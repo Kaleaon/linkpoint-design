@@ -628,14 +628,14 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                     <span style="flex:1;font:600 13px/1.25 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)">{{ c.title }}</span>
                     <sc-if value="{{ c.right }}" hint-placeholder-val="{{ true }}"><span style="font:400 10.5px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ c.right }}</span></sc-if>
                     <sc-if value="{{ c.badge }}" hint-placeholder-val="{{ false }}"><span style="min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--bdg,#8AD0B0);color:var(--onbdg,#0E3021);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--font,'JetBrains Mono')">{{ c.badge }}</span></sc-if>
-                    <sc-if value="{{ c.toggle }}" hint-placeholder-val="{{ false }}"><span style="{{ c.toggleStyle }}"><span style="{{ c.knobStyle }}"></span></span></sc-if>
+                    <sc-if value="{{ c.toggle }}" hint-placeholder-val="{{ false }}"><span onClick="{{ c.togglePick }}" style="{{ c.toggleStyle }}"><span style="{{ c.knobStyle }}"></span></span></sc-if>
                   </div>
                   <sc-if value="{{ c.body }}" hint-placeholder-val="{{ true }}"><div style="font:400 12px/1.6 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:8px">{{ c.body }}</div></sc-if>
                   <sc-if value="{{ c.big }}" hint-placeholder-val="{{ false }}"><div style="{{ c.bigStyle }}">{{ c.big }}</div></sc-if>
                   <sc-if value="{{ c.actions }}" hint-placeholder-val="{{ false }}">
                     <div style="display:flex;gap:8px;margin-top:11px">
                       <sc-for list="{{ c.actions }}" as="ac" hint-placeholder-count="2">
-                        <div style="{{ ac.style }}">{{ ac.label }}</div>
+                        <div onClick="{{ ac.pick }}" style="{{ ac.style }}">{{ ac.label }}</div>
                       </sc-for>
                     </div>
                   </sc-if>
@@ -1101,7 +1101,9 @@ const DIALOGS = {
 };
 
 class Component extends DCLogic {
-  state = { layout: "terminal", palette: "ink", device: "ios", screen: "Chat", dialog: null, dense: false, tab: "LOCAL", chip: "Nyx Vaher", tileOk: true, invOpen: { Objects: true },
+  state = { layout: "terminal", palette: "ink", device: "ios", screen: "Chat", dialog: null, dense: false, tabs: { Chat: "LOCAL", Friends: "ALL", Diagnostics: "AGNI" }, chip: "Nyx Vaher", tileOk: true, invOpen: { Objects: true },
+    dismissed: {}, pinned: {},
+    toggles: { largeType: false, push: true, voice: true, chatCmds: true, autoresponse: true },
     cond: "normal", hudOn: { ...HUD_DEFAULT }, hudPos: {}, hudPicker: false, target: null, targetPicker: false, navPeek: false,
     cPad: true, cHeld: "", cRun: false, cCam: "ORBIT", cHdg: 214, cPitch: 0, cDrag: false, cEdit: false, cFlash: "", cReason: "",
     rMode: "AV", rOpen: null, rMenu: null,
@@ -1188,6 +1190,13 @@ class Component extends DCLogic {
     return t.nav === "TILES" ? "tiles" : t.nav === "RAIL" && d.w > 700 ? "rail" : "tabs";
   }
   set(k, v) { this.setState({ [k]: v }); }
+  // Segment tabs are per-screen: Chat/Friends/Diagnostics each keep their own selection,
+  // so tapping ONLINE in Friends can never leave Chat's LOCAL/IM/GROUP row unselected.
+  setTab(scr, v) { this.setState(s => ({ tabs: { ...s.tabs, [scr]: v } })); }
+  dismiss(key) { this.setState(s => ({ dismissed: { ...s.dismissed, [key]: true } })); }
+  toggleSetting(key) { this.setState(s => ({ toggles: { ...s.toggles, [key]: !s.toggles[key] } })); }
+  pin(key) { this.setState(s => ({ pinned: { ...s.pinned, [key]: !s.pinned[key] } })); }
+  cycle(map, key) { const ks = Object.keys(map); this.setState(s => ({ [key]: ks[(ks.indexOf(s[key]) + 1) % ks.length] })); }
 
   componentDidMount() { this.icons(); this.iv = setInterval(() => this.setState(st => ({ tick: (st.tick || 0) + 1 })), 1000); }
   componentWillUnmount() { clearInterval(this.iv); clearTimeout(this.clp); clearTimeout(this.cfl); }
@@ -1275,7 +1284,9 @@ class Component extends DCLogic {
       { id: "Inventory", label: "INV", tile: "inventory", icon: "folder" },
       { id: "Settings", label: "MORE", tile: "settings", icon: "settings" },
     ];
-    const nvList = nav === "tabs" ? nvAll.filter(n => ["Chat","Friends","Radar","Map","Settings"].includes(n.id)) : nvAll;
+    // TABS nav (Ink Terminal, Aero Glass, Press) was missing the WORLD (3D View) key —
+    // rail/tiles nav already carried it, so tab-bar layouts were the only way to lose access to it.
+    const nvList = nav === "tabs" ? nvAll.filter(n => ["Chat","Friends","Radar","Map","3D View","Settings"].includes(n.id)) : nvAll;
     const railBase = { display: "flex", flexDirection: "column", alignItems: "center", gap: "5px", padding: "10px 4px", cursor: "pointer", borderRadius: V.navr, color: V.ink2 };
     const tabBase = { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", padding: "6px 0", cursor: "pointer", color: V.ink2, position: "relative" };
     const tileBase = { flex: 1, height: "62px", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "7px", cursor: "pointer", background: V.surf, color: V.ink };
@@ -1347,33 +1358,69 @@ class Component extends DCLogic {
       // not indented to the body gutter like the other packs.
       ? { flex: "none", display: "flex", margin: nav === "sweep" ? "2px 12px 10px 4px" : "2px 16px 10px", border: "1px solid " + V.outv, borderRadius: V.rs, overflow: "hidden" }
       : { flex: "none", display: "flex", margin: "0 16px 8px", borderBottom: segLook === "text" ? "1px solid " + V.outv : "none", overflowX: "auto" };
+    const curTab = s.tabs[scr];
     const segTabs = scr === "Chat" ? [
       { label: "LOCAL" }, { label: "IM", badge: 3 }, { label: "GROUP", badge: 1 },
-    ].map(x => ({ ...x, pick: () => this.set("tab", x.label),
-      style: M(M(segBase, s.tab === x.label ? on2 : null), isFloat ? { minHeight: "24px", height: "24px", padding: "0 9px", flex: "none", borderRadius: 0, font: "600 9.5px/1 " + t.font, letterSpacing: ".1em" } : null) }))
-      : scr === "Friends" ? [{ label: "ALL" }, { label: "ONLINE" }].map(x => ({ ...x, pick: () => this.set("tab", x.label), style: M(segBase, (s.tab === x.label || (x.label === "ALL" && s.tab !== "ONLINE")) ? on2 : null) }))
-      : scr === "Diagnostics" ? [{ label: "AGNI" }, { label: "ADITI" }].map(x => ({ ...x, pick: () => this.set("tab", x.label), style: M(segBase, x.label === "AGNI" ? on2 : null) }))
+    ].map(x => ({ ...x, pick: () => this.setTab(scr, x.label),
+      style: M(M(segBase, curTab === x.label ? on2 : null), isFloat ? { minHeight: "24px", height: "24px", padding: "0 9px", flex: "none", borderRadius: 0, font: "600 9.5px/1 " + t.font, letterSpacing: ".1em" } : null) }))
+      : scr === "Friends" ? [{ label: "ALL" }, { label: "ONLINE" }].map(x => ({ ...x, pick: () => this.setTab(scr, x.label), style: M(segBase, (curTab === x.label || (x.label === "ALL" && curTab !== "ONLINE")) ? on2 : null) }))
+      : scr === "Diagnostics" ? [{ label: "AGNI" }, { label: "ADITI" }].map(x => ({ ...x, pick: () => this.setTab(scr, x.label), style: M(segBase, (curTab || "AGNI") === x.label ? on2 : null) }))
       : null;
 
+    // IM and Group each have their own chip roster and, per chip, their own thread —
+    // Local stays the single always-on nearby feed with no chip picker.
+    const imChips = ["Nyx Vaher", "Kit Sandalwood", "Sable Ashgrove"];
+    const groupChips = ["Bay City Builders", "Ruthless Roofers"];
+    const chipList = curTab === "GROUP" ? groupChips : curTab === "IM" ? imChips : [];
+    const activeChip = chipList.includes(s.chip) ? s.chip : chipList[0];
     const chipBase = { flex: "none", height: "44px", padding: "0 14px", display: "flex", alignItems: "center", gap: "6px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, cursor: "pointer", color: V.ink2 };
-    const chips = LK.chips !== false && scr === "Chat" && s.tab !== "LOCAL" ? ["Nyx Vaher", "Kit Sandalwood", "Bay City Builders", "ALL (14)"].map(n => ({
+    const chips = LK.chips !== false && scr === "Chat" && chipList.length ? chipList.map(n => ({
       name: n, pick: () => this.set("chip", n), badge: n === "Kit Sandalwood" ? 2 : 0,
       dot: { width: "8px", height: "8px", borderRadius: "4px", flex: "none", background: n === "Nyx Vaher" ? V.ok : V.ink2 },
-      style: M(chipBase, s.chip === n ? { borderColor: V.pri, background: V.priC, color: V.onpriC } : null),
+      style: M(chipBase, activeChip === n ? { borderColor: V.pri, background: V.priC, color: V.onpriC } : null),
     })) : null;
 
     const wrapBase = { width: "100%", display: "flex", justifyContent: "flex-start" };
     const bubBase = { maxWidth: "88%", padding: "8px 10px", border: "1px solid " + V.outv, borderRadius: V.rp, background: V.surf };
     const headBase = { font: "400 10px/1.3 " + t.font, color: V.pri, marginBottom: "3px" };
     const textBase = { font: "400 13px/1.45 " + t.font, color: V.ink };
-    const msgs = [
+    const localMsgs = [
       { ts: "14:21", sender: "Nyx Vaher", text: "the roof build is up — teleport when you're free" },
       { ts: "14:22", sender: "Ruth Resident", text: "on my way, just rezzing the last sculpt", me: true },
       { ts: "14:24", sender: "System", text: "Kit Sandalwood is online.", sys: true },
       { ts: "14:25", sender: "Kit Sandalwood", text: "@Ruth check the landmark, second floor entrance", linkTitle: "Bay City — Hollywood", linkUrl: "secondlife://Hollywood/112/44/51" },
       { ts: "14:27", sender: "Ruth Resident", text: "got it 👍", me: true },
       { ts: "14:29", sender: "Nyx Vaher", text: "bringing the light rig over, one sec" },
-    ].map(m => {
+    ];
+    const imThreads = {
+      "Nyx Vaher": [
+        { ts: "13:52", sender: "Nyx Vaher", text: "you still at the build site?" },
+        { ts: "13:53", sender: "Ruth Resident", text: "yeah, finishing the roof trim", me: true },
+        { ts: "13:54", sender: "Nyx Vaher", text: "send me the landmark when it's done" },
+        { ts: "13:58", sender: "Ruth Resident", text: "will do — maybe 10 more min", me: true },
+      ],
+      "Kit Sandalwood": [
+        { ts: "13:40", sender: "Kit Sandalwood", text: "reslotted the brass texture, check inventory", linkTitle: "Bay City — Hollywood", linkUrl: "secondlife://Hollywood/112/44/51" },
+        { ts: "13:41", sender: "Kit Sandalwood", text: "lmk if the UVs still look off" },
+        { ts: "13:47", sender: "Ruth Resident", text: "looking now, one sec", me: true },
+      ],
+      "Sable Ashgrove": [
+        { ts: "yesterday", sender: "Sable Ashgrove", text: "the texture pack is in your inventory, no rush" },
+      ],
+    };
+    const groupThreads = {
+      "Bay City Builders": [
+        { ts: "12:10", sender: "Marlowe Quill", text: "meeting moved to 6pm SLT" },
+        { ts: "12:12", sender: "Ruth Resident", text: "works for me", me: true },
+        { ts: "12:15", sender: "System", text: "Sable Ashgrove joined the group.", sys: true },
+      ],
+      "Ruthless Roofers": [
+        { ts: "11:02", sender: "Oren Fairweather", text: "anyone have a spare roofing script?" },
+        { ts: "11:05", sender: "Ruth Resident", text: "I do, sending a copy now", me: true },
+        { ts: "11:06", sender: "Oren Fairweather", text: "you're a lifesaver" },
+      ],
+    };
+    const msgs = (curTab === "IM" ? imThreads[activeChip] : curTab === "GROUP" ? groupThreads[activeChip] : localMsgs).map(m => {
       const acc = m.sys ? V.info : m.me ? V.pri : V.sec2;
       if (!bleed) return {
         ...m, align: M(wrapBase, m.me ? { justifyContent: "flex-end" } : null),
@@ -1495,44 +1542,56 @@ class Component extends DCLogic {
     ].map(([name, meta], i) => ({ name, meta, style: { border: "1px solid " + V.outv, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "8px", background: i === 0 ? V.priC : V.surf2, borderColor: i === 0 ? V.pri : V.outv } }));
 
     const invTree = [
-      ["Inventory", "folder-star", 0, "chevron-down", "v42"], ["Objects", "box", 1, "chevron-down", "v18"],
-      ["Sunset Lamp v3", "box", 2, "circle-small", ""], ["Roof Kit (unpacked)", "box", 2, "circle-small", ""],
-      ["Clothing", "shirt", 1, "chevron-right", "v9"], ["Body Parts", "user", 1, "chevron-right", "v4"],
-      ["Landmarks", "map-pin", 1, "chevron-down", "v12"], ["Bay City — Hollywood", "map-pin", 2, "circle-small", ""],
-      ["Textures", "image", 1, "chevron-right", "v31"], ["Scripts", "file-code", 1, "chevron-right", "v7"],
-      ["Trash", "trash-2", 1, "chevron-right", "v2"],
-    ].map(([name, icon, depth, chev, ver]) => ({ name, icon, chev, ver, pick: () => {},
-      indent: bleed
-        ? { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 12px", paddingLeft: (10 + depth * 16) + "px",
-            background: V.surf, borderLeft: "4px solid " + (depth === 0 ? V.pri : depth === 1 ? V.sec2 : "transparent"), cursor: "pointer" }
-        : { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 16px", paddingLeft: (16 + depth * 18) + "px",
-            borderBottom: "1px solid " + V.outv, cursor: "pointer" } }));
+      ["Inventory", "folder-star", 0, null, "v42"], ["Objects", "box", 1, "Inventory", "v18"],
+      ["Sunset Lamp v3", "box", 2, "Objects", ""], ["Roof Kit (unpacked)", "box", 2, "Objects", ""],
+      ["Clothing", "shirt", 1, "Inventory", "v9"], ["Body Parts", "user", 1, "Inventory", "v4"],
+      ["Landmarks", "map-pin", 1, "Inventory", "v12"], ["Bay City — Hollywood", "map-pin", 2, "Landmarks", ""],
+      ["Textures", "image", 1, "Inventory", "v31"], ["Scripts", "file-code", 1, "Inventory", "v7"],
+      ["Trash", "trash-2", 1, "Inventory", "v2"],
+    ].map(([name, icon, depth, parent, ver]) => {
+      const kids = ["Inventory", "Objects", "Clothing", "Body Parts", "Landmarks", "Textures", "Scripts", "Trash"];
+      const isFolder = kids.includes(name);
+      const open = s.invOpen[name] !== false; // folders default open unless explicitly closed
+      return { name, icon, ver, parent, depth,
+        chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "circle-small",
+        open, isFolder,
+        pick: isFolder ? () => this.setState(st => ({ invOpen: { ...st.invOpen, [name]: !(st.invOpen[name] !== false) } })) : () => {},
+        indent: bleed
+          ? { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 12px", paddingLeft: (10 + depth * 16) + "px",
+              background: V.surf, borderLeft: "4px solid " + (depth === 0 ? V.pri : depth === 1 ? V.sec2 : "transparent"), cursor: "pointer" }
+          : { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 16px", paddingLeft: (16 + depth * 18) + "px",
+              borderBottom: "1px solid " + V.outv, cursor: "pointer" } };
+    }).filter(n => n.depth === 0 || (n.parent && (s.invOpen[n.parent] !== false)));
 
     const CARDS = {
       Friends: [
-        { icon: "user-plus", title: "Kit Sandalwood", right: "14:28", body: "“met you at the Bay City build jam”", style: { borderColor: V.sec2 },
-          actions: [{ label: "DECLINE", dim: true }, { label: "ACCEPT", primary: true }] },
-        ...friendRows.map(([n, m, online]) => ({ title: n, body: m, icon: online ? "circle-dot" : "circle", right: online ? "IM" : "" })),
+        // Pending requests aren't friends yet, so they only belong on the unfiltered ALL view.
+        ...(curTab === "ONLINE" || s.dismissed.friendReq ? [] : [{ icon: "user-plus", title: "Kit Sandalwood", right: "14:28", body: "“met you at the Bay City build jam”", style: { borderColor: V.sec2 },
+          actions: [{ label: "DECLINE", dim: true, pick: () => this.dismiss("friendReq") }, { label: "ACCEPT", primary: true, pick: () => this.dismiss("friendReq") }] }]),
+        ...friendRows.filter(([, , online]) => curTab !== "ONLINE" || online).map(([n, m, online]) => ({ title: n, body: m, icon: online ? "circle-dot" : "circle", right: online ? "IM" : "" })),
       ],
       Groups: [
-        { icon: "megaphone", title: "Notice · Bay City Builders", right: "2h", body: "Build jam Saturday 14:00 SLT — landmark attached.", style: { borderColor: V.pri },
-          actions: [{ label: "KEEP LANDMARK" }, { label: "OPEN CHAT", primary: true }] },
+        ...(s.dismissed.groupNotice ? [] : [{ icon: "megaphone", title: "Notice · Bay City Builders", right: "2h", body: "Build jam Saturday 14:00 SLT — landmark attached.", style: { borderColor: V.pri },
+          actions: [{ label: "KEEP LANDMARK", pick: () => this.dismiss("groupNotice") }, { label: "OPEN CHAT", primary: true, pick: () => { this.setTab("Chat", "GROUP"); this.set("chip", "Bay City Builders"); this.set("screen", "Chat"); } }] }]),
         { icon: "users", title: "Bay City Builders", body: "412 members · officer · notices on", badge: 4 },
         { icon: "users", title: "Sansara Cartographers", body: "88 members · member · notices on" },
         { icon: "users", title: "Terraform Co-op", body: "1 204 members · member · muted", badge: 12 },
         { icon: "users", title: "Mono Script Guild", body: "56 members · member · notices off" },
-        { icon: "user-plus", title: "Invite · Aurora Dance Crew", body: "Nyx Vaher invited you — no join fee.", style: { borderColor: V.sec2 },
-          actions: [{ label: "IGNORE", dim: true }, { label: "JOIN", primary: true }] },
+        ...(s.dismissed.groupInvite ? [] : [{ icon: "user-plus", title: "Invite · Aurora Dance Crew", body: "Nyx Vaher invited you — no join fee.", style: { borderColor: V.sec2 },
+          actions: [{ label: "IGNORE", dim: true, pick: () => this.dismiss("groupInvite") }, { label: "JOIN", primary: true, pick: () => this.dismiss("groupInvite") }] }]),
       ],
       Notices: [
-        { icon: "message-square", title: "Offline IM · Sable Ashgrove", right: "yesterday", body: "“the texture pack is in your inventory, no rush”", reply: true, actions: [{ label: "QUICK REPLY", primary: true }, { label: "MARK READ" }] },
-        { icon: "package", title: "Inventory offer · Nyx Vaher", right: "2h", body: "Bay City Landmark Pack · folder, 6 items", actions: [{ label: "DECLINE", dim: true }, { label: "ACCEPT", primary: true }] },
+        ...(s.dismissed.offlineIm ? [] : [{ icon: "message-square", title: "Offline IM · Sable Ashgrove", right: "yesterday", body: "“the texture pack is in your inventory, no rush”", reply: true,
+          actions: [{ label: "QUICK REPLY", primary: true, pick: () => { this.dismiss("offlineIm"); this.setTab("Chat", "IM"); this.set("chip", "Sable Ashgrove"); this.set("screen", "Chat"); } }, { label: "MARK READ", pick: () => this.dismiss("offlineIm") }] }]),
+        ...(s.dismissed.invOffer ? [] : [{ icon: "package", title: "Inventory offer · Nyx Vaher", right: "2h", body: "Bay City Landmark Pack · folder, 6 items",
+          actions: [{ label: "DECLINE", dim: true, pick: () => this.dismiss("invOffer") }, { label: "ACCEPT", primary: true, pick: () => this.dismiss("invOffer") }] }]),
         { icon: "banknote", title: "Payment received", right: "5h", body: "Marlowe Quill paid you L$ 1 200 for “Roof Kit”." },
         { icon: "megaphone", title: "Group notice · Terraform Co-op", right: "8h", body: "Sim edge terraform freeze until Monday." },
-        { icon: "bell-off", title: "Autoresponse is ON", body: "“On mobile — replies may be slow.” Sent 4 times today.", toggle: true },
+        { icon: "bell-off", title: "Autoresponse is " + (s.toggles.autoresponse ? "ON" : "OFF"), body: "“On mobile — replies may be slow.” Sent 4 times today.", toggle: true, on: s.toggles.autoresponse, togglePick: () => this.toggleSetting("autoresponse") },
       ],
       Teleport: [
-        { icon: "history", title: "Recent · Bay City — Hollywood", right: "14:02", body: "<112, 44, 51> · adult · 18 avatars", actions: [{ label: "TELEPORT", primary: true }, { label: "PIN" }] },
+        { icon: "history", title: "Recent · Bay City — Hollywood", right: "14:02", body: "<112, 44, 51> · adult · 18 avatars",
+          actions: [{ label: "TELEPORT", primary: true, pick: () => this.set("screen", "Map") }, { label: s.pinned.hollywood ? "PINNED" : "PIN", primary: s.pinned.hollywood, pick: () => this.pin("hollywood") }] },
         { icon: "star", title: "Home", body: "Da Boom <128, 128, 26>" },
         { icon: "star", title: "The Roof Build", body: "Bay City — Hollywood <112, 44, 51>" },
         { icon: "star", title: "Ahern Welcome Area", body: "Ahern <128, 128, 24>" },
@@ -1540,15 +1599,15 @@ class Component extends DCLogic {
         { icon: "map-pin", title: "Paste a SLURL", body: "secondlife:// … · or scan a QR from desktop" },
       ],
       Settings: [
-        { icon: "palette", title: "Layout pack", right: LAYOUTS[s.layout].name, body: "6 layout packs: geometry, nav model, type and density. Colour is a separate pack.", actions: [{ label: "PREVIEW ALL" }] },
-        { icon: "droplets", title: "Colour pack", right: PALETTES[s.palette].name, body: "24 Ktheme palettes grouped by family; any pack drops into any layout (144 combinations).", actions: [{ label: "BROWSE PACKS" }, { label: "SYSTEM MATCH" }] },
-        { icon: "type", title: "Large type & high contrast", body: "Scales body to 18px, forces AA contrast, disables shimmer", toggle: true },
-        { icon: "rows-3", title: "Compact density", body: s.dense ? "ON · Lumiya-style dense rows" : "OFF · comfortable rows", toggle: true, on: s.dense,
-          actions: [{ label: s.dense ? "SWITCH TO COMFORTABLE" : "SWITCH TO COMPACT", primary: true }] },
-        { icon: "bell", title: "Push notifications", body: "IMs, group notices, teleport offers · quick reply from the shade", toggle: true },
-        { icon: "mic", title: "Voice indicator", body: "Show speaking rings in radar and chat (listen-only on mobile)", toggle: true },
+        { icon: "palette", title: "Layout pack", right: LAYOUTS[s.layout].name, body: "6 layout packs: geometry, nav model, type and density. Colour is a separate pack.", actions: [{ label: "PREVIEW ALL", pick: () => this.cycle(LAYOUTS, "layout") }] },
+        { icon: "droplets", title: "Colour pack", right: PALETTES[s.palette].name, body: "24 Ktheme palettes grouped by family; any pack drops into any layout (144 combinations).", actions: [{ label: "BROWSE PACKS", pick: () => this.cycle(PALETTES, "palette") }, { label: "SYSTEM MATCH", pick: () => this.set("palette", "ink") }] },
+        { icon: "type", title: "Large type & high contrast", body: "Scales body to 18px, forces AA contrast, disables shimmer", toggle: true, on: s.toggles.largeType, togglePick: () => this.toggleSetting("largeType") },
+        { icon: "rows-3", title: "Compact density", body: s.dense ? "ON · Lumiya-style dense rows" : "OFF · comfortable rows", toggle: true, on: s.dense, togglePick: () => this.set("dense", !s.dense),
+          actions: [{ label: s.dense ? "SWITCH TO COMFORTABLE" : "SWITCH TO COMPACT", primary: true, pick: () => this.set("dense", !s.dense) }] },
+        { icon: "bell", title: "Push notifications", body: "IMs, group notices, teleport offers · quick reply from the shade", toggle: true, on: s.toggles.push, togglePick: () => this.toggleSetting("push") },
+        { icon: "mic", title: "Voice indicator", body: "Show speaking rings in radar and chat (listen-only on mobile)", toggle: true, on: s.toggles.voice, togglePick: () => this.toggleSetting("voice") },
         { icon: "shield", title: "Mute & block list", right: "6", body: "3 residents · 3 objects" },
-        { icon: "keyboard", title: "Chat channel commands", body: "/1 gestures, /me, /shout mapped to compose-bar shortcuts", toggle: true },
+        { icon: "keyboard", title: "Chat channel commands", body: "/1 gestures, /me, /shout mapped to compose-bar shortcuts", toggle: true, on: s.toggles.chatCmds, togglePick: () => this.toggleSetting("chatCmds") },
         { icon: "layout-dashboard", title: "Widgets", body: "Unread IMs, nearby count, L$ balance — lock-screen glance" },
       ],
       Diagnostics: [
@@ -1872,13 +1931,13 @@ class Component extends DCLogic {
         });
         // Sub-segments belong to the active area, indented off the spine like real LCARS sub-nav.
         const at = items.findIndex(x => x.on);
-        const subActive = scr === "Chat" ? s.tab : scr === "Radar" ? (objMode ? "OBJECT" : "AVATAR") : null;
+        const subActive = scr === "Chat" ? s.tabs.Chat : scr === "Radar" ? (objMode ? "OBJECT" : "AVATAR") : null;
         const sub = (CSUB[scr] || []).map(([label, code]) => {
           const sOn = subActive === label;
           const sbg = sOn ? V.sec : V.surf2;
           return {
             label, code, on: false,
-            pick: scr === "Chat" ? () => this.set("tab", label)
+            pick: scr === "Chat" ? () => this.setTab("Chat", label)
               : scr === "Radar" ? () => this.set("rMode", label === "AVATAR" ? "AV" : "OB")
               : () => {},
             codeStyle: { position: "absolute", left: "7px", top: "4px", font: "500 7.5px/1 " + t.font,
