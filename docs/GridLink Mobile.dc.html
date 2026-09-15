@@ -1279,8 +1279,8 @@ class Component extends DCLogic {
       { id: "Chat", label: "CHAT", tile: "chat", icon: "message-square", badge: 3 },
       { id: "Friends", label: "FRIENDS", tile: "people", icon: "users" },
       { id: "Radar", label: "RADAR", tile: "radar", icon: "radar" },
-      { id: "Map", label: "MAP", tile: "world", icon: "map" },
-      { id: "3D View", label: "WORLD", tile: "in-world", icon: "box" },
+      { id: "Map", label: "MAP", tile: "map", icon: "map" },
+      { id: "3D View", label: "3D", tile: "3d", icon: "box" },
       { id: "Inventory", label: "INV", tile: "inventory", icon: "folder" },
       { id: "Settings", label: "MORE", tile: "settings", icon: "settings" },
     ];
@@ -1356,7 +1356,7 @@ class Component extends DCLogic {
       : segLook === "fill"
       // Sweep's tab row hangs off the elbow: flush to the inner corner on the left,
       // not indented to the body gutter like the other packs.
-      ? { flex: "none", display: "flex", margin: nav === "sweep" ? "2px 12px 10px 4px" : "2px 16px 10px", border: "1px solid " + V.outv, borderRadius: V.rs, overflow: "hidden" }
+      ? { flex: "none", display: "flex", margin: nav === "sweep" ? "12px 12px 10px 4px" : "2px 16px 10px", border: "1px solid " + V.outv, borderRadius: V.rs, overflow: "hidden" }
       : { flex: "none", display: "flex", margin: "0 16px 8px", borderBottom: segLook === "text" ? "1px solid " + V.outv : "none", overflowX: "auto" };
     const curTab = s.tabs[scr];
     const segTabs = scr === "Chat" ? [
@@ -1858,7 +1858,7 @@ class Component extends DCLogic {
       invListStyle: { flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column",
         gap: bleed ? C.gap + "px" : 0, background: bleed ? V.bg : "transparent" },
       composerStyle: { flex: "none", display: "flex", gap: "8px", borderTop: "1px solid " + V.outv, background: V.surf,
-        padding: nav === "sweep" ? "12px 12px 12px 4px" : "12px",
+        padding: nav === "sweep" ? "12px 12px 12px 0" : "12px",
         borderTopLeftRadius: nav === "sweep" ? V.rl : "0", borderTopRightRadius: nav === "sweep" ? V.rl : "0" },
       composerFieldStyle: { flex: 1, minWidth: 0, minHeight: "44px", display: "flex", alignItems: "center", gap: "8px", padding: "0 12px",
         border: "1px solid " + V.outv, background: V.bg,
@@ -1878,18 +1878,18 @@ class Component extends DCLogic {
         : isConsole ? { position: "absolute", left: (C.rail + C.gap) + "px", top: (C.bar + C.gap) + "px",
             right: C.gap + "px", bottom: (C.foot + C.dock + C.gap * 3) + "px", display: "flex", minWidth: 0,
             borderRadius: C.rad + "px 0 0 0", overflow: "hidden", background: V.surf, zIndex: 2 }
-        : { flex: 1, display: "flex", minHeight: 0 },
+        : { flex: 1, display: "flex", minHeight: 0, minWidth: 0 },
       cfBar: { position: "absolute", left: 0, top: 0, right: 0, height: C.bar + "px", background: V.pri, borderRadius: Math.round(C.bar * 0.66) + "px 0 0 0" },
       cfBarEnd: { position: "absolute", right: 0, top: 0, width: (C.wide ? 104 : 66) + "px", height: C.bar + "px", background: V.sec2 },
       cfBarGap: { position: "absolute", right: (C.wide ? 108 : 70) + "px", top: 0, width: C.gap + "px", height: C.bar + "px", background: V.bg },
       cfTitleText: consoleScene ? "Exterior View" : title,
-      cfTitle: { position: "absolute", right: (C.wide ? 128 : 84) + "px", top: 0, height: C.bar + "px",
-        display: "flex", alignItems: "flex-end", paddingBottom: (C.wide ? 11 : 7) + "px",
-        font: "700 " + (C.wide ? 36 : 24) + "px/1 " + t.dfont, letterSpacing: ".05em",
+      cfTitle: { position: "absolute", right: (C.wide ? 128 : 84) + "px", left: (C.rail + C.gap) + "px", top: 0, height: C.bar + "px",
+        display: "flex", alignItems: "flex-end", justifyContent: "flex-end", paddingBottom: (C.wide ? 11 : 7) + "px",
+        font: "700 " + (C.wide ? 36 : 24) + "px/1 " + t.dfont, letterSpacing: ".05em", overflow: "hidden",
         color: this.ink(V.pri, [V.bg, V.onpri, V.ink]), textTransform: "uppercase", whiteSpace: "nowrap" },
       cfPlate: { position: "absolute", right: 0, top: 0, height: C.bar + "px", width: (C.wide ? 104 : 66) + "px",
-        display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: (C.wide ? 12 : 8) + "px",
-        font: "500 " + (C.wide ? 13 : 10) + "px/1 " + t.font, color: this.ink(V.sec2, [V.bg, V.onsec, V.ink]) },
+        display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: (C.wide ? 12 : 8) + "px", overflow: "hidden",
+        font: "500 " + (C.wide ? 13 : 10) + "px/1 " + t.font, color: this.ink(V.sec2, [V.bg, V.onsec, V.ink]), whiteSpace: "nowrap" },
       cfCurveFill: { position: "absolute", left: C.rail + "px", top: C.bar + "px", width: C.cur + "px", height: C.cur + "px", background: V.pri },
       cfCurveCut: { position: "absolute", left: C.rail + "px", top: C.bar + "px", width: C.cur + "px", height: C.cur + "px", background: V.bg, borderRadius: C.cur + "px 0 0 0" },
       cfRailCol: { position: "absolute", left: 0, top: C.bar + "px", width: C.rail + "px", bottom: (C.foot + C.gap) + "px", display: "flex", flexDirection: "column", gap: C.gap + "px" },
@@ -1949,7 +1949,7 @@ class Component extends DCLogic {
         });
         if (at >= 0 && sub.length) items.splice(at + 1, 0, ...sub);
         return items.concat([{ label: "", code: "", pick: () => {}, on: false, codeStyle: { display: "none" },
-          style: { flex: "1 1 auto", minHeight: "26px", width: C.rail + "px", background: V.outv, borderRadius: "0 0 0 " + C.rad + "px" } }]);
+          style: { flex: "none", height: "26px", width: C.rail + "px", background: V.outv, borderRadius: "0 0 0 " + C.rad + "px", marginTop: "auto" } }]);
       })(),
       cfDock: { position: "absolute", left: (C.rail + C.gap) + "px", right: C.gap + "px", bottom: (C.foot + C.gap * 2) + "px",
         height: C.dock + "px", display: "flex", gap: C.gap + "px", zIndex: s.cEdit ? 6 : 1 },
