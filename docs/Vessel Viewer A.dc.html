@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Antonio:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#07100f;font-family:"JetBrains Mono",monospace}
+  a{color:#6CFF9A}a:hover{color:#A7FFC4}
+  ::-webkit-scrollbar{width:8px;height:8px}
+  ::-webkit-scrollbar-thumb{background:#365047}
+</style>
+</helmet>
+
+<div style="width:1240px;height:880px;background:#0A1112;color:#D7F5E6;position:relative;overflow:hidden;display:flex;flex-direction:column">
+
+  <div style="flex:none;height:34px;display:flex;align-items:center;gap:14px;padding:0 14px;background:#101A1C;border-bottom:1px solid #365047">
+    <span style="font:700 11px/1 Antonio,sans-serif;letter-spacing:.24em;color:#6CFF9A">GRIDLINK VESSEL</span>
+    <span style="font:400 10px/1 'JetBrains Mono',monospace;color:#A7C8BC;letter-spacing:.1em">OPTION A &middot; CONSOLE READOUT</span>
+    <span style="margin-left:auto;font:400 10px/1 'JetBrains Mono',monospace;color:#A7C8BC">21 screens &middot; 48 files &middot; 6 packs &middot; 24 palettes</span>
+  </div>
+
+  <div style="flex:1;min-height:0;position:relative;overflow:hidden;background:#0A1112">
+
+    <div style="position:absolute;left:0;top:0;right:0;height:56px;background:#6CFF9A;border-radius:36px 0 0 0"></div>
+    <div style="position:absolute;right:0;top:0;width:78px;height:56px;background:#3E4E5E"></div>
+    <div style="position:absolute;right:82px;top:0;width:4px;height:56px;background:#0A1112"></div>
+    <div style="position:absolute;right:98px;top:0;height:56px;display:flex;align-items:flex-end;padding-bottom:7px;font:700 24px/1 Antonio,sans-serif;letter-spacing:.05em;color:#0A1112;text-transform:uppercase;white-space:nowrap">{{ fileName }}</div>
+    <div style="position:absolute;right:0;top:0;width:78px;height:56px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;font:500 10px/1 'JetBrains Mono',monospace;color:#D7F5E6">{{ fileLines }}</div>
+
+    <div style="position:absolute;left:84px;top:56px;width:40px;height:40px;background:#6CFF9A"></div>
+    <div style="position:absolute;left:84px;top:56px;width:40px;height:40px;background:#0A1112;border-radius:40px 0 0 0"></div>
+
+    <div style="position:absolute;left:0;top:56px;width:84px;bottom:26px;display:flex;flex-direction:column;gap:4px;overflow:hidden">
+      <div style="flex:none;height:32px;width:84px;background:#6CFF9A;color:#0A1112;display:flex;align-items:center;padding-left:10px;font:700 10px/1.05 Antonio,sans-serif;letter-spacing:.14em">SOURCE</div>
+      <sc-for list="{{ tree }}" as="n" hint-placeholder-count="12">
+        <div onClick="{{ n.pick }}" style="{{ n.style }}">
+          <span style="{{ n.codeStyle }}">{{ n.code }}</span>
+          <span style="font:inherit;letter-spacing:inherit">{{ n.short }}</span>
+        </div>
+      </sc-for>
+      <div style="flex:1 1 auto;min-height:20px;width:84px;background:#365047;border-radius:0 0 0 36px"></div>
+    </div>
+
+    <div style="position:absolute;left:88px;top:60px;right:4px;bottom:30px;border-radius:36px 0 0 0;overflow:hidden;background:#101A1C;display:flex;flex-direction:column">
+      <div style="flex:none;display:flex;align-items:center;gap:10px;height:30px;padding:0 12px 0 40px;background:#1B2A2D;color:#A7C8BC;font:500 9.5px/1 'JetBrains Mono',monospace;letter-spacing:.12em">
+        <span>{{ filePath }}</span>
+        <span style="margin-left:auto;color:#6CFF9A">{{ fileKind }}</span>
+      </div>
+      <div style="flex:1;min-height:0;overflow:auto;display:flex">
+        <div style="flex:none;width:52px;background:#0D1719;padding:10px 0">
+          <sc-for list="{{ gutter }}" as="g" hint-placeholder-count="40">
+            <div style="{{ g.style }}">{{ g.n }}</div>
+          </sc-for>
+        </div>
+        <div style="flex:1;min-width:0;padding:10px 16px 24px">
+          <sc-for list="{{ code }}" as="ln" hint-placeholder-count="40"><div style="font:400 12px/19px 'JetBrains Mono',monospace;white-space:pre"><sc-for list="{{ ln.toks }}" as="tk" hint-placeholder-count="6"><span style="{{ tk.style }}">{{ tk.text }}</span></sc-for></div></sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div style="position:absolute;left:0;right:0;bottom:0;height:26px;display:flex;align-items:center;gap:4px">
+      <div style="flex:none;width:84px;height:26px;background:#3E4E5E"></div>
+      <div style="flex:1;height:26px;background:#1B2A2D;display:flex;align-items:center;gap:18px;padding:0 14px;font:500 9px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:#A7C8BC">
+        <span>TS 5.3 &middot; EXPO 51</span>
+        <span>{{ provRead }}</span>
+        <span style="margin-left:auto;color:#6CFF9A">COPY FILE</span>
+        <span style="color:#6CFF9A">EXPORT TREE</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:880}}">
+const C = { kw:"#6CFF9A", str:"#E3B341", num:"#8AD0B0", typ:"#A485F7", cmt:"#5E7A70", pun:"#A7C8BC", ink:"#D7F5E6" };
+const KW = /^(import|from|export|default|function|const|let|return|if|else|await|async|type|interface|new|class|extends|for|of|null|true|false|useState|useEffect|useMemo|useCallback)$/;
+
+const TREE = [
+  ["src/theme/packs.ts", "PACKS"], ["src/theme/palettes.ts", "PALET"], ["src/theme/ThemeProvider.tsx", "PROV"],
+  ["src/shell/ConsoleFrame.tsx", "FRAME"], ["src/shell/Elbow.tsx", "ELBOW"], ["src/shell/NavRail.tsx", "RAIL"],
+  ["src/shell/Floaters.web.tsx", "FLOAT"], ["app/(tabs)/chat.tsx", "CHAT"], ["app/(tabs)/friends.tsx", "FRND"],
+  ["app/radar.tsx", "RADAR"], ["app/map.tsx", "MAP"], ["app/world.tsx", "WORLD"],
+  ["app/inventory.tsx", "INV"], ["app/appearance.tsx", "APPR"], ["app/search.tsx", "SRCH"],
+  ["app/land.tsx", "LAND"], ["src/sl/wearables.ts", "WEAR"], ["src/sl/money.ts", "L$"],
+  ["src/sl/voice-webrtc.ts", "VOICE"], ["src/sl/parcel.ts", "PARCL"],
+];
+
+const SRC = [
+  "// app/radar.tsx — Sweep Console radar, ported from the HTML vessel.",
+  "// Range rings are chat distances, not arbitrary: 10m whisper, 20m say, 100m shout.",
+  "",
+  "import { View, Text, Pressable, FlatList } from \"react-native\";",
+  "import { Gesture, GestureDetector } from \"react-native-gesture-handler\";",
+  "import Svg, { Circle, G } from \"react-native-svg\";",
+  "import { useCallback, useMemo, useState } from \"react\";",
+  "",
+  "import { usePack, usePalette } from \"@/src/theme/ThemeProvider\";",
+  "import { useRadar } from \"@/src/sl/hooks/useRadar\";",
+  "import type { RadarEntry } from \"@/src/sl/types\";",
+  "",
+  "const RINGS = [10, 20, 100] as const;",
+  "const COMPASS = [\"N\", \"NNE\", \"NE\", \"ENE\", \"E\", \"ESE\", \"SE\", \"SSE\"];",
+  "",
+  "export default function RadarScreen() {",
+  "  const pack = usePack();",
+  "  const c = usePalette();",
+  "  const { entries, mode, setMode } = useRadar();",
+  "  const [open, setOpen] = useState<string | null>(null);",
+  "  const [menu, setMenu] = useState<string | null>(null);",
+  "",
+  "  const sorted = useMemo(",
+  "    () => [...entries].sort((a, b) => a.distance - b.distance),",
+  "    [entries],",
+  "  );",
+  "",
+  "  const bandTone = useCallback((m: number) => {",
+  "    if (m <= 20) return c.success;",
+  "    if (m <= 100) return c.warning;",
+  "    return c.muted;",
+  "  }, [c]);",
+  "",
+  "  const longPress = Gesture.LongPress()",
+  "    .minDuration(460)",
+  "    .onStart(() => setMenu(open));",
+  "",
+  "  return (",
+  "    <View style={{ flex: 1, backgroundColor: c.surface }}>",
+  "      <Scope entries={sorted} rings={RINGS} tone={bandTone} />",
+  "      <FlatList",
+  "        data={sorted}",
+  "        keyExtractor={(e) => e.id}",
+  "        ItemSeparatorComponent={Gap}",
+  "        renderItem={({ item }) => (",
+  "          <Row entry={item} bleed={pack.bleed} tone={bandTone(item.distance)} />",
+  "        )}",
+  "      />",
+  "    </View>",
+  "  );",
+  "}",
+];
+
+class Component extends DCLogic {
+  state = { sel: 9 };
+  tok(line) {
+    const re = /(\s+|\/\/.*$|"[^"]*"|'[^']*'|[A-Za-z_$][\w$]*|\d+|.)/g;
+    const out = []; let m;
+    while ((m = re.exec(line)) !== null) {
+      const s = m[0]; let col = C.ink;
+      if (/^\s+$/.test(s)) col = null;
+      else if (s.indexOf("//") === 0) col = C.cmt;
+      else if (/^["']/.test(s)) col = C.str;
+      else if (KW.test(s)) col = C.kw;
+      else if (/^[A-Z]/.test(s)) col = C.typ;
+      else if (/^\d/.test(s)) col = C.num;
+      else if (/^[A-Za-z_$]/.test(s)) col = C.ink;
+      else col = C.pun;
+      out.push({ text: s, style: { color: col || "transparent", whiteSpace: "pre" } });
+      if (re.lastIndex >= line.length) break;
+    }
+    return out.length ? out : [{ text: " ", style: { whiteSpace: "pre" } }];
+  }
+  renderVals() {
+    const sel = this.state.sel;
+    const tint = ["#3E4E5E", "#1B2A2D", "#4E6A5E", "#1B2A2D"];
+    return {
+      fileName: TREE[sel][1], filePath: "frontend/" + TREE[sel][0],
+      fileKind: TREE[sel][0].indexOf("src/sl/") === 0 ? "PROTOCOL \u00b7 CITED" : "SCREEN",
+      fileLines: SRC.length + " LN",
+      provRead: TREE[sel][0].indexOf("src/sl/") === 0
+        ? "PROVENANCE: message_template.msg \u00b7 verified"
+        : "PROVENANCE: vessel design \u00b7 GridLink Mobile.dc.html",
+      tree: TREE.map(([path, short], i) => {
+        const on = i === sel, bg = on ? "#6CFF9A" : tint[i % tint.length];
+        return {
+          short, code: "0" + ((i % 9) + 1),
+          pick: () => this.setState({ sel: i }),
+          codeStyle: { position: "absolute", left: "7px", top: "4px", font: "500 7.5px/1 'JetBrains Mono',monospace", color: on ? "#0A1112" : "#A7C8BC", opacity: .85 },
+          style: { position: "relative", flex: "none", boxSizing: "border-box", height: "30px", width: "84px",
+            background: bg, color: on ? "#0A1112" : "#D7F5E6", display: "flex", alignItems: "flex-end",
+            justifyContent: "flex-end", padding: "0 8px 4px 0", cursor: "pointer",
+            font: "700 9px/1 Antonio,sans-serif", letterSpacing: ".1em" },
+        };
+      }),
+      gutter: SRC.map((_, i) => ({ n: i + 1,
+        style: { font: "400 11px/19px 'JetBrains Mono',monospace", color: "#4E6A5E", textAlign: "right", paddingRight: "10px" } })),
+      code: SRC.map(l => ({ toks: this.tok(l) })),
+    };
+  }
+}
+</script>
+</body>
+</html>

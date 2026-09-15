@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #0b0810; }
+    a { color: #F2A65A; } a:hover { color: #FFD7A8; }
+    @keyframes wig { 0%,100% { transform: rotate(-1.1deg); } 50% { transform: rotate(1.1deg); } }
+  </style>
+  <script src="https://unpkg.com/lucide@0.451.0/dist/umd/lucide.js"></script>
+</helmet>
+
+<div style="position:relative;width:1100px;height:740px;background:#120C1C;overflow:hidden;font-family:'Antonio',sans-serif">
+
+  <div style="position:absolute;left:0;top:0;width:1100px;height:88px;background:#F2A65A;border-radius:56px 0 0 0"></div>
+  <div style="position:absolute;right:0;top:0;width:104px;height:88px;background:#C5678D"></div>
+  <div style="position:absolute;right:108px;top:0;width:4px;height:88px;background:#120C1C"></div>
+  <div style="position:absolute;right:128px;bottom:10px;font:700 36px/1 'Antonio',sans-serif;letter-spacing:.05em;color:#1B0E24;text-transform:uppercase">Exterior View</div>
+  <div style="position:absolute;right:0;bottom:8px;width:104px;text-align:center;font:500 13px/1 'JetBrains Mono',monospace;color:#2B1030">{{ platePrime }}</div>
+
+  <div style="position:absolute;left:132px;top:88px;width:64px;height:64px;background:#F2A65A"></div>
+  <div style="position:absolute;left:132px;top:88px;width:64px;height:64px;background:#120C1C;border-radius:64px 0 0 0"></div>
+
+  <div style="position:absolute;left:0;top:88px;width:132px;bottom:6px;display:flex;flex-direction:column;gap:4px">
+    <sc-for list="{{ segs }}" as="g" hint-placeholder-count="8">
+      <div onClick="{{ g.pick }}" style="{{ g.style }}">
+        <span style="{{ g.codeStyle }}">{{ g.code }}</span>
+        <span style="font:inherit;letter-spacing:inherit">{{ g.label }}</span>
+      </div>
+    </sc-for>
+  </div>
+
+  <div onMouseDown="{{ sceneDown }}" onMouseMove="{{ sceneMove }}" onMouseUp="{{ sceneUp }}" onMouseLeave="{{ sceneUp }}" style="position:absolute;left:136px;top:92px;right:6px;bottom:110px;border-radius:60px 0 0 0;overflow:hidden;cursor:grab;background:linear-gradient(180deg,#3D1F5C 0%,#241338 44%,#1C132A 44%,#120C1C 100%)">
+    <div style="position:absolute;left:0;right:0;top:36%;height:12%;background:linear-gradient(180deg,rgba(164,133,247,.22),transparent)"></div>
+    <div style="{{ parallax }}">
+      <div style="position:absolute;left:-40px;bottom:34%;width:420px;height:120px;background:#1a1029;clip-path:polygon(0 100%,14% 38%,31% 62%,52% 12%,74% 54%,100% 30%,100% 100%)"></div>
+      <div style="position:absolute;right:-30px;bottom:36%;width:360px;height:92px;background:#170e24;clip-path:polygon(0 100%,18% 44%,44% 70%,68% 22%,100% 58%,100% 100%)"></div>
+    </div>
+    <div style="position:absolute;left:50%;top:56%;width:14px;height:34px;margin-left:-7px;background:#F2A65A;border-radius:7px"></div>
+    <div style="position:absolute;left:50%;top:56%;width:64px;height:10px;margin:26px 0 0 -32px;background:rgba(0,0,0,.38);border-radius:50%"></div>
+
+    <sc-if value="{{ padOpen }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute;left:22px;bottom:22px;display:flex;align-items:flex-start;gap:4px">
+        <div style="display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(3,52px);gap:4px">
+          <sc-for list="{{ pad }}" as="p" hint-placeholder-count="9">
+            <div onMouseDown="{{ p.down }}" onMouseUp="{{ p.up }}" onMouseLeave="{{ p.up }}" style="{{ p.style }}">
+              <sc-if value="{{ p.icon }}" hint-placeholder-val="{{ true }}"><i data-lucide="{{ p.icon }}" style="width:20px;height:20px"></i></sc-if>
+              <sc-if value="{{ p.label }}" hint-placeholder-val="{{ false }}"><span style="font:700 8.5px/1 'Antonio',sans-serif;letter-spacing:.1em">{{ p.label }}</span></sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <div onMouseDown="{{ upDown }}" onMouseUp="{{ padRelease }}" onMouseLeave="{{ padRelease }}" style="{{ flyUpStyle }}">UP</div>
+          <div onMouseDown="{{ dnDown }}" onMouseUp="{{ padRelease }}" onMouseLeave="{{ padRelease }}" style="{{ flyDnStyle }}">DN</div>
+          <div onClick="{{ toggleRun }}" style="{{ runStyle }}">RUN</div>
+          <div onClick="{{ togglePad }}" style="{{ padHideStyle }}">HIDE</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ padClosed }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ togglePad }}" style="position:absolute;left:22px;bottom:22px;display:flex;align-items:stretch;gap:4px;height:36px;cursor:pointer">
+        <span style="width:36px;background:#C5678D;border-radius:18px 0 0 18px"></span>
+        <span style="display:flex;align-items:center;padding:0 16px;background:#3D1F5C;color:#F3E9FF;font:700 12px/1 'Antonio',sans-serif;letter-spacing:.16em">MOVE PAD</span>
+      </div>
+    </sc-if>
+
+    <div style="position:absolute;left:24px;top:20px;display:flex;align-items:stretch;gap:4px;height:26px">
+      <span style="width:34px;background:#C5678D;border-radius:13px 0 0 13px"></span>
+      <span style="display:flex;align-items:center;padding:0 12px;background:#1C132A;font:500 12px/1 'JetBrains Mono',monospace;letter-spacing:.1em;color:#D0B3E6">HELIOTROPE · 128,64,42 · HDG {{ hdg }}</span>
+    </div>
+
+    <div style="position:absolute;right:24px;top:20px;width:214px;background:#1C132A;border-radius:0 0 0 22px;overflow:hidden">
+      <div style="display:flex;align-items:stretch;gap:4px;height:26px">
+        <span style="flex:1;display:flex;align-items:center;padding:0 10px;background:#A485F7;font:700 12px/1 'Antonio',sans-serif;letter-spacing:.16em;color:#170F2E">TARGET LOCK</span>
+        <span style="width:44px;display:flex;align-items:center;justify-content:center;background:#3D1F5C;font:500 11px/1 'JetBrains Mono',monospace;color:#F3E9FF">{{ plateB }}</span>
+      </div>
+      <div style="padding:12px 12px 14px">
+        <div style="font:600 17px/1.1 'Antonio',sans-serif;letter-spacing:.04em;color:#F3E9FF">KIT SANDALWOOD</div>
+        <div style="font:400 11px/1.5 'JetBrains Mono',monospace;color:#D0B3E6;margin-top:3px">12.4m · script 0.21ms</div>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:10px">
+          <sc-for list="{{ bars }}" as="b" hint-placeholder-count="3">
+            <div style="height:7px;background:#241338"><div style="{{ b.fill }}"></div></div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <sc-if value="{{ editing }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ endEdit }}" style="position:absolute;inset:0;background:rgba(9,6,14,.74);z-index:5"></div>
+    <div style="position:absolute;left:136px;right:6px;bottom:112px;z-index:6;display:flex;align-items:stretch;gap:4px;height:28px">
+      <span style="width:40px;background:#C5678D;border-radius:14px 0 0 14px"></span>
+      <span style="flex:1;display:flex;align-items:center;padding:0 12px;background:#1C132A;font:500 11px/1 'JetBrains Mono',monospace;letter-spacing:.12em;color:#D0B3E6">DOCK EDIT — TAP MINUS TO REMOVE, PLUS TO ADD</span>
+      <span onClick="{{ endEdit }}" style="display:flex;align-items:center;padding:0 18px;background:#F2A65A;font:700 12px/1 'Antonio',sans-serif;letter-spacing:.16em;color:#1B0E24;cursor:pointer">DONE</span>
+    </div>
+  </sc-if>
+
+  <div onMouseDown="{{ holdStart }}" onMouseUp="{{ holdEnd }}" onMouseLeave="{{ holdEnd }}" style="{{ dockStyle }}">
+    <sc-for list="{{ dock }}" as="b" hint-placeholder-count="8">
+      <div onClick="{{ b.press }}" style="{{ b.style }}">
+        <i data-lucide="{{ b.icon }}" style="width:20px;height:20px"></i>
+        <span style="font:600 10.5px/1 'Antonio',sans-serif;letter-spacing:.14em">{{ b.label }}</span>
+        <sc-if value="{{ b.badge }}" hint-placeholder-val="{{ false }}">
+          <span onClick="{{ b.remove }}" style="position:absolute;right:3px;top:3px;width:18px;height:18px;border-radius:9px;background:#CF6679;color:#2A0A0F;font:700 13px/18px 'Antonio',sans-serif;text-align:center;cursor:pointer">&minus;</span>
+        </sc-if>
+      </div>
+    </sc-for>
+    <sc-if value="{{ editing }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ addSlot }}" style="flex:0 0 84px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:#241338;border:2px dashed #4D2F5C;border-radius:0 22px 22px 0;color:#D0B3E6;cursor:pointer">
+        <span style="font:400 22px/1 'Antonio',sans-serif">+</span>
+        <span style="font:600 10px/1 'Antonio',sans-serif;letter-spacing:.14em">ADD</span>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="position:absolute;left:136px;right:6px;bottom:6px;height:38px;display:flex;align-items:stretch;gap:4px">
+    <span style="width:56px;background:#C5678D;border-radius:0 0 0 0"></span>
+    <span style="flex:1;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#1C132A;border-radius:0 19px 19px 0;font:500 11.5px/1 'JetBrains Mono',monospace;letter-spacing:.06em;color:#D0B3E6">
+      <span style="color:#F3E9FF">{{ statusLine }}</span>
+      <span>{{ tail }}</span>
+    </span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1100,&quot;height&quot;:740}}">
+const BTN = {
+  fly:  { label: "FLY",       icon: "plane",         tog: true,  off: "no fly in this region" },
+  sit:  { label: "SIT",       icon: "armchair" },
+  snap: { label: "SNAP",      icon: "camera" },
+  mini: { label: "MINIMAP",   icon: "map" },
+  inv:  { label: "INVENTORY", icon: "package" },
+  home: { label: "HOME",      icon: "house" },
+  ao:   { label: "AO",        icon: "person-standing", tog: true },
+  sun:  { label: "MIDDAY",    icon: "sun",            tog: true },
+};
+
+const SEGS = [
+  { id: "world", code: "01-4471", label: "EXTERIOR", h: 98 },
+  { id: "cam",   code: "01-4472", label: "CAM",      h: 30, sub: true },
+  { id: "gfx",   code: "01-4473", label: "GRAPHICS", h: 30, sub: true },
+  { id: "radar", code: "02-1180", label: "RADAR",    h: 54, c: "#A485F7" },
+  { id: "chat",  code: "03-2290", label: "CHAT",     h: 72, c: "#C5678D" },
+  { id: "inv",   code: "04-0071", label: "INVENTORY",h: 46, c: "#A485F7" },
+  { id: "map",   code: "05-3310", label: "MAP",      h: 60, c: "#3D1F5C" },
+  { id: "set",   code: "06-9002", label: "SETTINGS", h: 44, c: "#A485F7" },
+];
+
+const PAD = [
+  { k: "" },                           { k: "fwd", icon: "chevron-up" },    { k: "" },
+  { k: "lft", icon: "chevron-left" },  { k: "cam", icon: "video" },        { k: "rgt", icon: "chevron-right" },
+  { k: "" },                           { k: "bck", icon: "chevron-down" },  { k: "" },
+];
+
+const PADR = { 1: "26px 26px 0 0", 3: "26px 0 0 26px", 5: "0 26px 26px 0", 7: "0 0 26px 26px" };
+
+class Component extends DCLogic {
+  state = { sel: "world", edit: false, reason: "", t: 0, padOpen: true, held: "", run: false, flash: "",
+            cam: "ORBIT", heading: 214, pitch: 0, drag: false,
+            tog: { ao: true, sun: false, fly: false },
+            dock: ["fly", "sit", "snap", "mini", "inv", "home", "ao", "sun"] };
+
+  componentDidMount() { this.iv = setInterval(() => this.setState(s => ({ t: s.t + 1 })), 1000); this.ic(); }
+  componentDidUpdate() { this.ic(); }
+  componentWillUnmount() { clearInterval(this.iv); clearTimeout(this.lp); }
+  ic() { if (window.lucide) window.lucide.createIcons(); }
+
+  tap(id) {
+    clearTimeout(this.fl);
+    this.setState({ sel: id, flash: id });
+    this.fl = setTimeout(() => this.setState({ flash: "" }), 200);
+  }
+
+  hold(k) {
+    if (k === "run") this.setState(s => ({ run: !s.run }));
+    else if (k === "cam") this.setState(s => ({ cam: s.cam === "ORBIT" ? "MOUSELOOK" : "ORBIT" }));
+    else this.setState({ held: k });
+  }
+
+  press(k) {
+    const b = BTN[k];
+    if (b.off) { this.setState({ reason: "DENIED — " + b.off }); return; }
+    if (b.tog) this.setState(s => ({ tog: Object.assign({}, s.tog, { [k]: !s.tog[k] }), reason: "" }));
+    else this.setState({ reason: b.label + " — ACKNOWLEDGED" });
+  }
+
+  renderVals() {
+    const s = this.state, t = s.t;
+    const PRI = "#F2A65A", ON = "#1B0E24", INK = "#F3E9FF";
+    const pad = (n, w) => String(n).padStart(w, "0");
+
+    const segs = SEGS.map(g => {
+      const on = s.sel === g.id;
+      return {
+        code: g.code, label: g.label, pick: () => this.tap(g.id),
+        codeStyle: { position: "absolute", left: "8px", top: "6px",
+          font: "500 8.5px/1 'JetBrains Mono',monospace", letterSpacing: ".04em",
+          color: on ? "rgba(27,14,36,.6)" : "rgba(243,233,255,.42)" },
+        style: {
+          position: "relative", flex: "none", height: g.h + "px", boxSizing: "border-box",
+          width: g.sub ? "104px" : "132px", marginLeft: g.sub ? "28px" : "0",
+          background: s.flash === g.id ? "#FFD7A8" : (on ? PRI : (g.c || "#3D1F5C")), color: on ? ON : INK,
+          display: "flex", alignItems: "flex-end", justifyContent: "flex-end",
+          padding: "0 8px 5px 0", cursor: "pointer",
+          font: "700 " + (g.sub ? 9 : 11) + "px/1 'Antonio',sans-serif", letterSpacing: ".1em",
+        },
+      };
+    });
+    segs.push({ code: "", label: "", codeStyle: { display: "none" }, pick: () => {},
+      style: { flex: "1 1 auto", minHeight: "36px", background: "#4D2F5C", borderRadius: "0 0 0 44px" } });
+
+    const dock = s.dock.map((k, i) => {
+      const b = BTN[k], lit = !!s.tog[k], dis = !!b.off;
+      return {
+        key: k, label: b.label, icon: b.icon, badge: s.edit,
+        press: () => this.press(k),
+        remove: () => this.setState(st => ({ dock: st.dock.filter(x => x !== k) })),
+        style: {
+          position: "relative", flex: "1 1 0", minWidth: 0, display: "flex",
+          flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "5px",
+          background: dis ? "#241338" : (lit ? PRI : "#3D1F5C"),
+          color: dis ? "#8E7AA6" : (lit ? ON : INK),
+          cursor: dis ? "not-allowed" : "pointer",
+          borderRadius: i === 0 ? "22px 0 0 22px" : (i === s.dock.length - 1 && !s.edit ? "0 22px 22px 0" : "0"),
+          animation: s.edit ? "wig .42s ease-in-out infinite" : "none",
+          animationDelay: (i % 4) * 0.07 + "s",
+        },
+      };
+    });
+
+    const fly = (k, bg) => ({ width: "64px", height: "44px", display: "flex", alignItems: "center",
+      justifyContent: "center", background: s.held === k ? PRI : bg,
+      color: s.held === k ? ON : "#170F2E", font: "700 13px/1 'Antonio',sans-serif",
+      letterSpacing: ".14em", cursor: "pointer" });
+
+    return {
+      segs, dock, editing: s.edit,
+      padOpen: s.padOpen, padClosed: !s.padOpen,
+      hdg: String(((s.heading % 360) + 360) % 360).padStart(3, "0") + "\u00b0 " + (s.pitch > 2 ? "DN" : (s.pitch < -2 ? "UP" : "LVL")),
+      parallax: { position: "absolute", inset: 0,
+        transform: "translate(" + (-s.heading * 0.9).toFixed(1) + "px," + (s.pitch * 0.8).toFixed(1) + "px)",
+        transition: s.drag ? "none" : "transform .35s ease-out" },
+      sceneDown: (e) => { this.lastX = e.clientX; this.lastY = e.clientY; this.setState({ drag: true }); },
+      sceneMove: (e) => {
+        if (!this.state.drag) return;
+        const dx = e.clientX - this.lastX, dy = e.clientY - this.lastY;
+        this.lastX = e.clientX; this.lastY = e.clientY;
+        this.setState(st => ({ heading: st.heading + dx * 0.35,
+          pitch: Math.max(-70, Math.min(70, st.pitch + dy * 0.5)) }));
+      },
+      sceneUp: () => { if (this.state.drag) this.setState({ drag: false }); },
+      pad: PAD.map((p, i) => p.k ? {
+        icon: p.icon,
+        label: p.k === "cam" ? (s.cam === "ORBIT" ? "ORBIT" : "MOUSE") : "",
+        down: () => this.hold(p.k), up: () => this.setState({ held: "" }),
+        style: {
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+          gap: "3px", cursor: "pointer", backdropFilter: "blur(3px)",
+          background: s.held === p.k ? PRI : (p.k === "cam" ? "rgba(164,133,247,.72)" : "rgba(61,31,92,.66)"),
+          color: s.held === p.k ? ON : (p.k === "cam" ? "#170F2E" : INK),
+          borderRadius: PADR[i] || "0",
+        },
+      } : { icon: "", label: "", down: () => {}, up: () => {}, style: { background: "transparent", pointerEvents: "none" } }),
+      flyUpStyle: Object.assign(fly("up", "rgba(164,133,247,.78)"), { borderRadius: "0 26px 0 0", color: s.held === "up" ? ON : "#170F2E" }),
+      flyDnStyle: fly("dn", "rgba(164,133,247,.78)"),
+      runStyle: { width: "64px", height: "44px", display: "flex", alignItems: "center",
+        justifyContent: "center", background: s.run ? PRI : "rgba(61,31,92,.66)",
+        color: s.run ? ON : INK, font: "700 13px/1 'Antonio',sans-serif",
+        letterSpacing: ".14em", cursor: "pointer", backdropFilter: "blur(3px)" },
+      toggleRun: () => this.setState(st => ({ run: !st.run })),
+      padHideStyle: { width: "64px", height: "44px", display: "flex", alignItems: "center",
+        justifyContent: "center", background: "rgba(197,103,141,.82)", color: "#2B1030",
+        font: "700 11px/1 'Antonio',sans-serif", letterSpacing: ".14em", cursor: "pointer",
+        borderRadius: "0 0 26px 0", backdropFilter: "blur(3px)" },
+      upDown: () => this.setState({ held: "up" }),
+      dnDown: () => this.setState({ held: "dn" }),
+      padRelease: () => this.setState({ held: "" }),
+      togglePad: () => this.setState(st => ({ padOpen: !st.padOpen })),
+      platePrime: pad(4471 + (t % 29), 4) + "-" + pad(t % 97, 2),
+      plateB: pad((t * 7) % 999, 3),
+      bars: [62, 41, 88].map((v, i) => ({
+        fill: { height: "7px", width: Math.max(8, Math.min(100, v + ((t * (i + 3)) % 17) - 8)) + "%",
+                background: i === 2 ? "#C5678D" : "#A485F7" },
+      })),
+      dockStyle: { position: "absolute", left: "136px", right: "6px", bottom: "48px", height: "58px",
+                   display: "flex", gap: "4px", zIndex: s.edit ? 6 : 1,
+                   transform: s.edit ? "translateY(-2px)" : "none", transition: "transform .18s ease" },
+      statusLine: s.reason || ("SIM " + (21.4 + (t % 13) * 0.1).toFixed(1) + "ms · PKT " + ((t % 7) * 0.1).toFixed(1) + "% · FPS " + (58 - (t % 5))),
+      tail: "AGENTS " + (11 + (t % 4)) + " · " + pad(t % 24, 2) + ":" + pad((t * 7) % 60, 2) + " SLT",
+      holdStart: () => { this.lp = setTimeout(() => this.setState({ edit: true }), 480); },
+      holdEnd: () => clearTimeout(this.lp),
+      endEdit: () => this.setState({ edit: false }),
+      addSlot: () => this.setState(st => {
+        const miss = Object.keys(BTN).filter(k => st.dock.indexOf(k) < 0);
+        return miss.length ? { dock: st.dock.concat(miss[0]) } : { reason: "PALETTE EMPTY" };
+      }),
+    };
+  }
+}
+</script>
+</body>
+</html>
