@@ -33,7 +33,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
 </style></helmet>
 
 <section class="dv-turn" id="t1">
-<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">GridLink mobile — themed shell, 13 screens, 6 layout packs × 24 colour packs, 4 form factors</span></div>
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Linkpoint mobile — themed shell, 13 screens, 6 layout packs × 24 colour packs, 4 form factors</span></div>
 <div class="dv-opts">
 
 <div class="dv-opt" id="1a">
@@ -149,7 +149,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
       <div style="{{ cfCurveCut }}"></div>
 
       <div style="{{ cfRailCol }}">
-        <div style="{{ cfArm }}">GRIDLINK</div>
+        <div style="{{ cfArm }}">Linkpoint</div>
         <sc-for list="{{ consoleNav }}" as="n" hint-placeholder-count="9">
           <div onClick="{{ n.pick }}" style="{{ n.style }}">
             <span style="{{ n.codeStyle }}">{{ n.code }}</span>
@@ -511,7 +511,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                 <div onClick="{{ closeNavPeek }}" style="position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:9"></div>
                 <div style="{{ navPeekStyle }}">
                   <div style="display:flex;align-items:center;gap:8px;padding:0 8px 12px">
-                    <span style="flex:1;font:700 12px/1.1 var(--dfont,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A)">GRIDLINK</span>
+                    <span style="flex:1;font:700 12px/1.1 var(--dfont,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A)">Linkpoint</span>
                     <span onClick="{{ closeNavPeek }}" style="cursor:pointer;color:var(--ink2,#A7C8BC);display:flex"><i data-lucide="x" style="width:16px;height:16px"></i></span>
                   </div>
                   <sc-for list="{{ peekItems }}" as="pi" hint-placeholder-count="7">
@@ -629,6 +629,13 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                     <sc-if value="{{ c.right }}" hint-placeholder-val="{{ true }}"><span style="font:400 10.5px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ c.right }}</span></sc-if>
                     <sc-if value="{{ c.badge }}" hint-placeholder-val="{{ false }}"><span style="min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--bdg,#8AD0B0);color:var(--onbdg,#0E3021);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--font,'JetBrains Mono')">{{ c.badge }}</span></sc-if>
                     <sc-if value="{{ c.toggle }}" hint-placeholder-val="{{ false }}"><span onClick="{{ c.togglePick }}" style="{{ c.toggleStyle }}"><span style="{{ c.knobStyle }}"></span></span></sc-if>
+                    <sc-if value="{{ !!c.select }}" hint-placeholder-val="{{ false }}">
+                      <select onChange="{{ e => c.onChange(e.target.value) }}" style="margin-left: 10px; background: var(--surf2, #1B2A2D); color: var(--ink, #D7F5E6); border: 1px solid var(--outv, #365047); border-radius: 4px; padding: 4px 8px; font: 400 12px/1 var(--font, 'JetBrains Mono'); max-width: 150px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                        <sc-for list="{{ c.options }}" as="opt" hint-placeholder-count="2">
+                          <option value="{{ opt.value }}" selected="{{ opt.value === c.value ? 'selected' : '' }}">{{ opt.label }}</option>
+                        </sc-for>
+                      </select>
+                    </sc-if>
                   </div>
                   <sc-if value="{{ c.body }}" hint-placeholder-val="{{ true }}"><div style="font:400 12px/1.6 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:8px">{{ c.body }}</div></sc-if>
                   <sc-if value="{{ c.big }}" hint-placeholder-val="{{ false }}"><div style="{{ c.bigStyle }}">{{ c.big }}</div></sc-if>
@@ -649,7 +656,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
               <div style="position:absolute;left:0;right:0;top:0;height:340px;background:repeating-linear-gradient(135deg,var(--surf2,#1B2A2D) 0 12px,var(--surf,#101A1C) 12px 24px)"></div>
               <div style="position:absolute;left:0;right:0;top:0;height:420px;background:linear-gradient(180deg,transparent 0%,var(--bg,#0A1112) 88%)"></div>
               <div style="position:relative;padding:36px 16px 20px">
-                <div style="display:flex;align-items:center;gap:9px"><i data-lucide="hexagon" style="width:24px;height:24px;color:var(--pri,#6CFF9A)"></i><span style="font:700 27px/1 var(--dfont,'JetBrains Mono');letter-spacing:.24em;color:var(--pri,#6CFF9A)">GRIDLINK</span></div>
+                <div style="display:flex;align-items:center;gap:9px"><i data-lucide="hexagon" style="width:24px;height:24px;color:var(--pri,#6CFF9A)"></i><span style="font:700 27px/1 var(--dfont,'JetBrains Mono');letter-spacing:.24em;color:var(--pri,#6CFF9A)">Linkpoint</span></div>
                 <div style="font:400 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);letter-spacing:.18em;margin-top:7px">SECONDLIFE COMMUNICATOR // v2.0</div>
                 <div style="margin-top:150px;border:1px solid var(--outv,#365047);border-radius:var(--rp,4px);background:var(--surf,#101A1C);padding:16px;display:flex;flex-direction:column;gap:8px">
                   <div style="display:flex;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);overflow:hidden;margin-bottom:6px">
@@ -663,6 +670,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                     </div>
                   </sc-for>
                   <div style="margin-top:14px;height:48px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:8px;font:700 13px/1 var(--font,'JetBrains Mono');letter-spacing:.22em"><i data-lucide="power" style="width:17px;height:17px"></i>CONNECT TO GRID</div>
+                  <div onClick="{{ () => this.set('screen', 'Settings') }}" style="margin-top:8px;height:48px;border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);color:var(--pri,#6CFF9A);border:1px solid var(--outv,#365047);display:flex;align-items:center;justify-content:center;gap:8px;font:700 13px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;cursor:pointer"><i data-lucide="settings" style="width:17px;height:17px"></i>SETTINGS</div>
                   <div style="font:400 10.5px/1.5 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:8px">&gt; last: Agni · Da Boom · 14:02 · biometric unlock available</div>
                 </div>
               </div>
@@ -991,7 +999,7 @@ const FMENU = [
   { label:"View",  items:"WINDOWS" },
   { label:"World", items:[["Teleport Home","\u21e7\u2318H"],["Set Home to Here",""],["About Land…",""],["Region / Estate…",""]] },
   { label:"Build", items:[["Focus","\u23251"],["Move","\u23252"],["Edit","\u23253"],["Create","\u23254"],["Land","\u23255"]] },
-  { label:"Help",  items:[["Second Life Help","F1"],["Report Abuse…",""],["Report Bug…",""],["About GridLink",""]] },
+  { label:"Help",  items:[["Second Life Help","F1"],["Report Abuse…",""],["Report Bug…",""],["About Linkpoint",""]] },
 ];
 
 const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Settings","Diagnostics","Login"];
@@ -1609,13 +1617,15 @@ class Component extends DCLogic {
         { icon: "shield", title: "Mute & block list", right: "6", body: "3 residents · 3 objects" },
         { icon: "keyboard", title: "Chat channel commands", body: "/1 gestures, /me, /shout mapped to compose-bar shortcuts", toggle: true, on: s.toggles.chatCmds, togglePick: () => this.toggleSetting("chatCmds") },
         { icon: "layout-dashboard", title: "Widgets", body: "Unread IMs, nearby count, L$ balance — lock-screen glance" },
+        { icon: "layout", title: "Nav Layout", body: "Choose navigation and layout pack", select: true, options: Object.entries(LAYOUTS).map(([k,x]) => ({label: x.name, value: k})), value: s.layout, onChange: (v) => this.set("layout", v) },
+        { icon: "droplet", title: "Color Palette", body: "Choose color theme", select: true, options: Object.keys(PALETTES).map(k => ({label: PALETTES[k].name, value: k})), value: s.palette, onChange: (v) => this.set("palette", v) },
       ],
       Diagnostics: [
         { title: "LATENCY", big: "84", body: "> excellent · agni · round trip", bigStyle: { color: V.ok } },
         { title: "DNS", right: "12 ms", body: "OK · login.agni.lindenlab.com", style: { borderColor: V.ok } },
         { title: "TCP / TLS", right: "38 ms", body: "OK · handshake reachable", style: { borderColor: V.ok } },
         { title: "SIM CIRCUIT", right: "live", body: "rx 18 204 / tx 6 118 packets · 0.2% loss" },
-        { title: "ENDPOINT", body: "viewer GridLink Mobile 2.0 · server_time 2026-09-10T14:32:07Z" },
+        { title: "ENDPOINT", body: "viewer Linkpoint Mobile 2.0 · server_time 2026-09-10T14:32:07Z" },
         { title: "CAPS", body: "display names OK · event queue OK · avatar picker OK · inventory skeleton OK" },
       ],
     };
