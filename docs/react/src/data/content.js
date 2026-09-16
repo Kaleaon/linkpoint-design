@@ -58,14 +58,19 @@ export const GROUP_THREADS = {
   ],
 };
 
+// [name, meta, online, rights] — rights are the classic SL friend permissions:
+// eye = can see me online, map-pin = can see me on the map, pencil = can modify my objects.
 export const FRIEND_ROWS = [
-  ["Nyx Vaher", "ONLINE · id 4f2a9c11", true],
-  ["Kit Sandalwood", "ONLINE · id 8b71ee02", true],
-  ["Marlowe Quill", "ONLINE · id 22c4a5de", true],
-  ["Sable Ashgrove", "OFFLINE · seen 2d ago", false],
-  ["Tamsin Reed", "OFFLINE · seen 5d ago", false],
-  ["Oren Fairweather", "OFFLINE · seen 1w ago", false],
+  ["Nyx Vaher", "ONLINE · id 4f2a9c11", true, ["eye", "map-pin", "pencil"]],
+  ["Kit Sandalwood", "ONLINE · id 8b71ee02", true, ["eye", "map-pin"]],
+  ["Marlowe Quill", "ONLINE · id 22c4a5de", true, ["eye"]],
+  ["Sable Ashgrove", "OFFLINE · seen 2d ago", false, ["eye", "map-pin"]],
+  ["Tamsin Reed", "OFFLINE · seen 5d ago", false, ["eye"]],
+  ["Oren Fairweather", "OFFLINE · seen 1w ago", false, []],
 ];
+
+// Grid residents who show up in Search but aren't friends yet.
+export const SEARCH_STRANGERS = ["Lyra Sunspire", "Cove Ashworth", "Petra Vantage", "Wren Halloway"];
 
 // Radar, Firestorm-style: [name, distance-m, bearing-deg, meta, icon]
 export const RADAR_AVATARS = [
@@ -113,12 +118,6 @@ export const PROFILE_BLOCKS = [
   { label: "2ND LIFE", body: "Builder, terraformer, occasional DJ. Bay City Builders officer. Ask me about mesh roofs." },
   { label: "GROUPS", body: "Bay City Builders · Sansara Cartographers · Terraform Co-op" },
   { label: "PICKS", body: "The Roof Build · Ahern Welcome Area · Sansara Ridge overlook" },
-];
-
-export const LOGIN_FIELDS = [
-  { label: "GRID", value: "Agni (Main)" },
-  { label: "AVATAR NAME", value: "Ruth   /   Resident" },
-  { label: "PASSWORD", value: "••••••••" },
 ];
 
 export const HEAD = (layoutName, paletteName) => ({
@@ -192,11 +191,12 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
               ],
             },
           ]),
-      ...FRIEND_ROWS.filter(([, , online]) => state.tabs.Friends !== "ONLINE" || online).map(([n, m, online]) => ({
+      ...FRIEND_ROWS.filter(([, , online]) => state.tabs.Friends !== "ONLINE" || online).map(([n, m, online, rights]) => ({
         title: n,
         body: m,
         icon: online ? "circle-dot" : "circle",
         right: online ? "IM" : "",
+        rights,
       })),
     ],
     Groups: [
@@ -309,6 +309,33 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
       { icon: "map-pin", title: "Paste a SLURL", body: "secondlife:// … · or scan a QR from desktop" },
     ],
     Settings: [
+      {
+        icon: "user",
+        title: "Session",
+        right: state.loginMode === "offline" ? "offline" : "grid · " + state.loginGrid,
+        body:
+          "Ruth Resident · Da Boom · agent 22c4a5de-11 · sim link " +
+          (state.reconnecting ? "reconnecting…" : "LIVE · rx 18 204 / tx 6 118"),
+      },
+      {
+        icon: "plug-zap",
+        title: "Reconnect to grid",
+        body: "Manually re-open the sim circuit without a full re-login.",
+        actions: [
+          {
+            label: state.reconnecting ? "RECONNECTING…" : "RECONNECT",
+            primary: !state.reconnecting,
+            pick: state.reconnecting ? () => {} : () => actions.reconnect(),
+          },
+        ],
+      },
+      {
+        icon: "log-out",
+        title: "Disconnect",
+        body: "Ends this session and returns to the login screen.",
+        accent: "err",
+        actions: [{ label: "DISCONNECT", dim: true, pick: () => actions.setScreen("Login") }],
+      },
       {
         icon: "palette",
         title: "Layout pack",

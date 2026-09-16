@@ -36,7 +36,7 @@ export const FMENU = [
   { label:"Help",  items:[["Second Life Help","F1"],["Report Abuse…",""],["Report Bug…",""],["About GridLink",""]] },
 ];
 
-export const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Settings","Diagnostics","Login"];
+export const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Settings","Diagnostics","Login","Search"];
 
 // Firestorm-style custom button array: the user's dock is a list of keys into this palette.
 export const CBTN = {

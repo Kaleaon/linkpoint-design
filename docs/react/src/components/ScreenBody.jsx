@@ -16,6 +16,7 @@ import World3D, { World3DActionBar } from "../screens/World3D.jsx";
 import Inventory from "../screens/Inventory.jsx";
 import Profile from "../screens/Profile.jsx";
 import Login from "../screens/Login.jsx";
+import Search from "../screens/Search.jsx";
 
 const CARD_SCREENS = ["Friends", "Groups", "Notices", "Teleport", "Settings", "Diagnostics"];
 
@@ -48,6 +49,7 @@ export default function ScreenBody() {
         {norm && scr === "Profile" && <Profile />}
         {norm && isCardScreen && <CardList cards={cardsByScreen[scr] || []} />}
         {scr === "Login" && <Login />}
+        {scr === "Search" && <Search />}
         {!norm && <StateBlock />}
       </div>
       <SplitDetail />

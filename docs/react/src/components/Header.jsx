@@ -31,8 +31,17 @@ export default function Header() {
 
 function StackHead({ title, subtitle, scr }) {
   const { V, t } = useTheme();
+  const { actions } = useApp();
   const showLink = scr === "Chat";
-  const headerIcons = scr === "Friends" ? ["user-plus", "search"] : scr === "Diagnostics" ? ["refresh-cw"] : null;
+  const headerIcons =
+    scr === "Friends"
+      ? [
+          { icon: "user-plus", pick: () => actions.openSearch("Friends") },
+          { icon: "search", pick: () => actions.openSearch("Friends") },
+        ]
+      : scr === "Diagnostics"
+      ? [{ icon: "refresh-cw", pick: () => {} }]
+      : null;
   return (
     <div style={{ flex: "none", display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px 8px" }}>
       <div style={{ flex: 1, minWidth: 0 }}>
@@ -47,8 +56,12 @@ function StackHead({ title, subtitle, scr }) {
       ) : null}
       {headerIcons
         ? headerIcons.map((hi) => (
-            <div key={hi} style={{ width: "44px", height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri }}>
-              <Icon name={hi} size={18} />
+            <div
+              key={hi.icon}
+              onClick={hi.pick}
+              style={{ width: "44px", height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer" }}
+            >
+              <Icon name={hi.icon} size={18} />
             </div>
           ))
         : null}

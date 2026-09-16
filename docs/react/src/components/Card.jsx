@@ -18,6 +18,13 @@ export default function Card({ c }) {
         {c.icon && <Icon name={c.icon} size={16} style={{ color: V.pri }} />}
         <span style={{ flex: 1, font: "600 13px/1.25 " + t.font, color: V.ink }}>{c.title}</span>
         {c.right != null && c.right !== "" && <span style={{ font: "400 10.5px/1 " + t.font, color: V.ink2 }}>{c.right}</span>}
+        {c.rights && c.rights.length ? (
+          <span style={{ display: "flex", gap: "4px", flex: "none" }}>
+            {c.rights.map((r) => (
+              <Icon key={r} name={r} size={13} style={{ color: V.sec2 }} />
+            ))}
+          </span>
+        ) : null}
         {c.badge ? (
           <span
             style={{

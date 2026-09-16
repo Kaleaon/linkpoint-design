@@ -1687,7 +1687,7 @@ class Component extends DCLogic {
       Settings: [
         { icon: "user", title: "Session", right: s.loginMode === "offline" ? "offline" : "grid · " + s.loginGrid,
           body: "Ruth Resident · Da Boom · agent 22c4a5de-11 · sim link " + (s.reconnecting ? "reconnecting…" : "LIVE · rx 18 204 / tx 6 118") },
-        { icon: "lan-connect", title: "Reconnect to grid", body: "Manually re-open the sim circuit without a full re-login.",
+        { icon: "plug-zap", title: "Reconnect to grid", body: "Manually re-open the sim circuit without a full re-login.",
           actions: [{ label: s.reconnecting ? "RECONNECTING…" : "RECONNECT", primary: !s.reconnecting, pick: s.reconnecting ? () => {} : () => this.reconnect() }] },
         { icon: "log-out", title: "Disconnect", body: "Ends this session and returns to the login screen.", style: { borderColor: V.err },
           actions: [{ label: "DISCONNECT", dim: true, pick: () => this.set("screen", "Login") }] },

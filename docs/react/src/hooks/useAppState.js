@@ -50,6 +50,14 @@ export function useAppState() {
   const [flZ, setFlZ] = useState(["Map", "Inventory", "Friends", "Radar", "Chat"]);
   const [menu, setMenu] = useState(null);
   const [tick, setTick] = useState(0);
+  const [loginMode, setLoginModeState] = useState("grid");
+  const [loginGrid, setLoginGrid] = useState("agni");
+  const [loginBusy, setLoginBusy] = useState(false);
+  const [loginError, setLoginError] = useState(null);
+  const [searchFrom, setSearchFrom] = useState("Friends");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchState, setSearchState] = useState({});
+  const [reconnecting, setReconnecting] = useState(false);
 
   // ---- tick clock (componentDidMount's setInterval) ---------------------
   useEffect(() => {
@@ -64,12 +72,18 @@ export function useAppState() {
   const lpFiredRef = useRef(false);
   const lxRef = useRef(0);
   const lyRef = useRef(0);
+  const loginTimerRef = useRef(null);
+  const searchTimerRef = useRef(null);
+  const reconnectTimerRef = useRef(null);
 
   useEffect(
     () => () => {
       clearTimeout(cflRef.current);
       clearTimeout(clpRef.current);
       clearTimeout(rlpRef.current);
+      clearTimeout(loginTimerRef.current);
+      clearTimeout(searchTimerRef.current);
+      clearTimeout(reconnectTimerRef.current);
     },
     []
   );
@@ -111,6 +125,43 @@ export function useAppState() {
   const cyclePalette = useCallback(() => {
     const ks = Object.keys(PALETTES);
     setPalette((cur) => ks[(ks.indexOf(cur) + 1) % ks.length]);
+  }, []);
+
+  // ---- login (setLoginMode/setLoginGrid/connectLogin) --------------------
+  const setLoginMode = useCallback((m) => {
+    setLoginModeState(m);
+    setLoginError(null);
+  }, []);
+  const connectLogin = useCallback(() => {
+    setLoginBusy((busy) => {
+      if (busy) return busy;
+      clearTimeout(loginTimerRef.current);
+      loginTimerRef.current = setTimeout(() => {
+        setLoginBusy(false);
+        setLoginError(loginMode === "grid" ? "Unable to reach login." + loginGrid + ".lindenlab.com — check your connection and try again." : null);
+      }, 900);
+      return true;
+    });
+    setLoginError(null);
+  }, [loginMode, loginGrid]);
+
+  // ---- resident search (openSearch/searchAdd) -----------------------------
+  const openSearch = useCallback((from) => {
+    setSearchFrom(from);
+    setSearchQuery("");
+    setScreen("Search");
+  }, []);
+  const searchAdd = useCallback((name) => {
+    setSearchState((s) => ({ ...s, [name]: "sending" }));
+    clearTimeout(searchTimerRef.current);
+    searchTimerRef.current = setTimeout(() => setSearchState((s) => ({ ...s, [name]: "sent" })), 700);
+  }, []);
+
+  // ---- settings: reconnect to grid ---------------------------------------
+  const reconnect = useCallback(() => {
+    setReconnecting(true);
+    clearTimeout(reconnectTimerRef.current);
+    reconnectTimerRef.current = setTimeout(() => setReconnecting(false), 1200);
   }, []);
 
   // ---- desktop floater window model (flR/flDrag/flFocus/flToggle/flClose) --
@@ -320,6 +371,7 @@ export function useAppState() {
       toggles, cond, hudOn, hudPos, hudPicker, target, targetPicker, navPeek,
       cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
       rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
+      loginMode, loginGrid, loginBusy, loginError, searchFrom, searchQuery, searchState, reconnecting,
     },
     actions: {
       setLayout, setPalette, setDevice, setScreen: screenPick, setDialog, setDense,
@@ -331,6 +383,7 @@ export function useAppState() {
       holdStart, holdEnd, endEdit, togglePad, toggleRun, flyUpDown, flyDnDown, flyRelease, addSlot, removeDockSlot,
       radarTap, radarHold, radarRelease, radarBlipPick,
       setRMode,
+      setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchQuery, searchAdd, reconnect,
     },
     T, D, navMode,
   };

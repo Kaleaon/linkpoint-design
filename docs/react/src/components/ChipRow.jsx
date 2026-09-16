@@ -1,9 +1,11 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
-import { IM_CHIPS, GROUP_CHIPS } from "../data/content.js";
+import { IM_CHIPS, GROUP_CHIPS, FRIEND_ROWS } from "../data/content.js";
 
 // Ported from `chips`/`chipList`/`activeChip` — Chat's IM/GROUP thread picker.
-// Local has no chip row (it's the single always-on nearby feed).
+// Local has no chip row (it's the single always-on nearby feed). The trailing
+// "ALL (n)" chip opens the searchable picker for starting a thread with
+// someone not already a chip (the chip row only ever shows existing threads).
 export default function ChipRow() {
   const { state, actions } = useApp();
   const { V, t, LK, scr, norm } = useTheme();
@@ -13,6 +15,7 @@ export default function ChipRow() {
   const chipList = curTab === "GROUP" ? GROUP_CHIPS : curTab === "IM" ? IM_CHIPS : [];
   if (!chipList.length) return null;
   const activeChip = chipList.includes(state.chip) ? state.chip : chipList[0];
+  const allContacts = FRIEND_ROWS.length + GROUP_CHIPS.length;
 
   const chipBase = { flex: "none", height: "44px", padding: "0 14px", display: "flex", alignItems: "center", gap: "6px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, cursor: "pointer", color: V.ink2 };
 
@@ -33,6 +36,10 @@ export default function ChipRow() {
           </div>
         );
       })}
+      <div key="all" onClick={() => actions.openSearch("Chat")} style={{ ...chipBase, borderStyle: "dashed" }}>
+        <span style={{ width: "8px", height: "8px", borderRadius: "4px", flex: "none", background: V.pri }} />
+        <span style={{ font: "400 12px/1 " + t.font, whiteSpace: "nowrap" }}>{"ALL (" + allContacts + ")"}</span>
+      </div>
     </div>
   );
 }
