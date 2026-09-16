@@ -313,7 +313,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
             </sc-if>
             <sc-if value="{{ headerIcons }}" hint-placeholder-val="{{ false }}">
             <sc-for list="{{ headerIcons }}" as="hi" hint-placeholder-count="2">
-              <div style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A)"><i data-lucide="{{ hi }}" style="width:18px;height:18px"></i></div>
+              <div onClick="{{ hi.pick }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer"><i data-lucide="{{ hi.icon }}" style="width:18px;height:18px"></i></div>
             </sc-for>
             </sc-if>
           </div>
@@ -402,15 +402,17 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                   </div>
                 </div>
               </sc-for>
-              <div style="{{ typingStyle }}">&gt; Nyx is typing<span style="animation:blink 1s steps(1) infinite">_</span></div>
+              <sc-if value="{{ chatTyping }}" hint-placeholder-val="{{ false }}">
+              <div style="{{ typingStyle }}">&gt; {{ chatTypingWho }} is typing<span style="animation:blink 1s steps(1) infinite">_</span></div>
+              </sc-if>
             </div>
             <div style="{{ composerStyle }}">
               <div style="{{ composerFieldStyle }}">
                 <i data-lucide="smile" style="width:16px;height:16px;opacity:.55"></i>
-                <span style="font:400 13px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">say to local…</span>
+                <input value="{{ composeText }}" onChange="{{ composeChange }}" onKeyDown="{{ composeKeyDown }}" placeholder="{{ composePlaceholder }}" style="{{ composeInputStyle }}" />
                 <span style="margin-left:auto;font:600 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);letter-spacing:.1em">/1</span>
               </div>
-              <div style="{{ composerSendStyle }}"><i data-lucide="send" style="width:19px;height:19px"></i></div>
+              <div onClick="{{ sendChat }}" style="{{ composerSendStyle }}"><i data-lucide="send" style="width:19px;height:19px"></i></div>
             </div>
           </sc-if>
 
@@ -454,7 +456,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                   <sc-if value="{{ r.open }}" hint-placeholder-val="{{ false }}">
                     <div style="{{ r.actWrap }}">
                       <sc-for list="{{ r.acts }}" as="a" hint-placeholder-count="4">
-                        <div style="{{ a.style }}">{{ a.label }}</div>
+                        <div onClick="{{ a.pick }}" style="{{ a.style }}">{{ a.label }}</div>
                       </sc-for>
                     </div>
                   </sc-if>
@@ -463,7 +465,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                       <div style="{{ r.modHead }}">{{ r.modTitle }}</div>
                       <div style="{{ r.actWrap }}">
                         <sc-for list="{{ r.mods }}" as="a" hint-placeholder-count="6">
-                          <div style="{{ a.style }}">{{ a.label }}</div>
+                          <div onClick="{{ a.pick }}" style="{{ a.style }}">{{ a.label }}</div>
                         </sc-for>
                       </div>
                     </div>
@@ -486,13 +488,13 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
               <div style="position:absolute;inset:0">{{ tileLayer }}</div>
               <div style="position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:7px;background:var(--pri,#6CFF9A);border:2px solid var(--bg,#0A1112)"></div>
               <div style="position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px">
-                <sc-for list="{{ mapBtns }}" as="mb" hint-placeholder-count="3"><div style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--ink,#D7F5E6)"><i data-lucide="{{ mb }}" style="width:16px;height:16px"></i></div></sc-for>
+                <sc-for list="{{ mapBtns }}" as="mb" hint-placeholder-count="3"><div onClick="{{ mb.pick }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--ink,#D7F5E6);cursor:pointer"><i data-lucide="{{ mb.icon }}" style="width:16px;height:16px"></i></div></sc-for>
               </div>
               <div style="position:absolute;left:10px;bottom:10px;font:400 9.5px/1.35 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);background:var(--surf,#101A1C);border:1px solid var(--outv,#365047);padding:4px 6px;max-width:74%">{{ tileNote }}</div>
             </div>
             <div style="{{ mapFootStyle }}">
-              <div style="flex:1;height:46px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:8px;font:700 12px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;cursor:pointer"><i data-lucide="zap" style="width:16px;height:16px"></i>TELEPORT</div>
-              <div style="width:46px;height:46px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A)"><i data-lucide="star" style="width:18px;height:18px"></i></div>
+              <div onClick="{{ mapTeleport }}" style="flex:1;height:46px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:8px;font:700 12px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;cursor:pointer"><i data-lucide="zap" style="width:16px;height:16px"></i>TELEPORT</div>
+              <div onClick="{{ mapStar }}" style="{{ mapStarStyle }}"><i data-lucide="star" style="width:18px;height:18px"></i></div>
             </div>
           </sc-if>
 
@@ -535,7 +537,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                 <div style="position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:3px;background:var(--pri,#6CFF9A)"></div>
               </div>
               <div style="position:absolute;left:0;right:0;bottom:196px;display:flex;justify-content:center;gap:6px">
-                <sc-for list="{{ camPresets }}" as="cp" hint-placeholder-count="3"><div style="padding:6px 10px;background:var(--surf,#101A1C);border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;color:var(--ink2,#A7C8BC)">{{ cp }}</div></sc-for>
+                <sc-for list="{{ camPresets }}" as="cp" hint-placeholder-count="3"><div onClick="{{ cp.pick }}" style="{{ cp.style }}">{{ cp.label }}</div></sc-for>
               </div>
               <sc-for list="{{ hudPanels }}" as="hp" hint-placeholder-count="2">
                 <div style="{{ hp.style }}" onPointerDown="{{ hp.down }}">
@@ -569,17 +571,17 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
               </div>
             </div>
             <div style="flex:none;display:flex;gap:6px;padding:10px 12px;border-top:1px solid var(--outv,#365047);background:var(--surf,#101A1C)">
-              <sc-for list="{{ actionBar }}" as="a" hint-placeholder-count="4"><div style="flex:1;height:46px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--ink,#D7F5E6)"><i data-lucide="{{ a.icon }}" style="width:17px;height:17px"></i><span style="font:600 9px/1 var(--font,'JetBrains Mono');letter-spacing:.12em">{{ a.label }}</span></div></sc-for>
+              <sc-for list="{{ actionBar }}" as="a" hint-placeholder-count="4"><div onClick="{{ a.pick }}" style="flex:1;height:46px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--ink,#D7F5E6);cursor:pointer"><i data-lucide="{{ a.icon }}" style="width:17px;height:17px"></i><span style="font:600 9px/1 var(--font,'JetBrains Mono');letter-spacing:.12em">{{ a.label }}</span></div></sc-for>
             </div>
           </sc-if>
 
           <sc-if value="{{ isTree }}" hint-placeholder-val="{{ false }}">
             <div style="{{ invToolStyle }}">
-              <div style="flex:1;height:44px;display:flex;align-items:center;gap:8px;padding:0 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C)"><i data-lucide="search" style="width:15px;height:15px;opacity:.55"></i><span style="font:400 12px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">filter inventory…</span></div>
-              <div style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A)"><i data-lucide="layout-grid" style="width:17px;height:17px"></i></div>
+              <div style="flex:1;height:44px;display:flex;align-items:center;gap:8px;padding:0 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C)"><i data-lucide="search" style="width:15px;height:15px;opacity:.55"></i><input value="{{ invFilter }}" onChange="{{ invFilterChange }}" placeholder="filter inventory…" style="{{ invFilterInputStyle }}" /></div>
+              <div onClick="{{ invGridToggle }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer"><i data-lucide="{{ invGridIcon }}" style="width:17px;height:17px"></i></div>
             </div>
             <div style="{{ invRecentStyle }}">
-              <sc-for list="{{ invRecents }}" as="ir" hint-placeholder-count="4"><div style="flex:none;width:62px"><div style="height:62px;border:1px solid var(--outv,#365047);background:repeating-linear-gradient(135deg,var(--surf2,#1B2A2D) 0 6px,var(--surf,#101A1C) 6px 12px)"></div><div style="font:400 9px/1.3 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{ ir }}</div></div></sc-for>
+              <sc-for list="{{ invRecents }}" as="ir" hint-placeholder-count="4"><div onClick="{{ ir.pick }}" style="flex:none;width:62px;cursor:pointer"><div style="height:62px;border:1px solid var(--outv,#365047);background:repeating-linear-gradient(135deg,var(--surf2,#1B2A2D) 0 6px,var(--surf,#101A1C) 6px 12px)"></div><div style="font:400 9px/1.3 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{ ir.name }}</div></div></sc-for>
             </div>
             <div style="{{ invListStyle }}">
               <sc-for list="{{ invTree }}" as="n" hint-placeholder-count="11">
@@ -606,9 +608,9 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                 </div>
               </div>
               <div style="display:flex;gap:8px;padding:14px 16px">
-                <div style="flex:1;height:44px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em"><i data-lucide="message-square" style="width:16px;height:16px"></i>IM</div>
-                <div style="flex:1;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em"><i data-lucide="zap" style="width:16px;height:16px"></i>OFFER TP</div>
-                <div style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center"><i data-lucide="more-horizontal" style="width:18px;height:18px"></i></div>
+                <div onClick="{{ profileIm }}" style="flex:1;height:44px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer"><i data-lucide="message-square" style="width:16px;height:16px"></i>IM</div>
+                <div onClick="{{ profileOfferTp }}" style="flex:1;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer"><i data-lucide="zap" style="width:16px;height:16px"></i>OFFER TP</div>
+                <div onClick="{{ profileMore }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;cursor:pointer"><i data-lucide="more-horizontal" style="width:18px;height:18px"></i></div>
               </div>
               <sc-for list="{{ profileBlocks }}" as="pb" hint-placeholder-count="3">
                 <div style="margin:0 16px 12px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);padding:12px">
@@ -622,7 +624,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
           <sc-if value="{{ isCards }}" hint-placeholder-val="{{ false }}">
             <div style="{{ cardListStyle }}">
               <sc-for list="{{ cards }}" as="c" hint-placeholder-count="6">
-                <div style="{{ c.style }}">
+                <div onClick="{{ c.tap }}" style="{{ c.style }}">
                   <div style="display:flex;align-items:center;gap:9px">
                     <sc-if value="{{ c.icon }}" hint-placeholder-val="{{ true }}"><i data-lucide="{{ c.icon }}" style="width:16px;height:16px;color:var(--pri,#6CFF9A)"></i></sc-if>
                     <span style="flex:1;font:600 13px/1.25 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)">{{ c.title }}</span>
@@ -660,8 +662,8 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                 <div style="font:400 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);letter-spacing:.18em;margin-top:7px">SECONDLIFE COMMUNICATOR // v2.0</div>
                 <div style="margin-top:150px;border:1px solid var(--outv,#365047);border-radius:var(--rp,4px);background:var(--surf,#101A1C);padding:16px;display:flex;flex-direction:column;gap:8px">
                   <div style="display:flex;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);overflow:hidden;margin-bottom:6px">
-                    <div style="flex:1;text-align:center;padding:10px 0;background:var(--priC,#1F6640);color:var(--onpriC,#D7FFE4);border-bottom:2px solid var(--pri,#6CFF9A);font:600 12px/1 var(--font,'JetBrains Mono');letter-spacing:.18em">GRID LOGIN</div>
-                    <div style="flex:1;text-align:center;padding:10px 0;color:var(--ink2,#A7C8BC);font:600 12px/1 var(--font,'JetBrains Mono');letter-spacing:.18em">OFFLINE</div>
+                    <div onClick="{{ loginTabGrid }}" style="{{ loginTabGridStyle }}">GRID LOGIN</div>
+                    <div onClick="{{ loginTabOffline }}" style="{{ loginTabOfflineStyle }}">OFFLINE</div>
                   </div>
                   <sc-for list="{{ loginFields }}" as="lf" hint-placeholder-count="3">
                     <div>
@@ -669,7 +671,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                       <div style="min-height:42px;display:flex;align-items:center;padding:0 12px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);font:400 13px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ lf.value }}</div>
                     </div>
                   </sc-for>
-                  <div style="margin-top:14px;height:48px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:8px;font:700 13px/1 var(--font,'JetBrains Mono');letter-spacing:.22em"><i data-lucide="power" style="width:17px;height:17px"></i>CONNECT TO GRID</div>
+                  <div onClick="{{ loginConnect }}" style="margin-top:14px;height:48px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:8px;font:700 13px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;cursor:pointer"><i data-lucide="power" style="width:17px;height:17px"></i>CONNECT TO GRID</div>
                   <div onClick="{{ () => this.set('screen', 'Settings') }}" style="margin-top:8px;height:48px;border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);color:var(--pri,#6CFF9A);border:1px solid var(--outv,#365047);display:flex;align-items:center;justify-content:center;gap:8px;font:700 13px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;cursor:pointer"><i data-lucide="settings" style="width:17px;height:17px"></i>SETTINGS</div>
                   <div style="font:400 10.5px/1.5 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:8px">&gt; last: Agni · Da Boom · 14:02 · biometric unlock available</div>
                 </div>
@@ -759,11 +761,15 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
         </sc-if>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
           <sc-for list="{{ dialog.buttons }}" as="db" hint-placeholder-count="3">
-            <div style="{{ db.style }}">{{ db.label }}</div>
+            <div onClick="{{ db.pick }}" style="{{ db.style }}">{{ db.label }}</div>
           </sc-for>
         </div>
       </div>
     </div>
+    </sc-if>
+
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+      <div style="{{ toastStyle }}">{{ toast }}</div>
     </sc-if>
     </div>
 
@@ -1117,7 +1123,8 @@ class Component extends DCLogic {
     rMode: "AV", rOpen: null, rMenu: null,
     cDock: ["fly", "sit", "snap", "mini", "inv", "home", "ao", "sun"],
     flOpen: { Chat: true, Radar: true, Friends: true, Inventory: true, Map: true }, flMin: {}, flRect: {},
-    flZ: ["Map", "Inventory", "Friends", "Radar", "Chat"], menu: null };
+    flZ: ["Map", "Inventory", "Friends", "Radar", "Chat"], menu: null,
+    toast: "", composeText: "", chatSent: {}, chatTyping: false, invFilter: "", loginTab: "GRID" };
 
   // ---- desktop floater window model -------------------------------------
   flR(id) { const f = FLOATERS.find(x => x.id === id) || { x: 24, y: 24, w: 320, h: 240 }; return { ...f, ...(this.state.flRect[id] || {}) }; }
@@ -1206,8 +1213,33 @@ class Component extends DCLogic {
   pin(key) { this.setState(s => ({ pinned: { ...s.pinned, [key]: !s.pinned[key] } })); }
   cycle(map, key) { const ks = Object.keys(map); this.setState(s => ({ [key]: ks[(ks.indexOf(s[key]) + 1) % ks.length] })); }
 
+  // Transient acknowledgement toast, shared by every screen and layout pack —
+  // the feedback channel for actions that don't have a more specific effect.
+  notify(msg) {
+    clearTimeout(this.toastTimer);
+    this.setState({ toast: msg });
+    this.toastTimer = setTimeout(() => this.setState({ toast: "" }), 2200);
+  }
+  clock() { const d = new Date(); return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
+  static REPLIES = ["got it, heading over now", "sounds good 👍", "on it — give me a sec", "lol yeah saw that", "can you drop a landmark?"];
+  sendChat(channelKey, replier) {
+    const text = (this.state.composeText || "").trim();
+    if (!text) return;
+    this.setState(s => ({ composeText: "", chatSent: { ...s.chatSent,
+      [channelKey]: (s.chatSent[channelKey] || []).concat([{ ts: this.clock(), sender: "Ruth Resident", text, me: true }]) } }));
+    clearTimeout(this.replyT1); clearTimeout(this.replyT2);
+    this.replyT1 = setTimeout(() => {
+      this.setState({ chatTyping: true });
+      this.replyT2 = setTimeout(() => {
+        const reply = Component.REPLIES[Math.floor(Math.random() * Component.REPLIES.length)];
+        this.setState(s => ({ chatTyping: false, chatSent: { ...s.chatSent,
+          [channelKey]: (s.chatSent[channelKey] || []).concat([{ ts: this.clock(), sender: replier, text: reply }]) } }));
+      }, 1300);
+    }, 550);
+  }
+
   componentDidMount() { this.icons(); this.iv = setInterval(() => this.setState(st => ({ tick: (st.tick || 0) + 1 })), 1000); }
-  componentWillUnmount() { clearInterval(this.iv); clearTimeout(this.clp); clearTimeout(this.cfl); }
+  componentWillUnmount() { clearInterval(this.iv); clearTimeout(this.clp); clearTimeout(this.cfl); clearTimeout(this.replyT1); clearTimeout(this.replyT2); clearTimeout(this.toastTimer); }
   componentDidUpdate() { this.icons(); }
   // Render each glyph INSIDE its <i> instead of letting lucide replace the node —
   // replacement detaches the element React owns, so a changed icon name never repaints.
@@ -1428,7 +1460,12 @@ class Component extends DCLogic {
         { ts: "11:06", sender: "Oren Fairweather", text: "you're a lifesaver" },
       ],
     };
-    const msgs = (curTab === "IM" ? imThreads[activeChip] : curTab === "GROUP" ? groupThreads[activeChip] : localMsgs).map(m => {
+    const chatChannelKey = curTab === "LOCAL" || !curTab ? "LOCAL" : curTab + ":" + activeChip;
+    const chatBaseThread = curTab === "IM" ? imThreads[activeChip] : curTab === "GROUP" ? groupThreads[activeChip] : localMsgs;
+    const chatReplier = curTab === "IM" ? activeChip
+      : curTab === "GROUP" ? ((chatBaseThread.find(m => !m.me && !m.sys) || {}).sender || "Marlowe Quill")
+      : "Nyx Vaher";
+    const msgs = chatBaseThread.concat(s.chatSent[chatChannelKey] || []).map(m => {
       const acc = m.sys ? V.info : m.me ? V.pri : V.sec2;
       if (!bleed) return {
         ...m, align: M(wrapBase, m.me ? { justifyContent: "flex-end" } : null),
@@ -1486,9 +1523,17 @@ class Component extends DCLogic {
     const rList = rSrc.map(([name, dm, brg, meta, icon]) => {
       const id = name, tone = bandTone(dm), open = s.rOpen === id, menu = s.rMenu === id;
       const acts = (objMode ? ["INSPECT", "TOUCH", "DERENDER", "TRACK"] : ["PROFILE", "IM", "TRACK", "TELEPORT TO"])
-        .map(label => ({ label, style: actChip(null) }));
+        .map(label => ({ label, style: actChip(null), pick: () => {
+          this.setState({ rOpen: null });
+          if (label === "TELEPORT TO") this.setState({ screen: "Map" });
+          if (label === "IM") { this.setTab("Chat", "IM"); this.set("chip", name); this.setState({ screen: "Chat" }); }
+          this.notify(name + " — " + label);
+        } }));
       const mods = (objMode ? ["RETURN", "MUTE OWNER", "BLOCK", "REPORT"] : ["MUTE", "DERENDER", "FREEZE", "EJECT", "BAN", "REPORT"])
-        .map(label => ({ label, style: actChip(V.err) }));
+        .map(label => ({ label, style: actChip(V.err), pick: () => {
+          this.setState({ rMenu: null });
+          this.notify(name + " — " + label);
+        } }));
       return {
         name, meta: COMPASS[Math.round(brg / 22.5) % 16] + " \u00b7 " + meta, icon, dist: dm + "m",
         open, menu, acts, mods, modTitle: (objMode ? "OBJECT" : "MODERATOR") + " \u2014 LONG PRESS",
@@ -1563,13 +1608,17 @@ class Component extends DCLogic {
       return { name, icon, ver, parent, depth,
         chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "circle-small",
         open, isFolder,
-        pick: isFolder ? () => this.setState(st => ({ invOpen: { ...st.invOpen, [name]: !(st.invOpen[name] !== false) } })) : () => {},
+        pick: isFolder ? () => this.setState(st => ({ invOpen: { ...st.invOpen, [name]: !(st.invOpen[name] !== false) } })) : () => this.notify(name + " — OPEN"),
         indent: bleed
           ? { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 12px", paddingLeft: (10 + depth * 16) + "px",
               background: V.surf, borderLeft: "4px solid " + (depth === 0 ? V.pri : depth === 1 ? V.sec2 : "transparent"), cursor: "pointer" }
           : { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 16px", paddingLeft: (16 + depth * 18) + "px",
               borderBottom: "1px solid " + V.outv, cursor: "pointer" } };
-    }).filter(n => n.depth === 0 || (n.parent && (s.invOpen[n.parent] !== false)));
+    });
+    const invQuery = (s.invFilter || "").trim().toLowerCase();
+    const invTreeVisible = invQuery
+      ? invTree.filter(n => n.name.toLowerCase().includes(invQuery))
+      : invTree.filter(n => n.depth === 0 || (n.parent && (s.invOpen[n.parent] !== false)));
 
     const CARDS = {
       Friends: [
@@ -1645,17 +1694,27 @@ class Component extends DCLogic {
       : LK.card === "rule" ? { borderTopColor: accent }
       : { boxShadow: "inset 3px 0 0 " + accent + ", 0 3px 12px rgba(0,0,0,.20)" };
     const actBase = { flex: 1, height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, display: "flex", alignItems: "center", justifyContent: "center", font: "700 10.5px/1 " + t.font, letterSpacing: ".16em", color: V.ink, cursor: "pointer" };
+    // Teleport's starred/recent rows have no action buttons but are the real-app
+    // tap target in an SL viewer: tapping the row travels there.
+    const cardTap = (c) => scr === "Teleport" && !c.actions
+      ? (c.icon === "map-pin" ? () => this.notify("Paste a SLURL — clipboard is empty")
+        : () => { this.setState({ screen: "Map" }); this.notify("Teleporting to " + c.title); })
+      : null;
     const cards = (CARDS[scr] || []).map(c => ({
-      ...c, style: M(cardBase, accentOn(c.style && c.style.borderColor)),
+      ...c, tap: cardTap(c),
+      style: M(M(cardBase, accentOn(c.style && c.style.borderColor)), cardTap(c) ? { cursor: "pointer" } : null),
       toggleStyle: { width: "42px", height: "24px", borderRadius: "12px", position: "relative", display: "inline-block", flex: "none", background: c.on === false ? V.surf2 : V.priC },
       knobStyle: { position: "absolute", top: "3px", width: "18px", height: "18px", borderRadius: "9px", left: c.on === false ? "3px" : "21px", background: c.on === false ? V.ink2 : V.pri, transition: "left .18s ease" },
       bigStyle: M({ font: "700 46px/1 " + t.font, color: V.ok, marginTop: "6px" }, c.bigStyle),
-      actions: (c.actions || []).map(a => ({ label: a.label, style: M(actBase, a.primary ? { background: V.pri, color: V.onpri, borderColor: V.pri } : a.dim ? { color: V.err, borderColor: V.err } : null) })),
+      actions: (c.actions || []).map(a => ({ label: a.label, pick: a.pick,
+        style: M(actBase, a.primary ? { background: V.pri, color: V.onpri, borderColor: V.pri } : a.dim ? { color: V.err, borderColor: V.err } : null) })),
     }));
 
     const dlg = s.dialog && DIALOGS[s.dialog];
     const dbBase = { flex: "1 1 40%", minHeight: "46px", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid " + V.outv, borderRadius: V.rs, font: "700 11px/1 " + t.font, letterSpacing: ".14em", color: V.ink, textAlign: "center", padding: "0 8px", cursor: "pointer" };
-    const dialog = dlg ? { ...dlg, buttons: dlg.buttons.map(b => ({ label: b.label, style: M(dbBase, b.primary ? { background: V.pri, color: V.onpri, borderColor: V.pri } : b.dim ? { color: V.ink2 } : null) })) } : null;
+    const dialog = dlg ? { ...dlg, buttons: dlg.buttons.map(b => ({ label: b.label,
+      pick: () => { this.set("dialog", null); this.notify(dlg.title.split(" ").slice(0, 4).join(" ") + " — " + b.label); },
+      style: M(dbBase, b.primary ? { background: V.pri, color: V.onpri, borderColor: V.pri } : b.dim ? { color: V.ink2 } : null) })) } : null;
 
     const detail = {
       Chat: { title: "Nyx Vaher · IM", sub: "online · Da Boom · voice off",
@@ -1752,6 +1811,11 @@ class Component extends DCLogic {
     return {
       themeVars,
       isFloat,
+      toast: s.toast,
+      toastStyle: { position: "absolute", left: "50%", bottom: isFloat ? "14px" : "78px", transform: "translateX(-50%)",
+        maxWidth: "84%", padding: "10px 16px", borderRadius: V.rs, background: V.priC, color: V.onpriC,
+        font: "600 11.5px/1.3 " + t.font, letterSpacing: ".02em", textAlign: "center", zIndex: 40,
+        boxShadow: "0 8px 20px rgba(0,0,0,.35)", border: "1px solid " + V.pri, pointerEvents: "none" },
       bezelStyle: { position: "relative", background: "#0b0b0a", border: "1px solid rgba(255,255,255,.16)",
         borderRadius: isFloat ? "10px" : "34px", padding: isFloat ? "7px" : "12px", boxShadow: "0 24px 60px rgba(0,0,0,.55)" },
 
@@ -1875,6 +1939,13 @@ class Component extends DCLogic {
         borderRadius: nav === "sweep" ? "0 " + V.rs + " " + V.rs + " 0" : V.rs },
       composerSendStyle: { width: "48px", height: "44px", flex: "none", borderRadius: V.rs, background: V.pri, color: V.onpri,
         display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" },
+      composeText: s.composeText, chatTyping: s.chatTyping, chatTypingWho: chatReplier,
+      composePlaceholder: curTab === "LOCAL" || !curTab ? "say to local…" : "message " + activeChip + "…",
+      sendChat: () => this.sendChat(chatChannelKey, chatReplier),
+      composeChange: (e) => this.set("composeText", e.target.value),
+      composeKeyDown: (e) => { if (e.key === "Enter") { e.preventDefault(); this.sendChat(chatChannelKey, chatReplier); } },
+      composeInputStyle: { flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent",
+        font: "400 13px/1 " + t.font, color: V.ink },
       cfWrap: { flex: 1, minHeight: 0, minWidth: 0, position: "relative", display: "flex", overflow: "hidden", background: V.bg },
       isConsole, consoleScene,
       // In console mode the shell IS the content panel: same markup, reframed into the
@@ -2110,7 +2181,10 @@ class Component extends DCLogic {
       title, subtitle: condPack ? (condPack.sub || null) : subtitle,
       hasHeader: headLook === "stack",
       isSweepHead: headLook === "sweep" && !isConsole,
-      showLink: scr === "Chat", headerIcons: scr === "Friends" ? ["user-plus", "search"] : scr === "Diagnostics" ? ["refresh-cw"] : null,
+      showLink: scr === "Chat",
+      headerIcons: (scr === "Friends" ? [["user-plus", "ADD FRIEND"], ["search", "SEARCH"]]
+        : scr === "Diagnostics" ? [["refresh-cw", "RE-RUN PROBE"]] : null)?.map(([icon, label]) =>
+          ({ icon, pick: () => this.notify(label + (label === "RE-RUN PROBE" ? " — " + (Math.floor(Math.random() * 60) + 40) + "ms" : "")) })),
       segTabs, chips,
       rListWrap: { flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column",
         gap: bleed ? C.gap + "px" : "8px", padding: bleed ? "0" : "0 16px 16px",
@@ -2137,19 +2211,54 @@ class Component extends DCLogic {
       isChat: scr === "Chat" && norm, isFriends: scr === "Friends" && norm, isRadar: scr === "Radar" && norm, isMap: scr === "Map" && norm,
       isWorld: scr === "3D View" && norm, isTree: scr === "Inventory" && norm, isProfile: scr === "Profile" && norm, isLogin: scr === "Login",
       isCards: !!CARDS[scr] && norm, cards,
-      msgs, regions, invTree,
-      invRecents: ["Sunset Lamp v3", "Roof Kit", "Hollywood LM", "Brass texture"],
-      mapBtns: ["plus", "minus", "locate-fixed"],
+      msgs, regions, invTree: invTreeVisible,
+      invRecents: ["Sunset Lamp v3", "Roof Kit", "Hollywood LM", "Brass texture"]
+        .map(name => ({ name, pick: () => this.notify(name + " — OPEN") })),
+      invFilter: s.invFilter, invFilterChange: (e) => this.set("invFilter", e.target.value),
+      invFilterInputStyle: { flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent",
+        font: "400 12px/1 " + t.font, color: V.ink },
+      invGridToggle: () => { this.setState(st => ({ invGrid: !st.invGrid })); this.notify(s.invGrid ? "List view" : "Grid view"); },
+      invGridIcon: s.invGrid ? "list" : "layout-grid",
+      mapBtns: [["plus", "ZOOM IN"], ["minus", "ZOOM OUT"], ["locate-fixed", "RECENTER"]]
+        .map(([icon, label]) => ({ icon, pick: () => this.notify("Map — " + label) })),
+      mapTeleport: () => { this.setState({ screen: "Map" }); this.notify("Teleporting to Da Boom — <1000, 1000>"); },
+      mapStar: () => { this.pin("daBoom"); this.notify(s.pinned.daBoom ? "Da Boom — LANDMARK REMOVED" : "Da Boom — LANDMARK SAVED"); },
+      mapStarStyle: { width: "46px", height: "46px", border: "1px solid " + (s.pinned.daBoom ? V.pri : V.outv), borderRadius: V.rs,
+        display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
+        background: s.pinned.daBoom ? V.priC : "transparent", color: V.pri },
       tileLayer: s.tileOk ? React.createElement("img", { src: "https://secondlife-maps-cdn.akamaized.net/map-1-1000-1000-objects.jpg", alt: "", onError: () => this.set("tileOk", false), style: { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: .9 } }) : null,
       tileNote: s.tileOk ? "live SL map tile · secondlife-maps-cdn" : "tile CDN unreachable — themed vector grid fallback",
-      camPresets: ["FRONT", "ORBIT", "MOUSELOOK"],
-      actionBar: [{ icon: "armchair", label: "SIT" }, { icon: "footprints", label: "RUN" }, { icon: "plane", label: "FLY" }, { icon: "hand", label: "TOUCH" }],
+      camPresets: ["FRONT", "ORBIT", "MOUSELOOK"].map(label => ({ label,
+        pick: () => { this.set("camPreset", label); this.notify("Camera — " + label); },
+        style: { padding: "6px 10px", borderRadius: V.rs, cursor: "pointer",
+          font: "600 10px/1 " + t.font, letterSpacing: ".14em",
+          background: (s.camPreset || "ORBIT") === label ? V.priC : V.surf,
+          color: (s.camPreset || "ORBIT") === label ? V.onpriC : V.ink2,
+          border: "1px solid " + ((s.camPreset || "ORBIT") === label ? V.pri : V.outv) } })),
+      actionBar: [{ icon: "armchair", label: "SIT" }, { icon: "footprints", label: "RUN" }, { icon: "plane", label: "FLY" }, { icon: "hand", label: "TOUCH" }]
+        .map(a => ({ ...a, pick: () => this.notify("Nyx Vaher — " + a.label) })),
+      profileIm: () => { this.setTab("Chat", "IM"); this.set("chip", "Nyx Vaher"); this.setState({ screen: "Chat" }); },
+      profileOfferTp: () => this.notify("Nyx Vaher — TELEPORT OFFER SENT"),
+      profileMore: () => this.notify("Nyx Vaher — MORE OPTIONS"),
       profileBlocks: [
         { label: "2ND LIFE", body: "Builder, terraformer, occasional DJ. Bay City Builders officer. Ask me about mesh roofs." },
         { label: "GROUPS", body: "Bay City Builders · Sansara Cartographers · Terraform Co-op" },
         { label: "PICKS", body: "The Roof Build · Ahern Welcome Area · Sansara Ridge overlook" },
       ],
       loginFields: [{ label: "GRID", value: "Agni (Main)" }, { label: "AVATAR NAME", value: "Ruth   /   Resident" }, { label: "PASSWORD", value: "••••••••" }],
+      loginTabGrid: () => this.set("loginTab", "GRID"),
+      loginTabOffline: () => { this.set("loginTab", "OFFLINE"); this.notify("Offline mode — cached inventory and contacts only"); },
+      loginTabGridStyle: { flex: 1, textAlign: "center", padding: "10px 0", cursor: "pointer",
+        font: "600 12px/1 " + t.font, letterSpacing: ".18em",
+        background: (s.loginTab || "GRID") === "GRID" ? V.priC : "transparent",
+        color: (s.loginTab || "GRID") === "GRID" ? V.onpriC : V.ink2,
+        borderBottom: (s.loginTab || "GRID") === "GRID" ? "2px solid " + V.pri : "none" },
+      loginTabOfflineStyle: { flex: 1, textAlign: "center", padding: "10px 0", cursor: "pointer",
+        font: "600 12px/1 " + t.font, letterSpacing: ".18em",
+        background: s.loginTab === "OFFLINE" ? V.priC : "transparent",
+        color: s.loginTab === "OFFLINE" ? V.onpriC : V.ink2,
+        borderBottom: s.loginTab === "OFFLINE" ? "2px solid " + V.pri : "none" },
+      loginConnect: () => { this.setState({ screen: "Chat" }); this.notify("Connected to Agni — welcome back, Ruth Resident"); },
       iconRows: [
         { label: "line 20px", items: ["message-square", "users", "radar", "map", "folder", "settings"].map(n => ({ name: n, style: { width: "20px", height: "20px", color: "#6CFF9A", strokeWidth: 1.6 } })) },
         { label: "filled 24px", items: ["message-square", "users", "radar", "map", "folder", "settings"].map(n => ({ name: n, style: { width: "24px", height: "24px", color: "#6CFF9A", strokeWidth: 2.6 } })) },
