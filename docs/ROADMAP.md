@@ -19,62 +19,52 @@ notices, offline-IM quick reply, and diagnostics circuit/endpoint stats.
 Map, 3D View, Profile, Groups, Notices and Teleport go beyond the current
 real-app MVP scope — they're the aspirational surface from the design brief.
 
-## Gaps found (real app has it, mockup doesn't yet)
+## Gaps found (real app has it, mockup doesn't yet) — status: closed 2026-09-16
 
 Read directly from `frontend/app/login.tsx`, `search.tsx`,
 `src/components/scope-picker.tsx`, `(tabs)/friends.tsx`, `(tabs)/more.tsx`
 on 2026-09-15 — exact fields/states below, not paraphrased from the PRD.
+All five are now implemented in both `docs/GridLink Mobile.dc.html` and
+`docs/react/`, verified with a headless-Chromium pass exercising every new
+interaction (zero console/page errors) plus a regression check that
+existing card actions (friend accept/decline, Groups' OPEN CHAT) still
+work.
 
-1. **Login only has one working path.** `login.tsx` has a real GRID
-   LOGIN / OFFLINE segmented toggle (offline needs just an avatar name, no
-   grid contact) and an Agni/Aditi grid picker, plus busy and error states
-   on CONNECT. The mockup's Login screen renders GRID LOGIN as permanently
-   "on" and OFFLINE as inert text — no Aditi option, no offline field set,
-   no connecting/error condition. Needs: working two-tab toggle that swaps
-   the field set, a grid picker (Agni/Aditi), and a busy + error state.
-2. **No "start a conversation with anyone" picker in Chat.**
-   `scope-picker.tsx` is a searchable full-screen modal (filter box + list,
-   friends show an online dot, groups show a group icon) reached from an
-   "ALL (n)" chip per the PRD. The mockup's IM/Group chip rows only cycle
-   between pre-seeded existing threads — there's no entry point to start a
-   new one. Add an "ALL (n)" chip that opens this picker (can share the
-   same list UI as item 4 below).
-3. **Friends rows have no rights icons.** `friends.tsx` renders three
-   specific glyphs per row when set: `eye` (can see me online), `map-marker`
-   (can see me on the map), `pencil` (can modify my objects). The mockup's
-   Friends rows show only an online dot and an IM affordance. Add the same
-   three-icon row (icons already exist in lucide, used elsewhere in the
-   mockup).
-4. **No resident search screen.** `search.tsx`: query field (min 2 chars,
-   debounced), result rows with a state machine per row — idle → ADD
-   (pending) → OFFERED (sent) or RETRY (error), and FRIEND (with a chat
-   icon) if already friends — plus two empty states ("type a name to
-   search" / "no residents match"). The mockup's Friends search header icon
-   has nothing behind it. Add this as its own screen or full-bleed dialog
-   in the same style as the mockup's 6 existing SL system dialogs.
-5. **Settings has no account/session identity.** `more.tsx` leads with a
-   session card: avatar name, mode (grid/offline), grid, region, agent_id
-   (truncated), and live sim-link state (`LIVE · rx N / tx N` or the error),
-   plus a login-message/MOTD line. Below it: a conditional "RECONNECT TO
-   GRID" button (only shown when disconnected and reconnectable, with its
-   own busy + error state) and a red "Disconnect" row that ends the
-   session. The mockup's Settings only has preference cards (layout/colour
-   pack, toggles, mute list) — none of this identity/connection block
-   exists outside the transient "GRID CONNECTION LOST" system dialog.
+1. ~~Login only has one working path.~~ Now a real GRID LOGIN/OFFLINE
+   toggle that swaps the field set, an Agni/Aditi grid picker, and a
+   connecting → error state (CONNECT always "fails" after ~1s, since this
+   mockup has no live backend to succeed against).
+2. ~~No "start a conversation with anyone" picker in Chat.~~ Added an
+   "ALL (n)" chip to the IM/Group rows that opens the new Search screen.
+3. ~~Friends rows have no rights icons.~~ Added `eye`/`map-pin`/`pencil`
+   per row via a new optional `rights` field on the shared card renderer.
+4. ~~No resident search screen.~~ New "FIND RESIDENTS" screen: live-filtered
+   results, each row cycling ADD → (sending) → OFFERED, or FRIEND for
+   existing friends. Reached from Friends' header icons and the "ALL (n)"
+   chip.
+5. ~~Settings has no account/session identity.~~ Added a session card
+   (avatar/mode/grid/region/agent id/sim-link state), a Reconnect action
+   with its own busy state, and a destructive Disconnect row.
 
-## Suggested build order
+While testing these against a live browser, also found and fixed two
+real, pre-existing bugs in the mockup (both also present, or avoided, in
+the React port — see its commit history for specifics):
+- The `cards` renderer's action-button mapping dropped every action's
+  `pick` handler, so **every** card action in the whole app (friend
+  accept/decline, group notice/invite, notice quick-reply, teleport pin,
+  settings preview-all/browse-packs/system-match) rendered but did
+  nothing on click.
+- `"lan-connect"` isn't a real lucide icon name in either icon set, so the
+  Reconnect card's icon silently rendered blank — swapped for
+  `"plug-zap"`.
 
-1. Login toggle + Aditi option + busy/error state — self-contained, no
-   dependency on the others.
-2. Friend rights icons — smallest change, one row renderer.
-3. Search screen (own screen or dialog) — needed by both Friends' search
-   icon and item 4.
-4. "ALL (n)" Chat scope-picker chip, reusing the Search screen's list/row
-   pattern.
-5. Settings session card + RECONNECT/Disconnect rows.
-6. Full pass over all 144 layout×colour combinations for whichever of the
-   above get built (the mockup's existing screens were already audited for
-   this; new UI needs the same pass before calling it done).
+## Remaining before calling this fully done
+
+Full pass over all 144 layout×colour combinations for the five additions
+above — they were built and tested against Ink Terminal / iPhone only.
+The mockup's pre-existing 13 screens already got this audit; the new
+Login/Search/Settings additions need the same treatment before they're
+as trustworthy as the rest of the file.
 
 ## React port (`docs/react/`)
 
