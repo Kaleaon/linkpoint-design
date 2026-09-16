@@ -375,7 +375,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
           </sc-if>
 
           <sc-if value="{{ chips }}" hint-placeholder-val="{{ true }}">
-          <div style="flex:none;display:flex;gap:8px;padding:10px 16px;overflow-x:auto">
+          <div style="flex:none;min-width:0;display:flex;gap:8px;padding:10px 16px;overflow-x:auto">
             <sc-for list="{{ chips }}" as="ch" hint-placeholder-count="4">
               <div onClick="{{ ch.pick }}" style="{{ ch.style }}">
                 <span style="{{ ch.dot }}"></span>
@@ -1959,7 +1959,7 @@ class Component extends DCLogic {
         : isConsole ? { position: "absolute", left: (C.rail + C.gap) + "px", top: (C.bar + C.gap) + "px",
             right: C.gap + "px", bottom: (C.foot + C.dock + C.gap * 3) + "px", display: "flex", minWidth: 0,
             borderRadius: C.rad + "px 0 0 0", overflow: "hidden", background: V.surf, zIndex: 2 }
-        : { flex: 1, display: "flex", minHeight: 0 },
+        : { flex: 1, display: "flex", minHeight: 0, minWidth: 0 },
       cfBar: { position: "absolute", left: 0, top: 0, right: 0, height: C.bar + "px", background: V.pri, borderRadius: Math.round(C.bar * 0.66) + "px 0 0 0" },
       cfBarEnd: { position: "absolute", right: 0, top: 0, width: (C.wide ? 104 : 66) + "px", height: C.bar + "px", background: V.sec2 },
       cfBarGap: { position: "absolute", right: (C.wide ? 108 : 70) + "px", top: 0, width: C.gap + "px", height: C.bar + "px", background: V.bg },
