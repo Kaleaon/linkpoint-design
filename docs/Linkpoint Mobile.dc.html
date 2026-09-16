@@ -506,13 +506,13 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
               <div style="position:absolute;left:70%;top:56%;width:17px;height:38px;background:var(--sec2,#C5678D);opacity:.85"></div>
               <div style="position:absolute;left:50%;top:44%;width:26px;height:26px;margin:-13px 0 0 -13px;border:1px solid var(--pri,#6CFF9A);border-radius:50%;opacity:.8"></div>
               <div style="position:absolute;left:70px;top:12px;padding:6px 8px;background:var(--surf,#101A1C);border:1px solid var(--outv,#365047);font:400 10px/1.45 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">Da Boom &lt;128,128,26&gt;<br>draw 96m · 34 fps</div>
-              <div onClick="{{ openNavPeek }}" style="{{ navPeekBtn }}"><i data-lucide="menu" style="width:21px;height:21px"></i></div>
+              <div onClick="{{ openNavPeek }}" style="{{ navPeekBtn }}" role="button" aria-label="Open navigation menu" tabindex="0"><i data-lucide="menu" style="width:21px;height:21px"></i></div>
               <sc-if value="{{ navPeek }}" hint-placeholder-val="{{ false }}">
                 <div onClick="{{ closeNavPeek }}" style="position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:9"></div>
                 <div style="{{ navPeekStyle }}">
                   <div style="display:flex;align-items:center;gap:8px;padding:0 8px 12px">
                     <span style="flex:1;font:700 12px/1.1 var(--dfont,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A)">Linkpoint</span>
-                    <span onClick="{{ closeNavPeek }}" style="cursor:pointer;color:var(--ink2,#A7C8BC);display:flex"><i data-lucide="x" style="width:16px;height:16px"></i></span>
+                    <span onClick="{{ closeNavPeek }}" style="cursor:pointer;color:var(--ink2,#A7C8BC);display:flex" role="button" aria-label="Close navigation menu" tabindex="0"><i data-lucide="x" style="width:16px;height:16px"></i></span>
                   </div>
                   <sc-for list="{{ peekItems }}" as="pi" hint-placeholder-count="7">
                     <div onClick="{{ pi.pick }}" style="{{ pi.style }}">
@@ -522,7 +522,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                   </sc-for>
                 </div>
               </sc-if>
-              <div onClick="{{ openTargetPicker }}" style="position:absolute;right:12px;top:12px;width:46px;height:46px;border:1px solid var(--outv,#365047);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer;z-index:7"><i data-lucide="crosshair" style="width:21px;height:21px"></i></div>
+              <div onClick="{{ openTargetPicker }}" style="position:absolute;right:12px;top:12px;width:46px;height:46px;border:1px solid var(--outv,#365047);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer;z-index:7" role="button" aria-label="Open target picker" tabindex="0"><i data-lucide="crosshair" style="width:21px;height:21px"></i></div>
               <sc-if value="{{ targetName }}" hint-placeholder-val="{{ false }}">
                 <div style="{{ targetPlate }}">
                   <div style="{{ targetRing }}"></div>
@@ -542,7 +542,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                   <div style="{{ hp.barStyle }}">
                     <i data-lucide="grip-horizontal" style="width:12px;height:12px"></i>
                     <span style="flex:1;font:700 8.5px/1 var(--font,'JetBrains Mono');letter-spacing:.08em;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{ hp.name }}</span>
-                    <span onClick="{{ hp.hide }}" style="cursor:pointer;display:flex"><i data-lucide="x" style="width:12px;height:12px"></i></span>
+                    <span onClick="{{ hp.hide }}" style="cursor:pointer;display:flex" role="button" aria-label="Close panel" tabindex="0"><i data-lucide="x" style="width:12px;height:12px"></i></span>
                   </div>
                   <div style="{{ hp.bodyStyle }}">
                     <sc-for list="{{ hp.cells }}" as="hc" hint-placeholder-count="4"><span style="{{ hc }}"></span></sc-for>
@@ -550,7 +550,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                 </div>
               </sc-for>
 
-              <div onClick="{{ openHudPicker }}" style="{{ hudBtnStyle }}">
+              <div onClick="{{ openHudPicker }}" style="{{ hudBtnStyle }}" role="button" aria-label="Open HUD picker" tabindex="0">
                 <i data-lucide="layers" style="width:21px;height:21px"></i>
                 <sc-if value="{{ hudCount }}" hint-placeholder-val="{{ false }}"><span style="{{ hudCountStyle }}">{{ hudCount }}</span></sc-if>
               </div>
