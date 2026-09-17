@@ -23,7 +23,7 @@ export default function Login() {
       <div style={{ position: "relative", padding: "36px 16px 20px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "9px" }}>
           <Icon name="hexagon" size={24} style={{ color: V.pri }} />
-          <span style={{ font: "700 27px/1 " + t.dfont, letterSpacing: ".24em", color: V.pri }}>GRIDLINK</span>
+          <span style={{ font: "700 27px/1 " + t.dfont, letterSpacing: ".24em", color: V.pri }}>Linkpoint</span>
         </div>
         <div style={{ font: "400 11px/1 " + t.font, color: V.ink2, letterSpacing: ".18em", marginTop: "7px" }}>SECONDLIFE COMMUNICATOR // v2.0</div>
         <div style={{ marginTop: "150px", border: "1px solid " + V.outv, borderRadius: V.rp, background: V.surf, padding: "16px", display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -58,24 +58,21 @@ export default function Login() {
           {isGrid ? (
             <div>
               <div style={{ font: "400 11px/1 " + t.font, letterSpacing: ".2em", color: V.pri, margin: "8px 0 6px" }}>GRID</div>
-              <div style={{ display: "flex", gap: "8px" }}>
-                {[
-                  { grid: "agni", label: "Agni (Main)" },
-                  { grid: "aditi", label: "Aditi (Beta)" },
-                ].map((g) => {
-                  const active = state.loginGrid === g.grid;
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                {actions.allGrids().map((g) => {
+                  const active = state.loginGrid === g.key;
                   return (
                     <div
-                      key={g.grid}
-                      onClick={() => actions.setLoginGrid(g.grid)}
+                      key={g.key}
+                      onClick={() => actions.setLoginGrid(g.key)}
                       style={{
-                        flex: 1,
+                        flex: "1 1 84px",
                         textAlign: "center",
-                        padding: "9px 0",
+                        padding: "9px 6px",
                         border: "1px solid " + (active ? V.pri : V.outv),
                         borderRadius: V.rs,
-                        font: "600 11px/1 " + t.font,
-                        letterSpacing: ".06em",
+                        font: "600 10.5px/1 " + t.font,
+                        letterSpacing: ".04em",
                         color: active ? V.pri : V.ink2,
                         background: active ? V.priC : "transparent",
                         cursor: "pointer",
@@ -85,7 +82,53 @@ export default function Login() {
                     </div>
                   );
                 })}
+                <div
+                  onClick={actions.openAddGrid}
+                  style={{
+                    flex: "1 1 84px", textAlign: "center", padding: "9px 6px", border: "1px dashed " + V.outv,
+                    borderRadius: V.rs, font: "600 10.5px/1 " + t.font, letterSpacing: ".04em", color: V.ink2,
+                    background: "transparent", cursor: "pointer",
+                  }}
+                >
+                  + CUSTOM
+                </div>
               </div>
+
+              {/* A resident can point the viewer at any OpenSim grid, not
+                  just the built-in presets — the mockup's "add custom grid
+                  URI" flow, themed off the same tokens as everything else
+                  here so it re-skins with the layout/colour pack. */}
+              {state.addGrid ? (
+                <div style={{ marginTop: "10px", border: "1px dashed " + V.outv, borderRadius: V.rs, padding: "10px" }}>
+                  <div style={{ font: "400 10px/1 " + t.font, letterSpacing: ".16em", color: V.ink2 }}>ADD CUSTOM GRID</div>
+                  <input
+                    value={state.addGridName}
+                    onChange={(e) => actions.setAddGridName(e.target.value)}
+                    placeholder="grid name"
+                    style={{ minHeight: "42px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 12px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 13px/1 " + t.font, color: V.ink, marginTop: "6px" }}
+                  />
+                  <input
+                    value={state.addGridHost}
+                    onChange={(e) => actions.setAddGridHost(e.target.value)}
+                    placeholder="login URI (e.g. login.example.com:8002)"
+                    style={{ minHeight: "42px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 12px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 13px/1 " + t.font, color: V.ink, marginTop: "6px" }}
+                  />
+                  <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
+                    <div
+                      onClick={actions.cancelAddGrid}
+                      style={{ flex: 1, textAlign: "center", padding: "9px 0", border: "1px solid " + V.outv, borderRadius: V.rs, font: "600 10.5px/1 " + t.font, letterSpacing: ".14em", color: V.ink2, cursor: "pointer" }}
+                    >
+                      CANCEL
+                    </div>
+                    <div
+                      onClick={actions.saveCustomGrid}
+                      style={{ flex: 1, textAlign: "center", padding: "9px 0", borderRadius: V.rs, background: V.pri, color: V.onpri, font: "600 10.5px/1 " + t.font, letterSpacing: ".14em", cursor: "pointer" }}
+                    >
+                      ADD GRID
+                    </div>
+                  </div>
+                </div>
+              ) : null}
             </div>
           ) : null}
 

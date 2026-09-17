@@ -30,10 +30,19 @@ export default function SystemDialog() {
           <div style={{ marginTop: "10px", border: "1px dashed " + V.outv, borderRadius: V.rs, padding: "9px", font: "400 11px/1.6 " + t.font, color: V.ink2 }}>{dlg.meta}</div>
         ) : null}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "14px" }}>
-          {/* Ported as-is: in the source .dc.html these buttons are decorative
-              (no onClick — only "CLOSE" in the header dismisses the sheet). */}
+          {/* Every button closes the sheet and posts a toast — matches the
+              source's current dialog.buttons mapping (index.html), not the
+              older "decorative, CLOSE-only" behavior this port originally
+              matched. */}
           {dlg.buttons.map((b, i) => (
-            <div key={i} style={{ ...btnBase, ...(b.primary ? { background: V.pri, color: V.onpri, borderColor: V.pri } : b.dim ? { color: V.ink2 } : null) }}>
+            <div
+              key={i}
+              onClick={() => {
+                actions.setDialog(null);
+                actions.notify(dlg.title.split(" ").slice(0, 4).join(" ") + " — " + b.label);
+              }}
+              style={{ ...btnBase, ...(b.primary ? { background: V.pri, color: V.onpri, borderColor: V.pri } : b.dim ? { color: V.ink2 } : null) }}
+            >
               {b.label}
             </div>
           ))}

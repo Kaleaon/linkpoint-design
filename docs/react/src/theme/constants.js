@@ -1,4 +1,4 @@
-// Ported verbatim from GridLink Mobile.dc.html's <script> block: device list,
+// Ported verbatim from index.html's <script> block: device list,
 // the desktop floater/window model, the menu bar, screen order, custom dock
 // buttons, per-screen sub-segments, the movement pad, worn HUDs, world-view
 // targets and the loading/empty/error copy bank.
@@ -33,10 +33,18 @@ export const FMENU = [
   { label:"View",  items:"WINDOWS" },
   { label:"World", items:[["Teleport Home","⇧⌘H"],["Set Home to Here",""],["About Land…",""],["Region / Estate…",""]] },
   { label:"Build", items:[["Focus","⌥1"],["Move","⌥2"],["Edit","⌥3"],["Create","⌥4"],["Land","⌥5"]] },
-  { label:"Help",  items:[["Second Life Help","F1"],["Report Abuse…",""],["Report Bug…",""],["About GridLink",""]] },
+  { label:"Help",  items:[["Second Life Help","F1"],["Report Abuse…",""],["Report Bug…",""],["About Linkpoint",""]] },
 ];
 
 export const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Settings","Diagnostics","Login","Search"];
+// Grid picker for Login: Second Life's own two (Agni/Aditi) plus a few
+// well-known OpenSim grids, so the login screen isn't LL-only.
+export const GRIDS = [
+  { key: "agni", label: "Agni (Main)", host: "login.agni.lindenlab.com" },
+  { key: "aditi", label: "Aditi (Beta)", host: "login.aditi.lindenlab.com" },
+  { key: "osgrid", label: "OSgrid", host: "login.osgrid.org" },
+  { key: "kitely", label: "Kitely", host: "login.kitely.com" },
+];
 
 // Firestorm-style custom button array: the user's dock is a list of keys into this palette.
 export const CBTN = {

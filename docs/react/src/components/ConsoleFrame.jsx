@@ -7,6 +7,11 @@ import { CBTN, CSUB, CPAD, CPADR } from "../theme/constants.js";
 import Icon from "./Icon.jsx";
 import ScreenBody from "./ScreenBody.jsx";
 
+// The 3D View's sim/location — shared by the in-scene region tag and the
+// console's own top bar so the two never disagree.
+const SIM_NAME = "Heliotrope";
+const SIM_COORD = { x: 128, y: 64, z: 42 };
+
 // Ported from the `isConsole` block (lines ~140-222 of the source template)
 // plus the matching `cf*`/`consoleNav`/`cdock`/`cfPad`/`cfFly` computations in
 // renderVals(). This is the LCARS-manifesto "sweep console" frame: the swept
@@ -21,7 +26,7 @@ export default function ConsoleFrame() {
   const cfBarEnd = { position: "absolute", right: 0, top: 0, width: (C.wide ? 104 : 66) + "px", height: C.bar + "px", background: V.sec2 };
   const cfBarGap = { position: "absolute", right: (C.wide ? 108 : 70) + "px", top: 0, width: C.gap + "px", height: C.bar + "px", background: V.bg };
   const headMap = HEAD(LAYOUTS[state.layout].name, PALETTES[state.palette].name);
-  const cfTitleText = consoleScene ? "Exterior View" : (headMap[state.screen] || ["", ""])[0];
+  const cfTitleText = consoleScene ? SIM_NAME : (headMap[state.screen] || ["", ""])[0];
   const cfTitle = {
     position: "absolute", right: (C.wide ? 128 : 84) + "px", left: C.rail + C.gap + "px", top: 0, height: C.bar + "px",
     display: "flex", alignItems: "flex-end", justifyContent: "flex-end", paddingBottom: (C.wide ? 11 : 7) + "px",
@@ -29,6 +34,47 @@ export default function ConsoleFrame() {
     color: ink(V.pri, [V.bg, V.onpri, V.ink]), textTransform: "uppercase", whiteSpace: "nowrap",
   };
   const cfPlate = { position: "absolute", right: 0, top: 0, height: C.bar + "px", width: (C.wide ? 104 : 66) + "px", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: (C.wide ? 12 : 8) + "px", overflow: "hidden", font: "500 " + (C.wide ? 13 : 10) + "px/1 " + t.font, color: ink(V.sec2, [V.bg, V.onsec, V.ink]), whiteSpace: "nowrap" };
+  // Telemetry row, LCARS-style, following the manifesto's three-tier font
+  // scale (lcars-terminal.de/tutorial/guideline/font_size.gif): Main Title
+  // size is the big bold cfTitle above (sim name on 3D View, screen name
+  // elsewhere); this row is Normal Data size, the small supporting
+  // readouts underneath it. Rule (matches cdock/cfFoot below): a row of
+  // segments is ONE bar — rounding lives only on the two outer ends,
+  // square joints between segments — sitting in the extra headroom
+  // `cf().bar` reserves above the (bottom-anchored) title so it can never
+  // collide with a long screen name.
+  const cfNetWrap = { position: "absolute", left: C.rail + C.gap * 3 + "px", right: C.gap * 3 + "px", top: (C.wide ? 10 : 6) + "px", height: (C.wide ? 22 : 16) + "px", display: "flex", overflow: "hidden" };
+  const cfNet = (() => {
+    // On 3D View the sim name is already the big title above, so this row
+    // carries the supporting world telemetry (location, height, ping)
+    // instead of the generic grid-link stats every other screen shows here.
+    const items = consoleScene
+      ? [
+          { label: "LOC", value: SIM_COORD.x + "," + SIM_COORD.y },
+          { label: "HEIGHT", value: SIM_COORD.z + "M" },
+          { label: "PING", value: (24 + (tick % 19)) + "MS" },
+        ]
+      : [
+          { label: "PING", value: (24 + (tick % 19)) + "MS" },
+          { label: "SPEED", value: (1.1 + (tick % 8) * 0.15).toFixed(1) + "MB/S" },
+          { label: "LAG", value: ((tick % 6) * 0.08).toFixed(2) + "S" },
+        ];
+    const last = items.length - 1;
+    return items.map((n, i) => {
+      const bg = [V.sec2, V.surf2, V.sec][i % 3];
+      return {
+        ...n,
+        style: {
+          flex: "none", display: "flex", alignItems: "baseline", gap: "5px", height: (C.wide ? 22 : 16) + "px",
+          padding: "0 " + (C.wide ? 10 : 7) + "px", background: bg, marginLeft: i === 0 ? 0 : "2px",
+          borderRadius: i === 0 ? (C.wide ? 11 : 8) + "px 0 0 " + (C.wide ? 11 : 8) + "px" : i === last ? "0 " + (C.wide ? 11 : 8) + "px " + (C.wide ? 11 : 8) + "px 0" : "0",
+          color: ink(bg, [V.bg, V.onsec, V.ink]),
+        },
+        labelStyle: { font: "700 " + (C.wide ? 9 : 7.5) + "px/1 " + t.font, letterSpacing: ".14em", opacity: 0.8 },
+        valStyle: { font: "700 " + (C.wide ? 11 : 9) + "px/1 " + t.dfont, letterSpacing: ".02em" },
+      };
+    });
+  })();
   const cfCurveFill = { position: "absolute", left: C.rail + "px", top: C.bar + "px", width: C.cur + "px", height: C.cur + "px", background: V.pri };
   const cfCurveCut = { position: "absolute", left: C.rail + "px", top: C.bar + "px", width: C.cur + "px", height: C.cur + "px", background: V.bg, borderRadius: C.cur + "px 0 0 0" };
   const cfRailCol = { position: "absolute", left: 0, top: C.bar + "px", width: C.rail + "px", bottom: C.foot + C.gap + "px", display: "flex", flexDirection: "column", gap: C.gap + "px" };
@@ -45,13 +91,21 @@ export default function ConsoleFrame() {
       <div style={cfBar} />
       <div style={cfBarEnd} />
       <div style={cfBarGap} />
+      <div style={cfNetWrap}>
+        {cfNet.map((n, i) => (
+          <div key={i} style={n.style}>
+            <span style={n.labelStyle}>{n.label}</span>
+            <span style={n.valStyle}>{n.value}</span>
+          </div>
+        ))}
+      </div>
       <div style={cfTitle}>{cfTitleText}</div>
       <div style={cfPlate}>{String(4471 + (tick % 29)) + "-" + String(tick % 97).padStart(2, "0")}</div>
       <div style={cfCurveFill} />
       <div style={cfCurveCut} />
 
       <div style={cfRailCol}>
-        <div style={cfArm}>GRIDLINK</div>
+        <div style={cfArm}>Linkpoint</div>
         {consoleNav.map((n, i) => (
           <div key={i} onClick={n.pick} style={n.style}>
             {n.code ? <span style={n.codeStyle}>{n.code}</span> : null}
@@ -191,7 +245,7 @@ function ConsoleScene() {
     background: "linear-gradient(180deg," + V.sky1 + " 0%," + V.sky2 + " 46%," + V.gnd + " 46%," + V.gnd2 + " 100%)",
   };
   const cfParallax = { position: "absolute", inset: 0, transform: "translate(" + (-state.cHdg * 0.9).toFixed(1) + "px," + (state.cPitch * 0.8).toFixed(1) + "px)", transition: state.cDrag ? "none" : "transform .35s ease-out" };
-  const regionRead = "HELIOTROPE · 128,64,42 · HDG " + String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(3, "0") + "° " + (state.cPitch > 2 ? "DN" : state.cPitch < -2 ? "UP" : "LVL");
+  const regionRead = SIM_NAME.toUpperCase() + " · " + SIM_COORD.x + "," + SIM_COORD.y + "," + SIM_COORD.z + " · HDG " + String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(3, "0") + "° " + (state.cPitch > 2 ? "DN" : state.cPitch < -2 ? "UP" : "LVL");
 
   return (
     <div onMouseDown={actions.sceneDown} onMouseMove={actions.sceneMove} onMouseUp={actions.sceneUp} onMouseLeave={actions.sceneUp} style={cfScene}>

@@ -1,13 +1,23 @@
-# GridLink Mobile — React port
+# Linkpoint Mobile — React port
 
 This is a real, buildable React 18 + Vite app that mechanically translates
-[`../GridLink Mobile.dc.html`](../GridLink%20Mobile.dc.html) — a "Design
-Canvas" artifact whose UI is defined with a Mustache-like `x-dc` DSL
-(`{{ vm.x }}`, `<sc-for>`, `<sc-if>`, `sc-camel-on-click`) fed by a
-~1300-line `render()` that builds a giant view-model object — into ordinary
-JSX components with `useState`/Context. It is **not** a redesign: every
-palette token, layout token, screen, piece of copy, and interaction in the
-`.dc.html` file has a 1:1 counterpart here.
+[`../index.html`](../index.html) — a "Design Canvas" artifact whose UI is
+defined with a Mustache-like `x-dc` DSL (`{{ vm.x }}`, `<sc-for>`,
+`<sc-if>`, `sc-camel-on-click`) fed by a ~1300-line `render()` that builds
+a giant view-model object — into ordinary JSX components with
+`useState`/Context. It is **not** a redesign: every palette token, layout
+token, screen, piece of copy, and interaction in `index.html` has a 1:1
+counterpart here. See `../mockup-to-react.yaml` for the translation rules
+this port follows (and that any future edit to `index.html` should follow
+too, to keep the two in sync).
+
+This port was originally built against an older snapshot of the mockup
+(`GridLink Mobile.dc.html`, since removed — the project has one HTML
+mockup page now, see the repo root README) and has since been brought up
+to parity with `index.html`'s current behavior: the shared toast/`notify()`
+feedback channel (dialog buttons, header icons, several card taps — all
+were silently inert before), the Sweep Console's PING/SPEED/LAG telemetry
+row, and its rail wordmark (was still "GRIDLINK") are now ported in too.
 
 Translation key used throughout:
 
@@ -116,15 +126,14 @@ settings toggle, desktop floaters) all produced the expected visual result.
   as `nav === "sweep"` and the separate `isSweep` flag is defined as
   `nav === "sweep" && !isConsole` — which is *always false*, so the
   decorative left "sweepNav" sidebar markup (a plain nav list with a
-  "GRIDLINK" wordmark, distinct from the LCARS console frame) can never
-  render in the original either. This port skips reproducing that
-  unreachable markup rather than adding a dead code path.
-- **System dialog buttons are decorative, matching the source exactly.**
-  In the `.dc.html` template the dialog's option buttons (`BRASS`,
-  `ACCEPT`, `TELEPORT`, …) carry no `onClick` at all — only the header's
-  `CLOSE` label dismisses the sheet. This is preserved as-is; it reads as
-  a limitation of the mockup, not something this port should silently
-  "fix" by making every button close the dialog.
+  wordmark, distinct from the LCARS console frame) can never render in the
+  original either. This port skips reproducing that unreachable markup
+  rather than adding a dead code path.
+- **System dialog buttons close the sheet and post a toast**, matching
+  `index.html`'s current `dialog.buttons` mapping. (An earlier version of
+  the mockup — and an earlier version of this port — left them decorative,
+  with only the header's `CLOSE` working; that's since been fixed on both
+  sides.)
 - **HUD/target-picker sheets are scoped to the 3D View's own box.** In the
   source these overlay sheets are positioned `inset:0` against a wrapper
   that also contains the split-detail pane (so their `position:absolute`

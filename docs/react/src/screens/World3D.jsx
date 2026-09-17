@@ -54,7 +54,7 @@ export default function World3D() {
           <div onClick={() => actions.setNavPeek(false)} style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,.5)", zIndex: 9 }} />
           <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "156px", zIndex: 10, background: V.surf, borderRight: "1px solid " + V.pri, padding: "14px 10px", display: "flex", flexDirection: "column", gap: "5px", overflowY: "auto" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "0 8px 12px" }}>
-              <span style={{ flex: 1, font: "700 12px/1.1 " + t.dfont, letterSpacing: ".2em", color: V.pri }}>GRIDLINK</span>
+              <span style={{ flex: 1, font: "700 12px/1.1 " + t.dfont, letterSpacing: ".2em", color: V.pri }}>Linkpoint</span>
               <span onClick={() => actions.setNavPeek(false)} style={{ cursor: "pointer", color: V.ink2, display: "flex" }}>
                 <Icon name="x" size={16} />
               </span>
