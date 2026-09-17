@@ -184,9 +184,12 @@
       }, []);
       const defaults = React.useMemo(() => {
         const d = {};
-        for (const k in entry.propsMeta || {}) {
-          const v = entry.propsMeta?.[k]?.default;
-          if (v !== void 0) d[k] = v;
+        const meta = entry.propsMeta;
+        if (meta) {
+          for (const k in meta) {
+            const v = meta[k]?.default;
+            if (v !== void 0) d[k] = v;
+          }
         }
         return d;
       }, [entry.propsMeta]);
