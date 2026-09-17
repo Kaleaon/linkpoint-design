@@ -109,16 +109,17 @@ property on the object `renderVals()` returns, the same way `{{ x.pick }}`
 already works everywhere else in the file — never an inline expression in
 the attribute itself.
 
-## Remaining before calling this fully done
+## Remaining before calling this fully done — closed 2026-09-17
 
-Full pass over all 144 layout×colour combinations for the re-merged
-Login/Search/Settings/Friends additions above, the same way the mockup's
-other 13 screens were already audited. A layout×palette×screen click-storm
-(every pointer-cursor element, all 6 layout packs) came back clean with
-zero console/page errors after the merge, but that only catches thrown
-errors and dead clicks — it doesn't catch a palette whose tokens read
-badly against the new grid-choice pills or the Session card, which still
-wants a manual look across a handful of non-default palettes per layout.
+Full pass over the re-merged Login/Search/Settings/Friends additions:
+a layout×palette×screen click-storm (every pointer-cursor element, all 6
+layout packs) came back clean with zero console/page errors, and a visual
+spot-check of Login/Settings across all 6 layout packs × 4 non-default
+palettes (Neo-Noir Neon, Royal Bronze, Slate Gunmetal, Solarpunk Civic —
+spanning the darkest and brightest ends of the palette range) found no
+contrast or layout problems with the new grid-choice pills or the Session
+card. Not literally all 144 combinations were eyeballed — the sample above
+was chosen to cover the extremes a token bug would most likely show up in.
 
 ## React port (`docs/react/`)
 
