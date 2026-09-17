@@ -95,6 +95,16 @@ Before deleting the extra files, all of that was re-merged into
   layout packs and 24 colour packs — spot-checked on Sweep Console/LCARS
   Amber and Press/Paper & Ink (opposite ends of the palette range) with no
   contrast or layout problems.
+- The Sweep Console's top bar now follows the LCARS manifesto's three-tier
+  font scale (lcars-terminal.de/tutorial/guideline/font_size.gif — Main
+  Title / Sub Header / Normal Data) on the 3D View screen specifically:
+  the big bold title (already "Main Title" size) shows the sim name
+  (`HELIOTROPE`) instead of the generic "Exterior View", and the small
+  telemetry row beneath it (Normal Data size) swaps the grid-link PING/
+  SPEED/LAG every other screen shows there for LOC/HEIGHT/PING — the
+  region's own coordinates and camera ping. `SIM_NAME`/`SIM_COORD`
+  constants feed both this row and the in-scene `cfRegionRead` tag so the
+  two can't drift apart.
 
 Two more real, confirmed bugs turned up while doing this (both are a
 *template*-level footgun, not a JS one — see "DSL binding limits" below)

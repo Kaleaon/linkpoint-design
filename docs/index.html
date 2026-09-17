@@ -1421,6 +1421,9 @@ class Component extends DCLogic {
     // states scrim OVER the frame rather than replacing it with the legacy shell.
     const isConsole = nav === "sweep";
     const consoleScene = isConsole && s.screen === "3D View" && s.cond === "normal";
+    // The 3D View's sim/location — shared by the in-scene region tag and
+    // the console's own top bar so the two never disagree.
+    const SIM_NAME = "Heliotrope", SIM_COORD = { x: 128, y: 64, z: 42 };
     const isFloat = nav === "floaters";
     // Flush console rows: no card border, a 4px state bar on the left edge, gap-separated
     // on the page ground. Radar established it; Chat and Inventory now share it.
@@ -2124,7 +2127,7 @@ class Component extends DCLogic {
       cfBar: { position: "absolute", left: 0, top: 0, right: (C.wide ? 108 : 70) + "px", height: C.bar + "px", background: V.pri, borderRadius: Math.round(C.bar * 0.66) + "px 0 0 0" },
       cfBarEnd: { position: "absolute", right: 0, top: 0, width: (C.wide ? 104 : 66) + "px", height: C.bar + "px", background: V.sec2, borderRadius: "0 " + Math.round(C.bar * 0.66) + "px " + Math.round(C.bar * 0.66) + "px 0" },
       cfBarGap: { position: "absolute", right: (C.wide ? 108 : 70) + "px", top: 0, width: C.gap + "px", height: C.bar + "px", background: V.bg },
-      cfTitleText: consoleScene ? "Exterior View" : title,
+      cfTitleText: consoleScene ? SIM_NAME : title,
       cfTitle: { position: "absolute", right: (C.wide ? 128 : 84) + "px", top: 0, height: C.bar + "px",
         display: "flex", alignItems: "flex-end", paddingBottom: (C.wide ? 11 : 7) + "px",
         font: "700 " + (C.wide ? 36 : 24) + "px/1 " + t.dfont, letterSpacing: ".05em",
@@ -2144,7 +2147,7 @@ class Component extends DCLogic {
       cfRegion: { position: "absolute", left: (C.wide ? 28 : 16) + "px", top: "16px", display: "flex", alignItems: "center",
         height: "26px", padding: "0 12px", background: V.surf, color: V.ink2,
         font: "500 " + (C.wide ? 12 : 10) + "px/1 " + t.font, letterSpacing: ".08em", borderLeft: "6px solid " + V.sec2 },
-      cfRegionRead: "HELIOTROPE \u00b7 128,64,42 \u00b7 HDG " + String(Math.round(((s.cHdg % 360) + 360) % 360)).padStart(3, "0") + "\u00b0 " + (s.cPitch > 2 ? "DN" : (s.cPitch < -2 ? "UP" : "LVL")),
+      cfRegionRead: SIM_NAME.toUpperCase() + " \u00b7 " + SIM_COORD.x + "," + SIM_COORD.y + "," + SIM_COORD.z + " \u00b7 HDG " + String(Math.round(((s.cHdg % 360) + 360) % 360)).padStart(3, "0") + "\u00b0 " + (s.cPitch > 2 ? "DN" : (s.cPitch < -2 ? "UP" : "LVL")),
       sceneDown: (e) => { this.lx = e.clientX; this.ly = e.clientY; this.setState({ cDrag: true }); },
       sceneMove: (e) => {
         if (!this.state.cDrag) return;
@@ -2224,16 +2227,29 @@ class Component extends DCLogic {
       cfStatus: s.cReason || ("SIM " + (21.4 + (tick % 13) * 0.1).toFixed(1) + "ms \u00b7 PKT " + ((tick % 7) * 0.1).toFixed(1) + "% \u00b7 FPS " + (58 - (tick % 5))),
       cfTail: "AGENTS " + (11 + (tick % 4)),
       cfPlateCode: String(4471 + (tick % 29)) + "-" + String(tick % 97).padStart(2, "0"),
-      // Grid-link telemetry, LCARS-style. Rule (matches cdock/cfFoot elsewhere
-      // in this frame): a row of segments is ONE bar \u2014 rounding lives only on
-      // the two outer ends, joints between segments are square with a hairline
-      // gap of bg colour, never four rounded corners per segment. Sits above
-      // the title; both are edge-anchored inside the same taller bar so
-      // neither can collide with a long screen title.
+      // Telemetry row, LCARS-style, following the manifesto's three-tier
+      // font scale (lcars-terminal.de/tutorial/guideline/font_size.gif):
+      // Main Title size is the big bold cfTitle above (sim name on 3D View,
+      // screen name elsewhere); this row is Normal Data size, the small
+      // supporting readouts underneath it. Rule (matches cdock/cfFoot
+      // elsewhere in this frame): a row of segments is ONE bar \u2014 rounding
+      // lives only on the two outer ends, joints between segments are
+      // square with a hairline gap of bg colour, never four rounded
+      // corners per segment. Sits above the title; both are edge-anchored
+      // inside the same taller bar so neither can collide with a long
+      // screen title.
       cfNetWrap: { position: "absolute", left: (C.rail + C.gap * 3) + "px", right: (C.gap * 3) + "px", top: (C.wide ? 10 : 6) + "px",
         height: (C.wide ? 22 : 16) + "px", display: "flex", overflow: "hidden" },
       cfNet: (() => {
-        const items = [
+        // On 3D View the sim name is already the big title above, so this
+        // row carries the supporting world telemetry (location, height,
+        // ping) instead of the generic grid-link stats every other screen
+        // shows here.
+        const items = consoleScene ? [
+          { label: "LOC", value: SIM_COORD.x + "," + SIM_COORD.y },
+          { label: "HEIGHT", value: SIM_COORD.z + "M" },
+          { label: "PING", value: (24 + (tick % 19)) + "MS" },
+        ] : [
           { label: "PING", value: (24 + (tick % 19)) + "MS" },
           { label: "SPEED", value: (1.1 + (tick % 8) * 0.15).toFixed(1) + "MB/S" },
           { label: "LAG", value: ((tick % 6) * 0.08).toFixed(2) + "S" },
