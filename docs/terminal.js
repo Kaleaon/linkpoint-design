@@ -1,0 +1,2 @@
+window.LAYOUTS = window.LAYOUTS || {};
+window.LAYOUTS['terminal'] = { name: "Ink Terminal", nav: "TABS", font: '"JetBrains Mono","IBM Plex Mono",monospace', dfont: '"JetBrains Mono",monospace', s: { rs:"4px", rl:"8px", rp:"4px", navr:"4px", pad:"12px", tls:".26em" }, look: { card:"box", head:"stack", seg:"fill", chips:true, gap:"9px", measure:null }, note: "Dense terminal grid: mono type, 4px corners, bottom tabs, '>' status lines, 0.26em tracking on titles." };
