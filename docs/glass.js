@@ -1,0 +1,2 @@
+window.LAYOUTS = window.LAYOUTS || {};
+window.LAYOUTS['glass'] = { name: "Aero Glass", nav: "TABS", font: '"Nunito Sans",sans-serif', dfont: '"Nunito Sans",sans-serif', s: { rs:"12px", rl:"18px", rp:"16px", navr:"12px", pad:"14px", tls:".06em" }, look: { card:"soft", head:"stack", seg:"fill", chips:true, gap:"11px", measure:null }, note: "Glossy Aero: 12-18px rounding, comfortable 1.1 spacing, soft panels, rounded duotone icons." };
