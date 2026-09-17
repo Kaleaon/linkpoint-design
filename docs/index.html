@@ -328,7 +328,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
             </sc-if>
             <sc-if value="{{ headerIcons }}" hint-placeholder-val="{{ false }}">
             <sc-for list="{{ headerIcons }}" as="hi" hint-placeholder-count="2">
-              <div onClick="{{ hi.pick }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer"><i data-lucide="{{ hi.icon }}" style="width:18px;height:18px"></i></div>
+              <div onClick="{{ hi.pick }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer" role="button" aria-label="{{ hi.label }}" tabindex="0"><i data-lucide="{{ hi.icon }}" style="width:18px;height:18px"></i></div>
             </sc-for>
             </sc-if>
           </div>
@@ -427,7 +427,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                 <input value="{{ composeText }}" onChange="{{ composeChange }}" onKeyDown="{{ composeKeyDown }}" placeholder="{{ composePlaceholder }}" style="{{ composeInputStyle }}" />
                 <span style="margin-left:auto;font:600 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);letter-spacing:.1em">/1</span>
               </div>
-              <div onClick="{{ sendChat }}" style="{{ composerSendStyle }}"><i data-lucide="send" style="width:19px;height:19px"></i></div>
+              <div onClick="{{ sendChat }}" style="{{ composerSendStyle }}" role="button" aria-label="Send message" tabindex="0"><i data-lucide="send" style="width:19px;height:19px"></i></div>
             </div>
           </sc-if>
 
@@ -503,13 +503,13 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
               <div style="position:absolute;inset:0">{{ tileLayer }}</div>
               <div style="position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:7px;background:var(--pri,#6CFF9A);border:2px solid var(--bg,#0A1112)"></div>
               <div style="position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px">
-                <sc-for list="{{ mapBtns }}" as="mb" hint-placeholder-count="3"><div onClick="{{ mb.pick }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--ink,#D7F5E6);cursor:pointer"><i data-lucide="{{ mb.icon }}" style="width:16px;height:16px"></i></div></sc-for>
+                <sc-for list="{{ mapBtns }}" as="mb" hint-placeholder-count="3"><div onClick="{{ mb.pick }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--ink,#D7F5E6);cursor:pointer" role="button" aria-label="{{ mb.label }}" tabindex="0"><i data-lucide="{{ mb.icon }}" style="width:16px;height:16px"></i></div></sc-for>
               </div>
               <div style="position:absolute;left:10px;bottom:10px;font:400 9.5px/1.35 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);background:var(--surf,#101A1C);border:1px solid var(--outv,#365047);padding:4px 6px;max-width:74%">{{ tileNote }}</div>
             </div>
             <div style="{{ mapFootStyle }}">
               <div onClick="{{ mapTeleport }}" style="flex:1;height:46px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:8px;font:700 12px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;cursor:pointer"><i data-lucide="zap" style="width:16px;height:16px"></i>TELEPORT</div>
-              <div onClick="{{ mapStar }}" style="{{ mapStarStyle }}"><i data-lucide="star" style="width:18px;height:18px"></i></div>
+              <div onClick="{{ mapStar }}" style="{{ mapStarStyle }}" role="button" aria-label="Save landmark" tabindex="0"><i data-lucide="star" style="width:18px;height:18px"></i></div>
             </div>
           </sc-if>
 
@@ -593,7 +593,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
           <sc-if value="{{ isTree }}" hint-placeholder-val="{{ false }}">
             <div style="{{ invToolStyle }}">
               <div style="flex:1;height:44px;display:flex;align-items:center;gap:8px;padding:0 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C)"><i data-lucide="search" style="width:15px;height:15px;opacity:.55"></i><input value="{{ invFilter }}" onChange="{{ invFilterChange }}" placeholder="filter inventory…" style="{{ invFilterInputStyle }}" /></div>
-              <div onClick="{{ invGridToggle }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer"><i data-lucide="{{ invGridIcon }}" style="width:17px;height:17px"></i></div>
+              <div onClick="{{ invGridToggle }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer" role="button" aria-label="Toggle grid view" tabindex="0"><i data-lucide="{{ invGridIcon }}" style="width:17px;height:17px"></i></div>
             </div>
             <div style="{{ invRecentStyle }}">
               <sc-for list="{{ invRecents }}" as="ir" hint-placeholder-count="4"><div onClick="{{ ir.pick }}" style="flex:none;width:62px;cursor:pointer"><div style="height:62px;border:1px solid var(--outv,#365047);background:repeating-linear-gradient(135deg,var(--surf2,#1B2A2D) 0 6px,var(--surf,#101A1C) 6px 12px)"></div><div style="font:400 9px/1.3 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{ ir.name }}</div></div></sc-for>
@@ -625,7 +625,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
               <div style="display:flex;gap:8px;padding:14px 16px">
                 <div onClick="{{ profileIm }}" style="flex:1;height:44px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer"><i data-lucide="message-square" style="width:16px;height:16px"></i>IM</div>
                 <div onClick="{{ profileOfferTp }}" style="flex:1;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer"><i data-lucide="zap" style="width:16px;height:16px"></i>OFFER TP</div>
-                <div onClick="{{ profileMore }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;cursor:pointer"><i data-lucide="more-horizontal" style="width:18px;height:18px"></i></div>
+                <div onClick="{{ profileMore }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;cursor:pointer" role="button" aria-label="More options" tabindex="0"><i data-lucide="more-horizontal" style="width:18px;height:18px"></i></div>
               </div>
               <sc-for list="{{ profileBlocks }}" as="pb" hint-placeholder-count="3">
                 <div style="margin:0 16px 12px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);padding:12px">
@@ -2174,7 +2174,7 @@ class Component extends DCLogic {
       showLink: scr === "Chat",
       headerIcons: (scr === "Friends" ? [["user-plus", "ADD FRIEND"], ["search", "SEARCH"]]
         : scr === "Diagnostics" ? [["refresh-cw", "RE-RUN PROBE"]] : null)?.map(([icon, label]) =>
-          ({ icon, pick: () => this.notify(label + (label === "RE-RUN PROBE" ? " — " + (Math.floor(Math.random() * 60) + 40) + "ms" : "")) })),
+          ({ icon, label, pick: () => this.notify(label + (label === "RE-RUN PROBE" ? " — " + (Math.floor(Math.random() * 60) + 40) + "ms" : "")) })),
       segTabs, chips,
       rListWrap: { flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column",
         gap: bleed ? C.gap + "px" : "8px", padding: bleed ? "0" : "0 16px 16px",
@@ -2210,7 +2210,7 @@ class Component extends DCLogic {
       invGridToggle: () => { this.setState(st => ({ invGrid: !st.invGrid })); this.notify(s.invGrid ? "List view" : "Grid view"); },
       invGridIcon: s.invGrid ? "list" : "layout-grid",
       mapBtns: [["plus", "ZOOM IN"], ["minus", "ZOOM OUT"], ["locate-fixed", "RECENTER"]]
-        .map(([icon, label]) => ({ icon, pick: () => this.notify("Map — " + label) })),
+        .map(([icon, label]) => ({ icon, label, pick: () => this.notify("Map — " + label) })),
       mapTeleport: () => { this.setState({ screen: "Map" }); this.notify("Teleporting to Da Boom — <1000, 1000>"); },
       mapStar: () => { this.pin("daBoom"); this.notify(s.pinned.daBoom ? "Da Boom — LANDMARK REMOVED" : "Da Boom — LANDMARK SAVED"); },
       mapStarStyle: { width: "46px", height: "46px", border: "1px solid " + (s.pinned.daBoom ? V.pri : V.outv), borderRadius: V.rs,
