@@ -23,6 +23,25 @@
 <body>
 <x-dc>
 <helmet data-dc-atomics=""><meta name="design_doc_mode" content="canvas"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Antonio:wght@400;600;700&amp;family=Open+Sans:wght@300;400;600&amp;family=Nunito+Sans:wght@400;600;700&amp;family=Jost:wght@300;400;600;800&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;display=swap" rel="stylesheet"><script src="./vendor/lucide.min.js"></script><style>
+
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.drag-scrollable {
+  cursor: grab;
+}
+.drag-scrolling, .drag-scrolling * {
+  cursor: grabbing !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
 body{margin:0;background:#100f0e;font-family:"JetBrains Mono",ui-monospace,monospace;color:#e8e5df}
 a{color:#6CFF9A}a:hover{color:#a9ffc7}
 .dv-turn{padding:44px 48px 36px;border-bottom:1px solid rgba(255,255,255,.07)}
@@ -2520,5 +2539,109 @@ class Component extends DCLogic {
   }
 }
 </script>
+
+<script>
+(function initDragScroll() {
+  function getScrollableParent(el) {
+    let current = el;
+    while (current && current !== document.body && current !== document.documentElement) {
+      if (current.nodeType === 1) {
+        const style = window.getComputedStyle(current);
+        const overflowY = style.overflowY;
+        const overflowX = style.overflowX;
+        const canScrollY = (overflowY === "auto" || overflowY === "scroll" || overflowY === "overlay") && (current.scrollHeight - current.clientHeight > 1);
+        const canScrollX = (overflowX === "auto" || overflowX === "scroll" || overflowX === "overlay") && (current.scrollWidth - current.clientWidth > 1);
+        if (canScrollY || canScrollX) {
+          return { el: current, scrollY: canScrollY, scrollX: canScrollX };
+        }
+      }
+      current = current.parentElement;
+    }
+    return null;
+  }
+
+  let activeScrollable = null;
+  let activeInfo = null;
+  let startX = 0, startY = 0;
+  let initialScrollLeft = 0, initialScrollTop = 0;
+  let isDragging = false;
+  const dragThreshold = 5;
+  let suppressClick = false;
+
+  document.addEventListener("mouseover", (e) => {
+    const parentInfo = getScrollableParent(e.target);
+    if (parentInfo && !e.target.closest("input, textarea, select, button, [onMouseDown]")) {
+      parentInfo.el.classList.add("drag-scrollable");
+    }
+  }, { passive: true });
+
+  document.addEventListener("mousedown", (e) => {
+    if (e.button !== 0) return;
+    const target = e.target;
+    if (target.closest("input, textarea, select, option, button, .cfScene, .flScene, .movement-pad")) return;
+
+    const parentInfo = getScrollableParent(target);
+    if (!parentInfo) return;
+
+    activeScrollable = parentInfo.el;
+    activeInfo = parentInfo;
+    startX = e.clientX;
+    startY = e.clientY;
+    initialScrollLeft = activeScrollable.scrollLeft;
+    initialScrollTop = activeScrollable.scrollTop;
+    isDragging = false;
+
+    const onMouseMove = (moveEvent) => {
+      if (!activeScrollable) return;
+      const deltaX = moveEvent.clientX - startX;
+      const deltaY = moveEvent.clientY - startY;
+
+      if (!isDragging) {
+        if (Math.hypot(deltaX, deltaY) >= dragThreshold) {
+          isDragging = true;
+          document.body.classList.add("drag-scrolling");
+        }
+      }
+
+      if (isDragging) {
+        if (activeInfo.scrollX) {
+          activeScrollable.scrollLeft = initialScrollLeft - deltaX;
+        }
+        if (activeInfo.scrollY) {
+          activeScrollable.scrollTop = initialScrollTop - deltaY;
+        }
+        moveEvent.preventDefault();
+      }
+    };
+
+    const onMouseUp = () => {
+      window.removeEventListener("mousemove", onMouseMove, true);
+      window.removeEventListener("mouseup", onMouseUp, true);
+      document.body.classList.remove("drag-scrolling");
+
+      if (isDragging) {
+        suppressClick = true;
+        setTimeout(() => { suppressClick = false; }, 50);
+      }
+
+      activeScrollable = null;
+      activeInfo = null;
+      isDragging = false;
+    };
+
+    window.addEventListener("mousemove", onMouseMove, true);
+    window.addEventListener("mouseup", onMouseUp, true);
+  }, false);
+
+  document.addEventListener("click", (e) => {
+    if (suppressClick) {
+      e.stopPropagation();
+      e.preventDefault();
+      suppressClick = false;
+    }
+  }, true);
+})();
+</script>
+
 </body>
 </html>
