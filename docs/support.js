@@ -317,6 +317,10 @@
   var RAW_UNWRAP = Object.fromEntries(
     Object.entries(RAW_WRAP).map(([k, v]) => [v, k])
   );
+  var RAW_WRAP_RES = Object.entries(RAW_WRAP).map(([real, alias]) => [
+    new RegExp("(</?)" + real + "(?=[\\s>])", "gi"),
+    "$1" + alias
+  ]);
   var EVENT_MAP = {
     onclick: "onClick",
     onchange: "onChange",
@@ -380,11 +384,9 @@
     html = html.replace(/<helmet(\s|>)/gi, "<sc-helmet$1");
     html = html.replace(/<\/helmet\s*>/gi, "</sc-helmet>");
     html = encodeCamelAttrs(html);
-    for (const [real, alias] of Object.entries(RAW_WRAP)) {
-      html = html.replace(
-        new RegExp("(</?)" + real + "(?=[\\s>])", "gi"),
-        "$1" + alias
-      );
+    for (let i = 0; i < RAW_WRAP_RES.length; i++) {
+      const [re, rep] = RAW_WRAP_RES[i];
+      html = html.replace(re, rep);
     }
     return html;
   }
