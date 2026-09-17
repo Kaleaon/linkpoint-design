@@ -1,0 +1,2 @@
+window.LAYOUTS = window.LAYOUTS || {};
+window.LAYOUTS['press'] = { name: "Press", nav: "TABS", font: '"Source Serif 4",Georgia,serif', dfont: '"Jost",sans-serif', s: { rs:"2px", rl:"6px", rp:"3px", navr:"2px", pad:"14px", tls:".1em" }, look: { card:"quiet", head:"editorial", seg:"text", chips:false, gap:"0px", measure:"58ch" }, note: "Editorial: serif body, 2px corners, generous leading — the legibility layout for sunlight and large-type mode." };

@@ -1,5 +1,5 @@
 // Ported verbatim from the copy/content literals inside renderVals() in
-// GridLink Mobile.dc.html — chat transcripts, friend/radar rosters, the
+// index.html — chat transcripts, friend/radar rosters, the
 // inventory tree, map regions, profile blocks, login fields and the
 // buildCards() function (the Friends/Groups/Notices/Teleport/Settings/
 // Diagnostics card lists, including their accept/decline/toggle callbacks).
@@ -312,7 +312,10 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
       {
         icon: "user",
         title: "Session",
-        right: state.loginMode === "offline" ? "offline" : "grid · " + state.loginGrid,
+        right:
+          state.loginMode === "offline"
+            ? "offline"
+            : "grid · " + ((actions.allGrids().find((g) => g.key === state.loginGrid) || {}).label || state.loginGrid),
         body:
           "Ruth Resident · Da Boom · agent 22c4a5de-11 · sim link " +
           (state.reconnecting ? "reconnecting…" : "LIVE · rx 18 204 / tx 6 118"),
@@ -402,7 +405,7 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
       { title: "DNS", right: "12 ms", body: "OK · login.agni.lindenlab.com", accent: "ok" },
       { title: "TCP / TLS", right: "38 ms", body: "OK · handshake reachable", accent: "ok" },
       { title: "SIM CIRCUIT", right: "live", body: "rx 18 204 / tx 6 118 packets · 0.2% loss" },
-      { title: "ENDPOINT", body: "viewer GridLink Mobile 2.0 · server_time 2026-09-10T14:32:07Z" },
+      { title: "ENDPOINT", body: "viewer Linkpoint Mobile 2.0 · server_time 2026-09-10T14:32:07Z" },
       { title: "CAPS", body: "display names OK · event queue OK · avatar picker OK · inventory skeleton OK" },
     ],
   };

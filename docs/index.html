@@ -12,11 +12,36 @@
     "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "./vendor/react-dom.production.min.js"
   };
 </script>
+<script src="./terminal.js"></script>
+<script src="./sweep.js"></script>
+<script src="./tiles.js"></script>
+<script src="./glass.js"></script>
+<script src="./rules.js"></script>
+<script src="./press.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
 <helmet data-dc-atomics=""><meta name="design_doc_mode" content="canvas"><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Antonio:wght@400;600;700&amp;family=Open+Sans:wght@300;400;600&amp;family=Nunito+Sans:wght@400;600;700&amp;family=Jost:wght@300;400;600;800&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;display=swap" rel="stylesheet"><script src="./vendor/lucide.min.js"></script><style>
+
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+.drag-scrollable {
+  cursor: grab;
+}
+.drag-scrolling, .drag-scrolling * {
+  cursor: grabbing !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
 body{margin:0;background:#100f0e;font-family:"JetBrains Mono",ui-monospace,monospace;color:#e8e5df}
 a{color:#6CFF9A}a:hover{color:#a9ffc7}
 .dv-turn{padding:44px 48px 36px;border-bottom:1px solid rgba(255,255,255,.07)}
@@ -152,6 +177,11 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
       <div style="{{ cfBar }}"></div>
       <div style="{{ cfBarEnd }}"></div>
       <div style="{{ cfBarGap }}"></div>
+      <div style="{{ cfNetWrap }}">
+        <sc-for list="{{ cfNet }}" as="ns" hint-placeholder-count="3">
+          <div style="{{ ns.style }}"><span style="{{ ns.labelStyle }}">{{ ns.label }}</span><span style="{{ ns.valStyle }}">{{ ns.value }}</span></div>
+        </sc-for>
+      </div>
       <div style="{{ cfTitle }}">{{ cfTitleText }}</div>
       <div style="{{ cfPlate }}">{{ cfPlateCode }}</div>
       <div style="{{ cfCurveFill }}"></div>
@@ -638,12 +668,19 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                     <sc-if value="{{ c.icon }}" hint-placeholder-val="{{ true }}"><i data-lucide="{{ c.icon }}" style="width:16px;height:16px;color:var(--pri,#6CFF9A)"></i></sc-if>
                     <span style="flex:1;font:600 13px/1.25 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)">{{ c.title }}</span>
                     <sc-if value="{{ c.right }}" hint-placeholder-val="{{ true }}"><span style="font:400 10.5px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ c.right }}</span></sc-if>
+                    <sc-if value="{{ c.rights }}" hint-placeholder-val="{{ false }}">
+                      <span style="display:flex;gap:4px;flex:none">
+                        <sc-for list="{{ c.rights }}" as="ri" hint-placeholder-count="3">
+                          <i data-lucide="{{ ri }}" style="width:13px;height:13px;color:var(--sec2,#8AD0B0)"></i>
+                        </sc-for>
+                      </span>
+                    </sc-if>
                     <sc-if value="{{ c.badge }}" hint-placeholder-val="{{ false }}"><span style="min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--bdg,#8AD0B0);color:var(--onbdg,#0E3021);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--font,'JetBrains Mono')">{{ c.badge }}</span></sc-if>
                     <sc-if value="{{ c.toggle }}" hint-placeholder-val="{{ false }}"><span onClick="{{ c.togglePick }}" style="{{ c.toggleStyle }}"><span style="{{ c.knobStyle }}"></span></span></sc-if>
                     <sc-if value="{{ !!c.select }}" hint-placeholder-val="{{ false }}">
-                      <select onChange="{{ e => c.onChange(e.target.value) }}" style="margin-left: 10px; background: var(--surf2, #1B2A2D); color: var(--ink, #D7F5E6); border: 1px solid var(--outv, #365047); border-radius: 4px; padding: 4px 8px; font: 400 12px/1 var(--font, 'JetBrains Mono'); max-width: 150px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                      <select onChange="{{ c.selectChange }}" style="margin-left: 10px; background: var(--surf2, #1B2A2D); color: var(--ink, #D7F5E6); border: 1px solid var(--outv, #365047); border-radius: 4px; padding: 4px 8px; font: 400 12px/1 var(--font, 'JetBrains Mono'); max-width: 150px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
                         <sc-for list="{{ c.options }}" as="opt" hint-placeholder-count="2">
-                          <option value="{{ opt.value }}" selected="{{ opt.value === c.value ? 'selected' : '' }}">{{ opt.label }}</option>
+                          <option value="{{ opt.value }}" selected="{{ opt.selected }}">{{ opt.label }}</option>
                         </sc-for>
                       </select>
                     </sc-if>
@@ -671,19 +708,80 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                 <div style="font:400 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);letter-spacing:.18em;margin-top:7px">SECONDLIFE COMMUNICATOR // v2.0</div>
                 <div style="margin-top:150px;border:1px solid var(--outv,#365047);border-radius:var(--rp,4px);background:var(--surf,#101A1C);padding:16px;display:flex;flex-direction:column;gap:8px">
                   <div style="display:flex;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);overflow:hidden;margin-bottom:6px">
-                    <div onClick="{{ loginTabGrid }}" style="{{ loginTabGridStyle }}">GRID LOGIN</div>
-                    <div onClick="{{ loginTabOffline }}" style="{{ loginTabOfflineStyle }}">OFFLINE</div>
+                    <sc-for list="{{ loginTabs }}" as="lt" hint-placeholder-count="2">
+                      <div onClick="{{ lt.pick }}" style="{{ lt.style }}">{{ lt.label }}</div>
+                    </sc-for>
                   </div>
+                  <sc-if value="{{ loginIsGrid }}" hint-placeholder-val="{{ true }}">
+                    <div>
+                      <div style="font:400 11px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A);margin:8px 0 6px">GRID</div>
+                      <div style="display:flex;flex-wrap:wrap;gap:8px">
+                        <sc-for list="{{ loginGridChoices }}" as="gc" hint-placeholder-count="4">
+                          <div onClick="{{ gc.pick }}" style="{{ gc.style }}">{{ gc.label }}</div>
+                        </sc-for>
+                      </div>
+                      <sc-if value="{{ addGrid }}" hint-placeholder-val="{{ false }}">
+                        <div style="margin-top:10px;border:1px dashed var(--outv,#365047);border-radius:var(--rs,4px);padding:10px">
+                          <div style="font:400 10px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;color:var(--ink2,#A7C8BC)">ADD CUSTOM GRID</div>
+                          <input value="{{ addGridNameVal }}" onChange="{{ addGridNamePick }}" placeholder="grid name" style="{{ addGridInputStyle }}" />
+                          <input value="{{ addGridHostVal }}" onChange="{{ addGridHostPick }}" placeholder="login URI (e.g. login.example.com:8002)" style="{{ addGridInputStyle }}" />
+                          <div style="display:flex;gap:8px;margin-top:10px">
+                            <div onClick="{{ cancelAddGrid }}" style="flex:1;text-align:center;padding:9px 0;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);font:600 10.5px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;color:var(--ink2,#A7C8BC);cursor:pointer">CANCEL</div>
+                            <div onClick="{{ saveCustomGrid }}" style="flex:1;text-align:center;padding:9px 0;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);font:600 10.5px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;cursor:pointer">ADD GRID</div>
+                          </div>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-if>
                   <sc-for list="{{ loginFields }}" as="lf" hint-placeholder-count="3">
                     <div>
                       <div style="font:400 11px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A);margin:8px 0 6px">{{ lf.label }}</div>
                       <div style="min-height:42px;display:flex;align-items:center;padding:0 12px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);font:400 13px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ lf.value }}</div>
                     </div>
                   </sc-for>
-                  <div onClick="{{ loginConnect }}" style="margin-top:14px;height:48px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:8px;font:700 13px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;cursor:pointer"><i data-lucide="power" style="width:17px;height:17px"></i>CONNECT TO GRID</div>
-                  <div onClick="{{ () => this.set('screen', 'Settings') }}" style="margin-top:8px;height:48px;border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);color:var(--pri,#6CFF9A);border:1px solid var(--outv,#365047);display:flex;align-items:center;justify-content:center;gap:8px;font:700 13px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;cursor:pointer"><i data-lucide="settings" style="width:17px;height:17px"></i>SETTINGS</div>
-                  <div style="font:400 10.5px/1.5 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:8px">&gt; last: Agni · Da Boom · 14:02 · biometric unlock available</div>
+                  <sc-if value="{{ loginOfflineHint }}" hint-placeholder-val="{{ false }}">
+                    <div style="font:400 10.5px/1.5 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ loginOfflineHint }}</div>
+                  </sc-if>
+                  <div onClick="{{ loginBtnPick }}" style="{{ loginBtnStyle }}"><i data-lucide="power" style="width:17px;height:17px"></i>{{ loginBtnLabel }}</div>
+                  <div onClick="{{ loginSettingsPick }}" style="margin-top:8px;height:48px;border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);color:var(--pri,#6CFF9A);border:1px solid var(--outv,#365047);display:flex;align-items:center;justify-content:center;gap:8px;font:700 13px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;cursor:pointer"><i data-lucide="settings" style="width:17px;height:17px"></i>SETTINGS</div>
+                  <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
+                    <div style="font:400 10.5px/1.5 var(--font,'JetBrains Mono');color:var(--err,#CF6679);margin-top:8px;border:1px solid var(--err,#CF6679);border-radius:var(--rs,4px);padding:8px">&gt; {{ loginError }}</div>
+                  </sc-if>
+                  <sc-if value="{{ loginShowHint }}" hint-placeholder-val="{{ true }}">
+                    <div style="font:400 10.5px/1.5 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:8px">&gt; last: Agni · Da Boom · 14:02 · biometric unlock available</div>
+                  </sc-if>
                 </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isSearchScreen }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:1;min-height:0;display:flex;flex-direction:column">
+              <div style="flex:none;display:flex;align-items:center;gap:8px;padding:14px 16px 10px">
+                <div onClick="{{ searchBack }}" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer"><i data-lucide="chevron-left" style="width:22px;height:22px"></i></div>
+                <div>
+                  <div style="font:700 18px/1 var(--dfont,'JetBrains Mono');letter-spacing:.16em;color:var(--pri,#6CFF9A)">FIND RESIDENTS</div>
+                  <div style="font:400 10.5px/1.3 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:2px">&gt; search the grid to IM or add a friend</div>
+                </div>
+              </div>
+              <div style="flex:none;margin:0 16px 10px;height:44px;display:flex;align-items:center;gap:8px;padding:0 12px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C)">
+                <i data-lucide="search" style="width:16px;height:16px;color:var(--ink2,#A7C8BC)"></i>
+                <input value="{{ searchQuery }}" sc-camel-on-input="{{ searchQueryPick }}" placeholder="resident name (min 2 chars)" style="flex:1;min-width:0;border:none;outline:none;background:transparent;font:400 13px/1 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)" />
+              </div>
+              <div style="flex:1;min-height:0;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ searchResults }}" as="sr" hint-placeholder-count="4">
+                  <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C)">
+                    <i data-lucide="circle-user-round" style="width:22px;height:22px;color:var(--sec2,#8AD0B0);flex:none"></i>
+                    <div style="flex:1;min-width:0">
+                      <div style="font:600 13px/1.3 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)">{{ sr.name }}</div>
+                      <div style="font:400 10px/1.3 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:1px">resident · {{ sr.id }}</div>
+                    </div>
+                    <div onClick="{{ sr.pick }}" style="{{ sr.style }}">{{ sr.label }}</div>
+                  </div>
+                </sc-for>
+                <sc-if value="{{ searchShowEmpty }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:40px 0;text-align:center;font:400 12px/1.5 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ searchEmptyText }}</div>
+                </sc-if>
               </div>
             </div>
           </sc-if>
@@ -919,32 +1017,7 @@ const LEGACY_PALETTES = {
 };
 
 // Layout packs: geometry, nav model, type, density. No colour.
-const LAYOUTS = {
-  terminal: { name: "Ink Terminal", nav: "TABS", font: '"JetBrains Mono","IBM Plex Mono",monospace', dfont: '"JetBrains Mono",monospace',
-    s: { rs:"4px", rl:"8px", rp:"4px", navr:"4px", pad:"12px", tls:".26em" },
-    look: { card:"box", head:"stack", seg:"fill", chips:true, gap:"9px", measure:null },
-    note: "Dense terminal grid: mono type, 4px corners, bottom tabs, '>' status lines, 0.26em tracking on titles." },
-  sweep: { name: "Sweep Console", nav: "SWEEP", font: '"Antonio","Jost",sans-serif', dfont: '"Antonio",sans-serif',
-    s: { rs:"999px", rl:"28px", rp:"22px", navr:"0 999px 999px 0", pad:"10px", tls:".16em" },
-    look: { card:"cap", head:"sweep", seg:"fill", chips:true, gap:"6px", measure:null },
-    note: "LCARS-rule console: the swept elbow is the frame, rail segments ARE the buttons, thickness changes at every turn, rounded caps terminate bars, title-bar grammar (cap \u2192 bar \u2192 title \u2192 end cap), one font at three sizes, two text colours, fills only." },
-  tiles: { name: "Metro Tiles", nav: "TILES", font: '"Open Sans","Nunito Sans",sans-serif', dfont: '"Open Sans",sans-serif',
-    s: { rs:"0px", rl:"0px", rp:"0px", navr:"0px", pad:"14px", tls:"0em" },
-    look: { card:"flat", head:"pivot", seg:"pivot", chips:false, gap:"2px", measure:null },
-    note: "Metro: zero radius, light-weight pivot titles, spacious 1.25 scale, lowercase tile nav." },
-  glass: { name: "Aero Glass", nav: "TABS", font: '"Nunito Sans",sans-serif', dfont: '"Nunito Sans",sans-serif',
-    s: { rs:"12px", rl:"18px", rp:"16px", navr:"12px", pad:"14px", tls:".06em" },
-    look: { card:"soft", head:"stack", seg:"fill", chips:true, gap:"11px", measure:null },
-    note: "Glossy Aero: 12-18px rounding, comfortable 1.1 spacing, soft panels, rounded duotone icons." },
-  rules: { name: "Rule & Rail", nav: "RAIL", font: '"Jost",system-ui,sans-serif', dfont: '"Jost",sans-serif',
-    s: { rs:"0px", rl:"0px", rp:"0px", navr:"0px", pad:"11px", tls:".35em" },
-    look: { card:"rule", head:"rule", seg:"text", chips:false, gap:"0px", measure:null },
-    note: "Deco discipline: hairline rules instead of fills, sharp corners, 0.35em tracking, compact scale, rail nav." },
-  press: { name: "Press", nav: "TABS", font: '"Source Serif 4",Georgia,serif', dfont: '"Jost",sans-serif',
-    s: { rs:"2px", rl:"6px", rp:"3px", navr:"2px", pad:"14px", tls:".1em" },
-    look: { card:"quiet", head:"editorial", seg:"text", chips:false, gap:"0px", measure:"58ch" },
-    note: "Editorial: serif body, 2px corners, generous leading \u2014 the legibility layout for sunlight and large-type mode." },
-};
+const LAYOUTS = window.LAYOUTS;
 
 // Colour packs lifted from Ktheme's preset catalog. Any pack drops into any layout.
 const mkPal = (name, c, note, light) => ({ name, note, light: !!light, c });
@@ -1017,7 +1090,15 @@ const FMENU = [
   { label:"Help",  items:[["Second Life Help","F1"],["Report Abuse…",""],["Report Bug…",""],["About Linkpoint",""]] },
 ];
 
-const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Settings","Diagnostics","Login"];
+const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Settings","Diagnostics","Login","Search"];
+// Grid picker for Login: Second Life's own two (Agni/Aditi) plus a few
+// well-known OpenSim grids, so the login screen isn't LL-only.
+const GRIDS = [
+  { key: "agni", label: "Agni (Main)", host: "login.agni.lindenlab.com" },
+  { key: "aditi", label: "Aditi (Beta)", host: "login.aditi.lindenlab.com" },
+  { key: "osgrid", label: "OSgrid", host: "login.osgrid.org" },
+  { key: "kitely", label: "Kitely", host: "login.kitely.com" },
+];
 
 // Firestorm-style custom button array: the user's dock is a list of keys into this palette.
 const CBTN = {
@@ -1133,7 +1214,10 @@ class Component extends DCLogic {
     cDock: ["fly", "sit", "snap", "mini", "inv", "home", "ao", "sun"],
     flOpen: { Chat: true, Radar: true, Friends: true, Inventory: true, Map: true }, flMin: {}, flRect: {},
     flZ: ["Map", "Inventory", "Friends", "Radar", "Chat"], menu: null,
-    toast: "", composeText: "", chatSent: {}, chatTyping: false, invFilter: "", loginTab: "GRID" };
+    toast: "", composeText: "", chatSent: {}, chatTyping: false, invFilter: "",
+    loginMode: "grid", loginGrid: "agni", loginBusy: false, loginError: null,
+    customGrids: [], addGrid: false, addGridName: "", addGridHost: "",
+    searchFrom: "Friends", searchQuery: "", searchState: {}, reconnecting: false };
 
   // ---- desktop floater window model -------------------------------------
   flR(id) { const f = FLOATERS.find(x => x.id === id) || { x: 24, y: 24, w: 320, h: 240 }; return { ...f, ...(this.state.flRect[id] || {}) }; }
@@ -1222,6 +1306,48 @@ class Component extends DCLogic {
   pin(key) { this.setState(s => ({ pinned: { ...s.pinned, [key]: !s.pinned[key] } })); }
   cycle(map, key) { const ks = Object.keys(map); this.setState(s => ({ [key]: ks[(ks.indexOf(s[key]) + 1) % ks.length] })); }
 
+  // ---- resident search (openSearch/searchAdd) ----------------------------
+  openSearch(from) { this.setState({ searchFrom: from, searchQuery: "", screen: "Search" }); }
+  searchAdd(name) {
+    this.setState(s => ({ searchState: { ...s.searchState, [name]: "sending" } }));
+    clearTimeout(this.sat);
+    this.sat = setTimeout(() => this.setState(s => ({ searchState: { ...s.searchState, [name]: "sent" } })), 700);
+  }
+
+  // ---- login (setLoginMode/setLoginGrid/connectLogin) --------------------
+  // All known grids: the built-in Second Life / OpenSim presets plus
+  // whatever the resident has added themselves this session.
+  allGrids() { return GRIDS.concat(this.state.customGrids); }
+  setLoginMode(m) { this.setState({ loginMode: m, loginError: null }); }
+  setLoginGrid(g) { this.setState({ loginGrid: g }); }
+  connectLogin() {
+    if (this.state.loginBusy) return;
+    this.setState({ loginBusy: true, loginError: null });
+    clearTimeout(this.lgt);
+    this.lgt = setTimeout(() => this.setState(s => ({ loginBusy: false,
+      loginError: s.loginMode === "grid" ? "Unable to reach " + (this.allGrids().find(g => g.key === s.loginGrid) || GRIDS[0]).host + " — check your connection and try again." : null })), 900);
+  }
+
+  // ---- login: add a custom grid ------------------------------------------
+  // A resident can point the viewer at any OpenSim grid, not just the
+  // built-in presets — this is the mockup's "add custom grid URI" flow.
+  openAddGrid() { this.setState({ addGrid: true, addGridName: "", addGridHost: "" }); }
+  cancelAddGrid() { this.setState({ addGrid: false }); }
+  saveCustomGrid() {
+    const name = this.state.addGridName.trim(), host = this.state.addGridHost.trim();
+    if (!name || !host) { this.notify("Grid name and login URI are both required"); return; }
+    const key = "custom-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 24) + "-" + (this.state.customGrids.length + 1);
+    this.setState(s => ({ customGrids: s.customGrids.concat([{ key, label: name, host }]), loginGrid: key, addGrid: false }));
+    this.notify("Added grid — " + name);
+  }
+
+  // ---- settings: reconnect to grid ---------------------------------------
+  reconnect() {
+    this.setState({ reconnecting: true });
+    clearTimeout(this.rct);
+    this.rct = setTimeout(() => this.setState({ reconnecting: false }), 1200);
+  }
+
   // Transient acknowledgement toast, shared by every screen and layout pack —
   // the feedback channel for actions that don't have a more specific effect.
   notify(msg) {
@@ -1248,7 +1374,7 @@ class Component extends DCLogic {
   }
 
   componentDidMount() { this.icons(); this.iv = setInterval(() => this.setState(st => ({ tick: (st.tick || 0) + 1 })), 1000); }
-  componentWillUnmount() { clearInterval(this.iv); clearTimeout(this.clp); clearTimeout(this.cfl); clearTimeout(this.replyT1); clearTimeout(this.replyT2); clearTimeout(this.toastTimer); }
+  componentWillUnmount() { clearInterval(this.iv); clearTimeout(this.clp); clearTimeout(this.cfl); clearTimeout(this.replyT1); clearTimeout(this.replyT2); clearTimeout(this.toastTimer); clearTimeout(this.sat); clearTimeout(this.lgt); clearTimeout(this.rct); }
   componentDidUpdate() { this.icons(); }
   // Render each glyph INSIDE its <i> instead of letting lucide replace the node —
   // replacement detaches the element React owns, so a changed icon name never repaints.
@@ -1259,7 +1385,7 @@ class Component extends DCLogic {
       const name = el.getAttribute("data-lucide") || "";
       if (el.getAttribute("data-rendered") === name) return;
       el.setAttribute("data-rendered", name);
-      el.innerHTML = "";
+      el.textContent = "";
       el.style.display = "inline-flex";
       el.style.alignItems = "center";
       el.style.justifyContent = "center";
@@ -1281,7 +1407,7 @@ class Component extends DCLogic {
     // (rail width, bar height, elbow radius) stays at the compact scale there.
     const d = this.D(), wide = !!d.split && !d.desk;
     const gap = 4, cur = wide ? 64 : 40;
-    return { gap, cur, rad: cur - gap, rail: wide ? 132 : 84, bar: wide ? 84 : 56,
+    return { gap, cur, rad: cur - gap, rail: wide ? 132 : 84, bar: wide ? 104 : 70,
              dock: wide ? 58 : 52, foot: wide ? 36 : 30, wide };
   }
 
@@ -1314,6 +1440,9 @@ class Component extends DCLogic {
     // states scrim OVER the frame rather than replacing it with the legacy shell.
     const isConsole = nav === "sweep";
     const consoleScene = isConsole && s.screen === "3D View" && s.cond === "normal";
+    // The 3D View's sim/location — shared by the in-scene region tag and
+    // the console's own top bar so the two never disagree.
+    const SIM_NAME = "Heliotrope", SIM_COORD = { x: 128, y: 64, z: 42 };
     const isFloat = nav === "floaters";
     // Flush console rows: no card border, a 4px state bar on the left edge, gap-separated
     // on the page ground. Radar established it; Chat and Inventory now share it.
@@ -1416,6 +1545,12 @@ class Component extends DCLogic {
       : scr === "Diagnostics" ? [{ label: "AGNI" }, { label: "ADITI" }].map(x => ({ ...x, pick: () => this.setTab(scr, x.label), style: M(segBase, (curTab || "AGNI") === x.label ? on2 : null) }))
       : null;
 
+    const friendRows = [
+      ["Nyx Vaher", "ONLINE · id 4f2a9c11", true, ["eye", "map-pin", "pencil"]], ["Kit Sandalwood", "ONLINE · id 8b71ee02", true, ["eye", "map-pin"]],
+      ["Marlowe Quill", "ONLINE · id 22c4a5de", true, ["eye"]], ["Sable Ashgrove", "OFFLINE · seen 2d ago", false, ["eye", "map-pin"]],
+      ["Tamsin Reed", "OFFLINE · seen 5d ago", false, ["eye"]], ["Oren Fairweather", "OFFLINE · seen 1w ago", false, []],
+    ];
+
     // IM and Group each have their own chip roster and, per chip, their own thread —
     // Local stays the single always-on nearby feed with no chip picker.
     const imChips = ["Nyx Vaher", "Kit Sandalwood", "Sable Ashgrove"];
@@ -1423,11 +1558,18 @@ class Component extends DCLogic {
     const chipList = curTab === "GROUP" ? groupChips : curTab === "IM" ? imChips : [];
     const activeChip = chipList.includes(s.chip) ? s.chip : chipList[0];
     const chipBase = { flex: "none", height: "44px", padding: "0 14px", display: "flex", alignItems: "center", gap: "6px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, cursor: "pointer", color: V.ink2 };
+    // "ALL (n)" opens the searchable picker for starting a thread with someone not
+    // already a chip — the chip row only ever shows existing IM/Group threads.
+    const allContacts = friendRows.length + groupChips.length;
     const chips = LK.chips !== false && scr === "Chat" && chipList.length ? chipList.map(n => ({
       name: n, pick: () => this.set("chip", n), badge: n === "Kit Sandalwood" ? 2 : 0,
       dot: { width: "8px", height: "8px", borderRadius: "4px", flex: "none", background: n === "Nyx Vaher" ? V.ok : V.ink2 },
       style: M(chipBase, activeChip === n ? { borderColor: V.pri, background: V.priC, color: V.onpriC } : null),
-    })) : null;
+    })).concat([{
+      name: "ALL (" + allContacts + ")", pick: () => this.openSearch("Chat"), badge: 0,
+      dot: { width: "8px", height: "8px", borderRadius: "4px", flex: "none", background: V.pri },
+      style: M(chipBase, { borderStyle: "dashed" }),
+    }]) : null;
 
     const wrapBase = { width: "100%", display: "flex", justifyContent: "flex-start" };
     const bubBase = { maxWidth: "88%", padding: "8px 10px", border: "1px solid " + V.outv, borderRadius: V.rp, background: V.surf };
@@ -1492,11 +1634,6 @@ class Component extends DCLogic {
       };
     });
 
-    const friendRows = [
-      ["Nyx Vaher", "ONLINE · id 4f2a9c11", true], ["Kit Sandalwood", "ONLINE · id 8b71ee02", true],
-      ["Marlowe Quill", "ONLINE · id 22c4a5de", true], ["Sable Ashgrove", "OFFLINE · seen 2d ago", false],
-      ["Tamsin Reed", "OFFLINE · seen 5d ago", false], ["Oren Fairweather", "OFFLINE · seen 1w ago", false],
-    ];
 
     // Radar, Firestorm-style: range rings by chat distance, sorted by metres, per-entry
     // actions on tap and the full moderator set on long-press. Avatars and objects are
@@ -1634,7 +1771,7 @@ class Component extends DCLogic {
         // Pending requests aren't friends yet, so they only belong on the unfiltered ALL view.
         ...(curTab === "ONLINE" || s.dismissed.friendReq ? [] : [{ icon: "user-plus", title: "Kit Sandalwood", right: "14:28", body: "“met you at the Bay City build jam”", style: { borderColor: V.sec2 },
           actions: [{ label: "DECLINE", dim: true, pick: () => this.dismiss("friendReq") }, { label: "ACCEPT", primary: true, pick: () => this.dismiss("friendReq") }] }]),
-        ...friendRows.filter(([, , online]) => curTab !== "ONLINE" || online).map(([n, m, online]) => ({ title: n, body: m, icon: online ? "circle-dot" : "circle", right: online ? "IM" : "" })),
+        ...friendRows.filter(([, , online]) => curTab !== "ONLINE" || online).map(([n, m, online, rights]) => ({ title: n, body: m, icon: online ? "circle-dot" : "circle", right: online ? "IM" : "", rights })),
       ],
       Groups: [
         ...(s.dismissed.groupNotice ? [] : [{ icon: "megaphone", title: "Notice · Bay City Builders", right: "2h", body: "Build jam Saturday 14:00 SLT — landmark attached.", style: { borderColor: V.pri },
@@ -1665,6 +1802,12 @@ class Component extends DCLogic {
         { icon: "map-pin", title: "Paste a SLURL", body: "secondlife:// … · or scan a QR from desktop" },
       ],
       Settings: [
+        { icon: "user", title: "Session", right: s.loginMode === "offline" ? "offline" : "grid · " + ((this.allGrids().find(g => g.key === s.loginGrid) || {}).label || s.loginGrid),
+          body: "Ruth Resident · Da Boom · agent 22c4a5de-11 · sim link " + (s.reconnecting ? "reconnecting…" : "LIVE · rx 18 204 / tx 6 118") },
+        { icon: "plug-zap", title: "Reconnect to grid", body: "Manually re-open the sim circuit without a full re-login.",
+          actions: [{ label: s.reconnecting ? "RECONNECTING…" : "RECONNECT", primary: !s.reconnecting, pick: s.reconnecting ? () => {} : () => this.reconnect() }] },
+        { icon: "log-out", title: "Disconnect", body: "Ends this session and returns to the login screen.", style: { borderColor: V.err },
+          actions: [{ label: "DISCONNECT", dim: true, pick: () => this.set("screen", "Login") }] },
         { icon: "palette", title: "Layout pack", right: LAYOUTS[s.layout].name, body: "6 layout packs: geometry, nav model, type and density. Colour is a separate pack.", actions: [{ label: "PREVIEW ALL", pick: () => this.cycle(LAYOUTS, "layout") }] },
         { icon: "droplets", title: "Colour pack", right: PALETTES[s.palette].name, body: "24 Ktheme palettes grouped by family; any pack drops into any layout (144 combinations).", actions: [{ label: "BROWSE PACKS", pick: () => this.cycle(PALETTES, "palette") }, { label: "SYSTEM MATCH", pick: () => this.set("palette", "ink") }] },
         { icon: "type", title: "Large type & high contrast", body: "Scales body to 18px, forces AA contrast, disables shimmer", toggle: true, on: s.toggles.largeType, togglePick: () => this.toggleSetting("largeType") },
@@ -1717,6 +1860,14 @@ class Component extends DCLogic {
       bigStyle: M({ font: "700 46px/1 " + t.font, color: V.ok, marginTop: "6px" }, c.bigStyle),
       actions: (c.actions || []).map(a => ({ label: a.label, pick: a.pick,
         style: M(actBase, a.primary ? { background: V.pri, color: V.onpri, borderColor: V.pri } : a.dim ? { color: V.err, borderColor: V.err } : null) })),
+      // A template onChange can only reference a named prop (same rule as
+      // onClick) — an inline `e => …` arrow literal in the attribute never
+      // actually runs, so the select's handler has to be precomputed here.
+      selectChange: c.select ? (e) => c.onChange(e.target.value) : null,
+      // Same rule for `{{ }}` bindings generally: no ternaries either, only
+      // path lookups and top-level (in)equality — so "selected" needs a
+      // precomputed boolean per option rather than an inline `? :`.
+      options: c.select ? (c.options || []).map(opt => ({ ...opt, selected: opt.value === c.value })) : c.options,
     }));
 
     const dlg = s.dialog && DIALOGS[s.dialog];
@@ -1737,7 +1888,7 @@ class Component extends DCLogic {
 
     // ---- loading / empty / error -----------------------------------------
     const condPack = s.cond === "normal" ? null : (STATES[s.cond][scr] || STATES[s.cond]._);
-    const stateBlock = (!condPack || ["Login", "Settings"].includes(scr)) ? null : {
+    const stateBlock = (!condPack || ["Login", "Settings", "Search"].includes(scr)) ? null : {
       icon: condPack.icon, title: condPack.title, body: condPack.body,
       iconWrap: { width: "62px", height: "62px", flex: "none", borderRadius: V.rp, border: "1px solid " + (s.cond === "error" ? V.err : V.outv),
         background: V.surf, display: "flex", alignItems: "center", justifyContent: "center",
@@ -1755,7 +1906,7 @@ class Component extends DCLogic {
     const norm = !stateBlock;
 
     // ---- header grammar per layout pack ----------------------------------
-    const bare = ["3D View", "Login"].includes(scr);
+    const bare = ["3D View", "Login", "Search"].includes(scr);
     const immersive = scr === "3D View" && norm;
     const headLook = bare || isFloat ? "none" : nav === "sweep" ? "sweep" : LK.head;
     const nextScr = SCREENS[(SCREENS.indexOf(scr) + 1) % SCREENS.length];
@@ -1816,6 +1967,29 @@ class Component extends DCLogic {
     };
     const flFocused = isFloat && s.flOpen[scr] && !s.flMin[scr] ? this.flR(scr) : null;
     const fRow = { display: "flex", alignItems: "center", gap: "10px", minHeight: "26px", padding: "0 10px", background: V.surf };
+
+    // ---- resident search (Search screen, reached from Friends' header icons
+    // and Chat's "ALL (n)" chip) ---------------------------------------------
+    const searchQ = (s.searchQuery || "").trim().toLowerCase();
+    const searchResultsList = searchQ.length < 2 ? [] : (() => {
+      const friendNames = new Set(friendRows.map(r => r[0]));
+      const strangers = ["Lyra Sunspire", "Cove Ashworth", "Petra Vantage", "Wren Halloway"];
+      return [...friendRows.map(r => r[0]), ...strangers]
+        .filter(n => n.toLowerCase().includes(searchQ))
+        .map(n => {
+          const isFriend = friendNames.has(n);
+          const st = s.searchState[n];
+          const label = isFriend ? "FRIEND" : st === "sending" ? "…" : st === "sent" ? "OFFERED" : "ADD";
+          const pillOn = isFriend || st === "sent";
+          return {
+            name: n, id: n.toLowerCase().replace(/\s+/g, "-").slice(0, 8), label,
+            pick: (!isFriend && !st) ? () => this.searchAdd(n) : () => {},
+            style: { display: "flex", alignItems: "center", gap: "6px", height: "36px", padding: "0 12px", borderRadius: V.rs,
+              border: "1px solid " + (pillOn ? V.ok : V.pri), background: pillOn ? "transparent" : V.pri, color: pillOn ? V.ok : V.onpri,
+              font: "700 10.5px/1 " + t.font, letterSpacing: ".14em", cursor: (!isFriend && !st) ? "pointer" : "default" },
+          };
+        });
+    })();
 
     return {
       themeVars,
@@ -1972,7 +2146,7 @@ class Component extends DCLogic {
       cfBar: { position: "absolute", left: 0, top: 0, right: (C.wide ? 108 : 70) + "px", height: C.bar + "px", background: V.pri, borderRadius: Math.round(C.bar * 0.66) + "px 0 0 0" },
       cfBarEnd: { position: "absolute", right: 0, top: 0, width: (C.wide ? 104 : 66) + "px", height: C.bar + "px", background: V.sec2, borderRadius: "0 " + Math.round(C.bar * 0.66) + "px " + Math.round(C.bar * 0.66) + "px 0" },
       cfBarGap: { position: "absolute", right: (C.wide ? 108 : 70) + "px", top: 0, width: C.gap + "px", height: C.bar + "px", background: V.bg },
-      cfTitleText: consoleScene ? "Exterior View" : title,
+      cfTitleText: consoleScene ? SIM_NAME : title,
       cfTitle: { position: "absolute", right: (C.wide ? 128 : 84) + "px", top: 0, height: C.bar + "px",
         display: "flex", alignItems: "flex-end", paddingBottom: (C.wide ? 11 : 7) + "px",
         font: "700 " + (C.wide ? 36 : 24) + "px/1 " + t.dfont, letterSpacing: ".05em",
@@ -1992,7 +2166,7 @@ class Component extends DCLogic {
       cfRegion: { position: "absolute", left: (C.wide ? 28 : 16) + "px", top: "16px", display: "flex", alignItems: "center",
         height: "26px", padding: "0 12px", background: V.surf, color: V.ink2,
         font: "500 " + (C.wide ? 12 : 10) + "px/1 " + t.font, letterSpacing: ".08em", borderLeft: "6px solid " + V.sec2 },
-      cfRegionRead: "HELIOTROPE \u00b7 128,64,42 \u00b7 HDG " + String(Math.round(((s.cHdg % 360) + 360) % 360)).padStart(3, "0") + "\u00b0 " + (s.cPitch > 2 ? "DN" : (s.cPitch < -2 ? "UP" : "LVL")),
+      cfRegionRead: SIM_NAME.toUpperCase() + " \u00b7 " + SIM_COORD.x + "," + SIM_COORD.y + "," + SIM_COORD.z + " \u00b7 HDG " + String(Math.round(((s.cHdg % 360) + 360) % 360)).padStart(3, "0") + "\u00b0 " + (s.cPitch > 2 ? "DN" : (s.cPitch < -2 ? "UP" : "LVL")),
       sceneDown: (e) => { this.lx = e.clientX; this.ly = e.clientY; this.setState({ cDrag: true }); },
       sceneMove: (e) => {
         if (!this.state.cDrag) return;
@@ -2072,6 +2246,47 @@ class Component extends DCLogic {
       cfStatus: s.cReason || ("SIM " + (21.4 + (tick % 13) * 0.1).toFixed(1) + "ms \u00b7 PKT " + ((tick % 7) * 0.1).toFixed(1) + "% \u00b7 FPS " + (58 - (tick % 5))),
       cfTail: "AGENTS " + (11 + (tick % 4)),
       cfPlateCode: String(4471 + (tick % 29)) + "-" + String(tick % 97).padStart(2, "0"),
+      // Telemetry row, LCARS-style, following the manifesto's three-tier
+      // font scale (lcars-terminal.de/tutorial/guideline/font_size.gif):
+      // Main Title size is the big bold cfTitle above (sim name on 3D View,
+      // screen name elsewhere); this row is Normal Data size, the small
+      // supporting readouts underneath it. Rule (matches cdock/cfFoot
+      // elsewhere in this frame): a row of segments is ONE bar \u2014 rounding
+      // lives only on the two outer ends, joints between segments are
+      // square with a hairline gap of bg colour, never four rounded
+      // corners per segment. Sits above the title; both are edge-anchored
+      // inside the same taller bar so neither can collide with a long
+      // screen title.
+      cfNetWrap: { position: "absolute", left: (C.rail + C.gap * 3) + "px", right: (C.gap * 3) + "px", top: (C.wide ? 10 : 6) + "px",
+        height: (C.wide ? 22 : 16) + "px", display: "flex", overflow: "hidden" },
+      cfNet: (() => {
+        // On 3D View the sim name is already the big title above, so this
+        // row carries the supporting world telemetry (location, height,
+        // ping) instead of the generic grid-link stats every other screen
+        // shows here.
+        const items = consoleScene ? [
+          { label: "LOC", value: SIM_COORD.x + "," + SIM_COORD.y },
+          { label: "HEIGHT", value: SIM_COORD.z + "M" },
+          { label: "PING", value: (24 + (tick % 19)) + "MS" },
+        ] : [
+          { label: "PING", value: (24 + (tick % 19)) + "MS" },
+          { label: "SPEED", value: (1.1 + (tick % 8) * 0.15).toFixed(1) + "MB/S" },
+          { label: "LAG", value: ((tick % 6) * 0.08).toFixed(2) + "S" },
+        ];
+        const last = items.length - 1;
+        return items.map((n, i) => {
+          const bg = [V.sec2, V.surf2, V.sec][i % 3];
+          return { label: n.label, value: n.value,
+            style: { flex: "none", display: "flex", alignItems: "baseline", gap: "5px",
+              height: (C.wide ? 22 : 16) + "px", padding: "0 " + (C.wide ? 10 : 7) + "px", background: bg,
+              marginLeft: i === 0 ? 0 : "2px",
+              borderRadius: i === 0 ? (C.wide ? 11 : 8) + "px 0 0 " + (C.wide ? 11 : 8) + "px"
+                : i === last ? "0 " + (C.wide ? 11 : 8) + "px " + (C.wide ? 11 : 8) + "px 0" : "0",
+              color: this.ink(bg, [V.bg, V.onsec, V.ink]) },
+            labelStyle: { font: "700 " + (C.wide ? 9 : 7.5) + "px/1 " + t.font, letterSpacing: ".14em", opacity: .8 },
+            valStyle: { font: "700 " + (C.wide ? 11 : 9) + "px/1 " + t.dfont, letterSpacing: ".02em" } };
+        });
+      })(),
       cEdit: s.cEdit, cfPadOpen: s.cPad, cfPadShut: !s.cPad,
       cfPadWrap: { position: "absolute", left: (C.wide ? 24 : 14) + "px", bottom: (C.wide ? 24 : 14) + "px", display: "flex", alignItems: "flex-start", gap: C.gap + "px" },
       cfPadGrid: { display: "grid", gridTemplateColumns: "repeat(3," + (C.wide ? 52 : 46) + "px)", gridTemplateRows: "repeat(3," + (C.wide ? 52 : 46) + "px)", gap: C.gap + "px" },
@@ -2193,7 +2408,8 @@ class Component extends DCLogic {
       showLink: scr === "Chat",
       headerIcons: (scr === "Friends" ? [["user-plus", "ADD FRIEND"], ["search", "SEARCH"]]
         : scr === "Diagnostics" ? [["refresh-cw", "RE-RUN PROBE"]] : null)?.map(([icon, label]) =>
-          ({ icon, label, pick: () => this.notify(label + (label === "RE-RUN PROBE" ? " — " + (Math.floor(Math.random() * 60) + 40) + "ms" : "")) })),
+          ({ icon, label, pick: scr === "Friends" ? () => this.openSearch("Friends")
+            : () => this.notify(label + (label === "RE-RUN PROBE" ? " — " + (Math.floor(Math.random() * 60) + 40) + "ms" : "")) })),
       segTabs, chips,
       rListWrap: { flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column",
         gap: bleed ? C.gap + "px" : "8px", padding: bleed ? "0" : "0 16px 16px",
@@ -2254,20 +2470,48 @@ class Component extends DCLogic {
         { label: "GROUPS", body: "Bay City Builders · Sansara Cartographers · Terraform Co-op" },
         { label: "PICKS", body: "The Roof Build · Ahern Welcome Area · Sansara Ridge overlook" },
       ],
-      loginFields: [{ label: "GRID", value: "Agni (Main)" }, { label: "AVATAR NAME", value: "Ruth   /   Resident" }, { label: "PASSWORD", value: "••••••••" }],
-      loginTabGrid: () => this.set("loginTab", "GRID"),
-      loginTabOffline: () => { this.set("loginTab", "OFFLINE"); this.notify("Offline mode — cached inventory and contacts only"); },
-      loginTabGridStyle: { flex: 1, textAlign: "center", padding: "10px 0", cursor: "pointer",
-        font: "600 12px/1 " + t.font, letterSpacing: ".18em",
-        background: (s.loginTab || "GRID") === "GRID" ? V.priC : "transparent",
-        color: (s.loginTab || "GRID") === "GRID" ? V.onpriC : V.ink2,
-        borderBottom: (s.loginTab || "GRID") === "GRID" ? "2px solid " + V.pri : "none" },
-      loginTabOfflineStyle: { flex: 1, textAlign: "center", padding: "10px 0", cursor: "pointer",
-        font: "600 12px/1 " + t.font, letterSpacing: ".18em",
-        background: s.loginTab === "OFFLINE" ? V.priC : "transparent",
-        color: s.loginTab === "OFFLINE" ? V.onpriC : V.ink2,
-        borderBottom: s.loginTab === "OFFLINE" ? "2px solid " + V.pri : "none" },
-      loginConnect: () => { this.setState({ screen: "Chat" }); this.notify("Connected to Agni — welcome back, Ruth Resident"); },
+      loginTabs: [{ mode: "grid", label: "GRID LOGIN" }, { mode: "offline", label: "OFFLINE" }].map(x => ({
+        label: x.label, pick: () => this.setLoginMode(x.mode),
+        style: x.mode === s.loginMode
+          ? { flex: 1, textAlign: "center", padding: "10px 0", background: V.priC, color: V.onpriC, borderBottom: "2px solid " + V.pri, font: "600 12px/1 " + t.font, letterSpacing: ".18em", cursor: "pointer" }
+          : { flex: 1, textAlign: "center", padding: "10px 0", color: V.ink2, font: "600 12px/1 " + t.font, letterSpacing: ".18em", cursor: "pointer" },
+      })),
+      loginIsGrid: s.loginMode === "grid",
+      // Second Life's own grids (Agni/Aditi) plus a few well-known OpenSim
+      // grids, plus whatever the resident has added themselves this
+      // session — every pill reads its colours off the current theme
+      // tokens (V.*/t.*), so it re-skins with every layout and colour
+      // pack the same as everything else on this screen.
+      loginGridChoices: this.allGrids().map(g => ({
+        label: g.label, pick: () => this.setLoginGrid(g.key),
+        style: { flex: "1 1 84px", textAlign: "center", padding: "9px 6px", border: "1px solid " + (s.loginGrid === g.key ? V.pri : V.outv), borderRadius: V.rs,
+          font: "600 10.5px/1 " + t.font, letterSpacing: ".04em", color: s.loginGrid === g.key ? V.pri : V.ink2, background: s.loginGrid === g.key ? V.priC : "transparent", cursor: "pointer" },
+      })).concat([{
+        label: "+ CUSTOM", pick: () => this.openAddGrid(),
+        style: { flex: "1 1 84px", textAlign: "center", padding: "9px 6px", border: "1px dashed " + V.outv, borderRadius: V.rs,
+          font: "600 10.5px/1 " + t.font, letterSpacing: ".04em", color: V.ink2, background: "transparent", cursor: "pointer" },
+      }]),
+      addGrid: s.addGrid,
+      addGridNameVal: s.addGridName, addGridNamePick: (e) => this.set("addGridName", e.target.value),
+      addGridHostVal: s.addGridHost, addGridHostPick: (e) => this.set("addGridHost", e.target.value),
+      addGridInputStyle: { minHeight: "42px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 12px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 13px/1 " + t.font, color: V.ink, marginTop: "6px" },
+      saveCustomGrid: () => this.saveCustomGrid(), cancelAddGrid: () => this.cancelAddGrid(),
+      loginFields: s.loginMode === "grid"
+        ? [{ label: "AVATAR NAME", value: "Ruth   /   Resident" }, { label: "PASSWORD", value: "••••••••" }]
+        : [{ label: "AVATAR NAME", value: "Ruth Resident" }],
+      loginOfflineHint: s.loginMode === "offline" ? "> Offline mode: no grid connection, chat stays local." : null,
+      loginBtnLabel: s.loginBusy ? "CONNECTING…" : s.loginMode === "grid" ? "CONNECT TO GRID" : "ENTER OFFLINE",
+      loginBtnPick: () => this.connectLogin(),
+      loginBtnStyle: { marginTop: "14px", height: "48px", borderRadius: V.rs, background: V.pri, color: V.onpri, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+        font: "700 13px/1 " + t.font, letterSpacing: ".22em", cursor: "pointer", opacity: s.loginBusy ? .7 : 1 },
+      loginError: s.loginError, loginShowHint: !s.loginError,
+      loginSettingsPick: () => this.set("screen", "Settings"),
+      isSearchScreen: s.screen === "Search",
+      searchBack: () => this.set("screen", s.searchFrom || "Friends"),
+      searchQuery: s.searchQuery, searchQueryPick: (e) => this.set("searchQuery", e.target.value),
+      searchResults: searchResultsList,
+      searchEmptyText: searchQ.length < 2 ? "> type a name to search the grid" : "> no residents match",
+      searchShowEmpty: searchResultsList.length === 0,
       iconRows: [
         { label: "line 20px", items: ["message-square", "users", "radar", "map", "folder", "settings"].map(n => ({ name: n, style: { width: "20px", height: "20px", color: "#6CFF9A", strokeWidth: 1.6 } })) },
         { label: "filled 24px", items: ["message-square", "users", "radar", "map", "folder", "settings"].map(n => ({ name: n, style: { width: "24px", height: "24px", color: "#6CFF9A", strokeWidth: 2.6 } })) },
@@ -2295,5 +2539,109 @@ class Component extends DCLogic {
   }
 }
 </script>
+
+<script>
+(function initDragScroll() {
+  function getScrollableParent(el) {
+    let current = el;
+    while (current && current !== document.body && current !== document.documentElement) {
+      if (current.nodeType === 1) {
+        const style = window.getComputedStyle(current);
+        const overflowY = style.overflowY;
+        const overflowX = style.overflowX;
+        const canScrollY = (overflowY === "auto" || overflowY === "scroll" || overflowY === "overlay") && (current.scrollHeight - current.clientHeight > 1);
+        const canScrollX = (overflowX === "auto" || overflowX === "scroll" || overflowX === "overlay") && (current.scrollWidth - current.clientWidth > 1);
+        if (canScrollY || canScrollX) {
+          return { el: current, scrollY: canScrollY, scrollX: canScrollX };
+        }
+      }
+      current = current.parentElement;
+    }
+    return null;
+  }
+
+  let activeScrollable = null;
+  let activeInfo = null;
+  let startX = 0, startY = 0;
+  let initialScrollLeft = 0, initialScrollTop = 0;
+  let isDragging = false;
+  const dragThreshold = 5;
+  let suppressClick = false;
+
+  document.addEventListener("mouseover", (e) => {
+    const parentInfo = getScrollableParent(e.target);
+    if (parentInfo && !e.target.closest("input, textarea, select, button, [onMouseDown]")) {
+      parentInfo.el.classList.add("drag-scrollable");
+    }
+  }, { passive: true });
+
+  document.addEventListener("mousedown", (e) => {
+    if (e.button !== 0) return;
+    const target = e.target;
+    if (target.closest("input, textarea, select, option, button, .cfScene, .flScene, .movement-pad")) return;
+
+    const parentInfo = getScrollableParent(target);
+    if (!parentInfo) return;
+
+    activeScrollable = parentInfo.el;
+    activeInfo = parentInfo;
+    startX = e.clientX;
+    startY = e.clientY;
+    initialScrollLeft = activeScrollable.scrollLeft;
+    initialScrollTop = activeScrollable.scrollTop;
+    isDragging = false;
+
+    const onMouseMove = (moveEvent) => {
+      if (!activeScrollable) return;
+      const deltaX = moveEvent.clientX - startX;
+      const deltaY = moveEvent.clientY - startY;
+
+      if (!isDragging) {
+        if (Math.hypot(deltaX, deltaY) >= dragThreshold) {
+          isDragging = true;
+          document.body.classList.add("drag-scrolling");
+        }
+      }
+
+      if (isDragging) {
+        if (activeInfo.scrollX) {
+          activeScrollable.scrollLeft = initialScrollLeft - deltaX;
+        }
+        if (activeInfo.scrollY) {
+          activeScrollable.scrollTop = initialScrollTop - deltaY;
+        }
+        moveEvent.preventDefault();
+      }
+    };
+
+    const onMouseUp = () => {
+      window.removeEventListener("mousemove", onMouseMove, true);
+      window.removeEventListener("mouseup", onMouseUp, true);
+      document.body.classList.remove("drag-scrolling");
+
+      if (isDragging) {
+        suppressClick = true;
+        setTimeout(() => { suppressClick = false; }, 50);
+      }
+
+      activeScrollable = null;
+      activeInfo = null;
+      isDragging = false;
+    };
+
+    window.addEventListener("mousemove", onMouseMove, true);
+    window.addEventListener("mouseup", onMouseUp, true);
+  }, false);
+
+  document.addEventListener("click", (e) => {
+    if (suppressClick) {
+      e.stopPropagation();
+      e.preventDefault();
+      suppressClick = false;
+    }
+  }, true);
+})();
+</script>
+
 </body>
 </html>
