@@ -1,0 +1,2 @@
+window.LAYOUTS = window.LAYOUTS || {};
+window.LAYOUTS['tiles'] = { name: "Metro Tiles", nav: "TILES", font: '"Open Sans","Nunito Sans",sans-serif', dfont: '"Open Sans",sans-serif', s: { rs:"0px", rl:"0px", rp:"0px", navr:"0px", pad:"14px", tls:"0em" }, look: { card:"flat", head:"pivot", seg:"pivot", chips:false, gap:"2px", measure:null }, note: "Metro: zero radius, light-weight pivot titles, spacious 1.25 scale, lowercase tile nav." };

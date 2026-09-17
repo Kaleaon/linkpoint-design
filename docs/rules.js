@@ -1,0 +1,2 @@
+window.LAYOUTS = window.LAYOUTS || {};
+window.LAYOUTS['rules'] = { name: "Rule & Rail", nav: "RAIL", font: '"Jost",system-ui,sans-serif', dfont: '"Jost",sans-serif', s: { rs:"0px", rl:"0px", rp:"0px", navr:"0px", pad:"11px", tls:".35em" }, look: { card:"rule", head:"rule", seg:"text", chips:false, gap:"0px", measure:null }, note: "Deco discipline: hairline rules instead of fills, sharp corners, 0.35em tracking, compact scale, rail nav." };
