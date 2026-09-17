@@ -1,5 +1,5 @@
 // Ported verbatim from the `PALETTES` (and `LEGACY_PALETTES`) constants inside
-// GridLink Mobile.dc.html's <script type="text/x-dc"> block.
+// index.html's <script type="text/x-dc"> block.
 //
 // LEGACY_PALETTES was declared in the source file but never referenced by
 // render() (PALETTES was used instead) — it's kept here for completeness /

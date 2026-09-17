@@ -1,6 +1,7 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import Icon from "../components/Icon.jsx";
+import { GRIDS } from "../theme/constants.js";
 
 // Ported from the `isLogin` <sc-if> block. GRID LOGIN/OFFLINE is a real
 // toggle that swaps the field set; CONNECT TO GRID always "fails" after
@@ -23,7 +24,7 @@ export default function Login() {
       <div style={{ position: "relative", padding: "36px 16px 20px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "9px" }}>
           <Icon name="hexagon" size={24} style={{ color: V.pri }} />
-          <span style={{ font: "700 27px/1 " + t.dfont, letterSpacing: ".24em", color: V.pri }}>GRIDLINK</span>
+          <span style={{ font: "700 27px/1 " + t.dfont, letterSpacing: ".24em", color: V.pri }}>Linkpoint</span>
         </div>
         <div style={{ font: "400 11px/1 " + t.font, color: V.ink2, letterSpacing: ".18em", marginTop: "7px" }}>SECONDLIFE COMMUNICATOR // v2.0</div>
         <div style={{ marginTop: "150px", border: "1px solid " + V.outv, borderRadius: V.rp, background: V.surf, padding: "16px", display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -58,24 +59,21 @@ export default function Login() {
           {isGrid ? (
             <div>
               <div style={{ font: "400 11px/1 " + t.font, letterSpacing: ".2em", color: V.pri, margin: "8px 0 6px" }}>GRID</div>
-              <div style={{ display: "flex", gap: "8px" }}>
-                {[
-                  { grid: "agni", label: "Agni (Main)" },
-                  { grid: "aditi", label: "Aditi (Beta)" },
-                ].map((g) => {
-                  const active = state.loginGrid === g.grid;
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                {GRIDS.map((g) => {
+                  const active = state.loginGrid === g.key;
                   return (
                     <div
-                      key={g.grid}
-                      onClick={() => actions.setLoginGrid(g.grid)}
+                      key={g.key}
+                      onClick={() => actions.setLoginGrid(g.key)}
                       style={{
-                        flex: 1,
+                        flex: "1 1 84px",
                         textAlign: "center",
-                        padding: "9px 0",
+                        padding: "9px 6px",
                         border: "1px solid " + (active ? V.pri : V.outv),
                         borderRadius: V.rs,
-                        font: "600 11px/1 " + t.font,
-                        letterSpacing: ".06em",
+                        font: "600 10.5px/1 " + t.font,
+                        letterSpacing: ".04em",
                         color: active ? V.pri : V.ink2,
                         background: active ? V.priC : "transparent",
                         cursor: "pointer",

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
-import { DEVICES, FLOATERS, HUD_DEFAULT, HUDS, CBTN } from "../theme/constants.js";
+import { DEVICES, FLOATERS, HUD_DEFAULT, HUDS, CBTN, GRIDS } from "../theme/constants.js";
 
 // Ported from the mockup's `state = {...}` initializer and its instance
 // methods (flR/flDrag/flFocus/flToggle/flClose, hudDrag/toggleHud, T/D/navMode,
@@ -58,6 +58,7 @@ export function useAppState() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchState, setSearchState] = useState({});
   const [reconnecting, setReconnecting] = useState(false);
+  const [toast, setToast] = useState("");
 
   // ---- tick clock (componentDidMount's setInterval) ---------------------
   useEffect(() => {
@@ -75,6 +76,7 @@ export function useAppState() {
   const loginTimerRef = useRef(null);
   const searchTimerRef = useRef(null);
   const reconnectTimerRef = useRef(null);
+  const toastTimerRef = useRef(null);
 
   useEffect(
     () => () => {
@@ -84,9 +86,20 @@ export function useAppState() {
       clearTimeout(loginTimerRef.current);
       clearTimeout(searchTimerRef.current);
       clearTimeout(reconnectTimerRef.current);
+      clearTimeout(toastTimerRef.current);
     },
     []
   );
+
+  // ---- transient acknowledgement toast (notify) --------------------------
+  // Ported from the mockup's `notify(msg)` — the shared feedback channel for
+  // actions that don't have a more specific effect (dialog buttons, header
+  // icons, map/profile/inventory taps, …).
+  const notify = useCallback((msg) => {
+    clearTimeout(toastTimerRef.current);
+    setToast(msg);
+    toastTimerRef.current = setTimeout(() => setToast(""), 2200);
+  }, []);
 
   // ---- derived lookups (T()/D()/navMode()) -------------------------------
   const T = useCallback(() => {
@@ -138,7 +151,7 @@ export function useAppState() {
       clearTimeout(loginTimerRef.current);
       loginTimerRef.current = setTimeout(() => {
         setLoginBusy(false);
-        setLoginError(loginMode === "grid" ? "Unable to reach login." + loginGrid + ".lindenlab.com — check your connection and try again." : null);
+        setLoginError(loginMode === "grid" ? "Unable to reach " + (GRIDS.find((g) => g.key === loginGrid) || GRIDS[0]).host + " — check your connection and try again." : null);
       }, 900);
       return true;
     });
@@ -256,7 +269,7 @@ export function useAppState() {
       wide = !!d.split && !d.desk;
     const gap = 4,
       cur = wide ? 64 : 40;
-    return { gap, cur, rad: cur - gap, rail: wide ? 132 : 84, bar: wide ? 84 : 56, dock: wide ? 58 : 52, foot: wide ? 36 : 30, wide };
+    return { gap, cur, rad: cur - gap, rail: wide ? 132 : 84, bar: wide ? 104 : 70, dock: wide ? 58 : 52, foot: wide ? 36 : 30, wide };
   }, [D]);
 
   const cTap = useCallback((id) => {
@@ -371,7 +384,7 @@ export function useAppState() {
       toggles, cond, hudOn, hudPos, hudPicker, target, targetPicker, navPeek,
       cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
       rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
-      loginMode, loginGrid, loginBusy, loginError, searchFrom, searchQuery, searchState, reconnecting,
+      loginMode, loginGrid, loginBusy, loginError, searchFrom, searchQuery, searchState, reconnecting, toast,
     },
     actions: {
       setLayout, setPalette, setDevice, setScreen: screenPick, setDialog, setDense,
@@ -383,7 +396,7 @@ export function useAppState() {
       holdStart, holdEnd, endEdit, togglePad, toggleRun, flyUpDown, flyDnDown, flyRelease, addSlot, removeDockSlot,
       radarTap, radarHold, radarRelease, radarBlipPick,
       setRMode,
-      setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchQuery, searchAdd, reconnect,
+      setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchQuery, searchAdd, reconnect, notify,
     },
     T, D, navMode,
   };

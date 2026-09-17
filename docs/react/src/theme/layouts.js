@@ -1,4 +1,4 @@
-// Ported verbatim from the `LAYOUTS` constant in GridLink Mobile.dc.html.
+// Ported verbatim from the `LAYOUTS` constant in index.html.
 // Layout packs: geometry, nav model, type, density. No colour.
 export const LAYOUTS = {
   terminal: { name: "Ink Terminal", nav: "TABS", font: '"JetBrains Mono","IBM Plex Mono",monospace', dfont: '"JetBrains Mono",monospace',

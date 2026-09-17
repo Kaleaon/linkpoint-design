@@ -1,4 +1,4 @@
-/* Ported from the <style> block inside GridLink Mobile.dc.html's helmet.
+/* Ported from the <style> block inside index.html's helmet.
    That stylesheet mostly styled the design-canvas chrome (the dv-* picker
    panels around the prototype) plus four @keyframes the prototype itself
    uses inline. The dv-* rules are kept because App.jsx reuses the same

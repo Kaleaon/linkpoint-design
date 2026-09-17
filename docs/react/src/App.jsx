@@ -3,7 +3,7 @@ import { ThemeProvider, useTheme } from "./context/ThemeContext.jsx";
 import ControlPanels from "./components/ControlPanels.jsx";
 import DeviceFrame from "./components/DeviceFrame.jsx";
 
-// Top-level layout: ported from the "1a" option in GridLink Mobile.dc.html —
+// Top-level layout: ported from the "1a" option in index.html —
 // the picker column on the left, the live device mockup on the right, and
 // the skin note underneath it (`t.note`, the layout+colour pack blurb).
 function Prototype() {
@@ -23,8 +23,8 @@ function AppShell() {
   return (
     <div className="app-shell">
       <div className="app-title">
-        <span className="app-tid">GridLink</span>
-        <span className="app-tname">GridLink mobile — themed shell, 13 screens, 6 layout packs × 24 colour packs, 4 form factors</span>
+        <span className="app-tid">1</span>
+        <span className="app-tname">Linkpoint mobile — themed shell, 13 screens, 6 layout packs × 24 colour packs, 4 form factors</span>
       </div>
       <ThemeProvider>
         <Prototype />

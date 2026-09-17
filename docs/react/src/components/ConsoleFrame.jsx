@@ -29,6 +29,34 @@ export default function ConsoleFrame() {
     color: ink(V.pri, [V.bg, V.onpri, V.ink]), textTransform: "uppercase", whiteSpace: "nowrap",
   };
   const cfPlate = { position: "absolute", right: 0, top: 0, height: C.bar + "px", width: (C.wide ? 104 : 66) + "px", display: "flex", alignItems: "flex-end", justifyContent: "center", paddingBottom: (C.wide ? 12 : 8) + "px", overflow: "hidden", font: "500 " + (C.wide ? 13 : 10) + "px/1 " + t.font, color: ink(V.sec2, [V.bg, V.onsec, V.ink]), whiteSpace: "nowrap" };
+  // Grid-link telemetry: one LCARS bar (rounded caps only on the two outer
+  // ends, square joints between segments — see ROADMAP's "DSL binding
+  // limits" note, same convention as the dock/footer below), sitting in the
+  // extra headroom `cf().bar` reserves above the (bottom-anchored) title so
+  // it can never collide with a long screen name.
+  const cfNetWrap = { position: "absolute", left: C.rail + C.gap * 3 + "px", right: C.gap * 3 + "px", top: (C.wide ? 10 : 6) + "px", height: (C.wide ? 22 : 16) + "px", display: "flex", overflow: "hidden" };
+  const cfNet = (() => {
+    const items = [
+      { label: "PING", value: (24 + (tick % 19)) + "MS" },
+      { label: "SPEED", value: (1.1 + (tick % 8) * 0.15).toFixed(1) + "MB/S" },
+      { label: "LAG", value: ((tick % 6) * 0.08).toFixed(2) + "S" },
+    ];
+    const last = items.length - 1;
+    return items.map((n, i) => {
+      const bg = [V.sec2, V.surf2, V.sec][i % 3];
+      return {
+        ...n,
+        style: {
+          flex: "none", display: "flex", alignItems: "baseline", gap: "5px", height: (C.wide ? 22 : 16) + "px",
+          padding: "0 " + (C.wide ? 10 : 7) + "px", background: bg, marginLeft: i === 0 ? 0 : "2px",
+          borderRadius: i === 0 ? (C.wide ? 11 : 8) + "px 0 0 " + (C.wide ? 11 : 8) + "px" : i === last ? "0 " + (C.wide ? 11 : 8) + "px " + (C.wide ? 11 : 8) + "px 0" : "0",
+          color: ink(bg, [V.bg, V.onsec, V.ink]),
+        },
+        labelStyle: { font: "700 " + (C.wide ? 9 : 7.5) + "px/1 " + t.font, letterSpacing: ".14em", opacity: 0.8 },
+        valStyle: { font: "700 " + (C.wide ? 11 : 9) + "px/1 " + t.dfont, letterSpacing: ".02em" },
+      };
+    });
+  })();
   const cfCurveFill = { position: "absolute", left: C.rail + "px", top: C.bar + "px", width: C.cur + "px", height: C.cur + "px", background: V.pri };
   const cfCurveCut = { position: "absolute", left: C.rail + "px", top: C.bar + "px", width: C.cur + "px", height: C.cur + "px", background: V.bg, borderRadius: C.cur + "px 0 0 0" };
   const cfRailCol = { position: "absolute", left: 0, top: C.bar + "px", width: C.rail + "px", bottom: C.foot + C.gap + "px", display: "flex", flexDirection: "column", gap: C.gap + "px" };
@@ -45,13 +73,21 @@ export default function ConsoleFrame() {
       <div style={cfBar} />
       <div style={cfBarEnd} />
       <div style={cfBarGap} />
+      <div style={cfNetWrap}>
+        {cfNet.map((n, i) => (
+          <div key={i} style={n.style}>
+            <span style={n.labelStyle}>{n.label}</span>
+            <span style={n.valStyle}>{n.value}</span>
+          </div>
+        ))}
+      </div>
       <div style={cfTitle}>{cfTitleText}</div>
       <div style={cfPlate}>{String(4471 + (tick % 29)) + "-" + String(tick % 97).padStart(2, "0")}</div>
       <div style={cfCurveFill} />
       <div style={cfCurveCut} />
 
       <div style={cfRailCol}>
-        <div style={cfArm}>GRIDLINK</div>
+        <div style={cfArm}>Linkpoint</div>
         {consoleNav.map((n, i) => (
           <div key={i} onClick={n.pick} style={n.style}>
             {n.code ? <span style={n.codeStyle}>{n.code}</span> : null}
