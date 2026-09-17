@@ -83,6 +83,18 @@ Before deleting the extra files, all of that was re-merged into
   there and from Friends' header icons.
 - Friends rows carry their `rights` icons (`eye`/`map-pin`/`pencil`) again.
 - Settings' Session / Reconnect to grid / Disconnect cards are back.
+- Login's grid picker has a "+ CUSTOM" pill (2026-09-17) opening an inline
+  ADD CUSTOM GRID form (name + login URI) so a resident can point the
+  viewer at any OpenSim grid, not just the four presets. Added grids join
+  `s.customGrids` for the session and immediately become a normal
+  selectable pill; the Settings Session card and the connect-failure
+  message both resolve the picked grid's friendly label/host through a new
+  `allGrids()` helper (`GRIDS.concat(s.customGrids)`) instead of assuming
+  the built-in table. The form is themed off the same `V.*`/`t.*` tokens
+  as the rest of the Login card, so it re-skins correctly across all 6
+  layout packs and 24 colour packs — spot-checked on Sweep Console/LCARS
+  Amber and Press/Paper & Ink (opposite ends of the palette range) with no
+  contrast or layout problems.
 
 Two more real, confirmed bugs turned up while doing this (both are a
 *template*-level footgun, not a JS one — see "DSL binding limits" below)

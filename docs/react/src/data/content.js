@@ -312,7 +312,10 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
       {
         icon: "user",
         title: "Session",
-        right: state.loginMode === "offline" ? "offline" : "grid · " + state.loginGrid,
+        right:
+          state.loginMode === "offline"
+            ? "offline"
+            : "grid · " + ((actions.allGrids().find((g) => g.key === state.loginGrid) || {}).label || state.loginGrid),
         body:
           "Ruth Resident · Da Boom · agent 22c4a5de-11 · sim link " +
           (state.reconnecting ? "reconnecting…" : "LIVE · rx 18 204 / tx 6 118"),

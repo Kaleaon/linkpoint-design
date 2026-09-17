@@ -54,6 +54,10 @@ export function useAppState() {
   const [loginGrid, setLoginGrid] = useState("agni");
   const [loginBusy, setLoginBusy] = useState(false);
   const [loginError, setLoginError] = useState(null);
+  const [customGrids, setCustomGrids] = useState([]);
+  const [addGrid, setAddGrid] = useState(false);
+  const [addGridName, setAddGridName] = useState("");
+  const [addGridHost, setAddGridHost] = useState("");
   const [searchFrom, setSearchFrom] = useState("Friends");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchState, setSearchState] = useState({});
@@ -141,6 +145,9 @@ export function useAppState() {
   }, []);
 
   // ---- login (setLoginMode/setLoginGrid/connectLogin) --------------------
+  // All known grids: the built-in Second Life / OpenSim presets plus
+  // whatever the resident has added themselves this session.
+  const allGrids = useCallback(() => GRIDS.concat(customGrids), [customGrids]);
   const setLoginMode = useCallback((m) => {
     setLoginModeState(m);
     setLoginError(null);
@@ -151,12 +158,39 @@ export function useAppState() {
       clearTimeout(loginTimerRef.current);
       loginTimerRef.current = setTimeout(() => {
         setLoginBusy(false);
-        setLoginError(loginMode === "grid" ? "Unable to reach " + (GRIDS.find((g) => g.key === loginGrid) || GRIDS[0]).host + " — check your connection and try again." : null);
+        setLoginError(loginMode === "grid" ? "Unable to reach " + (allGrids().find((g) => g.key === loginGrid) || GRIDS[0]).host + " — check your connection and try again." : null);
       }, 900);
       return true;
     });
     setLoginError(null);
-  }, [loginMode, loginGrid]);
+  }, [loginMode, loginGrid, allGrids]);
+
+  // ---- login: add a custom grid ------------------------------------------
+  // A resident can point the viewer at any OpenSim grid, not just the
+  // built-in presets — this is the mockup's "add custom grid URI" flow.
+  const openAddGrid = useCallback(() => {
+    setAddGrid(true);
+    setAddGridName("");
+    setAddGridHost("");
+  }, []);
+  const cancelAddGrid = useCallback(() => setAddGrid(false), []);
+  const saveCustomGrid = useCallback(() => {
+    const name = addGridName.trim(),
+      host = addGridHost.trim();
+    if (!name || !host) {
+      notify("Grid name and login URI are both required");
+      return;
+    }
+    const key =
+      "custom-" +
+      name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 24) +
+      "-" +
+      (customGrids.length + 1);
+    setCustomGrids((g) => g.concat([{ key, label: name, host }]));
+    setLoginGrid(key);
+    setAddGrid(false);
+    notify("Added grid — " + name);
+  }, [addGridName, addGridHost, customGrids]);
 
   // ---- resident search (openSearch/searchAdd) -----------------------------
   const openSearch = useCallback((from) => {
@@ -384,10 +418,12 @@ export function useAppState() {
       toggles, cond, hudOn, hudPos, hudPicker, target, targetPicker, navPeek,
       cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
       rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
-      loginMode, loginGrid, loginBusy, loginError, searchFrom, searchQuery, searchState, reconnecting, toast,
+      loginMode, loginGrid, loginBusy, loginError, customGrids, addGrid, addGridName, addGridHost,
+      searchFrom, searchQuery, searchState, reconnecting, toast,
     },
     actions: {
       setLayout, setPalette, setDevice, setScreen: screenPick, setDialog, setDense,
+      allGrids, openAddGrid, cancelAddGrid, saveCustomGrid, setAddGridName, setAddGridHost,
       setTab, setChip, setTileOk, toggleInvFolder, dismiss, toggleSetting, pin,
       cycleLayout, cyclePalette, setCond, setMenu,
       flR, flDrag, flFocus, flToggle, flClose,

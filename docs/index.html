@@ -701,6 +701,17 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                           <div onClick="{{ gc.pick }}" style="{{ gc.style }}">{{ gc.label }}</div>
                         </sc-for>
                       </div>
+                      <sc-if value="{{ addGrid }}" hint-placeholder-val="{{ false }}">
+                        <div style="margin-top:10px;border:1px dashed var(--outv,#365047);border-radius:var(--rs,4px);padding:10px">
+                          <div style="font:400 10px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;color:var(--ink2,#A7C8BC)">ADD CUSTOM GRID</div>
+                          <input value="{{ addGridNameVal }}" onChange="{{ addGridNamePick }}" placeholder="grid name" style="{{ addGridInputStyle }}" />
+                          <input value="{{ addGridHostVal }}" onChange="{{ addGridHostPick }}" placeholder="login URI (e.g. login.example.com:8002)" style="{{ addGridInputStyle }}" />
+                          <div style="display:flex;gap:8px;margin-top:10px">
+                            <div onClick="{{ cancelAddGrid }}" style="flex:1;text-align:center;padding:9px 0;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);font:600 10.5px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;color:var(--ink2,#A7C8BC);cursor:pointer">CANCEL</div>
+                            <div onClick="{{ saveCustomGrid }}" style="flex:1;text-align:center;padding:9px 0;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);font:600 10.5px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;cursor:pointer">ADD GRID</div>
+                          </div>
+                        </div>
+                      </sc-if>
                     </div>
                   </sc-if>
                   <sc-for list="{{ loginFields }}" as="lf" hint-placeholder-count="3">
@@ -1186,6 +1197,7 @@ class Component extends DCLogic {
     flZ: ["Map", "Inventory", "Friends", "Radar", "Chat"], menu: null,
     toast: "", composeText: "", chatSent: {}, chatTyping: false, invFilter: "",
     loginMode: "grid", loginGrid: "agni", loginBusy: false, loginError: null,
+    customGrids: [], addGrid: false, addGridName: "", addGridHost: "",
     searchFrom: "Friends", searchQuery: "", searchState: {}, reconnecting: false };
 
   // ---- desktop floater window model -------------------------------------
@@ -1284,6 +1296,9 @@ class Component extends DCLogic {
   }
 
   // ---- login (setLoginMode/setLoginGrid/connectLogin) --------------------
+  // All known grids: the built-in Second Life / OpenSim presets plus
+  // whatever the resident has added themselves this session.
+  allGrids() { return GRIDS.concat(this.state.customGrids); }
   setLoginMode(m) { this.setState({ loginMode: m, loginError: null }); }
   setLoginGrid(g) { this.setState({ loginGrid: g }); }
   connectLogin() {
@@ -1291,7 +1306,20 @@ class Component extends DCLogic {
     this.setState({ loginBusy: true, loginError: null });
     clearTimeout(this.lgt);
     this.lgt = setTimeout(() => this.setState(s => ({ loginBusy: false,
-      loginError: s.loginMode === "grid" ? "Unable to reach " + (GRIDS.find(g => g.key === s.loginGrid) || GRIDS[0]).host + " — check your connection and try again." : null })), 900);
+      loginError: s.loginMode === "grid" ? "Unable to reach " + (this.allGrids().find(g => g.key === s.loginGrid) || GRIDS[0]).host + " — check your connection and try again." : null })), 900);
+  }
+
+  // ---- login: add a custom grid ------------------------------------------
+  // A resident can point the viewer at any OpenSim grid, not just the
+  // built-in presets — this is the mockup's "add custom grid URI" flow.
+  openAddGrid() { this.setState({ addGrid: true, addGridName: "", addGridHost: "" }); }
+  cancelAddGrid() { this.setState({ addGrid: false }); }
+  saveCustomGrid() {
+    const name = this.state.addGridName.trim(), host = this.state.addGridHost.trim();
+    if (!name || !host) { this.notify("Grid name and login URI are both required"); return; }
+    const key = "custom-" + name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 24) + "-" + (this.state.customGrids.length + 1);
+    this.setState(s => ({ customGrids: s.customGrids.concat([{ key, label: name, host }]), loginGrid: key, addGrid: false }));
+    this.notify("Added grid — " + name);
   }
 
   // ---- settings: reconnect to grid ---------------------------------------
@@ -1752,7 +1780,7 @@ class Component extends DCLogic {
         { icon: "map-pin", title: "Paste a SLURL", body: "secondlife:// … · or scan a QR from desktop" },
       ],
       Settings: [
-        { icon: "user", title: "Session", right: s.loginMode === "offline" ? "offline" : "grid · " + s.loginGrid,
+        { icon: "user", title: "Session", right: s.loginMode === "offline" ? "offline" : "grid · " + ((this.allGrids().find(g => g.key === s.loginGrid) || {}).label || s.loginGrid),
           body: "Ruth Resident · Da Boom · agent 22c4a5de-11 · sim link " + (s.reconnecting ? "reconnecting…" : "LIVE · rx 18 204 / tx 6 118") },
         { icon: "plug-zap", title: "Reconnect to grid", body: "Manually re-open the sim circuit without a full re-login.",
           actions: [{ label: s.reconnecting ? "RECONNECTING…" : "RECONNECT", primary: !s.reconnecting, pick: s.reconnecting ? () => {} : () => this.reconnect() }] },
@@ -2415,13 +2443,24 @@ class Component extends DCLogic {
       })),
       loginIsGrid: s.loginMode === "grid",
       // Second Life's own grids (Agni/Aditi) plus a few well-known OpenSim
-      // grids — this is a mockup, not a real grid-URI picker, so the list is
-      // illustrative rather than exhaustive.
-      loginGridChoices: GRIDS.map(g => ({
+      // grids, plus whatever the resident has added themselves this
+      // session — every pill reads its colours off the current theme
+      // tokens (V.*/t.*), so it re-skins with every layout and colour
+      // pack the same as everything else on this screen.
+      loginGridChoices: this.allGrids().map(g => ({
         label: g.label, pick: () => this.setLoginGrid(g.key),
         style: { flex: "1 1 84px", textAlign: "center", padding: "9px 6px", border: "1px solid " + (s.loginGrid === g.key ? V.pri : V.outv), borderRadius: V.rs,
           font: "600 10.5px/1 " + t.font, letterSpacing: ".04em", color: s.loginGrid === g.key ? V.pri : V.ink2, background: s.loginGrid === g.key ? V.priC : "transparent", cursor: "pointer" },
-      })),
+      })).concat([{
+        label: "+ CUSTOM", pick: () => this.openAddGrid(),
+        style: { flex: "1 1 84px", textAlign: "center", padding: "9px 6px", border: "1px dashed " + V.outv, borderRadius: V.rs,
+          font: "600 10.5px/1 " + t.font, letterSpacing: ".04em", color: V.ink2, background: "transparent", cursor: "pointer" },
+      }]),
+      addGrid: s.addGrid,
+      addGridNameVal: s.addGridName, addGridNamePick: (e) => this.set("addGridName", e.target.value),
+      addGridHostVal: s.addGridHost, addGridHostPick: (e) => this.set("addGridHost", e.target.value),
+      addGridInputStyle: { minHeight: "42px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 12px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 13px/1 " + t.font, color: V.ink, marginTop: "6px" },
+      saveCustomGrid: () => this.saveCustomGrid(), cancelAddGrid: () => this.cancelAddGrid(),
       loginFields: s.loginMode === "grid"
         ? [{ label: "AVATAR NAME", value: "Ruth   /   Resident" }, { label: "PASSWORD", value: "••••••••" }]
         : [{ label: "AVATAR NAME", value: "Ruth Resident" }],
