@@ -491,8 +491,17 @@
     return el.localName === "x-import" && (el.getAttribute("component-from-global-scope") || "") === "deck-stage";
   }
   function walkDeckChildren(el, host) {
-    const pairs = [...el.childNodes].map((c) => ({ c, b: walk(c, host) })).filter((p) => p.b !== null);
-    const kids = pairs.map((p) => p.b);
+    const childNodes = el.childNodes;
+    const pairs = [];
+    const kids = [];
+    for (let i = 0; i < childNodes.length; i++) {
+      const c = childNodes[i];
+      const b = walk(c, host);
+      if (b !== null) {
+        pairs.push({ c, b });
+        kids.push(b);
+      }
+    }
     const seen = /* @__PURE__ */ new Set();
     const wsSeen = /* @__PURE__ */ new Map();
     const keys = [];
