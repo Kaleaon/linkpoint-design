@@ -1250,7 +1250,7 @@ class Component extends DCLogic {
       const name = el.getAttribute("data-lucide") || "";
       if (el.getAttribute("data-rendered") === name) return;
       el.setAttribute("data-rendered", name);
-      el.innerHTML = "";
+      el.textContent = "";
       el.style.display = "inline-flex";
       el.style.alignItems = "center";
       el.style.justifyContent = "center";
