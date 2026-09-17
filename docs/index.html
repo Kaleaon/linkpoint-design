@@ -158,6 +158,11 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
       <div style="{{ cfBar }}"></div>
       <div style="{{ cfBarEnd }}"></div>
       <div style="{{ cfBarGap }}"></div>
+      <div style="{{ cfNetWrap }}">
+        <sc-for list="{{ cfNet }}" as="ns" hint-placeholder-count="3">
+          <div style="{{ ns.style }}"><span style="{{ ns.labelStyle }}">{{ ns.label }}</span><span style="{{ ns.valStyle }}">{{ ns.value }}</span></div>
+        </sc-for>
+      </div>
       <div style="{{ cfTitle }}">{{ cfTitleText }}</div>
       <div style="{{ cfPlate }}">{{ cfPlateCode }}</div>
       <div style="{{ cfCurveFill }}"></div>
@@ -1262,7 +1267,7 @@ class Component extends DCLogic {
     // (rail width, bar height, elbow radius) stays at the compact scale there.
     const d = this.D(), wide = !!d.split && !d.desk;
     const gap = 4, cur = wide ? 64 : 40;
-    return { gap, cur, rad: cur - gap, rail: wide ? 132 : 84, bar: wide ? 84 : 56,
+    return { gap, cur, rad: cur - gap, rail: wide ? 132 : 84, bar: wide ? 104 : 70,
              dock: wide ? 58 : 52, foot: wide ? 36 : 30, wide };
   }
 
@@ -2053,6 +2058,34 @@ class Component extends DCLogic {
       cfStatus: s.cReason || ("SIM " + (21.4 + (tick % 13) * 0.1).toFixed(1) + "ms \u00b7 PKT " + ((tick % 7) * 0.1).toFixed(1) + "% \u00b7 FPS " + (58 - (tick % 5))),
       cfTail: "AGENTS " + (11 + (tick % 4)),
       cfPlateCode: String(4471 + (tick % 29)) + "-" + String(tick % 97).padStart(2, "0"),
+      // Grid-link telemetry, LCARS-style. Rule (matches cdock/cfFoot elsewhere
+      // in this frame): a row of segments is ONE bar \u2014 rounding lives only on
+      // the two outer ends, joints between segments are square with a hairline
+      // gap of bg colour, never four rounded corners per segment. Sits above
+      // the title; both are edge-anchored inside the same taller bar so
+      // neither can collide with a long screen title.
+      cfNetWrap: { position: "absolute", left: (C.rail + C.gap * 3) + "px", right: (C.gap * 3) + "px", top: (C.wide ? 10 : 6) + "px",
+        height: (C.wide ? 22 : 16) + "px", display: "flex", overflow: "hidden" },
+      cfNet: (() => {
+        const items = [
+          { label: "PING", value: (24 + (tick % 19)) + "MS" },
+          { label: "SPEED", value: (1.1 + (tick % 8) * 0.15).toFixed(1) + "MB/S" },
+          { label: "LAG", value: ((tick % 6) * 0.08).toFixed(2) + "S" },
+        ];
+        const last = items.length - 1;
+        return items.map((n, i) => {
+          const bg = [V.sec2, V.surf2, V.sec][i % 3];
+          return { label: n.label, value: n.value,
+            style: { flex: "none", display: "flex", alignItems: "baseline", gap: "5px",
+              height: (C.wide ? 22 : 16) + "px", padding: "0 " + (C.wide ? 10 : 7) + "px", background: bg,
+              marginLeft: i === 0 ? 0 : "2px",
+              borderRadius: i === 0 ? (C.wide ? 11 : 8) + "px 0 0 " + (C.wide ? 11 : 8) + "px"
+                : i === last ? "0 " + (C.wide ? 11 : 8) + "px " + (C.wide ? 11 : 8) + "px 0" : "0",
+              color: this.ink(bg, [V.bg, V.onsec, V.ink]) },
+            labelStyle: { font: "700 " + (C.wide ? 9 : 7.5) + "px/1 " + t.font, letterSpacing: ".14em", opacity: .8 },
+            valStyle: { font: "700 " + (C.wide ? 11 : 9) + "px/1 " + t.dfont, letterSpacing: ".02em" } };
+        });
+      })(),
       cEdit: s.cEdit, cfPadOpen: s.cPad, cfPadShut: !s.cPad,
       cfPadWrap: { position: "absolute", left: (C.wide ? 24 : 14) + "px", bottom: (C.wide ? 24 : 14) + "px", display: "flex", alignItems: "flex-start", gap: C.gap + "px" },
       cfPadGrid: { display: "grid", gridTemplateColumns: "repeat(3," + (C.wide ? 52 : 46) + "px)", gridTemplateRows: "repeat(3," + (C.wide ? 52 : 46) + "px)", gap: C.gap + "px" },
