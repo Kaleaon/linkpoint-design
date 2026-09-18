@@ -1,13 +1,15 @@
+import React, { useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import Icon from "../components/Icon.jsx";
+import LinkpointLogo from "../components/LinkpointLogo.jsx";
 
-// Ported from the `isLogin` <sc-if> block. GRID LOGIN/OFFLINE is a real
-// toggle that swaps the field set; CONNECT TO GRID always "fails" after
-// ~1s since this mockup has no live backend to succeed against.
+// Refined Login / Splash Page component using LinkpointLogo
 export default function Login() {
   const { state, actions } = useApp();
   const { V, t } = useTheme();
+  const [animatedLogo, setAnimatedLogo] = useState(true);
+
   const isGrid = state.loginMode === "grid";
   const fields = isGrid
     ? [
@@ -18,15 +20,43 @@ export default function Login() {
 
   return (
     <div style={{ flex: 1, minHeight: 0, position: "relative", overflowY: "auto" }}>
-      <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: "120px", background: "repeating-linear-gradient(135deg,#1B2A2D 0 12px,#101A1C 12px 24px)" }} />
+      <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: "120px", background: "repeating-linear-gradient(135deg," + V.surf2 + " 0 12px," + V.surf + " 12px 24px)" }} />
       <div style={{ position: "absolute", left: 0, right: 0, top: 0, height: "160px", background: "linear-gradient(180deg,transparent 0%," + V.bg + " 88%)" }} />
-      <div style={{ position: "relative", padding: "16px 16px 12px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "9px" }}>
-          <Icon name="hexagon" size={22} style={{ color: V.pri }} />
-          <span style={{ font: "700 22px/1 " + t.dfont, letterSpacing: ".24em", color: V.pri }}>Linkpoint</span>
+
+      <div style={{ position: "relative", padding: "20px 16px 12px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+        {/* Refined Linkpoint Logo Section with Animated / Static Toggle */}
+        <div style={{ width: "100%", maxWidth: "240px", position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <div
+            onClick={() => setAnimatedLogo(!animatedLogo)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setAnimatedLogo(!animatedLogo); }}
+            aria-label="Toggle logo animation"
+            style={{
+              position: "absolute",
+              right: 0,
+              top: "-10px",
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+              font: "600 9px/1 " + t.font,
+              color: V.ink2,
+              cursor: "pointer",
+              background: V.surf,
+              padding: "4px 8px",
+              border: "1px solid " + V.outv,
+              borderRadius: V.rs,
+              zIndex: 2,
+            }}
+          >
+            <Icon name="sparkles" size={11} style={{ color: V.pri }} />
+            <span>{animatedLogo ? "ANIMATED" : "STATIC"}</span>
+          </div>
+
+          <LinkpointLogo animated={animatedLogo} showTitle={true} width="100%" height="auto" />
         </div>
-        <div style={{ font: "400 10px/1 " + t.font, color: V.ink2, letterSpacing: ".18em", marginTop: "5px" }}>SECONDLIFE COMMUNICATOR // v2.0</div>
-        <div style={{ marginTop: "12px", border: "1px solid " + V.outv, borderRadius: V.rp, background: V.surf, padding: "12px", display: "flex", flexDirection: "column", gap: "6px" }}>
+
+        <div style={{ width: "100%", marginTop: "8px", border: "1px solid " + V.outv, borderRadius: V.rp, background: V.surf, padding: "12px", display: "flex", flexDirection: "column", gap: "6px" }}>
           <div style={{ display: "flex", border: "1px solid " + V.outv, borderRadius: V.rs, overflow: "hidden", marginBottom: "2px" }}>
             {[
               { mode: "grid", label: "GRID LOGIN" },
@@ -37,6 +67,10 @@ export default function Login() {
                 <div
                   key={x.mode}
                   onClick={() => actions.setLoginMode(x.mode)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') actions.setLoginMode(x.mode); }}
+                  aria-label={x.label}
                   style={{
                     flex: 1,
                     textAlign: "center",
@@ -65,6 +99,10 @@ export default function Login() {
                     <div
                       key={g.key}
                       onClick={() => actions.setLoginGrid(g.key)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') actions.setLoginGrid(g.key); }}
+                      aria-label={"Select grid " + g.label}
                       style={{
                         flex: "1 1 80px",
                         textAlign: "center",
@@ -84,6 +122,10 @@ export default function Login() {
                 })}
                 <div
                   onClick={actions.openAddGrid}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') actions.openAddGrid(); }}
+                  aria-label="Add custom grid"
                   style={{
                     flex: "1 1 80px", textAlign: "center", padding: "7px 4px", border: "1px dashed " + V.outv,
                     borderRadius: V.rs, font: "600 10px/1 " + t.font, letterSpacing: ".04em", color: V.ink2,
@@ -112,12 +154,20 @@ export default function Login() {
                   <div style={{ display: "flex", gap: "6px", marginTop: "8px" }}>
                     <div
                       onClick={actions.cancelAddGrid}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') actions.cancelAddGrid(); }}
+                      aria-label="Cancel adding grid"
                       style={{ flex: 1, textAlign: "center", padding: "7px 0", border: "1px solid " + V.outv, borderRadius: V.rs, font: "600 10px/1 " + t.font, letterSpacing: ".14em", color: V.ink2, cursor: "pointer" }}
                     >
                       CANCEL
                     </div>
                     <div
                       onClick={actions.saveCustomGrid}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') actions.saveCustomGrid(); }}
+                      aria-label="Save custom grid"
                       style={{ flex: 1, textAlign: "center", padding: "7px 0", borderRadius: V.rs, background: V.pri, color: V.onpri, font: "600 10px/1 " + t.font, letterSpacing: ".14em", cursor: "pointer" }}
                     >
                       ADD GRID
@@ -141,6 +191,10 @@ export default function Login() {
 
           <div
             onClick={actions.connectLogin}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') actions.connectLogin(); }}
+            aria-label={state.loginBusy ? "Connecting" : isGrid ? "Connect to Grid" : "Enter Offline"}
             style={{
               marginTop: "10px",
               height: "42px",
@@ -163,6 +217,10 @@ export default function Login() {
 
           <div
             onClick={() => actions.setScreen("Settings")}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') actions.setScreen("Settings"); }}
+            aria-label="Open Settings"
             style={{
               marginTop: "6px",
               height: "40px",
