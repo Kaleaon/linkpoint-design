@@ -60,7 +60,8 @@ export default function FloatersDesktop() {
             style={{
               position: "absolute", left: r.x + "px", top: r.y + "px", width: r.w + "px", height: r.h + "px",
               zIndex: 10 + Math.max(0, state.flZ.indexOf(f.id)), display: "flex", flexDirection: "column", background: V.surf,
-              border: "1px solid " + (act ? V.pri : V.outv), boxShadow: act ? "0 16px 44px rgba(0,0,0,.58)" : "0 6px 18px rgba(0,0,0,.34)",
+              border: "1px solid " + (act ? V.pri : V.outv), borderRadius: V.rp, overflow: "hidden",
+              boxShadow: act ? "0 16px 44px rgba(0,0,0,.58)" : "0 6px 18px rgba(0,0,0,.34)",
             }}
           >
             <div
@@ -74,7 +75,7 @@ export default function FloatersDesktop() {
                   e.stopPropagation();
                   actions.flToggle(f.id);
                 }}
-                style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", font: "600 11px/1 " + t.font, cursor: "pointer", opacity: 0.75 }}
+                style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: V.rs, font: "600 11px/1 " + t.font, cursor: "pointer", opacity: 0.75 }}
               >
                 &minus;
               </span>
@@ -83,7 +84,7 @@ export default function FloatersDesktop() {
                   e.stopPropagation();
                   actions.flClose(f.id);
                 }}
-                style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", font: "600 11px/1 " + t.font, cursor: "pointer", opacity: 0.75 }}
+                style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: V.rs, font: "600 11px/1 " + t.font, cursor: "pointer", opacity: 0.75 }}
               >
                 &times;
               </span>
@@ -113,6 +114,7 @@ export default function FloatersDesktop() {
           style={{
             position: "absolute", left: flFocused.x + "px", top: flFocused.y + FBAR + "px", width: flFocused.w + "px", height: flFocused.h - FBAR + "px",
             display: "flex", minWidth: 0, overflow: "hidden", background: V.surf, borderWidth: "0 1px 1px", borderStyle: "solid", borderColor: V.pri,
+            borderBottomLeftRadius: V.rp, borderBottomRightRadius: V.rp,
             boxSizing: "border-box", zIndex: 50,
           }}
         >
@@ -128,7 +130,7 @@ export default function FloatersDesktop() {
             <div
               key={f.id}
               onClick={() => actions.flToggle(f.id)}
-              style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", padding: "0 10px", cursor: "pointer", background: act ? V.pri : min ? "transparent" : V.surf2, color: act ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2, border: "1px solid " + (min ? V.outv : "transparent"), font: "500 10px/1 " + t.font, letterSpacing: ".08em", whiteSpace: "nowrap" }}
+              style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", padding: "0 10px", cursor: "pointer", background: act ? V.pri : min ? "transparent" : V.surf2, color: act ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2, border: "1px solid " + (min ? V.outv : "transparent"), borderRadius: V.rs, font: "500 10px/1 " + t.font, letterSpacing: ".08em", whiteSpace: "nowrap" }}
             >
               {f.title}
             </div>
@@ -144,7 +146,7 @@ export default function FloatersDesktop() {
             <div
               key={k}
               onClick={() => actions.cPress(k)}
-              style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", gap: "6px", padding: "0 9px", background: dis ? "transparent" : bg, color: dis ? V.ink2 : ink(bg, [V.bg, V.onpri, V.ink]), border: "1px solid " + (dis ? V.outv : "transparent"), cursor: dis ? "not-allowed" : "pointer", font: "600 9.5px/1 " + t.dfont, letterSpacing: ".1em", whiteSpace: "nowrap" }}
+              style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", gap: "6px", padding: "0 9px", background: dis ? "transparent" : bg, color: dis ? V.ink2 : ink(bg, [V.bg, V.onpri, V.ink]), border: "1px solid " + (dis ? V.outv : "transparent"), borderRadius: V.rs, cursor: dis ? "not-allowed" : "pointer", font: "600 9.5px/1 " + t.dfont, letterSpacing: ".1em", whiteSpace: "nowrap" }}
             >
               <Icon name={b.icon} size={13} />
               {b.label}
