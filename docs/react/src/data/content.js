@@ -11,7 +11,7 @@ export const NAV_ALL = [
   { id: "Friends", label: "FRIENDS", tile: "people", icon: "users" },
   { id: "Radar", label: "RADAR", tile: "radar", icon: "radar" },
   { id: "Map", label: "MAP", tile: "map", icon: "map" },
-  { id: "3D View", label: "3D", tile: "3d", icon: "box" },
+  { id: "3D View", label: "3D WORLD", tile: "3d", icon: "box" },
   { id: "Inventory", label: "INV", tile: "inventory", icon: "folder" },
   { id: "Outfits", label: "OUTFITS", tile: "outfits", icon: "shirt" },
   { id: "Objects", label: "OBJECTS", tile: "objects", icon: "box" },

@@ -84,7 +84,7 @@ export default function ConsoleFrame() {
 
   const shellStyle = consoleScene
     ? { display: "none" }
-    : { position: "absolute", left: C.rail + C.gap + "px", top: C.bar + C.gap + "px", right: C.gap + "px", bottom: C.foot + C.dock + C.gap * 3 + "px", display: "flex", minWidth: 0, borderRadius: C.rad + "px 0 0 0", overflow: "hidden", background: V.surf, zIndex: 2 };
+    : { position: "absolute", left: C.rail + C.gap + "px", top: C.bar + C.gap + "px", right: C.gap + "px", bottom: C.foot + C.gap * 2 + "px", display: "flex", minWidth: 0, borderRadius: C.rad + "px 0 0 0", overflow: "hidden", background: V.surf, zIndex: 2 };
 
   return (
     <div style={{ position: "absolute", inset: 0, overflow: "hidden", background: V.bg }}>
@@ -114,15 +114,16 @@ export default function ConsoleFrame() {
         ))}
       </div>
 
-      {consoleScene ? <ConsoleScene /> : null}
-
-      <div
-        onMouseDown={actions.holdStart}
-        onMouseUp={actions.holdEnd}
-        onMouseLeave={actions.holdEnd}
-        style={{ position: "absolute", left: C.rail + C.gap + "px", right: C.gap + "px", bottom: C.foot + C.gap * 2 + "px", height: C.dock + "px", display: "flex", gap: C.gap + "px", zIndex: state.cEdit ? 6 : 1 }}
-      >
-        {state.cDock.map((k, i) => {
+      {consoleScene ? (
+        <>
+          <ConsoleScene />
+          <div
+            onMouseDown={actions.holdStart}
+            onMouseUp={actions.holdEnd}
+            onMouseLeave={actions.holdEnd}
+            style={{ position: "absolute", left: C.rail + C.gap + "px", right: C.gap + "px", bottom: C.foot + C.gap * 2 + "px", height: C.dock + "px", display: "flex", gap: C.gap + "px", zIndex: state.cEdit ? 6 : 1 }}
+          >
+            {state.cDock.map((k, i) => {
           const b = CBTN[k],
             lit = !!state.cTog[k],
             dis = !!b.off;
@@ -161,6 +162,8 @@ export default function ConsoleFrame() {
           </div>
         ) : null}
       </div>
+        </>
+      ) : null}
 
       <div style={{ position: "absolute", left: C.rail + C.gap + "px", right: C.gap + "px", bottom: C.gap + "px", height: C.foot + "px", display: "flex", gap: C.gap + "px" }}>
         <span style={{ width: (C.wide ? 56 : 34) + "px", background: V.sec2, flex: "none" }} />

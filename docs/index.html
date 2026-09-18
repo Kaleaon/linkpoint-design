@@ -117,7 +117,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
   <div class="pnl">
     <div class="pnlh">SCREEN</div>
     <div style="display:flex;flex-wrap:wrap;gap:5px">
-      <sc-for list="{{ screenList }}" as="s" hint-placeholder-count="13"><div class="tag" onClick="{{ s.pick }}">{{ s.name }}</div></sc-for>
+      <sc-for list="{{ screenList }}" as="s" hint-placeholder-count="13"><div class="tag" style="{{ s.style }}" onClick="{{ s.pick }}">{{ s.name }}</div></sc-for>
     </div>
     <div class="pnlh" style="margin:16px 0 10px">SCREEN STATE</div>
     <div style="display:flex;flex-wrap:wrap;gap:5px">
@@ -232,6 +232,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
       </div>
       </sc-if>
 
+      <sc-if value="{{ consoleScene }}" hint-placeholder-val="{{ true }}">
       <div onMouseDown="{{ holdStart }}" onMouseUp="{{ holdEnd }}" onMouseLeave="{{ holdEnd }}" style="{{ cfDock }}">
         <sc-for list="{{ cdock }}" as="b" hint-placeholder-count="8">
           <div onClick="{{ b.press }}" style="{{ b.style }}">
@@ -244,6 +245,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
           <div onClick="{{ addSlot }}" style="{{ cfAdd }}">+</div>
         </sc-if>
       </div>
+      </sc-if>
 
       <div style="{{ cfFoot }}">
         <span style="{{ cfFootCap }}"></span>
@@ -701,33 +703,33 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
 
           <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ false }}">
             <div style="flex:1;min-height:0;position:relative;overflow-y:auto">
-              <div style="position:absolute;left:0;right:0;top:0;height:340px;background:repeating-linear-gradient(135deg,var(--surf2,#1B2A2D) 0 12px,var(--surf,#101A1C) 12px 24px)"></div>
-              <div style="position:absolute;left:0;right:0;top:0;height:420px;background:linear-gradient(180deg,transparent 0%,var(--bg,#0A1112) 88%)"></div>
-              <div style="position:relative;padding:36px 16px 20px">
-                <div style="display:flex;align-items:center;gap:9px"><i data-lucide="hexagon" style="width:24px;height:24px;color:var(--pri,#6CFF9A)"></i><span style="font:700 27px/1 var(--dfont,'JetBrains Mono');letter-spacing:.24em;color:var(--pri,#6CFF9A)">Linkpoint</span></div>
-                <div style="font:400 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);letter-spacing:.18em;margin-top:7px">SECONDLIFE COMMUNICATOR // v2.0</div>
-                <div style="margin-top:150px;border:1px solid var(--outv,#365047);border-radius:var(--rp,4px);background:var(--surf,#101A1C);padding:16px;display:flex;flex-direction:column;gap:8px">
-                  <div style="display:flex;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);overflow:hidden;margin-bottom:6px">
+              <div style="position:absolute;left:0;right:0;top:0;height:120px;background:repeating-linear-gradient(135deg,var(--surf2,#1B2A2D) 0 12px,var(--surf,#101A1C) 12px 24px)"></div>
+              <div style="position:absolute;left:0;right:0;top:0;height:160px;background:linear-gradient(180deg,transparent 0%,var(--bg,#0A1112) 88%)"></div>
+              <div style="position:relative;padding:16px 16px 12px">
+                <div style="display:flex;align-items:center;gap:9px"><i data-lucide="hexagon" style="width:22px;height:22px;color:var(--pri,#6CFF9A)"></i><span style="font:700 22px/1 var(--dfont,'JetBrains Mono');letter-spacing:.24em;color:var(--pri,#6CFF9A)">Linkpoint</span></div>
+                <div style="font:400 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);letter-spacing:.18em;margin-top:5px">SECONDLIFE COMMUNICATOR // v2.0</div>
+                <div style="margin-top:12px;border:1px solid var(--outv,#365047);border-radius:var(--rp,4px);background:var(--surf,#101A1C);padding:12px;display:flex;flex-direction:column;gap:6px">
+                  <div style="display:flex;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);overflow:hidden;margin-bottom:2px">
                     <sc-for list="{{ loginTabs }}" as="lt" hint-placeholder-count="2">
                       <div onClick="{{ lt.pick }}" style="{{ lt.style }}">{{ lt.label }}</div>
                     </sc-for>
                   </div>
                   <sc-if value="{{ loginIsGrid }}" hint-placeholder-val="{{ true }}">
                     <div>
-                      <div style="font:400 11px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A);margin:8px 0 6px">GRID</div>
-                      <div style="display:flex;flex-wrap:wrap;gap:8px">
+                      <div style="font:400 10px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A);margin:6px 0 4px">GRID</div>
+                      <div style="display:flex;flex-wrap:wrap;gap:6px">
                         <sc-for list="{{ loginGridChoices }}" as="gc" hint-placeholder-count="4">
                           <div onClick="{{ gc.pick }}" style="{{ gc.style }}">{{ gc.label }}</div>
                         </sc-for>
                       </div>
                       <sc-if value="{{ addGrid }}" hint-placeholder-val="{{ false }}">
-                        <div style="margin-top:10px;border:1px dashed var(--outv,#365047);border-radius:var(--rs,4px);padding:10px">
-                          <div style="font:400 10px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;color:var(--ink2,#A7C8BC)">ADD CUSTOM GRID</div>
+                        <div style="margin-top:8px;border:1px dashed var(--outv,#365047);border-radius:var(--rs,4px);padding:8px">
+                          <div style="font:400 9.5px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;color:var(--ink2,#A7C8BC)">ADD CUSTOM GRID</div>
                           <input value="{{ addGridNameVal }}" onChange="{{ addGridNamePick }}" placeholder="grid name" style="{{ addGridInputStyle }}" />
                           <input value="{{ addGridHostVal }}" onChange="{{ addGridHostPick }}" placeholder="login URI (e.g. login.example.com:8002)" style="{{ addGridInputStyle }}" />
-                          <div style="display:flex;gap:8px;margin-top:10px">
-                            <div onClick="{{ cancelAddGrid }}" style="flex:1;text-align:center;padding:9px 0;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);font:600 10.5px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;color:var(--ink2,#A7C8BC);cursor:pointer">CANCEL</div>
-                            <div onClick="{{ saveCustomGrid }}" style="flex:1;text-align:center;padding:9px 0;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);font:600 10.5px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;cursor:pointer">ADD GRID</div>
+                          <div style="display:flex;gap:6px;margin-top:8px">
+                            <div onClick="{{ cancelAddGrid }}" style="flex:1;text-align:center;padding:7px 0;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;color:var(--ink2,#A7C8BC);cursor:pointer">CANCEL</div>
+                            <div onClick="{{ saveCustomGrid }}" style="flex:1;text-align:center;padding:7px 0;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;cursor:pointer">ADD GRID</div>
                           </div>
                         </div>
                       </sc-if>
@@ -735,20 +737,20 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                   </sc-if>
                   <sc-for list="{{ loginFields }}" as="lf" hint-placeholder-count="3">
                     <div>
-                      <div style="font:400 11px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A);margin:8px 0 6px">{{ lf.label }}</div>
-                      <div style="min-height:42px;display:flex;align-items:center;padding:0 12px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);font:400 13px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ lf.value }}</div>
+                      <div style="font:400 10px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A);margin:6px 0 4px">{{ lf.label }}</div>
+                      <div style="min-height:36px;display:flex;align-items:center;padding:0 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);font:400 12px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ lf.value }}</div>
                     </div>
                   </sc-for>
                   <sc-if value="{{ loginOfflineHint }}" hint-placeholder-val="{{ false }}">
-                    <div style="font:400 10.5px/1.5 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ loginOfflineHint }}</div>
+                    <div style="font:400 10px/1.4 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ loginOfflineHint }}</div>
                   </sc-if>
-                  <div onClick="{{ loginBtnPick }}" style="{{ loginBtnStyle }}"><i data-lucide="power" style="width:17px;height:17px"></i>{{ loginBtnLabel }}</div>
-                  <div onClick="{{ loginSettingsPick }}" style="margin-top:8px;height:48px;border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);color:var(--pri,#6CFF9A);border:1px solid var(--outv,#365047);display:flex;align-items:center;justify-content:center;gap:8px;font:700 13px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;cursor:pointer"><i data-lucide="settings" style="width:17px;height:17px"></i>SETTINGS</div>
+                  <div onClick="{{ loginBtnPick }}" style="{{ loginBtnStyle }}"><i data-lucide="power" style="width:16px;height:16px"></i>{{ loginBtnLabel }}</div>
+                  <div onClick="{{ loginSettingsPick }}" style="margin-top:6px;height:40px;border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);color:var(--pri,#6CFF9A);border:1px solid var(--outv,#365047);display:flex;align-items:center;justify-content:center;gap:6px;font:700 12px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;cursor:pointer"><i data-lucide="settings" style="width:16px;height:16px"></i>SETTINGS</div>
                   <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
-                    <div style="font:400 10.5px/1.5 var(--font,'JetBrains Mono');color:var(--err,#CF6679);margin-top:8px;border:1px solid var(--err,#CF6679);border-radius:var(--rs,4px);padding:8px">&gt; {{ loginError }}</div>
+                    <div style="font:400 10px/1.4 var(--font,'JetBrains Mono');color:var(--err,#CF6679);margin-top:6px;border:1px solid var(--err,#CF6679);border-radius:var(--rs,4px);padding:6px">&gt; {{ loginError }}</div>
                   </sc-if>
                   <sc-if value="{{ loginShowHint }}" hint-placeholder-val="{{ true }}">
-                    <div style="font:400 10.5px/1.5 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:8px">&gt; last: Agni · Da Boom · 14:02 · biometric unlock available</div>
+                    <div style="font:400 10px/1.4 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:6px">&gt; last: Agni · Da Boom · 14:02 · biometric unlock available</div>
                   </sc-if>
                 </div>
               </div>
@@ -1463,7 +1465,7 @@ class Component extends DCLogic {
       { id: "Friends", label: "FRIENDS", tile: "people", icon: "users" },
       { id: "Radar", label: "RADAR", tile: "radar", icon: "radar" },
       { id: "Map", label: "MAP", tile: "world", icon: "map" },
-      { id: "3D View", label: "WORLD", tile: "in-world", icon: "box" },
+      { id: "3D View", label: "3D WORLD", tile: "in-world", icon: "box" },
       { id: "Inventory", label: "INV", tile: "inventory", icon: "folder" },
       { id: "Outfits", label: "OUTFITS", tile: "outfits", icon: "shirt" },
       { id: "Objects", label: "OBJECTS", tile: "objects", icon: "box" },
@@ -2191,7 +2193,7 @@ class Component extends DCLogic {
             boxSizing: "border-box", zIndex: 50 } : { display: "none" })
         : consoleScene ? { display: "none" }
         : isConsole ? { position: "absolute", left: (C.rail + C.gap) + "px", top: (C.bar + C.gap) + "px",
-            right: C.gap + "px", bottom: (C.foot + C.dock + C.gap * 3) + "px", display: "flex", minWidth: 0,
+            right: C.gap + "px", bottom: (consoleScene ? C.foot + C.dock + C.gap * 3 : C.foot + C.gap * 2) + "px", display: "flex", minWidth: 0,
             borderRadius: C.rad + "px 0 0 0", overflow: "hidden", background: V.surf, zIndex: 2 }
         : { flex: 1, display: "flex", minHeight: 0, minWidth: 0 },
       cfBar: { position: "absolute", left: 0, top: 0, right: (C.wide ? 108 : 70) + "px", height: C.bar + "px", background: V.pri, borderRadius: Math.round(C.bar * 0.66) + "px 0 0 0" },
@@ -2209,7 +2211,7 @@ class Component extends DCLogic {
       cfCurveCut: { position: "absolute", left: C.rail + "px", top: C.bar + "px", width: C.cur + "px", height: C.cur + "px", background: V.bg, borderRadius: C.cur + "px 0 0 0" },
       cfRailCol: { position: "absolute", left: 0, top: C.bar + "px", width: C.rail + "px", bottom: (C.foot + C.gap) + "px", display: "flex", flexDirection: "column", gap: C.gap + "px" },
       cfScene: { position: "absolute", left: (C.rail + C.gap) + "px", top: (C.bar + C.gap) + "px", right: C.gap + "px",
-        bottom: (C.foot + C.dock + C.gap * 3) + "px", borderRadius: C.rad + "px 0 0 0", overflow: "hidden", cursor: "grab",
+        bottom: (consoleScene ? C.foot + C.dock + C.gap * 3 : C.foot + C.gap * 2) + "px", borderRadius: C.rad + "px 0 0 0", overflow: "hidden", cursor: "grab",
         background: "linear-gradient(180deg," + V.sky1 + " 0%," + V.sky2 + " 46%," + V.gnd + " 46%," + V.gnd2 + " 100%)" },
       cfParallax: { position: "absolute", inset: 0,
         transform: "translate(" + (-s.cHdg * 0.9).toFixed(1) + "px," + (s.cPitch * 0.8).toFixed(1) + "px)",
@@ -2365,7 +2367,7 @@ class Component extends DCLogic {
       cfPadShow: { position: "absolute", left: (C.wide ? 24 : 14) + "px", bottom: (C.wide ? 24 : 14) + "px", display: "flex",
         alignItems: "center", height: "34px", padding: "0 14px", background: V.surf2, color: this.ink(V.surf2, [V.ink, V.bg]),
         cursor: "pointer", borderLeft: "6px solid " + V.sec2, font: "700 11px/1 " + t.dfont, letterSpacing: ".16em" },
-      cfEditStrip: { position: "absolute", left: (C.rail + C.gap) + "px", right: C.gap + "px", bottom: (C.foot + C.dock + C.gap * 3) + "px",
+      cfEditStrip: { position: "absolute", left: (C.rail + C.gap) + "px", right: C.gap + "px", bottom: (consoleScene ? C.foot + C.dock + C.gap * 3 : C.foot + C.gap * 2) + "px",
         zIndex: 7, display: "flex", alignItems: "center", gap: "12px", height: "28px", padding: "0 14px",
         background: V.surf, color: V.ink2, font: "500 10.5px/1 " + t.font, letterSpacing: ".12em" },
       cfEditDone: { marginLeft: "auto", padding: "5px 16px", background: V.pri, color: this.ink(V.pri, [V.bg, V.onpri, V.ink]),
@@ -2426,7 +2428,7 @@ class Component extends DCLogic {
           a: { flex: 1, background: x.c.bg }, b: { flex: 1, background: x.c.pri }, c: { flex: 1, background: x.c.sec2 } };
       }) })),
       deviceList: Object.entries(DEVICES).map(([k, x]) => ({ name: x.name, dims: x.dims, pick: () => this.set("device", k) })),
-      screenList: SCREENS.map(n => ({ name: n, pick: () => {
+      screenList: SCREENS.map(n => ({ name: n, style: n === scr ? "border-color:#6CFF9A;color:#6CFF9A;background:rgba(108,255,154,.12)" : "", pick: () => {
         if (this.navMode() === "floaters" && FLOATERS.some(f => f.id === n)) { this.flFocus(n); this.set("dialog", null); return; }
         this.setState({ screen: n, dialog: null });
       } })),
@@ -2524,8 +2526,8 @@ class Component extends DCLogic {
       loginTabs: [{ mode: "grid", label: "GRID LOGIN" }, { mode: "offline", label: "OFFLINE" }].map(x => ({
         label: x.label, pick: () => this.setLoginMode(x.mode),
         style: x.mode === s.loginMode
-          ? { flex: 1, textAlign: "center", padding: "10px 0", background: V.priC, color: V.onpriC, borderBottom: "2px solid " + V.pri, font: "600 12px/1 " + t.font, letterSpacing: ".18em", cursor: "pointer" }
-          : { flex: 1, textAlign: "center", padding: "10px 0", color: V.ink2, font: "600 12px/1 " + t.font, letterSpacing: ".18em", cursor: "pointer" },
+          ? { flex: 1, textAlign: "center", padding: "8px 0", background: V.priC, color: V.onpriC, borderBottom: "2px solid " + V.pri, font: "600 11.5px/1 " + t.font, letterSpacing: ".18em", cursor: "pointer" }
+          : { flex: 1, textAlign: "center", padding: "8px 0", color: V.ink2, font: "600 11.5px/1 " + t.font, letterSpacing: ".18em", cursor: "pointer" },
       })),
       loginIsGrid: s.loginMode === "grid",
       // Second Life's own grids (Agni/Aditi) plus a few well-known OpenSim
@@ -2535,17 +2537,17 @@ class Component extends DCLogic {
       // pack the same as everything else on this screen.
       loginGridChoices: this.allGrids().map(g => ({
         label: g.label, pick: () => this.setLoginGrid(g.key),
-        style: { flex: "1 1 84px", textAlign: "center", padding: "9px 6px", border: "1px solid " + (s.loginGrid === g.key ? V.pri : V.outv), borderRadius: V.rs,
-          font: "600 10.5px/1 " + t.font, letterSpacing: ".04em", color: s.loginGrid === g.key ? V.pri : V.ink2, background: s.loginGrid === g.key ? V.priC : "transparent", cursor: "pointer" },
+        style: { flex: "1 1 80px", textAlign: "center", padding: "7px 4px", border: "1px solid " + (s.loginGrid === g.key ? V.pri : V.outv), borderRadius: V.rs,
+          font: "600 10px/1 " + t.font, letterSpacing: ".04em", color: s.loginGrid === g.key ? V.pri : V.ink2, background: s.loginGrid === g.key ? V.priC : "transparent", cursor: "pointer" },
       })).concat([{
         label: "+ CUSTOM", pick: () => this.openAddGrid(),
-        style: { flex: "1 1 84px", textAlign: "center", padding: "9px 6px", border: "1px dashed " + V.outv, borderRadius: V.rs,
-          font: "600 10.5px/1 " + t.font, letterSpacing: ".04em", color: V.ink2, background: "transparent", cursor: "pointer" },
+        style: { flex: "1 1 80px", textAlign: "center", padding: "7px 4px", border: "1px dashed " + V.outv, borderRadius: V.rs,
+          font: "600 10px/1 " + t.font, letterSpacing: ".04em", color: V.ink2, background: "transparent", cursor: "pointer" },
       }]),
       addGrid: s.addGrid,
       addGridNameVal: s.addGridName, addGridNamePick: (e) => this.set("addGridName", e.target.value),
       addGridHostVal: s.addGridHost, addGridHostPick: (e) => this.set("addGridHost", e.target.value),
-      addGridInputStyle: { minHeight: "42px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 12px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 13px/1 " + t.font, color: V.ink, marginTop: "6px" },
+      addGridInputStyle: { minHeight: "36px", height: "36px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 12px/1 " + t.font, color: V.ink, marginTop: "4px" },
       saveCustomGrid: () => this.saveCustomGrid(), cancelAddGrid: () => this.cancelAddGrid(),
       loginFields: s.loginMode === "grid"
         ? [{ label: "AVATAR NAME", value: "Ruth   /   Resident" }, { label: "PASSWORD", value: "••••••••" }]
@@ -2553,8 +2555,8 @@ class Component extends DCLogic {
       loginOfflineHint: s.loginMode === "offline" ? "> Offline mode: no grid connection, chat stays local." : null,
       loginBtnLabel: s.loginBusy ? "CONNECTING…" : s.loginMode === "grid" ? "CONNECT TO GRID" : "ENTER OFFLINE",
       loginBtnPick: () => this.connectLogin(),
-      loginBtnStyle: { marginTop: "14px", height: "48px", borderRadius: V.rs, background: V.pri, color: V.onpri, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
-        font: "700 13px/1 " + t.font, letterSpacing: ".22em", cursor: "pointer", opacity: s.loginBusy ? .7 : 1 },
+      loginBtnStyle: { marginTop: "10px", height: "42px", borderRadius: V.rs, background: V.pri, color: V.onpri, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
+        font: "700 12px/1 " + t.font, letterSpacing: ".22em", cursor: "pointer", opacity: s.loginBusy ? .7 : 1 },
       loginError: s.loginError, loginShowHint: !s.loginError,
       loginSettingsPick: () => this.set("screen", "Settings"),
       isSearchScreen: s.screen === "Search",
