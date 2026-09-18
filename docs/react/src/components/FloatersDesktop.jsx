@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { LAYOUTS } from "../theme/layouts.js";
@@ -16,6 +17,8 @@ import ScreenBody from "./ScreenBody.jsx";
 export default function FloatersDesktop() {
   const { state, actions } = useApp();
   const { V, t, ink } = useTheme();
+  const [quickMsg, setQuickMsg] = useState("");
+  const [showCamHud, setShowCamHud] = useState(true);
 
   const cardsByScreen = buildCards({ state, actions, layoutName: LAYOUTS[state.layout].name, paletteName: PALETTES[state.palette].name });
   const fBody = buildFBody(state, cardsByScreen);
@@ -33,6 +36,13 @@ export default function FloatersDesktop() {
   const openFloaters = FLOATERS.filter((f) => state.flOpen[f.id] && !state.flMin[f.id]);
   const flFocused = state.flOpen[state.screen] && !state.flMin[state.screen] ? actions.flR(state.screen) : null;
 
+  const sendQuickChat = (e) => {
+    e?.preventDefault();
+    if (!quickMsg.trim()) return;
+    actions.notify("Local Chat (" + quickMsg.trim() + ")");
+    setQuickMsg("");
+  };
+
   return (
     <div style={{ position: "absolute", inset: 0, overflow: "hidden", background: V.bg }}>
       <div
@@ -47,6 +57,43 @@ export default function FloatersDesktop() {
         <div style={{ position: "absolute", left: "14px", bottom: "52px", display: "flex", alignItems: "center", height: "24px", padding: "0 11px", background: V.surf, color: V.ink2, font: "500 10px/1 " + t.font, letterSpacing: ".08em", borderLeft: "5px solid " + V.sec2 }}>
           {regionRead}
         </div>
+
+        {/* Firestorm Camera & Orbit HUD Overlay */}
+        {showCamHud && (
+          <div
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+            style={{
+              position: "absolute", right: "16px", bottom: "52px", padding: "8px", background: V.surf, border: "1px solid " + V.outv,
+              borderRadius: V.rp, boxShadow: "0 8px 24px rgba(0,0,0,0.4)", display: "flex", flexDirection: "column", gap: "6px", zIndex: 20
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", borderBottom: "1px solid " + V.outv, paddingBottom: "4px" }}>
+              <span style={{ font: "600 9px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>CAMERA CONTROLS</span>
+              <span onClick={() => setShowCamHud(false)} style={{ cursor: "pointer", color: V.ink2, fontSize: "12px", lineHeight: 1 }}>&times;</span>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 24px)", gap: "3px", justifyContent: "center" }}>
+              <button type="button" onClick={() => actions.sceneMove({ clientX: 0, clientY: -10 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Up">
+                <Icon name="chevron-up" size={12} />
+              </button>
+              <button type="button" onClick={() => { actions.cHold("cam"); }} style={{ height: "24px", background: V.pri, border: "1px solid " + V.pri, color: ink(V.pri, [V.bg, V.onpri, V.ink]), borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", font: "600 8px/1 " + t.dfont }} aria-label="Toggle Mode">
+                {state.cCam === "ORBIT" ? "ORB" : "LOOK"}
+              </button>
+              <button type="button" onClick={() => actions.sceneMove({ clientX: 0, clientY: 10 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Down">
+                <Icon name="chevron-down" size={12} />
+              </button>
+              <button type="button" onClick={() => actions.sceneMove({ clientX: -15, clientY: 0 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Left">
+                <Icon name="chevron-left" size={12} />
+              </button>
+              <button type="button" onClick={() => actions.notify("Camera Reset")} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Reset View">
+                <Icon name="rotate-ccw" size={11} />
+              </button>
+              <button type="button" onClick={() => actions.sceneMove({ clientX: 15, clientY: 0 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Right">
+                <Icon name="chevron-right" size={12} />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {openFloaters.map((f) => {
@@ -76,6 +123,7 @@ export default function FloatersDesktop() {
                   actions.flToggle(f.id);
                 }}
                 style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: V.rs, font: "600 11px/1 " + t.font, cursor: "pointer", opacity: 0.75 }}
+                role="button" tabIndex={0} aria-label="Minimize"
               >
                 &minus;
               </span>
@@ -85,6 +133,7 @@ export default function FloatersDesktop() {
                   actions.flClose(f.id);
                 }}
                 style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: V.rs, font: "600 11px/1 " + t.font, cursor: "pointer", opacity: 0.75 }}
+                role="button" tabIndex={0} aria-label="Close"
               >
                 &times;
               </span>
@@ -122,7 +171,35 @@ export default function FloatersDesktop() {
         </div>
       ) : null}
 
-      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "40px", display: "flex", alignItems: "center", gap: "4px", padding: "0 8px", background: V.surf, borderTop: "1px solid " + V.outv, zIndex: 60 }}>
+      {/* Firestorm Desktop Taskbar & Nearby Quick-Chat Dock */}
+      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "40px", display: "flex", alignItems: "center", gap: "6px", padding: "0 8px", background: V.surf, borderTop: "1px solid " + V.outv, zIndex: 60 }}>
+        {/* Persistent Firestorm Nearby Quick Chat Input Bar */}
+        <form onSubmit={sendQuickChat} style={{ display: "flex", alignItems: "center", gap: "4px", minWidth: "260px", maxWidth: "340px" }}>
+          <div style={{ position: "relative", flex: 1 }}>
+            <input
+              type="text"
+              value={quickMsg}
+              onChange={(e) => setQuickMsg(e.target.value)}
+              placeholder="Nearby Chat..."
+              style={{
+                width: "100%", height: "26px", padding: "0 8px", background: V.bg, color: V.ink,
+                border: "1px solid " + V.outv, borderRadius: V.rs, font: "400 11px/1 " + t.font, outline: "none"
+              }}
+            />
+          </div>
+          <button
+            type="submit"
+            style={{
+              height: "26px", padding: "0 10px", background: V.pri, color: ink(V.pri, [V.bg, V.onpri, V.ink]),
+              border: "none", borderRadius: V.rs, font: "600 9.5px/1 " + t.dfont, letterSpacing: ".08em", cursor: "pointer", flex: "none"
+            }}
+          >
+            SAY
+          </button>
+        </form>
+
+        <div style={{ width: "1px", height: "20px", background: V.outv, margin: "0 2px" }} />
+
         {FLOATERS.filter((f) => state.flOpen[f.id]).map((f) => {
           const min = !!state.flMin[f.id];
           const act = f.id === state.screen && !min;
@@ -136,7 +213,25 @@ export default function FloatersDesktop() {
             </div>
           );
         })}
+
         <div style={{ flex: 1, minWidth: "8px" }} />
+
+        {/* Toggle Camera HUD Button */}
+        <button
+          type="button"
+          onClick={() => setShowCamHud((v) => !v)}
+          style={{
+            flex: "none", height: "26px", display: "flex", alignItems: "center", gap: "4px", padding: "0 8px",
+            background: showCamHud ? V.pri : V.surf2, color: showCamHud ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2,
+            border: "1px solid " + (showCamHud ? V.pri : V.outv), borderRadius: V.rs, cursor: "pointer",
+            font: "600 9.5px/1 " + t.dfont, letterSpacing: ".08em"
+          }}
+          title="Toggle Camera HUD"
+        >
+          <Icon name="video" size={12} />
+          CAM HUD
+        </button>
+
         {state.cDock.map((k) => {
           const b = CBTN[k],
             lit = !!state.cTog[k],

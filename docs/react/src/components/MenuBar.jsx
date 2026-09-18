@@ -3,13 +3,29 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { FMENU, FLOATERS } from "../theme/constants.js";
 
 // Ported from `fmBar`/`fmMenus` — the desktop-only File/Edit/View/World/
-// Build/Help bar. Every menu besides View>Windows is decorative in the
-// source (clicking an item just closes the menu); View>Windows toggles the
-// matching floater open/closed, exactly like the mockup.
+// Build/Help bar with Firestorm-style interactive menu commands.
 export default function MenuBar() {
   const { state, actions } = useApp();
   const { V, t, ink, isFloat } = useTheme();
   if (!isFloat) return null;
+
+  const handleMenuClick = (menuLabel, itemLabel) => {
+    actions.setMenu(null);
+    if (itemLabel === "Teleport Home") {
+      actions.setScreen("Map");
+      actions.notify("Teleporting Home...");
+    } else if (itemLabel === "Preferences…") {
+      actions.flFocus("Settings");
+    } else if (itemLabel === "Appearance…") {
+      actions.setScreen("Outfits");
+    } else if (itemLabel === "About Linkpoint") {
+      actions.notify("Linkpoint Viewer v2.0 (Firestorm Edition)");
+    } else if (itemLabel === "Quit") {
+      actions.setScreen("Login");
+    } else {
+      actions.notify(menuLabel + " > " + itemLabel);
+    }
+  };
 
   return (
     <div style={{ flex: "none", display: "flex", alignItems: "stretch", height: "28px", padding: "0 8px", background: V.surf, borderBottom: "1px solid " + V.outv, position: "relative", zIndex: 80 }} onClick={() => state.menu && actions.setMenu(null)}>
@@ -35,12 +51,12 @@ export default function MenuBar() {
                     key={i}
                     onClick={(e) => {
                       e.stopPropagation();
-                      if (!win) {
-                        actions.setMenu(null);
-                        return;
+                      if (win) {
+                        const f = FLOATERS.find((x) => x.title === it[0]);
+                        if (f) actions.flToggle(f.id);
+                      } else {
+                        handleMenuClick(mm.label, it[0]);
                       }
-                      const f = FLOATERS.find((x) => x.title === it[0]);
-                      if (f) actions.flToggle(f.id);
                     }}
                     style={{ display: "flex", alignItems: "center", gap: "10px", minHeight: "26px", padding: "0 12px", cursor: "pointer", font: "400 11.5px/1 " + t.font, color: V.ink }}
                   >
