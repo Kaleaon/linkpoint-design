@@ -18,7 +18,7 @@ import Profile from "../screens/Profile.jsx";
 import Login from "../screens/Login.jsx";
 import Search from "../screens/Search.jsx";
 
-const CARD_SCREENS = ["Friends", "Groups", "Notices", "Teleport", "Settings", "Diagnostics"];
+const CARD_SCREENS = ["Friends", "Groups", "Notices", "Teleport", "Outfits", "Objects", "Parcel", "Transactions", "Mute List", "Settings", "Diagnostics"];
 
 // Ported from the big content column inside `shellStyle` (headers -> segTabs
 // -> chips -> the 13 screens' bodies), plus the split-view detail pane that
