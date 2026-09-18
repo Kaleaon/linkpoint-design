@@ -84,11 +84,23 @@ export default function ControlPanels() {
       <div className="pnl">
         <div className="pnlh">SCREEN</div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "5px" }}>
-          {SCREENS.map((s) => (
-            <div key={s} className="tag" onClick={() => actions.setScreen(s)}>
-              {s}
-            </div>
-          ))}
+          {SCREENS.map((s) => {
+            const active = state.screen === s;
+            return (
+              <div
+                key={s}
+                className="tag"
+                onClick={() => actions.setScreen(s)}
+                style={
+                  active
+                    ? { borderColor: "#6CFF9A", color: "#6CFF9A", background: "rgba(108,255,154,.12)" }
+                    : undefined
+                }
+              >
+                {s}
+              </div>
+            );
+          })}
         </div>
         <div className="pnlh" style={{ margin: "16px 0 10px" }}>
           SCREEN STATE
