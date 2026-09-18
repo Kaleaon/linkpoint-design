@@ -36,7 +36,7 @@ export const FMENU = [
   { label:"Help",  items:[["Second Life Help","F1"],["Report Abuse…",""],["Report Bug…",""],["About Linkpoint",""]] },
 ];
 
-export const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Settings","Diagnostics","Login","Search"];
+export const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Outfits","Objects","Parcel","Transactions","Mute List","Settings","Diagnostics","Login","Search"];
 // Grid picker for Login: Second Life's own two (Agni/Aditi) plus a few
 // well-known OpenSim grids, so the login screen isn't LL-only.
 export const GRIDS = [

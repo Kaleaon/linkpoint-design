@@ -1090,7 +1090,7 @@ const FMENU = [
   { label:"Help",  items:[["Second Life Help","F1"],["Report Abuse…",""],["Report Bug…",""],["About Linkpoint",""]] },
 ];
 
-const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Settings","Diagnostics","Login","Search"];
+const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Outfits","Objects","Parcel","Transactions","Mute List","Settings","Diagnostics","Login","Search"];
 // Grid picker for Login: Second Life's own two (Agni/Aditi) plus a few
 // well-known OpenSim grids, so the login screen isn't LL-only.
 const GRIDS = [
@@ -1131,6 +1131,11 @@ const CSUB = {
   Teleport:      [["LANDMARK", "\u00b7 01"], ["HISTORY", "\u00b7 02"]],
   Settings:      [["LOOK", "\u00b7 01"], ["NETWORK", "\u00b7 02"]],
   Diagnostics:   [["NETWORK", "\u00b7 01"], ["RENDER", "\u00b7 02"]],
+  Outfits:       [["WORN", "\u00b7 01"], ["SAVED", "\u00b7 02"]],
+  Objects:       [["NEARBY", "\u00b7 01"], ["INSPECT", "\u00b7 02"]],
+  Parcel:        [["GENERAL", "\u00b7 01"], ["MEDIA", "\u00b7 02"]],
+  Transactions:  [["ALL", "\u00b7 01"], ["PAYMENTS", "\u00b7 02"]],
+  "Mute List":   [["AVATARS", "\u00b7 01"], ["OBJECTS", "\u00b7 02"]],
 };
 
 // Movement pad: turning is drag-to-look, so the pad is a cross with a camera-mode centre.
@@ -1460,6 +1465,11 @@ class Component extends DCLogic {
       { id: "Map", label: "MAP", tile: "world", icon: "map" },
       { id: "3D View", label: "WORLD", tile: "in-world", icon: "box" },
       { id: "Inventory", label: "INV", tile: "inventory", icon: "folder" },
+      { id: "Outfits", label: "OUTFITS", tile: "outfits", icon: "shirt" },
+      { id: "Objects", label: "OBJECTS", tile: "objects", icon: "box" },
+      { id: "Parcel", label: "PARCEL", tile: "parcel", icon: "map-pin" },
+      { id: "Transactions", label: "L$", tile: "money", icon: "banknote" },
+      { id: "Mute List", label: "MUTED", tile: "muted", icon: "volume-x" },
       { id: "Settings", label: "MORE", tile: "settings", icon: "settings" },
     ];
     // TABS nav (Ink Terminal, Aero Glass, Press) was missing the WORLD (3D View) key —
@@ -1767,6 +1777,35 @@ class Component extends DCLogic {
       : invTree.filter(n => n.depth === 0 || (n.parent && (s.invOpen[n.parent] !== false)));
 
     const CARDS = {
+      Outfits: [
+        { icon: "shirt", title: "Urban Casual v2 (Active)", right: "WORN", body: "12 items · Mesh body, jacket, jeans, boots", actions: [{ label: "EDIT OUTFIT", primary: true, pick: () => this.notify("Editing Urban Casual v2") }] },
+        { icon: "user-check", title: "Cyberpunk Tactical", right: "SAVED", body: "15 items · Exo-suit, visor, combat boots", actions: [{ label: "WEAR OUTFIT", primary: true, pick: () => this.notify("Wearing Cyberpunk Tactical") }] },
+        { icon: "user-check", title: "Formal Eveningwear", right: "SAVED", body: "8 items · Tuxedo, dress shoes, watch", actions: [{ label: "WEAR OUTFIT", pick: () => this.notify("Wearing Formal Eveningwear") }] },
+        { icon: "folder-archive", title: "Beach & Swimwear", right: "SAVED", body: "5 items · Boardshorts, sunglasses, sandals", actions: [{ label: "WEAR OUTFIT", pick: () => this.notify("Wearing Beach & Swimwear") }] },
+      ],
+      Objects: [
+        { icon: "box", title: "Sunset Lamp v3", right: "4 prims", body: "Owner: Kit Sandalwood · Scripted dimmer", actions: [{ label: "TOUCH", primary: true, pick: () => this.notify("Touched Sunset Lamp v3") }, { label: "PAY L$", pick: () => this.set("dialog", "pay") }] },
+        { icon: "door-closed", title: "Roof Access Door", right: "12 prims", body: "Owner: Da Boom Parcel · Auto-open script", actions: [{ label: "TOUCH", pick: () => this.notify("Door activated") }] },
+        { icon: "armchair", title: "Lounge Chair Deluxe", right: "8 prims", body: "Owner: Nyx Vaher · 14 sit animations", actions: [{ label: "SIT", primary: true, pick: () => this.notify("Sat on Lounge Chair") }] },
+        { icon: "trash-2", title: "Temp Build Platform", right: "1 prim", body: "Owner: Ruth Resident · Temporary object", actions: [{ label: "DEREZ / RETURN", dim: true, pick: () => this.notify("Derezzed Temp Build Platform") }] },
+      ],
+      Parcel: [
+        { icon: "map-pin", title: "Linden Public Park", right: "4096 m²", body: "Sim: Da Boom <128, 128, 26> · Rating: General", actions: [{ label: "TELEPORT HERE", primary: true, pick: () => this.set("screen", "Map") }] },
+        { icon: "user", title: "Parcel Owner", right: "Governor Linden", body: "Group: Linden Department of Public Works" },
+        { icon: "radio", title: "Audio & Music Stream", body: "http://stream.sl-radio.net:8000/live", actions: [{ label: "PLAY STREAM", primary: true, pick: () => this.notify("Playing region audio stream") }] },
+        { icon: "layers", title: "Parcel Capacity", right: "1240 / 1875", body: "66% prim capacity used · 635 prims available" },
+      ],
+      Transactions: [
+        { icon: "arrow-down-left", title: "Received L$ 1,200", right: "5h ago", body: "From Marlowe Quill for “Roof Kit”", style: { borderColor: V.ok } },
+        { icon: "arrow-up-right", title: "Paid L$ 350", right: "Yesterday", body: "To Bay City Land Co. for Parcel Rent", style: { borderColor: V.sec } },
+        { icon: "arrow-up-right", title: "Paid L$ 500", right: "Sep 12", body: "To Kit Sandalwood for Sculpted Light Rig" },
+        { icon: "arrow-down-left", title: "Received L$ 2,500", right: "Sep 10", body: "From Event Payout · Build Jam Winner", style: { borderColor: V.ok } },
+      ],
+      "Mute List": [
+        { icon: "volume-x", title: "Griefing Spambot 9000", right: "AVATAR", body: "Muted text, voice & gestures · Sep 14", actions: [{ label: "UNMUTE", dim: true, pick: () => this.notify("Unmuted Griefing Spambot 9000") }] },
+        { icon: "box", title: "Noisy Emitter Prim", right: "OBJECT", body: "Muted object sounds · Sep 11", actions: [{ label: "UNMUTE", dim: true, pick: () => this.notify("Unmuted Noisy Emitter Prim") }] },
+        { icon: "volume-x", title: "Annoying Vendor Script", right: "OBJECT", body: "Muted chat spam · Sep 02", actions: [{ label: "UNMUTE", dim: true, pick: () => this.notify("Unmuted Annoying Vendor Script") }] },
+      ],
       Friends: [
         // Pending requests aren't friends yet, so they only belong on the unfiltered ALL view.
         ...(curTab === "ONLINE" || s.dismissed.friendReq ? [] : [{ icon: "user-plus", title: "Kit Sandalwood", right: "14:28", body: "“met you at the Bay City build jam”", style: { borderColor: V.sec2 },
@@ -1815,7 +1854,9 @@ class Component extends DCLogic {
           actions: [{ label: s.dense ? "SWITCH TO COMFORTABLE" : "SWITCH TO COMPACT", primary: true, pick: () => this.set("dense", !s.dense) }] },
         { icon: "bell", title: "Push notifications", body: "IMs, group notices, teleport offers · quick reply from the shade", toggle: true, on: s.toggles.push, togglePick: () => this.toggleSetting("push") },
         { icon: "mic", title: "Voice indicator", body: "Show speaking rings in radar and chat (listen-only on mobile)", toggle: true, on: s.toggles.voice, togglePick: () => this.toggleSetting("voice") },
-        { icon: "shield", title: "Mute & block list", right: "6", body: "3 residents · 3 objects" },
+        { icon: "shield", title: "Mute & block list", right: "6", body: "3 residents · 3 objects", actions: [{ label: "OPEN MUTE LIST", primary: true, pick: () => this.set("screen", "Mute List") }] },
+        { icon: "lock", title: "RestrainedLove (RLV)", body: "Enable RLV script commands for viewer control & interactions", toggle: true, on: s.toggles.rlv || false, togglePick: () => this.toggleSetting("rlv") },
+        { icon: "hard-drive", title: "Cache Management", right: "512 MB", body: "Texture & asset disk cache size and storage location", actions: [{ label: "CLEAR CACHE", dim: true, pick: () => this.notify("Cache cleared — restart viewer to apply") }] },
         { icon: "keyboard", title: "Chat channel commands", body: "/1 gestures, /me, /shout mapped to compose-bar shortcuts", toggle: true, on: s.toggles.chatCmds, togglePick: () => this.toggleSetting("chatCmds") },
         { icon: "layout-dashboard", title: "Widgets", body: "Unread IMs, nearby count, L$ balance — lock-screen glance" },
         { icon: "layout", title: "Nav Layout", body: "Choose navigation and layout pack", select: true, options: Object.entries(LAYOUTS).map(([k,x]) => ({label: x.name, value: k})), value: s.layout, onChange: (v) => this.set("layout", v) },
@@ -1879,6 +1920,16 @@ class Component extends DCLogic {
     const detail = {
       Chat: { title: "Nyx Vaher · IM", sub: "online · Da Boom · voice off",
         rows: [["14:21 Nyx", "the roof build is up — teleport when you're free"], ["14:22 you", "on my way, just rezzing the last sculpt"], ["14:25 Nyx", "bring the light rig if you have it"], ["14:26 you", "packing it now"]] },
+      Outfits: { title: "Urban Casual v2", sub: "outfit · 12 items worn · active outfit",
+        rows: [["BASE AVATAR", "Ruth Classic Mesh"], ["ATTACHMENTS", "8 rigged mesh items · 4 HUDs"], ["FOLDER", "My Outfits / Urban Casual v2"], ["ACTIONS", "Wear · Replace · Add · Take Off"]] },
+      Objects: { title: "Sunset Lamp v3", sub: "object · 4 prims · owner Kit Sandalwood",
+        rows: [["PARCEL", "Da Boom <128, 128, 26>"], ["PERMISSIONS", "copy · modify · no transfer"], ["SCRIPT STATE", "1 script running · 0.02ms CPU time"], ["ACTIONS", "Touch · Pay L$ · Inspect · Derezz"]] },
+      Parcel: { title: "Linden Public Park", sub: "parcel · 4096 sq.m. · general rating",
+        rows: [["OWNER", "Governor Linden"], ["PRIM USAGE", "1 240 / 1 875 prims (66%)"], ["AUDIO STREAM", "http://stream.sl-radio.net:8000/live"], ["FLAGS", "Voice Enabled · No Script Restrict · Edit Land"]] },
+      Transactions: { title: "L$ Balance: 4,250", sub: "last 30 days · 14 transactions",
+        rows: [["LAST PAYMENT", "+L$ 1,200 from Marlowe Quill"], ["TOTAL SPENT", "L$ 3,450 this month"], ["TOTAL EARNED", "L$ 8,900 this month"], ["FILTER", "All transactions"]] },
+      "Mute List": { title: "Blocked Entities", sub: "6 blocked items · 3 residents · 3 objects",
+        rows: [["SETTINGS", "Block text chat · voice · inventory offers"], ["LAST BLOCKED", "Spam Bot v4 (yesterday)"], ["STORAGE", "Synced with Second Life server"]] },
       Inventory: { title: "Sunset Lamp v3", sub: "object · 4 prims · copy / mod / no-transfer",
         rows: [["ACQUIRED", "2026-08-14 from Kit Sandalwood"], ["PERMISSIONS", "copy · modify · no transfer"], ["DESCRIPTION", "Warm brass lamp, scripted dimmer on channel -142."], ["ACTIONS", "Wear · Rez here · Rename · Move to Trash"]] },
       Radar: { title: "Da Boom — region map", sub: "34 avatars · 4 parcels · restart in 2h",
