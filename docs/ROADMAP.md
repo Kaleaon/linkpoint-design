@@ -159,3 +159,32 @@ entirely (dialog buttons, header icons, and several card taps were silently
 inert) and the Sweep Console's PING/SPEED/LAG readout added above. Both
 have since been ported in; see `docs/react/README.md`'s "Known deviations"
 section for what's still intentionally simplified.
+
+## Desktop floater chrome ignored the layout pack's shape (2026-09-18)
+
+The Desktop device (`d.desk`, 1440×900) renders as its own window-manager
+mode — N draggable/resizable floaters plus a File/Edit/View/World/Build/
+Help menu bar and a taskbar/dock — instead of the tabs/rail/sweep/tiles nav
+every other device size uses. That mode already read colour-pack tokens
+(`V.surf`/`V.pri`/`V.outv`/etc., and the `sky1/sky2/gnd/gnd2` scene
+gradient) and the layout pack's font (`t.font`/`t.dfont`), but every window,
+menu, dropdown and dock button was hardcoded to square corners — the one
+place in the app that didn't pick up a layout pack's `rs`/`rp` shape
+tokens the way every card, sheet, chip and nav item elsewhere does. Picking
+Sweep Console (pill/22-28px rounding) vs. Metro Tiles (0px) vs. Aero Glass
+(12-18px) looked identical on Desktop — a "generic screen" regardless of
+style pack.
+
+Fixed in both `docs/index.html` (the floaters/fmMenus/flTasks/flTools
+blocks in `renderVals()`) and the React port
+(`docs/react/src/components/FloatersDesktop.jsx`,
+`docs/react/src/components/MenuBar.jsx`): floater windows and the focused
+window's content overlay now share `V.rp` (panel radius, clipped via
+`overflow: hidden`, with the focused overlay's bottom corners matched to
+its window), and the title-bar min/close buttons, menu-bar highlight,
+dropdown menu, taskbar buttons and dock buttons all use `V.rs` (small
+control radius) — the same tokens every other themed surface in the app
+already uses. Verified with a headless-Chromium pass across Metro Tiles
+(sharp), Sweep Console (pill), and Aero Glass (soft) on Desktop, including
+focusing a floater to confirm the content overlay's rounded corners still
+line up with the window frame underneath it.
