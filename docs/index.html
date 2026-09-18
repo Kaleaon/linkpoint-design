@@ -266,14 +266,30 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
     <div onMouseDown="{{ sceneDown }}" onMouseMove="{{ sceneMove }}" onMouseUp="{{ sceneUp }}" onMouseLeave="{{ sceneUp }}" onClick="{{ closeMenu }}" style="{{ flScene }}">
       <div style="{{ flHorizon }}"></div>
       <div style="{{ flRegionRead }}">{{ cfRegionRead }}</div>
+      <sc-if value="{{ showCamHud }}" hint-placeholder-val="{{ true }}">
+      <div onClick="{{ stopProp }}" onMouseDown="{{ stopProp }}" style="{{ camHudOverlayStyle }}">
+        <div style="{{ camHudHeaderStyle }}">
+          <span>CAMERA CONTROLS</span>
+          <span onClick="{{ toggleCamHud }}" style="cursor:pointer;font-size:12px;line-height:1" role="button" tabindex="0" aria-label="Close Camera HUD">&times;</span>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3, 24px);gap:3px;justify-content:center">
+          <button type="button" onClick="{{ camOrbitUp }}" style="{{ camHudGridBtnStyle }}" aria-label="Orbit Up">▲</button>
+          <button type="button" onClick="{{ camModeToggle }}" style="{{ camHudModeBtnStyle }}" aria-label="Toggle Mode">{{ camModeText }}</button>
+          <button type="button" onClick="{{ camOrbitDown }}" style="{{ camHudGridBtnStyle }}" aria-label="Orbit Down">▼</button>
+          <button type="button" onClick="{{ camOrbitLeft }}" style="{{ camHudGridBtnStyle }}" aria-label="Orbit Left">◄</button>
+          <button type="button" onClick="{{ camReset }}" style="{{ camHudGridBtnStyle }}" aria-label="Reset View">↺</button>
+          <button type="button" onClick="{{ camOrbitRight }}" style="{{ camHudGridBtnStyle }}" aria-label="Orbit Right">►</button>
+        </div>
+      </div>
+      </sc-if>
     </div>
     <sc-for list="{{ floaters }}" as="f" hint-placeholder-count="4">
       <div onMouseDown="{{ f.focus }}" style="{{ f.style }}">
         <div onMouseDown="{{ f.drag }}" style="{{ f.barStyle }}">
           <i data-lucide="{{ f.icon }}" style="width:13px;height:13px;flex:none"></i>
           <span style="flex:1;min-width:0;font:inherit;letter-spacing:inherit;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{ f.title }}</span>
-          <span onClick="{{ f.min }}" style="{{ f.btnStyle }}">&minus;</span>
-          <span onClick="{{ f.close }}" style="{{ f.btnStyle }}">&times;</span>
+          <span onClick="{{ f.min }}" style="{{ f.btnStyle }}" role="button" tabindex="0" aria-label="Minimize">&minus;</span>
+          <span onClick="{{ f.close }}" style="{{ f.btnStyle }}" role="button" tabindex="0" aria-label="Close">&times;</span>
         </div>
         <sc-if value="{{ f.rows }}" hint-placeholder-val="{{ true }}">
         <div style="{{ f.bodyStyle }}">
@@ -286,10 +302,19 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
       </div>
     </sc-for>
     <div style="{{ flTaskbar }}">
+      <div style="display:flex;align-items:center;gap:4px;min-width:240px;max-width:320px">
+        <input value="{{ flQuickMsg }}" onChange="{{ flQuickChange }}" onKeyDown="{{ flQuickKeyDown }}" placeholder="Nearby Chat..." style="{{ flQuickInputStyle }}" />
+        <button type="button" onClick="{{ flQuickSend }}" style="{{ flQuickBtnStyle }}">SAY</button>
+      </div>
+      <div style="{{ flDividerStyle }}"></div>
       <sc-for list="{{ flTasks }}" as="tk" hint-placeholder-count="4">
         <div onClick="{{ tk.pick }}" style="{{ tk.style }}">{{ tk.label }}</div>
       </sc-for>
       <div style="flex:1;min-width:8px"></div>
+      <div onClick="{{ toggleCamHud }}" style="{{ camHudBtnStyle }}" role="button" tabindex="0" aria-label="Toggle Camera HUD">
+        <i data-lucide="video" style="width:12px;height:12px;flex:none"></i>
+        <span>CAM HUD</span>
+      </div>
       <sc-for list="{{ flTools }}" as="tl" hint-placeholder-count="8">
         <div onClick="{{ tl.press }}" style="{{ tl.style }}">
           <i data-lucide="{{ tl.icon }}" style="width:14px;height:14px;flex:none"></i>
@@ -1232,7 +1257,7 @@ class Component extends DCLogic {
     rMode: "AV", rOpen: null, rMenu: null,
     cDock: ["fly", "sit", "snap", "mini", "inv", "home", "ao", "sun"],
     flOpen: { Chat: true, Radar: true, Friends: true, Inventory: true, Map: true }, flMin: {}, flRect: {},
-    flZ: ["Map", "Inventory", "Friends", "Radar", "Chat"], menu: null,
+    flZ: ["Map", "Inventory", "Friends", "Radar", "Chat"], menu: null, flQuickMsg: "", showCamHud: true,
     toast: "", composeText: "", chatSent: {}, chatTyping: false, invFilter: "",
     loginMode: "grid", loginGrid: "agni", loginBusy: false, loginError: null, logoAnim: true,
     customGrids: [], addGrid: false, addGridName: "", addGridHost: "",
@@ -2087,9 +2112,18 @@ class Component extends DCLogic {
             label: it[0], key: it[1],
             pick: (e) => {
               e.stopPropagation();
-              if (!win) { this.set("menu", null); return; }
-              const f = FLOATERS.find(x => x.title === it[0]);
-              if (f) this.flToggle(f.id);
+              this.set("menu", null);
+              if (win) {
+                const f = FLOATERS.find(x => x.title === it[0]);
+                if (f) this.flToggle(f.id);
+              } else {
+                if (it[0] === "Teleport Home") { this.set("screen", "Map"); this.notify("Teleporting Home..."); }
+                else if (it[0] === "Preferences…") { this.flFocus("Settings"); }
+                else if (it[0] === "Appearance…") { this.set("screen", "Outfits"); }
+                else if (it[0] === "About Linkpoint") { this.notify("Linkpoint Viewer v2.0 (Firestorm Edition)"); }
+                else if (it[0] === "Quit") { this.set("screen", "Login"); }
+                else { this.notify(mm.label + " > " + it[0]); }
+              }
             },
             style: { display: "flex", alignItems: "center", gap: "10px", minHeight: "26px", padding: "0 12px",
               cursor: "pointer", font: "400 11.5px/1 " + t.font, color: V.ink },
@@ -2108,6 +2142,43 @@ class Component extends DCLogic {
         transform: "translate(" + (-s.cHdg * 0.9).toFixed(1) + "px," + (s.cPitch * 0.8).toFixed(1) + "px)",
         transition: s.cDrag ? "none" : "transform .35s ease-out", opacity: .45,
         backgroundImage: "repeating-linear-gradient(90deg," + V.outv + " 0 1px,transparent 1px 104px)" },
+      stopProp: (e) => e && e.stopPropagation && e.stopPropagation(),
+      flQuickMsg: s.flQuickMsg || "",
+      flQuickChange: (e) => this.set("flQuickMsg", e.target.value),
+      flQuickKeyDown: (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          const msg = (s.flQuickMsg || "").trim();
+          if (msg) { this.notify("Local Chat (" + msg + ")"); this.set("flQuickMsg", ""); }
+        }
+      },
+      flQuickSend: () => {
+        const msg = (s.flQuickMsg || "").trim();
+        if (msg) { this.notify("Local Chat (" + msg + ")"); this.set("flQuickMsg", ""); }
+      },
+      flQuickInputStyle: { width: "100%", height: "26px", padding: "0 8px", background: V.bg, color: V.ink,
+        border: "1px solid " + V.outv, borderRadius: V.rs, font: "400 11px/1 " + t.font, outline: "none" },
+      flQuickBtnStyle: { height: "26px", padding: "0 10px", background: V.pri, color: this.ink(V.pri, [V.bg, V.onpri, V.ink]),
+        border: "none", borderRadius: V.rs, font: "600 9.5px/1 " + t.dfont, letterSpacing: ".08em", cursor: "pointer", flex: "none" },
+      flDividerStyle: { width: "1px", height: "20px", background: V.outv, margin: "0 2px" },
+      showCamHud: s.showCamHud !== false,
+      toggleCamHud: () => this.set("showCamHud", !s.showCamHud),
+      camHudBtnStyle: { flex: "none", height: "26px", display: "flex", alignItems: "center", gap: "4px", padding: "0 8px",
+        background: s.showCamHud ? V.pri : V.surf2, color: s.showCamHud ? this.ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2,
+        border: "1px solid " + (s.showCamHud ? V.pri : V.outv), borderRadius: V.rs, cursor: "pointer",
+        font: "600 9.5px/1 " + t.dfont, letterSpacing: ".08em" },
+      camHudOverlayStyle: { position: "absolute", right: "16px", bottom: "52px", padding: "8px", background: V.surf, border: "1px solid " + V.outv,
+        borderRadius: V.rp, boxShadow: "0 8px 24px rgba(0,0,0,0.4)", display: "flex", flexDirection: "column", gap: "6px", zIndex: 20 },
+      camHudHeaderStyle: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", borderBottom: "1px solid " + V.outv, paddingBottom: "4px", font: "600 9px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" },
+      camHudGridBtnStyle: { height: "24px", width: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px" },
+      camHudModeBtnStyle: { height: "24px", width: "24px", background: V.pri, border: "1px solid " + V.pri, color: this.ink(V.pri, [V.bg, V.onpri, V.ink]), borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", font: "600 8px/1 " + t.dfont },
+      camModeText: s.cCam === "ORBIT" ? "ORB" : "LOOK",
+      camOrbitUp: () => this.setState(st => ({ cPitch: Math.max(-70, st.cPitch - 10) })),
+      camOrbitDown: () => this.setState(st => ({ cPitch: Math.min(70, st.cPitch + 10) })),
+      camOrbitLeft: () => this.setState(st => ({ cHdg: st.cHdg - 15 })),
+      camOrbitRight: () => this.setState(st => ({ cHdg: st.cHdg + 15 })),
+      camReset: () => { this.setState({ cHdg: 214, cPitch: 0 }); this.notify("Camera Reset"); },
+      camModeToggle: () => this.setState(st => ({ cCam: st.cCam === "ORBIT" ? "MOUSELOOK" : "ORBIT" })),
       flRegionRead: { position: "absolute", left: "14px", bottom: "52px", display: "flex", alignItems: "center", height: "24px",
         padding: "0 11px", background: V.surf, color: V.ink2, font: "500 10px/1 " + t.font, letterSpacing: ".08em",
         borderLeft: "5px solid " + V.sec2 },

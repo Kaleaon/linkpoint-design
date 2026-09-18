@@ -1,3 +1,7 @@
 ## 2024-11-20 - Add ARIA Labels to Icon-Only Div Buttons
 **Learning:** In custom templating frameworks where `<div>` elements are used as interactive buttons (especially icon-only ones without text), they often lack semantic button properties (`role="button"`, `tabindex="0"`) and accessible names (`aria-label`), making them inaccessible to screen readers and keyboard navigation. Dynamic button arrays mapped via templates require ensuring the data object exposes a label field to populate `aria-label`.
 **Action:** When finding `onClick` handlers on `div` elements containing only an `<i data-lucide="...">` tag, always verify if it has an `aria-label`, `role="button"`, and `tabindex="0"`, and add them. Ensure backing data arrays provide human-readable labels for `aria-label` interpolation.
+
+## 2026-09-18 - Synchronizing Desktop Firestorm Features in Dual-Stack (HTML DSL + React) Mockups
+**Learning:** When adding interactive desktop features (such as a persistent quick-chat bar, interactive camera HUD controls, and functional top menu actions) to a dual-stack codebase (`docs/index.html` template DSL and `docs/react/` port), event handlers in `docs/index.html` must be named properties in `renderVals()` rather than inline expressions due to DSL resolution constraints.
+**Action:** Always maintain 1:1 behavioral parity between `docs/index.html` and `docs/react/`, ensuring new desktop widgets and inputs use named handler callbacks in `renderVals()` for `docs/index.html` and React hooks/state in `docs/react/`.
