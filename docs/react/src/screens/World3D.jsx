@@ -46,7 +46,12 @@ export default function World3D() {
         draw 96m · 34 fps
       </div>
 
-      <div onClick={() => actions.setNavPeek(true)} style={{ position: "absolute", left: "14px", top: "14px", zIndex: 7, width: "46px", height: "46px", borderRadius: V.rs, background: V.surf, border: "1px solid " + V.outv, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer" }}>
+      <div
+        role="button" aria-label="Open navigation menu" tabIndex={0}
+        onClick={() => actions.setNavPeek(true)}
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setNavPeek(true); } }}
+        style={{ position: "absolute", left: "14px", top: "14px", zIndex: 7, width: "46px", height: "46px", borderRadius: V.rs, background: V.surf, border: "1px solid " + V.outv, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer" }}
+      >
         <Icon name="menu" size={21} />
       </div>
       {state.navPeek ? (
@@ -80,7 +85,9 @@ export default function World3D() {
       ) : null}
 
       <div
+        role="button" aria-label="Open target picker" tabIndex={0}
         onClick={() => actions.setTargetPicker(true)}
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setTargetPicker(true); } }}
         style={{ position: "absolute", right: "12px", top: "12px", width: "46px", height: "46px", border: "1px solid " + V.outv, background: V.surf, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer", zIndex: 7 }}
       >
         <Icon name="crosshair" size={21} />
@@ -138,7 +145,12 @@ export default function World3D() {
         );
       })}
 
-      <div onClick={() => actions.setHudPicker(true)} style={{ ...overlayBtn, position: "absolute", left: "14px", bottom: "14px", zIndex: 7 }}>
+      <div
+        role="button" aria-label="Open HUD picker" tabIndex={0}
+        onClick={() => actions.setHudPicker(true)}
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setHudPicker(true); } }}
+        style={{ ...overlayBtn, position: "absolute", left: "14px", bottom: "14px", zIndex: 7 }}
+      >
         <Icon name="layers" size={21} />
         {hudPanels.length ? (
           <span style={{ position: "absolute", top: "-6px", right: "-6px", minWidth: "18px", height: "18px", padding: "0 5px", borderRadius: "9px", background: V.bdg, color: V.onbdg, font: "700 9.5px/18px " + t.font, textAlign: "center" }}>{hudPanels.length}</span>
