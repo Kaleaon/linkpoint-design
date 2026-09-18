@@ -705,10 +705,22 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
             <div style="flex:1;min-height:0;position:relative;overflow-y:auto">
               <div style="position:absolute;left:0;right:0;top:0;height:120px;background:repeating-linear-gradient(135deg,var(--surf2,#1B2A2D) 0 12px,var(--surf,#101A1C) 12px 24px)"></div>
               <div style="position:absolute;left:0;right:0;top:0;height:160px;background:linear-gradient(180deg,transparent 0%,var(--bg,#0A1112) 88%)"></div>
-              <div style="position:relative;padding:16px 16px 12px">
-                <div style="display:flex;align-items:center;gap:9px"><i data-lucide="hexagon" style="width:22px;height:22px;color:var(--pri,#6CFF9A)"></i><span style="font:700 22px/1 var(--dfont,'JetBrains Mono');letter-spacing:.24em;color:var(--pri,#6CFF9A)">Linkpoint</span></div>
-                <div style="font:400 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);letter-spacing:.18em;margin-top:5px">SECONDLIFE COMMUNICATOR // v2.0</div>
-                <div style="margin-top:12px;border:1px solid var(--outv,#365047);border-radius:var(--rp,4px);background:var(--surf,#101A1C);padding:12px;display:flex;flex-direction:column;gap:6px">
+              <div style="position:relative;padding:20px 16px 12px;display:flex;flex-direction:column;align-items:center">
+                <!-- Refined Linkpoint Logo Section with Animated / Static Toggle -->
+                <div style="width:100%;max-width:240px;position:relative;display:flex;flex-direction:column;align-items:center">
+                  <div style="position:absolute;right:0;top:-10px;display:flex;align-items:center;gap:4px;font:600 9px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer;background:var(--surf,#101A1C);padding:4px 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);z-index:2" onClick="{{ toggleLogoAnim }}" role="button" tabindex="0" aria-label="Toggle logo animation">
+                    <i data-lucide="sparkles" style="width:11px;height:11px;color:var(--pri,#6CFF9A)"></i>
+                    <sc-if value="{{ logoAnim }}" hint-placeholder-val="{{ true }}"><span>ANIMATED</span></sc-if>
+                    <sc-if value="{{ !logoAnim }}" hint-placeholder-val="{{ false }}"><span>STATIC</span></sc-if>
+                  </div>
+                  <sc-if value="{{ logoAnim }}" hint-placeholder-val="{{ true }}">
+                    <img src="linkpoint-logo-animated.svg" alt="Linkpoint Logo" style="width:100%;height:auto;max-height:220px;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.3))" />
+                  </sc-if>
+                  <sc-if value="{{ !logoAnim }}" hint-placeholder-val="{{ false }}">
+                    <img src="linkpoint-logo-static.svg" alt="Linkpoint Logo" style="width:100%;height:auto;max-height:220px;filter:drop-shadow(0 4px 16px rgba(0,0,0,0.3))" />
+                  </sc-if>
+                </div>
+                <div style="width:100%;margin-top:8px;border:1px solid var(--outv,#365047);border-radius:var(--rp,4px);background:var(--surf,#101A1C);padding:12px;display:flex;flex-direction:column;gap:6px">
                   <div style="display:flex;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);overflow:hidden;margin-bottom:2px">
                     <sc-for list="{{ loginTabs }}" as="lt" hint-placeholder-count="2">
                       <div onClick="{{ lt.pick }}" style="{{ lt.style }}">{{ lt.label }}</div>
@@ -1222,7 +1234,7 @@ class Component extends DCLogic {
     flOpen: { Chat: true, Radar: true, Friends: true, Inventory: true, Map: true }, flMin: {}, flRect: {},
     flZ: ["Map", "Inventory", "Friends", "Radar", "Chat"], menu: null,
     toast: "", composeText: "", chatSent: {}, chatTyping: false, invFilter: "",
-    loginMode: "grid", loginGrid: "agni", loginBusy: false, loginError: null,
+    loginMode: "grid", loginGrid: "agni", loginBusy: false, loginError: null, logoAnim: true,
     customGrids: [], addGrid: false, addGridName: "", addGridHost: "",
     searchFrom: "Friends", searchQuery: "", searchState: {}, reconnecting: false };
 
@@ -2489,7 +2501,7 @@ class Component extends DCLogic {
         letterSpacing: ".06em", color: V.ink2 },
       rScopeLabel: objMode ? "objects by distance" : "nearest " + rSrc[0][1] + "m \u00b7 " + bandName(rSrc[0][1]).toLowerCase(),
       isChat: scr === "Chat" && norm, isFriends: scr === "Friends" && norm, isRadar: scr === "Radar" && norm, isMap: scr === "Map" && norm,
-      isWorld: scr === "3D View" && norm, isTree: scr === "Inventory" && norm, isProfile: scr === "Profile" && norm, isLogin: scr === "Login",
+      isWorld: scr === "3D View" && norm, isTree: scr === "Inventory" && norm, isProfile: scr === "Profile" && norm, isLogin: scr === "Login", logoAnim: s.logoAnim !== false, toggleLogoAnim: () => this.setState(st => ({ logoAnim: !st.logoAnim })),
       isCards: !!CARDS[scr] && norm, cards,
       msgs, regions, invTree: invTreeVisible,
       invRecents: ["Sunset Lamp v3", "Roof Kit", "Hollywood LM", "Brass texture"]
