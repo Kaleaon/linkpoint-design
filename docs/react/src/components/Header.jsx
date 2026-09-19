@@ -36,8 +36,8 @@ function StackHead({ title, subtitle, scr }) {
   const headerIcons =
     scr === "Friends"
       ? [
-          { icon: "user-plus", label: "ADD FRIEND", pick: () => actions.openSearch("Friends") },
-          { icon: "search", label: "SEARCH", pick: () => actions.openSearch("Friends") },
+          { icon: "user-plus", label: "ADD FRIEND", pick: () => actions.openSearch("Friends", "SEARCH") },
+          { icon: "search", label: "SEARCH", pick: () => actions.openSearch("Friends", "SEARCH") },
         ]
       : scr === "Diagnostics"
       ? [{ icon: "refresh-cw", label: "RE-RUN PROBE", pick: () => actions.notify("RE-RUN PROBE — " + (Math.floor(Math.random() * 60) + 40) + "ms") }]
