@@ -25,6 +25,7 @@ export function computeTheme(state, cf) {
   const isConsole = nav === "sweep";
   const consoleScene = isConsole && state.screen === "3D View" && state.cond === "normal";
   const isFloat = nav === "floaters";
+  const isSweepDesk = isFloat && (state.layout === "sweep" || t.nav === "SWEEP");
   const bleed = isConsole || isFloat;
   const LK = LAYOUTS[state.layout].look;
 
@@ -39,5 +40,5 @@ export function computeTheme(state, cf) {
   const immersive = scr === "3D View" && norm;
   const headLook = bare || isFloat ? "none" : nav === "sweep" ? "sweep" : LK.head;
 
-  return { t, d, V, pad, C, isConsole, consoleScene, isFloat, bleed, LK, nav, scr, sel, ink, condPack, stateBlockActive, norm, bare, immersive, headLook };
+  return { t, d, isSweepDesk, V, pad, C, isConsole, consoleScene, isFloat, bleed, LK, nav, scr, sel, ink, condPack, stateBlockActive, norm, bare, immersive, headLook };
 }

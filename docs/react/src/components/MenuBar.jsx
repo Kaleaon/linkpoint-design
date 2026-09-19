@@ -6,7 +6,7 @@ import { FMENU, FLOATERS } from "../theme/constants.js";
 // Build/Help bar with Firestorm-style interactive menu commands.
 export default function MenuBar() {
   const { state, actions } = useApp();
-  const { V, t, ink, isFloat } = useTheme();
+  const { V, t, ink, isFloat, isSweepDesk } = useTheme();
   if (!isFloat) return null;
 
   const handleMenuClick = (menuLabel, itemLabel) => {
@@ -28,7 +28,7 @@ export default function MenuBar() {
   };
 
   return (
-    <div style={{ flex: "none", display: "flex", alignItems: "stretch", height: "28px", padding: "0 8px", background: V.surf, borderBottom: "1px solid " + V.outv, position: "relative", zIndex: 80 }} onClick={() => state.menu && actions.setMenu(null)}>
+    <div style={{ flex: "none", display: "flex", alignItems: "stretch", height: "28px", padding: "0 8px", background: V.surf, borderBottom: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv), position: "relative", zIndex: 80 }} onClick={() => state.menu && actions.setMenu(null)}>
       {FMENU.map((mm) => {
         const open = state.menu === mm.label;
         const win = mm.items === "WINDOWS";
@@ -40,7 +40,7 @@ export default function MenuBar() {
                 e.stopPropagation();
                 actions.setMenu(state.menu === mm.label ? null : mm.label);
               }}
-              style={{ display: "flex", alignItems: "center", height: "100%", padding: "0 10px", cursor: "pointer", background: open ? V.pri : "transparent", color: open ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink, font: "500 11px/1 " + t.font, letterSpacing: ".04em", borderRadius: V.rs }}
+              style={{ display: "flex", alignItems: "center", height: "100%", padding: "0 10px", cursor: "pointer", background: open ? V.pri : "transparent", color: open ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink, font: (isSweepDesk ? "700 11px/1 " + t.dfont : "500 11px/1 " + t.font), letterSpacing: (isSweepDesk ? ".12em" : ".04em"), borderRadius: isSweepDesk ? "999px" : V.rs, textTransform: isSweepDesk ? "uppercase" : "none" }}
             >
               {mm.label}
             </div>
