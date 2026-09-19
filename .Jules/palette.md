@@ -5,3 +5,7 @@
 ## 2026-09-18 - Synchronizing Desktop Firestorm Features in Dual-Stack (HTML DSL + React) Mockups
 **Learning:** When adding interactive desktop features (such as a persistent quick-chat bar, interactive camera HUD controls, and functional top menu actions) to a dual-stack codebase (`docs/index.html` template DSL and `docs/react/` port), event handlers in `docs/index.html` must be named properties in `renderVals()` rather than inline expressions due to DSL resolution constraints.
 **Action:** Always maintain 1:1 behavioral parity between `docs/index.html` and `docs/react/`, ensuring new desktop widgets and inputs use named handler callbacks in `renderVals()` for `docs/index.html` and React hooks/state in `docs/react/`.
+
+## 2024-11-20 - Add ARIA Labels and Keyboard Access to React Header Icons
+**Learning:** When porting custom div-buttons to React, it's essential to not only add `role="button"`, `tabIndex={0}`, and `aria-label` but also implement an `onKeyDown` handler for 'Enter' and ' ' (Space) keys. It is also important to use `e.preventDefault()` on the key down event to prevent the browser from scrolling down when space is pressed.
+**Action:** Add full accessibility attributes and keyboard handlers to interactive custom components.

@@ -36,11 +36,11 @@ function StackHead({ title, subtitle, scr }) {
   const headerIcons =
     scr === "Friends"
       ? [
-          { icon: "user-plus", pick: () => actions.openSearch("Friends") },
-          { icon: "search", pick: () => actions.openSearch("Friends") },
+          { icon: "user-plus", label: "ADD FRIEND", pick: () => actions.openSearch("Friends") },
+          { icon: "search", label: "SEARCH", pick: () => actions.openSearch("Friends") },
         ]
       : scr === "Diagnostics"
-      ? [{ icon: "refresh-cw", pick: () => {} }]
+      ? [{ icon: "refresh-cw", label: "RE-RUN PROBE", pick: () => actions.notify("RE-RUN PROBE — " + (Math.floor(Math.random() * 60) + 40) + "ms") }]
       : null;
   return (
     <div style={{ flex: "none", display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px 8px" }}>
@@ -59,6 +59,15 @@ function StackHead({ title, subtitle, scr }) {
             <div
               key={hi.icon}
               onClick={hi.pick}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  hi.pick();
+                }
+              }}
+              role="button"
+              aria-label={hi.label}
+              tabIndex={0}
               style={{ width: "44px", height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer" }}
             >
               <Icon name={hi.icon} size={18} />
