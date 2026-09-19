@@ -286,6 +286,9 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
     <sc-for list="{{ floaters }}" as="f" hint-placeholder-count="4">
       <div onMouseDown="{{ f.focus }}" style="{{ f.style }}">
         <div onMouseDown="{{ f.drag }}" style="{{ f.barStyle }}">
+          <sc-if value="{{ f.isSweep }}" hint-placeholder-val="{{ false }}">
+            <span style="{{ f.elbowCapStyle }}">{{ f.elbowText }}</span>
+          </sc-if>
           <i data-lucide="{{ f.icon }}" style="width:13px;height:13px;flex:none"></i>
           <span style="flex:1;min-width:0;font:inherit;letter-spacing:inherit;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{ f.title }}</span>
           <span onClick="{{ f.min }}" style="{{ f.btnStyle }}" role="button" tabindex="0" aria-label="Minimize">&minus;</span>
@@ -2093,7 +2096,7 @@ class Component extends DCLogic {
         borderRadius: isFloat ? "10px" : "34px", padding: isFloat ? "7px" : "12px", boxShadow: "0 24px 60px rgba(0,0,0,.55)" },
 
       fmBar: { flex: "none", display: "flex", alignItems: "stretch", height: "28px", padding: "0 8px",
-        background: V.surf, borderBottom: "1px solid " + V.outv, position: "relative", zIndex: 80 },
+        background: V.surf, borderBottom: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "2px solid " + V.pri : "1px solid " + V.outv, position: "relative", zIndex: 80 },
       fmMenus: FMENU.map(mm => {
         const open = s.menu === mm.label, win = mm.items === "WINDOWS";
         const items = win
@@ -2104,7 +2107,9 @@ class Component extends DCLogic {
           pick: (e) => { e.stopPropagation(); this.setState(st => ({ menu: st.menu === mm.label ? null : mm.label })); },
           style: { display: "flex", alignItems: "center", padding: "0 10px", cursor: "pointer", position: "relative",
             background: open ? V.pri : "transparent", color: open ? this.ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
-            font: "500 11px/1 " + t.font, letterSpacing: ".04em", borderRadius: V.rs },
+            font: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "700 11px/1 " + t.dfont : "500 11px/1 " + t.font,
+            letterSpacing: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? ".12em" : ".04em",
+            borderRadius: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "999px" : V.rs },
           dropStyle: { position: "absolute", left: 0, top: "28px", minWidth: "216px", background: V.surf,
             border: "1px solid " + V.pri, boxShadow: "0 14px 34px rgba(0,0,0,.55)", padding: "3px 0", zIndex: 90,
             borderRadius: V.rp, overflow: "hidden" },
@@ -2157,18 +2162,22 @@ class Component extends DCLogic {
         if (msg) { this.notify("Local Chat (" + msg + ")"); this.set("flQuickMsg", ""); }
       },
       flQuickInputStyle: { width: "100%", height: "26px", padding: "0 8px", background: V.bg, color: V.ink,
-        border: "1px solid " + V.outv, borderRadius: V.rs, font: "400 11px/1 " + t.font, outline: "none" },
+        border: "1px solid " + V.outv, borderRadius: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "999px" : V.rs, font: "400 11px/1 " + t.font, outline: "none" },
       flQuickBtnStyle: { height: "26px", padding: "0 10px", background: V.pri, color: this.ink(V.pri, [V.bg, V.onpri, V.ink]),
-        border: "none", borderRadius: V.rs, font: "600 9.5px/1 " + t.dfont, letterSpacing: ".08em", cursor: "pointer", flex: "none" },
+        border: "none", borderRadius: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "999px" : V.rs,
+        font: "700 9.5px/1 " + t.dfont, letterSpacing: ".12em", cursor: "pointer", flex: "none" },
       flDividerStyle: { width: "1px", height: "20px", background: V.outv, margin: "0 2px" },
       showCamHud: s.showCamHud !== false,
       toggleCamHud: () => this.set("showCamHud", !s.showCamHud),
       camHudBtnStyle: { flex: "none", height: "26px", display: "flex", alignItems: "center", gap: "4px", padding: "0 8px",
         background: s.showCamHud ? V.pri : V.surf2, color: s.showCamHud ? this.ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2,
-        border: "1px solid " + (s.showCamHud ? V.pri : V.outv), borderRadius: V.rs, cursor: "pointer",
-        font: "600 9.5px/1 " + t.dfont, letterSpacing: ".08em" },
-      camHudOverlayStyle: { position: "absolute", right: "16px", bottom: "52px", padding: "8px", background: V.surf, border: "1px solid " + V.outv,
-        borderRadius: V.rp, boxShadow: "0 8px 24px rgba(0,0,0,0.4)", display: "flex", flexDirection: "column", gap: "6px", zIndex: 20 },
+        border: "1px solid " + (s.showCamHud ? V.pri : V.outv),
+        borderRadius: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "999px" : V.rs, cursor: "pointer",
+        font: "700 9.5px/1 " + t.dfont, letterSpacing: ".1em" },
+      camHudOverlayStyle: { position: "absolute", right: "16px", bottom: "52px", padding: "8px", background: V.surf,
+        border: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "2px solid " + V.pri : "1px solid " + V.outv,
+        borderRadius: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "18px" : V.rp,
+        boxShadow: "0 12px 32px rgba(0,0,0,0.5)", display: "flex", flexDirection: "column", gap: "6px", zIndex: 20 },
       camHudHeaderStyle: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", borderBottom: "1px solid " + V.outv, paddingBottom: "4px", font: "600 9px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" },
       camHudGridBtnStyle: { height: "24px", width: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px" },
       camHudModeBtnStyle: { height: "24px", width: "24px", background: V.pri, border: "1px solid " + V.pri, color: this.ink(V.pri, [V.bg, V.onpri, V.ink]), borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", font: "600 8px/1 " + t.dfont },
@@ -2185,8 +2194,11 @@ class Component extends DCLogic {
 
       floaters: FLOATERS.filter(f => s.flOpen[f.id] && !s.flMin[f.id]).map(f => {
         const r = this.flR(f.id), act = f.id === scr;
+        const isSweepDesk = isFloat && (s.layout === "sweep" || t.nav === "SWEEP");
         return {
-          title: f.title, icon: f.icon,
+          title: f.title, icon: f.icon, isSweep: isSweepDesk,
+          elbowCapStyle: { display: "flex", alignItems: "center", height: "100%", padding: "0 8px", background: act ? V.sec : V.sec2, color: act ? V.bg : V.onsec, borderRadius: "18px 0 10px 0", font: "700 9.5px/1 " + t.dfont, letterSpacing: ".1em", flex: "none", marginRight: "4px" },
+          elbowText: act ? "LCARS" : "SYS",
           rows: act ? null : (FBODY[f.id] || []).map(x => ({ a: x.a, b: x.b, style: fRow,
             aStyle: { flex: 1, minWidth: 0, font: "400 11.5px/1.2 " + t.font, color: V.ink,
               overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" },
@@ -2198,28 +2210,36 @@ class Component extends DCLogic {
           close: (e) => { e.stopPropagation(); this.flClose(f.id); },
           style: { position: "absolute", left: r.x + "px", top: r.y + "px", width: r.w + "px", height: r.h + "px",
             zIndex: 10 + Math.max(0, s.flZ.indexOf(f.id)), display: "flex", flexDirection: "column", background: V.surf,
-            border: "1px solid " + (act ? V.pri : V.outv), borderRadius: V.rp, overflow: "hidden",
-            boxShadow: act ? "0 16px 44px rgba(0,0,0,.58)" : "0 6px 18px rgba(0,0,0,.34)" },
-          barStyle: { flex: "none", height: FBAR + "px", display: "flex", alignItems: "center", gap: "7px", padding: "0 5px 0 9px",
+            border: (isSweepDesk ? "2px solid " : "1px solid ") + (act ? V.pri : V.outv),
+            borderRadius: isSweepDesk ? "22px 22px 14px 14px" : V.rp, overflow: "hidden",
+            boxShadow: act ? "0 18px 48px rgba(0,0,0,.65)" : "0 6px 18px rgba(0,0,0,.34)" },
+          barStyle: { flex: "none", height: FBAR + "px", display: "flex", alignItems: "center", gap: "7px",
+            padding: isSweepDesk ? "0 5px 0 0" : "0 5px 0 9px",
             background: act ? V.pri : V.surf2, color: act ? this.ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2,
-            font: "600 10px/1 " + t.dfont, letterSpacing: ".12em", cursor: "move", userSelect: "none", touchAction: "none" },
+            font: "700 10.5px/1 " + t.dfont, letterSpacing: ".14em", cursor: "move", userSelect: "none", touchAction: "none" },
           btnStyle: { width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center",
-            border: "1px solid currentColor", borderRadius: V.rs, font: "600 11px/1 " + t.font, cursor: "pointer", opacity: .75 },
+            border: "1px solid " + (isSweepDesk && act ? V.sec : "currentColor"),
+            borderRadius: isSweepDesk ? "999px" : V.rs,
+            background: isSweepDesk && act ? V.sec : "transparent",
+            color: isSweepDesk && act ? V.bg : "inherit",
+            font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: .85 },
           bodyStyle: { flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column", gap: "1px", background: V.bg },
           gripStyle: { position: "absolute", right: 0, bottom: 0, width: "15px", height: "15px", cursor: "nwse-resize",
             background: "linear-gradient(135deg,transparent 0 52%," + (act ? V.pri : V.outv) + " 52% 100%)" },
         };
       }),
       flTaskbar: { position: "absolute", left: 0, right: 0, bottom: 0, height: "40px", display: "flex", alignItems: "center", gap: "4px",
-        padding: "0 8px", background: V.surf, borderTop: "1px solid " + V.outv, zIndex: 60 },
+        padding: "0 8px", background: V.surf, borderTop: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "2px solid " + V.pri : "1px solid " + V.outv, zIndex: 60 },
       flTasks: FLOATERS.filter(f => s.flOpen[f.id]).map(f => {
         const min = !!s.flMin[f.id], act = f.id === scr && !min;
         return { label: f.title, pick: () => this.flToggle(f.id),
           style: { flex: "none", height: "26px", display: "flex", alignItems: "center", padding: "0 10px", cursor: "pointer",
             background: act ? V.pri : (min ? "transparent" : V.surf2),
             color: act ? this.ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2,
-            border: "1px solid " + (min ? V.outv : "transparent"), borderRadius: V.rs, font: "500 10px/1 " + t.font,
-            letterSpacing: ".08em", whiteSpace: "nowrap" } };
+            border: "1px solid " + (min ? V.outv : "transparent"),
+            borderRadius: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "999px" : V.rs,
+            font: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "700 10px/1 " + t.dfont : "500 10px/1 " + t.font,
+            letterSpacing: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? ".12em" : ".08em", whiteSpace: "nowrap" } };
       }),
       flTools: s.cDock.map(k => {
         const b = CBTN[k], lit = !!(s.cTog || {})[k], dis = !!b.off;
@@ -2227,7 +2247,9 @@ class Component extends DCLogic {
         return { icon: b.icon, label: b.label, press: () => this.cPress(k),
           style: { flex: "none", height: "26px", display: "flex", alignItems: "center", gap: "6px", padding: "0 9px",
             background: dis ? "transparent" : bg, color: dis ? V.ink2 : this.ink(bg, [V.bg, V.onpri, V.ink]),
-            border: "1px solid " + (dis ? V.outv : "transparent"), borderRadius: V.rs, cursor: dis ? "not-allowed" : "pointer",
+            border: "1px solid " + (dis ? V.outv : "transparent"),
+            borderRadius: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "999px" : V.rs,
+            cursor: dis ? "not-allowed" : "pointer",
             font: "600 9.5px/1 " + t.dfont, letterSpacing: ".1em", whiteSpace: "nowrap" } };
       }),
       segWrap, cardListStyle, stateBlock, dialog,
