@@ -51,5 +51,43 @@
       "blur": 2,
       "color": "#00000011"
     }
+  },
+  "adaptation": {
+    "desktopAdaptation": {
+      "windowChrome": {
+        "titleBarHeight": 26,
+        "headerStyle": "editorial",
+        "cornerStyle": "quiet",
+        "panelRadius": 3,
+        "controlRadius": 2,
+        "borderWidth": 1,
+        "shadow": "0 6px 16px rgba(0, 0, 0, 0.15)"
+      },
+      "menuBar": {
+        "height": 28,
+        "fontSize": 11,
+        "letterSpacing": "0.08em",
+        "textTransform": "none",
+        "dropdownRadius": 3,
+        "dropdownShadow": "0 8px 20px rgba(0, 0, 0, 0.15)"
+      },
+      "taskbar": {
+        "height": 40,
+        "buttonRadius": 2,
+        "dockAlignment": "left",
+        "quickChatBorderRadius": 2
+      },
+      "cameraHud": {
+        "panelRadius": 3,
+        "buttonRadius": 2,
+        "shadow": "0 4px 12px rgba(0, 0, 0, 0.12)"
+      },
+      "sweep": {
+        "elbowWidth": 26,
+        "titleCapRadius": "3px",
+        "accentBand": "primary",
+        "showElbowBar": true
+      }
+    }
   }
 }

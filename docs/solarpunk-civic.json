@@ -79,9 +79,18 @@
       "enabled": true,
       "angle": 135,
       "stops": [
-        { "offset": 0, "color": "#EAF7FF" },
-        { "offset": 0.58, "color": "#DAF0FF" },
-        { "offset": 1, "color": "#BEEBFF" }
+        {
+          "offset": 0,
+          "color": "#EAF7FF"
+        },
+        {
+          "offset": 0.58,
+          "color": "#DAF0FF"
+        },
+        {
+          "offset": 1,
+          "color": "#BEEBFF"
+        }
       ]
     },
     "shimmer": {
@@ -89,6 +98,44 @@
       "speed": 4,
       "intensity": 0.32,
       "angle": 120
+    }
+  },
+  "adaptation": {
+    "desktopAdaptation": {
+      "windowChrome": {
+        "titleBarHeight": 26,
+        "headerStyle": "standard",
+        "cornerStyle": "rounded",
+        "panelRadius": 10,
+        "controlRadius": 8,
+        "borderWidth": 1,
+        "shadow": "0 10px 26px rgba(0,0,0,0.2)"
+      },
+      "menuBar": {
+        "height": 28,
+        "fontSize": 11,
+        "letterSpacing": "0.06em",
+        "textTransform": "none",
+        "dropdownRadius": 10,
+        "dropdownShadow": "0 8px 20px rgba(0,0,0,0.18)"
+      },
+      "taskbar": {
+        "height": 40,
+        "buttonRadius": 8,
+        "dockAlignment": "left",
+        "quickChatBorderRadius": 8
+      },
+      "cameraHud": {
+        "panelRadius": 10,
+        "buttonRadius": 8,
+        "shadow": "0 8px 20px rgba(0,0,0,0.3)"
+      },
+      "sweep": {
+        "elbowWidth": 30,
+        "titleCapRadius": "10px",
+        "accentBand": "primary",
+        "showElbowBar": true
+      }
     }
   }
 }
