@@ -16,7 +16,7 @@ import ScreenBody from "./ScreenBody.jsx";
 // read-only preview list built from the same data (`FBODY` in the source).
 export default function FloatersDesktop() {
   const { state, actions } = useApp();
-  const { V, t, ink } = useTheme();
+  const { V, t, ink, isSweepDesk } = useTheme();
   const [quickMsg, setQuickMsg] = useState("");
   const [showCamHud, setShowCamHud] = useState(true);
 
@@ -64,8 +64,8 @@ export default function FloatersDesktop() {
             onClick={(e) => e.stopPropagation()}
             onMouseDown={(e) => e.stopPropagation()}
             style={{
-              position: "absolute", right: "16px", bottom: "52px", padding: "8px", background: V.surf, border: "1px solid " + V.outv,
-              borderRadius: V.rp, boxShadow: "0 8px 24px rgba(0,0,0,0.4)", display: "flex", flexDirection: "column", gap: "6px", zIndex: 20
+              position: "absolute", right: "16px", bottom: "52px", padding: "8px", background: V.surf, border: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv),
+              borderRadius: isSweepDesk ? "18px" : V.rp, boxShadow: "0 12px 32px rgba(0,0,0,0.5)", display: "flex", flexDirection: "column", gap: "6px", zIndex: 20
             }}
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", borderBottom: "1px solid " + V.outv, paddingBottom: "4px" }}>
@@ -73,22 +73,22 @@ export default function FloatersDesktop() {
               <span onClick={() => setShowCamHud(false)} style={{ cursor: "pointer", color: V.ink2, fontSize: "12px", lineHeight: 1 }}>&times;</span>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 24px)", gap: "3px", justifyContent: "center" }}>
-              <button type="button" onClick={() => actions.sceneMove({ clientX: 0, clientY: -10 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Up">
+              <button type="button" onClick={() => actions.sceneMove({ clientX: 0, clientY: -10 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Up">
                 <Icon name="chevron-up" size={12} />
               </button>
-              <button type="button" onClick={() => { actions.cHold("cam"); }} style={{ height: "24px", background: V.pri, border: "1px solid " + V.pri, color: ink(V.pri, [V.bg, V.onpri, V.ink]), borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", font: "600 8px/1 " + t.dfont }} aria-label="Toggle Mode">
+              <button type="button" onClick={() => { actions.cHold("cam"); }} style={{ height: "24px", background: V.pri, border: "1px solid " + V.pri, color: ink(V.pri, [V.bg, V.onpri, V.ink]), borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", font: "600 8px/1 " + t.dfont }} aria-label="Toggle Mode">
                 {state.cCam === "ORBIT" ? "ORB" : "LOOK"}
               </button>
-              <button type="button" onClick={() => actions.sceneMove({ clientX: 0, clientY: 10 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Down">
+              <button type="button" onClick={() => actions.sceneMove({ clientX: 0, clientY: 10 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Down">
                 <Icon name="chevron-down" size={12} />
               </button>
-              <button type="button" onClick={() => actions.sceneMove({ clientX: -15, clientY: 0 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Left">
+              <button type="button" onClick={() => actions.sceneMove({ clientX: -15, clientY: 0 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Left">
                 <Icon name="chevron-left" size={12} />
               </button>
-              <button type="button" onClick={() => actions.notify("Camera Reset")} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Reset View">
+              <button type="button" onClick={() => actions.notify("Camera Reset")} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Reset View">
                 <Icon name="rotate-ccw" size={11} />
               </button>
-              <button type="button" onClick={() => actions.sceneMove({ clientX: 15, clientY: 0 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Right">
+              <button type="button" onClick={() => actions.sceneMove({ clientX: 15, clientY: 0 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Right">
                 <Icon name="chevron-right" size={12} />
               </button>
             </div>
@@ -107,14 +107,19 @@ export default function FloatersDesktop() {
             style={{
               position: "absolute", left: r.x + "px", top: r.y + "px", width: r.w + "px", height: r.h + "px",
               zIndex: 10 + Math.max(0, state.flZ.indexOf(f.id)), display: "flex", flexDirection: "column", background: V.surf,
-              border: "1px solid " + (act ? V.pri : V.outv), borderRadius: V.rp, overflow: "hidden",
-              boxShadow: act ? "0 16px 44px rgba(0,0,0,.58)" : "0 6px 18px rgba(0,0,0,.34)",
+              border: (isSweepDesk ? "2px solid " : "1px solid ") + (act ? V.pri : V.outv), borderRadius: isSweepDesk ? "22px 22px 14px 14px" : V.rp, overflow: "hidden",
+              boxShadow: act ? "0 18px 48px rgba(0,0,0,.65)" : "0 6px 18px rgba(0,0,0,.34)",
             }}
           >
             <div
               onMouseDown={(e) => actions.flDrag(f.id, e, "move")}
-              style={{ flex: "none", height: FBAR + "px", display: "flex", alignItems: "center", gap: "7px", padding: "0 5px 0 9px", background: act ? V.pri : V.surf2, color: act ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2, font: "600 10px/1 " + t.dfont, letterSpacing: ".12em", cursor: "move", userSelect: "none" }}
+              style={{ flex: "none", height: FBAR + "px", display: "flex", alignItems: "center", gap: "7px", padding: isSweepDesk ? "0 5px 0 0" : "0 5px 0 9px", background: act ? V.pri : V.surf2, color: act ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2, font: "700 10.5px/1 " + t.dfont, letterSpacing: ".14em", cursor: "move", userSelect: "none" }}
             >
+              {isSweepDesk && (
+                <span style={{ display: "flex", alignItems: "center", height: "100%", padding: "0 8px", background: act ? V.sec : V.sec2, color: act ? V.bg : V.onsec, borderRadius: "18px 0 10px 0", font: "700 9.5px/1 " + t.dfont, letterSpacing: ".1em", flex: "none", marginRight: "4px" }}>
+                  {act ? "LCARS" : "SYS"}
+                </span>
+              )}
               <Icon name={f.icon} size={13} />
               <span style={{ flex: 1, minWidth: 0, font: "inherit", letterSpacing: "inherit", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{f.title}</span>
               <span
@@ -122,7 +127,7 @@ export default function FloatersDesktop() {
                   e.stopPropagation();
                   actions.flToggle(f.id);
                 }}
-                style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: V.rs, font: "600 11px/1 " + t.font, cursor: "pointer", opacity: 0.75 }}
+                style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
                 role="button" tabIndex={0} aria-label="Minimize"
               >
                 &minus;
@@ -132,7 +137,7 @@ export default function FloatersDesktop() {
                   e.stopPropagation();
                   actions.flClose(f.id);
                 }}
-                style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: V.rs, font: "600 11px/1 " + t.font, cursor: "pointer", opacity: 0.75 }}
+                style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
                 role="button" tabIndex={0} aria-label="Close"
               >
                 &times;
@@ -172,7 +177,7 @@ export default function FloatersDesktop() {
       ) : null}
 
       {/* Firestorm Desktop Taskbar & Nearby Quick-Chat Dock */}
-      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "40px", display: "flex", alignItems: "center", gap: "6px", padding: "0 8px", background: V.surf, borderTop: "1px solid " + V.outv, zIndex: 60 }}>
+      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "40px", display: "flex", alignItems: "center", gap: "6px", padding: "0 8px", background: V.surf, borderTop: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv), zIndex: 60 }}>
         {/* Persistent Firestorm Nearby Quick Chat Input Bar */}
         <form onSubmit={sendQuickChat} style={{ display: "flex", alignItems: "center", gap: "4px", minWidth: "260px", maxWidth: "340px" }}>
           <div style={{ position: "relative", flex: 1 }}>
@@ -183,7 +188,7 @@ export default function FloatersDesktop() {
               placeholder="Nearby Chat..."
               style={{
                 width: "100%", height: "26px", padding: "0 8px", background: V.bg, color: V.ink,
-                border: "1px solid " + V.outv, borderRadius: V.rs, font: "400 11px/1 " + t.font, outline: "none"
+                border: "1px solid " + V.outv, borderRadius: isSweepDesk ? "999px" : V.rs, font: "400 11px/1 " + t.font, outline: "none"
               }}
             />
           </div>
@@ -191,7 +196,7 @@ export default function FloatersDesktop() {
             type="submit"
             style={{
               height: "26px", padding: "0 10px", background: V.pri, color: ink(V.pri, [V.bg, V.onpri, V.ink]),
-              border: "none", borderRadius: V.rs, font: "600 9.5px/1 " + t.dfont, letterSpacing: ".08em", cursor: "pointer", flex: "none"
+              border: "none", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 9.5px/1 " + t.dfont, letterSpacing: ".12em", cursor: "pointer", flex: "none"
             }}
           >
             SAY
@@ -207,7 +212,7 @@ export default function FloatersDesktop() {
             <div
               key={f.id}
               onClick={() => actions.flToggle(f.id)}
-              style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", padding: "0 10px", cursor: "pointer", background: act ? V.pri : min ? "transparent" : V.surf2, color: act ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2, border: "1px solid " + (min ? V.outv : "transparent"), borderRadius: V.rs, font: "500 10px/1 " + t.font, letterSpacing: ".08em", whiteSpace: "nowrap" }}
+              style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", padding: "0 10px", cursor: "pointer", background: act ? V.pri : min ? "transparent" : V.surf2, color: act ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2, border: "1px solid " + (min ? V.outv : "transparent"), borderRadius: isSweepDesk ? "999px" : V.rs, font: isSweepDesk ? "700 10px/1 " + t.dfont : "500 10px/1 " + t.font, letterSpacing: isSweepDesk ? ".12em" : ".08em", whiteSpace: "nowrap" }}
             >
               {f.title}
             </div>
@@ -223,7 +228,7 @@ export default function FloatersDesktop() {
           style={{
             flex: "none", height: "26px", display: "flex", alignItems: "center", gap: "4px", padding: "0 8px",
             background: showCamHud ? V.pri : V.surf2, color: showCamHud ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2,
-            border: "1px solid " + (showCamHud ? V.pri : V.outv), borderRadius: V.rs, cursor: "pointer",
+            border: "1px solid " + (showCamHud ? V.pri : V.outv), borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer",
             font: "600 9.5px/1 " + t.dfont, letterSpacing: ".08em"
           }}
           title="Toggle Camera HUD"

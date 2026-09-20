@@ -9,3 +9,7 @@
 ## 2024-11-20 - Add ARIA Labels and Keyboard Access to React Header Icons
 **Learning:** When porting custom div-buttons to React, it's essential to not only add `role="button"`, `tabIndex={0}`, and `aria-label` but also implement an `onKeyDown` handler for 'Enter' and ' ' (Space) keys. It is also important to use `e.preventDefault()` on the key down event to prevent the browser from scrolling down when space is pressed.
 **Action:** Add full accessibility attributes and keyboard handlers to interactive custom components.
+
+## 2026-09-20 - Custom Toggle Component Accessibility
+**Learning:** Custom interactive components, such as a toggle built from `<span>` elements, must include the semantic attributes `role="switch"` and `aria-checked` to be recognized properly by assistive technologies. Further, keyboard accessibility requires adding `tabIndex={0}` and an `onKeyDown` handler to handle Space and Enter keystrokes, ensuring `e.preventDefault()` is used to prevent the page from scrolling on Space.
+**Action:** When inspecting or adding custom switches/toggles, ensure `role="switch"`, `aria-checked`, `tabIndex`, and `onKeyDown` are all correctly configured to replicate native element behavior.
