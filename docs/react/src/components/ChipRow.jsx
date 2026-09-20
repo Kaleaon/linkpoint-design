@@ -4,8 +4,9 @@ import { IM_CHIPS, GROUP_CHIPS, FRIEND_ROWS } from "../data/content.js";
 
 // Ported from `chips`/`chipList`/`activeChip` — Chat's IM/GROUP thread picker.
 // Local has no chip row (it's the single always-on nearby feed). The trailing
-// "ALL (n)" chip opens the searchable picker for starting a thread with
-// someone not already a chip (the chip row only ever shows existing threads).
+// "ALL (n)" chip opens the People picker (Friends/Nearby/Search tabs) for
+// starting a thread with someone not already a chip (the chip row only ever
+// shows existing threads) — it lands on the Friends tab, not a bare search box.
 export default function ChipRow() {
   const { state, actions } = useApp();
   const { V, t, LK, scr, norm } = useTheme();

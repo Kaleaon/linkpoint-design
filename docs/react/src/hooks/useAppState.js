@@ -59,6 +59,7 @@ export function useAppState() {
   const [addGridName, setAddGridName] = useState("");
   const [addGridHost, setAddGridHost] = useState("");
   const [searchFrom, setSearchFrom] = useState("Friends");
+  const [searchTab, setSearchTab] = useState("FRIENDS");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchState, setSearchState] = useState({});
   const [reconnecting, setReconnecting] = useState(false);
@@ -193,8 +194,12 @@ export function useAppState() {
   }, [addGridName, addGridHost, customGrids]);
 
   // ---- resident search (openSearch/searchAdd) -----------------------------
-  const openSearch = useCallback((from) => {
+  // `tab` picks which of the picker's three panes opens first: FRIENDS (the
+  // contacts list, default — matches a real SL viewer's "start a conversation"
+  // flow), NEARBY (radar-range residents), or SEARCH (grid-wide name lookup).
+  const openSearch = useCallback((from, tab = "FRIENDS") => {
     setSearchFrom(from);
+    setSearchTab(tab);
     setSearchQuery("");
     setScreen("Search");
   }, []);
@@ -202,6 +207,12 @@ export function useAppState() {
     setSearchState((s) => ({ ...s, [name]: "sending" }));
     clearTimeout(searchTimerRef.current);
     searchTimerRef.current = setTimeout(() => setSearchState((s) => ({ ...s, [name]: "sent" })), 700);
+  }, []);
+  // Start (or resume) an IM thread with a resident picked from Friends/Nearby.
+  const startIm = useCallback((name) => {
+    setTabs((s) => ({ ...s, Chat: "IM" }));
+    setChip(name);
+    setScreen("Chat");
   }, []);
 
   // ---- settings: reconnect to grid ---------------------------------------
@@ -419,7 +430,7 @@ export function useAppState() {
       cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
       rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
       loginMode, loginGrid, loginBusy, loginError, customGrids, addGrid, addGridName, addGridHost,
-      searchFrom, searchQuery, searchState, reconnecting, toast,
+      searchFrom, searchTab, searchQuery, searchState, reconnecting, toast,
     },
     actions: {
       setLayout, setPalette, setDevice, setScreen: screenPick, setDialog, setDense,
@@ -432,7 +443,7 @@ export function useAppState() {
       holdStart, holdEnd, endEdit, togglePad, toggleRun, flyUpDown, flyDnDown, flyRelease, addSlot, removeDockSlot,
       radarTap, radarHold, radarRelease, radarBlipPick,
       setRMode,
-      setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchQuery, searchAdd, reconnect, notify,
+      setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchTab, setSearchQuery, searchAdd, startIm, reconnect, notify,
     },
     T, D, navMode,
   };
