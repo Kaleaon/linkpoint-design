@@ -703,7 +703,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                       </span>
                     </sc-if>
                     <sc-if value="{{ c.badge }}" hint-placeholder-val="{{ false }}"><span style="min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:var(--bdg,#8AD0B0);color:var(--onbdg,#0E3021);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--font,'JetBrains Mono')">{{ c.badge }}</span></sc-if>
-                    <sc-if value="{{ c.toggle }}" hint-placeholder-val="{{ false }}"><span onClick="{{ c.togglePick }}" style="{{ c.toggleStyle }}"><span style="{{ c.knobStyle }}"></span></span></sc-if>
+                    <sc-if value="{{ c.toggle }}" hint-placeholder-val="{{ false }}"><span onClick="{{ c.togglePick }}" onKeyDown="{{ c.toggleKeyDown }}" role="switch" aria-checked="{{ c.on }}" tabindex="0" style="{{ c.toggleStyle }}"><span style="{{ c.knobStyle }}"></span></span></sc-if>
                     <sc-if value="{{ !!c.select }}" hint-placeholder-val="{{ false }}">
                       <select onChange="{{ c.selectChange }}" style="margin-left: 10px; background: var(--surf2, #1B2A2D); color: var(--ink, #D7F5E6); border: 1px solid var(--outv, #365047); border-radius: 4px; padding: 4px 8px; font: 400 12px/1 var(--font, 'JetBrains Mono'); max-width: 150px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
                         <sc-for list="{{ c.options }}" as="opt" hint-placeholder-count="2">
@@ -1937,6 +1937,7 @@ class Component extends DCLogic {
       style: M(M(cardBase, accentOn(c.style && c.style.borderColor)), cardTap(c) ? { cursor: "pointer" } : null),
       toggleStyle: { width: "42px", height: "24px", borderRadius: "12px", position: "relative", display: "inline-block", flex: "none", background: c.on === false ? V.surf2 : V.priC },
       knobStyle: { position: "absolute", top: "3px", width: "18px", height: "18px", borderRadius: "9px", left: c.on === false ? "3px" : "21px", background: c.on === false ? V.ink2 : V.pri, transition: "left .18s ease" },
+      toggleKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (c.togglePick) c.togglePick(); } },
       bigStyle: M({ font: "700 46px/1 " + t.font, color: V.ok, marginTop: "6px" }, c.bigStyle),
       actions: (c.actions || []).map(a => ({ label: a.label, pick: a.pick,
         style: M(actBase, a.primary ? { background: V.pri, color: V.onpri, borderColor: V.pri } : a.dim ? { color: V.err, borderColor: V.err } : null) })),
