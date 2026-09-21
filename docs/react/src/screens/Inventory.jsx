@@ -2,6 +2,7 @@ import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { INVENTORY_SOURCE, INVENTORY_FOLDERS, INVENTORY_RECENTS } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
+import { subView } from "../theme/constants.js";
 
 // Ported from the `isTree` <sc-if> block: search/grid toolbar, recent-items
 // strip, and the folder tree (expand/collapse persists per folder in
@@ -14,11 +15,17 @@ export default function Inventory() {
   const invRecentStyle = { flex: "none", display: "flex", gap: "8px", overflowX: "auto", padding: bleed ? "0 0 8px 10px" : "0 16px 10px" };
   const invListStyle = { flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column", gap: bleed ? C.gap + "px" : 0, background: bleed ? V.bg : "transparent" };
 
-  const nodes = INVENTORY_SOURCE.map(([name, icon, depth, parent, ver]) => {
+  // RECENT and WORN are flat lists of tagged leaves, not a tree — folders and the
+  // open/closed state only mean anything under ALL.
+  const curSub = subView(state, "Inventory");
+  const all = INVENTORY_SOURCE.map(([name, icon, depth, parent, ver, tags]) => {
     const isFolder = INVENTORY_FOLDERS.includes(name);
     const open = state.invOpen[name] !== false;
-    return { name, icon, ver, parent, depth, isFolder, open, chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "circle-small" };
-  }).filter((n) => n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false));
+    return { name, icon, ver, parent, depth, isFolder, open, tags: tags || [], chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "dot" };
+  });
+  const nodes = curSub === "ALL"
+    ? all.filter((n) => n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false))
+    : all.filter((n) => n.tags.includes(curSub.toLowerCase())).map((n) => ({ ...n, depth: 0, isFolder: false, chev: "dot" }));
 
   return (
     <>

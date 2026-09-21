@@ -1,9 +1,12 @@
+import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { PROFILE_BLOCKS } from "../data/content.js";
+import { subView } from "../theme/constants.js";
 import Icon from "../components/Icon.jsx";
 
 // Ported from the `isProfile` <sc-if> block.
 export default function Profile() {
+  const { state } = useApp();
   const { V, t } = useTheme();
   return (
     <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
@@ -30,7 +33,7 @@ export default function Profile() {
           <Icon name="more-horizontal" size={18} />
         </div>
       </div>
-      {PROFILE_BLOCKS.map((pb) => (
+      {(PROFILE_BLOCKS[subView(state, "Profile")] || PROFILE_BLOCKS["2ND LIFE"]).map((pb) => (
         <div key={pb.label} style={{ margin: "0 16px 12px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, padding: "12px" }}>
           <div style={{ font: "600 11px/1 " + t.font, letterSpacing: ".26em", color: V.pri, marginBottom: "8px" }}>{pb.label}</div>
           <div style={{ font: "400 12px/1.65 " + t.font, color: V.ink2 }}>{pb.body}</div>

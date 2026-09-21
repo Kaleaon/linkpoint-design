@@ -3,9 +3,10 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL, HEAD } from "../data/content.js";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
-import { CBTN, CSUB, CPAD, CPADR } from "../theme/constants.js";
+import { CBTN, CSUB, CPAD, CPADR, subView, setSub } from "../theme/constants.js";
 import Icon from "./Icon.jsx";
 import ScreenBody from "./ScreenBody.jsx";
+import { navActive } from "../theme/look.js";
 
 // The 3D View's sim/location — shared by the in-scene region tag and the
 // console's own top bar so the two never disagree.
@@ -25,7 +26,7 @@ export default function ConsoleFrame() {
   const cfBar = { position: "absolute", left: 0, top: 0, right: 0, height: C.bar + "px", background: V.pri, borderRadius: Math.round(C.bar * 0.66) + "px 0 0 0" };
   const cfBarEnd = { position: "absolute", right: 0, top: 0, width: (C.wide ? 104 : 66) + "px", height: C.bar + "px", background: V.sec2 };
   const cfBarGap = { position: "absolute", right: (C.wide ? 108 : 70) + "px", top: 0, width: C.gap + "px", height: C.bar + "px", background: V.bg };
-  const headMap = HEAD(LAYOUTS[state.layout].name, PALETTES[state.palette].name);
+  const headMap = HEAD(LAYOUTS[state.layout].name, PALETTES[state.palette].name, { cleared: state.cacheCleared, limit: state.prefs.cacheLimit, loc: state.prefs.cacheLoc });
   const cfTitleText = consoleScene ? SIM_NAME : (headMap[state.screen] || ["", ""])[0];
   const cfTitle = {
     position: "absolute", right: (C.wide ? 128 : 84) + "px", left: C.rail + C.gap + "px", top: 0, height: C.bar + "px",
@@ -201,9 +202,8 @@ export default function ConsoleFrame() {
 function buildConsoleNav({ state, actions, V, t, C, ink }) {
   const hs = C.wide ? [94, 56, 70, 46, 58, 46, 52, 46] : [58, 46, 52, 46, 48, 46, 50, 46];
   const tint = [V.sec2, V.surf2, V.sec, V.surf2, V.sec2, V.sec, V.surf2, V.sec];
-  const objMode = state.rMode === "OBJ";
   const items = NAV_ALL.map((n, i) => {
-    const on = state.screen === n.id;
+    const on = navActive(state.screen, n.id);
     const bg = state.cFlash === n.id ? V.priC : on ? V.pri : tint[i % tint.length];
     return {
       label: n.label, code: "0" + (i + 1) + "-" + (4471 + i * 17), pick: () => actions.cTap(n.id), on,
@@ -216,13 +216,13 @@ function buildConsoleNav({ state, actions, V, t, C, ink }) {
     };
   });
   const at = items.findIndex((x) => x.on);
-  const subActive = state.screen === "Chat" ? state.tabs.Chat : state.screen === "Radar" ? (objMode ? "OBJECT" : "AVATAR") : null;
+  const subActive = subView(state, state.screen);
   const sub = (CSUB[state.screen] || []).map(([label, code]) => {
     const sOn = subActive === label;
     const sbg = sOn ? V.sec : V.surf2;
     return {
       label, code, on: false,
-      pick: state.screen === "Chat" ? () => actions.setTab("Chat", label) : state.screen === "Radar" ? () => actions.setRMode(label === "AVATAR" ? "AV" : "OB") : () => {},
+      pick: () => setSub(actions, state.screen, label),
       codeStyle: { position: "absolute", left: "7px", top: "4px", font: "500 7.5px/1 " + t.font, color: ink(sbg, [V.ink2, V.bg]), opacity: 0.8 },
       style: {
         position: "relative", flex: "none", boxSizing: "border-box", height: (C.wide ? 34 : 30) + "px", width: C.rail - 26 + "px", marginLeft: "26px",
@@ -248,7 +248,13 @@ function ConsoleScene() {
     background: "linear-gradient(180deg," + V.sky1 + " 0%," + V.sky2 + " 46%," + V.gnd + " 46%," + V.gnd2 + " 100%)",
   };
   const cfParallax = { position: "absolute", inset: 0, transform: "translate(" + (-state.cHdg * 0.9).toFixed(1) + "px," + (state.cPitch * 0.8).toFixed(1) + "px)", transition: state.cDrag ? "none" : "transform .35s ease-out" };
-  const regionRead = SIM_NAME.toUpperCase() + " · " + SIM_COORD.x + "," + SIM_COORD.y + "," + SIM_COORD.z + " · HDG " + String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(3, "0") + "° " + (state.cPitch > 2 ? "DN" : state.cPitch < -2 ? "UP" : "LVL");
+  // The console scene has one readout strip, so 3D View's CAM/GFX sub-views swap
+  // what it reports rather than adding a second strip to the LCARS frame.
+  const regionRead =
+    state.screen === "3D View" && subView(state, "3D View") === "GFX"
+      ? "GFX · DRAW " + state.prefs.draw.toUpperCase() + " · " + state.prefs.quality.toUpperCase() + " · " + state.prefs.fps.toUpperCase() +
+        " · SHADOWS " + (state.toggles.shadows ? "ON" : "OFF") + " · " + (state.toggles.battery ? "SAVER" : "FULL")
+      : SIM_NAME.toUpperCase() + " · " + SIM_COORD.x + "," + SIM_COORD.y + "," + SIM_COORD.z + " · HDG " + String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(3, "0") + "° " + (state.cPitch > 2 ? "DN" : state.cPitch < -2 ? "UP" : "LVL");
 
   return (
     <div onMouseDown={actions.sceneDown} onMouseMove={actions.sceneMove} onMouseUp={actions.sceneUp} onMouseLeave={actions.sceneUp} style={cfScene}>

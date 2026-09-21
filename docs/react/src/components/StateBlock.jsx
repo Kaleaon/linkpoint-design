@@ -1,6 +1,7 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import Icon from "./Icon.jsx";
+import CrystalLoader from "./CrystalLoader.jsx";
 
 // Ported from the `stateBlock` computation + its <sc-if> template block —
 // the shared loading/empty/error UI shown in place of a screen's normal body.
@@ -25,23 +26,28 @@ export default function StateBlock() {
         textAlign: "center",
       }}
     >
-      <div
-        style={{
-          width: "62px",
-          height: "62px",
-          flex: "none",
-          borderRadius: V.rp,
-          border: "1px solid " + (isError ? V.err : V.outv),
-          background: V.surf,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: isError ? V.err : V.pri,
-          animation: isLoading ? "spin 2.6s linear infinite" : "none",
-        }}
-      >
-        <Icon name={condPack.icon} size={26} />
-      </div>
+      {/* Loading swaps the lucide glyph for the crystal loader; empty/error keep the
+          glyph, which carries the specific meaning (inbox, plug-zap, cloud-off, …). */}
+      {isLoading ? (
+        <CrystalLoader />
+      ) : (
+        <div
+          style={{
+            width: "62px",
+            height: "62px",
+            flex: "none",
+            borderRadius: V.rp,
+            border: "1px solid " + (isError ? V.err : V.outv),
+            background: V.surf,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: isError ? V.err : V.pri,
+          }}
+        >
+          <Icon name={condPack.icon} size={26} />
+        </div>
+      )}
       <div style={{ font: "700 15px/1.3 " + t.dfont, letterSpacing: V.tls, color: isError ? V.err : V.ink }}>{condPack.title}</div>
       <div style={{ maxWidth: "300px", font: "400 12px/1.7 " + t.font, color: V.ink2 }}>{condPack.body}</div>
       {condPack.bar ? (
