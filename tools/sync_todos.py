@@ -27,6 +27,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -109,7 +110,7 @@ def ensure_mirror(url, cache, log=print):
 
     def clone(extra):
         if cache.exists():
-            subprocess.run(["rm", "-rf", str(cache)], check=False)
+            shutil.rmtree(cache, ignore_errors=True)
         return git(["clone", "--mirror", *extra, url, str(cache)])
 
     try:
@@ -124,7 +125,7 @@ def rev_exists(mirror, rev):
     return git(["cat-file", "-e", f"{rev}^{{commit}}"], cwd=mirror, check=False).returncode == 0
 
 
-def read_commits(mirror, branch, since, limit, include_merges):
+def read_commits(mirror, branch, since, limit, include_merges, log=print):
     """Return commits on `branch`, oldest first, as dicts with their files."""
     if not rev_exists(mirror, branch):
         raise SyncError(f"branch {branch!r} not found in the upstream mirror")
@@ -138,8 +139,8 @@ def read_commits(mirror, branch, since, limit, include_merges):
         args.append(f"{since}..{branch}")
     else:
         if since:
-            print(f"  ! {since[:12]} is not in the upstream history any more; "
-                  f"falling back to the last {limit} commits")
+            log(f"  ! {since[:12]} is not in the upstream history any more; "
+                f"falling back to the last {limit} commits")
         args += [f"-n{limit}", branch]
 
     out = git(args, cwd=mirror).stdout
@@ -282,25 +283,34 @@ def read_todo(path):
 
     text = path.read_text(encoding="utf-8")
 
-    state = {"items": [], "last_sha": None}
-    start = text.rfind(STATE_OPEN)
-    if start != -1:
-        end = text.find(STATE_CLOSE, start)
-        if end != -1:
-            blob = text[start + len(STATE_OPEN):end].strip()
-            try:
-                state = json.loads(blob)
-            except json.JSONDecodeError as exc:
-                raise SyncError(
-                    f"{path} has a corrupt <!-- sync-state --> block ({exc}). "
-                    f"Fix it, or delete the file to rebuild from scratch."
-                )
-
     ticks = {}
     for line in text.splitlines():
         m = ITEM_RE.match(line)
         if m:
             ticks[m.group(2)] = m.group(1).lower() == "x"
+
+    state = {"items": [], "last_sha": None}
+    start = text.rfind(STATE_OPEN)
+    if start == -1 or text.find(STATE_CLOSE, start) == -1:
+        # Rebuilding from scratch here would silently drop every tick and the
+        # whole Completed history, so refuse rather than quietly lose it.
+        if ticks:
+            raise SyncError(
+                f"{path} lists {plural(len(ticks), 'item')} but has no "
+                f"<!-- sync-state --> block. Restore it (git checkout the file), "
+                f"or delete the file to rebuild from scratch."
+            )
+        return state, ticks
+
+    end = text.find(STATE_CLOSE, start)
+    blob = text[start + len(STATE_OPEN):end].strip()
+    try:
+        state = json.loads(blob)
+    except json.JSONDecodeError as exc:
+        raise SyncError(
+            f"{path} has a corrupt <!-- sync-state --> block ({exc}). "
+            f"Fix it, or delete the file to rebuild from scratch."
+        )
     return state, ticks
 
 
@@ -505,7 +515,9 @@ def main(argv=None):
     else:
         ensure_mirror(up["url"], cache, log=log)
 
-    commits = read_commits(cache, up["branch"], since, limit, config.get("include_merges", False))
+    commits = read_commits(
+        cache, up["branch"], since, limit, config.get("include_merges", False), log=log
+    )
     head = git(["rev-parse", up["branch"]], cwd=cache).stdout.strip()
     log(f"  {plural(len(commits), 'commit')} to consider since "
         f"{since[:7] if since else 'the beginning'}")
