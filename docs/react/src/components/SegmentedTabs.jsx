@@ -1,20 +1,25 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { segLooks } from "../theme/look.js";
+import { CSUB, subView, setSub } from "../theme/constants.js";
 
-// Ported from `segTabs`/`segWrap`/`hasSeg` — Chat's LOCAL/IM/GROUP,
-// Friends' ALL/ONLINE and Diagnostics' AGNI/ADITI row.
+// Ported from `segTabs`/`segWrap`/`hasSeg`. The labels come from CSUB — the one
+// sub-view table the LCARS rail also renders — so a screen gains a tab strip by
+// appearing there, not by being named here.
 export default function SegmentedTabs() {
   const { state, actions } = useApp();
   const { V, t, LK, nav, isFloat, norm, scr } = useTheme();
 
   if (!norm) return null;
-  const curTab = state.tabs[scr];
-  let tabs = null;
-  if (scr === "Chat") tabs = [{ label: "LOCAL" }, { label: "IM", badge: 3 }, { label: "GROUP", badge: 1 }];
-  else if (scr === "Friends") tabs = [{ label: "ALL" }, { label: "ONLINE" }];
-  else if (scr === "Diagnostics") tabs = [{ label: "AGNI" }, { label: "ADITI" }];
-  if (!tabs) return null;
+  const curSub = subView(state, scr);
+  // Radar draws its own AVATARS/OBJECTS pill row inside the screen body, and 3D
+  // View is immersive with no header to hang a strip under — it carries its
+  // CAM/GFX switch in-scene instead. Both still get the LCARS sub-nav.
+  if (!CSUB[scr] || scr === "Radar" || scr === "3D View") return null;
+  // Unread counts live here rather than in CSUB — CSUB is the label model, a
+  // badge is a per-tab decoration that only Chat currently has.
+  const SEG_BADGE = { Chat: { IM: 3, GROUP: 1 } };
+  const tabs = CSUB[scr].map(([label]) => ({ label, badge: (SEG_BADGE[scr] || {})[label] }));
 
   const segLook = LK.seg || "fill";
   const looks = segLooks(V, t.font);
@@ -28,11 +33,7 @@ export default function SegmentedTabs() {
     ? { flex: "none", display: "flex", margin: nav === "sweep" ? "12px 12px 10px 4px" : "2px 16px 10px", border: "1px solid " + V.outv, borderRadius: V.rs, overflow: "hidden" }
     : { flex: "none", display: "flex", margin: "0 16px 8px", borderBottom: segLook === "text" ? "1px solid " + V.outv : "none", overflowX: "auto" };
 
-  const isActive = (label) => {
-    if (scr === "Friends") return curTab === label || (label === "ALL" && curTab !== "ONLINE");
-    if (scr === "Diagnostics") return (curTab || "AGNI") === label;
-    return curTab === label;
-  };
+  const isActive = (label) => curSub === label;
 
   return (
     <div style={wrap}>
@@ -40,7 +41,7 @@ export default function SegmentedTabs() {
         const active = isActive(x.label);
         const style = { ...base, ...(active ? onLook : null), ...(isFloat ? { minHeight: "24px", height: "24px", padding: "0 9px", flex: "none", borderRadius: 0, font: "600 9.5px/1 " + t.font, letterSpacing: ".1em" } : null) };
         return (
-          <div key={x.label} onClick={() => actions.setTab(scr, x.label)} style={style}>
+          <div key={x.label} onClick={() => setSub(actions, scr, x.label)} style={style}>
             <span style={{ font: "inherit", letterSpacing: "inherit" }}>{x.label}</span>
             {x.badge ? (
               <span

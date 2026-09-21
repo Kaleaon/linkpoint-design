@@ -1,7 +1,7 @@
 # linkpoint-design
 
 Design mockup for **Linkpoint**, a mobile Second Life/OpenSim viewer —
-13 screens × 6 layout packs × 24 colour packs × 4 device sizes, plus the
+20 screens × 6 layout packs × 24 colour packs × 5 device sizes, plus the
 Second Life system dialogs (permissions, teleport lures, pay, etc.).
 
 - **[`docs/index.html`](docs/index.html)** — the mockup: one HTML file,

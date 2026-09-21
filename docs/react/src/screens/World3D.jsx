@@ -1,10 +1,29 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL } from "../data/content.js";
-import { HUDS, TARGETS } from "../theme/constants.js";
+import { HUDS, TARGETS, CSUB, subView, setSub } from "../theme/constants.js";
 import Icon from "../components/Icon.jsx";
 
 const HUD_CELLS = { row: 6, grid: 9, list: 4, bar: 3, pad: 4 };
+// GFX taps cycle the same preferences the Settings screen sets, so the two
+// surfaces can never drift apart.
+const GFX_STRIP = [
+  ["DRAW", "draw", ["64 m", "96 m", "128 m", "192 m", "256 m"]],
+  ["QUALITY", "quality", ["Low", "Balanced", "High", "Ultra"]],
+  ["FPS", "fps", ["30 fps", "45 fps", "60 fps", "Uncapped"]],
+];
+
+function Readout({ V, t, label, value, onClick }) {
+  return (
+    <div
+      onClick={onClick}
+      style={{ padding: "6px 10px", borderRadius: V.rs, cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: "3px", background: "rgba(0,0,0,.42)", border: "1px solid " + V.outv }}
+    >
+      <span style={{ font: "600 8px/1 " + t.font, letterSpacing: ".18em", color: V.ink2 }}>{label}</span>
+      <span style={{ font: "700 10px/1 " + t.font, letterSpacing: ".08em", color: V.pri }}>{value}</span>
+    </div>
+  );
+}
 const HUD_COLS = { row: 6, grid: 3, list: 1, bar: 3, pad: 2 };
 
 // Ported from the `isWorld` <sc-if> block (standalone 3D view, used by every
@@ -14,6 +33,7 @@ const HUD_COLS = { row: 6, grid: 3, list: 1, bar: 3, pad: 2 };
 export default function World3D() {
   const { state, actions } = useApp();
   const { V, t } = useTheme();
+  const curSub = subView(state, "3D View");
   const overlayBtn = { width: "46px", height: "46px", borderRadius: V.rs, background: V.surf, border: "1px solid " + V.outv, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer", position: "relative" };
   const sheetStyle = { position: "absolute", left: 0, right: 0, bottom: 0, background: V.surf, borderTop: "1px solid " + V.pri, borderRadius: V.rl + " " + V.rl + " 0 0", padding: "16px 16px 20px", maxHeight: "62%", overflowY: "auto" };
   const tgt = TARGETS.find((x) => x.id === state.target) || null;
@@ -106,12 +126,59 @@ export default function World3D() {
         <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(" + V.outv + " 1px,transparent 1px),linear-gradient(90deg," + V.outv + " 1px,transparent 1px)", backgroundSize: "22px 22px", opacity: 0.55 }} />
         <div style={{ position: "absolute", left: "50%", top: "50%", width: "6px", height: "6px", margin: "-3px 0 0 -3px", borderRadius: "3px", background: V.pri }} />
       </div>
-      <div style={{ position: "absolute", left: 0, right: 0, bottom: "196px", display: "flex", justifyContent: "center", gap: "6px" }}>
-        {["FRONT", "ORBIT", "MOUSELOOK"].map((cp) => (
-          <div key={cp} style={{ padding: "6px 10px", background: V.surf, border: "1px solid " + V.outv, borderRadius: V.rs, font: "600 10px/1 " + t.dfont, letterSpacing: ".14em", color: V.ink2 }}>
-            {cp}
+      {/* 3D View is immersive: there is no header to hang a tab strip under, so
+          its CAM/GFX sub-views switch from a pill inside the scene, right above
+          the strip they control. The LCARS rail drives the same state. */}
+      <div style={{ position: "absolute", left: 0, right: 0, bottom: "196px", display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}>
+        <div style={{ display: "flex", gap: "5px" }}>
+          {(CSUB["3D View"] || []).map(([label]) => (
+            <div
+              key={label}
+              onClick={() => setSub(actions, "3D View", label)}
+              style={{
+                padding: "6px 12px", borderRadius: V.rs, cursor: "pointer", font: "700 9.5px/1 " + t.font, letterSpacing: ".18em",
+                background: curSub === label ? V.pri : "rgba(0,0,0,.42)", color: curSub === label ? V.onpri : V.ink,
+                border: "1px solid " + (curSub === label ? V.pri : V.outv),
+              }}
+            >
+              {label}
+            </div>
+          ))}
+        </div>
+        {curSub === "GFX" ? (
+          <div style={{ display: "flex", justifyContent: "center", gap: "6px", flexWrap: "wrap", maxWidth: "88%" }}>
+            {GFX_STRIP.map(([label, key, opts]) => (
+              <Readout
+                key={label} V={V} t={t} label={label} value={state.prefs[key]}
+                onClick={() => {
+                  const next = opts[(opts.indexOf(state.prefs[key]) + 1) % opts.length];
+                  actions.setPref(key, next);
+                  actions.notify(label + " \u2014 " + next);
+                }}
+              />
+            ))}
+            <Readout V={V} t={t} label="SHADOWS" value={state.toggles.shadows ? "ON" : "OFF"} onClick={() => actions.toggleSetting("shadows")} />
+            <Readout V={V} t={t} label="BATTERY" value={state.toggles.battery ? "SAVER" : "FULL"} onClick={() => actions.toggleSetting("battery")} />
           </div>
-        ))}
+        ) : (
+          <div style={{ display: "flex", justifyContent: "center", gap: "6px" }}>
+            {["FRONT", "ORBIT", "MOUSELOOK"].map((cp) => {
+              const on = state.camPreset === cp;
+              return (
+                <div
+                  key={cp}
+                  onClick={() => { actions.setCamPreset(cp); actions.notify("Camera \u2014 " + cp); }}
+                  style={{
+                    padding: "6px 10px", background: on ? V.priC : V.surf, border: "1px solid " + (on ? V.pri : V.outv), borderRadius: V.rs,
+                    font: "600 10px/1 " + t.dfont, letterSpacing: ".14em", color: on ? V.onpriC : V.ink2, cursor: "pointer",
+                  }}
+                >
+                  {cp}
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {hudPanels.map((h) => {

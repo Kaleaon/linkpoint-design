@@ -3,6 +3,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { buildCards } from "../data/content.js";
+import { subView, inSub } from "../theme/constants.js";
 import Header from "./Header.jsx";
 import SegmentedTabs from "./SegmentedTabs.jsx";
 import ChipRow from "./ChipRow.jsx";
@@ -18,7 +19,7 @@ import Profile from "../screens/Profile.jsx";
 import Login from "../screens/Login.jsx";
 import Search from "../screens/Search.jsx";
 
-const CARD_SCREENS = ["Friends", "Groups", "Notices", "Teleport", "Outfits", "Objects", "Parcel", "Transactions", "Mute List", "Settings", "Diagnostics"];
+const CARD_SCREENS = ["Friends", "Groups", "Notices", "Teleport", "Outfits", "Objects", "Parcel", "Transactions", "Mute List", "Settings", "Cache", "Diagnostics"];
 
 // Ported from the big content column inside `shellStyle` (headers -> segTabs
 // -> chips -> the 13 screens' bodies), plus the split-view detail pane that
@@ -29,6 +30,7 @@ export default function ScreenBody() {
 
   const cardsByScreen = buildCards({ state, actions, layoutName: LAYOUTS[state.layout].name, paletteName: PALETTES[state.palette].name });
   const isCardScreen = CARD_SCREENS.includes(scr);
+  const curSub = subView(state, scr);
 
   return (
     <div style={{ flex: 1, minWidth: 0, display: "flex", position: "relative" }}>
@@ -47,7 +49,7 @@ export default function ScreenBody() {
         )}
         {norm && scr === "Inventory" && <Inventory />}
         {norm && scr === "Profile" && <Profile />}
-        {norm && isCardScreen && <CardList cards={cardsByScreen[scr] || []} />}
+        {norm && isCardScreen && <CardList cards={(cardsByScreen[scr] || []).filter((c) => inSub(c, curSub))} />}
         {scr === "Login" && <Login />}
         {scr === "Search" && <Search />}
         {!norm && <StateBlock />}

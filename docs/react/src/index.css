@@ -164,6 +164,39 @@ a:hover {
     transform: rotate(360deg);
   }
 }
+
+/* Loading states reuse the login logo's crystal: two pyramid halves closing into
+   an octahedron with a pulsing core, instead of a spinning lucide glyph.
+   Mirrors the same block in docs/index.html. See CrystalLoader.jsx. */
+@keyframes lpldTop {
+  0%, 12% { transform: translateY(-15px); }
+  40%, 62% { transform: translateY(0); }
+  88%, 100% { transform: translateY(-15px); }
+}
+@keyframes lpldBot {
+  0%, 12% { transform: translateY(15px); }
+  40%, 62% { transform: translateY(0); }
+  88%, 100% { transform: translateY(15px); }
+}
+@keyframes lpldCore {
+  0%, 12% { opacity: 0.2; transform: scale(0.55); }
+  40%, 62% { opacity: 1; transform: scale(1.1); }
+  88%, 100% { opacity: 0.2; transform: scale(0.55); }
+}
+@keyframes lpldRing {
+  0%, 12% { opacity: 0.15; r: 6; }
+  40%, 62% { opacity: 0.5; r: 30; }
+  88%, 100% { opacity: 0.15; r: 6; }
+}
+.lpld-top { animation: lpldTop 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+.lpld-bot { animation: lpldBot 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+.lpld-core { transform-origin: 60px 60px; animation: lpldCore 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+.lpld-ring { transform-origin: 60px 60px; animation: lpldRing 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .lpld-top, .lpld-bot, .lpld-core, .lpld-ring { animation: none; }
+  .lpld-top { transform: translateY(-15px); }
+  .lpld-bot { transform: translateY(15px); }
+}
 @keyframes wig {
   0%,
   100% {
