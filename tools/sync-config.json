@@ -1,0 +1,107 @@
+{
+  "upstream": {
+    "name": "Kaleaon/React-Linkpoint",
+    "url": "https://github.com/Kaleaon/react-linkpoint",
+    "branch": "main",
+    "commit_url": "https://github.com/Kaleaon/react-linkpoint/commit/{sha}"
+  },
+
+  "output": "docs/react-linkpoint-todo.md",
+  "cache_dir": ".cache/react-linkpoint.git",
+
+  "first_run_max_commits": 40,
+  "include_merges": false,
+
+  "_note_skip_subjects": [
+    "Upstream runs its own sync in the opposite direction (scripts/sync-design.ts",
+    "copies docs/react/ into React-Linkpoint, e.g. commit 205b1a1). Those commits",
+    "are this repo's own work coming back, so they must never be scheduled as work",
+    "for this repo -- that is the echo loop these patterns exist to break."
+  ],
+  "skip_authors": [
+    "github-actions[bot]",
+    "github-actions",
+    "dependabot[bot]"
+  ],
+  "skip_subjects": [
+    "(?i)\\b(sync|synced|syncing|import|imported)\\b.*\\blinkpoint-design\\b",
+    "(?i)^(chore|feat|fix)\\(design\\):\\s*(auto-)?(sync|import)",
+    "^Merge (pull request|branch|remote-tracking)",
+    "^Revert \""
+  ],
+  "skip_paths": [
+    "package-lock.json",
+    "**/package-lock.json",
+    "pnpm-lock.yaml",
+    "**/*.snap",
+    "**/__snapshots__/**",
+    "src/design/**"
+  ],
+
+  "_note_areas": [
+    "First match wins, so order these most-specific first. A commit is filed under",
+    "the area holding most of its changed files; every other area it touches is",
+    "listed on the item. 'tests' sits late on purpose: a commit that changes one",
+    "screen and one test should read as screen work, not test work."
+  ],
+  "areas": [
+    {
+      "id": "screens",
+      "title": "Screens",
+      "match": ["src/screens/**", "src/views/**", "app/**", "App.tsx", "src/App.tsx"],
+      "targets": ["`docs/index.html` — screen templates + `SCREENS`/`CSUB`", "`docs/react/src/screens/`"]
+    },
+    {
+      "id": "components",
+      "title": "Components",
+      "match": ["src/components/**", "src/ui/**"],
+      "targets": ["`docs/index.html` — shared renderers (cards, header, tabs)", "`docs/react/src/components/`"]
+    },
+    {
+      "id": "theme",
+      "title": "Theme & tokens",
+      "match": ["src/theme/**", "src/index.css", "**/*.css", "public/manifest.webmanifest"],
+      "targets": ["`docs/index.html` — `PALETTES` / `LAYOUTS`", "`docs/react/src/theme/`", "the `docs/*.json` colour packs"]
+    },
+    {
+      "id": "state",
+      "title": "State & data",
+      "match": ["src/context/**", "src/hooks/**", "src/data/**", "src/store/**"],
+      "targets": ["`docs/index.html` — the `render()` view-model", "`docs/react/src/{context,hooks,data}/`"]
+    },
+    {
+      "id": "viewer",
+      "title": "Viewer & protocol features",
+      "match": ["src/linkpoint/**", "src/viewer/**", "src/lib/**", "LLSD-java/**", "server.ts", "benchmark.ts"],
+      "targets": ["`docs/ROADMAP.md` — decide whether the mockup has to model this surface yet"]
+    },
+    {
+      "id": "tests",
+      "title": "Tests",
+      "match": ["src/__tests__/**", "**/__tests__/**", "**/*.test.*", "**/*.spec.*", "vitest.setup.ts"],
+      "targets": ["the headless verification pass over `docs/index.html` + `docs/react/` (see `docs/ROADMAP.md`)"]
+    },
+    {
+      "id": "platform",
+      "title": "Build & platform",
+      "match": [
+        "package.json", "*.config.*", "tsconfig.json", "babel.config.js", "app.json",
+        ".env.example", "*.patch", "*.diff",
+        "android/**", "ios/**", "electron/**", "public/**", "scripts/**", ".github/**"
+      ],
+      "targets": ["usually no design change — confirm `docs/react/` still builds the same way"]
+    },
+    {
+      "id": "docs",
+      "title": "Docs & specs",
+      "match": ["*.md", "docs/**", "metadata.json", "*.html"],
+      "targets": ["`docs/ROADMAP.md`", "`docs/github.md`", "`docs/mockup-to-react.yaml`"]
+    }
+  ],
+
+  "default_area": {
+    "id": "other",
+    "title": "Unclassified",
+    "targets": ["triage by hand, then add a matching rule to `tools/sync-config.json`"]
+  }
+}
