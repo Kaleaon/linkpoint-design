@@ -366,6 +366,11 @@ def render(items, config, areas, default, last_sha, now):
         "against the parts of this repo it implicates, so the mockup and the React",
         "port can be brought back into step deliberately rather than by memory.",
         "",
+        "This repo designs for two unrelated upstream apps — they share no git",
+        "history. This file covers one of them; the other, the Expo app",
+        "[`Kaleaon1/Linkpoint-redux`](https://github.com/Kaleaon1/Linkpoint-redux),",
+        "is tracked by hand in [`github.md`](github.md).",
+        "",
         f"- **Upstream:** [`{up['name']}`]({up['url']}) (`{up['branch']}`)",
         f"- **Last change:** {now} — upstream read through "
         + (f"[`{last_sha[:7]}`]({up['commit_url'].format(sha=last_sha)})" if last_sha else "_nothing yet_"),
