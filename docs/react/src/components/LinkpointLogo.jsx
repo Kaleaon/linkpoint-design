@@ -79,23 +79,22 @@ function Pyramid({ className, data, staticData, animated, surf, rim, ink }) {
   );
 }
 
-function Motes({ layer, animated, colors }) {
+function Motes({ layer, animated, token }) {
   const values = layer === "near" ? CRYSTAL.nearOpacity : CRYSTAL.farOpacity;
   if (!animated) {
     // Resting placements: one mote parked on the far arc, two on the near arc.
-    return layer === "near" ? (
+    return (
       <>
-        <circle cx="56" cy="256" r="4" fill={colors[0]} filter="url(#rGlow)" />
-        <circle cx="430" cy="280" r="3" fill={colors[2]} filter="url(#rGlow)" />
+        {CRYSTAL.staticMotes[layer].map((m, i) => (
+          <circle key={i} cx={m.cx} cy={m.cy} r={m.r} fill={token(m.token)} filter="url(#rGlow)" />
+        ))}
       </>
-    ) : (
-      <circle cx="150" cy="201" r="3.5" fill={colors[1]} filter="url(#rGlow)" />
     );
   }
   return (
     <>
       {CRYSTAL.motes.map((m, i) => (
-        <circle key={i} r={layer === "near" ? m.near : m.far} fill={colors[i]} filter="url(#rGlow)">
+        <circle key={i} r={layer === "near" ? m.near : m.far} fill={token(m.token)} filter="url(#rGlow)">
           <animateMotion dur={CRYSTAL.dur} repeatCount="indefinite" begin={m.begin}>
             <mpath href="#rOrbitTrack" />
           </animateMotion>
@@ -119,7 +118,7 @@ function Motes({ layer, animated, colors }) {
 // reject ("Expected length").
 export default function LinkpointLogo({ animated = true, showTitle = true, width = "100%", height = "auto" }) {
   const { V, t } = useTheme();
-  const moteColors = [V.pri, V.sec2, V.sec];
+  const token = (name) => V[name];
 
   return (
     <svg
@@ -234,7 +233,7 @@ export default function LinkpointLogo({ animated = true, showTitle = true, width
         strokeOpacity="0.55"
       />
       <g opacity="0.6">
-        <Motes layer="far" animated={animated} colors={moteColors} />
+        <Motes layer="far" animated={animated} token={token} />
       </g>
 
       {/* ---- the solid ---------------------------------------------------- */}
@@ -268,7 +267,7 @@ export default function LinkpointLogo({ animated = true, showTitle = true, width
       />
       <path d="M 41 256 A 215 72 0 0 0 471 256" fill="none" stroke={V.outv} strokeWidth="1" />
       <g>
-        <Motes layer="near" animated={animated} colors={moteColors} />
+        <Motes layer="near" animated={animated} token={token} />
       </g>
       <g stroke={V.outv} strokeWidth="1.5" fill="none" opacity="0.6">
         <polyline points="430,256 256,332 82,256" />

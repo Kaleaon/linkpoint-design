@@ -1,14 +1,15 @@
 <?xml version="1.0" standalone="no"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="linkpoint-logo-static" viewBox="0 0 512 580" width="100%" height="100%">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="lp-logo-static" viewBox="0 0 512 580" width="100%" height="100%">
+  <title>Linkpoint logo</title>
   <style>
-    .logo-title {
+    .lp-logo-title {
       font-family: var(--dfont, 'JetBrains Mono', 'Open Sans', sans-serif);
       font-weight: 800;
       font-size: 38px;
       letter-spacing: 0.28em;
       fill: var(--pri, #2dd4bf);
     }
-    .logo-subtitle {
+    .lp-logo-subtitle {
       font-family: var(--font, 'JetBrains Mono', 'Open Sans', sans-serif);
       font-weight: 500;
       font-size: 13px;
@@ -18,25 +19,25 @@
   </style>
 
   <defs>
-    <!-- Base Gradients using CSS Theme Variables with defaults -->
-    <linearGradient id="face1GradStatic" x1="0%" y1="0%" x2="100%" y2="100%">
+    <!-- Base gradients, driven by the theme's CSS variables with defaults -->
+    <linearGradient id="lp-face1GradStatic" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="var(--pri, #2dd4bf)" stop-opacity="1"/>
       <stop offset="100%" stop-color="var(--priC, #0284c7)" stop-opacity="1"/>
     </linearGradient>
-    <linearGradient id="face2GradStatic" x1="100%" y1="0%" x2="0%" y2="100%">
+    <linearGradient id="lp-face2GradStatic" x1="100%" y1="0%" x2="0%" y2="100%">
       <stop offset="0%" stop-color="var(--sec2, #7c3aed)" stop-opacity="1"/>
       <stop offset="100%" stop-color="var(--sec, #0369a1)" stop-opacity="1"/>
     </linearGradient>
-    <linearGradient id="face3GradStatic" x1="50%" y1="100%" x2="50%" y2="0%">
+    <linearGradient id="lp-face3GradStatic" x1="50%" y1="100%" x2="50%" y2="0%">
       <stop offset="0%" stop-color="var(--sec, #7c3aed)" stop-opacity="1"/>
       <stop offset="100%" stop-color="var(--surf2, #312e81)" stop-opacity="1"/>
     </linearGradient>
-    <linearGradient id="face4GradStatic" x1="0%" y1="100%" x2="100%" y2="0%">
+    <linearGradient id="lp-face4GradStatic" x1="0%" y1="100%" x2="100%" y2="0%">
       <stop offset="0%" stop-color="var(--pri, #d946ef)" stop-opacity="1"/>
       <stop offset="100%" stop-color="var(--sec2, #a21caf)" stop-opacity="1"/>
     </linearGradient>
 
-    <radialGradient id="coreGlowStatic" cx="50%" cy="50%" r="50%">
+    <radialGradient id="lp-coreGlowStatic" cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
       <stop offset="30%" stop-color="var(--pri, #2dd4bf)" stop-opacity="0.9"/>
       <stop offset="100%" stop-color="var(--sec, #0284c7)" stop-opacity="0"/>
@@ -44,7 +45,7 @@
 
     <!-- Particle glow.  The region has to clear 3 sigma of blur on every side
          of a 3px mote, so it runs well outside the object bounding box. -->
-    <filter id="glowStatic" x="-200%" y="-200%" width="500%" height="500%">
+    <filter id="lp-glowStatic" x="-200%" y="-200%" width="500%" height="500%">
       <feGaussianBlur stdDeviation="3" result="blur"/>
       <feComposite in="SourceGraphic" in2="blur" operator="over"/>
     </filter>
@@ -67,29 +68,29 @@
 
   <!-- orbiting motes, far half -->
   <g opacity="0.6">
-    <circle cx="150" cy="201" r="3.5" fill="var(--sec2, #a5b4fc)" filter="url(#glowStatic)"/>
+    <circle cx="150" cy="201" r="3.5" fill="var(--sec2, #a5b4fc)" filter="url(#lp-glowStatic)"/>
   </g>
 
-  <!-- BOTTOM PYRAMID (Static Solid Gem) -->
-  <g style="isolation: isolate">
+  <!-- BOTTOM PYRAMID (static solid gem) -->
+  <g>
     <polygon fill="var(--surf, rgba(15, 23, 42, 0.9))" stroke="var(--sec, #d946ef)" stroke-opacity="0.6"
              stroke-width="1.5" stroke-linejoin="round" points="392,342 256,392 120,342 256,292"/>
-    <polygon fill="url(#face4GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5"
+    <polygon fill="url(#lp-face4GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5"
              stroke-linejoin="round" stroke-linecap="round" opacity="0.9"
              points="256,472 392,342 256,392"/>
-    <polygon fill="url(#face3GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5"
+    <polygon fill="url(#lp-face3GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5"
              stroke-linejoin="round" stroke-linecap="round" opacity="0.9"
              points="256,472 256,392 120,342"/>
   </g>
 
-  <!-- TOP PYRAMID (Static Solid Gem) -->
-  <g style="isolation: isolate">
+  <!-- TOP PYRAMID (static solid gem) -->
+  <g>
     <polygon fill="var(--surf, rgba(15, 23, 42, 0.9))" stroke="var(--pri, #2dd4bf)" stroke-opacity="0.6"
              stroke-width="1.5" stroke-linejoin="round" points="392,170 256,220 120,170 256,120"/>
-    <polygon fill="url(#face1GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5"
+    <polygon fill="url(#lp-face1GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5"
              stroke-linejoin="round" stroke-linecap="round" opacity="1"
              points="256,40 392,170 256,220"/>
-    <polygon fill="url(#face2GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5"
+    <polygon fill="url(#lp-face2GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5"
              stroke-linejoin="round" stroke-linecap="round" opacity="1"
              points="256,40 256,220 120,170"/>
   </g>
@@ -103,8 +104,8 @@
 
   <!-- orbiting motes, near half -->
   <g>
-    <circle cx="56" cy="256" r="4" fill="var(--pri, #2dd4bf)" filter="url(#glowStatic)"/>
-    <circle cx="430" cy="280" r="3" fill="var(--sec, #d946ef)" filter="url(#glowStatic)"/>
+    <circle cx="56" cy="256" r="4" fill="var(--pri, #2dd4bf)" filter="url(#lp-glowStatic)"/>
+    <circle cx="430" cy="280" r="3" fill="var(--sec, #d946ef)" filter="url(#lp-glowStatic)"/>
   </g>
 
   <g stroke="var(--outv, rgba(255,255,255,0.08))" stroke-width="1.5" fill="none" opacity="0.6">
@@ -115,14 +116,14 @@
 
   <!-- CORE NODE -->
   <g>
-    <circle cx="256" cy="256" r="45" fill="url(#coreGlowStatic)"/>
+    <circle cx="256" cy="256" r="45" fill="url(#lp-coreGlowStatic)"/>
     <polygon points="256,242 270,256 256,270 242,256" fill="var(--ink, #ffffff)"/>
   </g>
 
   <!-- TITLE TYPOGRAPHY BENEATH -->
   <g transform="translate(0, 522)">
-    <text x="256" y="0" text-anchor="middle" class="logo-title">LINKPOINT</text>
-    <text x="256" y="28" text-anchor="middle" class="logo-subtitle">SECONDLIFE COMMUNICATOR</text>
+    <text x="256" y="0" text-anchor="middle" class="lp-logo-title">LINKPOINT</text>
+    <text x="256" y="28" text-anchor="middle" class="lp-logo-subtitle">SECONDLIFE COMMUNICATOR</text>
   </g>
 
 </svg>
