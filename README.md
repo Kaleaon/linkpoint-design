@@ -15,3 +15,9 @@ Second Life system dialogs (permissions, teleport lures, pay, etc.).
   translation spec between the two: file-by-file mapping, the binding
   syntax each side uses, and the DSL's binding-evaluation rules (a
   recurring source of silent dead-click bugs if you don't know them).
+- **[`tools/sync_todos.py`](tools/README.md)** — pulls the changes that
+  landed in [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint)
+  (the real app) and schedules them as a checklist in
+  [`docs/react-linkpoint-todo.md`](docs/react-linkpoint-todo.md), filed under
+  the part of this repo each one implicates. Runs daily in CI; tick a box to
+  mark an item done.

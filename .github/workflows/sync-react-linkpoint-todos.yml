@@ -1,0 +1,66 @@
+name: Sync React-Linkpoint todos
+
+# Upstream moves faster than this repo. Once a day (and on demand), walk the
+# commits React-Linkpoint has landed since the last run and file them into
+# docs/react-linkpoint-todo.md as a checklist.
+#
+# repository_dispatch lets React-Linkpoint poke this repo the moment it pushes,
+# instead of waiting for the next cron tick:
+#   curl -X POST -H "Authorization: Bearer $TOKEN" \
+#        -H "Accept: application/vnd.github+json" \
+#        https://api.github.com/repos/Kaleaon/linkpoint-design/dispatches \
+#        -d '{"event_type":"react-linkpoint-updated"}'
+
+on:
+  schedule:
+    # 06:00 UTC — after upstream's own 00:00 sync in the opposite direction,
+    # so a day's round trip settles before this list is rebuilt.
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      since:
+        description: 'Re-scan from this upstream ref instead of the stored cursor'
+        required: false
+        type: string
+  repository_dispatch:
+    types: [react-linkpoint-updated]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-react-linkpoint-todos
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out linkpoint-design
+        uses: actions/checkout@v4
+
+      - name: Build the todo list from upstream commits
+        id: sync
+        run: |
+          python3 tools/sync_todos.py ${SINCE:+--since "$SINCE"}
+        env:
+          SINCE: ${{ inputs.since }}
+
+      - name: Commit the list if it moved
+        if: steps.sync.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/react-linkpoint-todo.md
+          git commit -m "chore(todo): schedule ${{ steps.sync.outputs.new_items }} upstream change(s) from React-Linkpoint"
+          git push
+
+      - name: Summary
+        run: |
+          {
+            echo "### React-Linkpoint todo sync"
+            echo
+            echo "- new items scheduled: **${{ steps.sync.outputs.new_items }}**"
+            echo "- open items in total: **${{ steps.sync.outputs.open_items }}**"
+            echo "- list changed: **${{ steps.sync.outputs.changed }}**"
+          } >> "$GITHUB_STEP_SUMMARY"
