@@ -20,63 +20,97 @@
   <defs>
     <!-- Base Gradients using CSS Theme Variables with defaults -->
     <linearGradient id="face1GradStatic" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="var(--pri, #2dd4bf)" stop-opacity="0.95"/>
-      <stop offset="100%" stop-color="var(--priC, #0284c7)" stop-opacity="0.8"/>
+      <stop offset="0%" stop-color="var(--pri, #2dd4bf)" stop-opacity="1"/>
+      <stop offset="100%" stop-color="var(--priC, #0284c7)" stop-opacity="1"/>
     </linearGradient>
     <linearGradient id="face2GradStatic" x1="100%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="var(--sec2, #7c3aed)" stop-opacity="0.9"/>
-      <stop offset="100%" stop-color="var(--sec, #0369a1)" stop-opacity="0.8"/>
+      <stop offset="0%" stop-color="var(--sec2, #7c3aed)" stop-opacity="1"/>
+      <stop offset="100%" stop-color="var(--sec, #0369a1)" stop-opacity="1"/>
     </linearGradient>
     <linearGradient id="face3GradStatic" x1="50%" y1="100%" x2="50%" y2="0%">
-      <stop offset="0%" stop-color="var(--sec, #7c3aed)" stop-opacity="0.9"/>
-      <stop offset="100%" stop-color="var(--surf2, #312e81)" stop-opacity="0.8"/>
+      <stop offset="0%" stop-color="var(--sec, #7c3aed)" stop-opacity="1"/>
+      <stop offset="100%" stop-color="var(--surf2, #312e81)" stop-opacity="1"/>
+    </linearGradient>
+    <linearGradient id="face4GradStatic" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="var(--pri, #d946ef)" stop-opacity="1"/>
+      <stop offset="100%" stop-color="var(--sec2, #a21caf)" stop-opacity="1"/>
     </linearGradient>
 
     <radialGradient id="coreGlowStatic" cx="50%" cy="50%" r="50%">
       <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
-      <stop offset="35%" stop-color="var(--pri, #2dd4bf)" stop-opacity="0.9"/>
+      <stop offset="30%" stop-color="var(--pri, #2dd4bf)" stop-opacity="0.9"/>
       <stop offset="100%" stop-color="var(--sec, #0284c7)" stop-opacity="0"/>
     </radialGradient>
 
-    <filter id="glowStatic" x="-50%" y="-50%" width="200%" height="200%">
+    <!-- Particle glow.  The region has to clear 3 sigma of blur on every side
+         of a 3px mote, so it runs well outside the object bounding box. -->
+    <filter id="glowStatic" x="-200%" y="-200%" width="500%" height="500%">
       <feGaussianBlur stdDeviation="3" result="blur"/>
       <feComposite in="SourceGraphic" in2="blur" operator="over"/>
     </filter>
   </defs>
 
-  <!-- Minimalist Isometric Space Grid -->
+  <!-- ===== FAR DEPTH LAYER - everything behind the crystal ===== -->
   <g stroke="var(--outv, rgba(255,255,255,0.08))" stroke-width="1.5" fill="none" opacity="0.6">
-    <polygon points="256,180 430,256 256,332 82,256"/>
-    <polygon points="256,120 490,256 256,392 22,256"/>
+    <!-- far halves of the ground plane -->
+    <polyline points="82,256 256,180 430,256"/>
+    <polyline points="22,256 256,120 490,256"/>
     <line x1="256" y1="20" x2="256" y2="492" stroke-dasharray="4 6"/>
     <line x1="22" y1="256" x2="490" y2="256" stroke-dasharray="4 6"/>
   </g>
 
-  <!-- Static Orbital Ring Path -->
-  <ellipse cx="256" cy="256" rx="200" ry="65" fill="none" stroke="var(--sec2, #2dd4bf)" stroke-opacity="0.3" stroke-width="2" stroke-dasharray="4 12"/>
-  <ellipse cx="256" cy="256" rx="215" ry="72" fill="none" stroke="var(--outv, rgba(255, 255, 255, 0.1))" stroke-width="1"/>
+  <!-- far halves of the orbital rings -->
+  <path d="M 56 256 A 200 65 0 0 1 456 256" fill="none" stroke="var(--sec2, #2dd4bf)"
+        stroke-opacity="0.16" stroke-width="2" stroke-dasharray="4 12"/>
+  <path d="M 41 256 A 215 72 0 0 1 471 256" fill="none" stroke="var(--outv, rgba(255, 255, 255, 0.1))"
+        stroke-width="1" stroke-opacity="0.55"/>
 
-  <!-- Orbital Particles (Static Placements) -->
-  <g>
-    <circle cx="56" cy="256" r="4" fill="var(--pri, #2dd4bf)" filter="url(#glowStatic)"/>
-    <circle cx="280" cy="192" r="5" fill="var(--sec2, #a5b4fc)" filter="url(#glowStatic)"/>
-    <circle cx="430" cy="280" r="3" fill="var(--sec, #d946ef)" filter="url(#glowStatic)"/>
-  </g>
-
-  <!-- TOP PYRAMID (Static Solid Gem) -->
-  <g>
-    <polygon fill="var(--surf, rgba(15, 23, 42, 0.9))" stroke="var(--pri, #2dd4bf)" stroke-opacity="0.4" stroke-width="1.5" points="392,170 256,220 120,170 256,120"/>
-    <polygon fill="url(#face1GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5" stroke-linejoin="round" points="256,40 392,170 256,220"/>
-    <polygon fill="url(#face2GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5" stroke-linejoin="round" points="256,40 256,220 120,170"/>
-    <polygon fill="url(#face3GradStatic)" stroke="var(--ink2, rgba(255,255,255,0.3))" stroke-width="1" stroke-linejoin="round" points="256,40 120,170 256,120"/>
+  <!-- orbiting motes, far half -->
+  <g opacity="0.6">
+    <circle cx="150" cy="201" r="3.5" fill="var(--sec2, #a5b4fc)" filter="url(#glowStatic)"/>
   </g>
 
   <!-- BOTTOM PYRAMID (Static Solid Gem) -->
+  <g style="isolation: isolate">
+    <polygon fill="var(--surf, rgba(15, 23, 42, 0.9))" stroke="var(--sec, #d946ef)" stroke-opacity="0.6"
+             stroke-width="1.5" stroke-linejoin="round" points="392,342 256,392 120,342 256,292"/>
+    <polygon fill="url(#face4GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5"
+             stroke-linejoin="round" stroke-linecap="round" opacity="0.9"
+             points="256,472 392,342 256,392"/>
+    <polygon fill="url(#face3GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5"
+             stroke-linejoin="round" stroke-linecap="round" opacity="0.9"
+             points="256,472 256,392 120,342"/>
+  </g>
+
+  <!-- TOP PYRAMID (Static Solid Gem) -->
+  <g style="isolation: isolate">
+    <polygon fill="var(--surf, rgba(15, 23, 42, 0.9))" stroke="var(--pri, #2dd4bf)" stroke-opacity="0.6"
+             stroke-width="1.5" stroke-linejoin="round" points="392,170 256,220 120,170 256,120"/>
+    <polygon fill="url(#face1GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5"
+             stroke-linejoin="round" stroke-linecap="round" opacity="1"
+             points="256,40 392,170 256,220"/>
+    <polygon fill="url(#face2GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5"
+             stroke-linejoin="round" stroke-linecap="round" opacity="1"
+             points="256,40 256,220 120,170"/>
+  </g>
+
+  <!-- ===== NEAR DEPTH LAYER - everything in front of the crystal ===== -->
+  <!-- near halves of the orbital rings -->
+  <path d="M 56 256 A 200 65 0 0 0 456 256" fill="none" stroke="var(--sec2, #2dd4bf)"
+        stroke-opacity="0.38" stroke-width="2" stroke-dasharray="4 12"/>
+  <path d="M 41 256 A 215 72 0 0 0 471 256" fill="none" stroke="var(--outv, rgba(255, 255, 255, 0.1))"
+        stroke-width="1"/>
+
+  <!-- orbiting motes, near half -->
   <g>
-    <polygon fill="var(--surf, rgba(15, 23, 42, 0.9))" stroke="var(--sec, #d946ef)" stroke-opacity="0.4" stroke-width="1.5" points="392,342 256,392 120,342 256,292"/>
-    <polygon fill="url(#face2GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5" stroke-linejoin="round" points="256,472 392,342 256,392"/>
-    <polygon fill="url(#face3GradStatic)" stroke="var(--ink, rgba(255,255,255,0.5))" stroke-width="1.5" stroke-linejoin="round" points="256,472 256,392 120,342"/>
-    <polygon fill="url(#face1GradStatic)" stroke="var(--ink2, rgba(255,255,255,0.3))" stroke-width="1" stroke-linejoin="round" points="256,472 120,342 256,292"/>
+    <circle cx="56" cy="256" r="4" fill="var(--pri, #2dd4bf)" filter="url(#glowStatic)"/>
+    <circle cx="430" cy="280" r="3" fill="var(--sec, #d946ef)" filter="url(#glowStatic)"/>
+  </g>
+
+  <g stroke="var(--outv, rgba(255,255,255,0.08))" stroke-width="1.5" fill="none" opacity="0.6">
+    <!-- near halves of the ground plane -->
+    <polyline points="430,256 256,332 82,256"/>
+    <polyline points="490,256 256,392 22,256"/>
   </g>
 
   <!-- CORE NODE -->
