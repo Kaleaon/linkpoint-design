@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { DEVICES, FLOATERS, HUD_DEFAULT, HUDS, CBTN, GRIDS } from "../theme/constants.js";
+import { CACHE_ROWS } from "../data/content.js";
 
 // Ported from the mockup's `state = {...}` initializer and its instance
 // methods (flR/flDrag/flFocus/flToggle/flClose, hudDrag/toggleHud, T/D/navMode,
@@ -21,7 +22,19 @@ export function useAppState() {
   const [invOpen, setInvOpen] = useState({ Objects: true });
   const [dismissed, setDismissed] = useState({});
   const [pinned, setPinned] = useState({});
-  const [toggles, setToggles] = useState({ largeType: false, push: true, voice: true, chatCmds: true, autoresponse: true });
+  const [toggles, setToggles] = useState({
+    largeType: false, push: true, voice: true, chatCmds: true, autoresponse: true,
+    rlv: false, shadows: false, battery: true, timestamps: true, imLogs: true, mediaAuto: false,
+    showOnline: true, typingSent: true, cacheOnExit: false,
+  });
+  // Everything the preferences screens expose as a <select>: one flat bag so a
+  // new preference is one entry here plus one card, not a new state key each time.
+  const [prefs, setPrefs] = useState({
+    draw: "96 m", quality: "Balanced", fps: "60 fps", complexity: "80 000",
+    volume: "70%", translate: "Off", maturity: "Moderate", bandwidth: "1 500 kbps",
+    cacheLimit: 512, cacheLoc: "Internal storage",
+  });
+  const [cacheCleared, setCacheCleared] = useState({});
   const [cond, setCond] = useState("normal");
   const [hudOn, setHudOn] = useState({ ...HUD_DEFAULT });
   const [hudPos, setHudPos] = useState({});
@@ -135,6 +148,7 @@ export function useAppState() {
   const setTab = useCallback((scr, v) => setTabs((s) => ({ ...s, [scr]: v })), []);
   const dismiss = useCallback((key) => setDismissed((s) => ({ ...s, [key]: true })), []);
   const toggleSetting = useCallback((key) => setToggles((s) => ({ ...s, [key]: !s[key] })), []);
+  const setPref = useCallback((key, v) => setPrefs((s) => ({ ...s, [key]: v })), []);
   const pin = useCallback((key) => setPinned((s) => ({ ...s, [key]: !s[key] })), []);
   const cycleLayout = useCallback(() => {
     const ks = Object.keys(LAYOUTS);
@@ -215,6 +229,19 @@ export function useAppState() {
     setScreen("Chat");
   }, []);
 
+  // ---- cache management ---------------------------------------------------
+  const clearCache = useCallback(
+    (key, name) => {
+      setCacheCleared((c) => ({ ...c, [key]: true }));
+      notify(name + " cleared \u2014 assets refetch on demand");
+    },
+    [notify]
+  );
+  const clearAllCache = useCallback(() => {
+    setCacheCleared(Object.fromEntries(CACHE_ROWS.map((r) => [r.key, true])));
+    notify("All caches cleared \u2014 assets refetch on demand");
+  }, [notify]);
+
   // ---- settings: reconnect to grid ---------------------------------------
   const reconnect = useCallback(() => {
     setReconnecting(true);
@@ -231,7 +258,12 @@ export function useAppState() {
     [flRect]
   );
 
+  // Focusing a window has to open it as well: only five floaters start open, so
+  // navigating to Preferences/Groups/Notices/Teleport/Profile/Statistics on Desktop
+  // used to raise and un-minimise a window that was never opened — the screen
+  // simply did not change.
   const flFocus = useCallback((id) => {
+    setFlOpen((o) => (o[id] ? o : { ...o, [id]: true }));
     setFlZ((z) => z.filter((x) => x !== id).concat(id));
     setScreen(id);
     setFlMin((m) => ({ ...m, [id]: false }));
@@ -431,6 +463,7 @@ export function useAppState() {
       rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
       loginMode, loginGrid, loginBusy, loginError, customGrids, addGrid, addGridName, addGridHost,
       searchFrom, searchTab, searchQuery, searchState, reconnecting, toast,
+      prefs, cacheCleared,
     },
     actions: {
       setLayout, setPalette, setDevice, setScreen: screenPick, setDialog, setDense,
@@ -444,6 +477,7 @@ export function useAppState() {
       radarTap, radarHold, radarRelease, radarBlipPick,
       setRMode,
       setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchTab, setSearchQuery, searchAdd, startIm, reconnect, notify,
+      setPref, clearCache, clearAllCache,
     },
     T, D, navMode,
   };

@@ -63,6 +63,17 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
 @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
 @keyframes ping{0%{transform:scale(.5);opacity:.85}100%{transform:scale(2.4);opacity:0}}
 @keyframes spin{to{transform:rotate(360deg)}}
+/* Loading states reuse the login logo's crystal: two pyramid halves closing into
+   an octahedron with a pulsing core, instead of a spinning lucide glyph. */
+@keyframes lpldTop{0%,12%{transform:translateY(-15px)}40%,62%{transform:translateY(0)}88%,100%{transform:translateY(-15px)}}
+@keyframes lpldBot{0%,12%{transform:translateY(15px)}40%,62%{transform:translateY(0)}88%,100%{transform:translateY(15px)}}
+@keyframes lpldCore{0%,12%{opacity:.2;transform:scale(.55)}40%,62%{opacity:1;transform:scale(1.1)}88%,100%{opacity:.2;transform:scale(.55)}}
+@keyframes lpldRing{0%,12%{opacity:.15;r:6}40%,62%{opacity:.5;r:30}88%,100%{opacity:.15;r:6}}
+.lpld-top{animation:lpldTop 2.6s cubic-bezier(.4,0,.2,1) infinite}
+.lpld-bot{animation:lpldBot 2.6s cubic-bezier(.4,0,.2,1) infinite}
+.lpld-core{transform-origin:60px 60px;animation:lpldCore 2.6s cubic-bezier(.4,0,.2,1) infinite}
+.lpld-ring{transform-origin:60px 60px;animation:lpldRing 2.6s cubic-bezier(.4,0,.2,1) infinite}
+@media (prefers-reduced-motion:reduce){.lpld-top,.lpld-bot,.lpld-core,.lpld-ring{animation:none}.lpld-top{transform:translateY(-15px)}.lpld-bot{transform:translateY(15px)}}
 @keyframes wig{0%,100%{transform:rotate(-1.1deg)}50%{transform:rotate(1.1deg)}}
 </style></helmet>
 
@@ -331,7 +342,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
 
       <sc-if value="{{ isRail }}" hint-placeholder-val="{{ false }}">
       <div style="flex:none;width:104px;background:var(--surf,#101A1C);border-right:1px solid var(--outv,#365047);display:flex;flex-direction:column;gap:5px;padding:12px 8px">
-        <div style="font:700 13px/1.15 var(--dfont,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A);padding:2px 6px 14px">GRID<br>LINK</div>
+        <div style="font:700 13px/1.15 var(--dfont,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A);padding:2px 6px 14px">LINK<br>POINT</div>
         <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="6">
           <div onClick="{{ n.pick }}" style="{{ n.railStyle }}">
             <i data-lucide="{{ n.icon }}" style="width:20px;height:20px"></i>
@@ -345,7 +356,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
       <div style="flex:none;width:112px;display:flex;flex-direction:column;gap:4px;padding:0">
         <div style="height:72px;background:var(--pri,#F2A65A);border-radius:26px 0 0 0;position:relative;flex:none">
           <div style="position:absolute;right:0;bottom:0;width:44px;height:26px;background:var(--bg,#120C1C);border-radius:18px 0 0 0"></div>
-          <div style="position:absolute;left:16px;top:12px;font:700 12px/1.05 var(--dfont,'Antonio');letter-spacing:.1em;color:var(--onpri,#1B0E24)">GRID<br>LINK</div>
+          <div style="position:absolute;left:16px;top:12px;font:700 12px/1.05 var(--dfont,'Antonio');letter-spacing:.1em;color:var(--onpri,#1B0E24)">LINK<br>POINT</div>
         </div>
         <sc-for list="{{ sweepNav }}" as="n" hint-placeholder-count="7">
           <div onClick="{{ n.pick }}" style="{{ n.sweepStyle }}">{{ n.label }}</div>
@@ -415,7 +426,42 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
 
           <sc-if value="{{ stateBlock }}" hint-placeholder-val="{{ false }}">
           <div style="flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:15px;padding:34px 26px;text-align:center">
-            <div style="{{ stateBlock.iconWrap }}"><i data-lucide="{{ stateBlock.icon }}" style="width:26px;height:26px"></i></div>
+            <sc-if value="{{ stateBlock.pyramid }}" hint-placeholder-val="{{ false }}">
+              <!-- LOADING: the login screen's Linkpoint crystal, not a spinning glyph.
+                   Two pyramid halves close into the octahedron and the core lights as
+                   they meet — same motion language as #lp-logo-animated, a tenth the markup. -->
+              <div style="{{ stateBlock.pyWrap }}" role="img" aria-label="Loading">
+                <svg viewBox="0 0 120 120" aria-hidden="true" style="width:100%;height:100%;display:block;overflow:visible">
+                  <defs>
+                    <linearGradient id="lpld-a" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="var(--pri,#6CFF9A)"/><stop offset="100%" stop-color="var(--priC,#123B27)"/>
+                    </linearGradient>
+                    <linearGradient id="lpld-b" x1="100%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="var(--sec2,#8AD0B0)"/><stop offset="100%" stop-color="var(--sec,#365047)"/>
+                    </linearGradient>
+                    <radialGradient id="lpld-core" cx="50%" cy="50%" r="50%">
+                      <stop offset="0%" stop-color="#ffffff" stop-opacity=".95"/>
+                      <stop offset="55%" stop-color="var(--pri,#6CFF9A)" stop-opacity=".8"/>
+                      <stop offset="100%" stop-color="var(--pri,#6CFF9A)" stop-opacity="0"/>
+                    </radialGradient>
+                  </defs>
+                  <circle class="lpld-ring" cx="60" cy="60" r="6" fill="none" stroke="var(--pri,#6CFF9A)" stroke-width="1"/>
+                  <g class="lpld-bot">
+                    <polygon points="60,114 12,60 60,76" fill="url(#lpld-b)" stroke="var(--outv,#365047)" stroke-width="1" stroke-linejoin="round"/>
+                    <polygon points="60,114 60,76 108,60" fill="url(#lpld-a)" stroke="var(--outv,#365047)" stroke-width="1" stroke-linejoin="round" opacity=".72"/>
+                  </g>
+                  <g class="lpld-top">
+                    <polygon points="60,6 12,60 60,76" fill="url(#lpld-a)" stroke="var(--outv,#365047)" stroke-width="1" stroke-linejoin="round"/>
+                    <polygon points="60,6 60,76 108,60" fill="url(#lpld-b)" stroke="var(--outv,#365047)" stroke-width="1" stroke-linejoin="round" opacity=".72"/>
+                    <polyline points="12,60 60,44 108,60" fill="none" stroke="var(--pri,#6CFF9A)" stroke-opacity=".45" stroke-width="1"/>
+                  </g>
+                  <circle class="lpld-core" cx="60" cy="60" r="15" fill="url(#lpld-core)"/>
+                </svg>
+              </div>
+            </sc-if>
+            <sc-if value="{{ stateBlock.plainIcon }}" hint-placeholder-val="{{ true }}">
+              <div style="{{ stateBlock.iconWrap }}"><i data-lucide="{{ stateBlock.icon }}" style="width:26px;height:26px"></i></div>
+            </sc-if>
             <div style="{{ stateBlock.titleStyle }}">{{ stateBlock.title }}</div>
             <div style="max-width:300px;font:400 12px/1.7 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);text-wrap:pretty">{{ stateBlock.body }}</div>
             <sc-if value="{{ stateBlock.bar }}" hint-placeholder-val="{{ false }}">
@@ -696,7 +742,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                 <div onClick="{{ c.tap }}" style="{{ c.style }}">
                   <div style="display:flex;align-items:center;gap:9px">
                     <sc-if value="{{ c.icon }}" hint-placeholder-val="{{ true }}"><i data-lucide="{{ c.icon }}" style="width:16px;height:16px;color:var(--pri,#6CFF9A)"></i></sc-if>
-                    <span style="flex:1;font:600 13px/1.25 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)">{{ c.title }}</span>
+                    <span style="{{ c.titleStyle }}">{{ c.title }}</span>
                     <sc-if value="{{ c.right }}" hint-placeholder-val="{{ true }}"><span style="font:400 10.5px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ c.right }}</span></sc-if>
                     <sc-if value="{{ c.rights }}" hint-placeholder-val="{{ false }}">
                       <span style="display:flex;gap:4px;flex:none">
@@ -717,6 +763,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
                   </div>
                   <sc-if value="{{ c.body }}" hint-placeholder-val="{{ true }}"><div style="font:400 12px/1.6 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:8px">{{ c.body }}</div></sc-if>
                   <sc-if value="{{ c.big }}" hint-placeholder-val="{{ false }}"><div style="{{ c.bigStyle }}">{{ c.big }}</div></sc-if>
+                  <sc-if value="{{ c.meterTrack }}" hint-placeholder-val="{{ false }}"><div style="{{ c.meterTrack }}"><div style="{{ c.meterFill }}"></div></div></sc-if>
                   <sc-if value="{{ c.actions }}" hint-placeholder-val="{{ false }}">
                     <div style="display:flex;gap:8px;margin-top:11px">
                       <sc-for list="{{ c.actions }}" as="ac" hint-placeholder-count="2">
@@ -1503,6 +1550,7 @@ const FLOATERS = [
   { id:"Notices",     title:"Notifications", icon:"bell",           x:852,  y:292, w:196, h:252 },
   { id:"Teleport",    title:"Places",        icon:"zap",            x:330,  y:150, w:370, h:350 },
   { id:"Settings",    title:"Preferences",   icon:"settings",       x:290,  y:80,  w:540, h:470 },
+  { id:"Cache",       title:"Cache",         icon:"hard-drive",     x:360,  y:120, w:460, h:420 },
   { id:"Diagnostics", title:"Statistics",    icon:"activity",       x:1056, y:462, w:346, h:196 },
 ];
 const FMENU = [
@@ -1514,7 +1562,7 @@ const FMENU = [
   { label:"Help",  items:[["Second Life Help","F1"],["Report Abuse…",""],["Report Bug…",""],["About Linkpoint",""]] },
 ];
 
-const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Outfits","Objects","Parcel","Transactions","Mute List","Settings","Diagnostics","Login","Search"];
+const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Outfits","Objects","Parcel","Transactions","Mute List","Settings","Cache","Diagnostics","Login","Search"];
 // Grid picker for Login: Second Life's own two (Agni/Aditi) plus a few
 // well-known OpenSim grids, so the login screen isn't LL-only.
 const GRIDS = [
@@ -1553,7 +1601,11 @@ const CSUB = {
   Groups:        [["NOTICES", "\u00b7 01"], ["ROLES", "\u00b7 02"]],
   Notices:       [["IM", "\u00b7 01"], ["SYSTEM", "\u00b7 02"]],
   Teleport:      [["LANDMARK", "\u00b7 01"], ["HISTORY", "\u00b7 02"]],
-  Settings:      [["LOOK", "\u00b7 01"], ["NETWORK", "\u00b7 02"]],
+  // These used to read LOOK / NETWORK and had no handler at all — the sub-nav
+  // rendered but every click was inert. They now switch between the two real
+  // preference surfaces.
+  Settings:      [["PREFS", "\u00b7 01"], ["CACHE", "\u00b7 02"]],
+  Cache:         [["PREFS", "\u00b7 01"], ["CACHE", "\u00b7 02"]],
   Diagnostics:   [["NETWORK", "\u00b7 01"], ["RENDER", "\u00b7 02"]],
   Outfits:       [["WORN", "\u00b7 01"], ["SAVED", "\u00b7 02"]],
   Objects:       [["NEARBY", "\u00b7 01"], ["INSPECT", "\u00b7 02"]],
@@ -1636,7 +1688,14 @@ const DIALOGS = {
 class Component extends DCLogic {
   state = { layout: "terminal", palette: "ink", device: "ios", screen: "Chat", dialog: null, dense: false, tabs: { Chat: "LOCAL", Friends: "ALL", Diagnostics: "AGNI" }, chip: "Nyx Vaher", tileOk: true, invOpen: { Objects: true },
     dismissed: {}, pinned: {},
-    toggles: { largeType: false, push: true, voice: true, chatCmds: true, autoresponse: true },
+    toggles: { largeType: false, push: true, voice: true, chatCmds: true, autoresponse: true,
+      rlv: false, shadows: false, battery: true, timestamps: true, imLogs: true, mediaAuto: false,
+      showOnline: true, typingSent: true, cacheOnExit: false },
+    // Everything the preferences screens expose as a <select>: one flat bag so a
+    // new preference is one entry here plus one card, not a new state key each time.
+    prefs: { draw: "96 m", quality: "Balanced", fps: "60 fps", complexity: "80 000",
+      volume: "70%", translate: "Off", maturity: "Moderate", bandwidth: "1 500 kbps",
+      cacheLimit: 512, cacheLoc: "Internal storage" },
     cond: "normal", hudOn: { ...HUD_DEFAULT }, hudPos: {}, hudPicker: false, target: null, targetPicker: false, navPeek: false,
     cPad: true, cHeld: "", cRun: false, cCam: "ORBIT", cHdg: 214, cPitch: 0, cDrag: false, cEdit: false, cFlash: "", cReason: "",
     rMode: "AV", rOpen: null, rMenu: null,
@@ -1646,7 +1705,7 @@ class Component extends DCLogic {
     toast: "", composeText: "", chatSent: {}, chatTyping: false, invFilter: "",
     loginMode: "grid", loginGrid: "agni", loginBusy: false, loginError: null, logoAnim: true,
     customGrids: [], addGrid: false, addGridName: "", addGridHost: "",
-    searchFrom: "Friends", searchQuery: "", searchState: {}, reconnecting: false };
+    searchFrom: "Friends", searchQuery: "", searchState: {}, reconnecting: false, cacheCleared: {} };
 
   // ---- desktop floater window model -------------------------------------
   flR(id) { const f = FLOATERS.find(x => x.id === id) || { x: 24, y: 24, w: 320, h: 240 }; return { ...f, ...(this.state.flRect[id] || {}) }; }
@@ -1664,7 +1723,7 @@ class Component extends DCLogic {
     window.addEventListener("mousemove", move); window.addEventListener("mouseup", up);
     this.flFocus(id);
   }
-  flFocus(id) { this.setState(st => ({ flZ: st.flZ.filter(x => x !== id).concat(id), screen: id, flMin: { ...st.flMin, [id]: false }, menu: null })); }
+  flFocus(id) { this.setState(st => ({ flOpen: { ...st.flOpen, [id]: true }, flZ: st.flZ.filter(x => x !== id).concat(id), screen: id, flMin: { ...st.flMin, [id]: false }, menu: null })); }
   flToggle(id) {
     this.setState(st => (st.flOpen[id] && !st.flMin[id])
       ? { flMin: { ...st.flMin, [id]: true }, menu: null }
@@ -1732,6 +1791,38 @@ class Component extends DCLogic {
   setTab(scr, v) { this.setState(s => ({ tabs: { ...s.tabs, [scr]: v } })); }
   dismiss(key) { this.setState(s => ({ dismissed: { ...s.dismissed, [key]: true } })); }
   toggleSetting(key) { this.setState(s => ({ toggles: { ...s.toggles, [key]: !s.toggles[key] } })); }
+  setPref(key, v) { this.setState(s => ({ prefs: { ...s.prefs, [key]: v } })); }
+  // In-app navigation between screens. On Desktop a "screen" is a floater window,
+  // so going somewhere has to raise that window rather than only set `screen` —
+  // the same rule the dev panel's screen picker already follows.
+  goScreen(id) {
+    if (this.navMode() === "floaters" && FLOATERS.some(f => f.id === id)) { this.flFocus(id); this.set("dialog", null); return; }
+    this.setState({ screen: id, dialog: null });
+  }
+  // Cache rows are notional megabytes, but they have to add up to the total the
+  // header and the meter quote, so both read this one table.
+  cacheRows() {
+    const c = this.state.cacheCleared || {};
+    return [
+      { key: "tex",  icon: "image",       name: "Texture cache",        mb: 318, note: "4 812 textures \u00b7 evicted least-recently-used" },
+      { key: "mesh", icon: "box",         name: "Mesh & object cache",  mb: 96,  note: "1 204 rezzed assets \u00b7 LOD levels 0-3" },
+      { key: "snd",  icon: "volume-2",    name: "Sound cache",          mb: 34,  note: "612 clips \u00b7 gestures and ambient loops" },
+      { key: "inv",  icon: "folder",      name: "Inventory skeleton",   mb: 21,  note: "1 284 items \u00b7 42 folders \u00b7 synced 14:32" },
+      { key: "map",  icon: "map",         name: "Map tiles",            mb: 12,  note: "96 region tiles \u00b7 secondlife-maps-cdn" },
+      { key: "chat", icon: "message-square", name: "Chat & IM logs",    mb: 4,   note: "38 conversations \u00b7 kept on device only" },
+    ].map(r => ({ ...r, mb: c[r.key] ? 0 : r.mb }));
+  }
+  cacheUsed() { return this.cacheRows().reduce((n, r) => n + r.mb, 0); }
+  clearCache(key, name) {
+    this.setState(s => ({ cacheCleared: { ...(s.cacheCleared || {}), [key]: true } }));
+    this.notify(name + " cleared \u2014 assets refetch on demand");
+  }
+  clearAllCache() {
+    const all = {};
+    this.cacheRows().forEach(r => { all[r.key] = true; });
+    this.setState({ cacheCleared: all });
+    this.notify("All caches cleared \u2014 assets refetch on demand");
+  }
   pin(key) { this.setState(s => ({ pinned: { ...s.pinned, [key]: !s.pinned[key] } })); }
   cycle(map, key) { const ks = Object.keys(map); this.setState(s => ({ [key]: ks[(ks.indexOf(s[key]) + 1) % ks.length] })); }
 
@@ -1809,7 +1900,7 @@ class Component extends DCLogic {
   // replacement detaches the element React owns, so a changed icon name never repaints.
   icons() {
     const L = window.lucide; if (!L) return;
-    const pascal = (n) => n.replace(/(^|-)([a-z])/g, (m, a, c) => c.toUpperCase());
+    const pascal = (n) => n.split("-").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join("");
     document.querySelectorAll("i[data-lucide]").forEach((el) => {
       const name = el.getAttribute("data-lucide") || "";
       if (el.getAttribute("data-rendered") === name) return;
@@ -1880,7 +1971,7 @@ class Component extends DCLogic {
     const themeVars = { ...Object.fromEntries(Object.entries(V).map(([k, x]) => ["--" + k, x])), "--font": t.font, "--dfont": t.dfont, "--pad": pad };
     const on = { background: V.priC, color: V.onpriC, borderBottom: "2px solid " + V.pri };
     const scr = s.screen;
-    const sel = (n) => scr === n;
+    const sel = (n) => scr === n || (n === "Settings" && scr === "Cache");
 
     const nvAll = [
       { id: "Chat", label: "CHAT", tile: "chat", icon: "message-square", badge: 3 },
@@ -1939,13 +2030,28 @@ class Component extends DCLogic {
       };
     });
 
+    // Cache totals are read by the Cache screen, its Settings row and the header,
+    // so they are derived once here rather than three times from three tables.
+    const cacheUsed = this.cacheUsed();
+    const cacheFree = Math.max(0, s.prefs.cacheLimit - cacheUsed);
+
     const HEAD = {
       Chat: ["CHAT", "> Ruth Resident @ Da Boom"], Friends: ["FRIENDS", "> 3 online / 8 total · live · sync 14:32:07"],
       Radar: ["RADAR", "> 6 avatars in region · 3 in chat range"], Map: ["WORLD MAP", "> Da Boom <1000, 1000> · 4 regions loaded"],
       Inventory: ["INVENTORY", "> 1 284 items · 42 folders · Ruth Resident"], Profile: ["PROFILE", "> resident record · nyx.vaher"],
       Groups: ["GROUPS", "> 12 of 42 slots · 3 unread notices"], Notices: ["NOTIFICATIONS", "> 4 offline IMs queued · autoresponse ON"],
-      Teleport: ["TELEPORT", "> 9 landmarks · 5 recent destinations"], Settings: ["SETTINGS", "> " + LAYOUTS[s.layout].name + " / " + PALETTES[s.palette].name],
-      Diagnostics: ["DIAGNOSTICS", "> grid connectivity probe · agni"], "3D View": ["", ""], Login: ["", ""],
+      Teleport: ["TELEPORT", "> 9 landmarks · 5 recent destinations"],
+      Settings: ["SETTINGS", "> " + LAYOUTS[s.layout].name + " layout / " + PALETTES[s.palette].name + " colour"],
+      Cache: ["CACHE", "> " + cacheUsed + " MB of " + s.prefs.cacheLimit + " MB · " + s.prefs.cacheLoc],
+      Diagnostics: ["DIAGNOSTICS", "> grid connectivity probe · agni"],
+      // These five screens existed but had no HEAD entry, so they fell through to
+      // ["", ""] and rendered an empty header band above their card list.
+      Outfits: ["OUTFITS", "> 1 worn · 14 saved · Ruth Resident"],
+      Objects: ["OBJECTS", "> 4 nearby · 25 prims in draw distance"],
+      Parcel: ["PARCEL", "> Linden Public Park · Da Boom · general"],
+      Transactions: ["L$ TRANSACTIONS", "> balance L$ 4 250 · 14 in the last 30 days"],
+      "Mute List": ["MUTE LIST", "> 6 blocked · 3 residents / 3 objects"],
+      "3D View": ["", ""], Login: ["", ""],
     };
     const [title, subtitle] = HEAD[scr] || ["", ""];
 
@@ -2175,7 +2281,7 @@ class Component extends DCLogic {
     ].map(([name, meta], i) => ({ name, meta, style: { border: "1px solid " + V.outv, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "8px", background: i === 0 ? V.priC : V.surf2, borderColor: i === 0 ? V.pri : V.outv } }));
 
     const invTree = [
-      ["Inventory", "folder-star", 0, null, "v42"], ["Objects", "box", 1, "Inventory", "v18"],
+      ["Inventory", "folder-root", 0, null, "v42"], ["Objects", "box", 1, "Inventory", "v18"],
       ["Sunset Lamp v3", "box", 2, "Objects", ""], ["Roof Kit (unpacked)", "box", 2, "Objects", ""],
       ["Clothing", "shirt", 1, "Inventory", "v9"], ["Body Parts", "user", 1, "Inventory", "v4"],
       ["Landmarks", "map-pin", 1, "Inventory", "v12"], ["Bay City — Hollywood", "map-pin", 2, "Landmarks", ""],
@@ -2186,7 +2292,7 @@ class Component extends DCLogic {
       const isFolder = kids.includes(name);
       const open = s.invOpen[name] !== false; // folders default open unless explicitly closed
       return { name, icon, ver, parent, depth,
-        chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "circle-small",
+        chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "dot",
         open, isFolder,
         pick: isFolder ? () => this.setState(st => ({ invOpen: { ...st.invOpen, [name]: !(st.invOpen[name] !== false) } })) : () => this.notify(name + " — OPEN"),
         indent: bleed
@@ -2264,27 +2370,93 @@ class Component extends DCLogic {
         { icon: "history", title: "Recent · Sansara Ridge", right: "yesterday", body: "<64, 200, 88> · general" },
         { icon: "map-pin", title: "Paste a SLURL", body: "secondlife:// … · or scan a QR from desktop" },
       ],
+      // Preferences, grouped the way a viewer's Preferences window is: a `sect` row
+      // opens each group, so the list reads as sections rather than 30 loose rows.
       Settings: [
-        { icon: "user", title: "Session", right: s.loginMode === "offline" ? "offline" : "grid · " + ((this.allGrids().find(g => g.key === s.loginGrid) || {}).label || s.loginGrid),
-          body: "Ruth Resident · Da Boom · agent 22c4a5de-11 · sim link " + (s.reconnecting ? "reconnecting…" : "LIVE · rx 18 204 / tx 6 118") },
+        { sect: true, title: "SESSION" },
+        { icon: "user", title: "Session", right: s.loginMode === "offline" ? "offline" : "grid \u00b7 " + ((this.allGrids().find(g => g.key === s.loginGrid) || {}).label || s.loginGrid),
+          body: "Ruth Resident \u00b7 Da Boom \u00b7 agent 22c4a5de-11 \u00b7 sim link " + (s.reconnecting ? "reconnecting\u2026" : "LIVE \u00b7 rx 18 204 / tx 6 118") },
         { icon: "plug-zap", title: "Reconnect to grid", body: "Manually re-open the sim circuit without a full re-login.",
-          actions: [{ label: s.reconnecting ? "RECONNECTING…" : "RECONNECT", primary: !s.reconnecting, pick: s.reconnecting ? () => {} : () => this.reconnect() }] },
+          actions: [{ label: s.reconnecting ? "RECONNECTING\u2026" : "RECONNECT", primary: !s.reconnecting, pick: s.reconnecting ? () => {} : () => this.reconnect() }] },
         { icon: "log-out", title: "Disconnect", body: "Ends this session and returns to the login screen.", style: { borderColor: V.err },
-          actions: [{ label: "DISCONNECT", dim: true, pick: () => this.set("screen", "Login") }] },
+          actions: [{ label: "DISCONNECT", dim: true, pick: () => this.goScreen("Login") }] },
+
+        { sect: true, title: "APPEARANCE" },
         { icon: "palette", title: "Layout pack", right: LAYOUTS[s.layout].name, body: "6 layout packs: geometry, nav model, type and density. Colour is a separate pack.", actions: [{ label: "PREVIEW ALL", pick: () => this.cycle(LAYOUTS, "layout") }] },
+        { icon: "layout", title: "Nav layout", body: "Tabs, rail, tiles, sweep console or desktop floaters \u2014 set by the pack.", select: true, options: Object.entries(LAYOUTS).map(([k, x]) => ({ label: x.name, value: k })), value: s.layout, onChange: (v) => this.set("layout", v) },
         { icon: "droplets", title: "Colour pack", right: PALETTES[s.palette].name, body: "24 Ktheme palettes grouped by family; any pack drops into any layout (144 combinations).", actions: [{ label: "BROWSE PACKS", pick: () => this.cycle(PALETTES, "palette") }, { label: "SYSTEM MATCH", pick: () => this.set("palette", "ink") }] },
+        { icon: "droplet", title: "Colour palette", body: "Pick a palette directly instead of cycling through them.", select: true, options: Object.keys(PALETTES).map(k => ({ label: PALETTES[k].name, value: k })), value: s.palette, onChange: (v) => this.set("palette", v) },
         { icon: "type", title: "Large type & high contrast", body: "Scales body to 18px, forces AA contrast, disables shimmer", toggle: true, on: s.toggles.largeType, togglePick: () => this.toggleSetting("largeType") },
-        { icon: "rows-3", title: "Compact density", body: s.dense ? "ON · Lumiya-style dense rows" : "OFF · comfortable rows", toggle: true, on: s.dense, togglePick: () => this.set("dense", !s.dense),
+        { icon: "rows-3", title: "Compact density", body: s.dense ? "ON \u00b7 Lumiya-style dense rows" : "OFF \u00b7 comfortable rows", toggle: true, on: s.dense, togglePick: () => this.set("dense", !s.dense),
           actions: [{ label: s.dense ? "SWITCH TO COMFORTABLE" : "SWITCH TO COMPACT", primary: true, pick: () => this.set("dense", !s.dense) }] },
-        { icon: "bell", title: "Push notifications", body: "IMs, group notices, teleport offers · quick reply from the shade", toggle: true, on: s.toggles.push, togglePick: () => this.toggleSetting("push") },
+
+        { sect: true, title: "GRAPHICS & PERFORMANCE" },
+        { icon: "eye", title: "Draw distance", right: s.prefs.draw, body: "How far objects and avatars stream in. Past 128 m mobile data and battery both suffer.", select: true, options: ["64 m", "96 m", "128 m", "192 m", "256 m"].map(v => ({ label: v, value: v })), value: s.prefs.draw, onChange: (v) => this.setPref("draw", v) },
+        { icon: "gauge", title: "Graphics quality", right: s.prefs.quality, body: "Preset for LOD factor, particle count, reflections and terrain detail.", select: true, options: ["Low", "Balanced", "High", "Ultra"].map(v => ({ label: v, value: v })), value: s.prefs.quality, onChange: (v) => this.setPref("quality", v) },
+        { icon: "activity", title: "Frame rate cap", right: s.prefs.fps, body: "Capping below the panel refresh is the single biggest battery win on mobile.", select: true, options: ["30 fps", "45 fps", "60 fps", "Uncapped"].map(v => ({ label: v, value: v })), value: s.prefs.fps, onChange: (v) => this.setPref("fps", v) },
+        { icon: "user-round-x", title: "Avatar complexity limit", right: s.prefs.complexity, body: "Avatars heavier than this render as a coloured silhouette (jellydoll).", select: true, options: ["20 000", "40 000", "80 000", "160 000", "No limit"].map(v => ({ label: v, value: v })), value: s.prefs.complexity, onChange: (v) => this.setPref("complexity", v) },
+        { icon: "sun", title: "Shadows & advanced lighting", body: "Off by default on mobile \u2014 roughly a third of the frame budget on a phone GPU.", toggle: true, on: s.toggles.shadows, togglePick: () => this.toggleSetting("shadows") },
+        { icon: "battery-charging", title: "Battery saver", body: "Drops to 30 fps, stops object streaming and pauses the scene when backgrounded.", toggle: true, on: s.toggles.battery, togglePick: () => this.toggleSetting("battery") },
+
+        { sect: true, title: "SOUND & VOICE" },
+        { icon: "volume-2", title: "Master volume", right: s.prefs.volume, body: "Ambient, gestures, object sounds and UI feedback.", select: true, options: ["Muted", "25%", "50%", "70%", "100%"].map(v => ({ label: v, value: v })), value: s.prefs.volume, onChange: (v) => this.setPref("volume", v) },
         { icon: "mic", title: "Voice indicator", body: "Show speaking rings in radar and chat (listen-only on mobile)", toggle: true, on: s.toggles.voice, togglePick: () => this.toggleSetting("voice") },
-        { icon: "shield", title: "Mute & block list", right: "6", body: "3 residents · 3 objects", actions: [{ label: "OPEN MUTE LIST", primary: true, pick: () => this.set("screen", "Mute List") }] },
-        { icon: "lock", title: "RestrainedLove (RLV)", body: "Enable RLV script commands for viewer control & interactions", toggle: true, on: s.toggles.rlv || false, togglePick: () => this.toggleSetting("rlv") },
-        { icon: "hard-drive", title: "Cache Management", right: "512 MB", body: "Texture & asset disk cache size and storage location", actions: [{ label: "CLEAR CACHE", dim: true, pick: () => this.notify("Cache cleared — restart viewer to apply") }] },
+        { icon: "radio", title: "Autoplay parcel media", body: "Start a parcel's audio stream and shared media without asking first.", toggle: true, on: s.toggles.mediaAuto, togglePick: () => this.toggleSetting("mediaAuto") },
+
+        { sect: true, title: "CHAT & IM" },
         { icon: "keyboard", title: "Chat channel commands", body: "/1 gestures, /me, /shout mapped to compose-bar shortcuts", toggle: true, on: s.toggles.chatCmds, togglePick: () => this.toggleSetting("chatCmds") },
-        { icon: "layout-dashboard", title: "Widgets", body: "Unread IMs, nearby count, L$ balance — lock-screen glance" },
-        { icon: "layout", title: "Nav Layout", body: "Choose navigation and layout pack", select: true, options: Object.entries(LAYOUTS).map(([k,x]) => ({label: x.name, value: k})), value: s.layout, onChange: (v) => this.set("layout", v) },
-        { icon: "droplet", title: "Color Palette", body: "Choose color theme", select: true, options: Object.keys(PALETTES).map(k => ({label: PALETTES[k].name, value: k})), value: s.palette, onChange: (v) => this.set("palette", v) },
+        { icon: "clock", title: "Timestamps in local chat", body: "Prefix every line with its sim time, the way the desktop viewer does.", toggle: true, on: s.toggles.timestamps, togglePick: () => this.toggleSetting("timestamps") },
+        { icon: "save", title: "Keep IM logs on device", body: "Conversations are stored locally and never uploaded. Counts against the cache budget.", toggle: true, on: s.toggles.imLogs, togglePick: () => this.toggleSetting("imLogs") },
+        { icon: "languages", title: "Translate incoming chat", right: s.prefs.translate, body: "Machine translation of local chat and IMs into your language.", select: true, options: ["Off", "English", "Deutsch", "Fran\u00e7ais", "\u65e5\u672c\u8a9e", "Portugu\u00eas"].map(v => ({ label: v, value: v })), value: s.prefs.translate, onChange: (v) => this.setPref("translate", v) },
+        { icon: "pencil-line", title: "Send typing indicator", body: "Let the other side see that you are composing a reply.", toggle: true, on: s.toggles.typingSent, togglePick: () => this.toggleSetting("typingSent") },
+        { icon: "bell-off", title: "Autoresponse while away", body: "\u201cOn mobile \u2014 replies may be slow.\u201d Sent 4 times today.", toggle: true, on: s.toggles.autoresponse, togglePick: () => this.toggleSetting("autoresponse") },
+
+        { sect: true, title: "NOTIFICATIONS" },
+        { icon: "bell", title: "Push notifications", body: "IMs, group notices, teleport offers \u00b7 quick reply from the shade", toggle: true, on: s.toggles.push, togglePick: () => this.toggleSetting("push") },
+        { icon: "layout-dashboard", title: "Widgets", body: "Unread IMs, nearby count, L$ balance \u2014 lock-screen glance" },
+
+        { sect: true, title: "PRIVACY & SAFETY" },
+        { icon: "shield", title: "Mute & block list", right: "6", body: "3 residents \u00b7 3 objects", actions: [{ label: "OPEN MUTE LIST", primary: true, pick: () => this.goScreen("Mute List") }] },
+        // The Permissions dialog tells the resident grants "can be revoked from
+        // Settings \u203a Scripted objects" \u2014 until now there was no such row to go to.
+        { icon: "shield-alert", title: "Scripted object permissions", right: "4 granted", body: "Animate, attach and take-controls grants held by HUDs and objects you have touched.",
+          actions: [{ label: "REVIEW GRANTS", pick: () => this.set("dialog", "Permissions") }, { label: "REVOKE ALL", dim: true, pick: () => this.notify("All scripted-object permissions revoked") }] },
+        { icon: "eye-off", title: "Show me as online", body: "When off, friends see you offline and your map position is hidden.", toggle: true, on: s.toggles.showOnline, togglePick: () => this.toggleSetting("showOnline") },
+        { icon: "lock", title: "RestrainedLove (RLV)", body: "Enable RLV script commands for viewer control & interactions", toggle: true, on: s.toggles.rlv, togglePick: () => this.toggleSetting("rlv") },
+        { icon: "badge-alert", title: "Maturity rating", right: s.prefs.maturity, body: "Which regions and search results this account is allowed to reach.", select: true, options: ["General", "Moderate", "Adult"].map(v => ({ label: v, value: v })), value: s.prefs.maturity, onChange: (v) => this.setPref("maturity", v) },
+
+        { sect: true, title: "NETWORK & STORAGE" },
+        { icon: "gauge", title: "Bandwidth limit", right: s.prefs.bandwidth, body: "Ceiling for asset streaming. Lower it on a metered connection.", select: true, options: ["500 kbps", "1 500 kbps", "3 000 kbps", "Unlimited"].map(v => ({ label: v, value: v })), value: s.prefs.bandwidth, onChange: (v) => this.setPref("bandwidth", v) },
+        { icon: "hard-drive", title: "Cache & storage", right: cacheUsed + " / " + s.prefs.cacheLimit + " MB", body: "Texture, mesh, sound and inventory caches \u00b7 " + s.prefs.cacheLoc.toLowerCase() + ".",
+          meter: cacheUsed / s.prefs.cacheLimit,
+          actions: [{ label: "OPEN CACHE MANAGER", primary: true, pick: () => this.goScreen("Cache") }] },
+        { icon: "activity", title: "Connection diagnostics", body: "Latency, DNS, TLS handshake and sim circuit counters.", actions: [{ label: "RUN PROBE", pick: () => this.goScreen("Diagnostics") }] },
+
+        { sect: true, title: "ABOUT" },
+        { icon: "info", title: "Linkpoint Mobile", right: "2.0", body: "build 2026.09.21 \u00b7 " + ((this.allGrids().find(g => g.key === s.loginGrid) || {}).host || "offline") + " \u00b7 open source, AGPL-3.0",
+          actions: [{ label: "RELEASE NOTES", pick: () => this.notify("Release notes \u2014 2.0 (2026.09.21)") }, { label: "REPORT A BUG", pick: () => this.notify("Bug report \u2014 opening issue tracker") }] },
+      ],
+      // Cache was one row on Settings with a single CLEAR CACHE button and no way to
+      // see what was actually using the space. It is its own screen now.
+      Cache: [
+        { icon: "hard-drive", title: "Disk cache", right: cacheUsed + " / " + s.prefs.cacheLimit + " MB",
+          body: cacheFree + " MB free before the oldest assets start being evicted. Clearing a cache is safe \u2014 anything still in use is refetched from the sim.",
+          meter: cacheUsed / s.prefs.cacheLimit,
+          actions: [{ label: "CLEAR ALL", dim: true, pick: () => this.clearAllCache() }, { label: "REFRESH", pick: () => this.notify("Cache recalculated \u2014 " + cacheUsed + " MB in use") }] },
+        { sect: true, title: "BY ASSET TYPE" },
+        ...this.cacheRows().map(r => ({
+          icon: r.icon, title: r.name, right: r.mb + " MB", body: r.mb === 0 ? "empty \u00b7 refills as assets are requested" : r.note,
+          meter: r.mb / (s.prefs.cacheLimit || 1),
+          actions: r.mb === 0 ? null : [{ label: "CLEAR", dim: true, pick: () => this.clearCache(r.key, r.name) }],
+        })),
+        { sect: true, title: "POLICY" },
+        { icon: "database", title: "Cache size limit", right: s.prefs.cacheLimit + " MB", body: "A bigger cache means fewer refetches and a longer first-visit wait after you clear it.",
+          select: true, options: [128, 256, 512, 1024, 2048].map(v => ({ label: v + " MB", value: v })), value: s.prefs.cacheLimit, onChange: (v) => this.setPref("cacheLimit", Number(v)) },
+        { icon: "folder-open", title: "Cache location", right: s.prefs.cacheLoc, body: "Moving the cache copies it and clears the old location.",
+          select: true, options: ["Internal storage", "SD card", "App sandbox"].map(v => ({ label: v, value: v })), value: s.prefs.cacheLoc, onChange: (v) => this.setPref("cacheLoc", v) },
+        { icon: "trash-2", title: "Clear cache on exit", body: "Frees the space every time you log out, at the cost of a cold start next session.", toggle: true, on: s.toggles.cacheOnExit, togglePick: () => this.toggleSetting("cacheOnExit") },
+        { icon: "refresh-cw", title: "Rebuild inventory skeleton", body: "Refetch all 1 284 items and 42 folders from the grid. Use this when inventory looks wrong.",
+          actions: [{ label: "REBUILD NOW", pick: () => this.notify("Inventory skeleton rebuilding \u2014 1 284 items") }] },
       ],
       Diagnostics: [
         { title: "LATENCY", big: "84", body: "> excellent · agni · round trip", bigStyle: { color: V.ok } },
@@ -2317,9 +2489,21 @@ class Component extends DCLogic {
       ? (c.icon === "map-pin" ? () => this.notify("Paste a SLURL — clipboard is empty")
         : () => { this.setState({ screen: "Map" }); this.notify("Teleporting to " + c.title); })
       : null;
+    // A `sect` entry is a group heading inside the list, not a card: it drops the
+    // card chrome and prints a rule + tracked label, so a long preferences screen
+    // reads as sections instead of thirty identical boxes.
+    const sectStyle = { border: "none", borderRadius: "0", background: "transparent",
+      padding: (LK.card === "flat" ? "18px 16px 2px" : "18px 2px 2px"), display: "flex", alignItems: "center", gap: "10px" };
+    const sectTitle = { flex: 1, font: "700 10px/1.4 " + t.font, letterSpacing: ".26em", color: V.ink2, textTransform: "uppercase" };
+    const cardTitle = { flex: 1, font: "600 13px/1.25 " + t.font, color: V.ink };
     const cards = (CARDS[scr] || []).map(c => ({
-      ...c, tap: cardTap(c),
-      style: M(M(cardBase, accentOn(c.style && c.style.borderColor)), cardTap(c) ? { cursor: "pointer" } : null),
+      ...c, tap: c.sect ? null : cardTap(c),
+      titleStyle: c.sect ? sectTitle : cardTitle,
+      // A usage meter is a 0-1 fraction; the track is only drawn when a card asks for one.
+      meterTrack: c.meter == null ? null : { height: "4px", borderRadius: "2px", background: V.surf2, overflow: "hidden", marginTop: "10px" },
+      meterFill: c.meter == null ? null : { width: Math.max(1, Math.min(100, Math.round(c.meter * 100))) + "%", height: "100%",
+        background: c.meter > .9 ? V.err : c.meter > .7 ? V.sec2 : V.pri, transition: "width .2s ease" },
+      style: c.sect ? sectStyle : M(M(cardBase, accentOn(c.style && c.style.borderColor)), cardTap(c) ? { cursor: "pointer" } : null),
       toggleStyle: { width: "42px", height: "24px", borderRadius: "12px", position: "relative", display: "inline-block", flex: "none", background: c.on === false ? V.surf2 : V.priC },
       knobStyle: { position: "absolute", top: "3px", width: "18px", height: "18px", borderRadius: "9px", left: c.on === false ? "3px" : "21px", background: c.on === false ? V.ink2 : V.pri, transition: "left .18s ease" },
       toggleKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (c.togglePick) c.togglePick(); } },
@@ -2364,11 +2548,15 @@ class Component extends DCLogic {
 
     // ---- loading / empty / error -----------------------------------------
     const condPack = s.cond === "normal" ? null : (STATES[s.cond][scr] || STATES[s.cond]._);
-    const stateBlock = (!condPack || ["Login", "Settings", "Search"].includes(scr)) ? null : {
+    const stateBlock = (!condPack || ["Login", "Settings", "Cache", "Search"].includes(scr)) ? null : {
       icon: condPack.icon, title: condPack.title, body: condPack.body,
+      // Loading swaps the lucide glyph for the crystal loader; empty/error keep the
+      // glyph, which carries the specific meaning (inbox, plug-zap, cloud-off, …).
+      pyramid: s.cond === "loading", plainIcon: s.cond !== "loading",
+      pyWrap: { width: "88px", height: "88px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center" },
       iconWrap: { width: "62px", height: "62px", flex: "none", borderRadius: V.rp, border: "1px solid " + (s.cond === "error" ? V.err : V.outv),
         background: V.surf, display: "flex", alignItems: "center", justifyContent: "center",
-        color: s.cond === "error" ? V.err : V.pri, animation: s.cond === "loading" ? "spin 2.6s linear infinite" : "none" },
+        color: s.cond === "error" ? V.err : V.pri },
       titleStyle: { font: "700 15px/1.3 " + t.dfont, letterSpacing: V.tls, color: s.cond === "error" ? V.err : V.ink },
       bar: condPack.bar ? { width: "216px", height: "4px", borderRadius: "2px", background: V.surf2, overflow: "hidden" } : null,
       fill: condPack.bar ? { width: Math.round(condPack.bar * 100) + "%", height: "100%", background: V.pri } : null,
@@ -2438,7 +2626,8 @@ class Component extends DCLogic {
       Groups: (CARDS.Groups || []).map(c => ({ a: c.title, b: c.right || "" })),
       Notices: (CARDS.Notices || []).map(c => ({ a: c.title, b: c.right || "" })),
       Teleport: (CARDS.Teleport || []).map(c => ({ a: c.title, b: c.right || "" })),
-      Settings: (CARDS.Settings || []).map(c => ({ a: c.title, b: c.right || "" })),
+      Settings: (CARDS.Settings || []).filter(c => !c.sect).map(c => ({ a: c.title, b: c.right || "" })),
+      Cache: (CARDS.Cache || []).filter(c => !c.sect).map(c => ({ a: c.title, b: c.right || "" })),
       Diagnostics: (CARDS.Diagnostics || []).map(c => ({ a: c.title, b: c.right || "" })),
     };
     const flFocused = isFloat && s.flOpen[scr] && !s.flMin[scr] ? this.flR(scr) : null;
@@ -2738,7 +2927,8 @@ class Component extends DCLogic {
         });
         // Sub-segments belong to the active area, indented off the spine like real LCARS sub-nav.
         const at = items.findIndex(x => x.on);
-        const subActive = scr === "Chat" ? s.tabs.Chat : scr === "Radar" ? (objMode ? "OBJECT" : "AVATAR") : null;
+        const subActive = scr === "Chat" ? s.tabs.Chat : scr === "Radar" ? (objMode ? "OBJECT" : "AVATAR")
+          : scr === "Settings" ? "PREFS" : scr === "Cache" ? "CACHE" : null;
         const sub = (CSUB[scr] || []).map(([label, code]) => {
           const sOn = subActive === label;
           const sbg = sOn ? V.sec : V.surf2;
@@ -2746,6 +2936,9 @@ class Component extends DCLogic {
             label, code, on: false,
             pick: scr === "Chat" ? () => this.setTab("Chat", label)
               : scr === "Radar" ? () => this.set("rMode", label === "AVATAR" ? "AV" : "OB")
+              // Preferences and Cache are two screens, so their shared sub-nav is
+              // real navigation rather than an in-screen tab.
+              : (scr === "Settings" || scr === "Cache") ? () => this.set("screen", label === "CACHE" ? "Cache" : "Settings")
               : () => {},
             codeStyle: { position: "absolute", left: "7px", top: "4px", font: "500 7.5px/1 " + t.font,
               color: this.ink(sbg, [V.ink2, V.bg]), opacity: .8 },

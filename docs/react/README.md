@@ -100,8 +100,9 @@ settings toggle, desktop floaters) all produced the expected visual result.
 
 ## Feature coverage
 
-- All 13 screens render real content: Chat, Friends, Radar, Map, 3D View,
-  Inventory, Profile, Groups, Notices, Teleport, Settings, Diagnostics, Login.
+- All 20 screens render real content: Chat, Friends, Radar, Map, 3D View,
+  Inventory, Profile, Groups, Notices, Teleport, Outfits, Objects, Parcel,
+  Transactions, Mute List, Settings, Cache, Diagnostics, Login, Search.
 - All 6 layout packs (Ink Terminal, Sweep Console, Metro Tiles, Aero Glass,
   Rule & Rail, Press) and all 24 colour packs are selectable and use the
   exact hex/radius/spacing tokens from the source.
@@ -121,6 +122,11 @@ settings toggle, desktop floaters) all produced the expected visual result.
   (drag/resize/minimise/close/focus/taskbar/menu bar).
 
 ## Known deviations from the mockup
+
+- **Nothing is missing from Settings any more.** This port used to skip the
+  two `<select>` cards on Settings (Nav layout / Colour palette) because
+  `Card.jsx` had no `select` branch at all. It does now, so the expanded
+  preferences screen and the Cache screen render identically on both sides.
 
 - **Dead `isSweep` branch omitted.** In the source, `isConsole` is defined
   as `nav === "sweep"` and the separate `isSweep` flag is defined as

@@ -25,6 +25,7 @@ export const FLOATERS = [
   { id:"Notices",     title:"Notifications", icon:"bell",           x:852,  y:292, w:196, h:252 },
   { id:"Teleport",    title:"Places",        icon:"zap",            x:330,  y:150, w:370, h:350 },
   { id:"Settings",    title:"Preferences",   icon:"settings",       x:290,  y:80,  w:540, h:470 },
+  { id:"Cache",       title:"Cache",         icon:"hard-drive",     x:360,  y:120, w:460, h:420 },
   { id:"Diagnostics", title:"Statistics",    icon:"activity",       x:1056, y:462, w:346, h:196 },
 ];
 export const FMENU = [
@@ -36,7 +37,7 @@ export const FMENU = [
   { label:"Help",  items:[["Second Life Help","F1"],["Report Abuse…",""],["Report Bug…",""],["About Linkpoint",""]] },
 ];
 
-export const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Outfits","Objects","Parcel","Transactions","Mute List","Settings","Diagnostics","Login","Search"];
+export const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Outfits","Objects","Parcel","Transactions","Mute List","Settings","Cache","Diagnostics","Login","Search"];
 // Grid picker for Login: Second Life's own two (Agni/Aditi) plus a few
 // well-known OpenSim grids, so the login screen isn't LL-only.
 export const GRIDS = [
@@ -75,7 +76,11 @@ export const CSUB = {
   Groups:        [["NOTICES", "· 01"], ["ROLES", "· 02"]],
   Notices:       [["IM", "· 01"], ["SYSTEM", "· 02"]],
   Teleport:      [["LANDMARK", "· 01"], ["HISTORY", "· 02"]],
-  Settings:      [["LOOK", "· 01"], ["NETWORK", "· 02"]],
+  // These used to read LOOK / NETWORK and had no handler at all — the sub-nav
+  // rendered but every click was inert. They now switch between the two real
+  // preference surfaces.
+  Settings:      [["PREFS", "· 01"], ["CACHE", "· 02"]],
+  Cache:         [["PREFS", "· 01"], ["CACHE", "· 02"]],
   Diagnostics:   [["NETWORK", "· 01"], ["RENDER", "· 02"]],
 };
 

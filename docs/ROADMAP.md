@@ -10,7 +10,8 @@ already covers all 13 screens the mockup set out to build, across 6 layout
 packs × 24 colour packs × 4 device sizes:
 
 Chat, Friends, Radar, Map, 3D View, Inventory, Profile, Groups, Notices,
-Teleport, Settings, Diagnostics, Login.
+Teleport, Settings, Diagnostics, Login — plus Outfits, Objects, Parcel,
+Transactions, Mute List, Search and (since 2026-09-21) Cache.
 
 Comparing screen-by-screen against the real app's PRD, the mockup already
 models most of what the real app does or plans to do: LINK badge (circuit
@@ -188,3 +189,109 @@ already uses. Verified with a headless-Chromium pass across Metro Tiles
 (sharp), Sweep Console (pill), and Aero Glass (soft) on Desktop, including
 focusing a floater to confirm the content overlay's rounded corners still
 line up with the window frame underneath it.
+
+## Settings review, cache management, crystal loader (2026-09-21)
+
+Three things were asked for: review and expand Settings, fix the screens that
+didn't load right, and add the cache-management page that didn't exist.
+
+### Screens that didn't load right
+
+Five of them, all real and all separate causes:
+
+1. **Five screens rendered a blank header band.** `HEAD` in `renderVals()`
+   (and `HEAD()` in the React port's `content.js`) had no entry for Outfits,
+   Objects, Parcel, Transactions or Mute List, so `HEAD[scr] || ["", ""]` fell
+   through to the empty pair and the header drew an empty title + subtitle
+   above the card list. Every one of them now has a title and a status line
+   like the other screens.
+2. **Six screens did nothing at all on Desktop.** `flFocus(id)` raised a
+   floater, un-minimised it and set `screen`, but never set `flOpen[id]`.
+   Only five floaters start open (Chat, Radar, Friends, Inventory, Map), so
+   navigating to Preferences, Groups, Notifications, Places, Profile or
+   Statistics on the 1440×900 Desktop device left the scene visually
+   unchanged — the window being "focused" had never been opened. `flFocus`
+   now opens the window it focuses, in both the mockup and the React port.
+3. **Icons with a digit in their name silently rendered nothing.** The
+   `pascal()` helper that maps a `data-lucide` name to Lucide's export
+   (`icons()` in `index.html`) was `n.replace(/(^|-)([a-z])/g, …)` — it
+   uppercased a letter after a dash but left the dash in place before a
+   digit, so `volume-2`, `trash-2` and `rows-3` resolved to `Volume-2` /
+   `Trash-2` / `Rows-3`, none of which exist, and the row drew with a blank
+   icon slot. It now splits on `-` and capitalises every segment.
+4. **Two icon names don't exist in the bundled Lucide at all.** Inventory
+   asked for `folder-star` (root folder) and `circle-small` (leaf item);
+   neither is in `docs/vendor/lucide.min.js`. Swapped for `folder-root` and
+   `dot`. A headless pass now asserts every `data-lucide` name on every
+   screen resolves.
+5. **The rail/console sub-nav under Settings was a dead click.** `CSUB`
+   listed LOOK / NETWORK for Settings but `sub[].pick` only had branches for
+   Chat and Radar, so both segments were inert. They are now PREFS / CACHE
+   and navigate between the two preference screens. The other screens' CSUB
+   sub-segments are still decorative — out of scope here, and they at least
+   name something the screen really has.
+
+Also fixed while in there: the rail and sweep-console wordmark still read
+`GRID LINK`, left over from the pre-rename `GridLink Mobile.dc.html`.
+
+### Settings, expanded
+
+Settings was 17 loose rows mixing session, appearance, notifications and
+privacy in no order. It is now ~35 rows under eight headings — SESSION,
+APPEARANCE, GRAPHICS & PERFORMANCE, SOUND & VOICE, CHAT & IM, NOTIFICATIONS,
+PRIVACY & SAFETY, NETWORK & STORAGE, ABOUT — the grouping a viewer's
+Preferences window uses. New rows model what the real viewer exposes: draw
+distance, graphics preset, frame-rate cap, avatar complexity limit, shadows,
+battery saver, master volume, media autoplay, chat timestamps, IM logging,
+translation, typing indicator, online-status privacy, maturity rating and
+bandwidth limit.
+
+One of them closes a dangling reference: the Permissions system dialog has
+always told the resident that grants "can be revoked from Settings ›
+Scripted objects", and no such row existed. It does now, and it opens that
+dialog.
+
+Two new card fields carry the expansion:
+
+- `sect: true` — a group heading rendered without card chrome.
+- `meter: 0..1` — a usage bar under the body text, tinted by fill level.
+
+The React port's `Card.jsx` also gained `select` support, which it never had
+even though the mockup's Settings already used two `<select>` cards.
+
+### Cache management
+
+`Cache` is a new screen (and a new Desktop floater), reached from Settings'
+NETWORK & STORAGE section or the PREFS/CACHE sub-nav. It shows total use
+against the configured limit, a per-asset-type breakdown (texture, mesh,
+sound, inventory skeleton, map tiles, chat logs) with its own meter and
+CLEAR button per row, and the policy controls: size limit, location, clear
+on exit, rebuild inventory skeleton. Clearing a row zeroes it and the totals
+recompute, so the header, the Settings row and the meters can't disagree —
+they all read one `cacheRows()` table.
+
+Cache has no nav entry of its own, so it keeps the Settings/MORE nav item
+lit (`navActive()` in the React port, `sel()` in the mockup) rather than
+leaving the whole nav unhighlighted.
+
+### Loading states use the Linkpoint crystal
+
+Loading used to rotate the screen's own lucide glyph inside its bordered
+box (`animation: spin 2.6s linear infinite`) — on Teleport that meant a
+spinning `zap` in a spinning diamond, which read as a generic spinner. All
+loading states now draw a compact version of the login screen's crystal
+instead: two pyramid halves closing into an octahedron with a core that
+lights as they meet, in the palette's own colours. Empty and error states
+keep their glyph, which carries specific meaning (`inbox`, `plug-zap`,
+`cloud-off`). The login logo's own SVG is a ~40 KB SMIL point-interpolation
+animation, so this is a small hand-built shape sharing its motion, not a
+copy of it; it honours `prefers-reduced-motion`.
+
+### Verification
+
+Headless Chromium, both `docs/index.html` and a production build of
+`docs/react/`: every screen visited with zero console/page errors; every
+`data-lucide` name on every screen resolves; and a click-storm over
+6 layout packs × 5 device sizes × 9 card screens, clicking every
+pointer-cursor element in the device frame — 26 218 clicks in the mockup and
+18 977 in the React port, zero errors in both.

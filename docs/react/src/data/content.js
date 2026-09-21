@@ -4,6 +4,9 @@
 // buildCards() function (the Friends/Groups/Notices/Teleport/Settings/
 // Diagnostics card lists, including their accept/decline/toggle callbacks).
 
+import { LAYOUTS } from "../theme/layouts.js";
+import { PALETTES } from "../theme/palettes.js";
+
 // Ported from `nvAll`/`nvList` — the 7-item navigation model shared by every
 // nav rendering (tabs/rail/tiles/sweep rail/console rail/desktop peek menu).
 export const NAV_ALL = [
@@ -104,7 +107,7 @@ export const REGIONS = [
 
 // [name, icon, depth, parent, version]
 export const INVENTORY_SOURCE = [
-  ["Inventory", "folder-star", 0, null, "v42"],
+  ["Inventory", "folder-root", 0, null, "v42"],
   ["Objects", "box", 1, "Inventory", "v18"],
   ["Sunset Lamp v3", "box", 2, "Objects", ""],
   ["Roof Kit (unpacked)", "box", 2, "Objects", ""],
@@ -125,7 +128,20 @@ export const PROFILE_BLOCKS = [
   { label: "PICKS", body: "The Roof Build · Ahern Welcome Area · Sansara Ridge overlook" },
 ];
 
-export const HEAD = (layoutName, paletteName) => ({
+// Cache contents, in notional megabytes. Both the Cache screen and the Settings
+// row that links to it read this one table, so the totals can never disagree.
+export const CACHE_ROWS = [
+  { key: "tex",  icon: "image",          name: "Texture cache",       mb: 318, note: "4 812 textures · evicted least-recently-used" },
+  { key: "mesh", icon: "box",            name: "Mesh & object cache", mb: 96,  note: "1 204 rezzed assets · LOD levels 0-3" },
+  { key: "snd",  icon: "volume-2",       name: "Sound cache",         mb: 34,  note: "612 clips · gestures and ambient loops" },
+  { key: "inv",  icon: "folder",         name: "Inventory skeleton",  mb: 21,  note: "1 284 items · 42 folders · synced 14:32" },
+  { key: "map",  icon: "map",            name: "Map tiles",           mb: 12,  note: "96 region tiles · secondlife-maps-cdn" },
+  { key: "chat", icon: "message-square", name: "Chat & IM logs",      mb: 4,   note: "38 conversations · kept on device only" },
+];
+export const cacheRows = (cleared = {}) => CACHE_ROWS.map((r) => ({ ...r, mb: cleared[r.key] ? 0 : r.mb }));
+export const cacheUsed = (cleared = {}) => cacheRows(cleared).reduce((n, r) => n + r.mb, 0);
+
+export const HEAD = (layoutName, paletteName, cacheState = {}) => ({
   Chat: ["CHAT", "> Ruth Resident @ Da Boom"],
   Friends: ["FRIENDS", "> 3 online / 8 total · live · sync 14:32:07"],
   Radar: ["RADAR", "> 6 avatars in region · 3 in chat range"],
@@ -135,8 +151,16 @@ export const HEAD = (layoutName, paletteName) => ({
   Groups: ["GROUPS", "> 12 of 42 slots · 3 unread notices"],
   Notices: ["NOTIFICATIONS", "> 4 offline IMs queued · autoresponse ON"],
   Teleport: ["TELEPORT", "> 9 landmarks · 5 recent destinations"],
-  Settings: ["SETTINGS", "> " + layoutName + " / " + paletteName],
+  Settings: ["SETTINGS", "> " + layoutName + " layout / " + paletteName + " colour"],
+  Cache: ["CACHE", "> " + cacheUsed(cacheState.cleared) + " MB of " + cacheState.limit + " MB · " + cacheState.loc],
   Diagnostics: ["DIAGNOSTICS", "> grid connectivity probe · agni"],
+  // These five screens existed but had no HEAD entry, so they fell through to
+  // ["", ""] and rendered an empty header band above their card list.
+  Outfits: ["OUTFITS", "> 1 worn · 14 saved · Ruth Resident"],
+  Objects: ["OBJECTS", "> 4 nearby · 25 prims in draw distance"],
+  Parcel: ["PARCEL", "> Linden Public Park · Da Boom · general"],
+  Transactions: ["L$ TRANSACTIONS", "> balance L$ 4 250 · 14 in the last 30 days"],
+  "Mute List": ["MUTE LIST", "> 6 blocked · 3 residents / 3 objects"],
   "3D View": ["", ""],
   Login: ["", ""],
 });
@@ -188,7 +212,10 @@ export const DETAIL = {
 // actions to the same state transitions (dismiss/pin/toggleSetting/tab+screen
 // navigation/cycle layout & palette).
 export function buildCards({ state, actions, layoutName, paletteName }) {
-  const { dismissed, toggles, pinned, dense } = state;
+  const { dismissed, toggles, pinned, dense, prefs } = state;
+  const used = cacheUsed(state.cacheCleared);
+  const free = Math.max(0, prefs.cacheLimit - used);
+  const opts = (vals) => vals.map((v) => ({ label: String(v), value: v }));
   return {
     Outfits: [
       { icon: "shirt", title: "Urban Casual v2 (Active)", right: "WORN", body: "12 items · Mesh body, jacket, jeans, boots", actions: [{ label: "EDIT OUTFIT", primary: true, pick: () => actions.notify("Editing Urban Casual v2") }] },
@@ -352,7 +379,10 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
       { icon: "history", title: "Recent · Sansara Ridge", right: "yesterday", body: "<64, 200, 88> · general" },
       { icon: "map-pin", title: "Paste a SLURL", body: "secondlife:// … · or scan a QR from desktop" },
     ],
+    // Preferences, grouped the way a viewer's Preferences window is: a `sect` row
+    // opens each group, so the list reads as sections rather than 30 loose rows.
     Settings: [
+      { sect: true, title: "SESSION" },
       {
         icon: "user",
         title: "Session",
@@ -383,31 +413,13 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
         accent: "err",
         actions: [{ label: "DISCONNECT", dim: true, pick: () => actions.setScreen("Login") }],
       },
-      {
-        icon: "palette",
-        title: "Layout pack",
-        right: layoutName,
-        body: "6 layout packs: geometry, nav model, type and density. Colour is a separate pack.",
-        actions: [{ label: "PREVIEW ALL", pick: () => actions.cycleLayout() }],
-      },
-      {
-        icon: "droplets",
-        title: "Colour pack",
-        right: paletteName,
-        body: "24 Ktheme palettes grouped by family; any pack drops into any layout (144 combinations).",
-        actions: [
-          { label: "BROWSE PACKS", pick: () => actions.cyclePalette() },
-          { label: "SYSTEM MATCH", pick: () => actions.setPalette("ink") },
-        ],
-      },
-      {
-        icon: "type",
-        title: "Large type & high contrast",
-        body: "Scales body to 18px, forces AA contrast, disables shimmer",
-        toggle: true,
-        on: toggles.largeType,
-        togglePick: () => actions.toggleSetting("largeType"),
-      },
+
+      { sect: true, title: "APPEARANCE" },
+      { icon: "palette", title: "Layout pack", right: layoutName, body: "6 layout packs: geometry, nav model, type and density. Colour is a separate pack.", actions: [{ label: "PREVIEW ALL", pick: () => actions.cycleLayout() }] },
+      { icon: "layout", title: "Nav layout", body: "Tabs, rail, tiles, sweep console or desktop floaters — set by the pack.", select: true, options: Object.entries(LAYOUTS).map(([k, x]) => ({ label: x.name, value: k })), value: state.layout, onChange: (v) => actions.setLayout(v) },
+      { icon: "droplets", title: "Colour pack", right: paletteName, body: "24 Ktheme palettes grouped by family; any pack drops into any layout (144 combinations).", actions: [{ label: "BROWSE PACKS", pick: () => actions.cyclePalette() }, { label: "SYSTEM MATCH", pick: () => actions.setPalette("ink") }] },
+      { icon: "droplet", title: "Colour palette", body: "Pick a palette directly instead of cycling through them.", select: true, options: Object.keys(PALETTES).map((k) => ({ label: PALETTES[k].name, value: k })), value: state.palette, onChange: (v) => actions.setPalette(v) },
+      { icon: "type", title: "Large type & high contrast", body: "Scales body to 18px, forces AA contrast, disables shimmer", toggle: true, on: toggles.largeType, togglePick: () => actions.toggleSetting("largeType") },
       {
         icon: "rows-3",
         title: "Compact density",
@@ -417,34 +429,125 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
         togglePick: () => actions.setDense(!dense),
         actions: [{ label: dense ? "SWITCH TO COMFORTABLE" : "SWITCH TO COMPACT", primary: true, pick: () => actions.setDense(!dense) }],
       },
-      {
-        icon: "bell",
-        title: "Push notifications",
-        body: "IMs, group notices, teleport offers · quick reply from the shade",
-        toggle: true,
-        on: toggles.push,
-        togglePick: () => actions.toggleSetting("push"),
-      },
-      {
-        icon: "mic",
-        title: "Voice indicator",
-        body: "Show speaking rings in radar and chat (listen-only on mobile)",
-        toggle: true,
-        on: toggles.voice,
-        togglePick: () => actions.toggleSetting("voice"),
-      },
-      { icon: "shield", title: "Mute & block list", right: "6", body: "3 residents · 3 objects", actions: [{ label: "OPEN MUTE LIST", primary: true, pick: () => actions.setScreen("Mute List") }] },
-      { icon: "lock", title: "RestrainedLove (RLV)", body: "Enable RLV script commands for viewer control & interactions", toggle: true, on: toggles.rlv || false, togglePick: () => actions.toggleSetting("rlv") },
-      { icon: "hard-drive", title: "Cache Management", right: "512 MB", body: "Texture & asset disk cache size and storage location", actions: [{ label: "CLEAR CACHE", dim: true, pick: () => actions.notify("Cache cleared — restart viewer to apply") }] },
-      {
-        icon: "keyboard",
-        title: "Chat channel commands",
-        body: "/1 gestures, /me, /shout mapped to compose-bar shortcuts",
-        toggle: true,
-        on: toggles.chatCmds,
-        togglePick: () => actions.toggleSetting("chatCmds"),
-      },
+
+      { sect: true, title: "GRAPHICS & PERFORMANCE" },
+      { icon: "eye", title: "Draw distance", right: prefs.draw, body: "How far objects and avatars stream in. Past 128 m mobile data and battery both suffer.", select: true, options: opts(["64 m", "96 m", "128 m", "192 m", "256 m"]), value: prefs.draw, onChange: (v) => actions.setPref("draw", v) },
+      { icon: "gauge", title: "Graphics quality", right: prefs.quality, body: "Preset for LOD factor, particle count, reflections and terrain detail.", select: true, options: opts(["Low", "Balanced", "High", "Ultra"]), value: prefs.quality, onChange: (v) => actions.setPref("quality", v) },
+      { icon: "activity", title: "Frame rate cap", right: prefs.fps, body: "Capping below the panel refresh is the single biggest battery win on mobile.", select: true, options: opts(["30 fps", "45 fps", "60 fps", "Uncapped"]), value: prefs.fps, onChange: (v) => actions.setPref("fps", v) },
+      { icon: "user-round-x", title: "Avatar complexity limit", right: prefs.complexity, body: "Avatars heavier than this render as a coloured silhouette (jellydoll).", select: true, options: opts(["20 000", "40 000", "80 000", "160 000", "No limit"]), value: prefs.complexity, onChange: (v) => actions.setPref("complexity", v) },
+      { icon: "sun", title: "Shadows & advanced lighting", body: "Off by default on mobile — roughly a third of the frame budget on a phone GPU.", toggle: true, on: toggles.shadows, togglePick: () => actions.toggleSetting("shadows") },
+      { icon: "battery-charging", title: "Battery saver", body: "Drops to 30 fps, stops object streaming and pauses the scene when backgrounded.", toggle: true, on: toggles.battery, togglePick: () => actions.toggleSetting("battery") },
+
+      { sect: true, title: "SOUND & VOICE" },
+      { icon: "volume-2", title: "Master volume", right: prefs.volume, body: "Ambient, gestures, object sounds and UI feedback.", select: true, options: opts(["Muted", "25%", "50%", "70%", "100%"]), value: prefs.volume, onChange: (v) => actions.setPref("volume", v) },
+      { icon: "mic", title: "Voice indicator", body: "Show speaking rings in radar and chat (listen-only on mobile)", toggle: true, on: toggles.voice, togglePick: () => actions.toggleSetting("voice") },
+      { icon: "radio", title: "Autoplay parcel media", body: "Start a parcel's audio stream and shared media without asking first.", toggle: true, on: toggles.mediaAuto, togglePick: () => actions.toggleSetting("mediaAuto") },
+
+      { sect: true, title: "CHAT & IM" },
+      { icon: "keyboard", title: "Chat channel commands", body: "/1 gestures, /me, /shout mapped to compose-bar shortcuts", toggle: true, on: toggles.chatCmds, togglePick: () => actions.toggleSetting("chatCmds") },
+      { icon: "clock", title: "Timestamps in local chat", body: "Prefix every line with its sim time, the way the desktop viewer does.", toggle: true, on: toggles.timestamps, togglePick: () => actions.toggleSetting("timestamps") },
+      { icon: "save", title: "Keep IM logs on device", body: "Conversations are stored locally and never uploaded. Counts against the cache budget.", toggle: true, on: toggles.imLogs, togglePick: () => actions.toggleSetting("imLogs") },
+      { icon: "languages", title: "Translate incoming chat", right: prefs.translate, body: "Machine translation of local chat and IMs into your language.", select: true, options: opts(["Off", "English", "Deutsch", "Français", "日本語", "Português"]), value: prefs.translate, onChange: (v) => actions.setPref("translate", v) },
+      { icon: "pencil-line", title: "Send typing indicator", body: "Let the other side see that you are composing a reply.", toggle: true, on: toggles.typingSent, togglePick: () => actions.toggleSetting("typingSent") },
+      { icon: "bell-off", title: "Autoresponse while away", body: "“On mobile — replies may be slow.” Sent 4 times today.", toggle: true, on: toggles.autoresponse, togglePick: () => actions.toggleSetting("autoresponse") },
+
+      { sect: true, title: "NOTIFICATIONS" },
+      { icon: "bell", title: "Push notifications", body: "IMs, group notices, teleport offers · quick reply from the shade", toggle: true, on: toggles.push, togglePick: () => actions.toggleSetting("push") },
       { icon: "layout-dashboard", title: "Widgets", body: "Unread IMs, nearby count, L$ balance — lock-screen glance" },
+
+      { sect: true, title: "PRIVACY & SAFETY" },
+      { icon: "shield", title: "Mute & block list", right: "6", body: "3 residents · 3 objects", actions: [{ label: "OPEN MUTE LIST", primary: true, pick: () => actions.setScreen("Mute List") }] },
+      // The Permissions dialog tells the resident grants "can be revoked from
+      // Settings › Scripted objects" — until now there was no such row to go to.
+      {
+        icon: "shield-alert",
+        title: "Scripted object permissions",
+        right: "4 granted",
+        body: "Animate, attach and take-controls grants held by HUDs and objects you have touched.",
+        actions: [
+          { label: "REVIEW GRANTS", pick: () => actions.setDialog("Permissions") },
+          { label: "REVOKE ALL", dim: true, pick: () => actions.notify("All scripted-object permissions revoked") },
+        ],
+      },
+      { icon: "eye-off", title: "Show me as online", body: "When off, friends see you offline and your map position is hidden.", toggle: true, on: toggles.showOnline, togglePick: () => actions.toggleSetting("showOnline") },
+      { icon: "lock", title: "RestrainedLove (RLV)", body: "Enable RLV script commands for viewer control & interactions", toggle: true, on: toggles.rlv, togglePick: () => actions.toggleSetting("rlv") },
+      { icon: "badge-alert", title: "Maturity rating", right: prefs.maturity, body: "Which regions and search results this account is allowed to reach.", select: true, options: opts(["General", "Moderate", "Adult"]), value: prefs.maturity, onChange: (v) => actions.setPref("maturity", v) },
+
+      { sect: true, title: "NETWORK & STORAGE" },
+      { icon: "gauge", title: "Bandwidth limit", right: prefs.bandwidth, body: "Ceiling for asset streaming. Lower it on a metered connection.", select: true, options: opts(["500 kbps", "1 500 kbps", "3 000 kbps", "Unlimited"]), value: prefs.bandwidth, onChange: (v) => actions.setPref("bandwidth", v) },
+      {
+        icon: "hard-drive",
+        title: "Cache & storage",
+        right: used + " / " + prefs.cacheLimit + " MB",
+        body: "Texture, mesh, sound and inventory caches · " + prefs.cacheLoc.toLowerCase() + ".",
+        meter: used / prefs.cacheLimit,
+        actions: [{ label: "OPEN CACHE MANAGER", primary: true, pick: () => actions.setScreen("Cache") }],
+      },
+      { icon: "activity", title: "Connection diagnostics", body: "Latency, DNS, TLS handshake and sim circuit counters.", actions: [{ label: "RUN PROBE", pick: () => actions.setScreen("Diagnostics") }] },
+
+      { sect: true, title: "ABOUT" },
+      {
+        icon: "info",
+        title: "Linkpoint Mobile",
+        right: "2.0",
+        body: "build 2026.09.21 · " + ((actions.allGrids().find((g) => g.key === state.loginGrid) || {}).host || "offline") + " · open source, AGPL-3.0",
+        actions: [
+          { label: "RELEASE NOTES", pick: () => actions.notify("Release notes — 2.0 (2026.09.21)") },
+          { label: "REPORT A BUG", pick: () => actions.notify("Bug report — opening issue tracker") },
+        ],
+      },
+    ],
+    // Cache was one row on Settings with a single CLEAR CACHE button and no way to
+    // see what was actually using the space. It is its own screen now.
+    Cache: [
+      {
+        icon: "hard-drive",
+        title: "Disk cache",
+        right: used + " / " + prefs.cacheLimit + " MB",
+        body: free + " MB free before the oldest assets start being evicted. Clearing a cache is safe — anything still in use is refetched from the sim.",
+        meter: used / prefs.cacheLimit,
+        actions: [
+          { label: "CLEAR ALL", dim: true, pick: () => actions.clearAllCache() },
+          { label: "REFRESH", pick: () => actions.notify("Cache recalculated — " + used + " MB in use") },
+        ],
+      },
+      { sect: true, title: "BY ASSET TYPE" },
+      ...cacheRows(state.cacheCleared).map((r) => ({
+        icon: r.icon,
+        title: r.name,
+        right: r.mb + " MB",
+        body: r.mb === 0 ? "empty · refills as assets are requested" : r.note,
+        meter: r.mb / (prefs.cacheLimit || 1),
+        actions: r.mb === 0 ? null : [{ label: "CLEAR", dim: true, pick: () => actions.clearCache(r.key, r.name) }],
+      })),
+      { sect: true, title: "POLICY" },
+      {
+        icon: "database",
+        title: "Cache size limit",
+        right: prefs.cacheLimit + " MB",
+        body: "A bigger cache means fewer refetches and a longer first-visit wait after you clear it.",
+        select: true,
+        options: [128, 256, 512, 1024, 2048].map((v) => ({ label: v + " MB", value: v })),
+        value: prefs.cacheLimit,
+        onChange: (v) => actions.setPref("cacheLimit", Number(v)),
+      },
+      {
+        icon: "folder-open",
+        title: "Cache location",
+        right: prefs.cacheLoc,
+        body: "Moving the cache copies it and clears the old location.",
+        select: true,
+        options: opts(["Internal storage", "SD card", "App sandbox"]),
+        value: prefs.cacheLoc,
+        onChange: (v) => actions.setPref("cacheLoc", v),
+      },
+      { icon: "trash-2", title: "Clear cache on exit", body: "Frees the space every time you log out, at the cost of a cold start next session.", toggle: true, on: toggles.cacheOnExit, togglePick: () => actions.toggleSetting("cacheOnExit") },
+      {
+        icon: "refresh-cw",
+        title: "Rebuild inventory skeleton",
+        body: "Refetch all 1 284 items and 42 folders from the grid. Use this when inventory looks wrong.",
+        actions: [{ label: "REBUILD NOW", pick: () => actions.notify("Inventory skeleton rebuilding — 1 284 items") }],
+      },
     ],
     Diagnostics: [
       { title: "LATENCY", big: "84", body: "> excellent · agni · round trip", tone: "ok" },

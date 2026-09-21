@@ -6,6 +6,7 @@ import { PALETTES } from "../theme/palettes.js";
 import { CBTN, CSUB, CPAD, CPADR } from "../theme/constants.js";
 import Icon from "./Icon.jsx";
 import ScreenBody from "./ScreenBody.jsx";
+import { navActive } from "../theme/look.js";
 
 // The 3D View's sim/location — shared by the in-scene region tag and the
 // console's own top bar so the two never disagree.
@@ -25,7 +26,7 @@ export default function ConsoleFrame() {
   const cfBar = { position: "absolute", left: 0, top: 0, right: 0, height: C.bar + "px", background: V.pri, borderRadius: Math.round(C.bar * 0.66) + "px 0 0 0" };
   const cfBarEnd = { position: "absolute", right: 0, top: 0, width: (C.wide ? 104 : 66) + "px", height: C.bar + "px", background: V.sec2 };
   const cfBarGap = { position: "absolute", right: (C.wide ? 108 : 70) + "px", top: 0, width: C.gap + "px", height: C.bar + "px", background: V.bg };
-  const headMap = HEAD(LAYOUTS[state.layout].name, PALETTES[state.palette].name);
+  const headMap = HEAD(LAYOUTS[state.layout].name, PALETTES[state.palette].name, { cleared: state.cacheCleared, limit: state.prefs.cacheLimit, loc: state.prefs.cacheLoc });
   const cfTitleText = consoleScene ? SIM_NAME : (headMap[state.screen] || ["", ""])[0];
   const cfTitle = {
     position: "absolute", right: (C.wide ? 128 : 84) + "px", left: C.rail + C.gap + "px", top: 0, height: C.bar + "px",
@@ -203,7 +204,7 @@ function buildConsoleNav({ state, actions, V, t, C, ink }) {
   const tint = [V.sec2, V.surf2, V.sec, V.surf2, V.sec2, V.sec, V.surf2, V.sec];
   const objMode = state.rMode === "OBJ";
   const items = NAV_ALL.map((n, i) => {
-    const on = state.screen === n.id;
+    const on = navActive(state.screen, n.id);
     const bg = state.cFlash === n.id ? V.priC : on ? V.pri : tint[i % tint.length];
     return {
       label: n.label, code: "0" + (i + 1) + "-" + (4471 + i * 17), pick: () => actions.cTap(n.id), on,
@@ -216,13 +217,24 @@ function buildConsoleNav({ state, actions, V, t, C, ink }) {
     };
   });
   const at = items.findIndex((x) => x.on);
-  const subActive = state.screen === "Chat" ? state.tabs.Chat : state.screen === "Radar" ? (objMode ? "OBJECT" : "AVATAR") : null;
+  const subActive =
+    state.screen === "Chat" ? state.tabs.Chat
+    : state.screen === "Radar" ? (objMode ? "OBJECT" : "AVATAR")
+    : state.screen === "Settings" ? "PREFS"
+    : state.screen === "Cache" ? "CACHE"
+    : null;
   const sub = (CSUB[state.screen] || []).map(([label, code]) => {
     const sOn = subActive === label;
     const sbg = sOn ? V.sec : V.surf2;
     return {
       label, code, on: false,
-      pick: state.screen === "Chat" ? () => actions.setTab("Chat", label) : state.screen === "Radar" ? () => actions.setRMode(label === "AVATAR" ? "AV" : "OB") : () => {},
+      pick:
+        state.screen === "Chat" ? () => actions.setTab("Chat", label)
+        : state.screen === "Radar" ? () => actions.setRMode(label === "AVATAR" ? "AV" : "OB")
+        // Preferences and Cache are two screens, so their shared sub-nav is
+        // real navigation rather than an in-screen tab.
+        : state.screen === "Settings" || state.screen === "Cache" ? () => actions.setScreen(label === "CACHE" ? "Cache" : "Settings")
+        : () => {},
       codeStyle: { position: "absolute", left: "7px", top: "4px", font: "500 7.5px/1 " + t.font, color: ink(sbg, [V.ink2, V.bg]), opacity: 0.8 },
       style: {
         position: "relative", flex: "none", boxSizing: "border-box", height: (C.wide ? 34 : 30) + "px", width: C.rail - 26 + "px", marginLeft: "26px",

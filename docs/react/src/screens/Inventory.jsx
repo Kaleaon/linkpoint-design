@@ -17,7 +17,7 @@ export default function Inventory() {
   const nodes = INVENTORY_SOURCE.map(([name, icon, depth, parent, ver]) => {
     const isFolder = INVENTORY_FOLDERS.includes(name);
     const open = state.invOpen[name] !== false;
-    return { name, icon, ver, parent, depth, isFolder, open, chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "circle-small" };
+    return { name, icon, ver, parent, depth, isFolder, open, chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "dot" };
   }).filter((n) => n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false));
 
   return (

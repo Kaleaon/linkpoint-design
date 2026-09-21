@@ -109,7 +109,7 @@ file_map:
     react: "src/theme/computeTheme.js, src/theme/color.js (ink()/contrast), src/hooks/useAppState.js's T()/D()/navMode()/cf()"
   render_vals_screen_content:
     dc: "the per-screen branches of renderVals() (isChat/isFriends/isRadar/... blocks, and the CARDS table)"
-    react: "src/screens/*.jsx for the screens with bespoke layouts; src/data/content.js's buildCards() + src/components/CardList.jsx for the six card-list screens (see screens map below)"
+    react: "src/screens/*.jsx for the screens with bespoke layouts; src/data/content.js's buildCards() + src/components/CardList.jsx for the card-list screens (see screens map below)"
   screens:
     Chat: docs/react/src/screens/Chat.jsx
     Radar: docs/react/src/screens/Radar.jsx
@@ -123,7 +123,13 @@ file_map:
     Groups: "same generic card list as Friends"
     Notices: "same generic card list as Friends"
     Teleport: "same generic card list as Friends"
+    Outfits: "same generic card list as Friends"
+    Objects: "same generic card list as Friends"
+    Parcel: "same generic card list as Friends"
+    Transactions: "same generic card list as Friends"
+    "Mute List": "same generic card list as Friends"
     Settings: "same generic card list as Friends"
+    Cache: "same generic card list as Friends"
     Diagnostics: "same generic card list as Friends"
   shell_chrome:
     sweep_console_frame: docs/react/src/components/ConsoleFrame.jsx
@@ -137,6 +143,7 @@ file_map:
     toast: docs/react/src/components/Toast.jsx
     device_frame_bezel: docs/react/src/components/DeviceFrame.jsx
     status_bar: docs/react/src/components/StatusBar.jsx
+    loading_crystal: "docs/react/src/components/CrystalLoader.jsx (dc: the inline <svg> under stateBlock.pyramid in index.html; keyframes in src/index.css / the <style> block mirror each other)"
     desktop_menu_bar: docs/react/src/components/MenuBar.jsx
 
 # ---------------------------------------------------------------------
