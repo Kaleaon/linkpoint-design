@@ -65,24 +65,56 @@ export const CBTN = {
 
 // Rail sub-segments are per-screen sub-nav, not decoration: each active area exposes
 // its own two or three sub-views the way LCARS indents sub-functions off the spine.
+// Every screen's sub-views, in one table. This is the model, not decoration: the
+// LCARS rail indents it off the spine as sub-segments, every other layout pack
+// renders it as the segmented tab strip above the body, and both write the same
+// `tabs[screen]` state that the screen bodies filter on. A screen missing from
+// this table simply has no sub-views. Mirrors the CSUB table in docs/index.html.
 export const CSUB = {
   "3D View":     [["CAM", "· 01"], ["GFX", "· 02"]],
   Chat:          [["LOCAL", "· 01"], ["IM", "· 02"], ["GROUP", "· 03"]],
-  Friends:       [["ONLINE", "· 01"], ["ALL", "· 02"]],
+  Friends:       [["ALL", "· 01"], ["ONLINE", "· 02"]],
   Radar:         [["AVATAR", "· 01"], ["OBJECT", "· 02"]],
   Map:           [["WORLD", "· 01"], ["MINI", "· 02"]],
-  Inventory:     [["RECENT", "· 01"], ["WORN", "· 02"]],
+  Inventory:     [["ALL", "· 01"], ["RECENT", "· 02"], ["WORN", "· 03"]],
   Profile:       [["2ND LIFE", "· 01"], ["PICKS", "· 02"]],
-  Groups:        [["NOTICES", "· 01"], ["ROLES", "· 02"]],
+  Groups:        [["GROUPS", "· 01"], ["ROLES", "· 02"]],
   Notices:       [["IM", "· 01"], ["SYSTEM", "· 02"]],
   Teleport:      [["LANDMARK", "· 01"], ["HISTORY", "· 02"]],
-  // These used to read LOOK / NETWORK and had no handler at all — the sub-nav
-  // rendered but every click was inert. They now switch between the two real
-  // preference surfaces.
   Settings:      [["PREFS", "· 01"], ["CACHE", "· 02"]],
   Cache:         [["PREFS", "· 01"], ["CACHE", "· 02"]],
-  Diagnostics:   [["NETWORK", "· 01"], ["RENDER", "· 02"]],
+  Diagnostics:   [["AGNI", "· 01"], ["ADITI", "· 02"]],
+  Outfits:       [["WORN", "· 01"], ["SAVED", "· 02"]],
+  Objects:       [["NEARBY", "· 01"], ["INSPECT", "· 02"]],
+  Parcel:        [["GENERAL", "· 01"], ["MEDIA", "· 02"]],
+  Transactions:  [["ALL", "· 01"], ["PAYMENTS", "· 02"]],
+  "Mute List":   [["AVATARS", "· 01"], ["OBJECTS", "· 02"]],
 };
+
+// The screen's current sub-view: `tabs[screen]` when it is one of that screen's
+// own labels, otherwise the first label. Every screen defaults to its leading
+// sub-view rather than to an implicit "no filter", so the tab strip and the
+// LCARS sub-nav always agree on what is highlighted.
+//  - Radar's sub-view predates this table and still lives in `rMode`.
+//  - Preferences and Cache are two screens, not two tabs, so the sub-view is
+//    simply which of them you are on.
+export const subView = (state, scr) => {
+  const subs = (CSUB[scr] || []).map((x) => x[0]);
+  if (!subs.length) return null;
+  if (scr === "Radar") return state.rMode === "OBJ" ? "OBJECT" : "AVATAR";
+  if (scr === "Settings" || scr === "Cache") return scr === "Cache" ? "CACHE" : "PREFS";
+  const cur = state.tabs[scr];
+  return subs.includes(cur) ? cur : subs[0];
+};
+export const setSub = (actions, scr, label) => {
+  if (scr === "Radar") return actions.setRMode(label === "AVATAR" ? "AV" : "OBJ");
+  if (scr === "Settings" || scr === "Cache") return actions.setScreen(label === "CACHE" ? "Cache" : "Settings");
+  return actions.setTab(scr, label);
+};
+// A card tagged `sub` belongs to those sub-views only; an untagged card shows
+// under all of them. Section headings carry the tag too, so a heading never
+// outlives the rows beneath it.
+export const inSub = (c, curSub) => !c.sub || (Array.isArray(c.sub) ? c.sub.includes(curSub) : c.sub === curSub);
 
 // Movement pad: turning is drag-to-look, so the pad is a cross with a camera-mode centre.
 export const CPAD = [

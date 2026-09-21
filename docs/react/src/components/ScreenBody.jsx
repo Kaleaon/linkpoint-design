@@ -3,6 +3,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { buildCards } from "../data/content.js";
+import { subView, inSub } from "../theme/constants.js";
 import Header from "./Header.jsx";
 import SegmentedTabs from "./SegmentedTabs.jsx";
 import ChipRow from "./ChipRow.jsx";
@@ -29,6 +30,7 @@ export default function ScreenBody() {
 
   const cardsByScreen = buildCards({ state, actions, layoutName: LAYOUTS[state.layout].name, paletteName: PALETTES[state.palette].name });
   const isCardScreen = CARD_SCREENS.includes(scr);
+  const curSub = subView(state, scr);
 
   return (
     <div style={{ flex: 1, minWidth: 0, display: "flex", position: "relative" }}>
@@ -47,7 +49,7 @@ export default function ScreenBody() {
         )}
         {norm && scr === "Inventory" && <Inventory />}
         {norm && scr === "Profile" && <Profile />}
-        {norm && isCardScreen && <CardList cards={cardsByScreen[scr] || []} />}
+        {norm && isCardScreen && <CardList cards={(cardsByScreen[scr] || []).filter((c) => inSub(c, curSub))} />}
         {scr === "Login" && <Login />}
         {scr === "Search" && <Search />}
         {!norm && <StateBlock />}

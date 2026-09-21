@@ -104,6 +104,10 @@ file_map:
   top_level_constants:
     dc: "const tables declared before `class Component` (SCREENS, GRIDS, LAYOUTS, PALETTES, DEVICES, CBTN, CSUB, CPAD/CPADR, DIALOGS, FLOATERS, FMENU, HUDS, TARGETS, STATES)"
     react: "src/theme/constants.js (most tables), layouts.js, palettes.js, dialogs.js — same names, same shape, ported near-verbatim"
+  sub_views:
+    dc: "CSUB + the subView()/setSub() methods on the component class; segTabs and the console rail's `sub` list both read them; card lists filter on the `sub` tag"
+    react: "src/theme/constants.js exports CSUB plus subView(state, scr) / setSub(actions, scr, label) / inSub(card, curSub); consumed by components/SegmentedTabs.jsx, components/ConsoleFrame.jsx, components/ScreenBody.jsx and screens/{Map,Inventory,Profile,World3D}.jsx"
+    note: "CSUB is the model, not LCARS decoration — a screen gains sub-views by appearing in the table. Radar's sub-view lives in rMode and Settings/Cache navigate instead of switching tabs; both are special-cased inside subView/setSub, nowhere else."
   render_vals_theme_head:
     dc: "the top of renderVals(): T()/D()/navMode()/cf() and turning layout+palette into V (colour tokens), t (font tokens), C (console geometry)"
     react: "src/theme/computeTheme.js, src/theme/color.js (ink()/contrast), src/hooks/useAppState.js's T()/D()/navMode()/cf()"

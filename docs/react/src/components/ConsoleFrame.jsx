@@ -3,7 +3,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL, HEAD } from "../data/content.js";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
-import { CBTN, CSUB, CPAD, CPADR } from "../theme/constants.js";
+import { CBTN, CSUB, CPAD, CPADR, subView, setSub } from "../theme/constants.js";
 import Icon from "./Icon.jsx";
 import ScreenBody from "./ScreenBody.jsx";
 import { navActive } from "../theme/look.js";
@@ -202,7 +202,6 @@ export default function ConsoleFrame() {
 function buildConsoleNav({ state, actions, V, t, C, ink }) {
   const hs = C.wide ? [94, 56, 70, 46, 58, 46, 52, 46] : [58, 46, 52, 46, 48, 46, 50, 46];
   const tint = [V.sec2, V.surf2, V.sec, V.surf2, V.sec2, V.sec, V.surf2, V.sec];
-  const objMode = state.rMode === "OBJ";
   const items = NAV_ALL.map((n, i) => {
     const on = navActive(state.screen, n.id);
     const bg = state.cFlash === n.id ? V.priC : on ? V.pri : tint[i % tint.length];
@@ -217,24 +216,13 @@ function buildConsoleNav({ state, actions, V, t, C, ink }) {
     };
   });
   const at = items.findIndex((x) => x.on);
-  const subActive =
-    state.screen === "Chat" ? state.tabs.Chat
-    : state.screen === "Radar" ? (objMode ? "OBJECT" : "AVATAR")
-    : state.screen === "Settings" ? "PREFS"
-    : state.screen === "Cache" ? "CACHE"
-    : null;
+  const subActive = subView(state, state.screen);
   const sub = (CSUB[state.screen] || []).map(([label, code]) => {
     const sOn = subActive === label;
     const sbg = sOn ? V.sec : V.surf2;
     return {
       label, code, on: false,
-      pick:
-        state.screen === "Chat" ? () => actions.setTab("Chat", label)
-        : state.screen === "Radar" ? () => actions.setRMode(label === "AVATAR" ? "AV" : "OB")
-        // Preferences and Cache are two screens, so their shared sub-nav is
-        // real navigation rather than an in-screen tab.
-        : state.screen === "Settings" || state.screen === "Cache" ? () => actions.setScreen(label === "CACHE" ? "Cache" : "Settings")
-        : () => {},
+      pick: () => setSub(actions, state.screen, label),
       codeStyle: { position: "absolute", left: "7px", top: "4px", font: "500 7.5px/1 " + t.font, color: ink(sbg, [V.ink2, V.bg]), opacity: 0.8 },
       style: {
         position: "relative", flex: "none", boxSizing: "border-box", height: (C.wide ? 34 : 30) + "px", width: C.rail - 26 + "px", marginLeft: "26px",
@@ -260,7 +248,13 @@ function ConsoleScene() {
     background: "linear-gradient(180deg," + V.sky1 + " 0%," + V.sky2 + " 46%," + V.gnd + " 46%," + V.gnd2 + " 100%)",
   };
   const cfParallax = { position: "absolute", inset: 0, transform: "translate(" + (-state.cHdg * 0.9).toFixed(1) + "px," + (state.cPitch * 0.8).toFixed(1) + "px)", transition: state.cDrag ? "none" : "transform .35s ease-out" };
-  const regionRead = SIM_NAME.toUpperCase() + " · " + SIM_COORD.x + "," + SIM_COORD.y + "," + SIM_COORD.z + " · HDG " + String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(3, "0") + "° " + (state.cPitch > 2 ? "DN" : state.cPitch < -2 ? "UP" : "LVL");
+  // The console scene has one readout strip, so 3D View's CAM/GFX sub-views swap
+  // what it reports rather than adding a second strip to the LCARS frame.
+  const regionRead =
+    state.screen === "3D View" && subView(state, "3D View") === "GFX"
+      ? "GFX · DRAW " + state.prefs.draw.toUpperCase() + " · " + state.prefs.quality.toUpperCase() + " · " + state.prefs.fps.toUpperCase() +
+        " · SHADOWS " + (state.toggles.shadows ? "ON" : "OFF") + " · " + (state.toggles.battery ? "SAVER" : "FULL")
+      : SIM_NAME.toUpperCase() + " · " + SIM_COORD.x + "," + SIM_COORD.y + "," + SIM_COORD.z + " · HDG " + String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(3, "0") + "° " + (state.cPitch > 2 ? "DN" : state.cPitch < -2 ? "UP" : "LVL");
 
   return (
     <div onMouseDown={actions.sceneDown} onMouseMove={actions.sceneMove} onMouseUp={actions.sceneUp} onMouseLeave={actions.sceneUp} style={cfScene}>

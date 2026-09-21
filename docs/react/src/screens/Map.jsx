@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
+import { subView } from "../theme/constants.js";
 import { REGIONS } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
 
@@ -7,8 +9,12 @@ import Icon from "../components/Icon.jsx";
 // tile (falls back to a themed note if the CDN image 404s, same as `tileOk`),
 // zoom/locate buttons and the teleport/favourite footer.
 export default function Map() {
+  const { state } = useApp();
   const { V, t, bleed, C } = useTheme();
   const [tileOk, setTileOk] = useState(true);
+  // WORLD lays the four loaded regions over the tile; MINI drops that grid for a
+  // single centred position readout, the way a viewer's minimap does.
+  const mini = subView(state, "Map") === "MINI";
 
   const mapBoxStyle = bleed
     ? { flex: 1, minHeight: 0, position: "relative", overflow: "hidden", background: V.surf, borderRadius: C.rad + "px 0 0 0" }
@@ -19,7 +25,7 @@ export default function Map() {
     <>
       <div style={mapBoxStyle}>
         <div style={{ position: "absolute", inset: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr" }}>
-          {REGIONS.map(([name, meta], i) => (
+          {(mini ? [] : REGIONS).map(([name, meta], i) => (
             <div key={name} style={{ border: "1px solid " + V.outv, display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "8px", background: i === 0 ? V.priC : V.surf2, borderColor: i === 0 ? V.pri : V.outv }}>
               <span style={{ font: "600 11px/1.25 " + t.font, color: V.ink, display: "block" }}>{name}</span>
               <span style={{ font: "400 9.5px/1.25 " + t.font, color: V.ink2, display: "block" }}>{meta}</span>
@@ -36,6 +42,16 @@ export default function Map() {
             />
           ) : null}
         </div>
+        {mini ? (
+          <div style={{ position: "absolute", left: "10px", top: "10px", display: "flex", flexDirection: "column", gap: "3px", background: V.surf, border: "1px solid " + V.outv, borderRadius: V.rs, padding: "8px 10px" }}>
+            {[["REGION", "Da Boom"], ["POSITION", "<128, 128, 26>"], ["HEADING", "214\u00b0 \u00b7 SW"], ["DRAW", state.prefs.draw]].map(([k, v]) => (
+              <div key={k} style={{ display: "flex", gap: "12px", font: "400 10px/1.4 " + t.font, color: V.ink2 }}>
+                <span style={{ width: "62px", flex: "none", letterSpacing: ".16em", color: V.pri }}>{k}</span>
+                <span>{v}</span>
+              </div>
+            ))}
+          </div>
+        ) : null}
         <div style={{ position: "absolute", left: "50%", top: "50%", width: "14px", height: "14px", margin: "-7px 0 0 -7px", borderRadius: "7px", background: V.pri, border: "2px solid " + V.bg }} />
         <div style={{ position: "absolute", right: "10px", top: "10px", display: "flex", flexDirection: "column", gap: "6px" }}>
           {["plus", "minus", "locate-fixed"].map((mb) => (
@@ -45,7 +61,7 @@ export default function Map() {
           ))}
         </div>
         <div style={{ position: "absolute", left: "10px", bottom: "10px", font: "400 9.5px/1.35 " + t.font, color: V.ink2, background: V.surf, border: "1px solid " + V.outv, padding: "4px 6px", maxWidth: "74%" }}>
-          {tileOk ? "live SL map tile · secondlife-maps-cdn" : "tile CDN unreachable — themed vector grid fallback"}
+          {mini ? "minimap · north up · draw distance " + state.prefs.draw : tileOk ? "live SL map tile · secondlife-maps-cdn" : "tile CDN unreachable — themed vector grid fallback"}
         </div>
       </div>
       <div style={mapFootStyle}>

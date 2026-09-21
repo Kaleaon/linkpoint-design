@@ -35,6 +35,7 @@ export function useAppState() {
     cacheLimit: 512, cacheLoc: "Internal storage",
   });
   const [cacheCleared, setCacheCleared] = useState({});
+  const [camPreset, setCamPreset] = useState("ORBIT");
   const [cond, setCond] = useState("normal");
   const [hudOn, setHudOn] = useState({ ...HUD_DEFAULT });
   const [hudPos, setHudPos] = useState({});
@@ -463,7 +464,7 @@ export function useAppState() {
       rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
       loginMode, loginGrid, loginBusy, loginError, customGrids, addGrid, addGridName, addGridHost,
       searchFrom, searchTab, searchQuery, searchState, reconnecting, toast,
-      prefs, cacheCleared,
+      prefs, cacheCleared, camPreset,
     },
     actions: {
       setLayout, setPalette, setDevice, setScreen: screenPick, setDialog, setDense,
@@ -477,7 +478,7 @@ export function useAppState() {
       radarTap, radarHold, radarRelease, radarBlipPick,
       setRMode,
       setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchTab, setSearchQuery, searchAdd, startIm, reconnect, notify,
-      setPref, clearCache, clearAllCache,
+      setPref, clearCache, clearAllCache, setCamPreset,
     },
     T, D, navMode,
   };
