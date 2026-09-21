@@ -1,6 +1,23 @@
+# Upstream sync ledger — Linkpoint-redux
+
 repo: Kaleaon1/Linkpoint-redux
 branch: main
 path: frontend
+
+> **This repo designs for two unrelated upstream apps. This file tracks one
+> of them.** They share no git history and neither references the other, so
+> one is not a rename or fork of the other:
+>
+> | Upstream | What it is | Tracked by |
+> | --- | --- | --- |
+> | [`Kaleaon1/Linkpoint-redux`](https://github.com/Kaleaon1/Linkpoint-redux) | the Expo app (`frontend/`) this mockup's IA was read from | **this file**, by hand |
+> | [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) | the React/PWA viewer that also pulls `docs/react/` back from here | [`react-linkpoint-todo.md`](react-linkpoint-todo.md), by `tools/sync_todos.py` |
+>
+> Everything below — the screen map especially — refers to Linkpoint-redux
+> only, and every path in it was re-verified against that repo on
+> 2026-09-21. Its head was then `de1df0c` (2026-09-09); React-Linkpoint's
+> was `7fd305d` (2026-09-21). The quiet side is the one this file tracks,
+> so treat a stale date here as "upstream is quiet", not "this file rotted".
 
 ## Last sync
 date: 2026-09-13T18:05:00Z

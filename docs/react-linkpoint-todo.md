@@ -8,8 +8,13 @@ Every commit that landed in [`Kaleaon/React-Linkpoint`](https://github.com/Kalea
 against the parts of this repo it implicates, so the mockup and the React
 port can be brought back into step deliberately rather than by memory.
 
+This repo designs for two unrelated upstream apps — they share no git
+history. This file covers one of them; the other, the Expo app
+[`Kaleaon1/Linkpoint-redux`](https://github.com/Kaleaon1/Linkpoint-redux),
+is tracked by hand in [`github.md`](github.md).
+
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-09-21T17:10:52Z — upstream read through [`7fd305d`](https://github.com/Kaleaon/react-linkpoint/commit/7fd305de21acb9be1ff2cf8968a608518504400b)
+- **Last change:** 2026-09-21T17:18:41Z — upstream read through [`7fd305d`](https://github.com/Kaleaon/react-linkpoint/commit/7fd305de21acb9be1ff2cf8968a608518504400b)
 - **Open:** 37 · **Completed:** 0
 
 ## Open
@@ -176,7 +181,7 @@ _Nothing ticked off yet._
 
 <!-- sync-state
 {
- "generated": "2026-09-21T17:10:52Z",
+ "generated": "2026-09-21T17:18:41Z",
  "items": [
   {
    "also": [
