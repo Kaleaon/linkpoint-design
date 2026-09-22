@@ -9,7 +9,10 @@ import { pickInk } from "./color.js";
 // headLook/stateBlock) that every screen and chrome component needs.
 export function computeTheme(state, cf) {
   const L = LAYOUTS[state.layout];
-  const P = PALETTES[state.palette];
+  const base = PALETTES[state.palette];
+  const P = state.customTheme?.active
+    ? { ...base, name: state.customTheme.name, note: "A custom, shareable colour theme.", c: { ...base.c, ...state.customTheme.colors } }
+    : base;
   const t = { name: L.name + " / " + P.name, nav: L.nav, font: L.font, dfont: L.dfont, note: L.note + "   Colour pack: " + P.note + ".", v: { ...P.c, ...L.s } };
   const d = DEVICES[state.device];
 
