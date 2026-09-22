@@ -73,6 +73,33 @@ export function useAppState() {
   const [addGridName, setAddGridName] = useState("");
   const [addGridHost, setAddGridHost] = useState("");
   const [searchFrom, setSearchFrom] = useState("Friends");
+  const [offlineRunning, setOfflineRunning] = useState(true);
+  const [offlineUser, setOfflineUser] = useState({ firstName: "Jane", lastName: "Doe" });
+  const [offlineAccountModal, setOfflineAccountModal] = useState(false);
+  const [offlineAccountFirstName, setOfflineAccountFirstName] = useState("Jane");
+  const [offlineAccountLastName, setOfflineAccountLastName] = useState("Doe");
+  const [offlineAccountPassword, setOfflineAccountPassword] = useState("");
+  const [oarFile] = useState("A1_Grid_Region_v2.oar");
+  const [oarRegionName] = useState("Welcome Island");
+  const [oarCoords] = useState("1000, 1000");
+  const [oarPrims] = useState(1420);
+  const [assetName, setAssetName] = useState("Grass Texture");
+  const [assetType, setAssetType] = useState("Texture");
+  const [localAssets, setLocalAssets] = useState([
+    { id: "ast-1", name: "Grass Texture 1024", type: "Texture", size: "2.1 MB", uuid: "e84d72a9-1102-4211-9a99-0a8811f3d82a" },
+    { id: "ast-2", name: "Ambient Forest Sound", type: "Sound", size: "512 KB", uuid: "f32a0018-912c-491a-b118-2993881023a1" }
+  ]);
+  const [offlineCacheSize, setOfflineCacheSize] = useState(1024);
+  const [consoleLevel, setConsoleLevel] = useState("ALL");
+  const [consoleQuery, setConsoleQuery] = useState("");
+  const [consoleAutoscroll, setConsoleAutoscroll] = useState(true);
+  const [consoleLogs, setConsoleLogs] = useState([
+    { ts: "16:30:33,123", level: "INFO", tag: "[LOGIN SERVICE]", msg: "User Jane Doe authenticated via XML-RPC." },
+    { ts: "16:30:35,456", level: "INFO", tag: "[SCENE]", msg: "Region Welcome Island loaded 1420 prims from OAR archive." },
+    { ts: "16:31:02,890", level: "WARN", tag: "[ASSET SERVICE]", msg: "Texture 89a2f1... fetch took > 1500ms." },
+    { ts: "16:32:10,012", level: "ERROR", tag: "[HYPERGRID]", msg: "Unable to resolve remote grid link test.osgrid.org:8002." },
+    { ts: "16:33:01,500", level: "INFO", tag: "[LOCAL GRID]", msg: "Grid listener active on 127.0.0.1:9000." }
+  ]);
   const [searchTab, setSearchTab] = useState("FRIENDS");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchState, setSearchState] = useState({});
@@ -443,6 +470,51 @@ export function useAppState() {
     setInvOpen((st) => ({ ...st, [name]: !(st[name] !== false) }));
   }, []);
 
+    const toggleOfflineGrid = useCallback(() => {
+    setOfflineRunning((r) => {
+      const next = !r;
+      notify(next ? "Local OpenSim Grid STARTED (127.0.0.1:9000)" : "Local OpenSim Grid SHUTDOWN");
+      return next;
+    });
+  }, [notify]);
+
+  const saveOfflineAccount = useCallback(() => {
+    setOfflineUser({ firstName: offlineAccountFirstName || "Jane", lastName: offlineAccountLastName || "Resident" });
+    setOfflineAccountModal(false);
+    notify("Local Account Saved: " + (offlineAccountFirstName || "Jane") + " " + (offlineAccountLastName || "Resident"));
+  }, [offlineAccountFirstName, offlineAccountLastName, notify]);
+
+  const importOarBackup = useCallback(() => {
+    notify("Importing OAR backup " + oarFile + "...");
+  }, [oarFile, notify]);
+
+  const addLocalAsset = useCallback(() => {
+    const name = assetName || "New Asset";
+    const type = assetType || "Texture";
+    const newAst = { id: "ast-" + Date.now(), name, type, size: "1.4 MB", uuid: "a" + Math.random().toString(16).substr(2, 8) + "-4000-8000-100000000000" };
+    setLocalAssets((ast) => [newAst, ...ast]);
+    setAssetName("");
+    notify("Local Asset Created: " + name);
+  }, [assetName, assetType, notify]);
+
+  const clearOfflineCache = useCallback(() => {
+    setOfflineCacheSize(256);
+    notify("Offline Asset & Region Cache Cleared.");
+  }, [notify]);
+
+  const clearConsoleLogs = useCallback(() => {
+    setConsoleLogs([]);
+    notify("Grid Console Logs Cleared.");
+  }, [notify]);
+
+  const copyConsoleLogs = useCallback(() => {
+    notify("Console Logs copied to clipboard.");
+  }, [notify]);
+
+  const downloadConsoleLogs = useCallback(() => {
+    notify("Downloading opensim-grid-log.txt...");
+  }, [notify]);
+
   const screenPick = useCallback(
     (id) => {
       if (navMode() === "floaters" && FLOATERS.some((f) => f.id === id)) {
@@ -463,7 +535,7 @@ export function useAppState() {
       cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
       rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
       loginMode, loginGrid, loginBusy, loginError, customGrids, addGrid, addGridName, addGridHost,
-      searchFrom, searchTab, searchQuery, searchState, reconnecting, toast,
+      searchFrom, searchTab, searchQuery, searchState, reconnecting, toast, offlineRunning, offlineUser, offlineAccountModal, offlineAccountFirstName, offlineAccountLastName, offlineAccountPassword, oarFile, oarRegionName, oarCoords, oarPrims, assetName, assetType, localAssets, offlineCacheSize, consoleLevel, consoleQuery, consoleAutoscroll, consoleLogs,
       prefs, cacheCleared, camPreset,
     },
     actions: {
@@ -478,7 +550,7 @@ export function useAppState() {
       radarTap, radarHold, radarRelease, radarBlipPick,
       setRMode,
       setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchTab, setSearchQuery, searchAdd, startIm, reconnect, notify,
-      setPref, clearCache, clearAllCache, setCamPreset,
+      setPref, clearCache, clearAllCache, setCamPreset, toggleOfflineGrid, setOfflineAccountModal, setOfflineAccountFirstName, setOfflineAccountLastName, setOfflineAccountPassword, saveOfflineAccount, importOarBackup, setAssetName, setAssetType, addLocalAsset, setOfflineCacheSize, clearOfflineCache, setConsoleLevel, setConsoleQuery, setConsoleAutoscroll, clearConsoleLogs, copyConsoleLogs, downloadConsoleLogs,
     },
     T, D, navMode,
   };
