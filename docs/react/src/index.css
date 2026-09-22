@@ -146,6 +146,25 @@ select:focus-visible {
   flex: none;
 }
 
+.theme-studio { margin-top: 14px; border-top: 1px solid rgba(255,255,255,.1); padding-top: 12px; }
+.theme-studio-trigger { width:100%; display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:9px; padding:10px; border:1px solid rgba(108,255,154,.3); border-radius:7px; background:linear-gradient(135deg,rgba(108,255,154,.1),rgba(108,255,154,.025)); color:#e8e5df; text-align:left; cursor:pointer; }
+.theme-studio-trigger strong { display:block; color:#6cff9a; font:700 10px/1.2 "JetBrains Mono",monospace; letter-spacing:.15em; }
+.theme-studio-trigger small { display:block; margin-top:4px; color:rgba(255,255,255,.5); font:400 9px/1.2 "JetBrains Mono",monospace; }
+.theme-studio-icon { color:#6cff9a; font-size:20px; }
+.theme-studio-body { padding:12px 2px 2px; }
+.theme-name { display:grid; gap:6px; color:rgba(255,255,255,.45); font:600 9px/1 "JetBrains Mono",monospace; letter-spacing:.13em; }
+.theme-name input { width:100%; padding:9px 10px; border:1px solid rgba(255,255,255,.16); border-radius:5px; background:#100f0e; color:#fff; font:500 11px "JetBrains Mono",monospace; }
+.theme-colors { display:grid; grid-template-columns:1fr 1fr; gap:10px 8px; margin:14px 0; }
+.color-field { display:grid; gap:5px; color:rgba(255,255,255,.62); font:500 9px/1.2 "JetBrains Mono",monospace; }
+.color-control { display:flex; align-items:center; gap:5px; padding:3px 5px 3px 3px; border:1px solid rgba(255,255,255,.13); border-radius:5px; background:#100f0e; }
+.color-control input { width:26px; height:24px; padding:0; border:0; background:none; cursor:pointer; }
+.color-control code { color:rgba(255,255,255,.65); font-size:8px; }
+.theme-actions { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+.theme-actions button { padding:8px 5px; border:1px solid rgba(108,255,154,.3); border-radius:5px; background:rgba(108,255,154,.06); color:#9dffbc; cursor:pointer; font:600 8px/1 "JetBrains Mono",monospace; letter-spacing:.04em; }
+.theme-actions .theme-reset { grid-column:1/-1; color:rgba(255,255,255,.52); border-color:rgba(255,255,255,.13); background:none; }
+.theme-hint { margin:10px 2px 0; color:rgba(255,255,255,.35); font:400 8.5px/1.45 "JetBrains Mono",monospace; }
+.visually-hidden { position:absolute!important; width:1px!important; height:1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; }
+
 .stage {
   display: flex;
   flex-direction: column;

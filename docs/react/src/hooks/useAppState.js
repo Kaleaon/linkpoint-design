@@ -3,6 +3,7 @@ import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { DEVICES, FLOATERS, HUD_DEFAULT, HUDS, CBTN, GRIDS } from "../theme/constants.js";
 import { CACHE_ROWS } from "../data/content.js";
+import { decodeSharedTheme, encodeSharedTheme, readSavedTheme, sanitizeTheme, themeFromPalette, THEME_STORAGE_KEY } from "../theme/customTheme.js";
 
 // Ported from the mockup's `state = {...}` initializer and its instance
 // methods (flR/flDrag/flFocus/flToggle/flClose, hudDrag/toggleHud, T/D/navMode,
@@ -12,6 +13,10 @@ import { CACHE_ROWS } from "../data/content.js";
 export function useAppState() {
   const [layout, setLayout] = useState("terminal");
   const [palette, setPalette] = useState("ink");
+  const [customTheme, setCustomTheme] = useState(() => {
+    const shared = decodeSharedTheme(new URLSearchParams(window.location.search).get("theme") || "");
+    return shared || readSavedTheme() || themeFromPalette(PALETTES.ink);
+  });
   const [device, setDevice] = useState("ios");
   const [screen, setScreen] = useState("Chat");
   const [dialog, setDialog] = useState(null);
@@ -147,6 +152,26 @@ export function useAppState() {
     toastTimerRef.current = setTimeout(() => setToast(""), 2200);
   }, []);
 
+  const setThemeColor = useCallback((key, value) => setCustomTheme((theme) => ({ ...theme, active: true, colors: { ...theme.colors, [key]: value } })), []);
+  const renameTheme = useCallback((name) => setCustomTheme((theme) => ({ ...theme, active: true, name })), []);
+  const selectPalette = useCallback((key) => { setPalette(key); setCustomTheme(themeFromPalette(PALETTES[key])); }, []);
+  const saveTheme = useCallback(() => { localStorage.setItem(THEME_STORAGE_KEY, JSON.stringify(customTheme)); notify("Theme saved to this device."); }, [customTheme, notify]);
+  const resetTheme = useCallback(() => { setCustomTheme(themeFromPalette(PALETTES[palette])); localStorage.removeItem(THEME_STORAGE_KEY); notify("Theme reset to the selected colour pack."); }, [palette, notify]);
+  const importTheme = useCallback(async (json) => {
+    try { const imported = sanitizeTheme(JSON.parse(json)); if (!imported) throw new Error(); setCustomTheme(imported); notify(`Imported “${imported.name}”.`); return true; }
+    catch { notify("That file is not a valid Linkpoint theme."); return false; }
+  }, [notify]);
+  const downloadTheme = useCallback(() => {
+    const blob = new Blob([JSON.stringify(customTheme, null, 2)], { type: "application/json" });
+    const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `${customTheme.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "linkpoint-theme"}.json`; link.click(); URL.revokeObjectURL(link.href);
+    notify("Theme JSON exported.");
+  }, [customTheme, notify]);
+  const shareTheme = useCallback(async () => {
+    const url = new URL(window.location.href); url.searchParams.set("theme", encodeSharedTheme(customTheme));
+    try { await navigator.clipboard.writeText(url.toString()); notify("Share link copied."); }
+    catch { window.prompt("Copy this theme link", url.toString()); }
+  }, [customTheme, notify]);
+
   // ---- derived lookups (T()/D()/navMode()) -------------------------------
   const T = useCallback(() => {
     const L = LAYOUTS[layout],
@@ -184,8 +209,10 @@ export function useAppState() {
   }, []);
   const cyclePalette = useCallback(() => {
     const ks = Object.keys(PALETTES);
-    setPalette((cur) => ks[(ks.indexOf(cur) + 1) % ks.length]);
-  }, []);
+    const next = ks[(ks.indexOf(palette) + 1) % ks.length];
+    setPalette(next);
+    setCustomTheme(themeFromPalette(PALETTES[next]));
+  }, [palette]);
 
   // ---- login (setLoginMode/setLoginGrid/connectLogin) --------------------
   // All known grids: the built-in Second Life / OpenSim presets plus
@@ -530,7 +557,7 @@ export function useAppState() {
 
   return {
     state: {
-      layout, palette, device, screen, dialog, dense, tabs, chip, tileOk, invOpen, dismissed, pinned,
+      layout, palette, customTheme, device, screen, dialog, dense, tabs, chip, tileOk, invOpen, dismissed, pinned,
       toggles, cond, hudOn, hudPos, hudPicker, target, targetPicker, navPeek,
       cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
       rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
@@ -539,7 +566,7 @@ export function useAppState() {
       prefs, cacheCleared, camPreset,
     },
     actions: {
-      setLayout, setPalette, setDevice, setScreen: screenPick, setDialog, setDense,
+      setLayout, setPalette: selectPalette, setThemeColor, renameTheme, saveTheme, resetTheme, importTheme, downloadTheme, shareTheme, setDevice, setScreen: screenPick, setDialog, setDense,
       allGrids, openAddGrid, cancelAddGrid, saveCustomGrid, setAddGridName, setAddGridHost,
       setTab, setChip, setTileOk, toggleInvFolder, dismiss, toggleSetting, pin,
       cycleLayout, cyclePalette, setCond, setMenu,

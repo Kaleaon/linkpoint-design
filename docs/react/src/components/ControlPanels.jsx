@@ -3,6 +3,7 @@ import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES, FAMILIES } from "../theme/palettes.js";
 import { DEVICES, SCREENS } from "../theme/constants.js";
 import { DIALOGS } from "../theme/dialogs.js";
+import ThemeStudio from "./ThemeStudio.jsx";
 
 // Ported from the "1a" picker column (`layoutList`/`paletteFams`/`deviceList`/
 // `screenList`/`condList`/`dialogList`) — the controls used to drive every
@@ -59,6 +60,7 @@ export default function ControlPanels() {
             </div>
           ))}
         </div>
+        <ThemeStudio />
       </div>
 
       <div className="pnl">
