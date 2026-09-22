@@ -24,7 +24,7 @@ function AppShell() {
     <div className="app-shell">
       <div className="app-title">
         <span className="app-tid">1</span>
-        <span className="app-tname">Linkpoint mobile — themed shell, 13 screens, 6 layout packs × 24 colour packs, 4 form factors</span>
+        <span className="app-tname">Linkpoint — 22 screens, 6 layout packs × 24 colour packs, 5 form factors</span>
       </div>
       <ThemeProvider>
         <Prototype />

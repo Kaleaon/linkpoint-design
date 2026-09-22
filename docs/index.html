@@ -42,9 +42,9 @@
   -webkit-user-select: none !important;
 }
 
-body{margin:0;background:#100f0e;font-family:"JetBrains Mono",ui-monospace,monospace;color:#e8e5df}
+body{margin:0;background:#100f0e;font-family:"JetBrains Mono",ui-monospace,monospace;color:#e8e5df;overflow-x:hidden}
 a{color:#6CFF9A}a:hover{color:#a9ffc7}
-.dv-turn{padding:44px 48px 36px;border-bottom:1px solid rgba(255,255,255,.07)}
+.dv-turn{padding:44px clamp(16px,3vw,48px) 36px;border-bottom:1px solid rgba(255,255,255,.07);max-width:1920px;margin:0 auto}
 .dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 24px}
 .dv-tid{font:600 10px ui-monospace,monospace;padding:3px 7px;background:#6CFF9A;color:#03240F;border-radius:4px;text-decoration:none}
 .dv-tname{font:600 13px/1.2 "JetBrains Mono",monospace;color:#e8e5df;letter-spacing:.04em}
@@ -60,6 +60,8 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
 .pick:hover{background:rgba(255,255,255,.07)}
 .tag{padding:6px 9px;border:1px solid rgba(255,255,255,.16);border-radius:5px;cursor:pointer;font:500 10.5px/1 "JetBrains Mono",monospace;color:rgba(255,255,255,.78)}
 .tag:hover{border-color:#6CFF9A;color:#6CFF9A}
+button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #6CFF9A;outline-offset:2px}
+@media(max-width:760px){.dv-turn{padding-top:22px}.dv-opts>*,.dv-opt,.dv-opt>div{max-width:calc(100vw - 32px)}.dv-opt>div{overflow-x:auto}.dv-thd{flex-wrap:wrap}}
 @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
 @keyframes ping{0%{transform:scale(.5);opacity:.85}100%{transform:scale(2.4);opacity:0}}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -78,7 +80,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
 </style></helmet>
 
 <section class="dv-turn" id="t1">
-<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Linkpoint mobile — themed shell, 13 screens, 6 layout packs × 24 colour packs, 4 form factors</span></div>
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Linkpoint — 22 screens, 6 layout packs × 24 colour packs, 5 form factors</span></div>
 <div class="dv-opts">
 
 <div class="dv-opt" id="1a">
