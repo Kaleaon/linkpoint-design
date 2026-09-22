@@ -26,7 +26,20 @@ export default function ChipRow() {
         const active = activeChip === n;
         const badge = n === "Kit Sandalwood" ? 2 : 0;
         return (
-          <div key={n} onClick={() => actions.setChip(n)} style={{ ...chipBase, ...(active ? { borderColor: V.pri, background: V.priC, color: V.onpriC } : null) }}>
+          <div
+            key={n}
+            onClick={() => actions.setChip(n)}
+            role="button"
+            tabIndex={0}
+            aria-label={`Chat with ${n}`}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                actions.setChip(n);
+              }
+            }}
+            style={{ ...chipBase, ...(active ? { borderColor: V.pri, background: V.priC, color: V.onpriC } : null) }}
+          >
             <span style={{ width: "8px", height: "8px", borderRadius: "4px", flex: "none", background: n === "Nyx Vaher" ? V.ok : V.ink2 }} />
             <span style={{ font: "400 12px/1 " + t.font, whiteSpace: "nowrap" }}>{n}</span>
             {badge ? (
@@ -37,7 +50,20 @@ export default function ChipRow() {
           </div>
         );
       })}
-      <div key="all" onClick={() => actions.openSearch("Chat")} style={{ ...chipBase, borderStyle: "dashed" }}>
+      <div
+        key="all"
+        onClick={() => actions.openSearch("Chat")}
+        role="button"
+        tabIndex={0}
+        aria-label={`View all ${allContacts} contacts`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            actions.openSearch("Chat");
+          }
+        }}
+        style={{ ...chipBase, borderStyle: "dashed" }}
+      >
         <span style={{ width: "8px", height: "8px", borderRadius: "4px", flex: "none", background: V.pri }} />
         <span style={{ font: "400 12px/1 " + t.font, whiteSpace: "nowrap" }}>{"ALL (" + allContacts + ")"}</span>
       </div>

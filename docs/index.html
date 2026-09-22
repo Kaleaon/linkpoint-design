@@ -492,7 +492,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
           <sc-if value="{{ chips }}" hint-placeholder-val="{{ true }}">
           <div style="flex:none;min-width:0;display:flex;gap:8px;padding:10px 16px;overflow-x:auto">
             <sc-for list="{{ chips }}" as="ch" hint-placeholder-count="4">
-              <div onClick="{{ ch.pick }}" style="{{ ch.style }}">
+              <div onClick="{{ ch.pick }}" role="button" tabindex="0" aria-label="{{ ch.ariaLabel }}" onKeyDown="{{ ch.pickKey }}" style="{{ ch.style }}">
                 <span style="{{ ch.dot }}"></span>
                 <span style="font:400 12px/1 var(--font,'JetBrains Mono');white-space:nowrap">{{ ch.name }}</span>
                 <sc-if value="{{ ch.badge }}" hint-placeholder-val="{{ false }}"><span style="min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--bdg,#8AD0B0);color:var(--onbdg,#0E3021);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--font,'JetBrains Mono')">{{ ch.badge }}</span></sc-if>
@@ -2158,10 +2158,14 @@ class Component extends DCLogic {
     const allContacts = friendRows.length + groupChips.length;
     const chips = LK.chips !== false && scr === "Chat" && chipList.length ? chipList.map(n => ({
       name: n, pick: () => this.set("chip", n), badge: n === "Kit Sandalwood" ? 2 : 0,
+      ariaLabel: "Chat with " + n,
+      pickKey: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.set("chip", n); } },
       dot: { width: "8px", height: "8px", borderRadius: "4px", flex: "none", background: n === "Nyx Vaher" ? V.ok : V.ink2 },
       style: M(chipBase, activeChip === n ? { borderColor: V.pri, background: V.priC, color: V.onpriC } : null),
     })).concat([{
       name: "ALL (" + allContacts + ")", pick: () => this.openSearch("Chat"), badge: 0,
+      ariaLabel: "View all " + allContacts + " contacts",
+      pickKey: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.openSearch("Chat"); } },
       dot: { width: "8px", height: "8px", borderRadius: "4px", flex: "none", background: V.pri },
       style: M(chipBase, { borderStyle: "dashed" }),
     }]) : null;
