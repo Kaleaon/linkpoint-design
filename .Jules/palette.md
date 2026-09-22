@@ -13,3 +13,8 @@
 ## 2026-09-20 - Custom Toggle Component Accessibility
 **Learning:** Custom interactive components, such as a toggle built from `<span>` elements, must include the semantic attributes `role="switch"` and `aria-checked` to be recognized properly by assistive technologies. Further, keyboard accessibility requires adding `tabIndex={0}` and an `onKeyDown` handler to handle Space and Enter keystrokes, ensuring `e.preventDefault()` is used to prevent the page from scrolling on Space.
 **Action:** When inspecting or adding custom switches/toggles, ensure `role="switch"`, `aria-checked`, `tabIndex`, and `onKeyDown` are all correctly configured to replicate native element behavior.
+## 2024-11-20 - Add ARIA Labels and Keyboard Access to Chat Chips\n**Learning:** When adding accessibility to interactive list items rendered from an array (like chat thread chips), ensure the mapped data object contains a human-readable label field that can be used to populate the  attribute in both custom HTML templating and React implementations.\n**Action:** Verify that data arrays used for dynamic interactive elements include properties suitable for  injection.
+
+## 2024-11-20 - Add ARIA Labels and Keyboard Access to Chat Chips
+**Learning:** When adding accessibility to interactive list items rendered from an array (like chat thread chips), ensure the mapped data object contains a human-readable label field that can be used to populate the `aria-label` attribute in both custom HTML templating and React implementations.
+**Action:** Verify that data arrays used for dynamic interactive elements include properties suitable for `aria-label` injection.
