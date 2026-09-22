@@ -282,5 +282,16 @@ function buildFBody(state, cardsByScreen) {
     Teleport: (cardsByScreen.Teleport || []).map((c) => ({ a: c.title, b: c.right || "" })),
     Settings: (cardsByScreen.Settings || []).map((c) => ({ a: c.title, b: c.right || "" })),
     Diagnostics: (cardsByScreen.Diagnostics || []).map((c) => ({ a: c.title, b: c.right || "" })),
+    "Offline Grid": [
+      { a: "Local Grid Engine", b: state.offlineRunning ? "ONLINE" : "OFFLINE" },
+      { a: "Active User", b: ((state.offlineUser && state.offlineUser.firstName) || "Jane") + " " + ((state.offlineUser && state.offlineUser.lastName) || "Doe") },
+      { a: "Local IP/Port", b: "127.0.0.1:9000" },
+      { a: "OAR Region", b: state.oarRegionName || "Welcome Island" }
+    ],
+    "Grid Console": [
+      { a: "Total Entries", b: String((state.consoleLogs || []).length) },
+      { a: "Warnings", b: String((state.consoleLogs || []).filter(e => e.level === "WARN").length) },
+      { a: "Errors", b: String((state.consoleLogs || []).filter(e => e.level === "ERROR" || e.level === "FATAL").length) }
+    ],
   };
 }

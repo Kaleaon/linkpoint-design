@@ -27,6 +27,8 @@ export const FLOATERS = [
   { id:"Settings",    title:"Preferences",   icon:"settings",       x:290,  y:80,  w:540, h:470 },
   { id:"Cache",       title:"Cache",         icon:"hard-drive",     x:360,  y:120, w:460, h:420 },
   { id:"Diagnostics", title:"Statistics",    icon:"activity",       x:1056, y:462, w:346, h:196 },
+  { id:"Offline Grid", title:"Offline Grid", icon:"server",         x:220,  y:60,  w:520, h:480 },
+  { id:"Grid Console", title:"Grid Console", icon:"terminal",       x:180,  y:90,  w:560, h:450 },
 ];
 export const FMENU = [
   { label:"File",  items:[["Upload Image…","⌘U"],["Take Snapshot","⌘`"],["Save Texture As…",""],["Quit","⌘Q"]] },
@@ -37,7 +39,7 @@ export const FMENU = [
   { label:"Help",  items:[["Second Life Help","F1"],["Report Abuse…",""],["Report Bug…",""],["About Linkpoint",""]] },
 ];
 
-export const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Outfits","Objects","Parcel","Transactions","Mute List","Settings","Cache","Diagnostics","Login","Search"];
+export const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Outfits","Objects","Parcel","Transactions","Mute List","Settings","Cache","Diagnostics","Offline Grid","Grid Console","Login","Search"];
 // Grid picker for Login: Second Life's own two (Agni/Aditi) plus a few
 // well-known OpenSim grids, so the login screen isn't LL-only.
 export const GRIDS = [
@@ -89,6 +91,8 @@ export const CSUB = {
   Parcel:        [["GENERAL", "· 01"], ["MEDIA", "· 02"]],
   Transactions:  [["ALL", "· 01"], ["PAYMENTS", "· 02"]],
   "Mute List":   [["AVATARS", "· 01"], ["OBJECTS", "· 02"]],
+  "Offline Grid": [["STATUS", "· 01"], ["ACCOUNT", "· 02"], ["OAR", "· 03"], ["ASSETS", "· 04"], ["CACHE", "· 05"]],
+  "Grid Console": [["ALL", "· 01"], ["ERRORS", "· 02"]],
 };
 
 // The screen's current sub-view: `tabs[screen]` when it is one of that screen's

@@ -91,11 +91,11 @@ Mirror into: `docs/index.html` — `PALETTES` / `LAYOUTS` · `docs/react/src/the
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
-- [ ] **`ea5a078`** feat(offline): Add grid console/error log and hash local account passwords
+- [x] **`ea5a078`** feat(offline): Add grid console/error log and hash local account passwords
   - 2026-09-21 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ea5a0780b7c3b87b33471831fd3cb80220d6349c)
   - 13 files: `LINKPOINT_DESIGN_OFFLINE_SPEC.md`, `src/linkpoint/offline/CacheManager.ts`, `src/linkpoint/offline/GridConsole.ts`, `src/linkpoint/offline/GridConsolePanel.tsx`, `src/linkpoint/offline/LocalAssetManager.ts`, `src/linkpoint/offline/LocalGridManager.ts` _(+7 more)_
   - also touches: Docs & specs
-- [ ] **`e10133f`** feat(offline): Add offline OpenSim grid engine, OAR parser, and design spec
+- [x] **`e10133f`** feat(offline): Add offline OpenSim grid engine, OAR parser, and design spec
   - 2026-09-21 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e10133f928ebcb2a52f0e53920a84ec1a0aa7943)
   - 9 files: `LINKPOINT_DESIGN_OFFLINE_SPEC.md`, `src/linkpoint/offline/CacheManager.ts`, `src/linkpoint/offline/LocalAssetManager.ts`, `src/linkpoint/offline/LocalGridManager.ts`, `src/linkpoint/offline/LocalGridServer.ts`, `src/linkpoint/offline/OARParser.ts` _(+3 more)_
   - also touches: Docs & specs

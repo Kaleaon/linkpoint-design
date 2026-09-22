@@ -18,6 +18,8 @@ import Inventory from "../screens/Inventory.jsx";
 import Profile from "../screens/Profile.jsx";
 import Login from "../screens/Login.jsx";
 import Search from "../screens/Search.jsx";
+import OfflineGrid from "../screens/OfflineGrid.jsx";
+import GridConsole from "../screens/GridConsole.jsx";
 
 const CARD_SCREENS = ["Friends", "Groups", "Notices", "Teleport", "Outfits", "Objects", "Parcel", "Transactions", "Mute List", "Settings", "Cache", "Diagnostics"];
 
@@ -49,6 +51,8 @@ export default function ScreenBody() {
         )}
         {norm && scr === "Inventory" && <Inventory />}
         {norm && scr === "Profile" && <Profile />}
+        {norm && scr === "Offline Grid" && <OfflineGrid />}
+        {norm && scr === "Grid Console" && <GridConsole />}
         {norm && isCardScreen && <CardList cards={(cardsByScreen[scr] || []).filter((c) => inSub(c, curSub))} />}
         {scr === "Login" && <Login />}
         {scr === "Search" && <Search />}

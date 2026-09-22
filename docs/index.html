@@ -760,6 +760,126 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
             </div>
           </sc-if>
 
+          <sc-if value="{{ isOfflineGrid }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:1;min-height:0;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px">
+              <div style="border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);padding:14px">
+                <div style="display:flex;align-items:center;justify-space-between">
+                  <div>
+                    <div style="font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;color:var(--pri,#6CFF9A)">LOCAL GRID ENGINE</div>
+                    <div style="font:700 15px/1.3 var(--dfont,'JetBrains Mono');margin-top:4px;color:var(--ink,#D7F5E6)">OpenSim Local Server</div>
+                  </div>
+                  <div onClick="{{ toggleOfflineGrid }}" style="padding:8px 14px;border-radius:var(--rs,4px);font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;cursor:pointer;background:var(--pri,#6CFF9A);color:var(--onpri,#03240F)" role="button" aria-label="Toggle grid status" tabindex="0">
+                    <sc-if value="{{ offlineRunning }}" hint-placeholder-val="{{ true }}">STOP GRID</sc-if>
+                    <sc-if value="{{ offlineStopped }}" hint-placeholder-val="{{ false }}">START GRID</sc-if>
+                  </div>
+                </div>
+                <div style="margin-top:12px;display:flex;align-items:center;gap:10px">
+                  <div style="{{ offlineStatusStyle }}">{{ offlineStatusText }}</div>
+                  <div style="font:400 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">User: {{ offlineUserFullName }}</div>
+                  <div onClick="{{ openOfflineAccountModal }}" style="margin-left:auto;font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.12em;color:var(--pri,#6CFF9A);cursor:pointer;text-decoration:underline" role="button" aria-label="Account setup" tabindex="0">ACCOUNT SETUP</div>
+                </div>
+              </div>
+
+              <sc-if value="{{ offlineAccountModal }}" hint-placeholder-val="{{ false }}">
+                <div style="border:1px solid var(--pri,#6CFF9A);border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);padding:14px">
+                  <div style="font:700 12px/1 var(--font,'JetBrains Mono');letter-spacing:.18em;color:var(--pri,#6CFF9A);margin-bottom:10px">FIRST-TIME ACCOUNT SETUP</div>
+                  <div style="display:flex;flex-direction:column;gap:8px">
+                    <div>
+                      <div style="font:400 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-bottom:3px">FIRST NAME</div>
+                      <input value="{{ offlineAccountFirstName }}" onChange="{{ onOfflineAccountFirstNameChange }}" style="width:100%;box-sizing:border-box;height:34px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 12px/1 var(--font,'JetBrains Mono')" />
+                    </div>
+                    <div>
+                      <div style="font:400 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-bottom:3px">LAST NAME</div>
+                      <input value="{{ offlineAccountLastName }}" onChange="{{ onOfflineAccountLastNameChange }}" style="width:100%;box-sizing:border-box;height:34px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 12px/1 var(--font,'JetBrains Mono')" />
+                    </div>
+                    <div>
+                      <div style="font:400 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-bottom:3px">LOCAL PASSWORD</div>
+                      <input type="password" value="{{ offlineAccountPassword }}" onChange="{{ onOfflineAccountPasswordChange }}" style="width:100%;box-sizing:border-box;height:34px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 12px/1 var(--font,'JetBrains Mono')" />
+                    </div>
+                    <div style="display:flex;gap:8px;margin-top:6px">
+                      <div onClick="{{ saveOfflineAccount }}" style="flex:1;height:36px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer" role="button" aria-label="Save account" tabindex="0">SAVE ACCOUNT</div>
+                      <div onClick="{{ closeOfflineAccountModal }}" style="flex:1;height:36px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);display:flex;align-items:center;justify-content:center;font:600 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer" role="button" aria-label="Cancel modal" tabindex="0">CANCEL</div>
+                    </div>
+                  </div>
+                </div>
+              </sc-if>
+
+              <div style="border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);padding:14px">
+                <div style="font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;color:var(--pri,#6CFF9A);margin-bottom:8px">OAR REGION BACKUP IMPORTER</div>
+                <div style="border:1px dashed var(--outv,#365047);border-radius:var(--rs,4px);padding:12px;text-align:center;background:var(--bg,#0A1112);margin-bottom:10px">
+                  <i data-lucide="file-up" style="width:20px;height:20px;color:var(--pri,#6CFF9A);margin-bottom:4px"></i>
+                  <div style="font:600 11px/1.3 var(--font,'JetBrains Mono')">{{ oarFile }}</div>
+                  <div style="font:400 10px/1.3 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:2px">Region: {{ oarRegionName }} · Loc: &lt;{{ oarCoords }}&gt; · {{ oarPrims }} prims</div>
+                </div>
+                <div onClick="{{ importOarBackup }}" style="height:38px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:var(--surf2,#1B2A2D);color:var(--pri,#6CFF9A);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer" role="button" aria-label="Import OAR" tabindex="0">
+                  <i data-lucide="download-cloud" style="width:16px;height:16px"></i>IMPORT OAR BACKUP
+                </div>
+              </div>
+
+              <div style="border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);padding:14px">
+                <div style="font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;color:var(--pri,#6CFF9A);margin-bottom:8px">LOCAL ASSET & SL UPLOAD CENTER</div>
+                <div style="display:flex;gap:8px;margin-bottom:10px">
+                  <input value="{{ assetName }}" onChange="{{ onAssetNameChange }}" placeholder="Asset title..." style="flex:2;height:34px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 12px/1 var(--font,'JetBrains Mono')" />
+                  <input value="{{ assetType }}" onChange="{{ onAssetTypeChange }}" placeholder="Type (Texture, Sound...)" style="flex:1;height:34px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 11px/1 var(--font,'JetBrains Mono')" />
+                  <div onClick="{{ addLocalAsset }}" style="padding:0 12px;height:34px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--font,'JetBrains Mono');letter-spacing:.12em;cursor:pointer" role="button" aria-label="Add local asset" tabindex="0">ADD</div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <sc-for list="{{ localAssets }}" as="ast" hint-placeholder-count="2">
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112)">
+                      <div>
+                        <div style="font:600 11px/1.2 var(--font,'JetBrains Mono')">{{ ast.name }} <span style="font-weight:400;color:var(--ink2,#A7C8BC)">({{ ast.type }})</span></div>
+                        <div style="font:400 9.5px/1.2 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:2px">UUID: {{ ast.uuid }} · {{ ast.size }}</div>
+                      </div>
+                      <div onClick="{{ ast.uploadToSL }}" style="padding:5px 9px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:var(--surf2,#1B2A2D);color:var(--pri,#6CFF9A);font:700 9.5px/1 var(--font,'JetBrains Mono');letter-spacing:.12em;cursor:pointer" role="button" aria-label="Upload to SL" tabindex="0">UPLOAD TO SL</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div style="border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);padding:14px">
+                <div style="font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;color:var(--pri,#6CFF9A);margin-bottom:8px">STORAGE & CACHE SIZING MANAGER</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                  <span style="font:400 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">Cache Allocation:</span>
+                  <span style="font:700 12px/1 var(--font,'JetBrains Mono');color:var(--pri,#6CFF9A)">{{ offlineCacheSize }} MB</span>
+                </div>
+                <input type="range" min="256" max="100000" value="{{ offlineCacheSize }}" onChange="{{ onOfflineCacheSizeChange }}" style="width:100%;margin-bottom:10px" />
+                <div style="height:8px;border-radius:4px;background:var(--bg,#0A1112);overflow:hidden;margin-bottom:10px;border:1px solid var(--outv,#365047)">
+                  <div style="{{ cacheGaugeStyle }}"></div>
+                </div>
+                <div onClick="{{ clearOfflineCache }}" style="height:36px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:var(--surf2,#1B2A2D);color:#FF6C6C;display:flex;align-items:center;justify-content:center;font:700 10.5px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;cursor:pointer" role="button" aria-label="Clear cache" tabindex="0">CLEAR OFFLINE CACHE</div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isGridConsole }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:1;min-height:0;display:flex;flex-direction:column;padding:12px;gap:10px">
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C)">
+                <div style="display:flex;gap:6px;align-items:center">
+                  <span style="padding:4px 8px;border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);font:700 10px/1 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)">ENTRIES: {{ consoleTotalCount }}</span>
+                  <span style="padding:4px 8px;border-radius:var(--rs,4px);background:rgba(255,176,32,0.15);font:700 10px/1 var(--font,'JetBrains Mono');color:#FFB020">WARN: {{ consoleWarnCount }}</span>
+                  <span style="{{ consoleErrorBadgeStyle }}">ERRORS: {{ consoleErrorCount }}</span>
+                </div>
+                <div style="margin-left:auto;display:flex;align-items:center;gap:6px">
+                  <input value="{{ consoleQuery }}" onChange="{{ onConsoleQueryChange }}" placeholder="filter logs..." style="height:28px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 11px/1 var(--font,'JetBrains Mono')" />
+                  <div onClick="{{ copyConsoleLogs }}" style="padding:6px 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);font:700 10px/1 var(--font,'JetBrains Mono');color:var(--pri,#6CFF9A);cursor:pointer" role="button" aria-label="Copy logs" tabindex="0">COPY</div>
+                  <div onClick="{{ downloadConsoleLogs }}" style="padding:6px 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);font:700 10px/1 var(--font,'JetBrains Mono');color:var(--pri,#6CFF9A);cursor:pointer" role="button" aria-label="Download logs" tabindex="0">DOWNLOAD</div>
+                  <div onClick="{{ clearConsoleLogs }}" style="padding:6px 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);font:700 10px/1 var(--font,'JetBrains Mono');color:#FF6C6C;cursor:pointer" role="button" aria-label="Clear logs" tabindex="0">CLEAR</div>
+                </div>
+              </div>
+
+              <div style="flex:1;min-height:0;overflow-y:auto;padding:10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:#050B0C;font-family:'JetBrains Mono',monospace">
+                <sc-for list="{{ consoleLogs }}" as="cl" hint-placeholder-count="5">
+                  <div style="{{ cl.style }}">
+                    <span style="opacity:.6;flex:none">[{{ cl.ts }}]</span>
+                    <span style="font-weight:700;flex:none;width:52px">{{ cl.level }}</span>
+                    <span style="color:var(--pri,#6CFF9A);flex:none">{{ cl.tag }}</span>
+                    <span style="flex:1">{{ cl.msg }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
           <sc-if value="{{ isCards }}" hint-placeholder-val="{{ false }}">
             <div style="{{ cardListStyle }}">
               <sc-for list="{{ cards }}" as="c" hint-placeholder-count="6">
@@ -1576,6 +1696,12 @@ const FLOATERS = [
   { id:"Settings",    title:"Preferences",   icon:"settings",       x:290,  y:80,  w:540, h:470 },
   { id:"Cache",       title:"Cache",         icon:"hard-drive",     x:360,  y:120, w:460, h:420 },
   { id:"Diagnostics", title:"Statistics",    icon:"activity",       x:1056, y:462, w:346, h:196 },
+  { id:"Offline Grid", title:"Offline Grid", icon:"server",         x:220,  y:60,  w:520, h:480 },
+  { id:"Grid Console", title:"Grid Console", icon:"terminal",       x:180,  y:90,  w:560, h:450 },
+  { id:"Offline Grid", title:"Offline Grid", icon:"server",         x:220,  y:60,  w:520, h:480 },
+  { id:"Grid Console", title:"Grid Console", icon:"terminal",       x:180,  y:90,  w:560, h:450 },
+  { id:"Offline Grid", title:"Offline Grid", icon:"server",         x:220,  y:60,  w:520, h:480 },
+  { id:"Grid Console", title:"Grid Console", icon:"terminal",       x:180,  y:90,  w:560, h:450 },
 ];
 const FMENU = [
   { label:"File",  items:[["Upload Image…","\u2318U"],["Take Snapshot","\u2318`"],["Save Texture As…",""],["Quit","\u2318Q"]] },
@@ -1586,7 +1712,7 @@ const FMENU = [
   { label:"Help",  items:[["Second Life Help","F1"],["Report Abuse…",""],["Report Bug…",""],["About Linkpoint",""]] },
 ];
 
-const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Outfits","Objects","Parcel","Transactions","Mute List","Settings","Cache","Diagnostics","Login","Search"];
+const SCREENS = ["Chat","Friends","Radar","Map","3D View","Inventory","Profile","Groups","Notices","Teleport","Outfits","Objects","Parcel","Transactions","Mute List","Settings","Cache","Diagnostics","Offline Grid","Grid Console","Login","Search"];
 // Grid picker for Login: Second Life's own two (Agni/Aditi) plus a few
 // well-known OpenSim grids, so the login screen isn't LL-only.
 const GRIDS = [
@@ -1636,6 +1762,10 @@ const CSUB = {
   Parcel:        [["GENERAL", "\u00b7 01"], ["MEDIA", "\u00b7 02"]],
   Transactions:  [["ALL", "\u00b7 01"], ["PAYMENTS", "\u00b7 02"]],
   "Mute List":   [["AVATARS", "\u00b7 01"], ["OBJECTS", "\u00b7 02"]],
+  "Offline Grid": [["STATUS", "· 01"], ["ACCOUNT", "· 02"], ["OAR", "· 03"], ["ASSETS", "· 04"], ["CACHE", "· 05"]],
+  "Grid Console": [["ALL", "· 01"], ["ERRORS", "· 02"]],
+  "Offline Grid": [["STATUS", "\u00b7 01"], ["ACCOUNT", "\u00b7 02"], ["OAR", "\u00b7 03"], ["ASSETS", "\u00b7 04"], ["CACHE", "\u00b7 05"]],
+  "Grid Console": [["ALL", "\u00b7 01"], ["ERRORS", "\u00b7 02"]],
 };
 
 // Movement pad: turning is drag-to-look, so the pad is a cross with a camera-mode centre.
@@ -1729,7 +1859,22 @@ class Component extends DCLogic {
     toast: "", composeText: "", chatSent: {}, chatTyping: false, invFilter: "",
     loginMode: "grid", loginGrid: "agni", loginBusy: false, loginError: null, logoAnim: true,
     customGrids: [], addGrid: false, addGridName: "", addGridHost: "",
-    searchFrom: "Friends", searchQuery: "", searchState: {}, reconnecting: false, cacheCleared: {} };
+    searchFrom: "Friends", searchQuery: "", searchState: {}, reconnecting: false, cacheCleared: {},
+    offlineRunning: true, offlinePort: 9000, offlineUser: { firstName: "Jane", lastName: "Doe" },
+    offlineAccountModal: false, offlineAccountFirstName: "Jane", offlineAccountLastName: "Doe", offlineAccountPassword: "",
+    oarFile: "A1_Grid_Region_v2.oar", oarRegionName: "Welcome Island", oarCoords: "1000, 1000", oarPrims: 1420, oarImporting: false,
+    assetName: "Grass Texture", assetType: "Texture", localAssets: [
+      { id: "ast-1", name: "Grass Texture 1024", type: "Texture", size: "2.1 MB", uuid: "e84d72a9-1102-4211-9a99-0a8811f3d82a" },
+      { id: "ast-2", name: "Ambient Forest Sound", type: "Sound", size: "512 KB", uuid: "f32a0018-912c-491a-b118-2993881023a1" }
+    ],
+    offlineCacheSize: 1024, consoleLevel: "ALL", consoleQuery: "", consoleAutoscroll: true,
+    consoleLogs: [
+      { ts: "16:30:33,123", level: "INFO", tag: "[LOGIN SERVICE]", msg: "User Jane Doe authenticated via XML-RPC." },
+      { ts: "16:30:35,456", level: "INFO", tag: "[SCENE]", msg: "Region Welcome Island loaded 1420 prims from OAR archive." },
+      { ts: "16:31:02,890", level: "WARN", tag: "[ASSET SERVICE]", msg: "Texture 89a2f1... fetch took > 1500ms." },
+      { ts: "16:32:10,012", level: "ERROR", tag: "[HYPERGRID]", msg: "Unable to resolve remote grid link test.osgrid.org:8002." },
+      { ts: "16:33:01,500", level: "INFO", tag: "[LOCAL GRID]", msg: "Grid listener active on 127.0.0.1:9000." }
+    ] };
 
   // ---- desktop floater window model -------------------------------------
   flR(id) { const f = FLOATERS.find(x => x.id === id) || { x: 24, y: 24, w: 320, h: 240 }; return { ...f, ...(this.state.flRect[id] || {}) }; }
@@ -3406,6 +3551,80 @@ class Component extends DCLogic {
         font: "700 12px/1 " + t.font, letterSpacing: ".22em", cursor: "pointer", opacity: s.loginBusy ? .7 : 1 },
       loginError: s.loginError, loginShowHint: !s.loginError,
       loginSettingsPick: () => this.set("screen", "Settings"),
+      isOfflineGrid: scr === "Offline Grid" && norm,
+      isGridConsole: scr === "Grid Console" && norm,
+      offlineSub: curSub,
+      offlineRunning: s.offlineRunning !== false,
+      offlineStopped: s.offlineRunning === false,
+      offlineUserFullName: ((s.offlineUser && s.offlineUser.firstName) || "Jane") + " " + ((s.offlineUser && s.offlineUser.lastName) || "Doe"),
+      offlineStatusText: s.offlineRunning !== false ? "ONLINE · 127.0.0.1:9000" : "OFFLINE · Server stopped",
+      offlineStatusStyle: { padding: "4px 8px", borderRadius: V.rs, font: "700 10.5px/1 " + t.font, background: s.offlineRunning !== false ? V.priC : "rgba(255,108,108,0.15)", color: s.offlineRunning !== false ? V.pri : "#FF6C6C" },
+      toggleOfflineGrid: () => {
+        const next = !s.offlineRunning;
+        this.setState({ offlineRunning: next });
+        this.notify(next ? "Local OpenSim Grid STARTED (127.0.0.1:9000)" : "Local OpenSim Grid SHUTDOWN");
+      },
+      offlineAccountModal: !!s.offlineAccountModal,
+      openOfflineAccountModal: () => this.setState({ offlineAccountModal: true }),
+      closeOfflineAccountModal: () => this.setState({ offlineAccountModal: false }),
+      offlineAccountFirstName: s.offlineAccountFirstName || "Jane",
+      offlineAccountLastName: s.offlineAccountLastName || "Doe",
+      offlineAccountPassword: s.offlineAccountPassword || "",
+      onOfflineAccountFirstNameChange: (e) => this.setState({ offlineAccountFirstName: e.target.value }),
+      onOfflineAccountLastNameChange: (e) => this.setState({ offlineAccountLastName: e.target.value }),
+      onOfflineAccountPasswordChange: (e) => this.setState({ offlineAccountPassword: e.target.value }),
+      saveOfflineAccount: () => {
+        this.setState(st => ({
+          offlineUser: { firstName: st.offlineAccountFirstName || "Jane", lastName: st.offlineAccountLastName || "Resident" },
+          offlineAccountModal: false
+        }));
+        this.notify("Local Account Saved: " + (this.state.offlineAccountFirstName || "Jane") + " " + (this.state.offlineAccountLastName || "Resident"));
+      },
+      oarFile: s.oarFile || "A1_Grid_Region_v2.oar",
+      oarRegionName: s.oarRegionName || "Welcome Island",
+      oarCoords: s.oarCoords || "1000, 1000",
+      oarPrims: s.oarPrims || 1420,
+      importOarBackup: () => {
+        this.notify("Importing OAR backup " + (s.oarFile || "A1_Grid_Region_v2.oar") + "...");
+      },
+      assetName: s.assetName || "Grass Texture",
+      assetType: s.assetType || "Texture",
+      onAssetNameChange: (e) => this.setState({ assetName: e.target.value }),
+      onAssetTypeChange: (e) => this.setState({ assetType: e.target.value }),
+      addLocalAsset: () => {
+        const name = s.assetName || "New Asset";
+        const type = s.assetType || "Texture";
+        const newAst = { id: "ast-" + Date.now(), name, type, size: "1.4 MB", uuid: "a" + Math.random().toString(16).substr(2, 8) + "-4000-8000-100000000000" };
+        this.setState(st => ({ localAssets: [newAst, ...(st.localAssets || [])], assetName: "" }));
+        this.notify("Local Asset Created: " + name);
+      },
+      localAssets: (s.localAssets || []).map(ast => ({ ...ast, uploadToSL: () => this.notify("Uploading " + ast.name + " (" + ast.uuid + ") to SL Grid...") })),
+      offlineCacheSize: s.offlineCacheSize || 1024,
+      onOfflineCacheSizeChange: (e) => this.setState({ offlineCacheSize: parseInt(e.target.value, 10) || 256 }),
+      cacheGaugeStyle: { width: Math.min(100, Math.max(5, ((s.offlineCacheSize || 1024) / 100000) * 100)) + "%", height: "100%", background: V.pri, borderRadius: "4px" },
+      clearOfflineCache: () => { this.setState({ offlineCacheSize: 256 }); this.notify("Offline Asset & Region Cache Cleared."); },
+      consoleTotalCount: (s.consoleLogs || []).length,
+      consoleWarnCount: (s.consoleLogs || []).filter(e => e.level === "WARN").length,
+      consoleErrorCount: (s.consoleLogs || []).filter(e => e.level === "ERROR" || e.level === "FATAL").length,
+      consoleErrorBadgeStyle: { padding: "4px 8px", borderRadius: V.rs, font: "700 10px/1 " + t.font, background: (s.consoleLogs || []).some(e => e.level === "ERROR" || e.level === "FATAL") ? "rgba(255,85,85,0.25)" : "var(--surf2,#1B2A2D)", color: (s.consoleLogs || []).some(e => e.level === "ERROR" || e.level === "FATAL") ? "#FF5555" : "var(--ink2,#A7C8BC)" },
+      consoleQuery: s.consoleQuery || "",
+      onConsoleQueryChange: (e) => this.setState({ consoleQuery: e.target.value }),
+      consoleLogs: (s.consoleLogs || []).filter(entry => {
+        if (s.consoleQuery) {
+          const q = s.consoleQuery.toLowerCase();
+          return entry.msg.toLowerCase().includes(q) || entry.tag.toLowerCase().includes(q);
+        }
+        return true;
+      }).map(entry => {
+        let col = V.ink2;
+        if (entry.level === "INFO") col = V.sec2 || V.pri;
+        if (entry.level === "WARN") col = "#FFB020";
+        if (entry.level === "ERROR" || entry.level === "FATAL") col = "#FF5555";
+        return { ...entry, style: "font:400 11px/1.5 " + t.font + ";color:" + col + ";display:flex;gap:8px;padding:2px 0;border-bottom:1px solid " + V.surf2 };
+      }),
+      clearConsoleLogs: () => { this.setState({ consoleLogs: [] }); this.notify("Grid Console Logs Cleared."); },
+      copyConsoleLogs: () => this.notify("Console Logs copied to clipboard."),
+      downloadConsoleLogs: () => this.notify("Downloading opensim-grid-log.txt..."),
       isSearchScreen: s.screen === "Search",
       searchBack: () => this.set("screen", s.searchFrom || "Friends"),
       searchQuery: s.searchQuery, searchQueryPick: (e) => this.set("searchQuery", e.target.value),
