@@ -41,7 +41,20 @@ export default function SegmentedTabs() {
         const active = isActive(x.label);
         const style = { ...base, ...(active ? onLook : null), ...(isFloat ? { minHeight: "24px", height: "24px", padding: "0 9px", flex: "none", borderRadius: 0, font: "600 9.5px/1 " + t.font, letterSpacing: ".1em" } : null) };
         return (
-          <div key={x.label} onClick={() => setSub(actions, scr, x.label)} style={style}>
+          <div
+            key={x.label}
+            onClick={() => setSub(actions, scr, x.label)}
+            role="tab"
+            tabIndex={0}
+            aria-selected={active}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setSub(actions, scr, x.label);
+              }
+            }}
+            style={style}
+          >
             <span style={{ font: "inherit", letterSpacing: "inherit" }}>{x.label}</span>
             {x.badge ? (
               <span

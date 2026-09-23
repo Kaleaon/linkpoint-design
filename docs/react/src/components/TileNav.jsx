@@ -18,6 +18,16 @@ export default function TileNav() {
           <div
             key={n.id}
             onClick={() => actions.setScreen(n.id)}
+            role="button"
+            tabIndex={0}
+            aria-label={"Go to " + n.id}
+            aria-pressed={active}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                actions.setScreen(n.id);
+              }
+            }}
             style={{ flex: 1, height: "62px", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "7px", cursor: "pointer", background: active ? V.pri : V.surf, color: active ? V.onpri : V.ink }}
           >
             <Icon name={n.icon} size={18} />
