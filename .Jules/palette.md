@@ -18,3 +18,7 @@
 ## 2024-11-20 - Add ARIA Labels and Keyboard Access to Chat Chips
 **Learning:** When adding accessibility to interactive list items rendered from an array (like chat thread chips), ensure the mapped data object contains a human-readable label field that can be used to populate the `aria-label` attribute in both custom HTML templating and React implementations.
 **Action:** Verify that data arrays used for dynamic interactive elements include properties suitable for `aria-label` injection.
+
+## 2026-09-23 - Accessible Custom Tab & Nav Controls
+**Learning:** When using `<div>` elements for navigation tabs or tiles in custom implementations (like `SegmentedTabs` and `TileNav`), providing correct ARIA roles (like `role="tab"` and `role="button"`) alongside active state attributes (`aria-selected`, `aria-pressed`) drastically improves screen reader context. Just making it focusable via `tabIndex={0}` is insufficient without key handlers (`onKeyDown`) listening for Space/Enter.
+**Action:** When inspecting navigation structures not using native `<button>` or `<a>` tags, ensure `role`, focus states, interaction handlers, and appropriate state attributes (like `aria-pressed/selected`) are fully implemented.
