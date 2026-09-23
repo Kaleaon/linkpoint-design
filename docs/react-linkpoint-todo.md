@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-09-21T17:18:41Z — upstream read through [`7fd305d`](https://github.com/Kaleaon/react-linkpoint/commit/7fd305de21acb9be1ff2cf8968a608518504400b)
-- **Open:** 37 · **Completed:** 0
+- **Last change:** 2026-09-23T06:22:05Z — upstream read through [`4f8a41b`](https://github.com/Kaleaon/react-linkpoint/commit/4f8a41ba9edfc24db17fece0addbbe718ded6b95)
+- **Open:** 42 · **Completed:** 2
 
 ## Open
 
@@ -32,6 +32,10 @@ Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/
 
 Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `docs/react/src/components/`
 
+- [ ] **`368d487`** feat(web): wire the web entry to the real viewer UI
+  - 2026-09-22 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/368d4872163e4422c225fdfc2868a955258e1389)
+  - 4 files: `src/App.tsx`, `src/components/ErrorBoundary.jsx`, `src/components/LinkpointLogo.jsx`, `src/components/Workbench.jsx`
+  - also touches: Screens
 - [ ] **`fa636dd`** Style disabled settings controls clearly
   - 2026-09-13 · copilot-swe-agent[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/fa636ddda65be25168bb5f3edaf6a91d46227dd0)
   - 1 file: `src/components/ViewerWorkbench.tsx`
@@ -91,14 +95,13 @@ Mirror into: `docs/index.html` — `PALETTES` / `LAYOUTS` · `docs/react/src/the
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
-- [x] **`ea5a078`** feat(offline): Add grid console/error log and hash local account passwords
-  - 2026-09-21 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ea5a0780b7c3b87b33471831fd3cb80220d6349c)
-  - 13 files: `LINKPOINT_DESIGN_OFFLINE_SPEC.md`, `src/linkpoint/offline/CacheManager.ts`, `src/linkpoint/offline/GridConsole.ts`, `src/linkpoint/offline/GridConsolePanel.tsx`, `src/linkpoint/offline/LocalAssetManager.ts`, `src/linkpoint/offline/LocalGridManager.ts` _(+7 more)_
-  - also touches: Docs & specs
-- [x] **`e10133f`** feat(offline): Add offline OpenSim grid engine, OAR parser, and design spec
-  - 2026-09-21 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e10133f928ebcb2a52f0e53920a84ec1a0aa7943)
-  - 9 files: `LINKPOINT_DESIGN_OFFLINE_SPEC.md`, `src/linkpoint/offline/CacheManager.ts`, `src/linkpoint/offline/LocalAssetManager.ts`, `src/linkpoint/offline/LocalGridManager.ts`, `src/linkpoint/offline/LocalGridServer.ts`, `src/linkpoint/offline/OARParser.ts` _(+3 more)_
-  - also touches: Docs & specs
+- [ ] **`34aaa0b`** test: give the cross-implementation PBKDF2 check room to finish
+  - 2026-09-22 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/34aaa0b0051a8f6d9189e544c0455e5359596d91)
+  - 1 file: `src/linkpoint/offline/__tests__/password.test.ts`
+- [ ] **`158d5d3`** feat: stream simulator objects to desktop viewer
+  - 2026-09-22 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/158d5d3c3cc720d6401805eb05f6d0229c227ea2)
+  - 26 files: `.github/workflows/desktop-build.yml`, `.gitignore`, `README.md`, `electron/main.cjs`, `electron/preload.cjs`, `electron/viewer-session.cjs` _(+20 more)_
+  - also touches: Screens, Theme & tokens, State & data, Build & platform, Docs & specs, Unclassified
 - [ ] **`5640591`** feat: consolidate open PRs #5,8,9,10,13,16,21,23
   - 2026-09-18 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/5640591b51191ef63d640d1f09d3f974d9760a56)
   - 2 files: `.github/workflows/android-apk.yml`, `src/linkpoint/sl-connection-full.ts`
@@ -143,6 +146,18 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
 
 Mirror into: usually no design change — confirm `docs/react/` still builds the same way
 
+- [ ] **`11209aa`** ci: add all-platform package build workflow
+  - 2026-09-22 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/11209aa91d924b2150ca76498ab29775548c08f1)
+  - 8 files: `.github/workflows/android-apk.yml`, `.github/workflows/desktop-build.yml`, `.github/workflows/release.yml`, `.gitignore`, `README.md`, `electron-builder.yml` _(+2 more)_
+  - also touches: Docs & specs, Unclassified
+- [ ] **`0709ad0`** fix(deps): upgrade react to 19 to satisfy react-native's peer range
+  - 2026-09-22 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0709ad01ff35c623e73ab2bcf641a9b0ee6111f2)
+  - 5 files: `.github/workflows/android-apk.yml`, `.github/workflows/release.yml`, `.github/workflows/test.yml`, `README.md`, `package.json`
+  - also touches: Docs & specs
+- [ ] **`06d47f7`** fix(android): restore native Expo build workflow
+  - 2026-09-22 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/06d47f72c72587383879bb7abe544779ec33d56f)
+  - 4 files: `.github/workflows/android-apk.yml`, `README.md`, `app.json`, `package.json`
+  - also touches: Docs & specs
 - [ ] **`f25976a`** Add PR review workflow using Jules
   - 2026-09-18 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f25976a26efd867a5b7c907bd02d38e8caced373)
   - 1 file: `.github/workflows/pr-review.yml`
@@ -175,13 +190,26 @@ Mirror into: `docs/ROADMAP.md` · `docs/github.md` · `docs/mockup-to-react.yaml
   - 9 files: `.github/workflows/test.yml`, `ARCHITECTURE.md`, `ROADMAP.md`, `TPV_COMPLIANCE.md`, `server.ts`, `src/custom.d.ts` _(+3 more)_
   - also touches: Viewer & protocol features, Build & platform, Unclassified
 
+### Unclassified
+
+Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json`
+
+- [ ] **`8cf8e34`** fix(vercel): point the deployment at Vite's output and the root base path
+  - 2026-09-22 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8cf8e34d39ae5ff74b41fcc59b6dba0cce9c93d0)
+  - 1 file: `vercel.json`
+
 ## Completed
 
-_Nothing ticked off yet._
+<details><summary>2 done</summary>
+
+- [x] **`ea5a078`** feat(offline): Add grid console/error log and hash local account passwords — 2026-09-21 · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ea5a0780b7c3b87b33471831fd3cb80220d6349c)
+- [x] **`e10133f`** feat(offline): Add offline OpenSim grid engine, OAR parser, and design spec — 2026-09-21 · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e10133f928ebcb2a52f0e53920a84ec1a0aa7943)
+
+</details>
 
 <!-- sync-state
 {
- "generated": "2026-09-21T17:18:41Z",
+ "generated": "2026-09-23T06:22:05Z",
  "items": [
   {
    "also": [
@@ -926,7 +954,7 @@ _Nothing ticked off yet._
    "area": "viewer",
    "author": "google-labs-jules[bot]",
    "date": "2026-09-21",
-   "done": false,
+   "done": true,
    "files": [
     "LINKPOINT_DESIGN_OFFLINE_SPEC.md",
     "src/linkpoint/offline/CacheManager.ts",
@@ -950,7 +978,7 @@ _Nothing ticked off yet._
    "area": "viewer",
    "author": "Claude",
    "date": "2026-09-21",
-   "done": false,
+   "done": true,
    "files": [
     "LINKPOINT_DESIGN_OFFLINE_SPEC.md",
     "src/linkpoint/offline/CacheManager.ts",
@@ -970,9 +998,165 @@ _Nothing ticked off yet._
    "short": "ea5a078",
    "subject": "feat(offline): Add grid console/error log and hash local account passwords",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/ea5a0780b7c3b87b33471831fd3cb80220d6349c"
+  },
+  {
+   "also": [
+    "docs"
+   ],
+   "area": "platform",
+   "author": "Kaleaon",
+   "date": "2026-09-22",
+   "done": false,
+   "files": [
+    ".github/workflows/android-apk.yml",
+    "README.md",
+    "app.json",
+    "package.json"
+   ],
+   "sha": "06d47f72c72587383879bb7abe544779ec33d56f",
+   "short": "06d47f7",
+   "subject": "fix(android): restore native Expo build workflow",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/06d47f72c72587383879bb7abe544779ec33d56f"
+  },
+  {
+   "also": [
+    "docs",
+    "other"
+   ],
+   "area": "platform",
+   "author": "Claude",
+   "date": "2026-09-22",
+   "done": false,
+   "files": [
+    ".github/workflows/android-apk.yml",
+    ".github/workflows/desktop-build.yml",
+    ".github/workflows/release.yml",
+    ".gitignore",
+    "README.md",
+    "electron-builder.yml",
+    "package.json",
+    "scripts/build-desktop.mjs"
+   ],
+   "sha": "11209aa91d924b2150ca76498ab29775548c08f1",
+   "short": "11209aa",
+   "subject": "ci: add all-platform package build workflow",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/11209aa91d924b2150ca76498ab29775548c08f1"
+  },
+  {
+   "also": [
+    "docs"
+   ],
+   "area": "platform",
+   "author": "Claude",
+   "date": "2026-09-22",
+   "done": false,
+   "files": [
+    ".github/workflows/android-apk.yml",
+    ".github/workflows/release.yml",
+    ".github/workflows/test.yml",
+    "README.md",
+    "package.json"
+   ],
+   "sha": "0709ad01ff35c623e73ab2bcf641a9b0ee6111f2",
+   "short": "0709ad0",
+   "subject": "fix(deps): upgrade react to 19 to satisfy react-native's peer range",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/0709ad01ff35c623e73ab2bcf641a9b0ee6111f2"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-09-22",
+   "done": false,
+   "files": [
+    "vercel.json"
+   ],
+   "sha": "8cf8e34d39ae5ff74b41fcc59b6dba0cce9c93d0",
+   "short": "8cf8e34",
+   "subject": "fix(vercel): point the deployment at Vite's output and the root base path",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8cf8e34d39ae5ff74b41fcc59b6dba0cce9c93d0"
+  },
+  {
+   "also": [
+    "screens",
+    "theme",
+    "state",
+    "platform",
+    "docs",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-09-22",
+   "done": false,
+   "files": [
+    ".github/workflows/desktop-build.yml",
+    ".gitignore",
+    "README.md",
+    "electron/main.cjs",
+    "electron/preload.cjs",
+    "electron/viewer-session.cjs",
+    "package.json",
+    "scripts/build-desktop.mjs",
+    "src/App.tsx",
+    "src/custom.d.ts",
+    "src/hooks/useAppState.js",
+    "src/index.css",
+    "src/linkpoint/__tests__/chat.test.ts",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/__tests__/world.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/chat.ts",
+    "src/linkpoint/cors-handler.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/sl-protocol-real.ts",
+    "src/linkpoint/world.ts",
+    "src/linkpoint/xmlParser.ts",
+    "src/screens/Chat.jsx",
+    "src/screens/Login.jsx",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "158d5d3c3cc720d6401805eb05f6d0229c227ea2",
+   "short": "158d5d3",
+   "subject": "feat: stream simulator objects to desktop viewer",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/158d5d3c3cc720d6401805eb05f6d0229c227ea2"
+  },
+  {
+   "also": [
+    "screens"
+   ],
+   "area": "components",
+   "author": "Claude",
+   "date": "2026-09-22",
+   "done": false,
+   "files": [
+    "src/App.tsx",
+    "src/components/ErrorBoundary.jsx",
+    "src/components/LinkpointLogo.jsx",
+    "src/components/Workbench.jsx"
+   ],
+   "sha": "368d4872163e4422c225fdfc2868a955258e1389",
+   "short": "368d487",
+   "subject": "feat(web): wire the web entry to the real viewer UI",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/368d4872163e4422c225fdfc2868a955258e1389"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-09-22",
+   "done": false,
+   "files": [
+    "src/linkpoint/offline/__tests__/password.test.ts"
+   ],
+   "sha": "34aaa0b0051a8f6d9189e544c0455e5359596d91",
+   "short": "34aaa0b",
+   "subject": "test: give the cross-implementation PBKDF2 check room to finish",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/34aaa0b0051a8f6d9189e544c0455e5359596d91"
   }
  ],
- "last_sha": "7fd305de21acb9be1ff2cf8968a608518504400b",
+ "last_sha": "4f8a41ba9edfc24db17fece0addbbe718ded6b95",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
