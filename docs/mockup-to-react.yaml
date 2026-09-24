@@ -34,6 +34,14 @@ target:
   install: npm install
   build: npm run build   # Vite; catches JSX/import errors
   dev: npm run dev
+  production_boundary: >
+    Port the in-app design, content, tokens and behavior only. The outer
+    GitHub Pages presentation canvas (title, explanatory note, picker sidebar,
+    fake device bezel and fake OS status bar) must remain in docs/index.html
+    and must not be imported by the React application root. React fills its
+    host viewport and chooses a form factor automatically from viewport width;
+    themes and layout packs remain user-selectable from the in-app Settings
+    screen.
 
 # ---------------------------------------------------------------------
 # The DSL's {{ }} binding evaluator (support.js: resolve()/resolvePath())
@@ -145,8 +153,8 @@ file_map:
     segmented_tabs_and_chips: docs/react/src/components/SegmentedTabs.jsx, docs/react/src/components/ChipRow.jsx
     system_dialogs: docs/react/src/components/SystemDialog.jsx
     toast: docs/react/src/components/Toast.jsx
-    device_frame_bezel: docs/react/src/components/DeviceFrame.jsx
-    status_bar: docs/react/src/components/StatusBar.jsx
+    application_viewport: "docs/react/src/components/DeviceFrame.jsx — port frame contents only; omit the mock device bezel"
+    preview_only_status_bar: "docs/index.html only — do not import docs/react/src/components/StatusBar.jsx from the React app"
     loading_crystal: "docs/react/src/components/CrystalLoader.jsx (dc: the inline <svg> under stateBlock.pyramid in index.html; keyframes in src/index.css / the <style> block mirror each other)"
     desktop_menu_bar: docs/react/src/components/MenuBar.jsx
 

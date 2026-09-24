@@ -17,7 +17,14 @@ export function useAppState() {
     const shared = decodeSharedTheme(new URLSearchParams(window.location.search).get("theme") || "");
     return shared || readSavedTheme() || themeFromPalette(PALETTES.ink);
   });
-  const [device, setDevice] = useState("ios");
+  const deviceForViewport = useCallback(() => {
+    const width = window.innerWidth;
+    if (width >= 1280) return "desk";
+    if (width >= 900) return "tab";
+    if (width >= 600) return "fold";
+    return width >= 400 ? "and" : "ios";
+  }, []);
+  const [device, setDevice] = useState(deviceForViewport);
   const [screen, setScreen] = useState("Chat");
   const [dialog, setDialog] = useState(null);
   const [dense, setDense] = useState(false);
@@ -116,6 +123,15 @@ export function useAppState() {
     const iv = setInterval(() => setTick((t) => t + 1), 1000);
     return () => clearInterval(iv);
   }, []);
+
+  // Form factor is an implementation concern in the real app. The design
+  // canvas exposes a manual device picker, but the React port follows its host
+  // viewport and changes navigation/layout at the same breakpoints instead.
+  useEffect(() => {
+    const syncDevice = () => setDevice(deviceForViewport());
+    window.addEventListener("resize", syncDevice);
+    return () => window.removeEventListener("resize", syncDevice);
+  }, [deviceForViewport]);
 
   // ---- timers / drag refs (were plain `this.x` fields on the class) -----
   const cflRef = useRef(null); // console-nav tap flash timeout
