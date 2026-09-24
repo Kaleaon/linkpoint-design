@@ -5,11 +5,14 @@ This is a real, buildable React 18 + Vite app that mechanically translates
 defined with a Mustache-like `x-dc` DSL (`{{ vm.x }}`, `<sc-for>`,
 `<sc-if>`, `sc-camel-on-click`) fed by a ~1300-line `render()` that builds
 a giant view-model object — into ordinary JSX components with
-`useState`/Context. It is **not** a redesign: every palette token, layout
-token, screen, piece of copy, and interaction in `index.html` has a 1:1
-counterpart here. See `../mockup-to-react.yaml` for the translation rules
-this port follows (and that any future edit to `index.html` should follow
-too, to keep the two in sync).
+`useState`/Context. It is **not** a redesign: every in-app palette token,
+layout token, screen, piece of copy, and interaction in `index.html` has a 1:1
+counterpart here. The GitHub Pages presentation canvas (device bezel, fake OS
+status bar, title, notes and the layout/palette/device picker sidebar) is
+intentionally excluded from the application build. See
+`../mockup-to-react.yaml` for the translation rules this port follows (and
+that any future edit to `index.html` should follow too, to keep the two in
+sync).
 
 This port was originally built against an older snapshot of the mockup
 (`GridLink Mobile.dc.html`, since removed — the project has one HTML
@@ -34,8 +37,8 @@ Translation key used throughout:
 ```
 src/
   main.jsx                 entry point
-  App.jsx                  top-level layout (picker column + device mockup)
-  index.css                ported <style> block (fonts/keyframes/dv-* panel CSS)
+  App.jsx                  production root (providers + viewport-filling app)
+  index.css                application globals and shared animation keyframes
   context/
     AppContext.jsx          state + actions (wraps hooks/useAppState.js)
     ThemeContext.jsx         computed per-render theme package (wraps theme/computeTheme.js)
@@ -59,10 +62,10 @@ src/
                                 buildCards() (Friends/Groups/Notices/Teleport/
                                 Settings/Diagnostics card lists + their callbacks)
   components/
-    ControlPanels.jsx          the "1a" picker column (layout/palette/device/
-                                screen/state/dialog pickers)
-    DeviceFrame.jsx            phone/tablet/desktop bezel + frame chrome
-    StatusBar.jsx, MenuBar.jsx, BottomTabs.jsx, TileNav.jsx, RailNav.jsx
+    ControlPanels.jsx          source reference for the GitHub Pages-only
+                                design controls (not imported by the app)
+    DeviceFrame.jsx            responsive, borderless application viewport
+    MenuBar.jsx, BottomTabs.jsx, TileNav.jsx, RailNav.jsx
     Shell.jsx                  plain (non-console, non-desktop) content shell
     ConsoleFrame.jsx           the LCARS "sweep console" elbow chrome + its
                                 own 3D scene (ConsoleScene, internal)
@@ -104,8 +107,11 @@ settings toggle, desktop floaters) all produced the expected visual result.
   Inventory, Profile, Groups, Notices, Teleport, Outfits, Objects, Parcel,
   Transactions, Mute List, Settings, Cache, Diagnostics, Login, Search.
 - All 6 layout packs (Ink Terminal, Sweep Console, Metro Tiles, Aero Glass,
-  Rule & Rail, Press) and all 24 colour packs are selectable and use the
-  exact hex/radius/spacing tokens from the source.
+  Rule & Rail, Press) and all 24 colour packs are selectable from Settings
+  and use the exact hex/radius/spacing tokens from the source.
+- The form factor follows the browser viewport automatically: phone, foldable,
+  tablet and desktop navigation switch without shipping the mockup's manual
+  device picker or fixed-size frame.
 - Nav adapts per layout pack exactly like the source: bottom tabs, a left
   rail, a bottom tile strip, the LCARS "sweep console" elbow frame (which
   takes over chrome for *every* screen, not just 3D View — see below), and
