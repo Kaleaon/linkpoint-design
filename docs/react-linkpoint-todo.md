@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-09-23T06:22:05Z — upstream read through [`4f8a41b`](https://github.com/Kaleaon/react-linkpoint/commit/4f8a41ba9edfc24db17fece0addbbe718ded6b95)
-- **Open:** 42 · **Completed:** 2
+- **Last change:** 2026-09-24T11:12:25Z — upstream read through [`233cc2e`](https://github.com/Kaleaon/react-linkpoint/commit/233cc2ea7841b01edd765b09a117fe95fb595327)
+- **Open:** 45 · **Completed:** 2
 
 ## Open
 
@@ -32,6 +32,10 @@ Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/
 
 Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `docs/react/src/components/`
 
+- [ ] **`99b14c8`** feat: add missing Lumiya viewer surfaces
+  - 2026-09-22 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/99b14c8b1bf1efe4b9e1c83b5f90753e89d2fc50)
+  - 42 files: `LUMIYA_FEATURE_AUDIT.md`, `src/App.tsx`, `src/components/Card.jsx`, `src/components/CardList.jsx`, `src/components/ChipRow.jsx`, `src/components/ConsoleFrame.jsx` _(+36 more)_
+  - also touches: Screens, Theme & tokens, State & data, Viewer & protocol features, Docs & specs
 - [ ] **`368d487`** feat(web): wire the web entry to the real viewer UI
   - 2026-09-22 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/368d4872163e4422c225fdfc2868a955258e1389)
   - 4 files: `src/App.tsx`, `src/components/ErrorBoundary.jsx`, `src/components/LinkpointLogo.jsx`, `src/components/Workbench.jsx`
@@ -95,6 +99,14 @@ Mirror into: `docs/index.html` — `PALETTES` / `LAYOUTS` · `docs/react/src/the
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`b793fe3`** feat: port recent Lumiya runtime behaviors
+  - 2026-09-23 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b793fe3485b7aa1059e7df54e62e3afc9442c4d3)
+  - 7 files: `LUMIYA_FEATURE_AUDIT.md`, `src/linkpoint/__tests__/runtime-ui-data.test.ts`, `src/linkpoint/sl-protocol-real.ts`, `src/linkpoint/world.ts`, `src/linkpoint/xmlrpc-client.test.ts`, `src/linkpoint/xmlrpc-client.ts` _(+1 more)_
+  - also touches: Screens, Docs & specs
+- [ ] **`abffcad`** fix: stabilize 3d renderer lifecycle
+  - 2026-09-23 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/abffcade428de43cdb4d2c95db5b304b548e8353)
+  - 5 files: `RENDERING_STATUS.md`, `src/linkpoint/__tests__/world.test.ts`, `src/linkpoint/graphics-3d.ts`, `src/linkpoint/world.ts`, `src/screens/World3D.jsx`
+  - also touches: Screens, Docs & specs
 - [ ] **`34aaa0b`** test: give the cross-implementation PBKDF2 check room to finish
   - 2026-09-22 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/34aaa0b0051a8f6d9189e544c0455e5359596d91)
   - 1 file: `src/linkpoint/offline/__tests__/password.test.ts`
@@ -209,7 +221,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-09-23T06:22:05Z",
+ "generated": "2026-09-24T11:12:25Z",
  "items": [
   {
    "also": [
@@ -1154,9 +1166,114 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "34aaa0b",
    "subject": "test: give the cross-implementation PBKDF2 check room to finish",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/34aaa0b0051a8f6d9189e544c0455e5359596d91"
+  },
+  {
+   "also": [
+    "screens",
+    "theme",
+    "state",
+    "viewer",
+    "docs"
+   ],
+   "area": "components",
+   "author": "Kaleaon",
+   "date": "2026-09-22",
+   "done": false,
+   "files": [
+    "LUMIYA_FEATURE_AUDIT.md",
+    "src/App.tsx",
+    "src/components/Card.jsx",
+    "src/components/CardList.jsx",
+    "src/components/ChipRow.jsx",
+    "src/components/ConsoleFrame.jsx",
+    "src/components/ControlPanels.jsx",
+    "src/components/DeviceFrame.jsx",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/Header.jsx",
+    "src/components/MenuBar.jsx",
+    "src/components/ScreenBody.jsx",
+    "src/components/SegmentedTabs.jsx",
+    "src/components/SplitDetail.jsx",
+    "src/components/StateBlock.jsx",
+    "src/components/StatusBar.jsx",
+    "src/data/content.js",
+    "src/data/slData.ts",
+    "src/hooks/useAppState.js",
+    "src/index.css",
+    "src/linkpoint/__tests__/runtime-ui-data.test.ts",
+    "src/linkpoint/inventory.ts",
+    "src/linkpoint/notifications.ts",
+    "src/linkpoint/phase2/chat-extended.ts",
+    "src/linkpoint/phase2/friends-extended.ts",
+    "src/linkpoint/phase2/groups.ts",
+    "src/linkpoint/phase2/objects-extended.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/Chat.jsx",
+    "src/screens/Inventory.jsx",
+    "src/screens/LiveScreens.jsx",
+    "src/screens/Login.jsx",
+    "src/screens/LumiyaTools.jsx",
+    "src/screens/Map.jsx",
+    "src/screens/Profile.jsx",
+    "src/screens/Radar.jsx",
+    "src/screens/Search.jsx",
+    "src/screens/World3D.jsx",
+    "src/theme/computeTheme.js",
+    "src/theme/constants.js",
+    "src/theme/dialogs.js",
+    "src/viewer/ViewerContext.tsx"
+   ],
+   "sha": "99b14c8b1bf1efe4b9e1c83b5f90753e89d2fc50",
+   "short": "99b14c8",
+   "subject": "feat: add missing Lumiya viewer surfaces",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/99b14c8b1bf1efe4b9e1c83b5f90753e89d2fc50"
+  },
+  {
+   "also": [
+    "screens",
+    "docs"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-09-23",
+   "done": false,
+   "files": [
+    "LUMIYA_FEATURE_AUDIT.md",
+    "src/linkpoint/__tests__/runtime-ui-data.test.ts",
+    "src/linkpoint/sl-protocol-real.ts",
+    "src/linkpoint/world.ts",
+    "src/linkpoint/xmlrpc-client.test.ts",
+    "src/linkpoint/xmlrpc-client.ts",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "b793fe3485b7aa1059e7df54e62e3afc9442c4d3",
+   "short": "b793fe3",
+   "subject": "feat: port recent Lumiya runtime behaviors",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/b793fe3485b7aa1059e7df54e62e3afc9442c4d3"
+  },
+  {
+   "also": [
+    "screens",
+    "docs"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-09-23",
+   "done": false,
+   "files": [
+    "RENDERING_STATUS.md",
+    "src/linkpoint/__tests__/world.test.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "abffcade428de43cdb4d2c95db5b304b548e8353",
+   "short": "abffcad",
+   "subject": "fix: stabilize 3d renderer lifecycle",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/abffcade428de43cdb4d2c95db5b304b548e8353"
   }
  ],
- "last_sha": "4f8a41ba9edfc24db17fece0addbbe718ded6b95",
+ "last_sha": "233cc2ea7841b01edd765b09a117fe95fb595327",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
