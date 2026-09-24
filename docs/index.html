@@ -653,7 +653,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                 <div style="{{ targetPlate }}">
                   <div style="{{ targetRing }}"></div>
                   <div style="{{ targetLabel }}">{{ targetName }}</div>
-                  <div onClick="{{ clearTarget }}" style="{{ targetMetaStyle }}">{{ targetMeta }} · CLEAR</div>
+                  <div onClick="{{ clearTarget }}" onKeyDown="{{ clearTargetKeyDown }}" role="button" tabindex="0" style="{{ targetMetaStyle }}">{{ targetMeta }} · CLEAR</div>
                 </div>
               </sc-if>
               <div style="position:absolute;right:12px;top:66px;width:88px;height:88px;border:1px solid var(--outv,#365047);background:var(--surf,#101A1C);overflow:hidden">
@@ -1432,7 +1432,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
             <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px">
               <i data-lucide="layers" style="width:17px;height:17px;color:var(--pri,#6CFF9A)"></i>
               <span style="flex:1;font:600 12px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A)">WORN HUDS</span>
-              <span onClick="{{ closeHudPicker }}" style="font:400 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer">DONE</span>
+              <span onClick="{{ closeHudPicker }}" onKeyDown="{{ closeHudPickerKeyDown }}" role="button" tabindex="0" aria-label="Done picking HUDs" style="font:400 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer">DONE</span>
             </div>
             <div style="font:400 11px/1.6 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-bottom:6px">Tick a HUD to paint it over the world view. Drag its title bar to move it.</div>
             <sc-for list="{{ hudList }}" as="hl" hint-placeholder-count="5">
@@ -1452,7 +1452,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
             <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px">
               <i data-lucide="crosshair" style="width:17px;height:17px;color:var(--pri,#6CFF9A)"></i>
               <span style="flex:1;font:600 12px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A)">PICK A TARGET</span>
-              <span onClick="{{ closeTargetPicker }}" style="font:400 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer">CLOSE</span>
+              <span onClick="{{ closeTargetPicker }}" onKeyDown="{{ closeTargetPickerKeyDown }}" role="button" tabindex="0" aria-label="Close target picker" style="font:400 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer">CLOSE</span>
             </div>
             <div style="font:400 11px/1.6 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-bottom:6px">Touch, sit, or IM whatever you select — precise picking without pixel-hunting the scene.</div>
             <sc-for list="{{ targetList }}" as="tl" hint-placeholder-count="5">
@@ -3361,6 +3361,9 @@ class Component extends DCLogic {
       targetMetaStyle: { padding: "3px 7px", background: V.bg, border: "1px solid " + V.outv, font: "400 9.5px/1.3 " + t.font, color: V.ink2, letterSpacing: ".08em", cursor: "pointer", whiteSpace: "nowrap" },
       targetRing: { width: "54px", height: "54px", border: "2px solid " + V.pri, borderRadius: "50%", boxShadow: "0 0 0 1px rgba(0,0,0,.5)" },
       targetLabel: { padding: "3px 8px", background: V.pri, color: V.onpri, font: "700 10px/1.4 " + t.font, letterSpacing: ".1em", whiteSpace: "nowrap" },
+      clearTargetKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.set("target", null); } },
+      closeHudPickerKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.set("hudPicker", false); } },
+      closeTargetPickerKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.set("targetPicker", false); } },
       frameStyle: { position: "relative", overflow: "hidden", borderRadius: "24px", background: V.bg, color: V.ink, fontFamily: t.font, display: "flex", flexDirection: "column", width: d.w + "px", height: d.h + "px" },
       clock: "14:32",
       statusStyle: { flex: "none", position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between",

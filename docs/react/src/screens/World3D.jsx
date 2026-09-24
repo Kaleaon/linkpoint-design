@@ -116,7 +116,13 @@ export default function World3D() {
         <div style={{ position: "absolute", left: "50%", top: "26%", transform: "translate(-50%,-50%)", display: "flex", flexDirection: "column", alignItems: "center", gap: "6px", zIndex: 8 }}>
           <div style={{ width: "54px", height: "54px", border: "2px solid " + V.pri, borderRadius: "50%", boxShadow: "0 0 0 1px rgba(0,0,0,.5)" }} />
           <div style={{ padding: "3px 8px", background: V.pri, color: V.onpri, font: "700 10px/1.4 " + t.font, letterSpacing: ".1em", whiteSpace: "nowrap" }}>{tgt.name}</div>
-          <div onClick={() => actions.setTarget(null)} style={{ padding: "3px 7px", background: V.bg, border: "1px solid " + V.outv, font: "400 9.5px/1.3 " + t.font, color: V.ink2, letterSpacing: ".08em", cursor: "pointer", whiteSpace: "nowrap" }}>
+          <div
+            onClick={() => actions.setTarget(null)}
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); actions.setTarget(null); } }}
+            role="button"
+            tabIndex={0}
+            style={{ padding: "3px 7px", background: V.bg, border: "1px solid " + V.outv, font: "400 9.5px/1.3 " + t.font, color: V.ink2, letterSpacing: ".08em", cursor: "pointer", whiteSpace: "nowrap" }}
+          >
             {tgt.meta} · CLEAR
           </div>
         </div>
@@ -257,7 +263,14 @@ export default function World3D() {
             <div style={{ display: "flex", alignItems: "center", gap: "9px", marginBottom: "6px" }}>
               <Icon name="layers" size={17} style={{ color: V.pri }} />
               <span style={{ flex: 1, font: "600 12px/1 " + t.font, letterSpacing: ".2em", color: V.pri }}>WORN HUDS</span>
-              <span onClick={() => actions.setHudPicker(false)} style={{ font: "400 11px/1 " + t.font, color: V.ink2, cursor: "pointer" }}>
+              <span
+                onClick={() => actions.setHudPicker(false)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); actions.setHudPicker(false); } }}
+                role="button"
+                tabIndex={0}
+                aria-label="Done picking HUDs"
+                style={{ font: "400 11px/1 " + t.font, color: V.ink2, cursor: "pointer" }}
+              >
                 DONE
               </span>
             </div>
@@ -284,7 +297,14 @@ export default function World3D() {
             <div style={{ display: "flex", alignItems: "center", gap: "9px", marginBottom: "6px" }}>
               <Icon name="crosshair" size={17} style={{ color: V.pri }} />
               <span style={{ flex: 1, font: "600 12px/1 " + t.font, letterSpacing: ".2em", color: V.pri }}>PICK A TARGET</span>
-              <span onClick={() => actions.setTargetPicker(false)} style={{ font: "400 11px/1 " + t.font, color: V.ink2, cursor: "pointer" }}>
+              <span
+                onClick={() => actions.setTargetPicker(false)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); actions.setTargetPicker(false); } }}
+                role="button"
+                tabIndex={0}
+                aria-label="Close target picker"
+                style={{ font: "400 11px/1 " + t.font, color: V.ink2, cursor: "pointer" }}
+              >
                 CLOSE
               </span>
             </div>
