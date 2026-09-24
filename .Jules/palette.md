@@ -22,3 +22,7 @@
 ## 2026-09-23 - Accessible Custom Tab & Nav Controls
 **Learning:** When using `<div>` elements for navigation tabs or tiles in custom implementations (like `SegmentedTabs` and `TileNav`), providing correct ARIA roles (like `role="tab"` and `role="button"`) alongside active state attributes (`aria-selected`, `aria-pressed`) drastically improves screen reader context. Just making it focusable via `tabIndex={0}` is insufficient without key handlers (`onKeyDown`) listening for Space/Enter.
 **Action:** When inspecting navigation structures not using native `<button>` or `<a>` tags, ensure `role`, focus states, interaction handlers, and appropriate state attributes (like `aria-pressed/selected`) are fully implemented.
+
+## 2026-09-24 - Accessibility for Text-Based Custom Buttons
+**Learning:** It is easy to remember adding `aria-label`, `role="button"`, and `tabindex="0"` to icon-only buttons, but text-based actionable `<div>` or `<span>` elements acting as buttons (like "CLEAR", "DONE", or "CLOSE" links inside modals) are often overlooked. Without these attributes and proper `onKeyDown` handlers for Space/Enter, keyboard and screen reader users cannot perceive or trigger these actions.
+**Action:** When auditing or building custom overlays and modals, proactively check any text span or div that has an `onClick` handler. Apply `role="button"`, `tabIndex={0}`, an explicit `aria-label` if the text alone lacks context, and an `onKeyDown` handler to ensure full keyboard interactivity.
