@@ -304,8 +304,8 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
           </sc-if>
           <i data-lucide="{{ f.icon }}" style="width:13px;height:13px;flex:none"></i>
           <span style="flex:1;min-width:0;font:inherit;letter-spacing:inherit;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{ f.title }}</span>
-          <span onClick="{{ f.min }}" style="{{ f.btnStyle }}" role="button" tabindex="0" aria-label="Minimize">&minus;</span>
-          <span onClick="{{ f.close }}" style="{{ f.btnStyle }}" role="button" tabindex="0" aria-label="Close">&times;</span>
+          <span onClick="{{ f.min }}" style="{{ f.btnStyle }}" role="button" tabindex="0" onKeyDown="{{ f.minKey }}" aria-label="Minimize">&minus;</span>
+          <span onClick="{{ f.close }}" style="{{ f.btnStyle }}" role="button" tabindex="0" onKeyDown="{{ f.closeKey }}" aria-label="Close">&times;</span>
         </div>
         <sc-if value="{{ f.rows }}" hint-placeholder-val="{{ true }}">
         <div style="{{ f.bodyStyle }}">
@@ -3050,7 +3050,9 @@ class Component extends DCLogic {
           drag: (e) => this.flDrag(f.id, e, "move"),
           resize: (e) => this.flDrag(f.id, e, "size"),
           min: (e) => { e.stopPropagation(); this.setState(st => ({ flMin: { ...st.flMin, [f.id]: true } })); },
+          minKey: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); this.flToggle(f.id); } },
           close: (e) => { e.stopPropagation(); this.flClose(f.id); },
+          closeKey: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); this.flClose(f.id); } },
           style: { position: "absolute", left: r.x + "px", top: r.y + "px", width: r.w + "px", height: r.h + "px",
             zIndex: 10 + Math.max(0, s.flZ.indexOf(f.id)), display: "flex", flexDirection: "column", background: V.surf,
             border: (isSweepDesk ? "2px solid " : "1px solid ") + (act ? V.pri : V.outv),

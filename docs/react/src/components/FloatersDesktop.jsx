@@ -128,7 +128,7 @@ export default function FloatersDesktop() {
                   actions.flToggle(f.id);
                 }}
                 style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
-                role="button" tabIndex={0} aria-label="Minimize"
+                role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); actions.flToggle(f.id); } }} aria-label="Minimize"
               >
                 &minus;
               </span>
@@ -138,7 +138,7 @@ export default function FloatersDesktop() {
                   actions.flClose(f.id);
                 }}
                 style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
-                role="button" tabIndex={0} aria-label="Close"
+                role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); actions.flClose(f.id); } }} aria-label="Close"
               >
                 &times;
               </span>
