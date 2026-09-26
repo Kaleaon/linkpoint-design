@@ -30,7 +30,7 @@ export default function Login() {
             onClick={() => setAnimatedLogo(!animatedLogo)}
             role="button"
             tabIndex={0}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setAnimatedLogo(!animatedLogo); }}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setAnimatedLogo(!animatedLogo); } }}
             aria-label="Toggle logo animation"
             style={{
               position: "absolute",
@@ -69,7 +69,7 @@ export default function Login() {
                   onClick={() => actions.setLoginMode(x.mode)}
                   role="button"
                   tabIndex={0}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') actions.setLoginMode(x.mode); }}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setLoginMode(x.mode); } }}
                   aria-label={x.label}
                   style={{
                     flex: 1,
@@ -101,7 +101,7 @@ export default function Login() {
                       onClick={() => actions.setLoginGrid(g.key)}
                       role="button"
                       tabIndex={0}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') actions.setLoginGrid(g.key); }}
+                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setLoginGrid(g.key); } }}
                       aria-label={"Select grid " + g.label}
                       style={{
                         flex: "1 1 80px",
@@ -124,7 +124,7 @@ export default function Login() {
                   onClick={actions.openAddGrid}
                   role="button"
                   tabIndex={0}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') actions.openAddGrid(); }}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.openAddGrid(); } }}
                   aria-label="Add custom grid"
                   style={{
                     flex: "1 1 80px", textAlign: "center", padding: "7px 4px", border: "1px dashed " + V.outv,
@@ -156,7 +156,7 @@ export default function Login() {
                       onClick={actions.cancelAddGrid}
                       role="button"
                       tabIndex={0}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') actions.cancelAddGrid(); }}
+                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.cancelAddGrid(); } }}
                       aria-label="Cancel adding grid"
                       style={{ flex: 1, textAlign: "center", padding: "7px 0", border: "1px solid " + V.outv, borderRadius: V.rs, font: "600 10px/1 " + t.font, letterSpacing: ".14em", color: V.ink2, cursor: "pointer" }}
                     >
@@ -166,7 +166,7 @@ export default function Login() {
                       onClick={actions.saveCustomGrid}
                       role="button"
                       tabIndex={0}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') actions.saveCustomGrid(); }}
+                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.saveCustomGrid(); } }}
                       aria-label="Save custom grid"
                       style={{ flex: 1, textAlign: "center", padding: "7px 0", borderRadius: V.rs, background: V.pri, color: V.onpri, font: "600 10px/1 " + t.font, letterSpacing: ".14em", cursor: "pointer" }}
                     >
@@ -193,7 +193,7 @@ export default function Login() {
             onClick={actions.connectLogin}
             role="button"
             tabIndex={0}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') actions.connectLogin(); }}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.connectLogin(); } }}
             aria-label={state.loginBusy ? "Connecting" : isGrid ? "Connect to Grid" : "Enter Offline"}
             style={{
               marginTop: "10px",
@@ -219,7 +219,7 @@ export default function Login() {
             onClick={() => actions.setScreen("Settings")}
             role="button"
             tabIndex={0}
-            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') actions.setScreen("Settings"); }}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setScreen("Settings"); } }}
             aria-label="Open Settings"
             style={{
               marginTop: "6px",
