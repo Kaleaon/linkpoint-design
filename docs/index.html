@@ -203,7 +203,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
       <div style="{{ cfRailCol }}">
         <div style="{{ cfArm }}">Linkpoint</div>
         <sc-for list="{{ consoleNav }}" as="n" hint-placeholder-count="9">
-          <div onClick="{{ n.pick }}" style="{{ n.style }}">
+          <div onClick="{{ n.pick }}" onKeyDown="{{ n.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ n.label }}" style="{{ n.style }}">
             <span style="{{ n.codeStyle }}">{{ n.code }}</span>
             <span style="font:inherit;letter-spacing:inherit">{{ n.label }}</span>
           </div>
@@ -283,7 +283,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
       <div onClick="{{ stopProp }}" onMouseDown="{{ stopProp }}" style="{{ camHudOverlayStyle }}">
         <div style="{{ camHudHeaderStyle }}">
           <span>CAMERA CONTROLS</span>
-          <span onClick="{{ toggleCamHud }}" style="cursor:pointer;font-size:12px;line-height:1" role="button" tabindex="0" aria-label="Close Camera HUD">&times;</span>
+          <span onClick="{{ toggleCamHud }}" onKeyDown="{{ toggleCamHudKeyDown }}" style="cursor:pointer;font-size:12px;line-height:1" role="button" tabindex="0" aria-label="Close Camera HUD">&times;</span>
         </div>
         <div style="display:grid;grid-template-columns:repeat(3, 24px);gap:3px;justify-content:center">
           <button type="button" onClick="{{ camOrbitUp }}" style="{{ camHudGridBtnStyle }}" aria-label="Orbit Up">▲</button>
@@ -327,7 +327,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
         <div onClick="{{ tk.pick }}" style="{{ tk.style }}">{{ tk.label }}</div>
       </sc-for>
       <div style="flex:1;min-width:8px"></div>
-      <div onClick="{{ toggleCamHud }}" style="{{ camHudBtnStyle }}" role="button" tabindex="0" aria-label="Toggle Camera HUD">
+      <div onClick="{{ toggleCamHud }}" onKeyDown="{{ toggleCamHudKeyDown }}" style="{{ camHudBtnStyle }}" role="button" tabindex="0" aria-label="Toggle Camera HUD">
         <i data-lucide="video" style="width:12px;height:12px;flex:none"></i>
         <span>CAM HUD</span>
       </div>
@@ -346,7 +346,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
       <div style="flex:none;width:104px;background:var(--surf,#101A1C);border-right:1px solid var(--outv,#365047);display:flex;flex-direction:column;gap:5px;padding:12px 8px">
         <div style="font:700 13px/1.15 var(--dfont,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A);padding:2px 6px 14px">LINK<br>POINT</div>
         <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="6">
-          <div onClick="{{ n.pick }}" style="{{ n.railStyle }}">
+          <div onClick="{{ n.pick }}" onKeyDown="{{ n.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ n.label }}" style="{{ n.railStyle }}">
             <i data-lucide="{{ n.icon }}" style="width:20px;height:20px"></i>
             <span style="font:600 8.5px/1 var(--font,'JetBrains Mono');letter-spacing:.1em">{{ n.label }}</span>
           </div>
@@ -361,7 +361,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
           <div style="position:absolute;left:16px;top:12px;font:700 12px/1.05 var(--dfont,'Antonio');letter-spacing:.1em;color:var(--onpri,#1B0E24)">LINK<br>POINT</div>
         </div>
         <sc-for list="{{ sweepNav }}" as="n" hint-placeholder-count="7">
-          <div onClick="{{ n.pick }}" style="{{ n.sweepStyle }}">{{ n.label }}</div>
+          <div onClick="{{ n.pick }}" onKeyDown="{{ n.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ n.label }}" style="{{ n.sweepStyle }}">{{ n.label }}</div>
         </sc-for>
         <div style="flex:1;min-height:14px;width:68px;background:var(--surf2,#3D1F5C);border-radius:0 0 0 26px"></div>
       </div>
@@ -395,7 +395,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
             </sc-if>
             <sc-if value="{{ headerIcons }}" hint-placeholder-val="{{ false }}">
             <sc-for list="{{ headerIcons }}" as="hi" hint-placeholder-count="2">
-              <div onClick="{{ hi.pick }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer" role="button" aria-label="{{ hi.label }}" tabindex="0"><i data-lucide="{{ hi.icon }}" style="width:18px;height:18px"></i></div>
+              <div onClick="{{ hi.pick }}" onKeyDown="{{ hi.pickKeyDown }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer" role="button" aria-label="{{ hi.label }}" tabindex="0"><i data-lucide="{{ hi.icon }}" style="width:18px;height:18px"></i></div>
             </sc-for>
             </sc-if>
           </div>
@@ -529,7 +529,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                 <input value="{{ composeText }}" onChange="{{ composeChange }}" onKeyDown="{{ composeKeyDown }}" placeholder="{{ composePlaceholder }}" style="{{ composeInputStyle }}" />
                 <span style="margin-left:auto;font:600 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);letter-spacing:.1em">/1</span>
               </div>
-              <div onClick="{{ sendChat }}" style="{{ composerSendStyle }}" role="button" aria-label="Send message" tabindex="0"><i data-lucide="send" style="width:19px;height:19px"></i></div>
+              <div onClick="{{ sendChat }}" onKeyDown="{{ sendChatKeyDown }}" style="{{ composerSendStyle }}" role="button" aria-label="Send message" tabindex="0"><i data-lucide="send" style="width:19px;height:19px"></i></div>
             </div>
           </sc-if>
 
@@ -612,13 +612,13 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
               </sc-if>
               <div style="position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:7px;background:var(--pri,#6CFF9A);border:2px solid var(--bg,#0A1112)"></div>
               <div style="position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px">
-                <sc-for list="{{ mapBtns }}" as="mb" hint-placeholder-count="3"><div onClick="{{ mb.pick }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--ink,#D7F5E6);cursor:pointer" role="button" aria-label="{{ mb.label }}" tabindex="0"><i data-lucide="{{ mb.icon }}" style="width:16px;height:16px"></i></div></sc-for>
+                <sc-for list="{{ mapBtns }}" as="mb" hint-placeholder-count="3"><div onClick="{{ mb.pick }}" onKeyDown="{{ mb.pickKeyDown }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--ink,#D7F5E6);cursor:pointer" role="button" aria-label="{{ mb.label }}" tabindex="0"><i data-lucide="{{ mb.icon }}" style="width:16px;height:16px"></i></div></sc-for>
               </div>
               <div style="position:absolute;left:10px;bottom:10px;font:400 9.5px/1.35 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);background:var(--surf,#101A1C);border:1px solid var(--outv,#365047);padding:4px 6px;max-width:74%">{{ tileNote }}</div>
             </div>
             <div style="{{ mapFootStyle }}">
               <div onClick="{{ mapTeleport }}" style="flex:1;height:46px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:8px;font:700 12px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;cursor:pointer"><i data-lucide="zap" style="width:16px;height:16px"></i>TELEPORT</div>
-              <div onClick="{{ mapStar }}" style="{{ mapStarStyle }}" role="button" aria-label="Save landmark" tabindex="0"><i data-lucide="star" style="width:18px;height:18px"></i></div>
+              <div onClick="{{ mapStar }}" onKeyDown="{{ mapStarKeyDown }}" style="{{ mapStarStyle }}" role="button" aria-label="Save landmark" tabindex="0"><i data-lucide="star" style="width:18px;height:18px"></i></div>
             </div>
           </sc-if>
 
@@ -632,13 +632,13 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
               <div style="position:absolute;left:70%;top:56%;width:17px;height:38px;background:var(--sec2,#C5678D);opacity:.85"></div>
               <div style="position:absolute;left:50%;top:44%;width:26px;height:26px;margin:-13px 0 0 -13px;border:1px solid var(--pri,#6CFF9A);border-radius:50%;opacity:.8"></div>
               <div style="position:absolute;left:70px;top:12px;padding:6px 8px;background:var(--surf,#101A1C);border:1px solid var(--outv,#365047);font:400 10px/1.45 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">Da Boom &lt;128,128,26&gt;<br>draw 96m · 34 fps</div>
-              <div onClick="{{ openNavPeek }}" style="{{ navPeekBtn }}" role="button" aria-label="Open navigation menu" tabindex="0"><i data-lucide="menu" style="width:21px;height:21px"></i></div>
+              <div onClick="{{ openNavPeek }}" onKeyDown="{{ openNavPeekKeyDown }}" style="{{ navPeekBtn }}" role="button" aria-label="Open navigation menu" tabindex="0"><i data-lucide="menu" style="width:21px;height:21px"></i></div>
               <sc-if value="{{ navPeek }}" hint-placeholder-val="{{ false }}">
                 <div onClick="{{ closeNavPeek }}" style="position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:9"></div>
                 <div style="{{ navPeekStyle }}">
                   <div style="display:flex;align-items:center;gap:8px;padding:0 8px 12px">
                     <span style="flex:1;font:700 12px/1.1 var(--dfont,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A)">Linkpoint</span>
-                    <span onClick="{{ closeNavPeek }}" style="cursor:pointer;color:var(--ink2,#A7C8BC);display:flex" role="button" aria-label="Close navigation menu" tabindex="0"><i data-lucide="x" style="width:16px;height:16px"></i></span>
+                    <span onClick="{{ closeNavPeek }}" onKeyDown="{{ closeNavPeekKeyDown }}" style="cursor:pointer;color:var(--ink2,#A7C8BC);display:flex" role="button" aria-label="Close navigation menu" tabindex="0"><i data-lucide="x" style="width:16px;height:16px"></i></span>
                   </div>
                   <sc-for list="{{ peekItems }}" as="pi" hint-placeholder-count="7">
                     <div onClick="{{ pi.pick }}" style="{{ pi.style }}">
@@ -648,7 +648,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                   </sc-for>
                 </div>
               </sc-if>
-              <div onClick="{{ openTargetPicker }}" style="position:absolute;right:12px;top:12px;width:46px;height:46px;border:1px solid var(--outv,#365047);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer;z-index:7" role="button" aria-label="Open target picker" tabindex="0"><i data-lucide="crosshair" style="width:21px;height:21px"></i></div>
+              <div onClick="{{ openTargetPicker }}" onKeyDown="{{ openTargetPickerKeyDown }}" style="position:absolute;right:12px;top:12px;width:46px;height:46px;border:1px solid var(--outv,#365047);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer;z-index:7" role="button" aria-label="Open target picker" tabindex="0"><i data-lucide="crosshair" style="width:21px;height:21px"></i></div>
               <sc-if value="{{ targetName }}" hint-placeholder-val="{{ false }}">
                 <div style="{{ targetPlate }}">
                   <div style="{{ targetRing }}"></div>
@@ -685,7 +685,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                   <div style="{{ hp.barStyle }}">
                     <i data-lucide="grip-horizontal" style="width:12px;height:12px"></i>
                     <span style="flex:1;font:700 8.5px/1 var(--font,'JetBrains Mono');letter-spacing:.08em;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{ hp.name }}</span>
-                    <span onClick="{{ hp.hide }}" style="cursor:pointer;display:flex" role="button" aria-label="Close panel" tabindex="0"><i data-lucide="x" style="width:12px;height:12px"></i></span>
+                    <span onClick="{{ hp.hide }}" onKeyDown="{{ hp.hideKeyDown }}" style="cursor:pointer;display:flex" role="button" aria-label="Close panel" tabindex="0"><i data-lucide="x" style="width:12px;height:12px"></i></span>
                   </div>
                   <div style="{{ hp.bodyStyle }}">
                     <sc-for list="{{ hp.cells }}" as="hc" hint-placeholder-count="4"><span style="{{ hc }}"></span></sc-for>
@@ -693,7 +693,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                 </div>
               </sc-for>
 
-              <div onClick="{{ openHudPicker }}" style="{{ hudBtnStyle }}" role="button" aria-label="Open HUD picker" tabindex="0">
+              <div onClick="{{ openHudPicker }}" onKeyDown="{{ openHudPickerKeyDown }}" style="{{ hudBtnStyle }}" role="button" aria-label="Open HUD picker" tabindex="0">
                 <i data-lucide="layers" style="width:21px;height:21px"></i>
                 <sc-if value="{{ hudCount }}" hint-placeholder-val="{{ false }}"><span style="{{ hudCountStyle }}">{{ hudCount }}</span></sc-if>
               </div>
@@ -719,14 +719,14 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
           <sc-if value="{{ isTree }}" hint-placeholder-val="{{ false }}">
             <div style="{{ invToolStyle }}">
               <div style="flex:1;height:44px;display:flex;align-items:center;gap:8px;padding:0 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C)"><i data-lucide="search" style="width:15px;height:15px;opacity:.55"></i><input value="{{ invFilter }}" onChange="{{ invFilterChange }}" placeholder="filter inventory…" style="{{ invFilterInputStyle }}" /></div>
-              <div onClick="{{ invGridToggle }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer" role="button" aria-label="Toggle grid view" tabindex="0"><i data-lucide="{{ invGridIcon }}" style="width:17px;height:17px"></i></div>
+              <div onClick="{{ invGridToggle }}" onKeyDown="{{ invGridToggleKeyDown }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer" role="button" aria-label="Toggle grid view" tabindex="0"><i data-lucide="{{ invGridIcon }}" style="width:17px;height:17px"></i></div>
             </div>
             <div style="{{ invRecentStyle }}">
               <sc-for list="{{ invRecents }}" as="ir" hint-placeholder-count="4"><div onClick="{{ ir.pick }}" style="flex:none;width:62px;cursor:pointer"><div style="height:62px;border:1px solid var(--outv,#365047);background:repeating-linear-gradient(135deg,var(--surf2,#1B2A2D) 0 6px,var(--surf,#101A1C) 6px 12px)"></div><div style="font:400 9px/1.3 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:4px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{ ir.name }}</div></div></sc-for>
             </div>
             <div style="{{ invListStyle }}">
               <sc-for list="{{ invTree }}" as="n" hint-placeholder-count="11">
-                <div onClick="{{ n.pick }}" style="{{ n.indent }}">
+                <div onClick="{{ n.pick }}" onKeyDown="{{ n.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ n.name }}" style="{{ n.indent }}">
                   <i data-lucide="{{ n.chev }}" style="width:16px;height:16px;color:var(--pri,#6CFF9A)"></i>
                   <i data-lucide="{{ n.icon }}" style="width:16px;height:16px;color:var(--sec2,#C5678D)"></i>
                   <span style="flex:1;font:400 13px/1.2 var(--font,'JetBrains Mono');overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{ n.name }}</span>
@@ -751,7 +751,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
               <div style="display:flex;gap:8px;padding:14px 16px">
                 <div onClick="{{ profileIm }}" style="flex:1;height:44px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer"><i data-lucide="message-square" style="width:16px;height:16px"></i>IM</div>
                 <div onClick="{{ profileOfferTp }}" style="flex:1;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer"><i data-lucide="zap" style="width:16px;height:16px"></i>OFFER TP</div>
-                <div onClick="{{ profileMore }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;cursor:pointer" role="button" aria-label="More options" tabindex="0"><i data-lucide="more-horizontal" style="width:18px;height:18px"></i></div>
+                <div onClick="{{ profileMore }}" onKeyDown="{{ profileMoreKeyDown }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;cursor:pointer" role="button" aria-label="More options" tabindex="0"><i data-lucide="more-horizontal" style="width:18px;height:18px"></i></div>
               </div>
               <sc-for list="{{ profileBlocks }}" as="pb" hint-placeholder-count="3">
                 <div style="margin:0 16px 12px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);padding:12px">
@@ -770,7 +770,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                     <div style="font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;color:var(--pri,#6CFF9A)">LOCAL GRID ENGINE</div>
                     <div style="font:700 15px/1.3 var(--dfont,'JetBrains Mono');margin-top:4px;color:var(--ink,#D7F5E6)">OpenSim Local Server</div>
                   </div>
-                  <div onClick="{{ toggleOfflineGrid }}" style="padding:8px 14px;border-radius:var(--rs,4px);font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;cursor:pointer;background:var(--pri,#6CFF9A);color:var(--onpri,#03240F)" role="button" aria-label="Toggle grid status" tabindex="0">
+                  <div onClick="{{ toggleOfflineGrid }}" onKeyDown="{{ toggleOfflineGridKeyDown }}" style="padding:8px 14px;border-radius:var(--rs,4px);font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;cursor:pointer;background:var(--pri,#6CFF9A);color:var(--onpri,#03240F)" role="button" aria-label="Toggle grid status" tabindex="0">
                     <sc-if value="{{ offlineRunning }}" hint-placeholder-val="{{ true }}">STOP GRID</sc-if>
                     <sc-if value="{{ offlineStopped }}" hint-placeholder-val="{{ false }}">START GRID</sc-if>
                   </div>
@@ -778,7 +778,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                 <div style="margin-top:12px;display:flex;align-items:center;gap:10px">
                   <div style="{{ offlineStatusStyle }}">{{ offlineStatusText }}</div>
                   <div style="font:400 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">User: {{ offlineUserFullName }}</div>
-                  <div onClick="{{ openOfflineAccountModal }}" style="margin-left:auto;font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.12em;color:var(--pri,#6CFF9A);cursor:pointer;text-decoration:underline" role="button" aria-label="Account setup" tabindex="0">ACCOUNT SETUP</div>
+                  <div onClick="{{ openOfflineAccountModal }}" onKeyDown="{{ openOfflineAccountModalKeyDown }}" style="margin-left:auto;font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.12em;color:var(--pri,#6CFF9A);cursor:pointer;text-decoration:underline" role="button" aria-label="Account setup" tabindex="0">ACCOUNT SETUP</div>
                 </div>
               </div>
 
@@ -799,8 +799,8 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                       <input type="password" value="{{ offlineAccountPassword }}" onChange="{{ onOfflineAccountPasswordChange }}" style="width:100%;box-sizing:border-box;height:34px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 12px/1 var(--font,'JetBrains Mono')" />
                     </div>
                     <div style="display:flex;gap:8px;margin-top:6px">
-                      <div onClick="{{ saveOfflineAccount }}" style="flex:1;height:36px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer" role="button" aria-label="Save account" tabindex="0">SAVE ACCOUNT</div>
-                      <div onClick="{{ closeOfflineAccountModal }}" style="flex:1;height:36px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);display:flex;align-items:center;justify-content:center;font:600 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer" role="button" aria-label="Cancel modal" tabindex="0">CANCEL</div>
+                      <div onClick="{{ saveOfflineAccount }}" onKeyDown="{{ saveOfflineAccountKeyDown }}" style="flex:1;height:36px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer" role="button" aria-label="Save account" tabindex="0">SAVE ACCOUNT</div>
+                      <div onClick="{{ closeOfflineAccountModal }}" onKeyDown="{{ closeOfflineAccountModalKeyDown }}" style="flex:1;height:36px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);display:flex;align-items:center;justify-content:center;font:600 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer" role="button" aria-label="Cancel modal" tabindex="0">CANCEL</div>
                     </div>
                   </div>
                 </div>
@@ -813,7 +813,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                   <div style="font:600 11px/1.3 var(--font,'JetBrains Mono')">{{ oarFile }}</div>
                   <div style="font:400 10px/1.3 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:2px">Region: {{ oarRegionName }} · Loc: &lt;{{ oarCoords }}&gt; · {{ oarPrims }} prims</div>
                 </div>
-                <div onClick="{{ importOarBackup }}" style="height:38px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:var(--surf2,#1B2A2D);color:var(--pri,#6CFF9A);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer" role="button" aria-label="Import OAR" tabindex="0">
+                <div onClick="{{ importOarBackup }}" onKeyDown="{{ importOarBackupKeyDown }}" style="height:38px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:var(--surf2,#1B2A2D);color:var(--pri,#6CFF9A);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer" role="button" aria-label="Import OAR" tabindex="0">
                   <i data-lucide="download-cloud" style="width:16px;height:16px"></i>IMPORT OAR BACKUP
                 </div>
               </div>
@@ -823,7 +823,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                 <div style="display:flex;gap:8px;margin-bottom:10px">
                   <input value="{{ assetName }}" onChange="{{ onAssetNameChange }}" placeholder="Asset title..." style="flex:2;height:34px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 12px/1 var(--font,'JetBrains Mono')" />
                   <input value="{{ assetType }}" onChange="{{ onAssetTypeChange }}" placeholder="Type (Texture, Sound...)" style="flex:1;height:34px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 11px/1 var(--font,'JetBrains Mono')" />
-                  <div onClick="{{ addLocalAsset }}" style="padding:0 12px;height:34px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--font,'JetBrains Mono');letter-spacing:.12em;cursor:pointer" role="button" aria-label="Add local asset" tabindex="0">ADD</div>
+                  <div onClick="{{ addLocalAsset }}" onKeyDown="{{ addLocalAssetKeyDown }}" style="padding:0 12px;height:34px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;font:700 10px/1 var(--font,'JetBrains Mono');letter-spacing:.12em;cursor:pointer" role="button" aria-label="Add local asset" tabindex="0">ADD</div>
                 </div>
                 <div style="display:flex;flex-direction:column;gap:6px">
                   <sc-for list="{{ localAssets }}" as="ast" hint-placeholder-count="2">
@@ -832,7 +832,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                         <div style="font:600 11px/1.2 var(--font,'JetBrains Mono')">{{ ast.name }} <span style="font-weight:400;color:var(--ink2,#A7C8BC)">({{ ast.type }})</span></div>
                         <div style="font:400 9.5px/1.2 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:2px">UUID: {{ ast.uuid }} · {{ ast.size }}</div>
                       </div>
-                      <div onClick="{{ ast.uploadToSL }}" style="padding:5px 9px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:var(--surf2,#1B2A2D);color:var(--pri,#6CFF9A);font:700 9.5px/1 var(--font,'JetBrains Mono');letter-spacing:.12em;cursor:pointer" role="button" aria-label="Upload to SL" tabindex="0">UPLOAD TO SL</div>
+                      <div onClick="{{ ast.uploadToSL }}" onKeyDown="{{ ast.uploadToSLKeyDown }}" style="padding:5px 9px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:var(--surf2,#1B2A2D);color:var(--pri,#6CFF9A);font:700 9.5px/1 var(--font,'JetBrains Mono');letter-spacing:.12em;cursor:pointer" role="button" aria-label="Upload to SL" tabindex="0">UPLOAD TO SL</div>
                     </div>
                   </sc-for>
                 </div>
@@ -848,7 +848,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                 <div style="height:8px;border-radius:4px;background:var(--bg,#0A1112);overflow:hidden;margin-bottom:10px;border:1px solid var(--outv,#365047)">
                   <div style="{{ cacheGaugeStyle }}"></div>
                 </div>
-                <div onClick="{{ clearOfflineCache }}" style="height:36px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:var(--surf2,#1B2A2D);color:#FF6C6C;display:flex;align-items:center;justify-content:center;font:700 10.5px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;cursor:pointer" role="button" aria-label="Clear cache" tabindex="0">CLEAR OFFLINE CACHE</div>
+                <div onClick="{{ clearOfflineCache }}" onKeyDown="{{ clearOfflineCacheKeyDown }}" style="height:36px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:var(--surf2,#1B2A2D);color:#FF6C6C;display:flex;align-items:center;justify-content:center;font:700 10.5px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;cursor:pointer" role="button" aria-label="Clear cache" tabindex="0">CLEAR OFFLINE CACHE</div>
               </div>
             </div>
           </sc-if>
@@ -863,9 +863,9 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                 </div>
                 <div style="margin-left:auto;display:flex;align-items:center;gap:6px">
                   <input value="{{ consoleQuery }}" onChange="{{ onConsoleQueryChange }}" placeholder="filter logs..." style="height:28px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 11px/1 var(--font,'JetBrains Mono')" />
-                  <div onClick="{{ copyConsoleLogs }}" style="padding:6px 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);font:700 10px/1 var(--font,'JetBrains Mono');color:var(--pri,#6CFF9A);cursor:pointer" role="button" aria-label="Copy logs" tabindex="0">COPY</div>
-                  <div onClick="{{ downloadConsoleLogs }}" style="padding:6px 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);font:700 10px/1 var(--font,'JetBrains Mono');color:var(--pri,#6CFF9A);cursor:pointer" role="button" aria-label="Download logs" tabindex="0">DOWNLOAD</div>
-                  <div onClick="{{ clearConsoleLogs }}" style="padding:6px 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);font:700 10px/1 var(--font,'JetBrains Mono');color:#FF6C6C;cursor:pointer" role="button" aria-label="Clear logs" tabindex="0">CLEAR</div>
+                  <div onClick="{{ copyConsoleLogs }}" onKeyDown="{{ copyConsoleLogsKeyDown }}" style="padding:6px 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);font:700 10px/1 var(--font,'JetBrains Mono');color:var(--pri,#6CFF9A);cursor:pointer" role="button" aria-label="Copy logs" tabindex="0">COPY</div>
+                  <div onClick="{{ downloadConsoleLogs }}" onKeyDown="{{ downloadConsoleLogsKeyDown }}" style="padding:6px 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);font:700 10px/1 var(--font,'JetBrains Mono');color:var(--pri,#6CFF9A);cursor:pointer" role="button" aria-label="Download logs" tabindex="0">DOWNLOAD</div>
+                  <div onClick="{{ clearConsoleLogs }}" onKeyDown="{{ clearConsoleLogsKeyDown }}" style="padding:6px 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);font:700 10px/1 var(--font,'JetBrains Mono');color:#FF6C6C;cursor:pointer" role="button" aria-label="Clear logs" tabindex="0">CLEAR</div>
                 </div>
               </div>
 
@@ -929,7 +929,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
               <div style="position:relative;padding:20px 16px 12px;display:flex;flex-direction:column;align-items:center">
                 <!-- Refined Linkpoint Logo Section with Animated / Static Toggle -->
                 <div style="width:100%;max-width:240px;position:relative;display:flex;flex-direction:column;align-items:center">
-                  <div style="position:absolute;right:0;top:-10px;display:flex;align-items:center;gap:4px;font:600 9px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer;background:var(--surf,#101A1C);padding:4px 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);z-index:2" onClick="{{ toggleLogoAnim }}" role="button" tabindex="0" aria-label="Toggle logo animation">
+                  <div style="position:absolute;right:0;top:-10px;display:flex;align-items:center;gap:4px;font:600 9px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer;background:var(--surf,#101A1C);padding:4px 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);z-index:2" onClick="{{ toggleLogoAnim }}" onKeyDown="{{ toggleLogoAnimKeyDown }}" role="button" tabindex="0" aria-label="Toggle logo animation">
                     <i data-lucide="sparkles" style="width:11px;height:11px;color:var(--pri,#6CFF9A)"></i>
                     <sc-if value="{{ logoAnim }}" hint-placeholder-val="{{ true }}"><span>ANIMATED</span></sc-if>
                     <sc-if value="{{ !logoAnim }}" hint-placeholder-val="{{ false }}"><span>STATIC</span></sc-if>
@@ -1456,7 +1456,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
             </div>
             <div style="font:400 11px/1.6 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-bottom:6px">Touch, sit, or IM whatever you select — precise picking without pixel-hunting the scene.</div>
             <sc-for list="{{ targetList }}" as="tl" hint-placeholder-count="5">
-              <div onClick="{{ tl.pick }}" style="{{ tl.rowStyle }}">
+              <div onClick="{{ tl.pick }}" onKeyDown="{{ tl.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ tl.name }}" style="{{ tl.rowStyle }}">
                 <i data-lucide="{{ tl.icon }}" style="width:17px;height:17px;color:var(--pri,#6CFF9A)"></i>
                 <span style="flex:1;font:500 13px/1.25 var(--font,'JetBrains Mono')">{{ tl.name }}</span>
                 <span style="font:400 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ tl.meta }}</span>
@@ -1500,7 +1500,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
     <sc-if value="{{ isTabs }}" hint-placeholder-val="{{ true }}">
     <div style="flex:none;display:flex;background:var(--surf,#101A1C);border-top:1px solid var(--outv,#365047);padding:6px 0 10px">
       <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
-        <div onClick="{{ n.pick }}" style="{{ n.tabStyle }}">
+        <div onClick="{{ n.pick }}" onKeyDown="{{ n.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ n.label }}" style="{{ n.tabStyle }}">
           <i data-lucide="{{ n.icon }}" style="width:22px;height:22px"></i>
           <span style="font:600 9px/1 var(--font,'JetBrains Mono');letter-spacing:.14em">{{ n.label }}</span>
           <sc-if value="{{ n.badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:2px;right:24%;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--bdg,#8AD0B0);color:var(--onbdg,#0E3021);font:700 9px/16px var(--font,'JetBrains Mono');text-align:center">{{ n.badge }}</span></sc-if>
@@ -1512,7 +1512,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
     <sc-if value="{{ isTiles }}" hint-placeholder-val="{{ false }}">
     <div style="flex:none;display:flex;gap:2px;background:var(--bg,#001A33);padding:2px">
       <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
-        <div onClick="{{ n.pick }}" style="{{ n.tileStyle }}">
+        <div onClick="{{ n.pick }}" onKeyDown="{{ n.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ n.tileLabel }}" style="{{ n.tileStyle }}">
           <i data-lucide="{{ n.icon }}" style="width:18px;height:18px"></i>
           <span style="font:300 10px/1.2 var(--dfont,'Open Sans');letter-spacing:.04em;margin-top:5px">{{ n.tileLabel }}</span>
         </div>
@@ -2284,6 +2284,7 @@ class Component extends DCLogic {
       : CSUB[scr].map(([label]) => ({
           label, badge: (SEG_BADGE[scr] || {})[label],
           pick: () => this.setSub(scr, label),
+            pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setSub(scr, label); } },
           style: M(M(segBase, curSub === label ? on2 : null), isFloat ? { minHeight: "24px", height: "24px", padding: "0 9px", flex: "none", borderRadius: 0, font: "600 9.5px/1 " + t.font, letterSpacing: ".1em" } : null),
         }));
 
@@ -2877,6 +2878,7 @@ class Component extends DCLogic {
     const tgt = TARGETS.find(x => x.id === s.target) || null;
     const targetList = TARGETS.map(x => ({
       icon: x.icon, name: x.name, meta: x.meta, pick: () => this.setState({ target: x.id, targetPicker: false }),
+      pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ target: x.id, targetPicker: false }); } },
       rowStyle: { display: "flex", alignItems: "center", gap: "11px", minHeight: "48px", padding: "0 2px", cursor: "pointer",
         borderBottom: "1px solid " + V.outv, color: s.target === x.id ? V.pri : V.ink },
     }));
@@ -3012,6 +3014,7 @@ class Component extends DCLogic {
       flDividerStyle: { width: "1px", height: "20px", background: V.outv, margin: "0 2px" },
       showCamHud: s.showCamHud !== false,
       toggleCamHud: () => this.set("showCamHud", !s.showCamHud),
+toggleCamHudKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("showCamHud", !this.state.showCamHud); } },
       camHudBtnStyle: { flex: "none", height: "26px", display: "flex", alignItems: "center", gap: "4px", padding: "0 8px",
         background: s.showCamHud ? V.pri : V.surf2, color: s.showCamHud ? this.ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2,
         border: "1px solid " + (s.showCamHud ? V.pri : V.outv),
@@ -3129,6 +3132,7 @@ class Component extends DCLogic {
       composeText: s.composeText, chatTyping: s.chatTyping, chatTypingWho: chatReplier,
       composePlaceholder: curTab === "LOCAL" || !curTab ? "say to local…" : "message " + activeChip + "…",
       sendChat: () => this.sendChat(chatChannelKey, chatReplier),
+sendChatKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.sendChat(chatChannelKey, chatReplier); } },
       composeChange: (e) => this.set("composeText", e.target.value),
       composeKeyDown: (e) => { if (e.key === "Enter") { e.preventDefault(); this.sendChat(chatChannelKey, chatReplier); } },
       composeInputStyle: { flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent",
@@ -3195,6 +3199,7 @@ class Component extends DCLogic {
           const on = sel(n.id);
           const bg = s.cFlash === n.id ? V.priC : (on ? V.pri : tint[i % tint.length]);
           return { label: n.label, code: "0" + (i + 1) + "-" + (4471 + i * 17), pick: () => this.cTap(n.id), on,
+            pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.cTap(n.id); } },
             codeStyle: { position: "absolute", left: "8px", top: "5px", font: "500 8px/1 " + t.font,
               color: this.ink(bg, [V.bg, V.ink]), opacity: .55 },
             style: { position: "relative", flex: "none", boxSizing: "border-box", height: hs[i % hs.length] + "px",
@@ -3212,6 +3217,7 @@ class Component extends DCLogic {
           return {
             label, code, on: false,
             pick: () => this.setSub(scr, label),
+            pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setSub(scr, label); } },
             codeStyle: { position: "absolute", left: "7px", top: "4px", font: "500 7.5px/1 " + t.font,
               color: this.ink(sbg, [V.ink2, V.bg]), opacity: .8 },
             style: { position: "relative", flex: "none", boxSizing: "border-box", height: (C.wide ? 34 : 30) + "px",
@@ -3350,8 +3356,10 @@ class Component extends DCLogic {
       hudPanels, hudList, targetList,
       hudPickerOpen: s.hudPicker, targetPickerOpen: s.targetPicker,
       openHudPicker: () => this.setState({ hudPicker: true, targetPicker: false }),
+openHudPickerKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ hudPicker: true, targetPicker: false }); } },
       closeHudPicker: () => this.set("hudPicker", false),
       openTargetPicker: () => this.setState({ targetPicker: true, hudPicker: false }),
+openTargetPickerKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ targetPicker: true, hudPicker: false }); } },
       closeTargetPicker: () => this.set("targetPicker", false),
       clearTarget: () => this.set("target", null),
       hudBtnStyle: { ...overlayBtn, position: "absolute", left: "14px", bottom: "14px", zIndex: 7 }, sheetStyle,
@@ -3399,7 +3407,9 @@ class Component extends DCLogic {
       isTabs: nav === "tabs" && !immersive, isRail: nav === "rail" && !immersive,
       isTiles: nav === "tiles" && !immersive, isSweep: nav === "sweep" && !immersive && !isConsole,
       immersive, navPeek: s.navPeek,
-      openNavPeek: () => this.set("navPeek", true), closeNavPeek: () => this.set("navPeek", false),
+      openNavPeek: () => this.set("navPeek", true),
+openNavPeekKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("navPeek", true); } }, closeNavPeek: () => this.set("navPeek", false),
+closeNavPeekKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("navPeek", false); } },
       navPeekStyle: { position: "absolute", left: 0, top: 0, bottom: 0, width: "156px", zIndex: 10, background: V.surf,
         borderRight: "1px solid " + V.pri, padding: "14px 10px", display: "flex", flexDirection: "column", gap: "5px", overflowY: "auto" },
       navPeekBtn: { position: "absolute", left: "14px", top: "14px", zIndex: 7, width: "46px", height: "46px", borderRadius: V.rs,
@@ -3420,7 +3430,7 @@ class Component extends DCLogic {
       headerIcons: (scr === "Friends" ? [["user-plus", "ADD FRIEND"], ["search", "SEARCH"]]
         : scr === "Diagnostics" ? [["refresh-cw", "RE-RUN PROBE"]] : null)?.map(([icon, label]) =>
           ({ icon, label, pick: scr === "Friends" ? () => this.openSearch("Friends")
-            : () => this.notify(label + (label === "RE-RUN PROBE" ? " — " + (Math.floor(Math.random() * 60) + 40) + "ms" : "")) })),
+            : () => this.notify(label + (label === "RE-RUN PROBE" ? " — " + (Math.floor(Math.random() * 60) + 40) + "ms" : "")), pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); (scr === "Friends" ? () => this.openSearch("Friends") : () => this.notify(label + (label === "RE-RUN PROBE" ? " — " + (Math.floor(Math.random() * 60) + 40) + "ms" : "")))(); } } })),
       segTabs, chips,
       rListWrap: { flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column",
         gap: bleed ? C.gap + "px" : "8px", padding: bleed ? "0" : "0 16px 16px",
@@ -3446,19 +3456,22 @@ class Component extends DCLogic {
       rScopeLabel: objMode ? "objects by distance" : "nearest " + rSrc[0][1] + "m \u00b7 " + bandName(rSrc[0][1]).toLowerCase(),
       isChat: scr === "Chat" && norm, isFriends: scr === "Friends" && norm, isRadar: scr === "Radar" && norm, isMap: scr === "Map" && norm,
       isWorld: scr === "3D View" && norm, isTree: scr === "Inventory" && norm, isProfile: scr === "Profile" && norm, isLogin: scr === "Login", logoAnim: s.logoAnim !== false, toggleLogoAnim: () => this.setState(st => ({ logoAnim: !st.logoAnim })),
+toggleLogoAnimKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState(st => ({ logoAnim: !this.state.logoAnim })); } },
       isCards: !!CARDS[scr] && norm, cards,
       msgs, regions, invTree: invTreeVisible,
       invRecents: ["Sunset Lamp v3", "Roof Kit", "Hollywood LM", "Brass texture"]
-        .map(name => ({ name, pick: () => this.notify(name + " — OPEN") })),
+        .map(name => ({ name, pick: () => this.notify(name + " — OPEN"), pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify(name + " — OPEN"); } } })),
       invFilter: s.invFilter, invFilterChange: (e) => this.set("invFilter", e.target.value),
       invFilterInputStyle: { flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent",
         font: "400 12px/1 " + t.font, color: V.ink },
       invGridToggle: () => { this.setState(st => ({ invGrid: !st.invGrid })); this.notify(s.invGrid ? "List view" : "Grid view"); },
+invGridToggleKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState(st => ({ invGrid: !st.invGrid })); this.notify(this.state.invGrid ? "List view" : "Grid view"); } },
       invGridIcon: s.invGrid ? "list" : "layout-grid",
       mapBtns: [["plus", "ZOOM IN"], ["minus", "ZOOM OUT"], ["locate-fixed", "RECENTER"]]
-        .map(([icon, label]) => ({ icon, label, pick: () => this.notify("Map — " + label) })),
+        .map(([icon, label]) => ({ icon, label, pick: () => this.notify("Map — " + label), pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify("Map — " + label); } } })),
       mapTeleport: () => { this.setState({ screen: "Map" }); this.notify("Teleporting to Da Boom — <1000, 1000>"); },
       mapStar: () => { this.pin("daBoom"); this.notify(s.pinned.daBoom ? "Da Boom — LANDMARK REMOVED" : "Da Boom — LANDMARK SAVED"); },
+mapStarKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.pin("daBoom"); this.notify(this.state.pinned.daBoom ? "Da Boom — LANDMARK REMOVED" : "Da Boom — LANDMARK SAVED"); } },
       mapStarStyle: { width: "46px", height: "46px", border: "1px solid " + (s.pinned.daBoom ? V.pri : V.outv), borderRadius: V.rs,
         display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
         background: s.pinned.daBoom ? V.priC : "transparent", color: V.pri },
@@ -3515,6 +3528,7 @@ class Component extends DCLogic {
       profileIm: () => { this.setTab("Chat", "IM"); this.set("chip", "Nyx Vaher"); this.setState({ screen: "Chat" }); },
       profileOfferTp: () => this.notify("Nyx Vaher — TELEPORT OFFER SENT"),
       profileMore: () => this.notify("Nyx Vaher — MORE OPTIONS"),
+profileMoreKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify("Nyx Vaher — MORE OPTIONS"); } },
       // A real SL profile splits the resident record from their picks; the blocks
       // shown follow whichever sub-view is active.
       profileBlocks: (curSub === "PICKS" ? [
@@ -3575,9 +3589,12 @@ class Component extends DCLogic {
         this.setState({ offlineRunning: next });
         this.notify(next ? "Local OpenSim Grid STARTED (127.0.0.1:9000)" : "Local OpenSim Grid SHUTDOWN");
       },
+toggleOfflineGridKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); const next = !this.state.offlineRunning; this.setState({ offlineRunning: next }); this.notify(next ? "Local OpenSim Grid STARTED (127.0.0.1:9000)" : "Local OpenSim Grid SHUTDOWN"); } },
       offlineAccountModal: !!s.offlineAccountModal,
       openOfflineAccountModal: () => this.setState({ offlineAccountModal: true }),
+openOfflineAccountModalKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ offlineAccountModal: true }); } },
       closeOfflineAccountModal: () => this.setState({ offlineAccountModal: false }),
+closeOfflineAccountModalKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ offlineAccountModal: false }); } },
       offlineAccountFirstName: s.offlineAccountFirstName || "Jane",
       offlineAccountLastName: s.offlineAccountLastName || "Doe",
       offlineAccountPassword: s.offlineAccountPassword || "",
@@ -3591,6 +3608,7 @@ class Component extends DCLogic {
         }));
         this.notify("Local Account Saved: " + (this.state.offlineAccountFirstName || "Jane") + " " + (this.state.offlineAccountLastName || "Resident"));
       },
+saveOfflineAccountKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState(st => ({ offlineUser: { firstName: st.offlineAccountFirstName || "Jane", lastName: st.offlineAccountLastName || "Resident" }, offlineAccountModal: false })); this.notify("Local Account Saved: " + (this.state.offlineAccountFirstName || "Jane") + " " + (this.state.offlineAccountLastName || "Resident")); } },
       oarFile: s.oarFile || "A1_Grid_Region_v2.oar",
       oarRegionName: s.oarRegionName || "Welcome Island",
       oarCoords: s.oarCoords || "1000, 1000",
@@ -3598,6 +3616,7 @@ class Component extends DCLogic {
       importOarBackup: () => {
         this.notify("Importing OAR backup " + (s.oarFile || "A1_Grid_Region_v2.oar") + "...");
       },
+importOarBackupKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify("Importing OAR backup " + (this.state.oarFile || "A1_Grid_Region_v2.oar") + "..."); } },
       assetName: s.assetName || "Grass Texture",
       assetType: s.assetType || "Texture",
       onAssetNameChange: (e) => this.setState({ assetName: e.target.value }),
@@ -3609,11 +3628,13 @@ class Component extends DCLogic {
         this.setState(st => ({ localAssets: [newAst, ...(st.localAssets || [])], assetName: "" }));
         this.notify("Local Asset Created: " + name);
       },
-      localAssets: (s.localAssets || []).map(ast => ({ ...ast, uploadToSL: () => this.notify("Uploading " + ast.name + " (" + ast.uuid + ") to SL Grid...") })),
+addLocalAssetKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); const name = this.state.assetName || "New Asset"; const type = this.state.assetType || "Texture"; const newAst = { id: "ast-" + Date.now(), name, type, size: "1.4 MB", uuid: "a" + Math.random().toString(16).substr(2, 8) + "-4000-8000-100000000000" }; this.setState(st => ({ localAssets: [newAst, ...(st.localAssets || [])], assetName: "" })); this.notify("Local Asset Created: " + name); } },
+      localAssets: (s.localAssets || []).map(ast => ({ ...ast, uploadToSL: () => this.notify("Uploading " + ast.name + " (" + ast.uuid + ") to SL Grid..."), uploadToSLKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify("Uploading " + ast.name + " (" + ast.uuid + ") to SL Grid..."); } } })),
       offlineCacheSize: s.offlineCacheSize || 1024,
       onOfflineCacheSizeChange: (e) => this.setState({ offlineCacheSize: parseInt(e.target.value, 10) || 256 }),
       cacheGaugeStyle: { width: Math.min(100, Math.max(5, ((s.offlineCacheSize || 1024) / 100000) * 100)) + "%", height: "100%", background: V.pri, borderRadius: "4px" },
       clearOfflineCache: () => { this.setState({ offlineCacheSize: 256 }); this.notify("Offline Asset & Region Cache Cleared."); },
+clearOfflineCacheKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ offlineCacheSize: 256 }); this.notify("Offline Asset & Region Cache Cleared."); } },
       consoleTotalCount: (s.consoleLogs || []).length,
       consoleWarnCount: (s.consoleLogs || []).filter(e => e.level === "WARN").length,
       consoleErrorCount: (s.consoleLogs || []).filter(e => e.level === "ERROR" || e.level === "FATAL").length,
@@ -3634,8 +3655,11 @@ class Component extends DCLogic {
         return { ...entry, style: "font:400 11px/1.5 " + t.font + ";color:" + col + ";display:flex;gap:8px;padding:2px 0;border-bottom:1px solid " + V.surf2 };
       }),
       clearConsoleLogs: () => { this.setState({ consoleLogs: [] }); this.notify("Grid Console Logs Cleared."); },
+clearConsoleLogsKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ consoleLogs: [] }); this.notify("Grid Console Logs Cleared."); } },
       copyConsoleLogs: () => this.notify("Console Logs copied to clipboard."),
+copyConsoleLogsKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify("Console Logs copied to clipboard."); } },
       downloadConsoleLogs: () => this.notify("Downloading opensim-grid-log.txt..."),
+downloadConsoleLogsKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify("Downloading opensim-grid-log.txt..."); } },
       isSearchScreen: s.screen === "Search",
       searchBack: () => this.set("screen", s.searchFrom || "Friends"),
       searchQuery: s.searchQuery, searchQueryPick: (e) => this.set("searchQuery", e.target.value),

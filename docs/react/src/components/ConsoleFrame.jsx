@@ -108,7 +108,7 @@ export default function ConsoleFrame() {
       <div style={cfRailCol}>
         <div style={cfArm}>Linkpoint</div>
         {consoleNav.map((n, i) => (
-          <div key={i} onClick={n.pick} style={n.style}>
+          <div key={i} onClick={n.pick} role="button" tabIndex={0} aria-label={n.label} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); n.pick(); } }} style={n.style}>
             {n.code ? <span style={n.codeStyle}>{n.code}</span> : null}
             <span style={{ font: "inherit", letterSpacing: "inherit" }}>{n.label}</span>
           </div>
@@ -133,6 +133,16 @@ export default function ConsoleFrame() {
             <div
               key={k}
               onClick={() => actions.cPress(k)}
+              role="button"
+              tabIndex={dis ? -1 : 0}
+              aria-label={k}
+              onKeyDown={(e) => {
+                if (dis) return;
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.cPress(k);
+                }
+              }}
               style={{
                 position: "relative", flex: "1 1 0", minWidth: 0, display: "flex", flexDirection: "column",
                 alignItems: "center", justifyContent: "center", gap: "4px", background: bg,
@@ -149,6 +159,16 @@ export default function ConsoleFrame() {
                     e.stopPropagation();
                     actions.removeDockSlot(k);
                   }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={"Remove " + k}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      actions.removeDockSlot(k);
+                    }
+                  }}
                   style={{ position: "absolute", right: "3px", top: "3px", width: "18px", height: "18px", borderRadius: "9px", background: V.err, color: ink(V.err, [V.bg, V.ink]), font: "700 13px/18px " + t.dfont, textAlign: "center", cursor: "pointer" }}
                 >
                   &minus;
@@ -158,7 +178,7 @@ export default function ConsoleFrame() {
           );
         })}
         {state.cEdit ? (
-          <div onClick={actions.addSlot} style={{ flex: "0 0 " + (C.wide ? 84 : 56) + "px", display: "flex", alignItems: "center", justifyContent: "center", background: V.surf, border: "2px dashed " + V.outv, color: V.ink2, cursor: "pointer", borderRadius: "0 " + C.rad + "px " + C.rad + "px 0", font: "400 22px/1 " + t.dfont }}>
+          <div onClick={actions.addSlot} role="button" tabIndex={0} aria-label="Add slot" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.addSlot(); } }} style={{ flex: "0 0 " + (C.wide ? 84 : 56) + "px", display: "flex", alignItems: "center", justifyContent: "center", background: V.surf, border: "2px dashed " + V.outv, color: V.ink2, cursor: "pointer", borderRadius: "0 " + C.rad + "px " + C.rad + "px 0", font: "400 22px/1 " + t.dfont }}>
             +
           </div>
         ) : null}
@@ -182,10 +202,10 @@ export default function ConsoleFrame() {
 
       {state.cEdit ? (
         <>
-          <div onClick={actions.endEdit} style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,.66)", zIndex: 4 }} />
+          <div onClick={actions.endEdit} role="button" tabIndex={0} aria-label="Cancel edit" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.endEdit(); } }} style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,.66)", zIndex: 4 }} />
           <div style={{ position: "absolute", left: C.rail + C.gap + "px", right: C.gap + "px", bottom: C.foot + C.dock + C.gap * 3 + "px", zIndex: 7, display: "flex", alignItems: "center", gap: "12px", height: "28px", padding: "0 14px", background: V.surf, color: V.ink2, font: "500 10.5px/1 " + t.font, letterSpacing: ".12em" }}>
             <span>DOCK EDIT — MINUS REMOVES, PLUS ADDS</span>
-            <span onClick={actions.endEdit} style={{ marginLeft: "auto", padding: "5px 16px", background: V.pri, color: ink(V.pri, [V.bg, V.onpri, V.ink]), font: "700 11px/1 " + t.dfont, letterSpacing: ".16em", cursor: "pointer" }}>
+            <span onClick={actions.endEdit} role="button" tabIndex={0} aria-label="Finish editing dock" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.endEdit(); } }} style={{ marginLeft: "auto", padding: "5px 16px", background: V.pri, color: ink(V.pri, [V.bg, V.onpri, V.ink]), font: "700 11px/1 " + t.dfont, letterSpacing: ".16em", cursor: "pointer" }}>
               DONE
             </span>
           </div>
@@ -301,10 +321,10 @@ function ConsoleScene() {
                   <div onMouseDown={actions.flyDnDown} onMouseUp={actions.flyRelease} onMouseLeave={actions.flyRelease} style={mk(state.cHeld === "dn", V.sec)}>
                     DN
                   </div>
-                  <div onClick={actions.toggleRun} style={mk(state.cRun, V.surf2)}>
+                  <div onClick={actions.toggleRun} role="button" tabIndex={0} aria-label="Toggle run" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.toggleRun(); } }} style={mk(state.cRun, V.surf2)}>
                     RUN
                   </div>
-                  <div onClick={actions.togglePad} style={{ ...mk(false, V.sec2), borderRadius: "0 0 " + C.rad + "px 0", font: "700 10px/1 " + t.dfont }}>
+                  <div onClick={actions.togglePad} role="button" tabIndex={0} aria-label="Hide move pad" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.togglePad(); } }} style={{ ...mk(false, V.sec2), borderRadius: "0 0 " + C.rad + "px 0", font: "700 10px/1 " + t.dfont }}>
                     HIDE
                   </div>
                 </>
@@ -313,7 +333,7 @@ function ConsoleScene() {
           </div>
         </div>
       ) : (
-        <div onClick={actions.togglePad} style={{ position: "absolute", left: (C.wide ? 24 : 14) + "px", bottom: (C.wide ? 24 : 14) + "px", display: "flex", alignItems: "center", height: "34px", padding: "0 14px", background: V.surf2, color: ink(V.surf2, [V.ink, V.bg]), cursor: "pointer", borderLeft: "6px solid " + V.sec2, font: "700 11px/1 " + t.dfont, letterSpacing: ".16em" }}>
+        <div onClick={actions.togglePad} role="button" tabIndex={0} aria-label="Show move pad" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.togglePad(); } }} style={{ position: "absolute", left: (C.wide ? 24 : 14) + "px", bottom: (C.wide ? 24 : 14) + "px", display: "flex", alignItems: "center", height: "34px", padding: "0 14px", background: V.surf2, color: ink(V.surf2, [V.ink, V.bg]), cursor: "pointer", borderLeft: "6px solid " + V.sec2, font: "700 11px/1 " + t.dfont, letterSpacing: ".16em" }}>
           MOVE PAD
         </div>
       )}
