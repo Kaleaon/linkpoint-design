@@ -21,8 +21,6 @@ repo over anonymous git, so it runs the same on a laptop as it does in CI.
 See tools/README.md for the full story.
 """
 
-from __future__ import annotations
-
 import argparse
 import json
 import os
