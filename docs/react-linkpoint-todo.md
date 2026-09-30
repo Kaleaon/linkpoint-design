@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-09-24T11:12:25Z — upstream read through [`233cc2e`](https://github.com/Kaleaon/react-linkpoint/commit/233cc2ea7841b01edd765b09a117fe95fb595327)
-- **Open:** 45 · **Completed:** 2
+- **Last change:** 2026-09-30T12:00:12Z — upstream read through [`fff3a82`](https://github.com/Kaleaon/react-linkpoint/commit/fff3a8238b4202503533c28818c23f971d2799f1)
+- **Open:** 49 · **Completed:** 2
 
 ## Open
 
@@ -23,6 +23,10 @@ is tracked by hand in [`github.md`](github.md).
 
 Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/react/src/screens/`
 
+- [ ] **`7df7fad`** fix: connect designed screens to live viewer data
+  - 2026-09-29 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7df7fad926e072c565a1019f891167e081527bcf)
+  - 12 files: `src/components/DeviceFrame.jsx`, `src/components/MenuBar.jsx`, `src/components/ScreenBody.jsx`, `src/hooks/useAppState.js`, `src/index.css`, `src/screens/Chat.jsx` _(+6 more)_
+  - also touches: Components, Theme & tokens, State & data
 - [ ] **`18c5358`** Design the full viewer: 13 screens on a 144-skin token system
   - 2026-09-13 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/18c5358ac226349098c273d3adaf4a35903d76e5)
   - 46 files: `package.json`, `src/App.tsx`, `src/__tests__/compliance.test.ts`, `src/__tests__/design-system.test.ts`, `src/__tests__/rlv.test.tsx`, `src/__tests__/screens.render.test.tsx` _(+40 more)_
@@ -32,6 +36,10 @@ Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/
 
 Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `docs/react/src/components/`
 
+- [ ] **`55affc6`** fix: restore responsive Linkpoint design PWA
+  - 2026-09-29 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/55affc6b1607affb97818f00e5c01c7f9d0fbde2)
+  - 43 files: `public/service-worker.js`, `src/App.tsx`, `src/components/BottomTabs.jsx`, `src/components/Card.jsx`, `src/components/CardList.jsx`, `src/components/ChipRow.jsx` _(+37 more)_
+  - also touches: Screens, Theme & tokens, State & data, Build & platform
 - [ ] **`99b14c8`** feat: add missing Lumiya viewer surfaces
   - 2026-09-22 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/99b14c8b1bf1efe4b9e1c83b5f90753e89d2fc50)
   - 42 files: `LUMIYA_FEATURE_AUDIT.md`, `src/App.tsx`, `src/components/Card.jsx`, `src/components/CardList.jsx`, `src/components/ChipRow.jsx`, `src/components/ConsoleFrame.jsx` _(+36 more)_
@@ -99,6 +107,10 @@ Mirror into: `docs/index.html` — `PALETTES` / `LAYOUTS` · `docs/react/src/the
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`fff3a82`** feat: add Gemini integration and SL session support
+  - 2026-09-29 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/fff3a8238b4202503533c28818c23f971d2799f1)
+  - 39 files: `.env.example`, `android/gradlew`, `bun.lock`, `index.html`, `ios/.xcode.env`, `metadata.json` _(+33 more)_
+  - also touches: Screens, Components, Theme & tokens, State & data, Build & platform, Docs & specs, Unclassified
 - [ ] **`b793fe3`** feat: port recent Lumiya runtime behaviors
   - 2026-09-23 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b793fe3485b7aa1059e7df54e62e3afc9442c4d3)
   - 7 files: `LUMIYA_FEATURE_AUDIT.md`, `src/linkpoint/__tests__/runtime-ui-data.test.ts`, `src/linkpoint/sl-protocol-real.ts`, `src/linkpoint/world.ts`, `src/linkpoint/xmlrpc-client.test.ts`, `src/linkpoint/xmlrpc-client.ts` _(+1 more)_
@@ -158,6 +170,10 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
 
 Mirror into: usually no design change — confirm `docs/react/` still builds the same way
 
+- [ ] **`6761423`** feat: ship portable Windows desktop app
+  - 2026-09-29 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6761423869728180a89e2ea99f65efb4582259a4)
+  - 3 files: `.github/workflows/release.yml`, `README.md`, `electron-builder.config.js`
+  - also touches: Docs & specs
 - [ ] **`11209aa`** ci: add all-platform package build workflow
   - 2026-09-22 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/11209aa91d924b2150ca76498ab29775548c08f1)
   - 8 files: `.github/workflows/android-apk.yml`, `.github/workflows/desktop-build.yml`, `.github/workflows/release.yml`, `.gitignore`, `README.md`, `electron-builder.yml` _(+2 more)_
@@ -221,7 +237,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-09-24T11:12:25Z",
+ "generated": "2026-09-30T12:00:12Z",
  "items": [
   {
    "also": [
@@ -1271,9 +1287,177 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "abffcad",
    "subject": "fix: stabilize 3d renderer lifecycle",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/abffcade428de43cdb4d2c95db5b304b548e8353"
+  },
+  {
+   "also": [
+    "docs"
+   ],
+   "area": "platform",
+   "author": "Kaleaon",
+   "date": "2026-09-29",
+   "done": false,
+   "files": [
+    ".github/workflows/release.yml",
+    "README.md",
+    "electron-builder.config.js"
+   ],
+   "sha": "6761423869728180a89e2ea99f65efb4582259a4",
+   "short": "6761423",
+   "subject": "feat: ship portable Windows desktop app",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/6761423869728180a89e2ea99f65efb4582259a4"
+  },
+  {
+   "also": [
+    "screens",
+    "theme",
+    "state",
+    "platform"
+   ],
+   "area": "components",
+   "author": "Kaleaon",
+   "date": "2026-09-29",
+   "done": false,
+   "files": [
+    "public/service-worker.js",
+    "src/App.tsx",
+    "src/components/BottomTabs.jsx",
+    "src/components/Card.jsx",
+    "src/components/CardList.jsx",
+    "src/components/ChipRow.jsx",
+    "src/components/ConsoleFrame.jsx",
+    "src/components/ControlPanels.jsx",
+    "src/components/CrystalLoader.jsx",
+    "src/components/DeviceFrame.jsx",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/Header.jsx",
+    "src/components/LinkpointLogo.jsx",
+    "src/components/MenuBar.jsx",
+    "src/components/RailNav.jsx",
+    "src/components/ScreenBody.jsx",
+    "src/components/SegmentedTabs.jsx",
+    "src/components/SplitDetail.jsx",
+    "src/components/StateBlock.jsx",
+    "src/components/StatusBar.jsx",
+    "src/components/ThemeStudio.jsx",
+    "src/components/TileNav.jsx",
+    "src/components/Toggle.jsx",
+    "src/components/linkpointCrystal.js",
+    "src/data/content.js",
+    "src/hooks/useAppState.js",
+    "src/index.css",
+    "src/screens/Chat.jsx",
+    "src/screens/GridConsole.jsx",
+    "src/screens/Inventory.jsx",
+    "src/screens/Login.jsx",
+    "src/screens/Map.jsx",
+    "src/screens/OfflineGrid.jsx",
+    "src/screens/Profile.jsx",
+    "src/screens/Radar.jsx",
+    "src/screens/Search.jsx",
+    "src/screens/World3D.jsx",
+    "src/theme/computeTheme.js",
+    "src/theme/constants.js",
+    "src/theme/customTheme.js",
+    "src/theme/dialogs.js",
+    "src/theme/look.js",
+    "vite.config.ts"
+   ],
+   "sha": "55affc6b1607affb97818f00e5c01c7f9d0fbde2",
+   "short": "55affc6",
+   "subject": "fix: restore responsive Linkpoint design PWA",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/55affc6b1607affb97818f00e5c01c7f9d0fbde2"
+  },
+  {
+   "also": [
+    "components",
+    "theme",
+    "state"
+   ],
+   "area": "screens",
+   "author": "Kaleaon",
+   "date": "2026-09-29",
+   "done": false,
+   "files": [
+    "src/components/DeviceFrame.jsx",
+    "src/components/MenuBar.jsx",
+    "src/components/ScreenBody.jsx",
+    "src/hooks/useAppState.js",
+    "src/index.css",
+    "src/screens/Chat.jsx",
+    "src/screens/Inventory.jsx",
+    "src/screens/Login.jsx",
+    "src/screens/Map.jsx",
+    "src/screens/Profile.jsx",
+    "src/screens/Radar.jsx",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "7df7fad926e072c565a1019f891167e081527bcf",
+   "short": "7df7fad",
+   "subject": "fix: connect designed screens to live viewer data",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/7df7fad926e072c565a1019f891167e081527bcf"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "theme",
+    "state",
+    "platform",
+    "docs",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-09-29",
+   "done": false,
+   "files": [
+    ".env.example",
+    "android/gradlew",
+    "bun.lock",
+    "index.html",
+    "ios/.xcode.env",
+    "metadata.json",
+    "package.json",
+    "scripts/patch-metaverse.cjs",
+    "server.ts",
+    "src/components/ChipRow.jsx",
+    "src/components/ConsoleFrame.jsx",
+    "src/components/DeviceFrame.jsx",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/Header.jsx",
+    "src/components/MenuBar.jsx",
+    "src/components/SegmentedTabs.jsx",
+    "src/data/content.js",
+    "src/hooks/useAppState.js",
+    "src/linkpoint/__tests__/chat.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/auth.ts",
+    "src/linkpoint/chat.ts",
+    "src/linkpoint/cors-handler.ts",
+    "src/linkpoint/inventory.ts",
+    "src/linkpoint/local-cache.ts",
+    "src/linkpoint/proxy-policy.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/utils.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/CacheScreen.jsx",
+    "src/screens/Chat.jsx",
+    "src/screens/Inventory.jsx",
+    "src/screens/LiveScreens.jsx",
+    "src/screens/Login.jsx",
+    "src/screens/World3D.jsx",
+    "src/server/gemini-proxy.ts",
+    "src/server/sl-session.ts",
+    "src/theme/constants.js"
+   ],
+   "sha": "fff3a8238b4202503533c28818c23f971d2799f1",
+   "short": "fff3a82",
+   "subject": "feat: add Gemini integration and SL session support",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/fff3a8238b4202503533c28818c23f971d2799f1"
   }
  ],
- "last_sha": "233cc2ea7841b01edd765b09a117fe95fb595327",
+ "last_sha": "fff3a8238b4202503533c28818c23f971d2799f1",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
