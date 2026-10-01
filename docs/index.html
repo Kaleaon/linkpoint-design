@@ -913,7 +913,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                   <sc-if value="{{ c.actions }}" hint-placeholder-val="{{ false }}">
                     <div style="display:flex;gap:8px;margin-top:11px">
                       <sc-for list="{{ c.actions }}" as="ac" hint-placeholder-count="2">
-                        <div onClick="{{ ac.pick }}" style="{{ ac.style }}">{{ ac.label }}</div>
+                        <div onClick="{{ ac.pick }}" onKeyDown="{{ ac.pickKeyDown }}" role="button" tabindex="0" style="{{ ac.style }}">{{ ac.label }}</div>
                       </sc-for>
                     </div>
                   </sc-if>
@@ -2780,7 +2780,7 @@ class Component extends DCLogic {
       knobStyle: { position: "absolute", top: "3px", width: "18px", height: "18px", borderRadius: "9px", left: c.on === false ? "3px" : "21px", background: c.on === false ? V.ink2 : V.pri, transition: "left .18s ease" },
       toggleKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (c.togglePick) c.togglePick(); } },
       bigStyle: M({ font: "700 46px/1 " + t.font, color: V.ok, marginTop: "6px" }, c.bigStyle),
-      actions: (c.actions || []).map(a => ({ label: a.label, pick: a.pick,
+      actions: (c.actions || []).map(a => ({ label: a.label, pick: a.pick, pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (a.pick) a.pick(); } },
         style: M(actBase, a.primary ? { background: V.pri, color: V.onpri, borderColor: V.pri } : a.dim ? { color: V.err, borderColor: V.err } : null) })),
       // A template onChange can only reference a named prop (same rule as
       // onClick) — an inline `e => …` arrow literal in the attribute never
