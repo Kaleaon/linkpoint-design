@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-09-30T12:00:12Z — upstream read through [`fff3a82`](https://github.com/Kaleaon/react-linkpoint/commit/fff3a8238b4202503533c28818c23f971d2799f1)
-- **Open:** 49 · **Completed:** 2
+- **Last change:** 2026-10-01T12:33:02Z — upstream read through [`4c417f1`](https://github.com/Kaleaon/react-linkpoint/commit/4c417f1a3ab2862b84f8b679e8917e9a647caa35)
+- **Open:** 62 · **Completed:** 2
 
 ## Open
 
@@ -23,6 +23,18 @@ is tracked by hand in [`github.md`](github.md).
 
 Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/react/src/screens/`
 
+- [ ] **`7fb2cf4`** Use live session data for friends and viewer screens
+  - 2026-09-30 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7fb2cf48684c7df1b075714a45b16a1954b97228)
+  - 10 files: `src/components/DesktopChrome.jsx`, `src/components/ScreenBody.jsx`, `src/data/content.js`, `src/linkpoint/__tests__/runtime-ui-data.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/phase2/friends-extended.ts` _(+4 more)_
+  - also touches: Components, State & data, Viewer & protocol features, Unclassified
+- [ ] **`611ae6a`** Fix desktop 3D viewport sizing
+  - 2026-09-30 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/611ae6a25c550bf858ea4aca454432e13be8710c)
+  - 2 files: `src/components/FloatersDesktop.jsx`, `src/screens/World3D.jsx`
+  - also touches: Components
+- [ ] **`08419f1`** Fix live 3D scene rendering on desktop
+  - 2026-09-30 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/08419f11e02728665b87ffe853f0092587ad2e63)
+  - 2 files: `src/components/FloatersDesktop.jsx`, `src/screens/World3D.jsx`
+  - also touches: Components
 - [ ] **`7df7fad`** fix: connect designed screens to live viewer data
   - 2026-09-29 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7df7fad926e072c565a1019f891167e081527bcf)
   - 12 files: `src/components/DeviceFrame.jsx`, `src/components/MenuBar.jsx`, `src/components/ScreenBody.jsx`, `src/hooks/useAppState.js`, `src/index.css`, `src/screens/Chat.jsx` _(+6 more)_
@@ -36,6 +48,14 @@ Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/
 
 Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `docs/react/src/components/`
 
+- [ ] **`1006ff6`** Improve desktop viewer layout
+  - 2026-09-30 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1006ff6a904f6a4d6c4039254369606867c2de32)
+  - 4 files: `src/components/DesktopChrome.jsx`, `src/components/FloatersDesktop.jsx`, `src/index.css`, `src/theme/constants.js`
+  - also touches: Theme & tokens
+- [ ] **`1006b7e`** Use live grid data across world surfaces
+  - 2026-09-30 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1006b7efde31ed14d946a98a5f102021341f2d36)
+  - 9 files: `src/components/FloatersDesktop.jsx`, `src/components/Header.jsx`, `src/components/ScreenBody.jsx`, `src/components/SplitDetail.jsx`, `src/linkpoint/__tests__/runtime-ui-data.test.ts`, `src/linkpoint/sl-connection-full.ts` _(+3 more)_
+  - also touches: Screens, Viewer & protocol features, Unclassified
 - [ ] **`55affc6`** fix: restore responsive Linkpoint design PWA
   - 2026-09-29 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/55affc6b1607affb97818f00e5c01c7f9d0fbde2)
   - 43 files: `public/service-worker.js`, `src/App.tsx`, `src/components/BottomTabs.jsx`, `src/components/Card.jsx`, `src/components/CardList.jsx`, `src/components/ChipRow.jsx` _(+37 more)_
@@ -107,10 +127,34 @@ Mirror into: `docs/index.html` — `PALETTES` / `LAYOUTS` · `docs/react/src/the
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`fef6874`** Decode LLMesh and JPEG2000 scene assets
+  - 2026-09-30 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/fef68747e1ce96c88a9ab5a44492d668af84cd8e)
+  - 16 files: `RENDERING_STATUS.md`, `bun.lock`, `electron/sl-asset-decoder.cjs`, `electron/viewer-session.cjs`, `package.json`, `server.ts` _(+10 more)_
+  - also touches: Build & platform, Docs & specs, Unclassified
+- [ ] **`bd8cd9c`** chore: add reproducible Codex test setup
+  - 2026-09-30 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/bd8cd9c0e95f6edc543e25ef4dc4c01c2dc0b9e4)
+  - 5 files: `README.md`, `package.json`, `scripts/codex-setup.sh`, `src/linkpoint/__tests__/chat.test.ts`, `src/linkpoint/__tests__/world.test.ts`
+  - also touches: Build & platform, Docs & specs
+- [ ] **`a80183e`** Connect instant messaging and friends services
+  - 2026-09-30 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/a80183ee24201fcebb09662f2283128339542011)
+  - 13 files: `electron/main.cjs`, `electron/preload.cjs`, `electron/viewer-session.cjs`, `src/custom.d.ts`, `src/linkpoint/__tests__/chat.test.ts`, `src/linkpoint/__tests__/runtime-ui-data.test.ts` _(+7 more)_
+  - also touches: Build & platform, Unclassified
+- [ ] **`8a19efd`** Render modern SL PBR materials and mirrors
+  - 2026-09-30 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8a19efdce2441a195c9c0c0dc47ba3b6debfab00)
+  - 13 files: `electron/sl-asset-decoder.cjs`, `electron/viewer-session.cjs`, `src/linkpoint/__tests__/camera-3d.test.ts`, `src/linkpoint/__tests__/sl-asset-decoder.test.ts`, `src/linkpoint/__tests__/viewer-session.test.ts`, `src/linkpoint/camera-3d.ts` _(+7 more)_
+  - also touches: Screens, Build & platform, Unclassified
+- [ ] **`037c360`** Restore live terrain WindLight and large mesh rendering
+  - 2026-09-30 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/037c360f0598fd2a941742cb7d7e790b71b044ae)
+  - 8 files: `electron/viewer-session.cjs`, `src/linkpoint/__tests__/viewer-session.test.ts`, `src/linkpoint/__tests__/world.test.ts`, `src/linkpoint/graphics-3d.ts`, `src/linkpoint/scene-3d.ts`, `src/linkpoint/sl-connection-full.ts` _(+2 more)_
+  - also touches: Build & platform, Unclassified
 - [ ] **`fff3a82`** feat: add Gemini integration and SL session support
   - 2026-09-29 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/fff3a8238b4202503533c28818c23f971d2799f1)
   - 39 files: `.env.example`, `android/gradlew`, `bun.lock`, `index.html`, `ios/.xcode.env`, `metadata.json` _(+33 more)_
   - also touches: Screens, Components, Theme & tokens, State & data, Build & platform, Docs & specs, Unclassified
+- [ ] **`5a4829f`** fix: remove mock data and enable real Second Life connection
+  - 2026-09-29 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/5a4829fe8d7389f20285b8e23e2861ed4cf4b5c6)
+  - 11 files: `bun.lock`, `package.json`, `src/data/content.js`, `src/hooks/useAppState.js`, `src/linkpoint/__tests__/chat.test.ts`, `src/linkpoint/__tests__/world.test.ts` _(+5 more)_
+  - also touches: Screens, State & data, Build & platform, Unclassified
 - [ ] **`b793fe3`** feat: port recent Lumiya runtime behaviors
   - 2026-09-23 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b793fe3485b7aa1059e7df54e62e3afc9442c4d3)
   - 7 files: `LUMIYA_FEATURE_AUDIT.md`, `src/linkpoint/__tests__/runtime-ui-data.test.ts`, `src/linkpoint/sl-protocol-real.ts`, `src/linkpoint/world.ts`, `src/linkpoint/xmlrpc-client.test.ts`, `src/linkpoint/xmlrpc-client.ts` _(+1 more)_
@@ -170,6 +214,14 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
 
 Mirror into: usually no design change — confirm `docs/react/` still builds the same way
 
+- [ ] **`852c211`** fix: keep Codex setup provisioning-only
+  - 2026-09-30 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/852c211081d53cfc1f3dc5f3233e8053db61abb0)
+  - 3 files: `README.md`, `package.json`, `scripts/codex-setup.sh`
+  - also touches: Docs & specs
+- [ ] **`3ee72a3`** fix: make Codex bootstrap standalone
+  - 2026-09-30 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/3ee72a3e3689e51b9a05ef5a06dcfba4ff00bbf0)
+  - 2 files: `README.md`, `scripts/codex-setup.sh`
+  - also touches: Docs & specs
 - [ ] **`6761423`** feat: ship portable Windows desktop app
   - 2026-09-29 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6761423869728180a89e2ea99f65efb4582259a4)
   - 3 files: `.github/workflows/release.yml`, `README.md`, `electron-builder.config.js`
@@ -237,7 +289,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-09-30T12:00:12Z",
+ "generated": "2026-10-01T12:33:02Z",
  "items": [
   {
    "also": [
@@ -1455,9 +1507,317 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "fff3a82",
    "subject": "feat: add Gemini integration and SL session support",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/fff3a8238b4202503533c28818c23f971d2799f1"
+  },
+  {
+   "also": [
+    "screens",
+    "state",
+    "platform",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-09-29",
+   "done": false,
+   "files": [
+    "bun.lock",
+    "package.json",
+    "src/data/content.js",
+    "src/hooks/useAppState.js",
+    "src/linkpoint/__tests__/chat.test.ts",
+    "src/linkpoint/__tests__/world.test.ts",
+    "src/linkpoint/cors-handler.ts",
+    "src/linkpoint/offline/__tests__/password.test.ts",
+    "src/linkpoint/offline/password.ts",
+    "src/linkpoint/xmlrpc-client.ts",
+    "src/screens/Search.jsx"
+   ],
+   "sha": "5a4829fe8d7389f20285b8e23e2861ed4cf4b5c6",
+   "short": "5a4829f",
+   "subject": "fix: remove mock data and enable real Second Life connection",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/5a4829fe8d7389f20285b8e23e2861ed4cf4b5c6"
+  },
+  {
+   "also": [
+    "theme"
+   ],
+   "area": "components",
+   "author": "Kaleaon",
+   "date": "2026-09-30",
+   "done": false,
+   "files": [
+    "src/components/DesktopChrome.jsx",
+    "src/components/FloatersDesktop.jsx",
+    "src/index.css",
+    "src/theme/constants.js"
+   ],
+   "sha": "1006ff6a904f6a4d6c4039254369606867c2de32",
+   "short": "1006ff6",
+   "subject": "Improve desktop viewer layout",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1006ff6a904f6a4d6c4039254369606867c2de32"
+  },
+  {
+   "also": [
+    "platform",
+    "docs"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-09-30",
+   "done": false,
+   "files": [
+    "README.md",
+    "package.json",
+    "scripts/codex-setup.sh",
+    "src/linkpoint/__tests__/chat.test.ts",
+    "src/linkpoint/__tests__/world.test.ts"
+   ],
+   "sha": "bd8cd9c0e95f6edc543e25ef4dc4c01c2dc0b9e4",
+   "short": "bd8cd9c",
+   "subject": "chore: add reproducible Codex test setup",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/bd8cd9c0e95f6edc543e25ef4dc4c01c2dc0b9e4"
+  },
+  {
+   "also": [
+    "docs"
+   ],
+   "area": "platform",
+   "author": "Kaleaon",
+   "date": "2026-09-30",
+   "done": false,
+   "files": [
+    "README.md",
+    "scripts/codex-setup.sh"
+   ],
+   "sha": "3ee72a3e3689e51b9a05ef5a06dcfba4ff00bbf0",
+   "short": "3ee72a3",
+   "subject": "fix: make Codex bootstrap standalone",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/3ee72a3e3689e51b9a05ef5a06dcfba4ff00bbf0"
+  },
+  {
+   "also": [
+    "docs"
+   ],
+   "area": "platform",
+   "author": "Kaleaon",
+   "date": "2026-09-30",
+   "done": false,
+   "files": [
+    "README.md",
+    "package.json",
+    "scripts/codex-setup.sh"
+   ],
+   "sha": "852c211081d53cfc1f3dc5f3233e8053db61abb0",
+   "short": "852c211",
+   "subject": "fix: keep Codex setup provisioning-only",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/852c211081d53cfc1f3dc5f3233e8053db61abb0"
+  },
+  {
+   "also": [
+    "platform",
+    "docs",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-09-30",
+   "done": false,
+   "files": [
+    "RENDERING_STATUS.md",
+    "bun.lock",
+    "electron/sl-asset-decoder.cjs",
+    "electron/viewer-session.cjs",
+    "package.json",
+    "server.ts",
+    "src/linkpoint/__tests__/primitives-3d.test.ts",
+    "src/linkpoint/__tests__/sl-asset-decoder.test.ts",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/__tests__/world.test.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/primitives-3d.ts",
+    "src/linkpoint/scene-3d.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/world.ts",
+    "src/server/sl-session.ts"
+   ],
+   "sha": "fef68747e1ce96c88a9ab5a44492d668af84cd8e",
+   "short": "fef6874",
+   "subject": "Decode LLMesh and JPEG2000 scene assets",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/fef68747e1ce96c88a9ab5a44492d668af84cd8e"
+  },
+  {
+   "also": [
+    "screens",
+    "platform",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-09-30",
+   "done": false,
+   "files": [
+    "electron/sl-asset-decoder.cjs",
+    "electron/viewer-session.cjs",
+    "src/linkpoint/__tests__/camera-3d.test.ts",
+    "src/linkpoint/__tests__/sl-asset-decoder.test.ts",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/camera-3d.ts",
+    "src/linkpoint/camera-controls.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/scene-3d.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/World3D.jsx",
+    "src/server/sl-session.ts"
+   ],
+   "sha": "8a19efdce2441a195c9c0c0dc47ba3b6debfab00",
+   "short": "8a19efd",
+   "subject": "Render modern SL PBR materials and mirrors",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8a19efdce2441a195c9c0c0dc47ba3b6debfab00"
+  },
+  {
+   "also": [
+    "components"
+   ],
+   "area": "screens",
+   "author": "Kaleaon",
+   "date": "2026-09-30",
+   "done": false,
+   "files": [
+    "src/components/FloatersDesktop.jsx",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "08419f11e02728665b87ffe853f0092587ad2e63",
+   "short": "08419f1",
+   "subject": "Fix live 3D scene rendering on desktop",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/08419f11e02728665b87ffe853f0092587ad2e63"
+  },
+  {
+   "also": [
+    "components"
+   ],
+   "area": "screens",
+   "author": "Kaleaon",
+   "date": "2026-09-30",
+   "done": false,
+   "files": [
+    "src/components/FloatersDesktop.jsx",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "611ae6a25c550bf858ea4aca454432e13be8710c",
+   "short": "611ae6a",
+   "subject": "Fix desktop 3D viewport sizing",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/611ae6a25c550bf858ea4aca454432e13be8710c"
+  },
+  {
+   "also": [
+    "screens",
+    "viewer",
+    "other"
+   ],
+   "area": "components",
+   "author": "Kaleaon",
+   "date": "2026-09-30",
+   "done": false,
+   "files": [
+    "src/components/FloatersDesktop.jsx",
+    "src/components/Header.jsx",
+    "src/components/ScreenBody.jsx",
+    "src/components/SplitDetail.jsx",
+    "src/linkpoint/__tests__/runtime-ui-data.test.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/Map.jsx",
+    "src/server/sl-session.ts"
+   ],
+   "sha": "1006b7efde31ed14d946a98a5f102021341f2d36",
+   "short": "1006b7e",
+   "subject": "Use live grid data across world surfaces",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1006b7efde31ed14d946a98a5f102021341f2d36"
+  },
+  {
+   "also": [
+    "platform",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-09-30",
+   "done": false,
+   "files": [
+    "electron/viewer-session.cjs",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/__tests__/world.test.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/scene-3d.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/world.ts",
+    "src/server/sl-session.ts"
+   ],
+   "sha": "037c360f0598fd2a941742cb7d7e790b71b044ae",
+   "short": "037c360",
+   "subject": "Restore live terrain WindLight and large mesh rendering",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/037c360f0598fd2a941742cb7d7e790b71b044ae"
+  },
+  {
+   "also": [
+    "platform",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-09-30",
+   "done": false,
+   "files": [
+    "electron/main.cjs",
+    "electron/preload.cjs",
+    "electron/viewer-session.cjs",
+    "src/custom.d.ts",
+    "src/linkpoint/__tests__/chat.test.ts",
+    "src/linkpoint/__tests__/runtime-ui-data.test.ts",
+    "src/linkpoint/__tests__/scene-3d.test.ts",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/phase2/friends-extended.ts",
+    "src/linkpoint/scene-3d.ts",
+    "src/linkpoint/sl-connection-full.ts"
+   ],
+   "sha": "a80183ee24201fcebb09662f2283128339542011",
+   "short": "a80183e",
+   "subject": "Connect instant messaging and friends services",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/a80183ee24201fcebb09662f2283128339542011"
+  },
+  {
+   "also": [
+    "components",
+    "state",
+    "viewer",
+    "other"
+   ],
+   "area": "screens",
+   "author": "Kaleaon",
+   "date": "2026-09-30",
+   "done": false,
+   "files": [
+    "src/components/DesktopChrome.jsx",
+    "src/components/ScreenBody.jsx",
+    "src/data/content.js",
+    "src/linkpoint/__tests__/runtime-ui-data.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/phase2/friends-extended.ts",
+    "src/screens/Chat.jsx",
+    "src/screens/LiveScreens.jsx",
+    "src/screens/Settings.jsx",
+    "src/server/sl-session.ts"
+   ],
+   "sha": "7fb2cf48684c7df1b075714a45b16a1954b97228",
+   "short": "7fb2cf4",
+   "subject": "Use live session data for friends and viewer screens",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/7fb2cf48684c7df1b075714a45b16a1954b97228"
   }
  ],
- "last_sha": "fff3a8238b4202503533c28818c23f971d2799f1",
+ "last_sha": "4c417f1a3ab2862b84f8b679e8917e9a647caa35",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
