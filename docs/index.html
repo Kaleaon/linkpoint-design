@@ -1476,7 +1476,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
         <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
           <i data-lucide="{{ dialog.icon }}" style="width:18px;height:18px;color:var(--pri,#6CFF9A)"></i>
           <span style="flex:1;font:600 12px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A)">{{ dialog.kind }}</span>
-          <span onClick="{{ closeDialog }}" style="font:400 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer">CLOSE</span>
+          <span onClick="{{ closeDialog }}" role="button" tabindex="0" onKeyDown="{{ closeDialogKeyDown }}" style="font:400 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer">CLOSE</span>
         </div>
         <div style="font:600 15px/1.35 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)">{{ dialog.title }}</div>
         <div style="font:400 12.5px/1.65 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:8px">{{ dialog.body }}</div>
@@ -1485,7 +1485,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
         </sc-if>
         <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
           <sc-for list="{{ dialog.buttons }}" as="db" hint-placeholder-count="3">
-            <div onClick="{{ db.pick }}" style="{{ db.style }}">{{ db.label }}</div>
+            <div onClick="{{ db.pick }}" role="button" tabindex="0" onKeyDown="{{ db.pickKeyDown }}" style="{{ db.style }}">{{ db.label }}</div>
           </sc-for>
         </div>
       </div>
@@ -2796,6 +2796,7 @@ class Component extends DCLogic {
     const dbBase = { flex: "1 1 40%", minHeight: "46px", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid " + V.outv, borderRadius: V.rs, font: "700 11px/1 " + t.font, letterSpacing: ".14em", color: V.ink, textAlign: "center", padding: "0 8px", cursor: "pointer" };
     const dialog = dlg ? { ...dlg, buttons: dlg.buttons.map(b => ({ label: b.label,
       pick: () => { this.set("dialog", null); this.notify(dlg.title.split(" ").slice(0, 4).join(" ") + " — " + b.label); },
+      pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("dialog", null); this.notify(dlg.title.split(" ").slice(0, 4).join(" ") + " — " + b.label); } },
       style: M(dbBase, b.primary ? { background: V.pri, color: V.onpri, borderColor: V.pri } : b.dim ? { color: V.ink2 } : null) })) } : null;
 
     const detail = {
@@ -3401,6 +3402,7 @@ openTargetPickerKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.pr
       dialogList: Object.keys(DIALOGS).map(n => ({ name: n, pick: () => this.set("dialog", n) })),
       setCompact: () => this.set("dense", true), setComfortable: () => this.set("dense", false),
       closeDialog: () => this.set("dialog", null),
+      closeDialogKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("dialog", null); } },
       // The world view gets the whole frame: nav collapses to a floating button so
       // the scene is never boxed in by a rail or a tab bar.
       navItems, sweepNav,
