@@ -40,7 +40,7 @@ function StackHead({ title, subtitle, scr }) {
           { icon: "search", label: "SEARCH", pick: () => actions.openSearch("Friends", "SEARCH") },
         ]
       : scr === "Diagnostics"
-      ? [{ icon: "refresh-cw", label: "RE-RUN PROBE", pick: () => actions.notify("RE-RUN PROBE — " + (Math.floor(Math.random() * 60) + 40) + "ms") }]
+      ? [{ icon: "refresh-cw", label: "RE-RUN PROBE", pick: () => actions.notify("RE-RUN PROBE — 48ms") }]
       : null;
   return (
     <div style={{ flex: "none", display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px 8px" }}>
@@ -82,11 +82,11 @@ function SweepHead({ title, subtitle }) {
   const { V, t } = useTheme();
   return (
     <>
-      <div style={{ flex: "none", display: "flex", alignItems: "flex-end", gap: "4px", padding: "10px 12px 6px 4px" }}>
-        <span style={{ width: "26px", height: "14px", background: V.sec2, borderRadius: "7px 0 0 7px", flex: "none" }} />
-        <span style={{ flex: 1, height: "8px", background: V.surf2 }} />
-        <span style={{ font: "600 20px/1 " + t.dfont, letterSpacing: ".12em", color: V.pri, flex: "none" }}>{title}</span>
-        <span style={{ width: "38px", height: "14px", background: V.pri, borderRadius: "0 7px 7px 0", flex: "none" }} />
+      <div style={{ flex: "none", display: "flex", alignItems: "center", gap: "6px", padding: "10px 12px 6px 4px" }}>
+        <span style={{ display: "flex", alignItems: "center", height: "16px", padding: "0 8px", background: V.sec2, borderRadius: "8px 0 0 8px", flex: "none", font: "700 8.5px/1 " + t.dfont, color: V.bg, letterSpacing: ".1em" }}>01-4471</span>
+        <span style={{ flex: 1, height: "6px", background: V.surf2 }} />
+        <span style={{ font: "700 22px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri, flex: "none", textTransform: "uppercase" }}>{title}</span>
+        <span style={{ width: "36px", height: "16px", background: V.pri, borderRadius: "0 8px 8px 0", flex: "none" }} />
       </div>
       <div style={{ flex: "none", padding: "0 12px 8px", font: "400 11px/1.4 " + t.font, letterSpacing: ".06em", color: V.ink2 }}>{subtitle}</div>
     </>
@@ -95,12 +95,22 @@ function SweepHead({ title, subtitle }) {
 
 function PivotHead({ title, subtitle, scr }) {
   const { t, V } = useTheme();
+  const { actions } = useApp();
   const nextScr = SCREENS[(SCREENS.indexOf(scr) + 1) % SCREENS.length];
   return (
     <>
       <div style={{ flex: "none", padding: "14px 0 2px 16px", display: "flex", alignItems: "baseline", gap: "22px", overflow: "hidden" }}>
-        <span style={{ flex: "none", font: "300 40px/1 " + t.dfont, color: V.ink }}>{String(title || "").toLowerCase()}</span>
-        <span style={{ flex: "none", font: "300 40px/1 " + t.dfont, color: V.ink2, opacity: 0.4 }}>{nextScr.toLowerCase()}</span>
+        <span style={{ flex: "none", font: "300 42px/1 " + t.dfont, color: V.ink, textTransform: "lowercase", letterSpacing: "-.02em" }}>{String(title || "").toLowerCase()}</span>
+        <span
+          onClick={() => actions.setScreen(nextScr)}
+          role="button"
+          tabIndex={0}
+          aria-label={"Pivot to " + nextScr}
+          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setScreen(nextScr); } }}
+          style={{ flex: "none", font: "300 42px/1 " + t.dfont, color: V.ink2, opacity: 0.35, cursor: "pointer", textTransform: "lowercase", letterSpacing: "-.02em" }}
+        >
+          {nextScr.toLowerCase()}
+        </span>
       </div>
       <div style={{ flex: "none", padding: "2px 16px 10px", font: "300 12px/1.4 " + t.font, color: V.ink2 }}>{subtitle}</div>
     </>
