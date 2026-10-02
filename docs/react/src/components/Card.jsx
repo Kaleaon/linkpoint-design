@@ -93,7 +93,19 @@ export default function Card({ c }) {
       {c.actions && c.actions.length ? (
         <div style={{ display: "flex", gap: "8px", marginTop: "11px" }}>
           {c.actions.map((a, i) => (
-            <div key={i} onClick={a.pick} style={actionButtonStyle(V, t.font, a)}>
+            <div
+              key={i}
+              onClick={a.pick}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  if (a.pick) a.pick();
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              style={actionButtonStyle(V, t.font, a)}
+            >
               {a.label}
             </div>
           ))}
