@@ -273,7 +273,8 @@ def build_default_desktop_config(data):
         }
     }
 
-for path in sorted(glob.glob('docs/*.json')):
+theme_paths = sorted(glob.glob('docs/*.json') + glob.glob('ktheme-pr/themes/community/*.json'))
+for path in theme_paths:
     with open(path, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
