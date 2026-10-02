@@ -20,7 +20,13 @@ export default function SystemDialog() {
         <div style={{ display: "flex", alignItems: "center", gap: "9px", marginBottom: "10px" }}>
           <Icon name={dlg.icon} size={18} style={{ color: V.pri }} />
           <span style={{ flex: 1, font: "600 12px/1 " + t.font, letterSpacing: ".2em", color: V.pri }}>{dlg.kind}</span>
-          <span onClick={() => actions.setDialog(null)} style={{ font: "400 11px/1 " + t.font, color: V.ink2, cursor: "pointer" }}>
+          <span
+            onClick={() => actions.setDialog(null)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setDialog(null); } }}
+            style={{ font: "400 11px/1 " + t.font, color: V.ink2, cursor: "pointer" }}
+          >
             CLOSE
           </span>
         </div>
@@ -40,6 +46,15 @@ export default function SystemDialog() {
               onClick={() => {
                 actions.setDialog(null);
                 actions.notify(dlg.title.split(" ").slice(0, 4).join(" ") + " — " + b.label);
+              }}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.setDialog(null);
+                  actions.notify(dlg.title.split(" ").slice(0, 4).join(" ") + " — " + b.label);
+                }
               }}
               style={{ ...btnBase, ...(b.primary ? { background: V.pri, color: V.onpri, borderColor: V.pri } : b.dim ? { color: V.ink2 } : null) }}
             >
