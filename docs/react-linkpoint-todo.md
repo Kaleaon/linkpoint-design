@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-10-02T06:22:03Z — upstream read through [`c1308fe`](https://github.com/Kaleaon/react-linkpoint/commit/c1308fe272c3ed6dab5ec49b41755d8d244a1821)
-- **Open:** 126 · **Completed:** 2
+- **Last change:** 2026-10-03T06:22:39Z — upstream read through [`760eefe`](https://github.com/Kaleaon/react-linkpoint/commit/760eefec9abc6bbfbbfabf60ac265f02f6ed3e35)
+- **Open:** 185 · **Completed:** 2
 
 ## Open
 
@@ -23,6 +23,42 @@ is tracked by hand in [`github.md`](github.md).
 
 Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/react/src/screens/`
 
+- [ ] **`f99b44e`** feat: sync outfit avatar viewer and accessibility improvements for viewer parity
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f99b44e26330f1d28550e2d4ad6c45768831ff89)
+  - 5 files: `src/components/ScreenBody.jsx`, `src/linkpoint/__tests__/outfit-viewer.test.tsx`, `src/linkpoint/local-cache.ts`, `src/screens/OutfitViewer.jsx`, `src/screens/Search.jsx`
+  - also touches: Components, Viewer & protocol features
+- [ ] **`a598cdd`** feat: skeleton UI loaders and progressive asset hydration
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/a598cdd9c87cb7e286d8b3015586011097cbff92)
+  - 9 files: `scripts/codex-setup.sh`, `src/components/AssetContainer.jsx`, `src/components/SkeletonLoader.jsx`, `src/index.css`, `src/linkpoint/__tests__/asset-hydration-ui.test.tsx`, `src/linkpoint/inventory.ts` _(+3 more)_
+  - also touches: Components, Theme & tokens, Viewer & protocol features, Build & platform
+- [ ] **`7e03431`** refactor: replace UI protocol jargon with plain language telemetry copy
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7e03431f246d2bb03d61e3ebd32b4ba25c0ddfe0)
+  - 5 files: `src/linkpoint/__tests__/diagnostics-view.test.ts`, `src/screens/DiagnosticsPanel.jsx`, `src/screens/Profile.jsx`, `src/screens/Settings.jsx`, `src/screens/diagnosticsView.js`
+  - also touches: Viewer & protocol features
+- [ ] **`79e339c`** feat(ui): implement TouchTarget component and MobileOverlayControls with WCAG 2.5.8 compliance
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/79e339c71954f9bf8aebdcaa6094d4f68958c9d9)
+  - 8 files: `src/components/Icon.d.ts`, `src/components/MobileOverlayControls.tsx`, `src/components/TouchTarget.tsx`, `src/index.css`, `src/linkpoint/__tests__/touch-target.test.tsx`, `src/screens/HudControls.jsx` _(+2 more)_
+  - also touches: Components, Theme & tokens, Viewer & protocol features
+- [ ] **`57b4dab`** feat(a11y): add LiveRegionAnnouncer service and scoped chat theme tokens
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/57b4dab9eb34c433aee85ca2355d2360f994e0e2)
+  - 7 files: `src/App.tsx`, `src/components/FloatersDesktop.jsx`, `src/components/LiveRegionAnnouncerComponent.jsx`, `src/index.css`, `src/linkpoint/__tests__/live-region-announcer.test.ts`, `src/screens/Chat.jsx` _(+1 more)_
+  - also touches: Components, Theme & tokens, Viewer & protocol features, Unclassified
+- [ ] **`4f84553`** feat(diagnostics): add adaptive dual-mode telemetry with expandable technical disclosure drawer
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/4f845533cb35caab35348641e70a3d04191d8256)
+  - 4 files: `src/linkpoint/__tests__/diagnostics-panel.test.tsx`, `src/linkpoint/__tests__/diagnostics-view.test.ts`, `src/screens/DiagnosticsPanel.jsx`, `src/screens/diagnosticsView.js`
+  - also touches: Viewer & protocol features
+- [ ] **`1ac6c31`** fix(a11y): add explicit form labels and accessible names across viewer screens
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1ac6c3120a66d634fd44b4324e117e72f0635636)
+  - 8 files: `src/linkpoint/__tests__/form-accessibility.test.tsx`, `src/screens/CacheScreen.jsx`, `src/screens/Chat.jsx`, `src/screens/LiveScreens.jsx`, `src/screens/LumiyaTools.jsx`, `src/screens/Radar.jsx` _(+2 more)_
+  - also touches: Viewer & protocol features
+- [ ] **`184f6ff`** Give Contacts and Calendar header titles; keep sweep title and 3D info panel from crowding
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/184f6ff3a0a7cb5ff9109a191c1e74a5d2eb9485)
+  - 3 files: `src/components/Header.jsx`, `src/data/content.js`, `src/screens/World3D.jsx`
+  - also touches: Components, State & data
+- [ ] **`045821d`** feat(a11y): implement unified adaptive accessible chat container component
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/045821da8a57ab1b323c7825a305f46115330ac5)
+  - 4 files: `src/components/AccessibleChatLog.jsx`, `src/linkpoint/__tests__/accessible-chat-log.test.tsx`, `src/screens/Chat.jsx`, `src/screens/World3D.jsx`
+  - also touches: Components, Viewer & protocol features
 - [ ] **`f5455fa`** Remove the 'Live grid connection' notice card from the login screen
   - 2026-10-01 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f5455fa581a90efc40dc2d75da8807596cc47bbe)
   - 1 file: `src/screens/Login.jsx`
@@ -55,6 +91,25 @@ Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/
 
 Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `docs/react/src/components/`
 
+- [ ] **`f8a1159`** feat(ui): expand design layouts and palettes for LCARS, Zune/Metro, and Terminal
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f8a1159132eb388f6b8ae59a2841d37bcb1a7bc2)
+  - 6 files: `src/components/Card.jsx`, `src/components/ConsoleFrame.jsx`, `src/components/Header.jsx`, `src/components/TileNav.jsx`, `src/theme/look.js`, `src/theme/palettes.js`
+  - also touches: Theme & tokens
+- [ ] **`eb83fc1`** fix(a11y): optimize auto-scroll dependency and set tabIndex to 0 for keyboard accessibility
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/eb83fc10dcd5b2ac5b1597d30fda41fce35adf2f)
+  - 2 files: `src/components/AccessibleChatLog.jsx`, `src/linkpoint/__tests__/accessible-chat-log.test.tsx`
+  - also touches: Viewer & protocol features
+- [ ] **`91194b3`** fix(a11y): enforce minimum 24x24 touch target size on compact interactive controls
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/91194b355481d3fca7e8b4d1b3c50365fbae6cce)
+  - 4 files: `src/components/ChipRow.jsx`, `src/components/FloatersDesktop.jsx`, `src/components/Header.jsx`, `src/components/__tests__/TouchTargetSizes.test.tsx`
+- [ ] **`67cd4ae`** feat(a11y): add standard ARIA roles and keyboard navigation to primary nav components
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/67cd4ae1033203a05e915cccfb2d2abdbaabade1)
+  - 4 files: `src/components/BottomTabs.jsx`, `src/components/MenuBar.jsx`, `src/components/RailNav.jsx`, `src/linkpoint/__tests__/accessible-nav-components.test.tsx`
+  - also touches: Viewer & protocol features
+- [ ] **`1745b5a`** feat: add accessible controls and ARIA attributes to 3D viewport canvas
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1745b5acae82b866a65a7142630dade53fd42dff)
+  - 3 files: `src/components/ViewportCanvas.tsx`, `src/components/__tests__/ViewportCanvas.test.tsx`, `src/screens/World3D.jsx`
+  - also touches: Screens
 - [ ] **`3fbd3d3`** Show only real values in the desktop menu bar status
   - 2026-10-01 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/3fbd3d31b28d910be113188bd1348c94101c0abb)
   - 5 files: `src/components/MenuBar.jsx`, `src/components/menuStatus.js`, `src/linkpoint/__tests__/menu-status.test.ts`, `src/linkpoint/sl-connection-full.ts`, `src/server/sl-session.ts`
@@ -138,14 +193,94 @@ Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `do
 
 Mirror into: `docs/index.html` — `PALETTES` / `LAYOUTS` · `docs/react/src/theme/` · the `docs/*.json` colour packs
 
+- [ ] **`dd70c12`** refactor(theme): consume design tokens and layout primitives from @linkpoint/design-system subpaths
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/dd70c12382de655713add986a57a94121ff4fbf9)
+  - 7 files: `bun.lock`, `package.json`, `src/theme/computeTheme.js`, `src/theme/contrast.ts`, `src/theme/layouts.js`, `src/theme/palettes.js` _(+1 more)_
+  - also touches: Build & platform, Unclassified
+- [ ] **`ae5a7ec`** Fix desktop build: drop unresolvable @linkpoint/design-system dependency
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ae5a7ecd4b11069b28c891663f9eb8cb92eded6e)
+  - 7 files: `bun.lock`, `package.json`, `src/theme/computeTheme.js`, `src/theme/contrast.ts`, `src/theme/layouts.js`, `src/theme/palettes.js` _(+1 more)_
+  - also touches: Build & platform, Unclassified
+- [ ] **`9cf55a1`** Restore in-repo theme sources including the 8 layout variations
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/9cf55a12722ffc51e45fd720f531c24639b9629e)
+  - 1 file: `src/theme/tokens.ts`
+- [ ] **`92ba882`** feat(a11y): add universal focus rings and dynamic theme contrast enforcement
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/92ba88292a6c630a6f95ea24781fbcb0d31b56be)
+  - 9 files: `src/components/AccessibleChatLog.jsx`, `src/components/FloatersDesktop.jsx`, `src/components/ViewportCanvas.tsx`, `src/index.css`, `src/screens/Radar.jsx`, `src/screens/Search.jsx` _(+3 more)_
+  - also touches: Screens, Components
+- [ ] **`1b7d767`** feat: expand theme engine to support all 24 Ktheme palettes and 8 structural layout variations
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1b7d767858fa10a6f6bc5a4c0f79bac84e592d47)
+  - 2 files: `src/linkpoint/__tests__/ktheme-theme-switching.test.tsx`, `src/theme/tokens.ts`
+  - also touches: Viewer & protocol features
 - [ ] **`168a6d1`** Use viewport min-height for full background coverage
   - 2026-09-13 · copilot-swe-agent[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/168a6d140ed5c67ea4ab183bcd0ab797ff466680)
   - 1 file: `src/index.css`
+
+### State & data
+
+Mirror into: `docs/index.html` — the `render()` view-model · `docs/react/src/{context,hooks,data}/`
+
+- [ ] **`c2eb2f2`** docs(design): align React-Linkpoint with Linkpoint Design reference frame and fix type checks
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/c2eb2f2b94251176568b3ad3a1822c28d745adbb)
+  - 3 files: `README.md`, `src/context/ErrorRecoveryContext.tsx`, `src/linkpoint/__tests__/errorRecovery.test.ts`
+  - also touches: Viewer & protocol features, Docs & specs
 
 ### Viewer & protocol features
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`ef8ab90`** ⚡ Optimize Base64 binary decoding in LLSD parser
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ef8ab90e3e4be715196d5465af457ed018eaf779)
+  - 2 files: `bun.lock`, `src/lib/llsd.ts`
+  - also touches: Unclassified
+- [ ] **`e923c90`** fix: remove duplicate clearTransactions method in local-cache
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e923c9094d2cd51b1ecdbdbb72aa81ac3aab309f)
+  - 1 file: `src/linkpoint/local-cache.ts`
+- [ ] **`7bcf46a`** fix: resolve Document type ambiguity in parseXML for tsc --noEmit
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7bcf46a756d1ca81fd4c998b442cd1bfb470ce08)
+  - 1 file: `src/lib/llsd.ts`
+- [ ] **`72b9537`** fix(llsd): delegate parseNotation directly to NotationParser to fix top-level parsing
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/72b95378f53f1878c02f6d9b65ff2c703b62f083)
+  - 1 file: `src/lib/llsd.ts`
+- [ ] **`62d1702`** feat(a11y): add ARIA tree semantics and single-pointer movement controls to InventoryTree
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/62d1702743789115689620b2c55e479a1f6b945a)
+  - 3 files: `src/components/InventoryTree.tsx`, `src/linkpoint/__tests__/inventory-tree.test.tsx`, `src/linkpoint/inventory.ts`
+  - also touches: Components
+- [ ] **`5dbac25`** feat: build EconomyManager with local ledger caching and interactive pay modal
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/5dbac254496d2470326d42254cbe4e977d590ce8)
+  - 11 files: `core/sl-actions.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/components/DesktopChrome.jsx`, `src/components/PayDialog.jsx`, `src/linkpoint/__tests__/economy-manager.test.ts` _(+5 more)_
+  - also touches: Screens, Components, Unclassified
+- [ ] **`5276407`** fix: directory search circuit lookup, EconomyManager.clearHistory, type errors, Search aria-label
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/5276407b3be945f38d97ae65290e301ebb9d7889)
+  - 6 files: `core/viewer-session.cjs`, `src/context/ErrorRecoveryContext.tsx`, `src/linkpoint/__tests__/errorRecovery.test.ts`, `src/linkpoint/__tests__/form-accessibility.test.tsx`, `src/linkpoint/local-cache.ts`, `src/screens/Search.jsx`
+  - also touches: Screens, State & data, Unclassified
+- [ ] **`50d8298`** feat: camera control mode selector with drag velocity filtering
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/50d829898681118339d1ee8582d5ed4ca08daafb)
+  - 4 files: `src/linkpoint/__tests__/camera-mode-velocity.test.ts`, `src/linkpoint/camera-controls.ts`, `src/linkpoint/world.ts`, `src/screens/World3D.jsx`
+  - also touches: Screens
+- [ ] **`4b5ddd1`** Fix type errors and Search accessibility on main
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/4b5ddd169fdd9ce00a9f80d6679992b2ddf97664)
+  - 5 files: `src/context/ErrorRecoveryContext.tsx`, `src/linkpoint/__tests__/errorRecovery.test.ts`, `src/linkpoint/__tests__/form-accessibility.test.tsx`, `src/linkpoint/local-cache.ts`, `src/screens/Search.jsx`
+  - also touches: Screens, State & data
+- [ ] **`4ae0ef0`** feat: implement grid directory search service with tabbed server results
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/4ae0ef00fd95c44eae0882bd57072e59c1ed77ae)
+  - 6 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/grid-directory-search.test.tsx`, `src/linkpoint/sl-bridge.ts`, `src/linkpoint/world.ts`, `src/screens/Search.jsx`
+  - also touches: Screens, Unclassified
+- [ ] **`361f279`** Add spatial sound and WebRTC voice support
+  - 2026-10-02 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/361f27979a0458f2b7d1a111867d1a8927d4b989)
+  - 10 files: `core/sl-sounds.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/sl-sounds.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/audio.ts` _(+4 more)_
+  - also touches: Screens, Unclassified
+- [ ] **`2d2870c`** fix: duplicate local chat, chat floater text, logout on shutdown, floater overlap, search timeout copy
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/2d2870c2244d59b8851274b401c27a477c2aaa27)
+  - 7 files: `core/viewer-session.cjs`, `server.ts`, `src/components/FloatersDesktop.jsx`, `src/hooks/useAppState.js`, `src/linkpoint/__tests__/chat.test.ts`, `src/linkpoint/chat.ts` _(+1 more)_
+  - also touches: Components, State & data, Unclassified
+- [ ] **`1bbf692`** test: add unit tests for chatBand and slTypes helpers
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1bbf6923801dd48b9bdfeba9a656077b5a768b5c)
+  - 1 file: `src/linkpoint/__tests__/slTypes.test.ts`
+- [ ] **`1af21a4`** feat: implement proper tokenizer/parser for LLSD notation maps and arrays
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1af21a49958c1eabcc2f32bcba913fe6e36cd7be)
+  - 3 files: `bun.lock`, `src/lib/llsd.test.ts`, `src/lib/llsd.ts`
+  - also touches: Unclassified
 - [ ] **`fca6e35`** Modern sky, light and water from the region environment (EEP), following the official viewer
   - 2026-10-01 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/fca6e35f6b244257394f2ce453cd6b666b108ad2)
   - 12 files: `RENDERING_STATUS.md`, `src/linkpoint/__tests__/atmosphere.test.ts`, `src/linkpoint/__tests__/eep-region-environment.test.ts`, `src/linkpoint/__tests__/eep.test.ts`, `src/linkpoint/__tests__/scene-3d-environment.test.ts`, `src/linkpoint/__tests__/scene-3d.test.ts` _(+6 more)_
@@ -372,6 +507,16 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
 
 Mirror into: usually no design change — confirm `docs/react/` still builds the same way
 
+- [ ] **`f1bca9c`** ci(release): enforce top-level permissions, 40-char SHA action pinning, checksum manifest, and SLSA provenance attestation
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f1bca9c86e2552cbda01b77d4efa13debac84986)
+  - 8 files: `.github/workflows/android-apk.yml`, `.github/workflows/android-kotlin.yml`, `.github/workflows/live-secondlife.yml`, `.github/workflows/opensim-live.yml`, `.github/workflows/pr-review.yml`, `.github/workflows/release.yml` _(+2 more)_
+- [ ] **`5397733`** Improve deployment source import diagnostics
+  - 2026-10-02 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/5397733dda80f7d5182641a276d128f96565e50b)
+  - 1 file: `scripts/check-source-imports.mjs`
+- [ ] **`192814c`** Add live Second Life login test and a manual workflow that uses the repository secrets
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/192814c4e6368f1e2748d6702e0e25fa006b73ec)
+  - 2 files: `.github/workflows/live-secondlife.yml`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/SecondLifeLiveTest.kt`
+  - also touches: Unclassified
 - [ ] **`e02849b`** Animate rigged meshes: bundled animations, animation messages, Animesh flag
   - 2026-10-01 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e02849bca21753e14293b0e36cac7fc2ea757ebd)
   - 128 files: `electron/sl-animations.cjs`, `electron/viewer-session.cjs`, `public/anims/038fcec9-5ebd-8a8e-0e2e-6e71a0a1ac53`, `public/anims/05ddbff8-aaa9-92a1-2b74-8fe77a29b445`, `public/anims/0836b67f-7f7b-f37b-c00a-460dc1521f5a`, `public/anims/08464f78-3a8e-2944-cba5-0c94aff3af29` _(+122 more)_
@@ -443,6 +588,9 @@ Mirror into: usually no design change — confirm `docs/react/` still builds the
 
 Mirror into: `docs/ROADMAP.md` · `docs/github.md` · `docs/mockup-to-react.yaml`
 
+- [ ] **`7af55c0`** Use the Linkpoint name in the page title
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7af55c098d1bc4a378cd08828c458b042aaacd05)
+  - 1 file: `index.html`
 - [ ] **`16be9ad`** Add files via upload
   - 2026-09-14 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/16be9adc5323e4a228474b51a5dde0b9df538976)
   - 1 file: `Second Life Mobile Viewer.html`
@@ -458,27 +606,92 @@ Mirror into: `docs/ROADMAP.md` · `docs/github.md` · `docs/mockup-to-react.yaml
 
 Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json`
 
+- [ ] **`ff90d68`** feat: implement centralized error recovery framework with auto-reconnection
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ff90d688b105ec1a3aab66e376cbcac3094fab9d)
+  - 15 files: `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ViewerHost.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/ErrorRecoveryComponents.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/Root.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/ErrorRecoveryManager.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/NetworkMonitor.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/ErrorRecoveryTest.kt` _(+9 more)_
+  - also touches: Screens, Components, State & data, Viewer & protocol features
+- [ ] **`fb9a280`** Docs: real-OpenSim status, sound/media/rigged-mesh rows, live test table, SL live test, environment notes
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/fb9a2802445e0b5aeecbe0053bab5a929bdfdc63)
+  - 2 files: `android-kotlin/AGENTS.md`, `android-kotlin/README.md`
 - [ ] **`f8925e8`** Add OAR generator and live OpenSim content test (prims, mesh, sculpt, textures, particles)
   - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f8925e8eeb3f510c43e07dd724ed6c4c4f19defb)
   - 4 files: `android-kotlin/README.md`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveTest.kt`, `android-kotlin/mockgrid/build.gradle.kts`, `android-kotlin/mockgrid/src/main/kotlin/OarBuilderMain.kt`
 - [ ] **`f7db5c9`** live.py: consume only the answered prompt (previous fix skipped the next prompt)
   - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f7db5c9df5993d9ea8c45957f284157494e707db)
   - 1 file: `android-kotlin/tools/opensim/live.py`
+- [ ] **`f55419d`** Fix dropped handshake reply race; add robustness tests; make handshake/watchdog timeouts injectable
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f55419d65779a67cd423ec75464bc00e654c8e5a)
+  - 3 files: `android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionRobustnessTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionTest.kt`
+- [ ] **`f3e342d`** live.py: download OpenSim with curl so proxy settings are honoured
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f3e342da6e2c23e2ca817cc7dfa73c0595df2d44)
+  - 1 file: `android-kotlin/tools/opensim/live.py`
+- [ ] **`eae6b48`** README: correct the :core:test count (83 run, 3 live tests skipped)
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/eae6b484fec248d4f47200b0eed078ed20a63c23)
+  - 1 file: `android-kotlin/README.md`
+- [ ] **`e504e3d`** Ignore OpenSim's stale TeleportFailed for a replaced attempt; drop the return pause from live tests
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e504e3db985ac05d7c48329c7c9bb1365efdec3c)
+  - 4 files: `android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSocialTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/RegionSwitchTest.kt`
+- [ ] **`e4d09fd`** Open child circuits for announced neighbours and promote them on crossing; follow own position
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e4d09fdbc5e1395959504d0a133d5f90655b4e84)
+  - 6 files: `android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/scene/SceneStore.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/RegionSwitchTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionRobustnessTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionTest.kt`
+- [ ] **`dbe3986`** README: exact live test counts
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/dbe398664e95b0bdb2e6eeb2e29f6d3acc28cfb5)
+  - 1 file: `android-kotlin/README.md`
 - [ ] **`da2a8fa`** Ignore Kotlin compiler cache directory
   - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/da2a8fab55705255d2ab3a7333551fb1e0399c12)
   - 1 file: `android-kotlin/.gitignore`
+- [ ] **`d9cf47d`** Sound and parcel-media protocol, spatial audio model and sound scene (core, tested)
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d9cf47dc3bc6ccf0c50a0c8bb786b9866921993d)
+  - 14 files: `android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/audio/SoundEvents.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/audio/SoundScene.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/audio/SpatialAudio.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/model/Models.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/Messages.kt` _(+8 more)_
+- [ ] **`d2e0295`** Rigged mesh support: decode skin (joints, bind matrices) and per-vertex weights; test with a generated rigged limb through real OpenSim
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d2e029531f80d735df45a76be4e0d958c0c7f3ba)
+  - 8 files: `android-kotlin/core/src/main/kotlin/app/linkpoint/core/scene/AvatarSkeleton.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/scene/LlMesh.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/scene/PrimVolume.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/RiggedMeshTest.kt` _(+2 more)_
 - [ ] **`ca9f002`** Real-OAR test: fall back to intact mesh LODs, release CPU texture copies after GPU upload, big-content live test
   - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ca9f002807a2868da8d1fe98b97543e0eab55db1)
   - 8 files: `android-kotlin/README.md`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/world/GpuTextures.kt`, `android-kotlin/core/build.gradle.kts`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/image/TextureData.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/scene/LlMesh.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/MeshAndSceneTest.kt` _(+2 more)_
+- [ ] **`bd139b3`** WIP: live OpenSim session tests and a second region (not yet verified)
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/bd139b398b1a933faff2e3f2631faad8ba808dd3)
+  - 2 files: `android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt`, `android-kotlin/tools/opensim/live.py`
+- [ ] **`95cf966`** Remove an accidentally committed Python cache file and ignore them
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/95cf9665912e0fee788b30992f17ac2c9c9a68d4)
+  - 2 files: `android-kotlin/.gitignore`, `android-kotlin/tools/opensim/__pycache__/live.cpython-311.pyc`
+- [ ] **`870f7c6`** Sounds and parcel media: asset fetcher, Ogg parser, Android playback, OpenSim + mock grid coverage
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/870f7c65c90a794e762af8fe38bab11228fbeb09)
+  - 21 files: `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ViewerHost.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/audio/AndroidSoundBackend.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/audio/AudioSettings.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/audio/ParcelAudioPlayer.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/audio/SoundController.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/audio/StreamPlayer.kt` _(+15 more)_
+- [ ] **`83172fe`** WIP: live.py answers OpenSim's estate-join prompts for the second region (rerun in progress)
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/83172fe5eb872a806841dd555efd74f8681e626b)
+  - 1 file: `android-kotlin/tools/opensim/live.py`
+- [ ] **`819f03c`** Let freshly opened child circuits settle before sending a teleport request
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/819f03c084ba5204430593b9382a5abf6b67070f)
+  - 3 files: `android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/RegionSwitchTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionTest.kt`
 - [ ] **`795872d`** live.py: consume answered console prompts so they are not answered twice
   - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/795872d577a736fcbda5f6534d548a6109c5f434)
   - 1 file: `android-kotlin/tools/opensim/live.py`
+- [ ] **`4d31ea2`** Social features, radar fix, OpenSim home/profile/second account, teleport race fixes
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/4d31ea290667104f7e2c46be51f66908b3188675)
+  - 11 files: `android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/Messages.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/Wire.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSocialTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/RegionSwitchTest.kt` _(+5 more)_
+- [ ] **`47910c5`** Test teleport home, lure accept/decline and teleport failure
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/47910c55768c5067101fb791efc0a7016134d739)
+  - 3 files: `android-kotlin/README.md`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/RegionSwitchTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionTest.kt`
+- [ ] **`3e50d24`** Test teleport by name and region crossing against two fake simulators
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/3e50d2411c131a71c6002c71cc3f28d549942d85)
+  - 3 files: `android-kotlin/README.md`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/RegionSwitchTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionTest.kt`
+- [ ] **`3994891`** Teleport recovery: re-request once when OpenSim accepts but never connects us; add OpenSim CI workflow
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/39948914a6998d8ae95c2c6b87248fe4fd925eda)
+  - 6 files: `.github/workflows/opensim-live.yml`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSocialTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/RegionSwitchTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionTest.kt`
+  - also touches: Build & platform
+- [ ] **`2cdb75d`** feat: implement SQLite persistent inventory cache and async JPEG2000 texture decoder
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/2cdb75d172b7e050fec2d2516c1e0c85d3873993)
+  - 5 files: `avatar_renderer.py`, `inventory_cache.py`, `test_inventory_cache.py`, `test_texture_decoder.py`, `texture_decoder.py`
 - [ ] **`2541b64`** Document the automated OpenSim live tests; add AGENTS.md for coding agents
   - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/2541b64852d4b8ba5ebc90f86d59b15545073943)
   - 2 files: `android-kotlin/AGENTS.md`, `android-kotlin/README.md`
 - [ ] **`04c390c`** Add live.py: one-command automated OpenSim live tests (replaces setup.sh); not yet verified end to end
   - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/04c390c2aab00a4efb2298d6998b5d38f02008ad)
   - 2 files: `android-kotlin/tools/opensim/live.py`, `android-kotlin/tools/opensim/setup.sh`
+- [ ] **`02f6222`** WIP: rework live session tests after first real OpenSim run (rerun in progress)
+  - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/02f6222f6a9f1bebfcd84307b245548d04d11261)
+  - 1 file: `android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt`
 - [ ] **`e2e911c`** Add mock grid, inventory, groups, parcel, profiles and offers to the Kotlin core
   - 2026-10-01 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e2e911c8e2d7003801efeba926c78b4de4f789a7)
   - 31 files: `.github/workflows/android-kotlin.yml`, `android-kotlin/app/build.gradle.kts`, `android-kotlin/app/src/main/AndroidManifest.xml`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/MainActivity.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ViewerHost.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/LoginScreen.kt` _(+25 more)_
@@ -523,7 +736,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-10-02T06:22:03Z",
+ "generated": "2026-10-03T06:22:39Z",
  "items": [
   {
    "also": [
@@ -3964,9 +4177,1152 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "2541b64",
    "subject": "Document the automated OpenSim live tests; add AGENTS.md for coding agents",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/2541b64852d4b8ba5ebc90f86d59b15545073943"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/README.md"
+   ],
+   "sha": "eae6b484fec248d4f47200b0eed078ed20a63c23",
+   "short": "eae6b48",
+   "subject": "README: correct the :core:test count (83 run, 3 live tests skipped)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/eae6b484fec248d4f47200b0eed078ed20a63c23"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/README.md",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/RegionSwitchTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionTest.kt"
+   ],
+   "sha": "3e50d2411c131a71c6002c71cc3f28d549942d85",
+   "short": "3e50d24",
+   "subject": "Test teleport by name and region crossing against two fake simulators",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/3e50d2411c131a71c6002c71cc3f28d549942d85"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/README.md",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/RegionSwitchTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionTest.kt"
+   ],
+   "sha": "47910c55768c5067101fb791efc0a7016134d739",
+   "short": "47910c5",
+   "subject": "Test teleport home, lure accept/decline and teleport failure",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/47910c55768c5067101fb791efc0a7016134d739"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionRobustnessTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionTest.kt"
+   ],
+   "sha": "f55419d65779a67cd423ec75464bc00e654c8e5a",
+   "short": "f55419d",
+   "subject": "Fix dropped handshake reply race; add robustness tests; make handshake/watchdog timeouts injectable",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/f55419d65779a67cd423ec75464bc00e654c8e5a"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/tools/opensim/live.py"
+   ],
+   "sha": "f3e342da6e2c23e2ca817cc7dfa73c0595df2d44",
+   "short": "f3e342d",
+   "subject": "live.py: download OpenSim with curl so proxy settings are honoured",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/f3e342da6e2c23e2ca817cc7dfa73c0595df2d44"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt",
+    "android-kotlin/tools/opensim/live.py"
+   ],
+   "sha": "bd139b398b1a933faff2e3f2631faad8ba808dd3",
+   "short": "bd139b3",
+   "subject": "WIP: live OpenSim session tests and a second region (not yet verified)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/bd139b398b1a933faff2e3f2631faad8ba808dd3"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/tools/opensim/live.py"
+   ],
+   "sha": "83172fe5eb872a806841dd555efd74f8681e626b",
+   "short": "83172fe",
+   "subject": "WIP: live.py answers OpenSim's estate-join prompts for the second region (rerun in progress)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/83172fe5eb872a806841dd555efd74f8681e626b"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt"
+   ],
+   "sha": "02f6222f6a9f1bebfcd84307b245548d04d11261",
+   "short": "02f6222",
+   "subject": "WIP: rework live session tests after first real OpenSim run (rerun in progress)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/02f6222f6a9f1bebfcd84307b245548d04d11261"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/scene/SceneStore.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/RegionSwitchTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionRobustnessTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionTest.kt"
+   ],
+   "sha": "e4d09fdbc5e1395959504d0a133d5f90655b4e84",
+   "short": "e4d09fd",
+   "subject": "Open child circuits for announced neighbours and promote them on crossing; follow own position",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e4d09fdbc5e1395959504d0a133d5f90655b4e84"
+  },
+  {
+   "also": [
+    "other"
+   ],
+   "area": "platform",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    ".github/workflows/live-secondlife.yml",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SecondLifeLiveTest.kt"
+   ],
+   "sha": "192814c4e6368f1e2748d6702e0e25fa006b73ec",
+   "short": "192814c",
+   "subject": "Add live Second Life login test and a manual workflow that uses the repository secrets",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/192814c4e6368f1e2748d6702e0e25fa006b73ec"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/RegionSwitchTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionTest.kt"
+   ],
+   "sha": "819f03c084ba5204430593b9382a5abf6b67070f",
+   "short": "819f03c",
+   "subject": "Let freshly opened child circuits settle before sending a teleport request",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/819f03c084ba5204430593b9382a5abf6b67070f"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/Messages.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/Wire.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSocialTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/RegionSwitchTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionRobustnessTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SocialTest.kt",
+    "android-kotlin/core/src/testFixtures/kotlin/app/linkpoint/core/mock/MockGrid.kt",
+    "android-kotlin/tools/opensim/live.py"
+   ],
+   "sha": "4d31ea290667104f7e2c46be51f66908b3188675",
+   "short": "4d31ea2",
+   "subject": "Social features, radar fix, OpenSim home/profile/second account, teleport race fixes",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/4d31ea290667104f7e2c46be51f66908b3188675"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/slTypes.test.ts"
+   ],
+   "sha": "1bbf6923801dd48b9bdfeba9a656077b5a768b5c",
+   "short": "1bbf692",
+   "subject": "test: add unit tests for chatBand and slTypes helpers",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1bbf6923801dd48b9bdfeba9a656077b5a768b5c"
+  },
+  {
+   "also": [
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "bun.lock",
+    "src/lib/llsd.ts"
+   ],
+   "sha": "ef8ab90e3e4be715196d5465af457ed018eaf779",
+   "short": "ef8ab90",
+   "subject": "\u26a1 Optimize Base64 binary decoding in LLSD parser",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ef8ab90e3e4be715196d5465af457ed018eaf779"
+  },
+  {
+   "also": [
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "bun.lock",
+    "src/lib/llsd.test.ts",
+    "src/lib/llsd.ts"
+   ],
+   "sha": "1af21a49958c1eabcc2f32bcba913fe6e36cd7be",
+   "short": "1af21a4",
+   "subject": "feat: implement proper tokenizer/parser for LLSD notation maps and arrays",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1af21a49958c1eabcc2f32bcba913fe6e36cd7be"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/lib/llsd.ts"
+   ],
+   "sha": "7bcf46a756d1ca81fd4c998b442cd1bfb470ce08",
+   "short": "7bcf46a",
+   "subject": "fix: resolve Document type ambiguity in parseXML for tsc --noEmit",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/7bcf46a756d1ca81fd4c998b442cd1bfb470ce08"
+  },
+  {
+   "also": [
+    "platform"
+   ],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    ".github/workflows/opensim-live.yml",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSocialTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/RegionSwitchTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SessionTest.kt"
+   ],
+   "sha": "39948914a6998d8ae95c2c6b87248fe4fd925eda",
+   "short": "3994891",
+   "subject": "Teleport recovery: re-request once when OpenSim accepts but never connects us; add OpenSim CI workflow",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/39948914a6998d8ae95c2c6b87248fe4fd925eda"
+  },
+  {
+   "also": [
+    "screens",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "core/sl-sounds.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/sl-sounds.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/audio.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/voice.ts",
+    "src/screens/Settings.jsx"
+   ],
+   "sha": "361f27979a0458f2b7d1a111867d1a8927d4b989",
+   "short": "361f279",
+   "subject": "Add spatial sound and WebRTC voice support",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/361f27979a0458f2b7d1a111867d1a8927d4b989"
+  },
+  {
+   "also": [
+    "components",
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/components/AccessibleChatLog.jsx",
+    "src/linkpoint/__tests__/accessible-chat-log.test.tsx",
+    "src/screens/Chat.jsx",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "045821da8a57ab1b323c7825a305f46115330ac5",
+   "short": "045821d",
+   "subject": "feat(a11y): implement unified adaptive accessible chat container component",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/045821da8a57ab1b323c7825a305f46115330ac5"
+  },
+  {
+   "also": [
+    "components",
+    "theme",
+    "viewer",
+    "other"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/App.tsx",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/LiveRegionAnnouncerComponent.jsx",
+    "src/index.css",
+    "src/linkpoint/__tests__/live-region-announcer.test.ts",
+    "src/screens/Chat.jsx",
+    "src/services/LiveRegionAnnouncer.ts"
+   ],
+   "sha": "57b4dab9eb34c433aee85ca2355d2360f994e0e2",
+   "short": "57b4dab",
+   "subject": "feat(a11y): add LiveRegionAnnouncer service and scoped chat theme tokens",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/57b4dab9eb34c433aee85ca2355d2360f994e0e2"
+  },
+  {
+   "also": [
+    "screens"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/camera-mode-velocity.test.ts",
+    "src/linkpoint/camera-controls.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "50d829898681118339d1ee8582d5ed4ca08daafb",
+   "short": "50d8298",
+   "subject": "feat: camera control mode selector with drag velocity filtering",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/50d829898681118339d1ee8582d5ed4ca08daafb"
+  },
+  {
+   "also": [
+    "screens"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/components/ViewportCanvas.tsx",
+    "src/components/__tests__/ViewportCanvas.test.tsx",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "1745b5acae82b866a65a7142630dade53fd42dff",
+   "short": "1745b5a",
+   "subject": "feat: add accessible controls and ARIA attributes to 3D viewport canvas",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1745b5acae82b866a65a7142630dade53fd42dff"
+  },
+  {
+   "also": [
+    "components",
+    "theme",
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/components/Icon.d.ts",
+    "src/components/MobileOverlayControls.tsx",
+    "src/components/TouchTarget.tsx",
+    "src/index.css",
+    "src/linkpoint/__tests__/touch-target.test.tsx",
+    "src/screens/HudControls.jsx",
+    "src/screens/Inventory.jsx",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "79e339c71954f9bf8aebdcaa6094d4f68958c9d9",
+   "short": "79e339c",
+   "subject": "feat(ui): implement TouchTarget component and MobileOverlayControls with WCAG 2.5.8 compliance",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/79e339c71954f9bf8aebdcaa6094d4f68958c9d9"
+  },
+  {
+   "also": [
+    "components"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/components/InventoryTree.tsx",
+    "src/linkpoint/__tests__/inventory-tree.test.tsx",
+    "src/linkpoint/inventory.ts"
+   ],
+   "sha": "62d1702743789115689620b2c55e479a1f6b945a",
+   "short": "62d1702",
+   "subject": "feat(a11y): add ARIA tree semantics and single-pointer movement controls to InventoryTree",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/62d1702743789115689620b2c55e479a1f6b945a"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "avatar_renderer.py",
+    "inventory_cache.py",
+    "test_inventory_cache.py",
+    "test_texture_decoder.py",
+    "texture_decoder.py"
+   ],
+   "sha": "2cdb75d172b7e050fec2d2516c1e0c85d3873993",
+   "short": "2cdb75d",
+   "subject": "feat: implement SQLite persistent inventory cache and async JPEG2000 texture decoder",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/2cdb75d172b7e050fec2d2516c1e0c85d3873993"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    ".github/workflows/android-apk.yml",
+    ".github/workflows/android-kotlin.yml",
+    ".github/workflows/live-secondlife.yml",
+    ".github/workflows/opensim-live.yml",
+    ".github/workflows/pr-review.yml",
+    ".github/workflows/release.yml",
+    ".github/workflows/sync-design.yml",
+    ".github/workflows/test.yml"
+   ],
+   "sha": "f1bca9c86e2552cbda01b77d4efa13debac84986",
+   "short": "f1bca9c",
+   "subject": "ci(release): enforce top-level permissions, 40-char SHA action pinning, checksum manifest, and SLSA provenance attestation",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/f1bca9c86e2552cbda01b77d4efa13debac84986"
+  },
+  {
+   "also": [
+    "components",
+    "theme",
+    "viewer",
+    "platform"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "scripts/codex-setup.sh",
+    "src/components/AssetContainer.jsx",
+    "src/components/SkeletonLoader.jsx",
+    "src/index.css",
+    "src/linkpoint/__tests__/asset-hydration-ui.test.tsx",
+    "src/linkpoint/inventory.ts",
+    "src/screens/Inventory.jsx",
+    "src/screens/LiveScreens.jsx",
+    "src/screens/LumiyaTools.jsx"
+   ],
+   "sha": "a598cdd9c87cb7e286d8b3015586011097cbff92",
+   "short": "a598cdd",
+   "subject": "feat: skeleton UI loaders and progressive asset hydration",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/a598cdd9c87cb7e286d8b3015586011097cbff92"
+  },
+  {
+   "also": [
+    "theme"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/components/Card.jsx",
+    "src/components/ConsoleFrame.jsx",
+    "src/components/Header.jsx",
+    "src/components/TileNav.jsx",
+    "src/theme/look.js",
+    "src/theme/palettes.js"
+   ],
+   "sha": "f8a1159132eb388f6b8ae59a2841d37bcb1a7bc2",
+   "short": "f8a1159",
+   "subject": "feat(ui): expand design layouts and palettes for LCARS, Zune/Metro, and Terminal",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/f8a1159132eb388f6b8ae59a2841d37bcb1a7bc2"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/components/AccessibleChatLog.jsx",
+    "src/linkpoint/__tests__/accessible-chat-log.test.tsx"
+   ],
+   "sha": "eb83fc10dcd5b2ac5b1597d30fda41fce35adf2f",
+   "short": "eb83fc1",
+   "subject": "fix(a11y): optimize auto-scroll dependency and set tabIndex to 0 for keyboard accessibility",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/eb83fc10dcd5b2ac5b1597d30fda41fce35adf2f"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSocialTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/RegionSwitchTest.kt"
+   ],
+   "sha": "e504e3db985ac05d7c48329c7c9bb1365efdec3c",
+   "short": "e504e3d",
+   "subject": "Ignore OpenSim's stale TeleportFailed for a replaced attempt; drop the return pause from live tests",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e504e3db985ac05d7c48329c7c9bb1365efdec3c"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/scene/AvatarSkeleton.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/scene/LlMesh.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/scene/PrimVolume.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/RiggedMeshTest.kt",
+    "android-kotlin/core/src/testFixtures/kotlin/app/linkpoint/core/mock/Encoders.kt",
+    "android-kotlin/mockgrid/src/main/kotlin/OarBuilderMain.kt"
+   ],
+   "sha": "d2e029531f80d735df45a76be4e0d958c0c7f3ba",
+   "short": "d2e0295",
+   "subject": "Rigged mesh support: decode skin (joints, bind matrices) and per-vertex weights; test with a generated rigged limb through real OpenSim",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d2e029531f80d735df45a76be4e0d958c0c7f3ba"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/audio/SoundEvents.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/audio/SoundScene.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/audio/SpatialAudio.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/model/Models.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/Messages.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/Wire.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/scene/ObjectDecoder.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/scene/Objects.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/scene/SceneStore.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SoundProtocolTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SoundSceneTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SpatialAudioTest.kt",
+    "android-kotlin/core/src/testFixtures/kotlin/app/linkpoint/core/mock/Encoders.kt"
+   ],
+   "sha": "d9cf47dc3bc6ccf0c50a0c8bb786b9866921993d",
+   "short": "d9cf47d",
+   "subject": "Sound and parcel-media protocol, spatial audio model and sound scene (core, tested)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d9cf47dc3bc6ccf0c50a0c8bb786b9866921993d"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ViewerHost.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/audio/AndroidSoundBackend.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/audio/AudioSettings.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/audio/ParcelAudioPlayer.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/audio/SoundController.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/audio/StreamPlayer.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/data/Prefs.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/MoreScreens.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/SoundScreen.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/audio/OggInfo.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/audio/SoundFetcher.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/MockGridSoundTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SoundAssetTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/SoundProtocolTest.kt",
+    "android-kotlin/core/src/testFixtures/kotlin/app/linkpoint/core/mock/MockGrid.kt",
+    "android-kotlin/core/src/testFixtures/resources/mock/tone.ogg",
+    "android-kotlin/mockgrid/src/main/kotlin/OarBuilderMain.kt",
+    "android-kotlin/tools/opensim/__pycache__/live.cpython-311.pyc",
+    "android-kotlin/tools/opensim/live.py"
+   ],
+   "sha": "870f7c65c90a794e762af8fe38bab11228fbeb09",
+   "short": "870f7c6",
+   "subject": "Sounds and parcel media: asset fetcher, Ogg parser, Android playback, OpenSim + mock grid coverage",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/870f7c65c90a794e762af8fe38bab11228fbeb09"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/AGENTS.md",
+    "android-kotlin/README.md"
+   ],
+   "sha": "fb9a2802445e0b5aeecbe0053bab5a929bdfdc63",
+   "short": "fb9a280",
+   "subject": "Docs: real-OpenSim status, sound/media/rigged-mesh rows, live test table, SL live test, environment notes",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/fb9a2802445e0b5aeecbe0053bab5a929bdfdc63"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/README.md"
+   ],
+   "sha": "dbe398664e95b0bdb2e6eeb2e29f6d3acc28cfb5",
+   "short": "dbe3986",
+   "subject": "README: exact live test counts",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/dbe398664e95b0bdb2e6eeb2e29f6d3acc28cfb5"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/.gitignore",
+    "android-kotlin/tools/opensim/__pycache__/live.cpython-311.pyc"
+   ],
+   "sha": "95cf9665912e0fee788b30992f17ac2c9c9a68d4",
+   "short": "95cf966",
+   "subject": "Remove an accidentally committed Python cache file and ignore them",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/95cf9665912e0fee788b30992f17ac2c9c9a68d4"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/diagnostics-panel.test.tsx",
+    "src/linkpoint/__tests__/diagnostics-view.test.ts",
+    "src/screens/DiagnosticsPanel.jsx",
+    "src/screens/diagnosticsView.js"
+   ],
+   "sha": "4f845533cb35caab35348641e70a3d04191d8256",
+   "short": "4f84553",
+   "subject": "feat(diagnostics): add adaptive dual-mode telemetry with expandable technical disclosure drawer",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/4f845533cb35caab35348641e70a3d04191d8256"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/diagnostics-view.test.ts",
+    "src/screens/DiagnosticsPanel.jsx",
+    "src/screens/Profile.jsx",
+    "src/screens/Settings.jsx",
+    "src/screens/diagnosticsView.js"
+   ],
+   "sha": "7e03431f246d2bb03d61e3ebd32b4ba25c0ddfe0",
+   "short": "7e03431",
+   "subject": "refactor: replace UI protocol jargon with plain language telemetry copy",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/7e03431f246d2bb03d61e3ebd32b4ba25c0ddfe0"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/components/BottomTabs.jsx",
+    "src/components/MenuBar.jsx",
+    "src/components/RailNav.jsx",
+    "src/linkpoint/__tests__/accessible-nav-components.test.tsx"
+   ],
+   "sha": "67cd4ae1033203a05e915cccfb2d2abdbaabade1",
+   "short": "67cd4ae",
+   "subject": "feat(a11y): add standard ARIA roles and keyboard navigation to primary nav components",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/67cd4ae1033203a05e915cccfb2d2abdbaabade1"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "Kaleaon",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "scripts/check-source-imports.mjs"
+   ],
+   "sha": "5397733dda80f7d5182641a276d128f96565e50b",
+   "short": "5397733",
+   "subject": "Improve deployment source import diagnostics",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/5397733dda80f7d5182641a276d128f96565e50b"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/form-accessibility.test.tsx",
+    "src/screens/CacheScreen.jsx",
+    "src/screens/Chat.jsx",
+    "src/screens/LiveScreens.jsx",
+    "src/screens/LumiyaTools.jsx",
+    "src/screens/Radar.jsx",
+    "src/screens/Search.jsx",
+    "src/screens/Settings.jsx"
+   ],
+   "sha": "1ac6c3120a66d634fd44b4324e117e72f0635636",
+   "short": "1ac6c31",
+   "subject": "fix(a11y): add explicit form labels and accessible names across viewer screens",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1ac6c3120a66d634fd44b4324e117e72f0635636"
+  },
+  {
+   "also": [
+    "screens",
+    "components"
+   ],
+   "area": "theme",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/components/AccessibleChatLog.jsx",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/ViewportCanvas.tsx",
+    "src/index.css",
+    "src/screens/Radar.jsx",
+    "src/screens/Search.jsx",
+    "src/theme/__tests__/contrast.test.ts",
+    "src/theme/computeTheme.js",
+    "src/theme/contrast.ts"
+   ],
+   "sha": "92ba88292a6c630a6f95ea24781fbcb0d31b56be",
+   "short": "92ba882",
+   "subject": "feat(a11y): add universal focus rings and dynamic theme contrast enforcement",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/92ba88292a6c630a6f95ea24781fbcb0d31b56be"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/components/ChipRow.jsx",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/Header.jsx",
+    "src/components/__tests__/TouchTargetSizes.test.tsx"
+   ],
+   "sha": "91194b355481d3fca7e8b4d1b3c50365fbae6cce",
+   "short": "91194b3",
+   "subject": "fix(a11y): enforce minimum 24x24 touch target size on compact interactive controls",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/91194b355481d3fca7e8b4d1b3c50365fbae6cce"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/lib/llsd.ts"
+   ],
+   "sha": "72b95378f53f1878c02f6d9b65ff2c703b62f083",
+   "short": "72b9537",
+   "subject": "fix(llsd): delegate parseNotation directly to NotationParser to fix top-level parsing",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/72b95378f53f1878c02f6d9b65ff2c703b62f083"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "state",
+    "viewer"
+   ],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ViewerHost.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/ErrorRecoveryComponents.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/Root.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/ErrorRecoveryManager.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/NetworkMonitor.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/ErrorRecoveryTest.kt",
+    "android-kotlin/settings.gradle.kts",
+    "src/App.tsx",
+    "src/components/ErrorRecoveryBanner.tsx",
+    "src/components/ErrorRecoveryModal.tsx",
+    "src/context/ErrorRecoveryContext.tsx",
+    "src/lib/llsd.ts",
+    "src/linkpoint/__tests__/errorRecovery.test.ts",
+    "src/linkpoint/__tests__/errorRecoveryUI.test.tsx",
+    "src/linkpoint/errorRecovery.ts"
+   ],
+   "sha": "ff90d688b105ec1a3aab66e376cbcac3094fab9d",
+   "short": "ff90d68",
+   "subject": "feat: implement centralized error recovery framework with auto-reconnection",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ff90d688b105ec1a3aab66e376cbcac3094fab9d"
+  },
+  {
+   "also": [
+    "screens",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/grid-directory-search.test.tsx",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/Search.jsx"
+   ],
+   "sha": "4ae0ef00fd95c44eae0882bd57072e59c1ed77ae",
+   "short": "4ae0ef0",
+   "subject": "feat: implement grid directory search service with tabbed server results",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/4ae0ef00fd95c44eae0882bd57072e59c1ed77ae"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "core/sl-actions.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/components/DesktopChrome.jsx",
+    "src/components/PayDialog.jsx",
+    "src/linkpoint/__tests__/economy-manager.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/economy-manager.ts",
+    "src/linkpoint/local-cache.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/screens/LumiyaTools.jsx"
+   ],
+   "sha": "5dbac254496d2470326d42254cbe4e977d590ce8",
+   "short": "5dbac25",
+   "subject": "feat: build EconomyManager with local ledger caching and interactive pay modal",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/5dbac254496d2470326d42254cbe4e977d590ce8"
+  },
+  {
+   "also": [
+    "screens",
+    "state"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/context/ErrorRecoveryContext.tsx",
+    "src/linkpoint/__tests__/errorRecovery.test.ts",
+    "src/linkpoint/__tests__/form-accessibility.test.tsx",
+    "src/linkpoint/local-cache.ts",
+    "src/screens/Search.jsx"
+   ],
+   "sha": "4b5ddd169fdd9ce00a9f80d6679992b2ddf97664",
+   "short": "4b5ddd1",
+   "subject": "Fix type errors and Search accessibility on main",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/4b5ddd169fdd9ce00a9f80d6679992b2ddf97664"
+  },
+  {
+   "also": [
+    "components",
+    "state"
+   ],
+   "area": "screens",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/components/Header.jsx",
+    "src/data/content.js",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "184f6ff3a0a7cb5ff9109a191c1e74a5d2eb9485",
+   "short": "184f6ff",
+   "subject": "Give Contacts and Calendar header titles; keep sweep title and 3D info panel from crowding",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/184f6ff3a0a7cb5ff9109a191c1e74a5d2eb9485"
+  },
+  {
+   "also": [
+    "viewer",
+    "docs"
+   ],
+   "area": "state",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "README.md",
+    "src/context/ErrorRecoveryContext.tsx",
+    "src/linkpoint/__tests__/errorRecovery.test.ts"
+   ],
+   "sha": "c2eb2f2b94251176568b3ad3a1822c28d745adbb",
+   "short": "c2eb2f2",
+   "subject": "docs(design): align React-Linkpoint with Linkpoint Design reference frame and fix type checks",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/c2eb2f2b94251176568b3ad3a1822c28d745adbb"
+  },
+  {
+   "also": [],
+   "area": "docs",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "index.html"
+   ],
+   "sha": "7af55c098d1bc4a378cd08828c458b042aaacd05",
+   "short": "7af55c0",
+   "subject": "Use the Linkpoint name in the page title",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/7af55c098d1bc4a378cd08828c458b042aaacd05"
+  },
+  {
+   "also": [
+    "screens",
+    "state",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "core/viewer-session.cjs",
+    "src/context/ErrorRecoveryContext.tsx",
+    "src/linkpoint/__tests__/errorRecovery.test.ts",
+    "src/linkpoint/__tests__/form-accessibility.test.tsx",
+    "src/linkpoint/local-cache.ts",
+    "src/screens/Search.jsx"
+   ],
+   "sha": "5276407b3be945f38d97ae65290e301ebb9d7889",
+   "short": "5276407",
+   "subject": "fix: directory search circuit lookup, EconomyManager.clearHistory, type errors, Search aria-label",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/5276407b3be945f38d97ae65290e301ebb9d7889"
+  },
+  {
+   "also": [
+    "components",
+    "state",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "core/viewer-session.cjs",
+    "server.ts",
+    "src/components/FloatersDesktop.jsx",
+    "src/hooks/useAppState.js",
+    "src/linkpoint/__tests__/chat.test.ts",
+    "src/linkpoint/chat.ts",
+    "src/server/sl-session.ts"
+   ],
+   "sha": "2d2870c2244d59b8851274b401c27a477c2aaa27",
+   "short": "2d2870c",
+   "subject": "fix: duplicate local chat, chat floater text, logout on shutdown, floater overlap, search timeout copy",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/2d2870c2244d59b8851274b401c27a477c2aaa27"
+  },
+  {
+   "also": [
+    "components",
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/components/ScreenBody.jsx",
+    "src/linkpoint/__tests__/outfit-viewer.test.tsx",
+    "src/linkpoint/local-cache.ts",
+    "src/screens/OutfitViewer.jsx",
+    "src/screens/Search.jsx"
+   ],
+   "sha": "f99b44e26330f1d28550e2d4ad6c45768831ff89",
+   "short": "f99b44e",
+   "subject": "feat: sync outfit avatar viewer and accessibility improvements for viewer parity",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/f99b44e26330f1d28550e2d4ad6c45768831ff89"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "theme",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/ktheme-theme-switching.test.tsx",
+    "src/theme/tokens.ts"
+   ],
+   "sha": "1b7d767858fa10a6f6bc5a4c0f79bac84e592d47",
+   "short": "1b7d767",
+   "subject": "feat: expand theme engine to support all 24 Ktheme palettes and 8 structural layout variations",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1b7d767858fa10a6f6bc5a4c0f79bac84e592d47"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/linkpoint/local-cache.ts"
+   ],
+   "sha": "e923c9094d2cd51b1ecdbdbb72aa81ac3aab309f",
+   "short": "e923c90",
+   "subject": "fix: remove duplicate clearTransactions method in local-cache",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e923c9094d2cd51b1ecdbdbb72aa81ac3aab309f"
+  },
+  {
+   "also": [
+    "platform",
+    "other"
+   ],
+   "area": "theme",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "bun.lock",
+    "package.json",
+    "src/theme/computeTheme.js",
+    "src/theme/contrast.ts",
+    "src/theme/layouts.js",
+    "src/theme/palettes.js",
+    "src/theme/tokens.ts"
+   ],
+   "sha": "dd70c12382de655713add986a57a94121ff4fbf9",
+   "short": "dd70c12",
+   "subject": "refactor(theme): consume design tokens and layout primitives from @linkpoint/design-system subpaths",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/dd70c12382de655713add986a57a94121ff4fbf9"
+  },
+  {
+   "also": [
+    "platform",
+    "other"
+   ],
+   "area": "theme",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "bun.lock",
+    "package.json",
+    "src/theme/computeTheme.js",
+    "src/theme/contrast.ts",
+    "src/theme/layouts.js",
+    "src/theme/palettes.js",
+    "src/theme/tokens.ts"
+   ],
+   "sha": "ae5a7ecd4b11069b28c891663f9eb8cb92eded6e",
+   "short": "ae5a7ec",
+   "subject": "Fix desktop build: drop unresolvable @linkpoint/design-system dependency",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ae5a7ecd4b11069b28c891663f9eb8cb92eded6e"
+  },
+  {
+   "also": [],
+   "area": "theme",
+   "author": "Claude",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "src/theme/tokens.ts"
+   ],
+   "sha": "9cf55a12722ffc51e45fd720f531c24639b9629e",
+   "short": "9cf55a1",
+   "subject": "Restore in-repo theme sources including the 8 layout variations",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/9cf55a12722ffc51e45fd720f531c24639b9629e"
   }
  ],
- "last_sha": "c1308fe272c3ed6dab5ec49b41755d8d244a1821",
+ "last_sha": "760eefec9abc6bbfbbfabf60ac265f02f6ed3e35",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
