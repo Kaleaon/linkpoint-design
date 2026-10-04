@@ -39,7 +39,7 @@ export default function SegmentedTabs() {
     <div style={wrap}>
       {tabs.map((x) => {
         const active = isActive(x.label);
-        const style = { ...base, ...(active ? onLook : null), ...(isFloat ? { minHeight: "24px", height: "24px", padding: "0 9px", flex: "none", borderRadius: 0, font: "600 9.5px/1 " + t.font, letterSpacing: ".1em" } : null) };
+        const style = { ...base, ...(active ? onLook : null), ...(isFloat ? { minHeight: "28px", height: "28px", padding: "0 12px", flex: "none", borderRadius: 0, font: "600 9.5px/1 " + t.font, letterSpacing: ".1em" } : null) };
         return (
           <div
             key={x.label}
