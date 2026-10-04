@@ -90,7 +90,7 @@ export default function World3D() {
                 style={{ cursor: "pointer", color: V.ink2, display: "flex" }}
               >
                 <Icon name="x" size={16} />
-              </KInteractive>
+              </span>
             </div>
             {NAV_ALL.map((n) => {
               const active = state.screen === n.id;
