@@ -2,6 +2,7 @@ import React from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import FormInput from "../components/FormInput.jsx";
 
 export default function GridConsole() {
   const { state, actions } = useApp();
@@ -30,7 +31,8 @@ export default function GridConsole() {
           </span>
         </div>
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "6px" }}>
-          <input
+          <FormInput
+            aria-label="Filter console logs"
             value={state.consoleQuery || ""}
             onChange={(e) => actions.setConsoleQuery(e.target.value)}
             placeholder="filter logs..."
