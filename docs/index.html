@@ -749,6 +749,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
           <sc-if value="{{ isTree }}" hint-placeholder-val="{{ false }}">
             <div style="{{ invToolStyle }}">
               <div style="flex:1;height:44px;display:flex;align-items:center;gap:8px;padding:0 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C)"><i data-lucide="search" style="width:15px;height:15px;opacity:.55"></i><input value="{{ invFilter }}" onChange="{{ invFilterChange }}" placeholder="filter inventory…" style="{{ invFilterInputStyle }}" /></div>
+              <div onClick="{{ invSelectToggle }}" onKeyDown="{{ invSelectToggleKeyDown }}" style="{{ invSelectToggleStyle }}" role="button" aria-label="Toggle selection mode" tabindex="0"><i data-lucide="check-square" style="width:17px;height:17px"></i></div>
               <div onClick="{{ invGridToggle }}" onKeyDown="{{ invGridToggleKeyDown }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer" role="button" aria-label="Toggle grid view" tabindex="0"><i data-lucide="{{ invGridIcon }}" style="width:17px;height:17px"></i></div>
             </div>
             <div style="{{ invRecentStyle }}">
@@ -756,14 +757,50 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
             </div>
             <div style="{{ invListStyle }}">
               <sc-for list="{{ invTree }}" as="n" hint-placeholder-count="11">
-                <div onClick="{{ n.pick }}" onKeyDown="{{ n.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ n.name }}" style="{{ n.indent }}">
-                  <i data-lucide="{{ n.chev }}" style="width:16px;height:16px;color:var(--pri,#6CFF9A)"></i>
-                  <i data-lucide="{{ n.icon }}" style="width:16px;height:16px;color:var(--sec2,#C5678D)"></i>
+                <div onClick="{{ n.pick }}" onMouseDown="{{ n.down }}" onMouseUp="{{ n.up }}" onTouchStart="{{ n.down }}" onTouchEnd="{{ n.up }}" onKeyDown="{{ n.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ n.name }}" style="{{ n.indent }}">
+                  <sc-if value="{{ n.selectMode }}">
+                    <sc-if value="{{ !n.isFolder }}">
+                      <i data-lucide="{{ n.selectIcon }}" style="width:16px;height:16px;color:var(--pri,#6CFF9A);flex-shrink:0"></i>
+                    </sc-if>
+                  </sc-if>
+                  <i data-lucide="{{ n.chev }}" style="width:16px;height:16px;color:var(--pri,#6CFF9A);flex-shrink:0"></i>
+                  <i data-lucide="{{ n.icon }}" style="width:16px;height:16px;color:var(--sec2,#C5678D);flex-shrink:0"></i>
                   <span style="flex:1;font:400 13px/1.2 var(--font,'JetBrains Mono');overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{ n.name }}</span>
                   <span style="font:400 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ n.ver }}</span>
                 </div>
               </sc-for>
             </div>
+
+            <sc-if value="{{ hasInvSelected }}">
+              <div style="margin:8px 12px 12px;padding:10px;border:1px solid var(--pri,#6CFF9A);border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);box-shadow:0 6px 20px rgba(0,0,0,0.4);display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <span style="font:700 11px/1 var(--font,'JetBrains Mono');color:var(--pri,#6CFF9A);letter-spacing:.12em">{{ invSelectedCount }} SELECTED</span>
+                  <span onClick="{{ invSelectToggle }}" onKeyDown="{{ invSelectToggleKeyDown }}" style="font:600 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer" role="button" tabindex="0">CANCEL</span>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <div onClick="{{ invWearBtn }}" onKeyDown="{{ invWearBtnKeyDown }}" style="flex:1;height:44px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.1em;cursor:pointer" role="button" tabindex="0"><i data-lucide="shirt" style="width:16px;height:16px"></i>WEAR</div>
+                  <div onClick="{{ invMoveBtn }}" onKeyDown="{{ invMoveBtnKeyDown }}" style="flex:1;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);color:var(--ink,#D7F5E6);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.1em;cursor:pointer" role="button" tabindex="0"><i data-lucide="folder-input" style="width:16px;height:16px"></i>MOVE TO…</div>
+                  <div onClick="{{ invDeleteBtn }}" onKeyDown="{{ invDeleteBtnKeyDown }}" style="flex:1;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:rgba(255,108,108,0.15);color:#FF6C6C;display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.1em;cursor:pointer" role="button" tabindex="0"><i data-lucide="trash-2" style="width:16px;height:16px"></i>DELETE</div>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ invMoveModal }}">
+              <div style="margin:8px 12px 12px;padding:12px;border:1px solid var(--pri,#6CFF9A);border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <span style="font:700 11px/1 var(--font,'JetBrains Mono');color:var(--pri,#6CFF9A);letter-spacing:.12em">MOVE TO FOLDER</span>
+                  <span onClick="{{ invCloseMoveModalBtn }}" onKeyDown="{{ invCloseMoveModalBtnKeyDown }}" style="font:600 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer" role="button" tabindex="0">CANCEL</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <sc-for list="{{ invFolderOptions }}" as="fo" hint-placeholder-count="7">
+                    <div onClick="{{ fo.pick }}" onKeyDown="{{ fo.pickKeyDown }}" style="height:44px;padding:0 12px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;gap:8px;cursor:pointer" role="button" tabindex="0">
+                      <i data-lucide="folder" style="width:16px;height:16px;color:var(--sec2,#C5678D)"></i>
+                      <span style="font:600 12px/1 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)">{{ fo.name }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
           </sc-if>
 
           <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
@@ -1891,7 +1928,7 @@ class Component extends DCLogic {
     cDock: ["fly", "sit", "snap", "mini", "inv", "home", "ao", "sun"],
     flOpen: { Chat: true, Radar: true, Friends: true, Inventory: true, Map: true }, flMin: {}, flRect: {},
     flZ: ["Map", "Inventory", "Friends", "Radar", "Chat"], menu: null, flQuickMsg: "", showCamHud: true,
-    toast: "", composeText: "", chatSent: {}, chatTyping: false, invFilter: "",
+    toast: "", composeText: "", chatSent: {}, chatTyping: false, invFilter: "", invSelectMode: false, invSelected: [], invMoveModal: false, invItems: null,
     loginMode: "grid", loginGrid: "agni", loginBusy: false, loginError: null, logoAnim: true,
     customGrids: [], addGrid: false, addGridName: "", addGridHost: "",
     searchFrom: "Friends", searchQuery: "", searchState: {}, reconnecting: false, cacheCleared: {},
@@ -1927,7 +1964,12 @@ class Component extends DCLogic {
     window.addEventListener("mousemove", move); window.addEventListener("mouseup", up);
     this.flFocus(id);
   }
-  flFocus(id) { this.setState(st => ({ flOpen: { ...st.flOpen, [id]: true }, flZ: st.flZ.filter(x => x !== id).concat(id), screen: id, flMin: { ...st.flMin, [id]: false }, menu: null })); }
+  flFocus(id) {
+    if (id !== "Inventory") {
+      this.setState({ invSelectMode: false, invSelected: [], invMoveModal: false });
+    }
+    this.setState(st => ({ flOpen: { ...st.flOpen, [id]: true }, flZ: st.flZ.filter(x => x !== id).concat(id), screen: id, flMin: { ...st.flMin, [id]: false }, menu: null }));
+  }
   flToggle(id) {
     this.setState(st => (st.flOpen[id] && !st.flMin[id])
       ? { flMin: { ...st.flMin, [id]: true }, menu: null }
@@ -2023,7 +2065,91 @@ class Component extends DCLogic {
   // the same rule the dev panel's screen picker already follows.
   goScreen(id) {
     if (this.navMode() === "floaters" && FLOATERS.some(f => f.id === id)) { this.flFocus(id); this.set("dialog", null); return; }
+    if (id !== "Inventory") {
+      this.setState({ invSelectMode: false, invSelected: [], invMoveModal: false });
+    }
     this.setState({ screen: id, dialog: null });
+  }
+
+  // ---- inventory batch selection ----------------------------------------
+  getInvItems() {
+    if (this.state.invItems) return this.state.invItems;
+    return [
+      { name: "Inventory", icon: "folder-root", depth: 0, parent: null, ver: "v42" },
+      { name: "Objects", icon: "box", depth: 1, parent: "Inventory", ver: "v18" },
+      { name: "Sunset Lamp v3", icon: "box", depth: 2, parent: "Objects", ver: "", tags: ["recent"] },
+      { name: "Roof Kit (unpacked)", icon: "box", depth: 2, parent: "Objects", ver: "", tags: ["recent"] },
+      { name: "Clothing", icon: "shirt", depth: 1, parent: "Inventory", ver: "v9" },
+      { name: "Urban Jacket", icon: "shirt", depth: 2, parent: "Clothing", ver: "", tags: ["worn"] },
+      { name: "Dark Jeans", icon: "shirt", depth: 2, parent: "Clothing", ver: "", tags: ["worn"] },
+      { name: "Work Boots", icon: "shirt", depth: 2, parent: "Clothing", ver: "", tags: ["worn", "recent"] },
+      { name: "Body Parts", icon: "user", depth: 1, parent: "Inventory", ver: "v4" },
+      { name: "Ruth Classic Mesh", icon: "user", depth: 2, parent: "Body Parts", ver: "", tags: ["worn"] },
+      { name: "Shape — Nyx v4", icon: "user", depth: 2, parent: "Body Parts", ver: "", tags: ["worn"] },
+      { name: "Landmarks", icon: "map-pin", depth: 1, parent: "Inventory", ver: "v12" },
+      { name: "Bay City — Hollywood", icon: "map-pin", depth: 2, parent: "Landmarks", ver: "", tags: ["recent"] },
+      { name: "Textures", icon: "image", depth: 1, parent: "Inventory", ver: "v31" },
+      { name: "Brass Panel 512", icon: "image", depth: 2, parent: "Textures", ver: "", tags: ["recent"] },
+      { name: "Scripts", icon: "file-code", depth: 1, parent: "Inventory", ver: "v7" },
+      { name: "Trash", icon: "trash-2", depth: 1, parent: "Inventory", ver: "v2" },
+    ];
+  }
+  toggleInvSelectMode() {
+    this.setState(st => ({
+      invSelectMode: !st.invSelectMode,
+      invSelected: !st.invSelectMode ? st.invSelected : [],
+      invMoveModal: false
+    }));
+  }
+  toggleInvSelectedItem(name) {
+    this.setState(st => {
+      const isSel = (st.invSelected || []).includes(name);
+      return {
+        invSelectMode: true,
+        invSelected: isSel ? st.invSelected.filter(x => x !== name) : [...(st.invSelected || []), name]
+      };
+    });
+  }
+  invLongPressItem(name) {
+    this.setState(st => ({
+      invSelectMode: true,
+      invSelected: (st.invSelected || []).includes(name) ? st.invSelected : [...(st.invSelected || []), name]
+    }));
+  }
+  invWearSelected() {
+    const count = (this.state.invSelected || []).length;
+    if (count > 0) {
+      this.notify("Equipped " + count + " selected item" + (count > 1 ? "s" : ""));
+    }
+    this.setState({ invSelected: [], invSelectMode: false });
+  }
+  invOpenMoveModal() {
+    this.setState({ invMoveModal: true });
+  }
+  invCloseMoveModal() {
+    this.setState({ invMoveModal: false });
+  }
+  invMoveSelected(targetFolder) {
+    const sel = this.state.invSelected || [];
+    const count = sel.length;
+    if (count > 0) {
+      const currentItems = this.getInvItems();
+      const newItems = currentItems.map(item => sel.includes(item.name) ? { ...item, parent: targetFolder, depth: 2 } : item);
+      this.setState({ invItems: newItems, invSelected: [], invMoveModal: false, invSelectMode: false });
+      this.notify("Moved " + count + " item" + (count > 1 ? "s" : "") + " to " + targetFolder);
+    } else {
+      this.setState({ invMoveModal: false });
+    }
+  }
+  invDeleteSelected() {
+    const sel = this.state.invSelected || [];
+    const count = sel.length;
+    if (count > 0) {
+      const currentItems = this.getInvItems();
+      const newItems = currentItems.map(item => sel.includes(item.name) ? { ...item, parent: "Trash", depth: 2 } : item);
+      this.setState({ invItems: newItems, invSelected: [], invSelectMode: false });
+      this.notify("Moved " + count + " item" + (count > 1 ? "s" : "") + " to Trash");
+    }
   }
   // Cache rows are notional megabytes, but they have to add up to the total the
   // header and the meter quote, so both read this one table.
@@ -2600,31 +2726,62 @@ class Component extends DCLogic {
 
     // The tree gained leaves under Clothing and Body Parts so the WORN sub-view
     // has something to list: the 5th field tags an item `worn`, `recent` or both.
-    const invTree = [
-      ["Inventory", "folder-root", 0, null, "v42"], ["Objects", "box", 1, "Inventory", "v18"],
-      ["Sunset Lamp v3", "box", 2, "Objects", "", ["recent"]], ["Roof Kit (unpacked)", "box", 2, "Objects", "", ["recent"]],
-      ["Clothing", "shirt", 1, "Inventory", "v9"],
-      ["Urban Jacket", "shirt", 2, "Clothing", "", ["worn"]], ["Dark Jeans", "shirt", 2, "Clothing", "", ["worn"]],
-      ["Work Boots", "shirt", 2, "Clothing", "", ["worn", "recent"]],
-      ["Body Parts", "user", 1, "Inventory", "v4"],
-      ["Ruth Classic Mesh", "user", 2, "Body Parts", "", ["worn"]], ["Shape — Nyx v4", "user", 2, "Body Parts", "", ["worn"]],
-      ["Landmarks", "map-pin", 1, "Inventory", "v12"], ["Bay City — Hollywood", "map-pin", 2, "Landmarks", "", ["recent"]],
-      ["Textures", "image", 1, "Inventory", "v31"], ["Brass Panel 512", "image", 2, "Textures", "", ["recent"]],
-      ["Scripts", "file-code", 1, "Inventory", "v7"],
-      ["Trash", "trash-2", 1, "Inventory", "v2"],
-    ].map(([name, icon, depth, parent, ver, tags]) => {
-      const kids = ["Inventory", "Objects", "Clothing", "Body Parts", "Landmarks", "Textures", "Scripts", "Trash"];
+    const rawInv = this.getInvItems();
+    const kids = ["Inventory", "Objects", "Clothing", "Body Parts", "Landmarks", "Textures", "Scripts", "Trash"];
+    const invTree = rawInv.map(item => {
+      const { name, icon, depth, parent, ver, tags } = item;
       const isFolder = kids.includes(name);
       const open = s.invOpen[name] !== false; // folders default open unless explicitly closed
-      return { name, icon, ver, parent, depth, tags: tags || [],
+      const isSelected = (s.invSelected || []).includes(name);
+      return {
+        name, icon, ver, parent, depth, tags: tags || [],
         chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "dot",
-        open, isFolder,
-        pick: isFolder ? () => this.setState(st => ({ invOpen: { ...st.invOpen, [name]: !(st.invOpen[name] !== false) } })) : () => this.notify(name + " — OPEN"),
+        open, isFolder, isSelected,
+        selectMode: !!s.invSelectMode,
+        selectIcon: isSelected ? "check-square" : "square",
+        down: () => {
+          if (isFolder) return;
+          this.invHoldFired = false;
+          clearTimeout(this.invHoldTimer);
+          this.invHoldTimer = setTimeout(() => {
+            this.invHoldFired = true;
+            this.invLongPressItem(name);
+          }, 450);
+        },
+        up: () => {
+          clearTimeout(this.invHoldTimer);
+        },
+        pick: () => {
+          if (this.invHoldFired) {
+            this.invHoldFired = false;
+            return;
+          }
+          if (isFolder) {
+            this.setState(st => ({ invOpen: { ...st.invOpen, [name]: !(st.invOpen[name] !== false) } }));
+          } else if (s.invSelectMode) {
+            this.toggleInvSelectedItem(name);
+          } else {
+            this.notify(name + " — OPEN");
+          }
+        },
+        pickKeyDown: (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            if (isFolder) {
+              this.setState(st => ({ invOpen: { ...st.invOpen, [name]: !(st.invOpen[name] !== false) } }));
+            } else if (s.invSelectMode) {
+              this.toggleInvSelectedItem(name);
+            } else {
+              this.notify(name + " — OPEN");
+            }
+          }
+        },
         indent: bleed
           ? { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 12px", paddingLeft: (10 + depth * 16) + "px",
-              background: V.surf, borderLeft: "4px solid " + (depth === 0 ? V.pri : depth === 1 ? V.sec2 : "transparent"), cursor: "pointer" }
+              background: isSelected ? V.priC : V.surf, borderLeft: "4px solid " + (isSelected ? V.pri : depth === 0 ? V.pri : depth === 1 ? V.sec2 : "transparent"), cursor: "pointer" }
           : { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 16px", paddingLeft: (16 + depth * 18) + "px",
-              borderBottom: "1px solid " + V.outv, cursor: "pointer" } };
+              background: isSelected ? V.priC : "transparent", borderBottom: "1px solid " + V.outv, cursor: "pointer" }
+      };
     });
     const invQuery = (s.invFilter || "").trim().toLowerCase();
     // RECENT and WORN are flat lists of tagged leaves, not a tree — folders and
@@ -3574,6 +3731,28 @@ toggleLogoAnimKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.prev
       invFilter: s.invFilter, invFilterChange: (e) => this.set("invFilter", e.target.value),
       invFilterInputStyle: { flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent",
         font: "400 12px/1 " + t.font, color: V.ink },
+      invSelectMode: !!s.invSelectMode,
+      invSelectedCount: (s.invSelected || []).length,
+      hasInvSelected: (s.invSelected || []).length > 0,
+      invMoveModal: !!s.invMoveModal,
+      invSelectToggle: () => this.toggleInvSelectMode(),
+      invSelectToggleKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.toggleInvSelectMode(); } },
+      invSelectToggleStyle: { width: "44px", height: "44px", border: "1px solid " + (s.invSelectMode ? V.pri : V.outv),
+        borderRadius: V.rs, display: "flex", alignItems: "center", justifyContent: "center",
+        color: s.invSelectMode ? V.onpri : V.pri, background: s.invSelectMode ? V.pri : "transparent", cursor: "pointer" },
+      invWearBtn: () => this.invWearSelected(),
+      invWearBtnKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.invWearSelected(); } },
+      invMoveBtn: () => this.invOpenMoveModal(),
+      invMoveBtnKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.invOpenMoveModal(); } },
+      invDeleteBtn: () => this.invDeleteSelected(),
+      invDeleteBtnKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.invDeleteSelected(); } },
+      invCloseMoveModalBtn: () => this.invCloseMoveModal(),
+      invCloseMoveModalBtnKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.invCloseMoveModal(); } },
+      invFolderOptions: ["Objects", "Clothing", "Body Parts", "Landmarks", "Textures", "Scripts", "Trash"].map(folder => ({
+        name: folder,
+        pick: () => this.invMoveSelected(folder),
+        pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.invMoveSelected(folder); } }
+      })),
       invGridToggle: () => { this.setState(st => ({ invGrid: !st.invGrid })); this.notify(s.invGrid ? "List view" : "Grid view"); },
 invGridToggleKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState(st => ({ invGrid: !st.invGrid })); this.notify(this.state.invGrid ? "List view" : "Grid view"); } },
       invGridIcon: s.invGrid ? "list" : "layout-grid",
