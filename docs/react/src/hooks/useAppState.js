@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { DEVICES, FLOATERS, HUD_DEFAULT, HUDS, CBTN, GRIDS } from "../theme/constants.js";
-import { CACHE_ROWS } from "../data/content.js";
+import { CACHE_ROWS, INVENTORY_SOURCE } from "../data/content.js";
 import { decodeSharedTheme, encodeSharedTheme, readSavedTheme, sanitizeTheme, themeFromPalette, THEME_STORAGE_KEY } from "../theme/customTheme.js";
 
 // Ported from the mockup's `state = {...}` initializer and its instance
@@ -32,8 +32,17 @@ export function useAppState() {
   const [chip, setChip] = useState("Nyx Vaher");
   const [tileOk, setTileOk] = useState(true);
   const [invOpen, setInvOpen] = useState({ Objects: true });
+  const [invSelectMode, setInvSelectMode] = useState(false);
+  const [invSelected, setInvSelected] = useState([]);
+  const [invMoveModal, setInvMoveModal] = useState(false);
+  const [invItems, setInvItems] = useState(() =>
+    INVENTORY_SOURCE.map(([name, icon, depth, parent, ver, tags]) => ({
+      name, icon, depth, parent, ver, tags: tags || []
+    }))
+  );
   const [dismissed, setDismissed] = useState({});
   const [pinned, setPinned] = useState({});
+  const [lureState, setLureState] = useState({});
   const [toggles, setToggles] = useState({
     largeType: false, push: true, voice: true, chatCmds: true, autoresponse: true,
     rlv: false, shadows: false, battery: true, timestamps: true, imLogs: true, mediaAuto: false,
@@ -219,6 +228,35 @@ export function useAppState() {
   const toggleSetting = useCallback((key) => setToggles((s) => ({ ...s, [key]: !s[key] })), []);
   const setPref = useCallback((key, v) => setPrefs((s) => ({ ...s, [key]: v })), []);
   const pin = useCallback((key) => setPinned((s) => ({ ...s, [key]: !s[key] })), []);
+  const respondLure = useCallback((lureId, response, regionName, coords) => {
+    setLureState((s) => ({ ...s, [lureId]: response }));
+    if (response === "accepted") {
+      if (loginMode === "offline") {
+        notify("Cannot accept teleport lure while offline");
+      } else {
+        notify(`Teleporting to ${regionName || "destination"} ${coords || ""}…`);
+        setScreen("Map");
+      }
+    } else {
+      notify("Teleport lure declined");
+    }
+  }, [loginMode, notify]);
+  const teleportToRegion = useCallback((regionName, coords) => {
+    if (loginMode === "offline") {
+      notify("Cannot teleport while offline");
+      return;
+    }
+    notify(`Teleporting to ${regionName || "region"} ${coords || ""}…`);
+    setScreen("Map");
+  }, [loginMode, notify]);
+  const saveLandmark = useCallback((name) => {
+    const k = name.toLowerCase().replace(/[^a-z0-9]+/g, "");
+    setPinned((s) => {
+      const isPinned = !s[k];
+      notify(isPinned ? `Landmark saved to Inventory: ${name}` : `Landmark removed: ${name}`);
+      return { ...s, [k]: isPinned };
+    });
+  }, [notify]);
   const cycleLayout = useCallback(() => {
     const ks = Object.keys(LAYOUTS);
     setLayout((cur) => ks[(ks.indexOf(cur) + 1) % ks.length]);
@@ -334,6 +372,11 @@ export function useAppState() {
   // used to raise and un-minimise a window that was never opened — the screen
   // simply did not change.
   const flFocus = useCallback((id) => {
+    if (id !== "Inventory") {
+      setInvSelectMode(false);
+      setInvSelected([]);
+      setInvMoveModal(false);
+    }
     setFlOpen((o) => (o[id] ? o : { ...o, [id]: true }));
     setFlZ((z) => z.filter((x) => x !== id).concat(id));
     setScreen(id);
@@ -513,6 +556,86 @@ export function useAppState() {
     setInvOpen((st) => ({ ...st, [name]: !(st[name] !== false) }));
   }, []);
 
+  const toggleInvSelectMode = useCallback(() => {
+    setInvSelectMode((mode) => {
+      if (mode) {
+        setInvSelected([]);
+        setInvMoveModal(false);
+      }
+      return !mode;
+    });
+  }, []);
+
+  const toggleInvSelectedItem = useCallback((itemName) => {
+    setInvSelectMode(true);
+    setInvSelected((prev) =>
+      prev.includes(itemName)
+        ? prev.filter((i) => i !== itemName)
+        : [...prev, itemName]
+    );
+  }, []);
+
+  const invLongPressItem = useCallback((itemName) => {
+    setInvSelectMode(true);
+    setInvSelected((prev) => (prev.includes(itemName) ? prev : [...prev, itemName]));
+  }, []);
+
+  const invWearSelected = useCallback(() => {
+    setInvSelected((sel) => {
+      const count = sel.length;
+      if (count > 0) {
+        notify("Equipped " + count + " selected item" + (count > 1 ? "s" : ""));
+      }
+      return [];
+    });
+    setInvSelectMode(false);
+  }, [notify]);
+
+  const invOpenMoveModal = useCallback(() => {
+    setInvMoveModal(true);
+  }, []);
+
+  const invCloseMoveModal = useCallback(() => {
+    setInvMoveModal(false);
+  }, []);
+
+  const invMoveSelected = useCallback((targetFolder) => {
+    setInvSelected((sel) => {
+      const count = sel.length;
+      if (count > 0) {
+        setInvItems((items) =>
+          items.map((item) =>
+            sel.includes(item.name)
+              ? { ...item, parent: targetFolder, depth: 2 }
+              : item
+          )
+        );
+        notify("Moved " + count + " item" + (count > 1 ? "s" : "") + " to " + targetFolder);
+      }
+      return [];
+    });
+    setInvMoveModal(false);
+    setInvSelectMode(false);
+  }, [notify]);
+
+  const invDeleteSelected = useCallback(() => {
+    setInvSelected((sel) => {
+      const count = sel.length;
+      if (count > 0) {
+        setInvItems((items) =>
+          items.map((item) =>
+            sel.includes(item.name)
+              ? { ...item, parent: "Trash", depth: 2 }
+              : item
+          )
+        );
+        notify("Moved " + count + " item" + (count > 1 ? "s" : "") + " to Trash");
+      }
+      return [];
+    });
+    setInvSelectMode(false);
+  }, [notify]);
+
     const toggleOfflineGrid = useCallback(() => {
     setOfflineRunning((r) => {
       const next = !r;
@@ -560,6 +683,11 @@ export function useAppState() {
 
   const screenPick = useCallback(
     (id) => {
+      if (id !== "Inventory") {
+        setInvSelectMode(false);
+        setInvSelected([]);
+        setInvMoveModal(false);
+      }
       if (navMode() === "floaters" && FLOATERS.some((f) => f.id === id)) {
         flFocus(id);
         setDialog(null);
@@ -573,7 +701,7 @@ export function useAppState() {
 
   return {
     state: {
-      layout, palette, customTheme, device, screen, dialog, dense, tabs, chip, tileOk, invOpen, dismissed, pinned,
+      layout, palette, customTheme, device, screen, dialog, dense, tabs, chip, tileOk, invOpen, invSelectMode, invSelected, invMoveModal, invItems, dismissed, pinned,
       toggles, cond, hudOn, hudPos, hudPicker, target, targetPicker, navPeek,
       cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
       rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
@@ -584,7 +712,7 @@ export function useAppState() {
     actions: {
       setLayout, setPalette: selectPalette, setThemeColor, renameTheme, saveTheme, resetTheme, importTheme, downloadTheme, shareTheme, setDevice, setScreen: screenPick, setDialog, setDense,
       allGrids, openAddGrid, cancelAddGrid, saveCustomGrid, setAddGridName, setAddGridHost,
-      setTab, setChip, setTileOk, toggleInvFolder, dismiss, toggleSetting, pin,
+      setTab, setChip, setTileOk, toggleInvFolder, toggleInvSelectMode, toggleInvSelectedItem, invLongPressItem, invWearSelected, invOpenMoveModal, invCloseMoveModal, invMoveSelected, invDeleteSelected, dismiss, toggleSetting, pin,
       cycleLayout, cyclePalette, setCond, setMenu,
       flR, flDrag, flFocus, flToggle, flClose,
       hudDrag, toggleHud, setHudPicker, setTarget, setTargetPicker, setNavPeek,
