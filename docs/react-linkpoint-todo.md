@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-10-03T06:22:39Z — upstream read through [`760eefe`](https://github.com/Kaleaon/react-linkpoint/commit/760eefec9abc6bbfbbfabf60ac265f02f6ed3e35)
-- **Open:** 185 · **Completed:** 2
+- **Last change:** 2026-10-04T08:05:05Z — upstream read through [`17bfb5d`](https://github.com/Kaleaon/react-linkpoint/commit/17bfb5d5bd30d208a3a090e03fc424a298d9723b)
+- **Open:** 202 · **Completed:** 2
 
 ## Open
 
@@ -23,6 +23,10 @@ is tracked by hand in [`github.md`](github.md).
 
 Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/react/src/screens/`
 
+- [ ] **`08f4f54`** Restore full-featured settings, themes, and palettes; move microphone controls to 3D View and IM calls
+  - 2026-10-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/08f4f5460bbd30c8dd49ef034e0c0d897b09f8d0)
+  - 6 files: `bun.lock`, `src/components/FloatersDesktop.jsx`, `src/components/MobileOverlayControls.tsx`, `src/screens/Chat.jsx`, `src/screens/Settings.jsx`, `src/screens/World3D.jsx`
+  - also touches: Components, Unclassified
 - [ ] **`f99b44e`** feat: sync outfit avatar viewer and accessibility improvements for viewer parity
   - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f99b44e26330f1d28550e2d4ad6c45768831ff89)
   - 5 files: `src/components/ScreenBody.jsx`, `src/linkpoint/__tests__/outfit-viewer.test.tsx`, `src/linkpoint/local-cache.ts`, `src/screens/OutfitViewer.jsx`, `src/screens/Search.jsx`
@@ -229,6 +233,36 @@ Mirror into: `docs/index.html` — the `render()` view-model · `docs/react/src/
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`e43ae73`** refactor: update texture download and avatar defaults
+  - 2026-10-03 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e43ae7390588719744975bcc9fa9e002d84779d9)
+  - 6 files: `core/viewer-session.cjs`, `src/linkpoint/__tests__/viewer-session.test.ts`, `src/linkpoint/__tests__/world-avatar-body.test.ts`, `src/linkpoint/avatar-body.ts`, `src/linkpoint/graphics-3d.ts`, `src/linkpoint/world.ts`
+  - also touches: Unclassified
+- [ ] **`da31041`** feat(lumiya-parity): complete RLV, binary bucket events, atomic inventory, and sun phase calculations
+  - 2026-10-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/da310413c57e992f899f2a70d2fc9f26d1698081)
+  - 12 files: `core/sl-interactions.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/rlv.test.ts`, `src/linkpoint/interactions.ts`, `src/linkpoint/phase2/chat-extended.ts` _(+6 more)_
+  - also touches: Unclassified
+- [ ] **`d7fb3bf`** fix: align asset retrieval with official viewer
+  - 2026-10-03 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d7fb3bf5e55967c5352e8cb5e3f3cf1c0e72d8c6)
+  - 6 files: `core/viewer-session.cjs`, `src/linkpoint/__tests__/viewer-session.test.ts`, `src/linkpoint/__tests__/world-avatar-body.test.ts`, `src/linkpoint/avatar-body.ts`, `src/linkpoint/graphics-3d.ts`, `src/linkpoint/world.ts`
+  - also touches: Unclassified
+- [ ] **`c749cc3`** feat: restore mobile appearance settings
+  - 2026-10-03 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/c749cc34b0ffff7febc0a09c939026f321d25f28)
+  - 13 files: `core/serializers.cjs`, `core/viewer-session.cjs`, `src/components/DeviceFrame.jsx`, `src/index.css`, `src/linkpoint/__tests__/form-accessibility.test.tsx`, `src/linkpoint/__tests__/rate-limited-fetch.test.ts` _(+7 more)_
+  - also touches: Screens, Components, Theme & tokens, Unclassified
+- [ ] **`aaa8184`** chore(test): restore valid binary file content
+  - 2026-10-03 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/aaa818435f8344089632748e6921d2f058f30189)
+  - 34 files: `.env.example`, `android-kotlin/core/src/test/resources/j2k/irrev5.reduce1.ppm`, `android-kotlin/core/src/test/resources/j2k/irrev5.reduce2.ppm`, `android-kotlin/core/src/test/resources/j2k/irrev_gray.pgm`, `android-kotlin/core/src/test/resources/j2k/rev_gray.pgm`, `android-kotlin/core/src/test/resources/j2k/tiny.pgm` _(+28 more)_
+  - also touches: Screens, Components, Build & platform, Unclassified
+- [ ] **`294c314`** fix: align capability downloads with official viewer
+  - 2026-10-03 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/294c31435cba9cf73a11c711c407ecf49072fa68)
+  - 7 files: `core/viewer-session.cjs`, `scripts/patch-metaverse.cjs`, `src/linkpoint/__tests__/sl-actions-client.test.ts`, `src/linkpoint/__tests__/sl-login.test.ts`, `src/linkpoint/__tests__/viewer-session.test.ts`, `src/linkpoint/sl-connection-full.ts` _(+1 more)_
+  - also touches: Build & platform, Unclassified
+- [ ] **`0a8ed9c`** fix: share avatar attachment skeleton deformation
+  - 2026-10-03 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0a8ed9c6bd417f7331adbb7349574923d43197cb)
+  - 4 files: `src/linkpoint/__tests__/avatar-skeleton.test.ts`, `src/linkpoint/__tests__/world-rigged-mesh.test.ts`, `src/linkpoint/avatar-skeleton.ts`, `src/linkpoint/world.ts`
+- [ ] **`0a553a6`** Fix avatar clothing and mesh rendering
+  - 2026-10-03 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0a553a61cecb98909771ccbd5402116893d087e6)
+  - 4 files: `src/linkpoint/__tests__/world-avatar-body.test.ts`, `src/linkpoint/avatar-body.ts`, `src/linkpoint/graphics-3d.ts`, `src/linkpoint/world.ts`
 - [ ] **`ef8ab90`** ⚡ Optimize Base64 binary decoding in LLSD parser
   - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ef8ab90e3e4be715196d5465af457ed018eaf779)
   - 2 files: `bun.lock`, `src/lib/llsd.ts`
@@ -507,6 +541,10 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
 
 Mirror into: usually no design change — confirm `docs/react/` still builds the same way
 
+- [ ] **`99707b0`** ci: consolidate workflows from 8 to 4 and fix bugs
+  - 2026-10-03 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/99707b0b809bb4149ccc114f57c92102aaf23334)
+  - 11 files: `.github/workflows/android-apk.yml`, `.github/workflows/android-kotlin.yml`, `.github/workflows/ci.yml`, `.github/workflows/live-secondlife.yml`, `.github/workflows/live.yml`, `.github/workflows/opensim-live.yml` _(+5 more)_
+  - also touches: Unclassified
 - [ ] **`f1bca9c`** ci(release): enforce top-level permissions, 40-char SHA action pinning, checksum manifest, and SLSA provenance attestation
   - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f1bca9c86e2552cbda01b77d4efa13debac84986)
   - 8 files: `.github/workflows/android-apk.yml`, `.github/workflows/android-kotlin.yml`, `.github/workflows/live-secondlife.yml`, `.github/workflows/opensim-live.yml`, `.github/workflows/pr-review.yml`, `.github/workflows/release.yml` _(+2 more)_
@@ -588,6 +626,9 @@ Mirror into: usually no design change — confirm `docs/react/` still builds the
 
 Mirror into: `docs/ROADMAP.md` · `docs/github.md` · `docs/mockup-to-react.yaml`
 
+- [ ] **`0a15bbc`** chore: remove metadata.json
+  - 2026-10-03 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0a15bbc0c0d0dc6778a65182a25ba9bb3670bf9b)
+  - 1 file: `metadata.json`
 - [ ] **`7af55c0`** Use the Linkpoint name in the page title
   - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7af55c098d1bc4a378cd08828c458b042aaacd05)
   - 1 file: `index.html`
@@ -606,6 +647,21 @@ Mirror into: `docs/ROADMAP.md` · `docs/github.md` · `docs/mockup-to-react.yaml
 
 Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json`
 
+- [ ] **`e12826e`** fix(opensim): resolve review comments for child circuit handling and agent updates
+  - 2026-10-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e12826ea1e5de2507ed9dc3b2af55b043fd77dc3)
+  - 1 file: `android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt`
+- [ ] **`b8b8105`** fix(android-kotlin): resolve compilation errors in ViewerHost and ErrorRecoveryComponents
+  - 2026-10-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b8b8105c660ff50008906b040f993c14ca9e9508)
+  - 2 files: `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ViewerHost.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/ErrorRecoveryComponents.kt`
+- [ ] **`8b9fa79`** fix(desktop): add auto-discovered electron-builder.yml configuration
+  - 2026-10-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8b9fa79e6060ba1c3cee38076dde6c07370358fd)
+  - 1 file: `electron-builder.yml`
+- [ ] **`2a59750`** Fix border crossing region handshakes and remove try-catch fallback in live test
+  - 2026-10-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/2a5975098e1f7530853cd9f2b06779e636ea0d5e)
+  - 2 files: `android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt`
+- [ ] **`129139f`** fix(opensim): handle both List and Map for TeleportFinish Info and wait for in-flight teleports in settleChildren
+  - 2026-10-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/129139fb136170210bcf2693f26a8acd289adba1)
+  - 1 file: `android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt`
 - [ ] **`ff90d68`** feat: implement centralized error recovery framework with auto-reconnection
   - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ff90d688b105ec1a3aab66e376cbcac3094fab9d)
   - 15 files: `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ViewerHost.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/ErrorRecoveryComponents.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/Root.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/ErrorRecoveryManager.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/NetworkMonitor.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/ErrorRecoveryTest.kt` _(+9 more)_
@@ -686,6 +742,9 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 - [ ] **`2541b64`** Document the automated OpenSim live tests; add AGENTS.md for coding agents
   - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/2541b64852d4b8ba5ebc90f86d59b15545073943)
   - 2 files: `android-kotlin/AGENTS.md`, `android-kotlin/README.md`
+- [ ] **`0be15ac`** fix(opensim): resolve OpenSim OAR virtual integration test suite and border crossing
+  - 2026-10-02 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0be15acfa40036f350b6774e9b6f14dabf235d9d)
+  - 7 files: `android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/Messages.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/Wire.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/scene/ObjectDecoder.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt`, `android-kotlin/settings.gradle.kts` _(+1 more)_
 - [ ] **`04c390c`** Add live.py: one-command automated OpenSim live tests (replaces setup.sh); not yet verified end to end
   - 2026-10-02 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/04c390c2aab00a4efb2298d6998b5d38f02008ad)
   - 2 files: `android-kotlin/tools/opensim/live.py`, `android-kotlin/tools/opensim/setup.sh`
@@ -736,7 +795,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-10-03T06:22:39Z",
+ "generated": "2026-10-04T08:05:05Z",
  "items": [
   {
    "also": [
@@ -5320,9 +5379,372 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "9cf55a1",
    "subject": "Restore in-repo theme sources including the 8 layout variations",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/9cf55a12722ffc51e45fd720f531c24639b9629e"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-02",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/Messages.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/Wire.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/scene/ObjectDecoder.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt",
+    "android-kotlin/settings.gradle.kts",
+    "android-kotlin/tools/opensim/live.py"
+   ],
+   "sha": "0be15acfa40036f350b6774e9b6f14dabf235d9d",
+   "short": "0be15ac",
+   "subject": "fix(opensim): resolve OpenSim OAR virtual integration test suite and border crossing",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/0be15acfa40036f350b6774e9b6f14dabf235d9d"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ViewerHost.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/ErrorRecoveryComponents.kt"
+   ],
+   "sha": "b8b8105c660ff50008906b040f993c14ca9e9508",
+   "short": "b8b8105",
+   "subject": "fix(android-kotlin): resolve compilation errors in ViewerHost and ErrorRecoveryComponents",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/b8b8105c660ff50008906b040f993c14ca9e9508"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt"
+   ],
+   "sha": "129139fb136170210bcf2693f26a8acd289adba1",
+   "short": "129139f",
+   "subject": "fix(opensim): handle both List and Map for TeleportFinish Info and wait for in-flight teleports in settleChildren",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/129139fb136170210bcf2693f26a8acd289adba1"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/OpenSimLiveSessionTest.kt"
+   ],
+   "sha": "2a5975098e1f7530853cd9f2b06779e636ea0d5e",
+   "short": "2a59750",
+   "subject": "Fix border crossing region handshakes and remove try-catch fallback in live test",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/2a5975098e1f7530853cd9f2b06779e636ea0d5e"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt"
+   ],
+   "sha": "e12826ea1e5de2507ed9dc3b2af55b043fd77dc3",
+   "short": "e12826e",
+   "subject": "fix(opensim): resolve review comments for child circuit handling and agent updates",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e12826ea1e5de2507ed9dc3b2af55b043fd77dc3"
+  },
+  {
+   "also": [
+    "other"
+   ],
+   "area": "platform",
+   "author": "Claude",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    ".github/workflows/android-apk.yml",
+    ".github/workflows/android-kotlin.yml",
+    ".github/workflows/ci.yml",
+    ".github/workflows/live-secondlife.yml",
+    ".github/workflows/live.yml",
+    ".github/workflows/opensim-live.yml",
+    ".github/workflows/pr-review.yml",
+    ".github/workflows/release.yml",
+    ".github/workflows/sync-design.yml",
+    ".github/workflows/test.yml",
+    "android-kotlin/README.md"
+   ],
+   "sha": "99707b0b809bb4149ccc114f57c92102aaf23334",
+   "short": "99707b0",
+   "subject": "ci: consolidate workflows from 8 to 4 and fix bugs",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/99707b0b809bb4149ccc114f57c92102aaf23334"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    "electron-builder.yml"
+   ],
+   "sha": "8b9fa79e6060ba1c3cee38076dde6c07370358fd",
+   "short": "8b9fa79",
+   "subject": "fix(desktop): add auto-discovered electron-builder.yml configuration",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8b9fa79e6060ba1c3cee38076dde6c07370358fd"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/world-avatar-body.test.ts",
+    "src/linkpoint/avatar-body.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "0a553a61cecb98909771ccbd5402116893d087e6",
+   "short": "0a553a6",
+   "subject": "Fix avatar clothing and mesh rendering",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/0a553a61cecb98909771ccbd5402116893d087e6"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "platform",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    ".env.example",
+    "android-kotlin/core/src/test/resources/j2k/irrev5.reduce1.ppm",
+    "android-kotlin/core/src/test/resources/j2k/irrev5.reduce2.ppm",
+    "android-kotlin/core/src/test/resources/j2k/irrev_gray.pgm",
+    "android-kotlin/core/src/test/resources/j2k/rev_gray.pgm",
+    "android-kotlin/core/src/test/resources/j2k/tiny.pgm",
+    "android-kotlin/core/src/test/resources/j2k/tiny_irrev.pgm",
+    "android-kotlin/gradlew",
+    "android-kotlin/tools/j2k/make-fixtures.sh",
+    "android-kotlin/tools/opensim/live.py",
+    "android/gradlew",
+    "bun.lock",
+    "core/viewer-session.cjs",
+    "electron-builder.yml",
+    "package.json",
+    "scripts/codex-setup.sh",
+    "scripts/patch-metaverse.cjs",
+    "server.ts",
+    "src/components/MobileOverlayControls.tsx",
+    "src/linkpoint/__tests__/camera-3d.test.ts",
+    "src/linkpoint/__tests__/camera-touch-gestures.test.ts",
+    "src/linkpoint/__tests__/world-avatar-body.test.ts",
+    "src/linkpoint/__tests__/world.test.ts",
+    "src/linkpoint/avatar-body.ts",
+    "src/linkpoint/camera-3d.ts",
+    "src/linkpoint/camera-controls.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/scene-3d.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/World3D.jsx",
+    "src/server/sl-session.ts",
+    "vite.config.mts"
+   ],
+   "sha": "aaa818435f8344089632748e6921d2f058f30189",
+   "short": "aaa8184",
+   "subject": "chore(test): restore valid binary file content",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/aaa818435f8344089632748e6921d2f058f30189"
+  },
+  {
+   "also": [
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/__tests__/world-avatar-body.test.ts",
+    "src/linkpoint/avatar-body.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "d7fb3bf5e55967c5352e8cb5e3f3cf1c0e72d8c6",
+   "short": "d7fb3bf",
+   "subject": "fix: align asset retrieval with official viewer",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d7fb3bf5e55967c5352e8cb5e3f3cf1c0e72d8c6"
+  },
+  {
+   "also": [
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/__tests__/world-avatar-body.test.ts",
+    "src/linkpoint/avatar-body.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "e43ae7390588719744975bcc9fa9e002d84779d9",
+   "short": "e43ae73",
+   "subject": "refactor: update texture download and avatar defaults",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e43ae7390588719744975bcc9fa9e002d84779d9"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/avatar-skeleton.test.ts",
+    "src/linkpoint/__tests__/world-rigged-mesh.test.ts",
+    "src/linkpoint/avatar-skeleton.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "0a8ed9c6bd417f7331adbb7349574923d43197cb",
+   "short": "0a8ed9c",
+   "subject": "fix: share avatar attachment skeleton deformation",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/0a8ed9c6bd417f7331adbb7349574923d43197cb"
+  },
+  {
+   "also": [
+    "platform",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    "core/viewer-session.cjs",
+    "scripts/patch-metaverse.cjs",
+    "src/linkpoint/__tests__/sl-actions-client.test.ts",
+    "src/linkpoint/__tests__/sl-login.test.ts",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "294c31435cba9cf73a11c711c407ecf49072fa68",
+   "short": "294c314",
+   "subject": "fix: align capability downloads with official viewer",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/294c31435cba9cf73a11c711c407ecf49072fa68"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "theme",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    "core/serializers.cjs",
+    "core/viewer-session.cjs",
+    "src/components/DeviceFrame.jsx",
+    "src/index.css",
+    "src/linkpoint/__tests__/form-accessibility.test.tsx",
+    "src/linkpoint/__tests__/rate-limited-fetch.test.ts",
+    "src/linkpoint/__tests__/settings-and-tabs.test.tsx",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/avatar-animator.ts",
+    "src/linkpoint/avatar-body.ts",
+    "src/linkpoint/rate-limited-fetch.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/screens/Settings.jsx"
+   ],
+   "sha": "c749cc34b0ffff7febc0a09c939026f321d25f28",
+   "short": "c749cc3",
+   "subject": "feat: restore mobile appearance settings",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/c749cc34b0ffff7febc0a09c939026f321d25f28"
+  },
+  {
+   "also": [],
+   "area": "docs",
+   "author": "Kaleaon",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    "metadata.json"
+   ],
+   "sha": "0a15bbc0c0d0dc6778a65182a25ba9bb3670bf9b",
+   "short": "0a15bbc",
+   "subject": "chore: remove metadata.json",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/0a15bbc0c0d0dc6778a65182a25ba9bb3670bf9b"
+  },
+  {
+   "also": [
+    "components",
+    "other"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    "bun.lock",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/MobileOverlayControls.tsx",
+    "src/screens/Chat.jsx",
+    "src/screens/Settings.jsx",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "08f4f5460bbd30c8dd49ef034e0c0d897b09f8d0",
+   "short": "08f4f54",
+   "subject": "Restore full-featured settings, themes, and palettes; move microphone controls to 3D View and IM calls",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/08f4f5460bbd30c8dd49ef034e0c0d897b09f8d0"
+  },
+  {
+   "also": [
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-03",
+   "done": false,
+   "files": [
+    "core/sl-interactions.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/rlv.test.ts",
+    "src/linkpoint/interactions.ts",
+    "src/linkpoint/phase2/chat-extended.ts",
+    "src/linkpoint/phase2/inventory-core.ts",
+    "src/linkpoint/rlv.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/windlight.ts",
+    "src/viewer/RlvContext.tsx"
+   ],
+   "sha": "da310413c57e992f899f2a70d2fc9f26d1698081",
+   "short": "da31041",
+   "subject": "feat(lumiya-parity): complete RLV, binary bucket events, atomic inventory, and sun phase calculations",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/da310413c57e992f899f2a70d2fc9f26d1698081"
   }
  ],
- "last_sha": "760eefec9abc6bbfbbfabf60ac265f02f6ed3e35",
+ "last_sha": "17bfb5d5bd30d208a3a090e03fc424a298d9723b",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
