@@ -1,5 +1,4 @@
-import test from "node:test";
-import assert from "node:assert/strict";
+import { test, assert } from "vitest";
 import { lum, ratio, pickInk, lumCache } from "./color.js";
 
 test("lum: returns consistent luminance for hex inputs and caches results", () => {
