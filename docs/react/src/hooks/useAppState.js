@@ -50,10 +50,20 @@ export function useAppState() {
   });
   // Everything the preferences screens expose as a <select>: one flat bag so a
   // new preference is one entry here plus one card, not a new state key each time.
-  const [prefs, setPrefs] = useState({
-    draw: "96 m", quality: "Balanced", fps: "60 fps", complexity: "80 000",
-    volume: "70%", translate: "Off", maturity: "Moderate", bandwidth: "1 500 kbps",
-    cacheLimit: 512, cacheLoc: "Internal storage",
+  const [prefs, setPrefs] = useState(() => {
+    let savedVerbosity = "simple";
+    try {
+      const val = localStorage.getItem("telemetryVerbosity");
+      if (val === "simple" || val === "advanced") {
+        savedVerbosity = val;
+      }
+    } catch {}
+    return {
+      draw: "96 m", quality: "Balanced", fps: "60 fps", complexity: "80 000",
+      volume: "70%", translate: "Off", maturity: "Moderate", bandwidth: "1 500 kbps",
+      cacheLimit: 512, cacheLoc: "Internal storage",
+      telemetryVerbosity: savedVerbosity,
+    };
   });
   const [cacheCleared, setCacheCleared] = useState({});
   const [camPreset, setCamPreset] = useState("ORBIT");
@@ -240,7 +250,20 @@ export function useAppState() {
   const setTab = useCallback((scr, v) => setTabs((s) => ({ ...s, [scr]: v })), []);
   const dismiss = useCallback((key) => setDismissed((s) => ({ ...s, [key]: true })), []);
   const toggleSetting = useCallback((key) => setToggles((s) => ({ ...s, [key]: !s[key] })), []);
-  const setPref = useCallback((key, v) => setPrefs((s) => ({ ...s, [key]: v })), []);
+  const setTelemetryVerbosity = useCallback((mode) => {
+    const validMode = mode === "advanced" ? "advanced" : "simple";
+    setPrefs((s) => ({ ...s, telemetryVerbosity: validMode }));
+    try {
+      localStorage.setItem("telemetryVerbosity", validMode);
+    } catch {}
+  }, []);
+  const setPref = useCallback((key, v) => {
+    if (key === "telemetryVerbosity") {
+      setTelemetryVerbosity(v);
+    } else {
+      setPrefs((s) => ({ ...s, [key]: v }));
+    }
+  }, [setTelemetryVerbosity]);
   const pin = useCallback((key) => setPinned((s) => ({ ...s, [key]: !s[key] })), []);
   const respondLure = useCallback((lureId, response, regionName, coords) => {
     setLureState((s) => ({ ...s, [lureId]: response }));
@@ -744,7 +767,7 @@ export function useAppState() {
       radarTap, radarHold, radarRelease, radarBlipPick,
       setRMode,
       setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchTab, setSearchQuery, searchAdd, startIm, reconnect, notify,
-      setPref, clearCache, clearAllCache, setCamPreset, toggleOfflineGrid, setOfflineAccountModal, setOfflineAccountFirstName, setOfflineAccountLastName, setOfflineAccountPassword, saveOfflineAccount, importOarBackup, setAssetName, setAssetType, addLocalAsset, setOfflineCacheSize, clearOfflineCache, setConsoleLevel, setConsoleQuery, setConsoleAutoscroll, clearConsoleLogs, copyConsoleLogs, downloadConsoleLogs,
+      setPref, setTelemetryVerbosity, clearCache, clearAllCache, setCamPreset, toggleOfflineGrid, setOfflineAccountModal, setOfflineAccountFirstName, setOfflineAccountLastName, setOfflineAccountPassword, saveOfflineAccount, importOarBackup, setAssetName, setAssetType, addLocalAsset, setOfflineCacheSize, clearOfflineCache, setConsoleLevel, setConsoleQuery, setConsoleAutoscroll, clearConsoleLogs, copyConsoleLogs, downloadConsoleLogs,
       refreshBalance, setLindenBalance, setExchangeRate,
     },
     T, D, navMode,

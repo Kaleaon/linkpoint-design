@@ -35,6 +35,7 @@ const HUD_COLS = { row: 6, grid: 3, list: 1, bar: 3, pad: 2 };
 export default function World3D() {
   const { state, actions } = useApp();
   const { V, t } = useTheme();
+  const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
   const curSub = subView(state, "3D View");
   const overlayBtn = { width: "46px", height: "46px", borderRadius: V.rs, background: V.surf, border: "1px solid " + V.outv, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer", position: "relative" };
   const sheetStyle = { position: "absolute", left: 0, right: 0, bottom: 0, background: V.surf, borderTop: "1px solid " + V.pri, borderRadius: V.rl + " " + V.rl + " 0 0", padding: "16px 16px 20px", maxHeight: "62%", overflowY: "auto" };
@@ -63,9 +64,19 @@ export default function World3D() {
       <div style={{ position: "absolute", left: "70%", top: "56%", width: "17px", height: "38px", background: V.sec2, opacity: 0.85 }} />
       <div style={{ position: "absolute", left: "50%", top: "44%", width: "26px", height: "26px", margin: "-13px 0 0 -13px", border: "1px solid " + V.pri, borderRadius: "50%", opacity: 0.8 }} />
       <div style={{ position: "absolute", left: "70px", top: "12px", padding: "6px 8px", background: V.surf, border: "1px solid " + V.outv, font: "400 10px/1.45 " + t.font, color: V.ink2 }}>
-        Da Boom &lt;128,128,26&gt;
-        <br />
-        draw 96m · 34 fps
+        {isAdvanced ? (
+          <>
+            Da Boom &lt;128,128,26&gt;
+            <br />
+            draw 96m · 34 fps
+          </>
+        ) : (
+          <>
+            Da Boom (Center)
+            <br />
+            View distance 96m · Smooth (34 fps)
+          </>
+        )}
       </div>
 
       <KInteractive
@@ -160,18 +171,23 @@ export default function World3D() {
         </div>
         {curSub === "GFX" ? (
           <div style={{ display: "flex", justifyContent: "center", gap: "6px", flexWrap: "wrap", maxWidth: "88%" }}>
-            {GFX_STRIP.map(([label, key, opts]) => (
-              <Readout
-                key={label} V={V} t={t} label={label} value={state.prefs[key]}
-                onClick={() => {
-                  const next = opts[(opts.indexOf(state.prefs[key]) + 1) % opts.length];
-                  actions.setPref(key, next);
-                  actions.notify(label + " \u2014 " + next);
-                }}
-              />
-            ))}
-            <Readout V={V} t={t} label="SHADOWS" value={state.toggles.shadows ? "ON" : "OFF"} onClick={() => actions.toggleSetting("shadows")} />
-            <Readout V={V} t={t} label="BATTERY" value={state.toggles.battery ? "SAVER" : "FULL"} onClick={() => actions.toggleSetting("battery")} />
+            {GFX_STRIP.map(([label, key, opts]) => {
+              const displayLabel = !isAdvanced
+                ? label === "DRAW" ? "VIEW DISTANCE" : label === "QUALITY" ? "GRAPHICS" : label === "FPS" ? "FRAME RATE" : label
+                : label;
+              return (
+                <Readout
+                  key={label} V={V} t={t} label={displayLabel} value={state.prefs[key]}
+                  onClick={() => {
+                    const next = opts[(opts.indexOf(state.prefs[key]) + 1) % opts.length];
+                    actions.setPref(key, next);
+                    actions.notify(displayLabel + " \u2014 " + next);
+                  }}
+                />
+              );
+            })}
+            <Readout V={V} t={t} label="SHADOWS" value={state.toggles.shadows ? (isAdvanced ? "ON" : "Enabled") : (isAdvanced ? "OFF" : "Disabled")} onClick={() => actions.toggleSetting("shadows")} />
+            <Readout V={V} t={t} label="BATTERY" value={state.toggles.battery ? (isAdvanced ? "SAVER" : "Saver Mode") : (isAdvanced ? "FULL" : "Full Power")} onClick={() => actions.toggleSetting("battery")} />
           </div>
         ) : (
           <div style={{ display: "flex", justifyContent: "center", gap: "6px" }}>

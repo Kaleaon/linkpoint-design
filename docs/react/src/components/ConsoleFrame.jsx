@@ -22,6 +22,7 @@ export default function ConsoleFrame() {
   const { state, actions } = useApp();
   const { V, t, C, ink, consoleScene } = useTheme();
   const tick = state.tick || 0;
+  const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
 
   const cfBar = { position: "absolute", left: 0, top: 0, right: 0, height: C.bar + "px", background: V.pri, borderRadius: Math.round(C.bar * 0.66) + "px 0 0 0" };
   const cfBarEnd = { position: "absolute", right: 0, top: 0, width: (C.wide ? 104 : 66) + "px", height: C.bar + "px", background: V.sec2 };
@@ -50,16 +51,28 @@ export default function ConsoleFrame() {
     // carries the supporting world telemetry (location, height, ping)
     // instead of the generic grid-link stats every other screen shows here.
     const items = consoleScene
-      ? [
-          { label: "LOC", value: SIM_COORD.x + "," + SIM_COORD.y },
-          { label: "HEIGHT", value: SIM_COORD.z + "M" },
-          { label: "PING", value: (24 + (tick % 19)) + "MS" },
-        ]
-      : [
-          { label: "PING", value: (24 + (tick % 19)) + "MS" },
-          { label: "SPEED", value: (1.1 + (tick % 8) * 0.15).toFixed(1) + "MB/S" },
-          { label: "LAG", value: ((tick % 6) * 0.08).toFixed(2) + "S" },
-        ];
+      ? isAdvanced
+        ? [
+            { label: "LOC", value: SIM_COORD.x + "," + SIM_COORD.y },
+            { label: "HEIGHT", value: SIM_COORD.z + "M" },
+            { label: "PING", value: (24 + (tick % 19)) + "MS" },
+          ]
+        : [
+            { label: "POSITION", value: SIM_COORD.x + "," + SIM_COORD.y },
+            { label: "ALTITUDE", value: SIM_COORD.z + "m" },
+            { label: "RESPONSE", value: "Good (" + (24 + (tick % 19)) + "ms)" },
+          ]
+      : isAdvanced
+        ? [
+            { label: "PING", value: (24 + (tick % 19)) + "MS" },
+            { label: "SPEED", value: (1.1 + (tick % 8) * 0.15).toFixed(1) + "MB/S" },
+            { label: "LAG", value: ((tick % 6) * 0.08).toFixed(2) + "S" },
+          ]
+        : [
+            { label: "RESPONSE", value: "Good (" + (24 + (tick % 19)) + "ms)" },
+            { label: "SPEED", value: (1.1 + (tick % 8) * 0.15).toFixed(1) + " MB/s" },
+            { label: "DELAY", value: ((tick % 6) * 0.08).toFixed(2) + "s" },
+          ];
     const last = items.length - 1;
     return items.map((n, i) => {
       const bg = [V.sec2, V.surf2, V.sec][i % 3];
@@ -195,8 +208,13 @@ export default function ConsoleFrame() {
             font: "500 " + (C.wide ? 11.5 : 9.5) + "px/1 " + t.font, letterSpacing: ".05em", overflow: "hidden", whiteSpace: "nowrap",
           }}
         >
-          <span>{state.cReason || "SIM " + (21.4 + (tick % 13) * 0.1).toFixed(1) + "ms · PKT " + ((tick % 7) * 0.1).toFixed(1) + "% · FPS " + (58 - (tick % 5))}</span>
-          <span>{"AGENTS " + (11 + (tick % 4))}</span>
+          <span>
+            {state.cReason || (isAdvanced
+              ? "SIM " + (21.4 + (tick % 13) * 0.1).toFixed(1) + "ms · PKT " + ((tick % 7) * 0.1).toFixed(1) + "% · FPS " + (58 - (tick % 5))
+              : "Server: " + (21.4 + (tick % 13) * 0.1).toFixed(1) + "ms · Loss: " + ((tick % 7) * 0.1).toFixed(1) + "% · FPS: " + (58 - (tick % 5))
+            )}
+          </span>
+          <span>{isAdvanced ? "AGENTS " + (11 + (tick % 4)) : "Avatars: " + (11 + (tick % 4))}</span>
         </span>
       </div>
 
@@ -261,6 +279,7 @@ function buildConsoleNav({ state, actions, V, t, C, ink }) {
 function ConsoleScene() {
   const { state, actions } = useApp();
   const { V, t, C, ink } = useTheme();
+  const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
 
   const cfScene = {
     position: "absolute", left: C.rail + C.gap + "px", top: C.bar + C.gap + "px", right: C.gap + "px",
@@ -272,9 +291,14 @@ function ConsoleScene() {
   // what it reports rather than adding a second strip to the LCARS frame.
   const regionRead =
     state.screen === "3D View" && subView(state, "3D View") === "GFX"
-      ? "GFX · DRAW " + state.prefs.draw.toUpperCase() + " · " + state.prefs.quality.toUpperCase() + " · " + state.prefs.fps.toUpperCase() +
-        " · SHADOWS " + (state.toggles.shadows ? "ON" : "OFF") + " · " + (state.toggles.battery ? "SAVER" : "FULL")
-      : SIM_NAME.toUpperCase() + " · " + SIM_COORD.x + "," + SIM_COORD.y + "," + SIM_COORD.z + " · HDG " + String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(3, "0") + "° " + (state.cPitch > 2 ? "DN" : state.cPitch < -2 ? "UP" : "LVL");
+      ? isAdvanced
+        ? "GFX · DRAW " + state.prefs.draw.toUpperCase() + " · " + state.prefs.quality.toUpperCase() + " · " + state.prefs.fps.toUpperCase() +
+          " · SHADOWS " + (state.toggles.shadows ? "ON" : "OFF") + " · " + (state.toggles.battery ? "SAVER" : "FULL")
+        : "Graphics · View: " + state.prefs.draw + " · " + state.prefs.quality + " · " + state.prefs.fps +
+          " · Shadows: " + (state.toggles.shadows ? "On" : "Off") + " · " + (state.toggles.battery ? "Saver" : "Full")
+      : isAdvanced
+        ? SIM_NAME.toUpperCase() + " · " + SIM_COORD.x + "," + SIM_COORD.y + "," + SIM_COORD.z + " · HDG " + String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(3, "0") + "° " + (state.cPitch > 2 ? "DN" : state.cPitch < -2 ? "UP" : "LVL")
+        : SIM_NAME + " · Location: <" + SIM_COORD.x + ", " + SIM_COORD.y + ", " + SIM_COORD.z + "> · Facing: " + String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(3, "0") + "° (" + (state.cPitch > 2 ? "Down" : state.cPitch < -2 ? "Up" : "Level") + ")";
 
   return (
     <div onMouseDown={actions.sceneDown} onMouseMove={actions.sceneMove} onMouseUp={actions.sceneUp} onMouseLeave={actions.sceneUp} style={cfScene}>
