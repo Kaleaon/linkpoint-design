@@ -81,7 +81,7 @@ export default function World3D() {
           <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "156px", zIndex: 10, background: V.surf, borderRight: "1px solid " + V.pri, padding: "14px 10px", display: "flex", flexDirection: "column", gap: "5px", overflowY: "auto" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "0 8px 12px" }}>
               <span style={{ flex: 1, font: "700 12px/1.1 " + t.dfont, letterSpacing: ".2em", color: V.pri }}>Linkpoint</span>
-              <span
+              <KInteractive
                 onClick={() => actions.setNavPeek(false)}
                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setNavPeek(false); } }}
                 role="button"
