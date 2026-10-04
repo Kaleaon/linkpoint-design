@@ -2,6 +2,7 @@ import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { RADAR_AVATARS, RADAR_OBJECTS, COMPASS } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
+import ElevationBadge from "../components/ElevationBadge.jsx";
 import KInteractive from "../components/KInteractive.jsx";
 
 const RINGS = [
@@ -21,7 +22,7 @@ export default function Radar() {
   const { V, t, bleed, pad } = useTheme();
 
   const objMode = state.rMode === "OBJ";
-  const rSrc = (objMode ? RADAR_OBJECTS : RADAR_AVATARS).slice().sort((a, b) => a[1] - b[1]);
+  const rSrc = (objMode ? RADAR_OBJECTS : RADAR_AVATARS).slice().sort((a, b) => a.distance - b.distance);
 
   const actChip = (tone) => ({
     display: "flex",
@@ -74,7 +75,7 @@ export default function Radar() {
           );
         })}
         <div style={{ marginLeft: "auto", font: "400 10px/1 " + t.font, color: V.ink2, letterSpacing: ".06em" }}>
-          {rSrc.length + (objMode ? " objects" : " avatars") + " · " + rSrc.filter((x) => x[1] <= 20).length + " in chat range"}
+          {rSrc.length + (objMode ? " objects" : " avatars") + " · " + rSrc.filter((x) => x.distance <= 20).length + " in chat range"}
         </div>
       </div>
 
@@ -117,14 +118,20 @@ export default function Radar() {
         </div>
         <div style={{ position: "absolute", left: "50%", top: "50%", width: "10px", height: "10px", margin: "-5px 0 0 -5px", borderRadius: "5px", background: V.pri, animation: "ping 2.6s ease-out infinite" }} />
         <div style={{ position: "absolute", left: "50%", top: "50%", width: "9px", height: "9px", margin: "-4.5px 0 0 -4.5px", borderRadius: "5px", background: V.pri }} />
-        {rSrc.map(([name, dm, brg]) => {
-          const r = rPix(dm),
-            a = (brg * Math.PI) / 180,
+        {rSrc.map((r) => {
+          const name = r.name,
+            dm = r.distance,
+            brg = r.bearing,
+            zDelta = r.zDelta,
             selBlip = state.rOpen === name || state.rMenu === name;
-          const x = r * Math.sin(a),
-            y = -r * Math.cos(a),
+          const dist = rPix(dm),
+            a = (brg * Math.PI) / 180;
+          const x = dist * Math.sin(a),
+            y = -dist * Math.cos(a),
             sz = selBlip ? 13 : 9;
           return (
+            <div
+              key={r.id || name}
             <KInteractive
               key={name}
               onClick={() => actions.radarBlipPick(name)}
@@ -133,25 +140,53 @@ export default function Radar() {
                 position: "absolute",
                 left: "calc(50% + " + x.toFixed(1) + "px)",
                 top: "calc(50% + " + y.toFixed(1) + "px)",
-                width: sz + "px",
-                height: sz + "px",
-                margin: -sz / 2 + "px 0 0 " + -sz / 2 + "px",
-                borderRadius: objMode ? "2px" : "50%",
-                background: bandTone(V, dm),
-                cursor: "pointer",
-                border: "1px solid " + V.bg,
-                boxShadow: selBlip ? "0 0 0 3px " + V.outv : "none",
               }}
-            />
+            >
+              <div
+                onClick={() => actions.radarBlipPick(name)}
+                style={{
+                  position: "relative",
+                  width: sz + "px",
+                  height: sz + "px",
+                  margin: -sz / 2 + "px 0 0 " + -sz / 2 + "px",
+                  borderRadius: objMode ? "2px" : "50%",
+                  background: bandTone(V, dm),
+                  cursor: "pointer",
+                  border: "1px solid " + V.bg,
+                  boxShadow: selBlip ? "0 0 0 3px " + V.outv : "none",
+                }}
+              />
+              {(selBlip || (zDelta !== undefined && zDelta !== 0)) && (
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "100%",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    marginBottom: "3px",
+                    pointerEvents: "none",
+                    zIndex: 10,
+                  }}
+                >
+                  <ElevationBadge zDelta={zDelta} compact />
+                </div>
+              )}
+            </div>
           );
         })}
         <div style={{ position: "absolute", left: "10px", bottom: "8px", font: "400 9px/1 " + t.font, letterSpacing: ".06em", color: V.ink2 }}>
-          {objMode ? "objects by distance" : "nearest " + rSrc[0][1] + "m · " + bandName(rSrc[0][1]).toLowerCase()}
+          {objMode ? "objects by distance" : "nearest " + (rSrc[0]?.distance ?? 0) + "m · " + bandName(rSrc[0]?.distance ?? 0).toLowerCase()}
         </div>
       </div>
 
       <div style={rListWrap}>
-        {rSrc.map(([name, dm, brg, meta, icon]) => {
+        {rSrc.map((r) => {
+          const name = r.name,
+            dm = r.distance,
+            brg = r.bearing,
+            zDelta = r.zDelta,
+            meta = r.meta,
+            icon = r.icon;
           const tone = bandTone(V, dm),
             open = state.rOpen === name,
             menu = state.rMenu === name;
@@ -168,6 +203,8 @@ export default function Radar() {
             background: V.surf,
           };
           return (
+            <div key={r.id || name} style={wrap}>
+              <div
             <div key={name} style={wrap}>
               <KInteractive
                 onClick={() => actions.radarTap(name)}
@@ -184,6 +221,11 @@ export default function Radar() {
                     {COMPASS[Math.round(brg / 22.5) % 16] + " · " + meta}
                   </div>
                 </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", flex: "none" }}>
+                  <ElevationBadge zDelta={zDelta} />
+                  <div style={{ padding: "4px 8px", border: "1px solid " + tone, borderRadius: V.rs, font: "400 11px/1 " + t.font, color: tone }}>{dm}m</div>
+                </div>
+              </div>
                 <div style={{ padding: "4px 8px", border: "1px solid " + tone, borderRadius: V.rs, font: "400 11px/1 " + t.font, color: tone, flex: "none" }}>{dm}m</div>
               </KInteractive>
               {open ? (
