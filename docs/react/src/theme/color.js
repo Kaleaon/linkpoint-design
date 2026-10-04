@@ -4,7 +4,12 @@
 // so we resolve the actual background and pick whichever candidate ink scores
 // highest against it (WCAG contrast ratio).
 
+export const lumCache = new Map();
+
 export function lum(c) {
+  if (lumCache.has(c)) {
+    return lumCache.get(c);
+  }
   const m = String(c).trim().match(/^#?([0-9a-f]{3}|[0-9a-f]{6})$/i);
   let r, g, b;
   if (m) {
@@ -15,7 +20,10 @@ export function lum(c) {
     b = parseInt(x.slice(4, 6), 16);
   } else {
     const n = String(c).match(/\d+(\.\d+)?/g);
-    if (!n || n.length < 3) return 0.5;
+    if (!n || n.length < 3) {
+      lumCache.set(c, 0.5);
+      return 0.5;
+    }
     r = +n[0];
     g = +n[1];
     b = +n[2];
@@ -24,21 +32,24 @@ export function lum(c) {
     v /= 255;
     return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
   };
-  return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+  const val = 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b);
+  lumCache.set(c, val);
+  return val;
 }
 
 export function ratio(a, b) {
-  const la = lum(a),
-    lb = lum(b);
+  const la = typeof a === "number" ? a : lum(a),
+    lb = typeof b === "number" ? b : lum(b);
   return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
 }
 
 export function pickInk(bg, candidates) {
+  const bgLum = lum(bg);
   const list = (candidates || []).concat(["#FFFFFF", "#000000"]).filter(Boolean);
   let best = list[0],
     score = -1;
   for (const c of list) {
-    const r = ratio(bg, c);
+    const r = ratio(bgLum, c);
     if (r > score) {
       score = r;
       best = c;
