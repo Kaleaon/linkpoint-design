@@ -724,7 +724,7 @@ export function useAppState() {
 
   return {
     state: {
-      layout, palette, customTheme, device, screen, dialog, dense, tabs, chip, tileOk, invOpen, invSelectMode, invSelected, invMoveModal, invItems, dismissed, pinned,
+      layout, palette, customTheme, device, screen, dialog, dense, tabs, chip, tileOk, invOpen, invSelectMode, invSelected, invMoveModal, invItems, dismissed, pinned, lureState,
       toggles, cond, hudOn, hudPos, hudPicker, target, targetPicker, navPeek,
       cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
       rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
@@ -735,7 +735,7 @@ export function useAppState() {
     actions: {
       setLayout, setPalette: selectPalette, setThemeColor, renameTheme, saveTheme, resetTheme, importTheme, downloadTheme, shareTheme, setDevice, setScreen: screenPick, setDialog, setDense,
       allGrids, openAddGrid, cancelAddGrid, saveCustomGrid, setAddGridName, setAddGridHost,
-      setTab, setChip, setTileOk, toggleInvFolder, toggleInvSelectMode, toggleInvSelectedItem, invLongPressItem, invWearSelected, invOpenMoveModal, invCloseMoveModal, invMoveSelected, invDeleteSelected, dismiss, toggleSetting, pin,
+      setTab, setChip, setTileOk, toggleInvFolder, toggleInvSelectMode, toggleInvSelectedItem, invLongPressItem, invWearSelected, invOpenMoveModal, invCloseMoveModal, invMoveSelected, invDeleteSelected, dismiss, toggleSetting, pin, respondLure, teleportToRegion, saveLandmark,
       cycleLayout, cyclePalette, setCond, setMenu,
       flR, flDrag, flFocus, flToggle, flClose,
       hudDrag, toggleHud, setHudPicker, setTarget, setTargetPicker, setNavPeek,
