@@ -29,12 +29,61 @@ export const TABS_NAV_IDS = ["Chat", "Friends", "Radar", "Map", "3D View", "Sett
 export const IM_CHIPS = ["Nyx Vaher", "Kit Sandalwood", "Sable Ashgrove"];
 export const GROUP_CHIPS = ["Bay City Builders", "Ruthless Roofers"];
 
+export const REGION_META = {
+  "Hollywood": { name: "Bay City — Hollywood", coords: "<112, 44, 51>", rating: "Adult", avatars: "18 avatars online" },
+  "Bay City — Hollywood": { name: "Bay City — Hollywood", coords: "<112, 44, 51>", rating: "Adult", avatars: "18 avatars online" },
+  "Da Boom": { name: "Da Boom", coords: "<128, 128, 26>", rating: "General", avatars: "34 avatars online" },
+  "Ahern": { name: "Ahern Welcome Area", coords: "<128, 128, 24>", rating: "Moderate", avatars: "6 avatars online" },
+  "Sansara Ridge": { name: "Sansara Ridge", coords: "<64, 200, 88>", rating: "General", avatars: "2 avatars online" },
+};
+
+export function parseSlurl(text, explicitUrl, explicitTitle) {
+  let url = explicitUrl || "";
+  let title = explicitTitle || "";
+  let extractedUrl = null;
+
+  if (!url && text) {
+    const slurlRegex = /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^\/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
+    const match = text.match(slurlRegex);
+    if (match) {
+      extractedUrl = match[0];
+      const regRaw = decodeURIComponent(match[1]).replace(/\+/g, " ");
+      const x = match[2] || "128";
+      const y = match[3] || "128";
+      const z = match[4] || "20";
+      url = match[0];
+      title = regRaw;
+      var parsedCoords = `<${x}, ${y}, ${z}>`;
+    }
+  }
+
+  if (!url) return null;
+
+  const slurlRegex = /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^\/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
+  const match = url.match(slurlRegex);
+  let regKey = title || (match ? decodeURIComponent(match[1]).replace(/\+/g, " ") : "Unknown Region");
+  let coords = parsedCoords || (match ? `<${match[2] || 128}, ${match[3] || 128}, ${match[4] || 20}>` : "<128, 128, 26>");
+
+  const known = REGION_META[regKey] || REGION_META[regKey.split("—")[0].trim()] || REGION_META[Object.keys(REGION_META).find(k => regKey.includes(k))];
+
+  return {
+    url,
+    extractedUrl,
+    regionName: known ? known.name : regKey,
+    coords: known ? known.coords : coords,
+    rating: known ? known.rating : "Moderate",
+    avatars: known ? known.avatars : "4 avatars online",
+  };
+}
+
 export const LOCAL_MSGS = [
   { ts: "14:21", sender: "Nyx Vaher", text: "the roof build is up — teleport when you're free" },
   { ts: "14:22", sender: "Ruth Resident", text: "on my way, just rezzing the last sculpt", me: true },
   { ts: "14:24", sender: "System", text: "Kit Sandalwood is online.", sys: true },
   { ts: "14:25", sender: "Kit Sandalwood", text: "@Ruth check the landmark, second floor entrance", linkTitle: "Bay City — Hollywood", linkUrl: "secondlife://Hollywood/112/44/51" },
+  { id: "lure-local-1", ts: "14:26", sender: "Kit Sandalwood", text: "Kit Sandalwood offers to teleport you", isLure: true, lureRegion: "Bay City — Hollywood", lureCoords: "<112, 44, 51>", lureMsg: "come see the build jam, we're on the roof" },
   { ts: "14:27", sender: "Ruth Resident", text: "got it 👍", me: true },
+  { ts: "14:28", sender: "Nyx Vaher", text: "or check the welcome area secondlife://Ahern/128/128/24" },
   { ts: "14:29", sender: "Nyx Vaher", text: "bringing the light rig over, one sec" },
 ];
 
@@ -47,7 +96,7 @@ export const IM_THREADS = {
   ],
   "Kit Sandalwood": [
     { ts: "13:40", sender: "Kit Sandalwood", text: "reslotted the brass texture, check inventory", linkTitle: "Bay City — Hollywood", linkUrl: "secondlife://Hollywood/112/44/51" },
-    { ts: "13:41", sender: "Kit Sandalwood", text: "lmk if the UVs still look off" },
+    { id: "lure-im-1", ts: "13:41", sender: "Kit Sandalwood", text: "offers to teleport you to Bay City — Hollywood <112, 44, 51>", isLure: true, lureRegion: "Bay City — Hollywood", lureCoords: "<112, 44, 51>", lureMsg: "come inspect the UV alignment in person" },
     { ts: "13:47", sender: "Ruth Resident", text: "looking now, one sec", me: true },
   ],
   "Sable Ashgrove": [{ ts: "yesterday", sender: "Sable Ashgrove", text: "the texture pack is in your inventory, no rush" }],
@@ -55,7 +104,7 @@ export const IM_THREADS = {
 
 export const GROUP_THREADS = {
   "Bay City Builders": [
-    { ts: "12:10", sender: "Marlowe Quill", text: "meeting moved to 6pm SLT" },
+    { ts: "12:10", sender: "Marlowe Quill", text: "meeting moved to 6pm SLT at secondlife://Hollywood/112/44/51" },
     { ts: "12:12", sender: "Ruth Resident", text: "works for me", me: true },
     { ts: "12:15", sender: "System", text: "Sable Ashgrove joined the group.", sys: true },
   ],
@@ -80,21 +129,21 @@ export const FRIEND_ROWS = [
 // Grid residents who show up in Search but aren't friends yet.
 export const SEARCH_STRANGERS = ["Lyra Sunspire", "Cove Ashworth", "Petra Vantage", "Wren Halloway"];
 
-// Radar, Firestorm-style: [name, distance-m, bearing-deg, meta, icon]
+// Radar entities with explicit schema and relative altitude (zDelta)
 export const RADAR_AVATARS = [
-  ["Nyx Vaher", 8, 45, "friend · typing · payment info used", "user-round"],
-  ["Kit Sandalwood", 17, 10, "friend · voice active", "user-round"],
-  ["Marlowe Quill", 34, 95, "age 14d · payment info on file", "user"],
-  ["Bramble Vex", 48, 220, "age 3y · no payment info", "user"],
-  ["Juno Halcyon", 112, 175, "beyond shout range", "user"],
-  ["Wren Ostara", 146, 310, "beyond draw distance", "user"],
+  { id: "av-nyx", name: "Nyx Vaher", distance: 8, bearing: 45, zDelta: 12, meta: "friend · typing · payment info used", icon: "user-round" },
+  { id: "av-kit", name: "Kit Sandalwood", distance: 17, bearing: 10, zDelta: 0, meta: "friend · voice active", icon: "user-round" },
+  { id: "av-marlowe", name: "Marlowe Quill", distance: 34, bearing: 95, zDelta: -4, meta: "age 14d · payment info on file", icon: "user" },
+  { id: "av-bramble", name: "Bramble Vex", distance: 48, bearing: 220, zDelta: 25, meta: "age 3y · no payment info", icon: "user" },
+  { id: "av-juno", name: "Juno Halcyon", distance: 112, bearing: 175, zDelta: -15, meta: "beyond shout range", icon: "user" },
+  { id: "av-wren", name: "Wren Ostara", distance: 146, bearing: 310, zDelta: 0, meta: "beyond draw distance", icon: "user" },
 ];
 export const RADAR_OBJECTS = [
-  ["Vendor — Sunset Lamp v3", 6, 60, "Kit Sandalwood · 4 prims · 0.21ms", "box"],
-  ["Particle fountain", 14, 120, "Linden Public · 240 particles/s", "sparkles"],
-  ["Security orb", 22, 200, "Marlowe Quill · scans every 5s", "shield-alert"],
-  ["Dance ball", 31, 15, "Juno Halcyon · 1 script · 0.04ms", "circle-dot"],
-  ["Rezzing platform", 58, 285, "you · 128 prims · no scripts", "layers"],
+  { id: "obj-lamp", name: "Vendor — Sunset Lamp v3", distance: 6, bearing: 60, zDelta: 0, meta: "Kit Sandalwood · 4 prims · 0.21ms", icon: "box" },
+  { id: "obj-fountain", name: "Particle fountain", distance: 14, bearing: 120, zDelta: -2, meta: "Linden Public · 240 particles/s", icon: "sparkles" },
+  { id: "obj-orb", name: "Security orb", distance: 22, bearing: 200, zDelta: 8, meta: "Marlowe Quill · scans every 5s", icon: "shield-alert" },
+  { id: "obj-dance", name: "Dance ball", distance: 31, bearing: 15, zDelta: 3, meta: "Juno Halcyon · 1 script · 0.04ms", icon: "circle-dot" },
+  { id: "obj-platform", name: "Rezzing platform", distance: 58, bearing: 285, zDelta: 45, meta: "you · 128 prims · no scripts", icon: "layers" },
 ];
 export const COMPASS = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
 
@@ -158,29 +207,35 @@ export const CACHE_ROWS = [
 export const cacheRows = (cleared = {}) => CACHE_ROWS.map((r) => ({ ...r, mb: cleared[r.key] ? 0 : r.mb }));
 export const cacheUsed = (cleared = {}) => cacheRows(cleared).reduce((n, r) => n + r.mb, 0);
 
-export const HEAD = (layoutName, paletteName, cacheState = {}) => ({
-  Chat: ["CHAT", "> Ruth Resident @ Da Boom"],
-  Friends: ["FRIENDS", "> 3 online / 8 total · live · sync 14:32:07"],
-  Radar: ["RADAR", "> 6 avatars in region · 3 in chat range"],
-  Map: ["WORLD MAP", "> Da Boom <1000, 1000> · 4 regions loaded"],
-  Inventory: ["INVENTORY", "> 1 284 items · 42 folders · Ruth Resident"],
-  Profile: ["PROFILE", "> resident record · nyx.vaher"],
-  Groups: ["GROUPS", "> 12 of 42 slots · 3 unread notices"],
-  Notices: ["NOTIFICATIONS", "> 4 offline IMs queued · autoresponse ON"],
-  Teleport: ["TELEPORT", "> 9 landmarks · 5 recent destinations"],
-  Settings: ["SETTINGS", "> " + layoutName + " layout / " + paletteName + " colour"],
-  Cache: ["CACHE", "> " + cacheUsed(cacheState.cleared) + " MB of " + cacheState.limit + " MB · " + cacheState.loc],
-  Diagnostics: ["DIAGNOSTICS", "> grid connectivity probe · agni"],
-  // These five screens existed but had no HEAD entry, so they fell through to
-  // ["", ""] and rendered an empty header band above their card list.
-  Outfits: ["OUTFITS", "> 1 worn · 14 saved · Ruth Resident"],
-  Objects: ["OBJECTS", "> 4 nearby · 25 prims in draw distance"],
-  Parcel: ["PARCEL", "> Linden Public Park · Da Boom · general"],
-  Transactions: ["L$ TRANSACTIONS", "> balance L$ 4 250 · 14 in the last 30 days"],
-  "Mute List": ["MUTE LIST", "> 6 blocked · 3 residents / 3 objects"],
-  "3D View": ["", ""],
-  Login: ["", ""],
-});
+export const HEAD = (layoutName, paletteName, cacheState = {}, balanceState = {}) => {
+  const linden = balanceState.lindenBalance ?? 4250;
+  const rate = balanceState.exchangeRate ?? 248.5;
+  const usd = (linden / rate).toFixed(2);
+  const formattedLinden = linden.toLocaleString("en-US");
+  return {
+    Chat: ["CHAT", "> Ruth Resident @ Da Boom"],
+    Friends: ["FRIENDS", "> 3 online / 8 total · live · sync 14:32:07"],
+    Radar: ["RADAR", "> 6 avatars in region · 3 in chat range"],
+    Map: ["WORLD MAP", "> Da Boom <1000, 1000> · 4 regions loaded"],
+    Inventory: ["INVENTORY", "> 1 284 items · 42 folders · Ruth Resident"],
+    Profile: ["PROFILE", "> resident record · nyx.vaher"],
+    Groups: ["GROUPS", "> 12 of 42 slots · 3 unread notices"],
+    Notices: ["NOTIFICATIONS", "> 4 offline IMs queued · autoresponse ON"],
+    Teleport: ["TELEPORT", "> 9 landmarks · 5 recent destinations"],
+    Settings: ["SETTINGS", "> " + layoutName + " layout / " + paletteName + " colour"],
+    Cache: ["CACHE", "> " + cacheUsed(cacheState.cleared) + " MB of " + cacheState.limit + " MB · " + cacheState.loc],
+    Diagnostics: ["DIAGNOSTICS", "> grid connectivity probe · agni"],
+    // These five screens existed but had no HEAD entry, so they fell through to
+    // ["", ""] and rendered an empty header band above their card list.
+    Outfits: ["OUTFITS", "> 1 worn · 14 saved · Ruth Resident"],
+    Objects: ["OBJECTS", "> 4 nearby · 25 prims in draw distance"],
+    Parcel: ["PARCEL", "> Linden Public Park · Da Boom · general"],
+    Transactions: ["L$ TRANSACTIONS", `> balance L$ ${formattedLinden} (~$${usd} USD) · 14 in the last 30 days`],
+    "Mute List": ["MUTE LIST", "> 6 blocked · 3 residents / 3 objects"],
+    "3D View": ["", ""],
+    Login: ["", ""],
+  };
+};
 
 export const DETAIL = {
   Chat: {
@@ -199,7 +254,7 @@ export const DETAIL = {
     rows: [["PARCEL", "Da Boom <128, 128, 26>"], ["PERMISSIONS", "copy · modify · no transfer"], ["SCRIPT STATE", "1 script running · 0.02ms CPU time"], ["ACTIONS", "Touch · Pay L$ · Inspect · Derezz"]] },
   Parcel: { title: "Linden Public Park", sub: "parcel · 4096 sq.m. · general rating",
     rows: [["OWNER", "Governor Linden"], ["PRIM USAGE", "1 240 / 1 875 prims (66%)"], ["AUDIO STREAM", "http://stream.sl-radio.net:8000/live"], ["FLAGS", "Voice Enabled · No Script Restrict · Edit Land"]] },
-  Transactions: { title: "L$ Balance: 4,250", sub: "last 30 days · 14 transactions",
+  Transactions: { title: "L$ Balance: 4,250 (~$17.10 USD)", sub: "rate 1 USD = 248.5 L$ · 14 transactions in last 30 days",
     rows: [["LAST PAYMENT", "+L$ 1,200 from Marlowe Quill"], ["TOTAL SPENT", "L$ 3,450 this month"], ["TOTAL EARNED", "L$ 8,900 this month"], ["FILTER", "All transactions"]] },
   "Mute List": { title: "Blocked Entities", sub: "6 blocked items · 3 residents · 3 objects",
     rows: [["SETTINGS", "Block text chat · voice · inventory offers"], ["LAST BLOCKED", "Spam Bot v4 (yesterday)"], ["STORAGE", "Synced with Second Life server"]] },
@@ -267,11 +322,91 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
     // ALL lists every movement; PAYMENTS narrows to money leaving the account,
     // so the outgoing rows carry both tags and the incoming ones only ALL.
     Transactions: [
-      { sub: ["ALL"], icon: "arrow-down-left", title: "Received L$ 1,200", right: "5h ago", body: "From Marlowe Quill for “Roof Kit”", accent: "ok" },
-      { sub: ["ALL", "PAYMENTS"], icon: "arrow-up-right", title: "Paid L$ 350", right: "Yesterday", body: "To Bay City Land Co. for Parcel Rent", accent: "sec" },
-      { sub: ["ALL", "PAYMENTS"], icon: "arrow-up-right", title: "Paid L$ 500", right: "Sep 12", body: "To Kit Sandalwood for Sculpted Light Rig" },
-      { sub: ["ALL"], icon: "arrow-down-left", title: "Received L$ 2,500", right: "Sep 10", body: "From Event Payout · Build Jam Winner", accent: "ok" },
-      { sub: ["ALL", "PAYMENTS"], icon: "arrow-up-right", title: "Paid L$ 99", right: "Sep 08", body: "To Aurora Dance Crew for Group Join Fee" },
+      {
+        sub: ["ALL"], icon: "arrow-down-left", title: "Received L$ 1,200", right: "5h ago", body: "From Marlowe Quill for “Roof Kit”", accent: "ok",
+        actions: [
+          {
+            label: "VIEW RECEIPT",
+            primary: true,
+            pick: () => actions.setDialog({
+              icon: "receipt",
+              kind: "ITEMIZED RECEIPT",
+              title: "Received L$ 1,200",
+              body: "Payment received from Marlowe Quill for “Roof Kit”.",
+              meta: "Transaction ID: TX-84920412 · Date: Today 14:32 SLT · Amount: L$ 1,200 (~$4.83 USD) · Status: Settled",
+              buttons: [{ label: "CLOSE", primary: true }]
+            })
+          }
+        ]
+      },
+      {
+        sub: ["ALL", "PAYMENTS"], icon: "arrow-up-right", title: "Paid L$ 350", right: "Yesterday", body: "To Bay City Land Co. for Parcel Rent", accent: "sec",
+        actions: [
+          {
+            label: "VIEW RECEIPT",
+            primary: true,
+            pick: () => actions.setDialog({
+              icon: "receipt",
+              kind: "ITEMIZED RECEIPT",
+              title: "Paid L$ 350",
+              body: "Payment sent to Bay City Land Co. for Parcel Rent.",
+              meta: "Transaction ID: TX-84918230 · Date: Yesterday 11:15 SLT · Amount: L$ 350 (~$1.41 USD) · Status: Settled",
+              buttons: [{ label: "CLOSE", primary: true }]
+            })
+          }
+        ]
+      },
+      {
+        sub: ["ALL", "PAYMENTS"], icon: "arrow-up-right", title: "Paid L$ 500", right: "Sep 12", body: "To Kit Sandalwood for Sculpted Light Rig",
+        actions: [
+          {
+            label: "VIEW RECEIPT",
+            primary: true,
+            pick: () => actions.setDialog({
+              icon: "receipt",
+              kind: "ITEMIZED RECEIPT",
+              title: "Paid L$ 500",
+              body: "Payment sent to Kit Sandalwood for Sculpted Light Rig.",
+              meta: "Transaction ID: TX-84890123 · Date: 2026-09-12 16:40 SLT · Amount: L$ 500 (~$2.01 USD) · Status: Settled",
+              buttons: [{ label: "CLOSE", primary: true }]
+            })
+          }
+        ]
+      },
+      {
+        sub: ["ALL"], icon: "arrow-down-left", title: "Received L$ 2,500", right: "Sep 10", body: "From Event Payout · Build Jam Winner", accent: "ok",
+        actions: [
+          {
+            label: "VIEW RECEIPT",
+            primary: true,
+            pick: () => actions.setDialog({
+              icon: "receipt",
+              kind: "ITEMIZED RECEIPT",
+              title: "Received L$ 2,500",
+              body: "Event Payout received for Build Jam Winner.",
+              meta: "Transaction ID: TX-84872391 · Date: 2026-09-10 18:00 SLT · Amount: L$ 2,500 (~$10.06 USD) · Status: Settled",
+              buttons: [{ label: "CLOSE", primary: true }]
+            })
+          }
+        ]
+      },
+      {
+        sub: ["ALL", "PAYMENTS"], icon: "arrow-up-right", title: "Paid L$ 99", right: "Sep 08", body: "To Aurora Dance Crew for Group Join Fee",
+        actions: [
+          {
+            label: "VIEW RECEIPT",
+            primary: true,
+            pick: () => actions.setDialog({
+              icon: "receipt",
+              kind: "ITEMIZED RECEIPT",
+              title: "Paid L$ 99",
+              body: "Group Join Fee paid to Aurora Dance Crew.",
+              meta: "Transaction ID: TX-84851204 · Date: 2026-09-08 09:20 SLT · Amount: L$ 99 (~$0.40 USD) · Status: Settled",
+              buttons: [{ label: "CLOSE", primary: true }]
+            })
+          }
+        ]
+      },
     ],
     "Mute List": [
       { sub: "AVATARS", icon: "volume-x", title: "Griefing Spambot 9000", right: "AVATAR", body: "Muted text, voice & gestures · Sep 14", actions: [{ label: "UNMUTE", dim: true, pick: () => actions.notify("Unmuted Griefing Spambot 9000") }] },

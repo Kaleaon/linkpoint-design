@@ -2,7 +2,7 @@ import { createContext, useContext, useMemo } from "react";
 import { useApp } from "./AppContext.jsx";
 import { computeTheme } from "../theme/computeTheme.js";
 
-const ThemeContext = createContext(null);
+export const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
   const { state, actions } = useApp();

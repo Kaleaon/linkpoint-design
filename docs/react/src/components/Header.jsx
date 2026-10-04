@@ -12,7 +12,12 @@ export default function Header() {
   const { state } = useApp();
   const { V, t, headLook, condPack, scr, isConsole } = useTheme();
 
-  const headMap = HEAD(LAYOUTS[state.layout].name, PALETTES[state.palette].name, { cleared: state.cacheCleared, limit: state.prefs.cacheLimit, loc: state.prefs.cacheLoc });
+  const headMap = HEAD(
+    LAYOUTS[state.layout].name,
+    PALETTES[state.palette].name,
+    { cleared: state.cacheCleared, limit: state.prefs.cacheLimit, loc: state.prefs.cacheLoc },
+    { lindenBalance: state.lindenBalance, exchangeRate: state.exchangeRate, lastSyncedAt: state.lastSyncedAt }
+  );
   const [rawTitle, rawSubtitle] = headMap[scr] || ["", ""];
   const title = rawTitle;
   const subtitle = condPack ? condPack.sub || null : rawSubtitle;

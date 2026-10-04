@@ -9,7 +9,7 @@ import Icon from "./Icon.jsx";
 export default function SystemDialog() {
   const { state, actions } = useApp();
   const { V, t } = useTheme();
-  const dlg = state.dialog && DIALOGS[state.dialog];
+  const dlg = state.dialog && (typeof state.dialog === "object" ? state.dialog : DIALOGS[state.dialog]);
   if (!dlg) return null;
 
   const btnBase = { flex: "1 1 40%", minHeight: "46px", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid " + V.outv, borderRadius: V.rs, font: "700 11px/1 " + t.font, letterSpacing: ".14em", color: V.ink, textAlign: "center", padding: "0 8px", cursor: "pointer" };

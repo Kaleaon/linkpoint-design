@@ -279,9 +279,9 @@ function buildFBody(state, cardsByScreen) {
   return {
     Chat: LOCAL_MSGS.slice(-6).map((m) => ({ a: m.sender, b: m.ts })),
     Radar: RADAR_AVATARS.slice()
-      .sort((a, b) => a[1] - b[1])
+      .sort((a, b) => a.distance - b.distance)
       .slice(0, 8)
-      .map((r) => ({ a: r[0], b: r[1] + "m" })),
+      .map((r) => ({ a: r.name, b: r.distance + "m" })),
     Friends: FRIEND_ROWS.map((r) => ({ a: r[0], b: r[1].split(" · ")[0] })),
     Inventory: invNodes.map((n) => ({ a: n.name, b: n.ver })),
     Map: REGIONS.map(([name, meta]) => ({ a: name, b: meta })),
