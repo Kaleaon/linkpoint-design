@@ -54,7 +54,7 @@ function StackHead({ title, subtitle, scr }) {
         <div style={{ font: "400 11px/1.4 " + t.font, color: V.ink2, marginTop: "4px" }}>{subtitle}</div>
       </div>
       {showLink ? (
-        <div style={{ display: "flex", alignItems: "center", gap: "6px", height: "28px", padding: "0 10px", border: "1px solid " + V.ok, borderRadius: V.rs, background: V.surf }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "6px", height: "32px", padding: "0 12px", border: "1px solid " + V.ok, borderRadius: V.rs, background: V.surf }}>
           <span style={{ width: "6px", height: "6px", borderRadius: "3px", background: V.ok }} />
           <span style={{ font: "600 10px/1 " + t.font, letterSpacing: ".2em", color: V.ok }}>LINK</span>
         </div>

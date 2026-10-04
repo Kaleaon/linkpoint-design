@@ -28,7 +28,7 @@ export default function MenuBar() {
   };
 
   return (
-    <div style={{ flex: "none", display: "flex", alignItems: "stretch", height: "28px", padding: "0 8px", background: V.surf, borderBottom: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv), position: "relative", zIndex: 80 }} onClick={() => state.menu && actions.setMenu(null)}>
+    <div style={{ flex: "none", display: "flex", alignItems: "stretch", height: "32px", padding: "0 8px", background: V.surf, borderBottom: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv), position: "relative", zIndex: 80 }} onClick={() => state.menu && actions.setMenu(null)}>
       {FMENU.map((mm) => {
         const open = state.menu === mm.label;
         const win = mm.items === "WINDOWS";
@@ -45,7 +45,7 @@ export default function MenuBar() {
               {mm.label}
             </div>
             {open ? (
-              <div style={{ position: "absolute", left: 0, top: "28px", minWidth: "216px", background: V.surf, border: "1px solid " + V.pri, boxShadow: "0 14px 34px rgba(0,0,0,.55)", padding: "3px 0", zIndex: 90, borderRadius: V.rp, overflow: "hidden" }}>
+              <div style={{ position: "absolute", left: 0, top: "32px", minWidth: "216px", background: V.surf, border: "1px solid " + V.pri, boxShadow: "0 14px 34px rgba(0,0,0,.55)", padding: "3px 0", zIndex: 90, borderRadius: V.rp, overflow: "hidden" }}>
                 {items.map((it, i) => (
                   <div
                     key={i}
@@ -58,7 +58,7 @@ export default function MenuBar() {
                         handleMenuClick(mm.label, it[0]);
                       }
                     }}
-                    style={{ display: "flex", alignItems: "center", gap: "10px", minHeight: "26px", padding: "0 12px", cursor: "pointer", font: "400 11.5px/1 " + t.font, color: V.ink }}
+                    style={{ display: "flex", alignItems: "center", gap: "10px", minHeight: "32px", padding: "0 12px", cursor: "pointer", font: "400 11.5px/1 " + t.font, color: V.ink }}
                   >
                     <span style={{ flex: 1, font: "inherit" }}>{it[0]}</span>
                     <span style={{ flex: "none", font: "400 10px/1 " + t.font, color: V.ink2, letterSpacing: ".06em" }}>{it[1]}</span>

@@ -169,7 +169,7 @@ export default function ConsoleFrame() {
                       actions.removeDockSlot(k);
                     }
                   }}
-                  style={{ position: "absolute", right: "3px", top: "3px", width: "18px", height: "18px", borderRadius: "9px", background: V.err, color: ink(V.err, [V.bg, V.ink]), font: "700 13px/18px " + t.dfont, textAlign: "center", cursor: "pointer" }}
+                  style={{ position: "absolute", right: "3px", top: "3px", width: "24px", height: "24px", borderRadius: "12px", background: V.err, color: ink(V.err, [V.bg, V.ink]), font: "700 13px/24px " + t.dfont, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
                 >
                   &minus;
                 </span>
