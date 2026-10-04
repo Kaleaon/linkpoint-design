@@ -7,7 +7,7 @@ import { subView, inSub } from "../theme/constants.js";
 import Header from "./Header.jsx";
 import SegmentedTabs from "./SegmentedTabs.jsx";
 import ChipRow from "./ChipRow.jsx";
-import StateBlock from "./StateBlock.jsx";
+import StateBlock, { GlobalErrorBoundary } from "./StateBlock.jsx";
 import CardList from "./CardList.jsx";
 import SplitDetail from "./SplitDetail.jsx";
 import Chat from "../screens/Chat.jsx";
@@ -40,23 +40,25 @@ export default function ScreenBody() {
         <Header />
         <SegmentedTabs />
         <ChipRow />
-        {norm && scr === "Chat" && <Chat />}
-        {norm && scr === "Radar" && <Radar />}
-        {norm && scr === "Map" && <Map />}
-        {norm && scr === "3D View" && (
-          <>
-            <World3D />
-            <World3DActionBar />
-          </>
-        )}
-        {norm && scr === "Inventory" && <Inventory />}
-        {norm && scr === "Profile" && <Profile />}
-        {norm && scr === "Offline Grid" && <OfflineGrid />}
-        {norm && scr === "Grid Console" && <GridConsole />}
-        {norm && isCardScreen && <CardList cards={(cardsByScreen[scr] || []).filter((c) => inSub(c, curSub))} />}
-        {scr === "Login" && <Login />}
-        {scr === "Search" && <Search />}
-        {!norm && <StateBlock />}
+        <GlobalErrorBoundary onReset={() => actions.setCond && actions.setCond("normal")}>
+          {norm && scr === "Chat" && <Chat />}
+          {norm && scr === "Radar" && <Radar />}
+          {norm && scr === "Map" && <Map />}
+          {norm && scr === "3D View" && (
+            <>
+              <World3D />
+              <World3DActionBar />
+            </>
+          )}
+          {norm && scr === "Inventory" && <Inventory />}
+          {norm && scr === "Profile" && <Profile />}
+          {norm && scr === "Offline Grid" && <OfflineGrid />}
+          {norm && scr === "Grid Console" && <GridConsole />}
+          {norm && isCardScreen && <CardList cards={(cardsByScreen[scr] || []).filter((c) => inSub(c, curSub))} />}
+          {scr === "Login" && <Login />}
+          {scr === "Search" && <Search />}
+          {!norm && <StateBlock />}
+        </GlobalErrorBoundary>
       </main>
       <SplitDetail />
     </div>

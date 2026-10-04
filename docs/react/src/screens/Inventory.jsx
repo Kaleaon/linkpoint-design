@@ -100,32 +100,72 @@ export default function Inventory() {
       </div>
 
       <div style={invListStyle}>
-        {nodes.map((n) => {
-          const indent = bleed
-            ? { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 12px", paddingLeft: 10 + n.depth * 16 + "px", background: n.isSelected ? V.priC : V.surf, borderLeft: "4px solid " + (n.isSelected ? V.pri : n.depth === 0 ? V.pri : n.depth === 1 ? V.sec2 : "transparent"), cursor: "pointer" }
-            : { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 16px", paddingLeft: 16 + n.depth * 18 + "px", background: n.isSelected ? V.priC : "transparent", borderBottom: "1px solid " + V.outv, cursor: "pointer" };
-          return (
-            <KInteractive
-              key={n.name}
-              onClick={() => handleRowClick(n)}
-              onPointerDown={() => handlePointerDown(n)}
-              onPointerUp={handlePointerUpOrLeave}
-              onPointerLeave={handlePointerUpOrLeave}
-              label={n.name}
-              style={indent}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleRowClick(n); } }}
-              role="button" aria-label={n.name} tabIndex={0}
+        {state.asyncQueryState?.inventory?.status === "loading" ? (
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px", padding: "12px 16px" }}>
+            {[1, 2, 3, 4].map((idx) => (
+              <div key={idx} style={{ height: "36px", display: "flex", alignItems: "center", gap: "12px", borderBottom: "1px solid " + V.outv, opacity: 0.6 }}>
+                <div style={{ width: "16px", height: "16px", borderRadius: "3px", background: V.surf2 }} />
+                <div style={{ width: "16px", height: "16px", borderRadius: "3px", background: V.surf2 }} />
+                <div style={{ flex: 1, height: "12px", borderRadius: "3px", background: V.surf2 }} />
+              </div>
+            ))}
+          </div>
+        ) : state.asyncQueryState?.inventory?.status === "timeout" || state.asyncQueryState?.inventory?.status === "error" ? (
+          <div style={{ margin: "16px", border: "1px solid #FF6C6C", borderRadius: V.rs, background: V.surf2, padding: "20px 16px", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+            <div style={{ width: "44px", height: "44px", borderRadius: V.rs, border: "1px solid #FF6C6C", display: "flex", alignItems: "center", justifyContent: "center", color: "#FF6C6C" }}>
+              <Icon name="package-x" size={22} />
+            </div>
+            <div>
+              <div style={{ font: "700 14px/1.3 " + t.dfont, color: V.ink }}>INVENTORY FETCH TIMEOUT</div>
+              <div style={{ font: "400 11.5px/1.5 " + t.font, color: V.ink2, marginTop: "4px", maxWidth: "280px" }}>
+                Asset server timeout while loading resident inventory. Managed async query recovery injected.
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                actions.runAsyncQuery("inventory", () => new Promise((resolve) => setTimeout(resolve, 300)));
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.runAsyncQuery("inventory", () => new Promise((resolve) => setTimeout(resolve, 300)));
+                }
+              }}
+              style={{ padding: "0 20px", height: "36px", borderRadius: V.rs, background: V.pri, color: V.onpri, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".14em", cursor: "pointer" }}
+              role="button" aria-label="Retry Inventory Fetch" tabIndex={0}
             >
-              {state.invSelectMode && !n.isFolder && (
-                <Icon name={n.isSelected ? "check-square" : "square"} size={16} style={{ color: V.pri, flexShrink: 0 }} />
-              )}
-              <Icon name={n.chev} size={16} style={{ color: V.pri, flexShrink: 0 }} />
-              <Icon name={n.icon} size={16} style={{ color: V.sec2, flexShrink: 0 }} />
-              <span style={{ flex: 1, font: "400 13px/1.2 " + t.font, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{n.name}</span>
-              <span style={{ font: "400 10px/1 " + t.font, color: V.ink2 }}>{n.ver}</span>
-            </KInteractive>
-          );
-        })}
+              <Icon name="refresh-cw" size={14} />
+              RETRY INVENTORY FETCH
+            </div>
+          </div>
+        ) : (
+          nodes.map((n) => {
+            const indent = bleed
+              ? { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 12px", paddingLeft: 10 + n.depth * 16 + "px", background: n.isSelected ? V.priC : V.surf, borderLeft: "4px solid " + (n.isSelected ? V.pri : n.depth === 0 ? V.pri : n.depth === 1 ? V.sec2 : "transparent"), cursor: "pointer" }
+              : { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 16px", paddingLeft: 16 + n.depth * 18 + "px", background: n.isSelected ? V.priC : "transparent", borderBottom: "1px solid " + V.outv, cursor: "pointer" };
+            return (
+              <KInteractive
+                key={n.name}
+                onClick={() => handleRowClick(n)}
+                onPointerDown={() => handlePointerDown(n)}
+                onPointerUp={handlePointerUpOrLeave}
+                onPointerLeave={handlePointerUpOrLeave}
+                label={n.name}
+                style={indent}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleRowClick(n); } }}
+                role="button" aria-label={n.name} tabIndex={0}
+              >
+                {state.invSelectMode && !n.isFolder && (
+                  <Icon name={n.isSelected ? "check-square" : "square"} size={16} style={{ color: V.pri, flexShrink: 0 }} />
+                )}
+                <Icon name={n.chev} size={16} style={{ color: V.pri, flexShrink: 0 }} />
+                <Icon name={n.icon} size={16} style={{ color: V.sec2, flexShrink: 0 }} />
+                <span style={{ flex: 1, font: "400 13px/1.2 " + t.font, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{n.name}</span>
+                <span style={{ font: "400 10px/1 " + t.font, color: V.ink2 }}>{n.ver}</span>
+              </KInteractive>
+            );
+          })
+        )}
       </div>
 
       {hasSelected && (
