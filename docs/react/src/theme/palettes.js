@@ -6,6 +6,9 @@
 // reference only and is not wired into the running app. See README.md ->
 // "Known deviations from the mockup".
 
+/**
+ * @deprecated Local JS palette definitions are deprecated in favor of `@ktheme/react` <KthemeProvider> central token registry.
+ */
 export const LEGACY_PALETTES = {
   ink: { name: "Ink Terminal", nav: "TABS", font: '"JetBrains Mono","IBM Plex Mono",monospace', dfont: '"JetBrains Mono",monospace',
     v: { bg:"#0A1112", surf:"#101A1C", surf2:"#1B2A2D", ink:"#D7F5E6", ink2:"#A7C8BC", pri:"#6CFF9A", onpri:"#03240F", priC:"#1F6640", onpriC:"#D7FFE4",

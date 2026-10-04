@@ -43,7 +43,7 @@ export default function World3D() {
 
   return (
     <div style={{ flex: 1, minHeight: 0, position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,#1c4a5c 0%,#12333a 46%,#10241d 46%,#0a1112 100%)" }} />
+      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, var(--md-sys-color-surface-variant, var(--ktheme-sky1)) 0%, var(--ktheme-sky2) 46%, var(--ktheme-gnd1) 46%, var(--md-sys-color-background, var(--ktheme-gnd2)) 100%)" }} />
       <div
         style={{
           position: "absolute",
@@ -82,6 +82,7 @@ export default function World3D() {
             <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "0 8px 12px" }}>
               <span style={{ flex: 1, font: "700 12px/1.1 " + t.dfont, letterSpacing: ".2em", color: V.pri }}>Linkpoint</span>
               <KInteractive
+                as="span"
                 onClick={() => actions.setNavPeek(false)}
                 aria-label="Close navigation menu"
                 style={{ cursor: "pointer", color: V.ink2, display: "flex" }}

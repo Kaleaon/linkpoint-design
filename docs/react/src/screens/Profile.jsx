@@ -10,11 +10,11 @@ export default function Profile() {
   const { V, t } = useTheme();
   return (
     <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
-      <div style={{ position: "relative", height: "158px", background: "repeating-linear-gradient(135deg,#1B2A2D 0 10px,#101A1C 10px 20px)", display: "flex", alignItems: "flex-end", padding: "12px" }}>
+      <div style={{ position: "relative", height: "158px", background: "repeating-linear-gradient(135deg, var(--md-sys-color-surface-variant, var(--ktheme-surf2)) 0 10px, var(--md-sys-color-surface, var(--ktheme-surf)) 10px 20px)", display: "flex", alignItems: "flex-end", padding: "12px" }}>
         <span style={{ font: "400 10px/1 " + t.font, color: V.ink2 }}>profile banner — drop 2nd Life picture</span>
       </div>
       <div style={{ padding: "0 16px", marginTop: "-36px", display: "flex", alignItems: "flex-end", gap: "12px" }}>
-        <div style={{ width: "76px", height: "76px", border: "1px solid " + V.outv, background: "repeating-linear-gradient(45deg,#1B2A2D 0 6px,#101A1C 6px 12px)" }} />
+        <div style={{ width: "76px", height: "76px", border: "1px solid " + V.outv, background: "repeating-linear-gradient(45deg, var(--md-sys-color-surface-variant, var(--ktheme-surf2)) 0 6px, var(--md-sys-color-surface, var(--ktheme-surf)) 6px 12px)" }} />
         <div style={{ paddingBottom: "6px" }}>
           <div style={{ font: "600 17px/1.2 " + t.dfont }}>Nyx Vaher</div>
           <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "4px" }}>nyx.vaher · online · Da Boom</div>

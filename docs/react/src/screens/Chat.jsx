@@ -84,7 +84,7 @@ function LandmarkCard({ slurlData, state, actions, V, t }) {
               borderRadius: V.rs,
               border: "none",
               background: isOffline ? V.surf2 : V.pri,
-              color: isOffline ? V.ink2 : (V.onpri || "#fff"),
+              color: isOffline ? V.ink2 : V.onpri,
               font: "600 10px/1 " + t.dfont,
               letterSpacing: ".06em",
               cursor: isOffline ? "not-allowed" : "pointer",
@@ -178,7 +178,7 @@ function LureCard({ msg, state, actions, V, t }) {
               padding: "2px 6px",
               borderRadius: V.rs,
               background: response === "accepted" ? V.pri : V.surf2,
-              color: response === "accepted" ? (V.onpri || "#fff") : V.ink2,
+              color: response === "accepted" ? V.onpri : V.ink2,
             }}
           >
             {response === "accepted" ? "✓ ACCEPTED" : "✗ DECLINED"}
@@ -203,7 +203,7 @@ function LureCard({ msg, state, actions, V, t }) {
               borderRadius: V.rs,
               border: "none",
               background: isOffline ? V.surf2 : V.pri,
-              color: isOffline ? V.ink2 : (V.onpri || "#fff"),
+              color: isOffline ? V.ink2 : V.onpri,
               font: "600 10px/1 " + t.dfont,
               letterSpacing: ".06em",
               cursor: isOffline ? "not-allowed" : "pointer",
