@@ -29,12 +29,61 @@ export const TABS_NAV_IDS = ["Chat", "Friends", "Radar", "Map", "3D View", "Sett
 export const IM_CHIPS = ["Nyx Vaher", "Kit Sandalwood", "Sable Ashgrove"];
 export const GROUP_CHIPS = ["Bay City Builders", "Ruthless Roofers"];
 
+export const REGION_META = {
+  "Hollywood": { name: "Bay City — Hollywood", coords: "<112, 44, 51>", rating: "Adult", avatars: "18 avatars online" },
+  "Bay City — Hollywood": { name: "Bay City — Hollywood", coords: "<112, 44, 51>", rating: "Adult", avatars: "18 avatars online" },
+  "Da Boom": { name: "Da Boom", coords: "<128, 128, 26>", rating: "General", avatars: "34 avatars online" },
+  "Ahern": { name: "Ahern Welcome Area", coords: "<128, 128, 24>", rating: "Moderate", avatars: "6 avatars online" },
+  "Sansara Ridge": { name: "Sansara Ridge", coords: "<64, 200, 88>", rating: "General", avatars: "2 avatars online" },
+};
+
+export function parseSlurl(text, explicitUrl, explicitTitle) {
+  let url = explicitUrl || "";
+  let title = explicitTitle || "";
+  let extractedUrl = null;
+
+  if (!url && text) {
+    const slurlRegex = /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^\/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
+    const match = text.match(slurlRegex);
+    if (match) {
+      extractedUrl = match[0];
+      const regRaw = decodeURIComponent(match[1]).replace(/\+/g, " ");
+      const x = match[2] || "128";
+      const y = match[3] || "128";
+      const z = match[4] || "20";
+      url = match[0];
+      title = regRaw;
+      var parsedCoords = `<${x}, ${y}, ${z}>`;
+    }
+  }
+
+  if (!url) return null;
+
+  const slurlRegex = /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^\/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
+  const match = url.match(slurlRegex);
+  let regKey = title || (match ? decodeURIComponent(match[1]).replace(/\+/g, " ") : "Unknown Region");
+  let coords = parsedCoords || (match ? `<${match[2] || 128}, ${match[3] || 128}, ${match[4] || 20}>` : "<128, 128, 26>");
+
+  const known = REGION_META[regKey] || REGION_META[regKey.split("—")[0].trim()] || REGION_META[Object.keys(REGION_META).find(k => regKey.includes(k))];
+
+  return {
+    url,
+    extractedUrl,
+    regionName: known ? known.name : regKey,
+    coords: known ? known.coords : coords,
+    rating: known ? known.rating : "Moderate",
+    avatars: known ? known.avatars : "4 avatars online",
+  };
+}
+
 export const LOCAL_MSGS = [
   { ts: "14:21", sender: "Nyx Vaher", text: "the roof build is up — teleport when you're free" },
   { ts: "14:22", sender: "Ruth Resident", text: "on my way, just rezzing the last sculpt", me: true },
   { ts: "14:24", sender: "System", text: "Kit Sandalwood is online.", sys: true },
   { ts: "14:25", sender: "Kit Sandalwood", text: "@Ruth check the landmark, second floor entrance", linkTitle: "Bay City — Hollywood", linkUrl: "secondlife://Hollywood/112/44/51" },
+  { id: "lure-local-1", ts: "14:26", sender: "Kit Sandalwood", text: "Kit Sandalwood offers to teleport you", isLure: true, lureRegion: "Bay City — Hollywood", lureCoords: "<112, 44, 51>", lureMsg: "come see the build jam, we're on the roof" },
   { ts: "14:27", sender: "Ruth Resident", text: "got it 👍", me: true },
+  { ts: "14:28", sender: "Nyx Vaher", text: "or check the welcome area secondlife://Ahern/128/128/24" },
   { ts: "14:29", sender: "Nyx Vaher", text: "bringing the light rig over, one sec" },
 ];
 
@@ -47,7 +96,7 @@ export const IM_THREADS = {
   ],
   "Kit Sandalwood": [
     { ts: "13:40", sender: "Kit Sandalwood", text: "reslotted the brass texture, check inventory", linkTitle: "Bay City — Hollywood", linkUrl: "secondlife://Hollywood/112/44/51" },
-    { ts: "13:41", sender: "Kit Sandalwood", text: "lmk if the UVs still look off" },
+    { id: "lure-im-1", ts: "13:41", sender: "Kit Sandalwood", text: "offers to teleport you to Bay City — Hollywood <112, 44, 51>", isLure: true, lureRegion: "Bay City — Hollywood", lureCoords: "<112, 44, 51>", lureMsg: "come inspect the UV alignment in person" },
     { ts: "13:47", sender: "Ruth Resident", text: "looking now, one sec", me: true },
   ],
   "Sable Ashgrove": [{ ts: "yesterday", sender: "Sable Ashgrove", text: "the texture pack is in your inventory, no rush" }],
@@ -55,7 +104,7 @@ export const IM_THREADS = {
 
 export const GROUP_THREADS = {
   "Bay City Builders": [
-    { ts: "12:10", sender: "Marlowe Quill", text: "meeting moved to 6pm SLT" },
+    { ts: "12:10", sender: "Marlowe Quill", text: "meeting moved to 6pm SLT at secondlife://Hollywood/112/44/51" },
     { ts: "12:12", sender: "Ruth Resident", text: "works for me", me: true },
     { ts: "12:15", sender: "System", text: "Sable Ashgrove joined the group.", sys: true },
   ],

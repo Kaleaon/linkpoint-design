@@ -1,14 +1,239 @@
+import { useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
-import { LOCAL_MSGS, IM_THREADS, GROUP_THREADS, IM_CHIPS, GROUP_CHIPS } from "../data/content.js";
+import { LOCAL_MSGS, IM_THREADS, GROUP_THREADS, IM_CHIPS, GROUP_CHIPS, parseSlurl } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
 
-// Ported from the `isChat` <sc-if> block: message transcript + composer.
-// `msgs`/`bubble`/`headStyle`/`textStyle` are rebuilt per-message here exactly
-// as renderVals() computed them (two visual modes: bordered bubble normally,
-// flush left-accent row when `bleed` — console/desktop nav).
+function LandmarkCard({ slurlData, state, actions, V, t }) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const regionKey = slurlData.regionName.toLowerCase().replace(/[^a-z0-9]+/g, "");
+  const isSaved = !!state.pinned[regionKey];
+  const isOffline = state.loginMode === "offline";
+
+  return (
+    <div
+      style={{
+        marginTop: "8px",
+        maxHeight: "140px",
+        height: "128px",
+        border: "1px solid " + V.outv,
+        borderRadius: V.rs,
+        overflow: "hidden",
+        background: V.bg,
+        display: "flex",
+        flexDirection: "row",
+      }}
+    >
+      <div
+        style={{
+          width: "96px",
+          height: "100%",
+          flex: "none",
+          position: "relative",
+          background: "repeating-linear-gradient(135deg," + V.surf2 + " 0 8px, transparent 8px 16px)",
+          borderRight: "1px solid " + V.outv,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+        }}
+      >
+        {!imgFailed && slurlData.img ? (
+          <img
+            src={slurlData.img}
+            alt={slurlData.regionName}
+            onError={() => setImgFailed(true)}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "4px",
+              color: V.pri,
+              opacity: 0.9,
+            }}
+          >
+            <Icon name="map-pin" size={22} />
+            <span style={{ font: "700 9px/1 " + t.dfont, letterSpacing: ".08em", textTransform: "uppercase" }}>
+              {slurlData.rating}
+            </span>
+          </div>
+        )}
+      </div>
+
+      <div style={{ flex: 1, minWidth: 0, padding: "8px 10px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+        <div>
+          <div style={{ font: "600 12px/1.2 " + t.font, color: V.ink, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {slurlData.regionName}
+          </div>
+          <div style={{ font: "400 10px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
+            {slurlData.coords} · <span style={{ color: V.sec2 }}>{slurlData.avatars}</span>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+          <button
+            onClick={() => actions.teleportToRegion(slurlData.regionName, slurlData.coords)}
+            style={{
+              flex: "none",
+              padding: "4px 8px",
+              borderRadius: V.rs,
+              border: "none",
+              background: isOffline ? V.surf2 : V.pri,
+              color: isOffline ? V.ink2 : (V.onpri || "#fff"),
+              font: "600 10px/1 " + t.dfont,
+              letterSpacing: ".06em",
+              cursor: isOffline ? "not-allowed" : "pointer",
+              opacity: isOffline ? 0.7 : 1,
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+            }}
+          >
+            <Icon name="zap" size={11} />
+            TELEPORT
+          </button>
+
+          <button
+            onClick={() => {
+              actions.notify("Viewing " + slurlData.regionName + " on Map");
+              actions.setScreen("Map");
+            }}
+            style={{
+              flex: "none",
+              padding: "4px 8px",
+              borderRadius: V.rs,
+              border: "1px solid " + V.outv,
+              background: "transparent",
+              color: V.ink,
+              font: "500 10px/1 " + t.font,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+            }}
+          >
+            <Icon name="map" size={11} />
+            VIEW ON MAP
+          </button>
+
+          <button
+            onClick={() => actions.saveLandmark(slurlData.regionName)}
+            style={{
+              flex: "none",
+              padding: "4px 8px",
+              borderRadius: V.rs,
+              border: "1px solid " + (isSaved ? V.pri : V.outv),
+              background: isSaved ? V.priC : "transparent",
+              color: isSaved ? V.pri : V.ink,
+              font: "500 10px/1 " + t.font,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+            }}
+          >
+            <Icon name={isSaved ? "check" : "bookmark"} size={11} />
+            {isSaved ? "SAVED" : "SAVE LANDMARK"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function LureCard({ msg, state, actions, V, t }) {
+  const response = state.lureState[msg.id || msg.ts];
+  const isOffline = state.loginMode === "offline";
+
+  return (
+    <div
+      style={{
+        marginTop: "8px",
+        maxHeight: "140px",
+        padding: "8px 10px",
+        border: "1px solid " + (response === "accepted" ? V.pri : response === "declined" ? V.outv : V.sec2),
+        borderRadius: V.rs,
+        background: V.bg,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        gap: "6px",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <Icon name="zap" size={14} style={{ color: V.sec2 }} />
+        <span style={{ font: "600 11px/1.2 " + t.dfont, color: V.sec2, letterSpacing: ".06em" }}>
+          TELEPORT OFFER
+        </span>
+        {response && (
+          <span
+            style={{
+              marginLeft: "auto",
+              font: "700 9px/1 " + t.dfont,
+              padding: "2px 6px",
+              borderRadius: V.rs,
+              background: response === "accepted" ? V.pri : V.surf2,
+              color: response === "accepted" ? (V.onpri || "#fff") : V.ink2,
+            }}
+          >
+            {response === "accepted" ? "✓ ACCEPTED" : "✗ DECLINED"}
+          </span>
+        )}
+      </div>
+
+      <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink }}>
+        “{msg.lureMsg || "Come teleport to my location"}”
+      </div>
+
+      <div style={{ font: "400 10px/1.2 " + t.font, color: V.ink2 }}>
+        Destination: {msg.lureRegion} {msg.lureCoords}
+      </div>
+
+      {!response ? (
+        <div style={{ display: "flex", gap: "8px", marginTop: "2px" }}>
+          <button
+            onClick={() => actions.respondLure(msg.id || msg.ts, "accepted", msg.lureRegion, msg.lureCoords)}
+            style={{
+              padding: "5px 10px",
+              borderRadius: V.rs,
+              border: "none",
+              background: isOffline ? V.surf2 : V.pri,
+              color: isOffline ? V.ink2 : (V.onpri || "#fff"),
+              font: "600 10px/1 " + t.dfont,
+              letterSpacing: ".06em",
+              cursor: isOffline ? "not-allowed" : "pointer",
+              opacity: isOffline ? 0.7 : 1,
+            }}
+          >
+            ACCEPT LURE
+          </button>
+          <button
+            onClick={() => actions.respondLure(msg.id || msg.ts, "declined", msg.lureRegion, msg.lureCoords)}
+            style={{
+              padding: "5px 10px",
+              borderRadius: V.rs,
+              border: "1px solid " + V.outv,
+              background: "transparent",
+              color: V.ink2,
+              font: "500 10px/1 " + t.font,
+              cursor: "pointer",
+            }}
+          >
+            DECLINE
+          </button>
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 export default function Chat() {
-  const { state } = useApp();
+  const { state, actions } = useApp();
   const { V, t, bleed, pad, C, nav } = useTheme();
 
   const curTab = state.tabs.Chat;
@@ -39,6 +264,9 @@ export default function Chat() {
             : { ...bubBase, ...(m.me ? { background: V.priC, borderColor: V.pri } : m.sys ? { background: "transparent", borderStyle: "dashed", borderColor: V.info } : null) };
           const headStyle = bleed ? { font: "400 10px/1.3 " + t.font, color: acc, letterSpacing: ".06em", marginBottom: "3px" } : { ...headBase, ...(m.sys ? { color: V.info } : m.me ? { color: V.onpriC } : null) };
           const textStyle = bleed ? { ...textBase, ...(m.sys ? { color: V.info } : null) } : { ...textBase, ...(m.sys ? { color: V.info } : m.me ? { color: V.onpriC } : null) };
+
+          const slurlData = parseSlurl(m.text, m.linkUrl, m.linkTitle);
+
           return (
             <div key={i} style={align}>
               <div style={bubble}>
@@ -46,14 +274,11 @@ export default function Chat() {
                   [{m.ts}] {m.sender}
                 </div>
                 <div style={textStyle}>{m.text}</div>
-                {m.linkTitle ? (
-                  <div style={{ marginTop: "8px", border: "1px solid " + V.outv, borderRadius: V.rs, overflow: "hidden", background: V.bg }}>
-                    <div style={{ height: "62px", background: "repeating-linear-gradient(135deg,#1B2A2D 0 8px,transparent 8px 16px)" }} />
-                    <div style={{ padding: "7px 9px" }}>
-                      <div style={{ font: "600 11px/1.3 " + t.font }}>{m.linkTitle}</div>
-                      <div style={{ font: "400 10px/1.3 " + t.font, color: V.ink2, marginTop: "2px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{m.linkUrl}</div>
-                    </div>
-                  </div>
+
+                {m.isLure ? (
+                  <LureCard msg={m} state={state} actions={actions} V={V} t={t} />
+                ) : slurlData ? (
+                  <LandmarkCard slurlData={slurlData} state={state} actions={actions} V={V} t={t} />
                 ) : null}
               </div>
             </div>
