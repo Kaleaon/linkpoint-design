@@ -2,12 +2,12 @@
 
 Four themes generated from the Linkpoint 2.0 mobile Second Life UI design exploration. Each is a stand-alone Ktheme JSON conforming to the `Theme` schema and ready to drop into `themes/community/` (or promote to `themes/examples/`).
 
-| File | Theme ID | Vibe |
-| --- | --- | --- |
-| `stargate-sg1.json` | `stargate-sg1` | Iris-bronze + event-horizon teal · gate-room console |
+| File                     | Theme ID            | Vibe                                                                       |
+| ------------------------ | ------------------- | -------------------------------------------------------------------------- |
+| `stargate-sg1.json`      | `stargate-sg1`      | Iris-bronze + event-horizon teal · gate-room console                       |
 | `stargate-atlantis.json` | `stargate-atlantis` | Atlantean blue glass + bronze · Art Deco geometry · Wright prairie banding |
-| `lcars-tng.json` | `lcars-tng` | Warm TNG amber + lilac · strict pill geometry · uppercase Antonio |
-| `metro-cyan.json` | `metro-cyan` | Black field + vivid cyan tiles · Segoe Light · lowercase chrome |
+| `lcars-tng.json`         | `lcars-tng`         | Warm TNG amber + lilac · strict pill geometry · uppercase Antonio          |
+| `metro-cyan.json`        | `metro-cyan`        | Black field + vivid cyan tiles · Segoe Light · lowercase chrome            |
 
 ## How to PR
 
@@ -26,8 +26,9 @@ git push origin add-linkpoint-themes
 ## Validation
 
 Each file matches the schema used by `themes/examples/*.json` (notably `lcars.json`, `windows-phone-metro.json`, `aurora-glass-night.json`):
+
 - `metadata` block with `id`, `name`, `description`, `author`, `version`, `tags`, timestamps
-- Full Material Design 3 `colorScheme` (primary/secondary/tertiary + containers + on-* + surface variants + outline + inverse)
+- Full Material Design 3 `colorScheme` (primary/secondary/tertiary + containers + on-\* + surface variants + outline + inverse)
 - `effects` (metallic, shadows, blur, shimmer, gradients, overlays — only the relevant ones)
 - Optional `typography` and `adaptation` blocks for layout/icons/componentOverrides
 

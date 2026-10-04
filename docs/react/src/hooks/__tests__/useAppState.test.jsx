@@ -27,7 +27,7 @@ describe("useAppState hook - Balance Polling & Sync", () => {
     });
 
     expect(result.current.state.lastSyncedAt.getTime()).toBeGreaterThanOrEqual(
-      initialSyncedAt.getTime()
+      initialSyncedAt.getTime(),
     );
   });
 
@@ -50,7 +50,7 @@ describe("useAppState hook - Balance Polling & Sync", () => {
     });
 
     expect(result.current.state.lastSyncedAt.getTime()).toBeGreaterThan(
-      initialTime.getTime()
+      initialTime.getTime(),
     );
     expect(result.current.state.toast).toContain("Balance synced: L$ 4,250");
   });

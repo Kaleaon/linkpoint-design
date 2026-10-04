@@ -86,7 +86,14 @@ function Motes({ layer, animated, token }) {
     return (
       <>
         {CRYSTAL.staticMotes[layer].map((m, i) => (
-          <circle key={i} cx={m.cx} cy={m.cy} r={m.r} fill={token(m.token)} filter="url(#rGlow)" />
+          <circle
+            key={i}
+            cx={m.cx}
+            cy={m.cy}
+            r={m.r}
+            fill={token(m.token)}
+            filter="url(#rGlow)"
+          />
         ))}
       </>
     );
@@ -94,8 +101,17 @@ function Motes({ layer, animated, token }) {
   return (
     <>
       {CRYSTAL.motes.map((m, i) => (
-        <circle key={i} r={layer === "near" ? m.near : m.far} fill={token(m.token)} filter="url(#rGlow)">
-          <animateMotion dur={CRYSTAL.dur} repeatCount="indefinite" begin={m.begin}>
+        <circle
+          key={i}
+          r={layer === "near" ? m.near : m.far}
+          fill={token(m.token)}
+          filter="url(#rGlow)"
+        >
+          <animateMotion
+            dur={CRYSTAL.dur}
+            repeatCount="indefinite"
+            begin={m.begin}
+          >
             <mpath href="#rOrbitTrack" />
           </animateMotion>
           <animate
@@ -116,7 +132,12 @@ function Motes({ layer, animated, token }) {
 // width/height are applied through `style` rather than as SVG attributes:
 // callers pass CSS keywords such as "auto", which the presentation attributes
 // reject ("Expected length").
-export default function LinkpointLogo({ animated = true, showTitle = true, width = "100%", height = "auto" }) {
+export default function LinkpointLogo({
+  animated = true,
+  showTitle = true,
+  width = "100%",
+  height = "auto",
+}) {
   const { V, t } = useTheme();
   const token = (name) => V[name];
 
@@ -126,20 +147,36 @@ export default function LinkpointLogo({ animated = true, showTitle = true, width
       xmlnsXlink="http://www.w3.org/1999/xlink"
       id="linkpoint-logo-react"
       viewBox={showTitle ? "0 0 512 580" : "0 0 512 512"}
-      style={{ width, height, filter: "drop-shadow(0 4px 16px rgba(0,0,0,0.3))" }}
+      style={{
+        width,
+        height,
+        filter: "drop-shadow(0 4px 16px rgba(0,0,0,0.3))",
+      }}
     >
       <style>{`
         /* The halves close into a perfect octahedron: their base centres sit
            172px apart, so each travels exactly 86px to meet at the waist. */
         .top-crystal-r {
-          animation: ${animated ? "topCloseSeq 6s cubic-bezier(0.4, 0, 0.2, 1) infinite" : "none"};
+          animation: ${
+            animated
+              ? "topCloseSeq 6s cubic-bezier(0.4, 0, 0.2, 1) infinite"
+              : "none"
+          };
         }
         .bot-crystal-r {
-          animation: ${animated ? "botCloseSeq 6s cubic-bezier(0.4, 0, 0.2, 1) infinite" : "none"};
+          animation: ${
+            animated
+              ? "botCloseSeq 6s cubic-bezier(0.4, 0, 0.2, 1) infinite"
+              : "none"
+          };
         }
         .core-anim-r {
           transform-origin: 256px 256px;
-          animation: ${animated ? "corePulseR 6s cubic-bezier(0.4, 0, 0.2, 1) infinite" : "none"};
+          animation: ${
+            animated
+              ? "corePulseR 6s cubic-bezier(0.4, 0, 0.2, 1) infinite"
+              : "none"
+          };
         }
 
         @keyframes topCloseSeq {
@@ -156,19 +193,21 @@ export default function LinkpointLogo({ animated = true, showTitle = true, width
 
         @keyframes corePulseR {
           0%, 25% { transform: scale(1); opacity: 0.8; }
-          35%, 65% { transform: scale(0.6) rotate(180deg); opacity: 1; filter: drop-shadow(0 0 20px ${V.pri}); }
+          35%, 65% { transform: scale(0.6) rotate(180deg); opacity: 1; filter: drop-shadow(0 0 20px ${
+            V.pri
+          }); }
           75%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
         }
 
         .logo-title-r {
-          font-family: ${t.dfont || 'sans-serif'};
+          font-family: ${t.dfont || "sans-serif"};
           font-weight: 800;
           font-size: 38px;
           letter-spacing: 0.28em;
           fill: ${V.pri};
         }
         .logo-subtitle-r {
-          font-family: ${t.font || 'sans-serif'};
+          font-family: ${t.font || "sans-serif"};
           font-weight: 500;
           font-size: 13px;
           letter-spacing: 0.38em;
@@ -207,7 +246,10 @@ export default function LinkpointLogo({ animated = true, showTitle = true, width
         </filter>
 
         {/* Path fraction 0 - 0.5 sweeps the near half, 0.5 - 1 the far half. */}
-        <path id="rOrbitTrack" d="M 56 256 A 200 65 0 1 0 456 256 A 200 65 0 1 0 56 256" />
+        <path
+          id="rOrbitTrack"
+          d="M 56 256 A 200 65 0 1 0 456 256 A 200 65 0 1 0 56 256"
+        />
       </defs>
 
       {/* ---- far layer ---------------------------------------------------- */}
@@ -265,7 +307,12 @@ export default function LinkpointLogo({ animated = true, showTitle = true, width
         strokeWidth="2"
         strokeDasharray="4 12"
       />
-      <path d="M 41 256 A 215 72 0 0 0 471 256" fill="none" stroke={V.outv} strokeWidth="1" />
+      <path
+        d="M 41 256 A 215 72 0 0 0 471 256"
+        fill="none"
+        stroke={V.outv}
+        strokeWidth="1"
+      />
       <g>
         <Motes layer="near" animated={animated} token={token} />
       </g>

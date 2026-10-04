@@ -8,7 +8,6 @@ export const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
   const { state, actions } = useApp();
-
   const tokens = useMemo(
     () => computeThemeTokens(state),
     [state.layout, state.palette, state.customTheme, state.dense]

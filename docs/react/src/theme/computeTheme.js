@@ -8,7 +8,12 @@ export function computeThemeTokens(state) {
   const L = LAYOUTS[state.layout];
   const base = PALETTES[state.palette];
   const P = state.customTheme?.active
-    ? { ...base, name: state.customTheme.name, note: "A custom, shareable colour theme.", c: { ...base.c, ...state.customTheme.colors } }
+    ? {
+        ...base,
+        name: state.customTheme.name,
+        note: "A custom, shareable colour theme.",
+        c: { ...base.c, ...state.customTheme.colors },
+      }
     : base;
   const t = { name: L.name + " / " + P.name, nav: L.nav, font: L.font, dfont: L.dfont, note: L.note + "   Colour pack: " + P.note + ".", v: { ...P.c, ...L.s } };
   const V = t.v;
@@ -32,7 +37,8 @@ export function computeThemeRuntime(state, cf, tokens) {
 
   const C = cf();
   const isConsole = nav === "sweep";
-  const consoleScene = isConsole && state.screen === "3D View" && state.cond === "normal";
+  const consoleScene =
+    isConsole && state.screen === "3D View" && state.cond === "normal";
   const isFloat = nav === "floaters";
   const isSweepDesk = isFloat && (state.layout === "sweep" || tNav === "SWEEP");
   const bleed = isConsole || isFloat;
@@ -40,8 +46,14 @@ export function computeThemeRuntime(state, cf, tokens) {
   const scr = state.screen;
   const sel = (n) => scr === n;
 
-  const condPack = state.cond === "normal" ? null : STATES[state.cond][scr] || STATES[state.cond]._;
-  const stateBlockActive = !!condPack && state.cond !== "loading" && !["Login", "Settings", "Cache", "Search"].includes(scr);
+  const condPack =
+    state.cond === "normal"
+      ? null
+      : STATES[state.cond][scr] || STATES[state.cond]._;
+  const stateBlockActive =
+    !!condPack &&
+    state.cond !== "loading" &&
+    !["Login", "Settings", "Cache", "Search"].includes(scr);
   const norm = !stateBlockActive;
   const bare = ["3D View", "Login", "Search"].includes(scr);
   const immersive = scr === "3D View" && norm;

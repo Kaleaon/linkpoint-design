@@ -118,10 +118,18 @@ export default function CardList({ cards }) {
             size={16}
             style={{
               transform: `rotate(${pullDistance * 5}deg)`,
-              transition: refreshing ? "transform 0.8s linear infinite" : "none",
+              transition: refreshing
+                ? "transform 0.8s linear infinite"
+                : "none",
             }}
           />
-          <span>{refreshing ? "Syncing balance..." : pullDistance > 40 ? "Release to sync" : "Pull to sync balance"}</span>
+          <span>
+            {refreshing
+              ? "Syncing balance..."
+              : pullDistance > 40
+                ? "Release to sync"
+                : "Pull to sync balance"}
+          </span>
         </div>
       )}
       {cards.map((c, i) => (

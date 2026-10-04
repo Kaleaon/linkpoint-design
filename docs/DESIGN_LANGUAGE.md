@@ -5,6 +5,7 @@
 **Linkpoint Design** is the universal design language and reference system for the Linkpoint ecosystem, supporting Second Life and OpenSimulator viewers across Mobile, Web PWA, Desktop (Tauri/Electron), and native platforms.
 
 By establishing a single, coherent reference frame, all client implementations share:
+
 - **Identical Information Architecture (IA)** and screen hierarchies (Chat, Friends, Radar, Map, 3D View, Inventory, Profile, Groups, Notices, Teleport, Settings, Diagnostics, Login, Outfits, Objects, Parcel, Transactions, Mute List, Search, Cache).
 - **A 4-Token Color Grouping Framework** mapped to Material Design 3 and app-neutral **Ktheme** schemas.
 - **Interchangeable Layout Packs** allowing decoupled navigation paradigms (Tabs, Rail, Sweep Console / LCARS, Metro Tiles, Aero Glass, Floaters Desktop) without altering the application state tree or component contract.
@@ -18,34 +19,34 @@ Linkpoint Design utilizes a semantic token hierarchy that maps directly to the a
 
 ### 2.1 Core Color Token Mapping
 
-| Linkpoint Token | Ktheme / M3 Token | Description |
-| --- | --- | --- |
-| `V.bg` | `colorScheme.background` | App background ground surface |
-| `V.surf` | `colorScheme.surface` | Primary container / card surface |
-| `V.surf2` | `colorScheme.surfaceVariant` | Secondary / elevated panel surface |
-| `V.ink` | `colorScheme.onBackground` / `onSurface` | High-contrast primary text and icons |
-| `V.ink2` | `colorScheme.onSurfaceVariant` | Subdued secondary labels / metadata |
-| `V.pri` | `colorScheme.primary` | Primary brand accent / active highlights |
-| `V.onpri` | `colorScheme.onPrimary` | Text / icons placed on primary accent fills |
-| `V.priC` | `colorScheme.primaryContainer` | Container fill for primary grouped controls |
-| `V.onpriC` | `colorScheme.onPrimaryContainer` | Text on primary container fills |
-| `V.sec` | `colorScheme.secondary` | Secondary action fill / badge accent |
-| `V.onsec` | `colorScheme.onSecondary` | Text / icons on secondary fills |
-| `V.outv` | `colorScheme.outlineVariant` | Hairlines, borders, and divider rules |
-| `V.ok` | `colorScheme.tertiary` / custom | Success status indicators (green/cyan) |
-| `V.err` | `colorScheme.error` | Destructive / error states |
-| `V.warn` | custom `warning` | Warning / alert highlights |
+| Linkpoint Token | Ktheme / M3 Token                        | Description                                 |
+| --------------- | ---------------------------------------- | ------------------------------------------- |
+| `V.bg`          | `colorScheme.background`                 | App background ground surface               |
+| `V.surf`        | `colorScheme.surface`                    | Primary container / card surface            |
+| `V.surf2`       | `colorScheme.surfaceVariant`             | Secondary / elevated panel surface          |
+| `V.ink`         | `colorScheme.onBackground` / `onSurface` | High-contrast primary text and icons        |
+| `V.ink2`        | `colorScheme.onSurfaceVariant`           | Subdued secondary labels / metadata         |
+| `V.pri`         | `colorScheme.primary`                    | Primary brand accent / active highlights    |
+| `V.onpri`       | `colorScheme.onPrimary`                  | Text / icons placed on primary accent fills |
+| `V.priC`        | `colorScheme.primaryContainer`           | Container fill for primary grouped controls |
+| `V.onpriC`      | `colorScheme.onPrimaryContainer`         | Text on primary container fills             |
+| `V.sec`         | `colorScheme.secondary`                  | Secondary action fill / badge accent        |
+| `V.onsec`       | `colorScheme.onSecondary`                | Text / icons on secondary fills             |
+| `V.outv`        | `colorScheme.outlineVariant`             | Hairlines, borders, and divider rules       |
+| `V.ok`          | `colorScheme.tertiary` / custom          | Success status indicators (green/cyan)      |
+| `V.err`         | `colorScheme.error`                      | Destructive / error states                  |
+| `V.warn`        | custom `warning`                         | Warning / alert highlights                  |
 
 ### 2.2 Geometry & Shape Tokens
 
-| Token | Description | Examples |
-| --- | --- | --- |
-| `V.rs` | Control radius (buttons, chips, inputs) | `0px` (Metro), `4px` (Terminal), `12px` (Aero), `999px` (LCARS) |
-| `V.rp` | Panel radius (cards, floaters, bottom sheets) | `0px` (Metro), `4px` (Terminal), `16px` (Aero), `22px` (LCARS) |
-| `V.rl` | Large radius (modals, hero containers) | `0px` (Metro), `8px` (Terminal), `18px` (Aero), `28px` (LCARS) |
-| `V.navr` | Navigation item border radius | Custom per layout pack |
-| `V.pad` | Content padding module | `10px` – `14px` standard baseline grid |
-| `V.tls` | Title letter spacing (tracking) | `.0em` (Metro) – `.35em` (Art Deco) |
+| Token    | Description                                   | Examples                                                        |
+| -------- | --------------------------------------------- | --------------------------------------------------------------- |
+| `V.rs`   | Control radius (buttons, chips, inputs)       | `0px` (Metro), `4px` (Terminal), `12px` (Aero), `999px` (LCARS) |
+| `V.rp`   | Panel radius (cards, floaters, bottom sheets) | `0px` (Metro), `4px` (Terminal), `16px` (Aero), `22px` (LCARS)  |
+| `V.rl`   | Large radius (modals, hero containers)        | `0px` (Metro), `8px` (Terminal), `18px` (Aero), `28px` (LCARS)  |
+| `V.navr` | Navigation item border radius                 | Custom per layout pack                                          |
+| `V.pad`  | Content padding module                        | `10px` – `14px` standard baseline grid                          |
+| `V.tls`  | Title letter spacing (tracking)               | `.0em` (Metro) – `.35em` (Art Deco)                             |
 
 ---
 
@@ -121,6 +122,7 @@ For desktop window-manager mode, themes specify `adaptation.desktopAdaptation` i
 ## 6. Upstream Ktheme Contribution Standard
 
 All theme files created or updated in the Linkpoint ecosystem are app-neutral **Ktheme** JSON files:
+
 - Placed in `docs/*.json` and `ktheme-pr/themes/community/` (or `themes/examples/`).
 - Validated via `update_json_themes.py` against contrast guardrails (WCAG AA compliant).
 - Ready to be contributed directly upstream to `github.com/Kaleaon/Ktheme`.
