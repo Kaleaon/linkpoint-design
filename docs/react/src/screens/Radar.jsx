@@ -3,6 +3,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { RADAR_AVATARS, RADAR_OBJECTS, COMPASS } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
 import ElevationBadge from "../components/ElevationBadge.jsx";
+import KInteractive from "../components/KInteractive.jsx";
 
 const RINGS = [
   [10, "WHISPER 10m"],
@@ -51,9 +52,10 @@ export default function Radar() {
         ].map(([k, label]) => {
           const on = state.rMode === k;
           return (
-            <div
+            <KInteractive
               key={k}
               onClick={() => actions.setRMode(k)}
+              label={label}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -69,7 +71,7 @@ export default function Radar() {
               }}
             >
               {label}
-            </div>
+            </KInteractive>
           );
         })}
         <div style={{ marginLeft: "auto", font: "400 10px/1 " + t.font, color: V.ink2, letterSpacing: ".06em" }}>
@@ -130,6 +132,10 @@ export default function Radar() {
           return (
             <div
               key={r.id || name}
+            <KInteractive
+              key={name}
+              onClick={() => actions.radarBlipPick(name)}
+              label={`Radar blip ${name}`}
               style={{
                 position: "absolute",
                 left: "calc(50% + " + x.toFixed(1) + "px)",
@@ -199,10 +205,13 @@ export default function Radar() {
           return (
             <div key={r.id || name} style={wrap}>
               <div
+            <div key={name} style={wrap}>
+              <KInteractive
                 onClick={() => actions.radarTap(name)}
                 onMouseDown={() => actions.radarHold(name)}
                 onMouseUp={actions.radarRelease}
                 onMouseLeave={actions.radarRelease}
+                label={name}
                 style={{ display: "flex", alignItems: "center", gap: "12px", padding: pad, cursor: "pointer" }}
               >
                 <Icon name={icon} size={22} style={{ color: V.pri }} />
@@ -217,12 +226,14 @@ export default function Radar() {
                   <div style={{ padding: "4px 8px", border: "1px solid " + tone, borderRadius: V.rs, font: "400 11px/1 " + t.font, color: tone }}>{dm}m</div>
                 </div>
               </div>
+                <div style={{ padding: "4px 8px", border: "1px solid " + tone, borderRadius: V.rs, font: "400 11px/1 " + t.font, color: tone, flex: "none" }}>{dm}m</div>
+              </KInteractive>
               {open ? (
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", padding: "0 " + pad }}>
                   {acts.map((a, i) => (
-                    <div key={i} style={a.style}>
+                    <KInteractive key={i} label={a.label} style={a.style}>
                       {a.label}
-                    </div>
+                    </KInteractive>
                   ))}
                 </div>
               ) : null}
@@ -231,9 +242,9 @@ export default function Radar() {
                   <div style={{ padding: "0 " + pad, font: "600 9px/1 " + t.dfont, letterSpacing: ".18em", color: V.err }}>{(objMode ? "OBJECT" : "MODERATOR") + " — LONG PRESS"}</div>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", padding: "0 " + pad }}>
                     {mods.map((a, i) => (
-                      <div key={i} style={a.style}>
+                      <KInteractive key={i} label={a.label} style={a.style}>
                         {a.label}
-                      </div>
+                      </KInteractive>
                     ))}
                   </div>
                 </div>
