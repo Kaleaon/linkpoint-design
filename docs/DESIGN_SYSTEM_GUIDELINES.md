@@ -7,6 +7,7 @@ This document establishes **Ktheme / linkpoint-design** as the primary source of
 The Ktheme design system defines 24 standardized color palette presets grouped into four families:
 
 1. **TERMINAL & NEON**
+
    - `ink-terminal-modern` (Ink Terminal): Phosphor green on near-black.
    - `neo-noir-neon` (Neo-Noir Neon): Electric purple and cyan glow.
    - `windows-phone-metro` (Metro Cyan): Flat cyan on deep blue/black.
@@ -14,6 +15,7 @@ The Ktheme design system defines 24 standardized color palette presets grouped i
    - `slate-cyan` (Slate Cyan): Cool slate gray with vibrant cyan accents.
 
 2. **CONSOLE & AMBER**
+
    - `lcars` (LCARS Amber): Amber, violet, and mauve on aubergine.
    - `midnight-amber` (Midnight Amber): Golden amber on midnight navy.
    - `royal-bronze` (Royal Bronze): Regal deep purple with bronze accents.
@@ -21,6 +23,7 @@ The Ktheme design system defines 24 standardized color palette presets grouped i
    - `obsidian-crimson` (Obsidian Crimson): Crimson on deep obsidian black.
 
 3. **METAL & JEWEL**
+
    - `navy-gold` (Navy Gold): Metallic gold on deep navy blue.
    - `art-deco` (Art Deco): Gold hairlines on ivory black.
    - `emerald-silver` (Emerald Silver): Silver on deep emerald green.
