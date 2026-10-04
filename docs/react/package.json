@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "node --test src/theme/color.test.js && vitest run --environment jsdom --exclude \"**/color.test.js\""
+    "test": "node --test src/theme/color.test.js src/hooks/useFocusTrap.test.js src/components/SystemDialog.test.js"
     "test": "node --test src/theme/color.test.js src/components/component-sizing.test.js"
     "test": "vitest run"
   },
