@@ -1,6 +1,6 @@
 import React, { forwardRef, useContext } from "react";
 import { FormFieldContext } from "./FormField.jsx";
-import { useTheme } from "../context/ThemeContext.jsx";
+import { useThemeTokens } from "../context/ThemeContext.jsx";
 
 const FormSwitch = forwardRef(function FormSwitch(
   {
@@ -25,7 +25,7 @@ const FormSwitch = forwardRef(function FormSwitch(
 
   let V = {};
   try {
-    const themeContext = useTheme();
+    const themeContext = useThemeTokens();
     if (themeContext) {
       V = themeContext.V || {};
     }
