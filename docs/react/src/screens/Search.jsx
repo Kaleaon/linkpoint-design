@@ -59,16 +59,16 @@ export default function Search() {
     ));
     emptyText = q ? "> no friends match “" + state.searchQuery + "”" : "> no friends yet";
   } else if (tab === "NEARBY") {
-    const list = RADAR_AVATARS.filter(([n]) => !q || n.toLowerCase().includes(q)).slice().sort((a, b) => a[1] - b[1]);
-    rows = list.map(([name, dm, , meta]) => (
-      <div key={name} onClick={() => startIm(name)} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 12px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, cursor: "pointer" }}>
+    const list = RADAR_AVATARS.filter((r) => !q || r.name.toLowerCase().includes(q)).slice().sort((a, b) => a.distance - b.distance);
+    rows = list.map((r) => (
+      <div key={r.id || r.name} onClick={() => startIm(r.name)} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 12px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, cursor: "pointer" }}>
         <Icon name="circle-user-round" size={20} style={{ color: V.sec2, flex: "none" }} />
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ font: "600 13px/1.3 " + t.font, color: V.ink }}>{name}</div>
-          <div style={{ font: "400 10px/1.3 " + t.font, color: V.ink2, marginTop: "1px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{meta}</div>
+          <div style={{ font: "600 13px/1.3 " + t.font, color: V.ink }}>{r.name}</div>
+          <div style={{ font: "400 10px/1.3 " + t.font, color: V.ink2, marginTop: "1px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{r.meta}</div>
         </div>
-        <div style={{ padding: "4px 8px", border: "1px solid " + V.outv, borderRadius: V.rs, font: "400 11px/1 " + t.font, color: V.ink2, flex: "none" }}>{dm}m</div>
-        <div onClick={(e) => { e.stopPropagation(); startIm(name); }} style={imPillStyle(IM_CHIPS.includes(name))}>
+        <div style={{ padding: "4px 8px", border: "1px solid " + V.outv, borderRadius: V.rs, font: "400 11px/1 " + t.font, color: V.ink2, flex: "none" }}>{r.distance}m</div>
+        <div onClick={(e) => { e.stopPropagation(); startIm(r.name); }} style={imPillStyle(IM_CHIPS.includes(r.name))}>
           IM
         </div>
       </div>

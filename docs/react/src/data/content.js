@@ -80,21 +80,21 @@ export const FRIEND_ROWS = [
 // Grid residents who show up in Search but aren't friends yet.
 export const SEARCH_STRANGERS = ["Lyra Sunspire", "Cove Ashworth", "Petra Vantage", "Wren Halloway"];
 
-// Radar, Firestorm-style: [name, distance-m, bearing-deg, meta, icon]
+// Radar entities with explicit schema and relative altitude (zDelta)
 export const RADAR_AVATARS = [
-  ["Nyx Vaher", 8, 45, "friend · typing · payment info used", "user-round"],
-  ["Kit Sandalwood", 17, 10, "friend · voice active", "user-round"],
-  ["Marlowe Quill", 34, 95, "age 14d · payment info on file", "user"],
-  ["Bramble Vex", 48, 220, "age 3y · no payment info", "user"],
-  ["Juno Halcyon", 112, 175, "beyond shout range", "user"],
-  ["Wren Ostara", 146, 310, "beyond draw distance", "user"],
+  { id: "av-nyx", name: "Nyx Vaher", distance: 8, bearing: 45, zDelta: 12, meta: "friend · typing · payment info used", icon: "user-round" },
+  { id: "av-kit", name: "Kit Sandalwood", distance: 17, bearing: 10, zDelta: 0, meta: "friend · voice active", icon: "user-round" },
+  { id: "av-marlowe", name: "Marlowe Quill", distance: 34, bearing: 95, zDelta: -4, meta: "age 14d · payment info on file", icon: "user" },
+  { id: "av-bramble", name: "Bramble Vex", distance: 48, bearing: 220, zDelta: 25, meta: "age 3y · no payment info", icon: "user" },
+  { id: "av-juno", name: "Juno Halcyon", distance: 112, bearing: 175, zDelta: -15, meta: "beyond shout range", icon: "user" },
+  { id: "av-wren", name: "Wren Ostara", distance: 146, bearing: 310, zDelta: 0, meta: "beyond draw distance", icon: "user" },
 ];
 export const RADAR_OBJECTS = [
-  ["Vendor — Sunset Lamp v3", 6, 60, "Kit Sandalwood · 4 prims · 0.21ms", "box"],
-  ["Particle fountain", 14, 120, "Linden Public · 240 particles/s", "sparkles"],
-  ["Security orb", 22, 200, "Marlowe Quill · scans every 5s", "shield-alert"],
-  ["Dance ball", 31, 15, "Juno Halcyon · 1 script · 0.04ms", "circle-dot"],
-  ["Rezzing platform", 58, 285, "you · 128 prims · no scripts", "layers"],
+  { id: "obj-lamp", name: "Vendor — Sunset Lamp v3", distance: 6, bearing: 60, zDelta: 0, meta: "Kit Sandalwood · 4 prims · 0.21ms", icon: "box" },
+  { id: "obj-fountain", name: "Particle fountain", distance: 14, bearing: 120, zDelta: -2, meta: "Linden Public · 240 particles/s", icon: "sparkles" },
+  { id: "obj-orb", name: "Security orb", distance: 22, bearing: 200, zDelta: 8, meta: "Marlowe Quill · scans every 5s", icon: "shield-alert" },
+  { id: "obj-dance", name: "Dance ball", distance: 31, bearing: 15, zDelta: 3, meta: "Juno Halcyon · 1 script · 0.04ms", icon: "circle-dot" },
+  { id: "obj-platform", name: "Rezzing platform", distance: 58, bearing: 285, zDelta: 45, meta: "you · 128 prims · no scripts", icon: "layers" },
 ];
 export const COMPASS = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
 
