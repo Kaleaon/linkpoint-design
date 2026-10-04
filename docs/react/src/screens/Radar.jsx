@@ -130,10 +130,8 @@ export default function Radar() {
             y = -dist * Math.cos(a),
             sz = selBlip ? 13 : 9;
           return (
-            <div
-              key={r.id || name}
             <KInteractive
-              key={name}
+              key={r.id || name}
               onClick={() => actions.radarBlipPick(name)}
               label={`Radar blip ${name}`}
               style={{
@@ -171,7 +169,7 @@ export default function Radar() {
                   <ElevationBadge zDelta={zDelta} compact />
                 </div>
               )}
-            </div>
+            </KInteractive>
           );
         })}
         <div style={{ position: "absolute", left: "10px", bottom: "8px", font: "400 9px/1 " + t.font, letterSpacing: ".06em", color: V.ink2 }}>
@@ -204,8 +202,6 @@ export default function Radar() {
           };
           return (
             <div key={r.id || name} style={wrap}>
-              <div
-            <div key={name} style={wrap}>
               <KInteractive
                 onClick={() => actions.radarTap(name)}
                 onMouseDown={() => actions.radarHold(name)}
@@ -225,8 +221,6 @@ export default function Radar() {
                   <ElevationBadge zDelta={zDelta} />
                   <div style={{ padding: "4px 8px", border: "1px solid " + tone, borderRadius: V.rs, font: "400 11px/1 " + t.font, color: tone }}>{dm}m</div>
                 </div>
-              </div>
-                <div style={{ padding: "4px 8px", border: "1px solid " + tone, borderRadius: V.rs, font: "400 11px/1 " + t.font, color: tone, flex: "none" }}>{dm}m</div>
               </KInteractive>
               {open ? (
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", padding: "0 " + pad }}>
