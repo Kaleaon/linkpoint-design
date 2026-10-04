@@ -70,7 +70,7 @@ export default function FloatersDesktop() {
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", borderBottom: "1px solid " + V.outv, paddingBottom: "4px" }}>
               <span style={{ font: "600 9px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>CAMERA CONTROLS</span>
-              <span onClick={() => setShowCamHud(false)} style={{ cursor: "pointer", color: V.ink2, fontSize: "12px", lineHeight: 1 }}>&times;</span>
+              <span onClick={() => setShowCamHud(false)} style={{ width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: V.ink2, fontSize: "12px", lineHeight: 1 }} aria-label="Close HUD">&times;</span>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 24px)", gap: "3px", justifyContent: "center" }}>
               <button type="button" onClick={() => actions.sceneMove({ clientX: 0, clientY: -10 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Up">
@@ -134,7 +134,7 @@ export default function FloatersDesktop() {
                     actions.flToggle(f.id);
                   }
                 }}
-                style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
+                style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
                 role="button" tabIndex={0} aria-label="Minimize"
               >
                 &minus;
@@ -151,7 +151,7 @@ export default function FloatersDesktop() {
                     actions.flClose(f.id);
                   }
                 }}
-                style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
+                style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
                 role="button" tabIndex={0} aria-label="Close"
               >
                 &times;
