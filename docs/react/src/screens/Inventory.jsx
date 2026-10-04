@@ -105,12 +105,14 @@ export default function Inventory() {
             ? { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 12px", paddingLeft: 10 + n.depth * 16 + "px", background: n.isSelected ? V.priC : V.surf, borderLeft: "4px solid " + (n.isSelected ? V.pri : n.depth === 0 ? V.pri : n.depth === 1 ? V.sec2 : "transparent"), cursor: "pointer" }
             : { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 16px", paddingLeft: 16 + n.depth * 18 + "px", background: n.isSelected ? V.priC : "transparent", borderBottom: "1px solid " + V.outv, cursor: "pointer" };
           return (
-            <div
+            <KInteractive
               key={n.name}
               onClick={() => handleRowClick(n)}
               onPointerDown={() => handlePointerDown(n)}
               onPointerUp={handlePointerUpOrLeave}
               onPointerLeave={handlePointerUpOrLeave}
+              label={n.name}
+              style={indent}
               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleRowClick(n); } }}
               style={indent}
               role="button" aria-label={n.name} tabIndex={0}

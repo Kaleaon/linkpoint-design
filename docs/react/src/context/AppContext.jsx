@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 import { useAppState } from "../hooks/useAppState.js";
 
-const AppContext = createContext(null);
+export const AppContext = createContext(null);
 
 export function AppProvider({ children }) {
   const value = useAppState();

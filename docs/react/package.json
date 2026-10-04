@@ -8,6 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "node --test src/theme/color.test.js && vitest run --environment jsdom --exclude \"**/color.test.js\""
+    "test": "node --test src/theme/color.test.js src/components/component-sizing.test.js"
+    "test": "vitest run"
   },
   "dependencies": {
     "lucide-react": "^0.451.0",
@@ -18,6 +20,7 @@
     "@testing-library/dom": "^10.4.2",
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
     "@vitejs/plugin-react": "^4.3.4",
     "jsdom": "^30.1.2",
     "vite": "^5.4.11",

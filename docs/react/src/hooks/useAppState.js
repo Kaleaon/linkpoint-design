@@ -126,6 +126,9 @@ export function useAppState() {
   const [searchState, setSearchState] = useState({});
   const [reconnecting, setReconnecting] = useState(false);
   const [toast, setToast] = useState("");
+  const [lindenBalance, setLindenBalance] = useState(4250);
+  const [exchangeRate, setExchangeRate] = useState(248.5);
+  const [lastSyncedAt, setLastSyncedAt] = useState(() => new Date());
 
   // ---- tick clock (componentDidMount's setInterval) ---------------------
   useEffect(() => {
@@ -153,6 +156,7 @@ export function useAppState() {
   const searchTimerRef = useRef(null);
   const reconnectTimerRef = useRef(null);
   const toastTimerRef = useRef(null);
+  const pollTimerRef = useRef(null);
 
   useEffect(
     () => () => {
@@ -163,9 +167,19 @@ export function useAppState() {
       clearTimeout(searchTimerRef.current);
       clearTimeout(reconnectTimerRef.current);
       clearTimeout(toastTimerRef.current);
+      clearInterval(pollTimerRef.current);
     },
     []
   );
+
+  // ---- background 30-second balance polling & sync -----------------------
+  useEffect(() => {
+    const pollInterval = setInterval(() => {
+      setLastSyncedAt(new Date());
+    }, 30000);
+    pollTimerRef.current = pollInterval;
+    return () => clearInterval(pollInterval);
+  }, []);
 
   // ---- transient acknowledgement toast (notify) --------------------------
   // Ported from the mockup's `notify(msg)` — the shared feedback channel for
@@ -681,6 +695,15 @@ export function useAppState() {
     notify("Downloading opensim-grid-log.txt...");
   }, [notify]);
 
+  // ---- balance refresh & sync ---------------------------------------------
+  const refreshBalance = useCallback(() => {
+    const now = new Date();
+    setLastSyncedAt(now);
+    const usd = (lindenBalance / exchangeRate).toFixed(2);
+    notify("Balance synced: L$ " + lindenBalance.toLocaleString("en-US") + " (~$" + usd + " USD)");
+    return { lindenBalance, exchangeRate, lastSyncedAt: now };
+  }, [lindenBalance, exchangeRate, notify]);
+
   const screenPick = useCallback(
     (id) => {
       if (id !== "Inventory") {
@@ -701,18 +724,18 @@ export function useAppState() {
 
   return {
     state: {
-      layout, palette, customTheme, device, screen, dialog, dense, tabs, chip, tileOk, invOpen, invSelectMode, invSelected, invMoveModal, invItems, dismissed, pinned,
+      layout, palette, customTheme, device, screen, dialog, dense, tabs, chip, tileOk, invOpen, invSelectMode, invSelected, invMoveModal, invItems, dismissed, pinned, lureState,
       toggles, cond, hudOn, hudPos, hudPicker, target, targetPicker, navPeek,
       cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
       rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
       loginMode, loginGrid, loginBusy, loginError, customGrids, addGrid, addGridName, addGridHost,
       searchFrom, searchTab, searchQuery, searchState, reconnecting, toast, offlineRunning, offlineUser, offlineAccountModal, offlineAccountFirstName, offlineAccountLastName, offlineAccountPassword, oarFile, oarRegionName, oarCoords, oarPrims, assetName, assetType, localAssets, offlineCacheSize, consoleLevel, consoleQuery, consoleAutoscroll, consoleLogs,
-      prefs, cacheCleared, camPreset,
+      prefs, cacheCleared, camPreset, lindenBalance, exchangeRate, lastSyncedAt,
     },
     actions: {
       setLayout, setPalette: selectPalette, setThemeColor, renameTheme, saveTheme, resetTheme, importTheme, downloadTheme, shareTheme, setDevice, setScreen: screenPick, setDialog, setDense,
       allGrids, openAddGrid, cancelAddGrid, saveCustomGrid, setAddGridName, setAddGridHost,
-      setTab, setChip, setTileOk, toggleInvFolder, toggleInvSelectMode, toggleInvSelectedItem, invLongPressItem, invWearSelected, invOpenMoveModal, invCloseMoveModal, invMoveSelected, invDeleteSelected, dismiss, toggleSetting, pin,
+      setTab, setChip, setTileOk, toggleInvFolder, toggleInvSelectMode, toggleInvSelectedItem, invLongPressItem, invWearSelected, invOpenMoveModal, invCloseMoveModal, invMoveSelected, invDeleteSelected, dismiss, toggleSetting, pin, respondLure, teleportToRegion, saveLandmark,
       cycleLayout, cyclePalette, setCond, setMenu,
       flR, flDrag, flFocus, flToggle, flClose,
       hudDrag, toggleHud, setHudPicker, setTarget, setTargetPicker, setNavPeek,
@@ -722,6 +745,7 @@ export function useAppState() {
       setRMode,
       setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchTab, setSearchQuery, searchAdd, startIm, reconnect, notify,
       setPref, clearCache, clearAllCache, setCamPreset, toggleOfflineGrid, setOfflineAccountModal, setOfflineAccountFirstName, setOfflineAccountLastName, setOfflineAccountPassword, saveOfflineAccount, importOarBackup, setAssetName, setAssetType, addLocalAsset, setOfflineCacheSize, clearOfflineCache, setConsoleLevel, setConsoleQuery, setConsoleAutoscroll, clearConsoleLogs, copyConsoleLogs, downloadConsoleLogs,
+      refreshBalance, setLindenBalance, setExchangeRate,
     },
     T, D, navMode,
   };

@@ -29,3 +29,7 @@
 ## 2024-10-02 - Keyboard Accessible System Dialogs
 **Learning:** Custom modal overlays and dialogs in both the HTML templates and React ports often rely on `<span onClick>` or `<div onClick>` without semantic keyboard support. Applying `role="button"`, `tabindex="0"`, and `onKeyDown` handlers explicitly for Enter/Space keys ensures critical system prompts (like permissions and inventory offers) can be navigated and dismissed by all users.
 **Action:** When implementing or updating custom modals/dialogs (such as `SystemDialog.jsx` or in `docs/index.html`), always apply ARIA roles and keyboard event listeners to the interactive action elements to ensure parity with native `<button>` tags.
+
+## 2026-09-24 - Accessibility for Icon-only Close Buttons
+**Learning:** When porting custom panels and overlays from the HTML DSL to React, it's easy to overlook accessiblity on icon-only close buttons (like 'x' icons) or action buttons (like 'CLEAR' text spans). These elements must include `role="button"`, `tabIndex={0}`, `aria-label`, and `onKeyDown` attributes to maintain 1:1 parity with the accessible HTML definitions and ensure full screen-reader and keyboard support.
+**Action:** When inspecting or adding icon-only controls or text-based spans acting as buttons (e.g., `navPeek` close, HUD panel close, target clear), verify they contain `role`, `tabIndex`, descriptive `aria-label`, and `onKeyDown` event listeners to match native `<button>` behavior.
