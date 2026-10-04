@@ -21,3 +21,14 @@ Second Life system dialogs (permissions, teleport lures, pay, etc.).
   [`docs/react-linkpoint-todo.md`](docs/react-linkpoint-todo.md), filed under
   the part of this repo each one implicates. Runs daily in CI; tick a box to
   mark an item done.
+
+## CI/CD & Itemized Verification Tasks
+
+The repository utilizes automated sync workflows (`.github/workflows/sync-react-linkpoint-todos.yml`):
+
+1. **Task 1 - Synchronize React-Linkpoint TODO Checklist**:
+   Runs daily at 06:00 UTC and on `repository_dispatch` to sync upstream changes into `docs/react-linkpoint-todo.md`.
+   Run locally via:
+   ```bash
+   python3 tools/sync_todos.py
+   ```
