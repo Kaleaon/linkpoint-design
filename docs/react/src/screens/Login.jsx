@@ -3,6 +3,8 @@ import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import Icon from "../components/Icon.jsx";
 import LinkpointLogo from "../components/LinkpointLogo.jsx";
+import FormField from "../components/FormField.jsx";
+import FormInput from "../components/FormInput.jsx";
 
 // Refined Login / Splash Page component using LinkpointLogo
 export default function Login() {
@@ -138,19 +140,23 @@ export default function Login() {
 
               {state.addGrid ? (
                 <div style={{ marginTop: "8px", border: "1px dashed " + V.outv, borderRadius: V.rs, padding: "8px" }}>
-                  <div style={{ font: "400 9.5px/1 " + t.font, letterSpacing: ".16em", color: V.ink2 }}>ADD CUSTOM GRID</div>
-                  <input
-                    value={state.addGridName}
-                    onChange={(e) => actions.setAddGridName(e.target.value)}
-                    placeholder="grid name"
-                    style={{ minHeight: "36px", height: "36px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 12px/1 " + t.font, color: V.ink, marginTop: "4px" }}
-                  />
-                  <input
-                    value={state.addGridHost}
-                    onChange={(e) => actions.setAddGridHost(e.target.value)}
-                    placeholder="login URI (e.g. login.example.com:8002)"
-                    style={{ minHeight: "36px", height: "36px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 12px/1 " + t.font, color: V.ink, marginTop: "4px" }}
-                  />
+                  <div style={{ font: "400 9.5px/1 " + t.font, letterSpacing: ".16em", color: V.ink2, marginBottom: "4px" }}>ADD CUSTOM GRID</div>
+                  <FormField label="GRID NAME" description="Name for the custom grid">
+                    <FormInput
+                      value={state.addGridName}
+                      onChange={(e) => actions.setAddGridName(e.target.value)}
+                      placeholder="grid name"
+                      style={{ minHeight: "36px", height: "36px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 12px/1 " + t.font, color: V.ink }}
+                    />
+                  </FormField>
+                  <FormField label="LOGIN URI" description="e.g. login.example.com:8002">
+                    <FormInput
+                      value={state.addGridHost}
+                      onChange={(e) => actions.setAddGridHost(e.target.value)}
+                      placeholder="login URI (e.g. login.example.com:8002)"
+                      style={{ minHeight: "36px", height: "36px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 12px/1 " + t.font, color: V.ink }}
+                    />
+                  </FormField>
                   <div style={{ display: "flex", gap: "6px", marginTop: "8px" }}>
                     <div
                       onClick={actions.cancelAddGrid}
@@ -179,10 +185,13 @@ export default function Login() {
           ) : null}
 
           {fields.map((lf) => (
-            <div key={lf.label}>
-              <div style={{ font: "400 10px/1 " + t.font, letterSpacing: ".2em", color: V.pri, margin: "6px 0 4px" }}>{lf.label}</div>
-              <div style={{ minHeight: "36px", display: "flex", alignItems: "center", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 12px/1 " + t.font, color: V.ink2 }}>{lf.value}</div>
-            </div>
+            <FormField key={lf.label} label={lf.label}>
+              <FormInput
+                value={lf.value}
+                readOnly
+                style={{ minHeight: "36px", height: "36px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 12px/1 " + t.font, color: V.ink2 }}
+              />
+            </FormField>
           ))}
 
           {!isGrid ? (

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
+import FormInput from "./FormInput.jsx";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { FLOATERS, FBAR, CBTN } from "../theme/constants.js";
@@ -195,8 +196,9 @@ export default function FloatersDesktop() {
         {/* Persistent Firestorm Nearby Quick Chat Input Bar */}
         <form onSubmit={sendQuickChat} style={{ display: "flex", alignItems: "center", gap: "4px", minWidth: "260px", maxWidth: "340px" }}>
           <div style={{ position: "relative", flex: 1 }}>
-            <input
+            <FormInput
               type="text"
+              aria-label="Nearby chat message"
               value={quickMsg}
               onChange={(e) => setQuickMsg(e.target.value)}
               placeholder="Nearby Chat..."

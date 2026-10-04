@@ -2,6 +2,7 @@ import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { FRIEND_ROWS, RADAR_AVATARS, SEARCH_STRANGERS, IM_CHIPS } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
+import FormInput from "../components/FormInput.jsx";
 
 const TABS = [
   { id: "FRIENDS", label: "FRIENDS", icon: "users" },
@@ -168,11 +169,12 @@ export default function Search() {
 
       <div style={{ flex: "none", margin: "0 16px 10px", height: "44px", display: "flex", alignItems: "center", gap: "8px", padding: "0 12px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf }}>
         <Icon name="search" size={16} style={{ color: V.ink2 }} />
-        <input
+        <FormInput
+          aria-label="Filter or search residents by name"
           value={state.searchQuery}
           onChange={(e) => actions.setSearchQuery(e.target.value)}
           placeholder={tab === "SEARCH" ? "resident name (min 2 chars)" : "filter by name"}
-          style={{ flex: 1, minWidth: 0, border: "none", background: "transparent", font: "400 13px/1 " + t.font, color: V.ink }}
+          style={{ flex: 1, minWidth: 0, border: "none", background: "transparent", font: "400 13px/1 " + t.font, color: V.ink, outline: "none" }}
         />
       </div>
 
