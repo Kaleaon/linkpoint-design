@@ -3,6 +3,7 @@ import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { INVENTORY_SOURCE, INVENTORY_FOLDERS, INVENTORY_RECENTS } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
+import KInteractive from "../components/KInteractive.jsx";
 import { subView } from "../theme/constants.js";
 
 // Ported from the `isTree` <sc-if> block: search/grid toolbar, recent-items
@@ -121,7 +122,7 @@ export default function Inventory() {
               <Icon name={n.icon} size={16} style={{ color: V.sec2, flexShrink: 0 }} />
               <span style={{ flex: 1, font: "400 13px/1.2 " + t.font, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{n.name}</span>
               <span style={{ font: "400 10px/1 " + t.font, color: V.ink2 }}>{n.ver}</span>
-            </div>
+            </KInteractive>
           );
         })}
       </div>

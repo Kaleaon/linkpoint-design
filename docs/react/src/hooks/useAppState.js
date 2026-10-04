@@ -42,6 +42,7 @@ export function useAppState() {
   );
   const [dismissed, setDismissed] = useState({});
   const [pinned, setPinned] = useState({});
+  const [lureState, setLureState] = useState({});
   const [toggles, setToggles] = useState({
     largeType: false, push: true, voice: true, chatCmds: true, autoresponse: true,
     rlv: false, shadows: false, battery: true, timestamps: true, imLogs: true, mediaAuto: false,
@@ -227,6 +228,35 @@ export function useAppState() {
   const toggleSetting = useCallback((key) => setToggles((s) => ({ ...s, [key]: !s[key] })), []);
   const setPref = useCallback((key, v) => setPrefs((s) => ({ ...s, [key]: v })), []);
   const pin = useCallback((key) => setPinned((s) => ({ ...s, [key]: !s[key] })), []);
+  const respondLure = useCallback((lureId, response, regionName, coords) => {
+    setLureState((s) => ({ ...s, [lureId]: response }));
+    if (response === "accepted") {
+      if (loginMode === "offline") {
+        notify("Cannot accept teleport lure while offline");
+      } else {
+        notify(`Teleporting to ${regionName || "destination"} ${coords || ""}…`);
+        setScreen("Map");
+      }
+    } else {
+      notify("Teleport lure declined");
+    }
+  }, [loginMode, notify]);
+  const teleportToRegion = useCallback((regionName, coords) => {
+    if (loginMode === "offline") {
+      notify("Cannot teleport while offline");
+      return;
+    }
+    notify(`Teleporting to ${regionName || "region"} ${coords || ""}…`);
+    setScreen("Map");
+  }, [loginMode, notify]);
+  const saveLandmark = useCallback((name) => {
+    const k = name.toLowerCase().replace(/[^a-z0-9]+/g, "");
+    setPinned((s) => {
+      const isPinned = !s[k];
+      notify(isPinned ? `Landmark saved to Inventory: ${name}` : `Landmark removed: ${name}`);
+      return { ...s, [k]: isPinned };
+    });
+  }, [notify]);
   const cycleLayout = useCallback(() => {
     const ks = Object.keys(LAYOUTS);
     setLayout((cur) => ks[(ks.indexOf(cur) + 1) % ks.length]);

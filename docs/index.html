@@ -510,10 +510,40 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                   <div style="{{ m.bubble }}">
                     <div style="{{ m.headStyle }}">[{{ m.ts }}] {{ m.sender }}</div>
                     <div style="{{ m.textStyle }}">{{ m.text }}</div>
-                    <sc-if value="{{ m.linkTitle }}" hint-placeholder-val="{{ false }}">
-                      <div style="margin-top:8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);overflow:hidden;background:var(--bg,#0A1112)">
-                        <div style="height:62px;background:repeating-linear-gradient(135deg,var(--surf2,#1B2A2D) 0 8px,transparent 8px 16px)"></div>
-                        <div style="padding:7px 9px"><div style="font:600 11px/1.3 var(--font,'JetBrains Mono')">{{ m.linkTitle }}</div><div style="font:400 10px/1.3 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{ m.linkUrl }}</div></div>
+                    <sc-if value="{{ m.hasLandmarkCard }}" hint-placeholder-val="{{ false }}">
+                      <div style="margin-top:8px;max-height:140px;height:128px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);overflow:hidden;background:var(--bg,#0A1112);display:flex;flex-direction:row">
+                        <div style="width:96px;height:100%;flex:none;background:repeating-linear-gradient(135deg,var(--surf2,#1B2A2D) 0 8px,transparent 8px 16px);border-right:1px solid var(--outv,#365047);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--pri,#8AD0B0)">
+                          <span style="font:700 9px/1 var(--dfont,'JetBrains Mono');letter-spacing:.08em;text-transform:uppercase">{{ m.landmark.rating }}</span>
+                        </div>
+                        <div style="flex:1;min-width:0;padding:8px 10px;display:flex;flex-direction:column;justify-content:space-between">
+                          <div>
+                            <div style="font:600 12px/1.2 var(--font,'JetBrains Mono');color:var(--ink,#E0F2EC);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.landmark.regionName }}</div>
+                            <div style="font:400 10px/1.3 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:2px">{{ m.landmark.coords }} · {{ m.landmark.avatars }}</div>
+                          </div>
+                          <div style="display:flex;gap:6px">
+                            <button onClick="{{ m.landmark.teleportPick }}" style="padding:4px 8px;border-radius:var(--rs,4px);border:none;background:var(--pri,#8AD0B0);color:var(--onpri,#0E3021);font:600 10px/1 var(--dfont,'JetBrains Mono');letter-spacing:.06em;cursor:pointer">TELEPORT</button>
+                            <button onClick="{{ m.landmark.viewMapPick }}" style="padding:4px 8px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:transparent;color:var(--ink,#E0F2EC);font:500 10px/1 var(--font,'JetBrains Mono');cursor:pointer">VIEW ON MAP</button>
+                            <button onClick="{{ m.landmark.saveLandmarkPick }}" style="padding:4px 8px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:transparent;color:var(--pri,#8AD0B0);font:500 10px/1 var(--font,'JetBrains Mono');cursor:pointer">{{ m.landmark.saveBtnLabel }}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ m.isLure }}" hint-placeholder-val="{{ false }}">
+                      <div style="margin-top:8px;max-height:140px;padding:8px 10px;border:1px solid var(--sec2,#F2B880);border-radius:var(--rs,4px);background:var(--bg,#0A1112);display:flex;flex-direction:column;justify-content:space-between;gap:6px">
+                        <div style="display:flex;align-items:center;gap:6px">
+                          <span style="font:600 11px/1.2 var(--dfont,'JetBrains Mono');color:var(--sec2,#F2B880);letter-spacing:.06em">TELEPORT OFFER</span>
+                          <sc-if value="{{ m.lureState }}" hint-placeholder-val="{{ false }}">
+                            <span style="margin-left:auto;font:700 9px/1 var(--dfont,'JetBrains Mono');padding:2px 6px;border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);color:var(--ink2,#A7C8BC)">{{ m.lureStatusLabel }}</span>
+                          </sc-if>
+                        </div>
+                        <div style="font:400 11px/1.3 var(--font,'JetBrains Mono');color:var(--ink,#E0F2EC)">“{{ m.lureMsg }}”</div>
+                        <div style="font:400 10px/1.2 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">Destination: {{ m.lureRegion }} {{ m.lureCoords }}</div>
+                        <sc-if value="{{ m.showLureButtons }}" hint-placeholder-val="{{ true }}">
+                          <div style="display:flex;gap:8px;margin-top:2px">
+                            <button onClick="{{ m.acceptLurePick }}" style="padding:5px 10px;border-radius:var(--rs,4px);border:none;background:var(--pri,#8AD0B0);color:var(--onpri,#0E3021);font:600 10px/1 var(--dfont,'JetBrains Mono');letter-spacing:.06em;cursor:pointer">ACCEPT LURE</button>
+                            <button onClick="{{ m.declineLurePick }}" style="padding:5px 10px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:transparent;color:var(--ink2,#A7C8BC);font:500 10px/1 var(--font,'JetBrains Mono');cursor:pointer">DECLINE</button>
+                          </div>
+                        </sc-if>
                       </div>
                     </sc-if>
                   </div>
@@ -1883,7 +1913,7 @@ const DIALOGS = {
 
 class Component extends DCLogic {
   state = { layout: "terminal", palette: "ink", device: "ios", screen: "Chat", dialog: null, dense: false, tabs: { Chat: "LOCAL", Friends: "ALL", Diagnostics: "AGNI" }, chip: "Nyx Vaher", tileOk: true, invOpen: { Objects: true },
-    dismissed: {}, pinned: {},
+    dismissed: {}, pinned: {}, lureState: {},
     toggles: { largeType: false, push: true, voice: true, chatCmds: true, autoresponse: true,
       rlv: false, shadows: false, battery: true, timestamps: true, imLogs: true, mediaAuto: false,
       showOnline: true, typingSent: true, cacheOnExit: false },
@@ -2456,7 +2486,9 @@ class Component extends DCLogic {
       { ts: "14:22", sender: "Ruth Resident", text: "on my way, just rezzing the last sculpt", me: true },
       { ts: "14:24", sender: "System", text: "Kit Sandalwood is online.", sys: true },
       { ts: "14:25", sender: "Kit Sandalwood", text: "@Ruth check the landmark, second floor entrance", linkTitle: "Bay City — Hollywood", linkUrl: "secondlife://Hollywood/112/44/51" },
+      { id: "lure-local-1", ts: "14:26", sender: "Kit Sandalwood", text: "Kit Sandalwood offers to teleport you", isLure: true, lureRegion: "Bay City — Hollywood", lureCoords: "<112, 44, 51>", lureMsg: "come see the build jam, we're on the roof" },
       { ts: "14:27", sender: "Ruth Resident", text: "got it 👍", me: true },
+      { ts: "14:28", sender: "Nyx Vaher", text: "or check the welcome area secondlife://Ahern/128/128/24" },
       { ts: "14:29", sender: "Nyx Vaher", text: "bringing the light rig over, one sec" },
     ];
     const imThreads = {
@@ -2468,7 +2500,7 @@ class Component extends DCLogic {
       ],
       "Kit Sandalwood": [
         { ts: "13:40", sender: "Kit Sandalwood", text: "reslotted the brass texture, check inventory", linkTitle: "Bay City — Hollywood", linkUrl: "secondlife://Hollywood/112/44/51" },
-        { ts: "13:41", sender: "Kit Sandalwood", text: "lmk if the UVs still look off" },
+        { id: "lure-im-1", ts: "13:41", sender: "Kit Sandalwood", text: "offers to teleport you to Bay City — Hollywood <112, 44, 51>", isLure: true, lureRegion: "Bay City — Hollywood", lureCoords: "<112, 44, 51>", lureMsg: "come inspect the UV alignment in person" },
         { ts: "13:47", sender: "Ruth Resident", text: "looking now, one sec", me: true },
       ],
       "Sable Ashgrove": [
@@ -2477,7 +2509,7 @@ class Component extends DCLogic {
     };
     const groupThreads = {
       "Bay City Builders": [
-        { ts: "12:10", sender: "Marlowe Quill", text: "meeting moved to 6pm SLT" },
+        { ts: "12:10", sender: "Marlowe Quill", text: "meeting moved to 6pm SLT at secondlife://Hollywood/112/44/51" },
         { ts: "12:12", sender: "Ruth Resident", text: "works for me", me: true },
         { ts: "12:15", sender: "System", text: "Sable Ashgrove joined the group.", sys: true },
       ],
@@ -2492,21 +2524,94 @@ class Component extends DCLogic {
     const chatReplier = curTab === "IM" ? activeChip
       : curTab === "GROUP" ? ((chatBaseThread.find(m => !m.me && !m.sys) || {}).sender || "Marlowe Quill")
       : "Nyx Vaher";
-    const msgs = chatBaseThread.concat(s.chatSent[chatChannelKey] || []).map(m => {
+    const msgs = chatBaseThread.concat(s.chatSent[chatChannelKey] || []).map((m, idx) => {
       const acc = m.sys ? V.info : m.me ? V.pri : V.sec2;
-      if (!bleed) return {
-        ...m, align: M(wrapBase, m.me ? { justifyContent: "flex-end" } : null),
-        bubble: M(bubBase, m.me ? { background: V.priC, borderColor: V.pri } : m.sys ? { background: "transparent", borderStyle: "dashed", borderColor: V.info } : null),
-        headStyle: M(headBase, m.sys ? { color: V.info } : m.me ? { color: V.onpriC } : null),
-        textStyle: M(textBase, m.sys ? { color: V.info } : m.me ? { color: V.onpriC } : null),
+      const mId = m.id || (m.ts + "-" + idx);
+      const isLure = !!m.isLure;
+      const lureRes = s.lureState && s.lureState[mId];
+      const showLureButtons = isLure && !lureRes;
+      const lureStatusLabel = lureRes === 'accepted' ? '✓ ACCEPTED' : lureRes === 'declined' ? '✗ DECLINED' : '';
+      const acceptLurePick = () => {
+        this.setState(st => ({ lureState: { ...st.lureState, [mId]: 'accepted' } }));
+        if (s.loginMode === 'offline') {
+          this.notify('Cannot accept teleport lure while offline');
+        } else {
+          this.notify('Teleporting to ' + (m.lureRegion || 'destination') + ' ' + (m.lureCoords || '') + '…');
+          this.setState({ screen: 'Map' });
+        }
       };
+      const declineLurePick = () => {
+        this.setState(st => ({ lureState: { ...st.lureState, [mId]: 'declined' } }));
+        this.notify('Teleport lure declined');
+      };
+
+      let slurlMatch = null;
+      let url = m.linkUrl || "";
+      let title = m.linkTitle || "";
+      if (!url && m.text) {
+        const re = /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^\/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
+        const match = m.text.match(re);
+        if (match) {
+          url = match[0];
+          title = decodeURIComponent(match[1]).replace(/\+/g, " ");
+        }
+      }
+      if (url && !isLure) {
+        const re = /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^\/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
+        const match = url.match(re);
+        const regName = title || (match ? decodeURIComponent(match[1]).replace(/\+/g, " ") : "Unknown Region");
+        const coords = match ? `<${match[2] || 128}, ${match[3] || 128}, ${match[4] || 20}>` : "<128, 128, 26>";
+        const regKey = regName.toLowerCase().replace(/[^a-z0-9]+/g, "");
+        const isSaved = !!s.pinned[regKey];
+
+        slurlMatch = {
+          regionName: regName,
+          coords: coords,
+          rating: regName.includes("Hollywood") ? "Adult" : regName.includes("Ahern") ? "Moderate" : "General",
+          avatars: regName.includes("Hollywood") ? "18 avatars online" : regName.includes("Da Boom") ? "34 avatars online" : "6 avatars online",
+          isSaved: isSaved,
+          saveBtnLabel: isSaved ? "SAVED" : "SAVE LANDMARK",
+          teleportPick: () => {
+            if (s.loginMode === 'offline') {
+              this.notify('Cannot teleport while offline');
+            } else {
+              this.notify('Teleporting to ' + regName + ' ' + coords + '…');
+              this.setState({ screen: 'Map' });
+            }
+          },
+          viewMapPick: () => {
+            this.notify('Viewing ' + regName + ' on Map');
+            this.setState({ screen: 'Map' });
+          },
+          saveLandmarkPick: () => {
+            this.pin(regKey);
+            this.notify(s.pinned[regKey] ? 'Landmark removed: ' + regName : 'Landmark saved to Inventory: ' + regName);
+          }
+        };
+      }
+
+      const baseBubble = !bleed
+        ? M(bubBase, m.me ? { background: V.priC, borderColor: V.pri } : m.sys ? { background: "transparent", borderStyle: "dashed", borderColor: V.info } : null)
+        : { flex: 1, minWidth: 0, background: V.surf, borderLeft: "4px solid " + acc, overflow: "hidden", padding: pad + " 12px " + pad + " 10px" };
+
+      const alignStyle = !bleed
+        ? M(wrapBase, m.me ? { justifyContent: "flex-end" } : null)
+        : { display: "flex", width: "100%" };
+
       return {
         ...m,
-        align: { display: "flex", width: "100%" },
-        bubble: { flex: 1, minWidth: 0, background: V.surf, borderLeft: "4px solid " + acc, overflow: "hidden",
-          padding: pad + " 12px " + pad + " 10px" },
-        headStyle: { font: "400 10px/1.3 " + t.font, color: acc, letterSpacing: ".06em", marginBottom: "3px" },
-        textStyle: M(textBase, m.sys ? { color: V.info } : null),
+        align: alignStyle,
+        bubble: baseBubble,
+        headStyle: !bleed ? M(headBase, m.sys ? { color: V.info } : m.me ? { color: V.onpriC } : null) : { font: "400 10px/1.3 " + t.font, color: acc, letterSpacing: ".06em", marginBottom: "3px" },
+        textStyle: !bleed ? M(textBase, m.sys ? { color: V.info } : m.me ? { color: V.onpriC } : null) : M(textBase, m.sys ? { color: V.info } : null),
+        isLure: isLure,
+        lureState: lureRes,
+        showLureButtons: showLureButtons,
+        lureStatusLabel: lureStatusLabel,
+        acceptLurePick: acceptLurePick,
+        declineLurePick: declineLurePick,
+        hasLandmarkCard: !!slurlMatch,
+        landmark: slurlMatch,
       };
     });
 
