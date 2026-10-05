@@ -2,6 +2,7 @@ import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { segLooks } from "../theme/look.js";
 import { CSUB, subView, setSub } from "../theme/constants.js";
+import { useTabNavigation } from "../hooks/useTabNavigation.js";
 
 // Ported from `segTabs`/`segWrap`/`hasSeg`. The labels come from CSUB — the one
 // sub-view table the LCARS rail also renders — so a screen gains a tab strip by
@@ -21,6 +22,21 @@ export default function SegmentedTabs() {
   const SEG_BADGE = { Chat: { IM: 3, GROUP: 1 } };
   const tabs = CSUB[scr].map(([label]) => ({ label, badge: (SEG_BADGE[scr] || {})[label] }));
 
+  const activeIndex = tabs.findIndex((x) => x.label === curSub);
+
+  const handleSelect = (index) => {
+    if (tabs[index]) {
+      setSub(actions, scr, tabs[index].label);
+    }
+  };
+
+  const { containerProps, getTabProps } = useTabNavigation({
+    itemCount: tabs.length,
+    activeIndex,
+    onSelect: handleSelect,
+    ariaLabel: "View Filters",
+  });
+
   const segLook = LK.seg || "fill";
   const looks = segLooks(V, t.font);
   const base = looks[segLook];
@@ -33,26 +49,16 @@ export default function SegmentedTabs() {
     ? { flex: "none", display: "flex", margin: nav === "sweep" ? "12px 12px 10px 4px" : "2px 16px 10px", border: "1px solid " + V.outv, borderRadius: V.rs, overflow: "hidden" }
     : { flex: "none", display: "flex", margin: "0 16px 8px", borderBottom: segLook === "text" ? "1px solid " + V.outv : "none", overflowX: "auto" };
 
-  const isActive = (label) => curSub === label;
-
   return (
-    <div style={wrap}>
-      {tabs.map((x) => {
-        const active = isActive(x.label);
+    <div {...containerProps} style={wrap}>
+      {tabs.map((x, index) => {
+        const active = x.label === curSub;
         const style = { ...base, ...(active ? onLook : null), ...(isFloat ? { minHeight: "28px", height: "28px", padding: "0 12px", flex: "none", borderRadius: 0, font: "600 9.5px/1 " + t.font, letterSpacing: ".1em" } : null) };
+        const tabProps = getTabProps(index);
         return (
           <div
             key={x.label}
-            onClick={() => setSub(actions, scr, x.label)}
-            role="tab"
-            tabIndex={0}
-            aria-selected={active}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                setSub(actions, scr, x.label);
-              }
-            }}
+            {...tabProps}
             style={style}
           >
             <span style={{ font: "inherit", letterSpacing: "inherit" }}>{x.label}</span>
@@ -80,3 +86,4 @@ export default function SegmentedTabs() {
     </div>
   );
 }
+
