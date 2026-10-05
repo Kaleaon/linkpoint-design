@@ -1,5 +1,5 @@
 import { useApp } from "../context/AppContext.jsx";
-import { useTheme } from "../context/ThemeContext.jsx";
+import { useThemeRuntime } from "../context/ThemeContext.jsx";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { buildCards } from "../data/content.js";
@@ -28,7 +28,7 @@ const CARD_SCREENS = ["Friends", "Groups", "Notices", "Teleport", "Outfits", "Ob
 // sits beside it on tablet/foldable devices.
 export default function ScreenBody() {
   const { state, actions } = useApp();
-  const { norm, scr } = useTheme();
+  const { norm, scr } = useThemeRuntime();
 
   const cardsByScreen = buildCards({ state, actions, layoutName: LAYOUTS[state.layout].name, paletteName: PALETTES[state.palette].name });
   const isCardScreen = CARD_SCREENS.includes(scr);

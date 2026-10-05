@@ -26,7 +26,7 @@ on:
     types: [react-linkpoint-updated]
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: sync-react-linkpoint-todos
@@ -36,6 +36,8 @@ jobs:
   sync:
     name: Task 1 - Synchronize React-Linkpoint TODO Checklist
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Check out linkpoint-design
         uses: actions/checkout@v4
