@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback } from "react";
-import { useTheme } from "../context/ThemeContext.jsx";
+import { useThemeTokens } from "../context/ThemeContext.jsx";
 import { useApp } from "../context/AppContext.jsx";
 import Card from "./Card.jsx";
 import Icon from "./Icon.jsx";
@@ -8,7 +8,7 @@ import Icon from "./Icon.jsx";
 // Friends/Groups/Notices/Teleport/Settings/Diagnostics all share.
 // Enhanced with pull-to-refresh swipe gesture detection for balance sync.
 export default function CardList({ cards }) {
-  const { LK, V, t } = useTheme();
+  const { LK, V, t } = useThemeTokens();
   const { actions } = useApp();
 
   const [pullDistance, setPullDistance] = useState(0);
@@ -60,7 +60,6 @@ export default function CardList({ cards }) {
       setPullDistance(0);
     }
   }, [pullDistance, refreshing, actions]);
-
   const style = {
     flex: 1,
     minHeight: 0,
