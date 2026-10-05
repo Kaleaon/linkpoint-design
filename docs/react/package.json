@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "node --test src/hooks/useFocusTrap.test.js src/components/SystemDialog.test.js src/components/component-sizing.test.js && vitest run --exclude=\"**/{useFocusTrap,SystemDialog,component-sizing}.test.js\""
+    "test": "node --test src/hooks/useFocusTrap.test.js src/components/SystemDialog.test.js src/components/component-sizing.test.js && vitest run --exclude \"**/{SystemDialog,component-sizing,useFocusTrap}.test.js\""
   },
   "dependencies": {
     "lucide-react": "^0.451.0",
