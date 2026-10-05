@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
+import FormInput from "./FormInput.jsx";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { FLOATERS, FBAR, CBTN } from "../theme/constants.js";
@@ -71,6 +72,7 @@ export default function FloatersDesktop() {
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", borderBottom: "1px solid " + V.outv, paddingBottom: "4px" }}>
               <span style={{ font: "600 9px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>CAMERA CONTROLS</span>
               <span onClick={() => setShowCamHud(false)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setShowCamHud(false); } }} role="button" tabIndex={0} aria-label="Close Camera HUD" style={{ cursor: "pointer", color: V.ink2, fontSize: "12px", lineHeight: 1 }}>&times;</span>
+              <span onClick={() => setShowCamHud(false)} style={{ width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: V.ink2, fontSize: "12px", lineHeight: 1 }} aria-label="Close HUD">&times;</span>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 24px)", gap: "3px", justifyContent: "center" }}>
               <button type="button" onClick={() => actions.sceneMove({ clientX: 0, clientY: -10 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Up">
@@ -134,7 +136,7 @@ export default function FloatersDesktop() {
                     actions.flToggle(f.id);
                   }
                 }}
-                style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
+                style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
                 role="button" tabIndex={0} aria-label="Minimize"
               >
                 &minus;
@@ -151,7 +153,7 @@ export default function FloatersDesktop() {
                     actions.flClose(f.id);
                   }
                 }}
-                style={{ width: "17px", height: "17px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
+                style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
                 role="button" tabIndex={0} aria-label="Close"
               >
                 &times;
@@ -195,8 +197,9 @@ export default function FloatersDesktop() {
         {/* Persistent Firestorm Nearby Quick Chat Input Bar */}
         <form onSubmit={sendQuickChat} style={{ display: "flex", alignItems: "center", gap: "4px", minWidth: "260px", maxWidth: "340px" }}>
           <div style={{ position: "relative", flex: 1 }}>
-            <input
+            <FormInput
               type="text"
+              aria-label="Nearby chat message"
               value={quickMsg}
               onChange={(e) => setQuickMsg(e.target.value)}
               placeholder="Nearby Chat..."
@@ -279,9 +282,9 @@ function buildFBody(state, cardsByScreen) {
   return {
     Chat: LOCAL_MSGS.slice(-6).map((m) => ({ a: m.sender, b: m.ts })),
     Radar: RADAR_AVATARS.slice()
-      .sort((a, b) => a[1] - b[1])
+      .sort((a, b) => a.distance - b.distance)
       .slice(0, 8)
-      .map((r) => ({ a: r[0], b: r[1] + "m" })),
+      .map((r) => ({ a: r.name, b: r.distance + "m" })),
     Friends: FRIEND_ROWS.map((r) => ({ a: r[0], b: r[1].split(" · ")[0] })),
     Inventory: invNodes.map((n) => ({ a: n.name, b: n.ver })),
     Map: REGIONS.map(([name, meta]) => ({ a: name, b: meta })),

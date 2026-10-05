@@ -510,10 +510,40 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                   <div style="{{ m.bubble }}">
                     <div style="{{ m.headStyle }}">[{{ m.ts }}] {{ m.sender }}</div>
                     <div style="{{ m.textStyle }}">{{ m.text }}</div>
-                    <sc-if value="{{ m.linkTitle }}" hint-placeholder-val="{{ false }}">
-                      <div style="margin-top:8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);overflow:hidden;background:var(--bg,#0A1112)">
-                        <div style="height:62px;background:repeating-linear-gradient(135deg,var(--surf2,#1B2A2D) 0 8px,transparent 8px 16px)"></div>
-                        <div style="padding:7px 9px"><div style="font:600 11px/1.3 var(--font,'JetBrains Mono')">{{ m.linkTitle }}</div><div style="font:400 10px/1.3 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{ m.linkUrl }}</div></div>
+                    <sc-if value="{{ m.hasLandmarkCard }}" hint-placeholder-val="{{ false }}">
+                      <div style="margin-top:8px;max-height:140px;height:128px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);overflow:hidden;background:var(--bg,#0A1112);display:flex;flex-direction:row">
+                        <div style="width:96px;height:100%;flex:none;background:repeating-linear-gradient(135deg,var(--surf2,#1B2A2D) 0 8px,transparent 8px 16px);border-right:1px solid var(--outv,#365047);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--pri,#8AD0B0)">
+                          <span style="font:700 9px/1 var(--dfont,'JetBrains Mono');letter-spacing:.08em;text-transform:uppercase">{{ m.landmark.rating }}</span>
+                        </div>
+                        <div style="flex:1;min-width:0;padding:8px 10px;display:flex;flex-direction:column;justify-content:space-between">
+                          <div>
+                            <div style="font:600 12px/1.2 var(--font,'JetBrains Mono');color:var(--ink,#E0F2EC);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.landmark.regionName }}</div>
+                            <div style="font:400 10px/1.3 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:2px">{{ m.landmark.coords }} · {{ m.landmark.avatars }}</div>
+                          </div>
+                          <div style="display:flex;gap:6px">
+                            <button onClick="{{ m.landmark.teleportPick }}" style="padding:4px 8px;border-radius:var(--rs,4px);border:none;background:var(--pri,#8AD0B0);color:var(--onpri,#0E3021);font:600 10px/1 var(--dfont,'JetBrains Mono');letter-spacing:.06em;cursor:pointer">TELEPORT</button>
+                            <button onClick="{{ m.landmark.viewMapPick }}" style="padding:4px 8px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:transparent;color:var(--ink,#E0F2EC);font:500 10px/1 var(--font,'JetBrains Mono');cursor:pointer">VIEW ON MAP</button>
+                            <button onClick="{{ m.landmark.saveLandmarkPick }}" style="padding:4px 8px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:transparent;color:var(--pri,#8AD0B0);font:500 10px/1 var(--font,'JetBrains Mono');cursor:pointer">{{ m.landmark.saveBtnLabel }}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ m.isLure }}" hint-placeholder-val="{{ false }}">
+                      <div style="margin-top:8px;max-height:140px;padding:8px 10px;border:1px solid var(--sec2,#F2B880);border-radius:var(--rs,4px);background:var(--bg,#0A1112);display:flex;flex-direction:column;justify-content:space-between;gap:6px">
+                        <div style="display:flex;align-items:center;gap:6px">
+                          <span style="font:600 11px/1.2 var(--dfont,'JetBrains Mono');color:var(--sec2,#F2B880);letter-spacing:.06em">TELEPORT OFFER</span>
+                          <sc-if value="{{ m.lureState }}" hint-placeholder-val="{{ false }}">
+                            <span style="margin-left:auto;font:700 9px/1 var(--dfont,'JetBrains Mono');padding:2px 6px;border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);color:var(--ink2,#A7C8BC)">{{ m.lureStatusLabel }}</span>
+                          </sc-if>
+                        </div>
+                        <div style="font:400 11px/1.3 var(--font,'JetBrains Mono');color:var(--ink,#E0F2EC)">“{{ m.lureMsg }}”</div>
+                        <div style="font:400 10px/1.2 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">Destination: {{ m.lureRegion }} {{ m.lureCoords }}</div>
+                        <sc-if value="{{ m.showLureButtons }}" hint-placeholder-val="{{ true }}">
+                          <div style="display:flex;gap:8px;margin-top:2px">
+                            <button onClick="{{ m.acceptLurePick }}" style="padding:5px 10px;border-radius:var(--rs,4px);border:none;background:var(--pri,#8AD0B0);color:var(--onpri,#0E3021);font:600 10px/1 var(--dfont,'JetBrains Mono');letter-spacing:.06em;cursor:pointer">ACCEPT LURE</button>
+                            <button onClick="{{ m.declineLurePick }}" style="padding:5px 10px;border-radius:var(--rs,4px);border:1px solid var(--outv,#365047);background:transparent;color:var(--ink2,#A7C8BC);font:500 10px/1 var(--font,'JetBrains Mono');cursor:pointer">DECLINE</button>
+                          </div>
+                        </sc-if>
                       </div>
                     </sc-if>
                   </div>
@@ -719,6 +749,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
           <sc-if value="{{ isTree }}" hint-placeholder-val="{{ false }}">
             <div style="{{ invToolStyle }}">
               <div style="flex:1;height:44px;display:flex;align-items:center;gap:8px;padding:0 10px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C)"><i data-lucide="search" style="width:15px;height:15px;opacity:.55"></i><input value="{{ invFilter }}" onChange="{{ invFilterChange }}" placeholder="filter inventory…" style="{{ invFilterInputStyle }}" /></div>
+              <div onClick="{{ invSelectToggle }}" onKeyDown="{{ invSelectToggleKeyDown }}" style="{{ invSelectToggleStyle }}" role="button" aria-label="Toggle selection mode" tabindex="0"><i data-lucide="check-square" style="width:17px;height:17px"></i></div>
               <div onClick="{{ invGridToggle }}" onKeyDown="{{ invGridToggleKeyDown }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer" role="button" aria-label="Toggle grid view" tabindex="0"><i data-lucide="{{ invGridIcon }}" style="width:17px;height:17px"></i></div>
             </div>
             <div style="{{ invRecentStyle }}">
@@ -726,14 +757,50 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
             </div>
             <div style="{{ invListStyle }}">
               <sc-for list="{{ invTree }}" as="n" hint-placeholder-count="11">
-                <div onClick="{{ n.pick }}" onKeyDown="{{ n.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ n.name }}" style="{{ n.indent }}">
-                  <i data-lucide="{{ n.chev }}" style="width:16px;height:16px;color:var(--pri,#6CFF9A)"></i>
-                  <i data-lucide="{{ n.icon }}" style="width:16px;height:16px;color:var(--sec2,#C5678D)"></i>
+                <div onClick="{{ n.pick }}" onMouseDown="{{ n.down }}" onMouseUp="{{ n.up }}" onTouchStart="{{ n.down }}" onTouchEnd="{{ n.up }}" onKeyDown="{{ n.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ n.name }}" style="{{ n.indent }}">
+                  <sc-if value="{{ n.selectMode }}">
+                    <sc-if value="{{ !n.isFolder }}">
+                      <i data-lucide="{{ n.selectIcon }}" style="width:16px;height:16px;color:var(--pri,#6CFF9A);flex-shrink:0"></i>
+                    </sc-if>
+                  </sc-if>
+                  <i data-lucide="{{ n.chev }}" style="width:16px;height:16px;color:var(--pri,#6CFF9A);flex-shrink:0"></i>
+                  <i data-lucide="{{ n.icon }}" style="width:16px;height:16px;color:var(--sec2,#C5678D);flex-shrink:0"></i>
                   <span style="flex:1;font:400 13px/1.2 var(--font,'JetBrains Mono');overflow:hidden;white-space:nowrap;text-overflow:ellipsis">{{ n.name }}</span>
                   <span style="font:400 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ n.ver }}</span>
                 </div>
               </sc-for>
             </div>
+
+            <sc-if value="{{ hasInvSelected }}">
+              <div style="margin:8px 12px 12px;padding:10px;border:1px solid var(--pri,#6CFF9A);border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);box-shadow:0 6px 20px rgba(0,0,0,0.4);display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <span style="font:700 11px/1 var(--font,'JetBrains Mono');color:var(--pri,#6CFF9A);letter-spacing:.12em">{{ invSelectedCount }} SELECTED</span>
+                  <span onClick="{{ invSelectToggle }}" onKeyDown="{{ invSelectToggleKeyDown }}" style="font:600 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer" role="button" tabindex="0">CANCEL</span>
+                </div>
+                <div style="display:flex;gap:8px">
+                  <div onClick="{{ invWearBtn }}" onKeyDown="{{ invWearBtnKeyDown }}" style="flex:1;height:44px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.1em;cursor:pointer" role="button" tabindex="0"><i data-lucide="shirt" style="width:16px;height:16px"></i>WEAR</div>
+                  <div onClick="{{ invMoveBtn }}" onKeyDown="{{ invMoveBtnKeyDown }}" style="flex:1;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);color:var(--ink,#D7F5E6);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.1em;cursor:pointer" role="button" tabindex="0"><i data-lucide="folder-input" style="width:16px;height:16px"></i>MOVE TO…</div>
+                  <div onClick="{{ invDeleteBtn }}" onKeyDown="{{ invDeleteBtnKeyDown }}" style="flex:1;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:rgba(255,108,108,0.15);color:#FF6C6C;display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.1em;cursor:pointer" role="button" tabindex="0"><i data-lucide="trash-2" style="width:16px;height:16px"></i>DELETE</div>
+                </div>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ invMoveModal }}">
+              <div style="margin:8px 12px 12px;padding:12px;border:1px solid var(--pri,#6CFF9A);border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                  <span style="font:700 11px/1 var(--font,'JetBrains Mono');color:var(--pri,#6CFF9A);letter-spacing:.12em">MOVE TO FOLDER</span>
+                  <span onClick="{{ invCloseMoveModalBtn }}" onKeyDown="{{ invCloseMoveModalBtnKeyDown }}" style="font:600 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);cursor:pointer" role="button" tabindex="0">CANCEL</span>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:6px">
+                  <sc-for list="{{ invFolderOptions }}" as="fo" hint-placeholder-count="7">
+                    <div onClick="{{ fo.pick }}" onKeyDown="{{ fo.pickKeyDown }}" style="height:44px;padding:0 12px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;gap:8px;cursor:pointer" role="button" tabindex="0">
+                      <i data-lucide="folder" style="width:16px;height:16px;color:var(--sec2,#C5678D)"></i>
+                      <span style="font:600 12px/1 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)">{{ fo.name }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
           </sc-if>
 
           <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
@@ -1846,7 +1913,7 @@ const DIALOGS = {
 
 class Component extends DCLogic {
   state = { layout: "terminal", palette: "ink", device: "ios", screen: "Chat", dialog: null, dense: false, tabs: { Chat: "LOCAL", Friends: "ALL", Diagnostics: "AGNI" }, chip: "Nyx Vaher", tileOk: true, invOpen: { Objects: true },
-    dismissed: {}, pinned: {},
+    dismissed: {}, pinned: {}, lureState: {},
     toggles: { largeType: false, push: true, voice: true, chatCmds: true, autoresponse: true,
       rlv: false, shadows: false, battery: true, timestamps: true, imLogs: true, mediaAuto: false,
       showOnline: true, typingSent: true, cacheOnExit: false },
@@ -1861,7 +1928,7 @@ class Component extends DCLogic {
     cDock: ["fly", "sit", "snap", "mini", "inv", "home", "ao", "sun"],
     flOpen: { Chat: true, Radar: true, Friends: true, Inventory: true, Map: true }, flMin: {}, flRect: {},
     flZ: ["Map", "Inventory", "Friends", "Radar", "Chat"], menu: null, flQuickMsg: "", showCamHud: true,
-    toast: "", composeText: "", chatSent: {}, chatTyping: false, invFilter: "",
+    toast: "", composeText: "", chatSent: {}, chatTyping: false, invFilter: "", invSelectMode: false, invSelected: [], invMoveModal: false, invItems: null,
     loginMode: "grid", loginGrid: "agni", loginBusy: false, loginError: null, logoAnim: true,
     customGrids: [], addGrid: false, addGridName: "", addGridHost: "",
     searchFrom: "Friends", searchQuery: "", searchState: {}, reconnecting: false, cacheCleared: {},
@@ -1897,7 +1964,12 @@ class Component extends DCLogic {
     window.addEventListener("mousemove", move); window.addEventListener("mouseup", up);
     this.flFocus(id);
   }
-  flFocus(id) { this.setState(st => ({ flOpen: { ...st.flOpen, [id]: true }, flZ: st.flZ.filter(x => x !== id).concat(id), screen: id, flMin: { ...st.flMin, [id]: false }, menu: null })); }
+  flFocus(id) {
+    if (id !== "Inventory") {
+      this.setState({ invSelectMode: false, invSelected: [], invMoveModal: false });
+    }
+    this.setState(st => ({ flOpen: { ...st.flOpen, [id]: true }, flZ: st.flZ.filter(x => x !== id).concat(id), screen: id, flMin: { ...st.flMin, [id]: false }, menu: null }));
+  }
   flToggle(id) {
     this.setState(st => (st.flOpen[id] && !st.flMin[id])
       ? { flMin: { ...st.flMin, [id]: true }, menu: null }
@@ -1993,7 +2065,91 @@ class Component extends DCLogic {
   // the same rule the dev panel's screen picker already follows.
   goScreen(id) {
     if (this.navMode() === "floaters" && FLOATERS.some(f => f.id === id)) { this.flFocus(id); this.set("dialog", null); return; }
+    if (id !== "Inventory") {
+      this.setState({ invSelectMode: false, invSelected: [], invMoveModal: false });
+    }
     this.setState({ screen: id, dialog: null });
+  }
+
+  // ---- inventory batch selection ----------------------------------------
+  getInvItems() {
+    if (this.state.invItems) return this.state.invItems;
+    return [
+      { name: "Inventory", icon: "folder-root", depth: 0, parent: null, ver: "v42" },
+      { name: "Objects", icon: "box", depth: 1, parent: "Inventory", ver: "v18" },
+      { name: "Sunset Lamp v3", icon: "box", depth: 2, parent: "Objects", ver: "", tags: ["recent"] },
+      { name: "Roof Kit (unpacked)", icon: "box", depth: 2, parent: "Objects", ver: "", tags: ["recent"] },
+      { name: "Clothing", icon: "shirt", depth: 1, parent: "Inventory", ver: "v9" },
+      { name: "Urban Jacket", icon: "shirt", depth: 2, parent: "Clothing", ver: "", tags: ["worn"] },
+      { name: "Dark Jeans", icon: "shirt", depth: 2, parent: "Clothing", ver: "", tags: ["worn"] },
+      { name: "Work Boots", icon: "shirt", depth: 2, parent: "Clothing", ver: "", tags: ["worn", "recent"] },
+      { name: "Body Parts", icon: "user", depth: 1, parent: "Inventory", ver: "v4" },
+      { name: "Ruth Classic Mesh", icon: "user", depth: 2, parent: "Body Parts", ver: "", tags: ["worn"] },
+      { name: "Shape — Nyx v4", icon: "user", depth: 2, parent: "Body Parts", ver: "", tags: ["worn"] },
+      { name: "Landmarks", icon: "map-pin", depth: 1, parent: "Inventory", ver: "v12" },
+      { name: "Bay City — Hollywood", icon: "map-pin", depth: 2, parent: "Landmarks", ver: "", tags: ["recent"] },
+      { name: "Textures", icon: "image", depth: 1, parent: "Inventory", ver: "v31" },
+      { name: "Brass Panel 512", icon: "image", depth: 2, parent: "Textures", ver: "", tags: ["recent"] },
+      { name: "Scripts", icon: "file-code", depth: 1, parent: "Inventory", ver: "v7" },
+      { name: "Trash", icon: "trash-2", depth: 1, parent: "Inventory", ver: "v2" },
+    ];
+  }
+  toggleInvSelectMode() {
+    this.setState(st => ({
+      invSelectMode: !st.invSelectMode,
+      invSelected: !st.invSelectMode ? st.invSelected : [],
+      invMoveModal: false
+    }));
+  }
+  toggleInvSelectedItem(name) {
+    this.setState(st => {
+      const isSel = (st.invSelected || []).includes(name);
+      return {
+        invSelectMode: true,
+        invSelected: isSel ? st.invSelected.filter(x => x !== name) : [...(st.invSelected || []), name]
+      };
+    });
+  }
+  invLongPressItem(name) {
+    this.setState(st => ({
+      invSelectMode: true,
+      invSelected: (st.invSelected || []).includes(name) ? st.invSelected : [...(st.invSelected || []), name]
+    }));
+  }
+  invWearSelected() {
+    const count = (this.state.invSelected || []).length;
+    if (count > 0) {
+      this.notify("Equipped " + count + " selected item" + (count > 1 ? "s" : ""));
+    }
+    this.setState({ invSelected: [], invSelectMode: false });
+  }
+  invOpenMoveModal() {
+    this.setState({ invMoveModal: true });
+  }
+  invCloseMoveModal() {
+    this.setState({ invMoveModal: false });
+  }
+  invMoveSelected(targetFolder) {
+    const sel = this.state.invSelected || [];
+    const count = sel.length;
+    if (count > 0) {
+      const currentItems = this.getInvItems();
+      const newItems = currentItems.map(item => sel.includes(item.name) ? { ...item, parent: targetFolder, depth: 2 } : item);
+      this.setState({ invItems: newItems, invSelected: [], invMoveModal: false, invSelectMode: false });
+      this.notify("Moved " + count + " item" + (count > 1 ? "s" : "") + " to " + targetFolder);
+    } else {
+      this.setState({ invMoveModal: false });
+    }
+  }
+  invDeleteSelected() {
+    const sel = this.state.invSelected || [];
+    const count = sel.length;
+    if (count > 0) {
+      const currentItems = this.getInvItems();
+      const newItems = currentItems.map(item => sel.includes(item.name) ? { ...item, parent: "Trash", depth: 2 } : item);
+      this.setState({ invItems: newItems, invSelected: [], invSelectMode: false });
+      this.notify("Moved " + count + " item" + (count > 1 ? "s" : "") + " to Trash");
+    }
   }
   // Cache rows are notional megabytes, but they have to add up to the total the
   // header and the meter quote, so both read this one table.
@@ -2330,7 +2486,9 @@ class Component extends DCLogic {
       { ts: "14:22", sender: "Ruth Resident", text: "on my way, just rezzing the last sculpt", me: true },
       { ts: "14:24", sender: "System", text: "Kit Sandalwood is online.", sys: true },
       { ts: "14:25", sender: "Kit Sandalwood", text: "@Ruth check the landmark, second floor entrance", linkTitle: "Bay City — Hollywood", linkUrl: "secondlife://Hollywood/112/44/51" },
+      { id: "lure-local-1", ts: "14:26", sender: "Kit Sandalwood", text: "Kit Sandalwood offers to teleport you", isLure: true, lureRegion: "Bay City — Hollywood", lureCoords: "<112, 44, 51>", lureMsg: "come see the build jam, we're on the roof" },
       { ts: "14:27", sender: "Ruth Resident", text: "got it 👍", me: true },
+      { ts: "14:28", sender: "Nyx Vaher", text: "or check the welcome area secondlife://Ahern/128/128/24" },
       { ts: "14:29", sender: "Nyx Vaher", text: "bringing the light rig over, one sec" },
     ];
     const imThreads = {
@@ -2342,7 +2500,7 @@ class Component extends DCLogic {
       ],
       "Kit Sandalwood": [
         { ts: "13:40", sender: "Kit Sandalwood", text: "reslotted the brass texture, check inventory", linkTitle: "Bay City — Hollywood", linkUrl: "secondlife://Hollywood/112/44/51" },
-        { ts: "13:41", sender: "Kit Sandalwood", text: "lmk if the UVs still look off" },
+        { id: "lure-im-1", ts: "13:41", sender: "Kit Sandalwood", text: "offers to teleport you to Bay City — Hollywood <112, 44, 51>", isLure: true, lureRegion: "Bay City — Hollywood", lureCoords: "<112, 44, 51>", lureMsg: "come inspect the UV alignment in person" },
         { ts: "13:47", sender: "Ruth Resident", text: "looking now, one sec", me: true },
       ],
       "Sable Ashgrove": [
@@ -2351,7 +2509,7 @@ class Component extends DCLogic {
     };
     const groupThreads = {
       "Bay City Builders": [
-        { ts: "12:10", sender: "Marlowe Quill", text: "meeting moved to 6pm SLT" },
+        { ts: "12:10", sender: "Marlowe Quill", text: "meeting moved to 6pm SLT at secondlife://Hollywood/112/44/51" },
         { ts: "12:12", sender: "Ruth Resident", text: "works for me", me: true },
         { ts: "12:15", sender: "System", text: "Sable Ashgrove joined the group.", sys: true },
       ],
@@ -2366,21 +2524,94 @@ class Component extends DCLogic {
     const chatReplier = curTab === "IM" ? activeChip
       : curTab === "GROUP" ? ((chatBaseThread.find(m => !m.me && !m.sys) || {}).sender || "Marlowe Quill")
       : "Nyx Vaher";
-    const msgs = chatBaseThread.concat(s.chatSent[chatChannelKey] || []).map(m => {
+    const msgs = chatBaseThread.concat(s.chatSent[chatChannelKey] || []).map((m, idx) => {
       const acc = m.sys ? V.info : m.me ? V.pri : V.sec2;
-      if (!bleed) return {
-        ...m, align: M(wrapBase, m.me ? { justifyContent: "flex-end" } : null),
-        bubble: M(bubBase, m.me ? { background: V.priC, borderColor: V.pri } : m.sys ? { background: "transparent", borderStyle: "dashed", borderColor: V.info } : null),
-        headStyle: M(headBase, m.sys ? { color: V.info } : m.me ? { color: V.onpriC } : null),
-        textStyle: M(textBase, m.sys ? { color: V.info } : m.me ? { color: V.onpriC } : null),
+      const mId = m.id || (m.ts + "-" + idx);
+      const isLure = !!m.isLure;
+      const lureRes = s.lureState && s.lureState[mId];
+      const showLureButtons = isLure && !lureRes;
+      const lureStatusLabel = lureRes === 'accepted' ? '✓ ACCEPTED' : lureRes === 'declined' ? '✗ DECLINED' : '';
+      const acceptLurePick = () => {
+        this.setState(st => ({ lureState: { ...st.lureState, [mId]: 'accepted' } }));
+        if (s.loginMode === 'offline') {
+          this.notify('Cannot accept teleport lure while offline');
+        } else {
+          this.notify('Teleporting to ' + (m.lureRegion || 'destination') + ' ' + (m.lureCoords || '') + '…');
+          this.setState({ screen: 'Map' });
+        }
       };
+      const declineLurePick = () => {
+        this.setState(st => ({ lureState: { ...st.lureState, [mId]: 'declined' } }));
+        this.notify('Teleport lure declined');
+      };
+
+      let slurlMatch = null;
+      let url = m.linkUrl || "";
+      let title = m.linkTitle || "";
+      if (!url && m.text) {
+        const re = /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^\/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
+        const match = m.text.match(re);
+        if (match) {
+          url = match[0];
+          title = decodeURIComponent(match[1]).replace(/\+/g, " ");
+        }
+      }
+      if (url && !isLure) {
+        const re = /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^\/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
+        const match = url.match(re);
+        const regName = title || (match ? decodeURIComponent(match[1]).replace(/\+/g, " ") : "Unknown Region");
+        const coords = match ? `<${match[2] || 128}, ${match[3] || 128}, ${match[4] || 20}>` : "<128, 128, 26>";
+        const regKey = regName.toLowerCase().replace(/[^a-z0-9]+/g, "");
+        const isSaved = !!s.pinned[regKey];
+
+        slurlMatch = {
+          regionName: regName,
+          coords: coords,
+          rating: regName.includes("Hollywood") ? "Adult" : regName.includes("Ahern") ? "Moderate" : "General",
+          avatars: regName.includes("Hollywood") ? "18 avatars online" : regName.includes("Da Boom") ? "34 avatars online" : "6 avatars online",
+          isSaved: isSaved,
+          saveBtnLabel: isSaved ? "SAVED" : "SAVE LANDMARK",
+          teleportPick: () => {
+            if (s.loginMode === 'offline') {
+              this.notify('Cannot teleport while offline');
+            } else {
+              this.notify('Teleporting to ' + regName + ' ' + coords + '…');
+              this.setState({ screen: 'Map' });
+            }
+          },
+          viewMapPick: () => {
+            this.notify('Viewing ' + regName + ' on Map');
+            this.setState({ screen: 'Map' });
+          },
+          saveLandmarkPick: () => {
+            this.pin(regKey);
+            this.notify(s.pinned[regKey] ? 'Landmark removed: ' + regName : 'Landmark saved to Inventory: ' + regName);
+          }
+        };
+      }
+
+      const baseBubble = !bleed
+        ? M(bubBase, m.me ? { background: V.priC, borderColor: V.pri } : m.sys ? { background: "transparent", borderStyle: "dashed", borderColor: V.info } : null)
+        : { flex: 1, minWidth: 0, background: V.surf, borderLeft: "4px solid " + acc, overflow: "hidden", padding: pad + " 12px " + pad + " 10px" };
+
+      const alignStyle = !bleed
+        ? M(wrapBase, m.me ? { justifyContent: "flex-end" } : null)
+        : { display: "flex", width: "100%" };
+
       return {
         ...m,
-        align: { display: "flex", width: "100%" },
-        bubble: { flex: 1, minWidth: 0, background: V.surf, borderLeft: "4px solid " + acc, overflow: "hidden",
-          padding: pad + " 12px " + pad + " 10px" },
-        headStyle: { font: "400 10px/1.3 " + t.font, color: acc, letterSpacing: ".06em", marginBottom: "3px" },
-        textStyle: M(textBase, m.sys ? { color: V.info } : null),
+        align: alignStyle,
+        bubble: baseBubble,
+        headStyle: !bleed ? M(headBase, m.sys ? { color: V.info } : m.me ? { color: V.onpriC } : null) : { font: "400 10px/1.3 " + t.font, color: acc, letterSpacing: ".06em", marginBottom: "3px" },
+        textStyle: !bleed ? M(textBase, m.sys ? { color: V.info } : m.me ? { color: V.onpriC } : null) : M(textBase, m.sys ? { color: V.info } : null),
+        isLure: isLure,
+        lureState: lureRes,
+        showLureButtons: showLureButtons,
+        lureStatusLabel: lureStatusLabel,
+        acceptLurePick: acceptLurePick,
+        declineLurePick: declineLurePick,
+        hasLandmarkCard: !!slurlMatch,
+        landmark: slurlMatch,
       };
     });
 
@@ -2495,31 +2726,62 @@ class Component extends DCLogic {
 
     // The tree gained leaves under Clothing and Body Parts so the WORN sub-view
     // has something to list: the 5th field tags an item `worn`, `recent` or both.
-    const invTree = [
-      ["Inventory", "folder-root", 0, null, "v42"], ["Objects", "box", 1, "Inventory", "v18"],
-      ["Sunset Lamp v3", "box", 2, "Objects", "", ["recent"]], ["Roof Kit (unpacked)", "box", 2, "Objects", "", ["recent"]],
-      ["Clothing", "shirt", 1, "Inventory", "v9"],
-      ["Urban Jacket", "shirt", 2, "Clothing", "", ["worn"]], ["Dark Jeans", "shirt", 2, "Clothing", "", ["worn"]],
-      ["Work Boots", "shirt", 2, "Clothing", "", ["worn", "recent"]],
-      ["Body Parts", "user", 1, "Inventory", "v4"],
-      ["Ruth Classic Mesh", "user", 2, "Body Parts", "", ["worn"]], ["Shape — Nyx v4", "user", 2, "Body Parts", "", ["worn"]],
-      ["Landmarks", "map-pin", 1, "Inventory", "v12"], ["Bay City — Hollywood", "map-pin", 2, "Landmarks", "", ["recent"]],
-      ["Textures", "image", 1, "Inventory", "v31"], ["Brass Panel 512", "image", 2, "Textures", "", ["recent"]],
-      ["Scripts", "file-code", 1, "Inventory", "v7"],
-      ["Trash", "trash-2", 1, "Inventory", "v2"],
-    ].map(([name, icon, depth, parent, ver, tags]) => {
-      const kids = ["Inventory", "Objects", "Clothing", "Body Parts", "Landmarks", "Textures", "Scripts", "Trash"];
+    const rawInv = this.getInvItems();
+    const kids = ["Inventory", "Objects", "Clothing", "Body Parts", "Landmarks", "Textures", "Scripts", "Trash"];
+    const invTree = rawInv.map(item => {
+      const { name, icon, depth, parent, ver, tags } = item;
       const isFolder = kids.includes(name);
       const open = s.invOpen[name] !== false; // folders default open unless explicitly closed
-      return { name, icon, ver, parent, depth, tags: tags || [],
+      const isSelected = (s.invSelected || []).includes(name);
+      return {
+        name, icon, ver, parent, depth, tags: tags || [],
         chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "dot",
-        open, isFolder,
-        pick: isFolder ? () => this.setState(st => ({ invOpen: { ...st.invOpen, [name]: !(st.invOpen[name] !== false) } })) : () => this.notify(name + " — OPEN"),
+        open, isFolder, isSelected,
+        selectMode: !!s.invSelectMode,
+        selectIcon: isSelected ? "check-square" : "square",
+        down: () => {
+          if (isFolder) return;
+          this.invHoldFired = false;
+          clearTimeout(this.invHoldTimer);
+          this.invHoldTimer = setTimeout(() => {
+            this.invHoldFired = true;
+            this.invLongPressItem(name);
+          }, 450);
+        },
+        up: () => {
+          clearTimeout(this.invHoldTimer);
+        },
+        pick: () => {
+          if (this.invHoldFired) {
+            this.invHoldFired = false;
+            return;
+          }
+          if (isFolder) {
+            this.setState(st => ({ invOpen: { ...st.invOpen, [name]: !(st.invOpen[name] !== false) } }));
+          } else if (s.invSelectMode) {
+            this.toggleInvSelectedItem(name);
+          } else {
+            this.notify(name + " — OPEN");
+          }
+        },
+        pickKeyDown: (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            if (isFolder) {
+              this.setState(st => ({ invOpen: { ...st.invOpen, [name]: !(st.invOpen[name] !== false) } }));
+            } else if (s.invSelectMode) {
+              this.toggleInvSelectedItem(name);
+            } else {
+              this.notify(name + " — OPEN");
+            }
+          }
+        },
         indent: bleed
           ? { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 12px", paddingLeft: (10 + depth * 16) + "px",
-              background: V.surf, borderLeft: "4px solid " + (depth === 0 ? V.pri : depth === 1 ? V.sec2 : "transparent"), cursor: "pointer" }
+              background: isSelected ? V.priC : V.surf, borderLeft: "4px solid " + (isSelected ? V.pri : depth === 0 ? V.pri : depth === 1 ? V.sec2 : "transparent"), cursor: "pointer" }
           : { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 16px", paddingLeft: (16 + depth * 18) + "px",
-              borderBottom: "1px solid " + V.outv, cursor: "pointer" } };
+              background: isSelected ? V.priC : "transparent", borderBottom: "1px solid " + V.outv, cursor: "pointer" }
+      };
     });
     const invQuery = (s.invFilter || "").trim().toLowerCase();
     // RECENT and WORN are flat lists of tagged leaves, not a tree — folders and
@@ -3469,6 +3731,28 @@ toggleLogoAnimKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.prev
       invFilter: s.invFilter, invFilterChange: (e) => this.set("invFilter", e.target.value),
       invFilterInputStyle: { flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent",
         font: "400 12px/1 " + t.font, color: V.ink },
+      invSelectMode: !!s.invSelectMode,
+      invSelectedCount: (s.invSelected || []).length,
+      hasInvSelected: (s.invSelected || []).length > 0,
+      invMoveModal: !!s.invMoveModal,
+      invSelectToggle: () => this.toggleInvSelectMode(),
+      invSelectToggleKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.toggleInvSelectMode(); } },
+      invSelectToggleStyle: { width: "44px", height: "44px", border: "1px solid " + (s.invSelectMode ? V.pri : V.outv),
+        borderRadius: V.rs, display: "flex", alignItems: "center", justifyContent: "center",
+        color: s.invSelectMode ? V.onpri : V.pri, background: s.invSelectMode ? V.pri : "transparent", cursor: "pointer" },
+      invWearBtn: () => this.invWearSelected(),
+      invWearBtnKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.invWearSelected(); } },
+      invMoveBtn: () => this.invOpenMoveModal(),
+      invMoveBtnKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.invOpenMoveModal(); } },
+      invDeleteBtn: () => this.invDeleteSelected(),
+      invDeleteBtnKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.invDeleteSelected(); } },
+      invCloseMoveModalBtn: () => this.invCloseMoveModal(),
+      invCloseMoveModalBtnKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.invCloseMoveModal(); } },
+      invFolderOptions: ["Objects", "Clothing", "Body Parts", "Landmarks", "Textures", "Scripts", "Trash"].map(folder => ({
+        name: folder,
+        pick: () => this.invMoveSelected(folder),
+        pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.invMoveSelected(folder); } }
+      })),
       invGridToggle: () => { this.setState(st => ({ invGrid: !st.invGrid })); this.notify(s.invGrid ? "List view" : "Grid view"); },
 invGridToggleKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState(st => ({ invGrid: !st.invGrid })); this.notify(this.state.invGrid ? "List view" : "Grid view"); } },
       invGridIcon: s.invGrid ? "list" : "layout-grid",

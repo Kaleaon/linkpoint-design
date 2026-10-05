@@ -2,6 +2,8 @@ import React from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import Icon from "../components/Icon.jsx";
+import FormField from "../components/FormField.jsx";
+import FormInput from "../components/FormInput.jsx";
 
 export default function OfflineGrid() {
   const { state, actions } = useApp();
@@ -55,31 +57,28 @@ export default function OfflineGrid() {
         <div style={{ border: "1px solid " + V.pri, borderRadius: V.rs, background: V.surf2, padding: "14px" }}>
           <div style={{ font: "700 12px/1 " + t.font, letterSpacing: ".18em", color: V.pri, marginBottom: "10px" }}>FIRST-TIME ACCOUNT SETUP</div>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <div>
-              <div style={{ font: "400 10px/1 " + t.font, color: V.ink2, marginBottom: "3px" }}>FIRST NAME</div>
-              <input
+            <FormField label="FIRST NAME">
+              <FormInput
                 value={state.offlineAccountFirstName || "Jane"}
                 onChange={(e) => actions.setOfflineAccountFirstName(e.target.value)}
                 style={{ width: "100%", boxSizing: "border-box", height: "34px", padding: "0 8px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, color: V.ink, font: "400 12px/1 " + t.font }}
               />
-            </div>
-            <div>
-              <div style={{ font: "400 10px/1 " + t.font, color: V.ink2, marginBottom: "3px" }}>LAST NAME</div>
-              <input
+            </FormField>
+            <FormField label="LAST NAME">
+              <FormInput
                 value={state.offlineAccountLastName || "Doe"}
                 onChange={(e) => actions.setOfflineAccountLastName(e.target.value)}
                 style={{ width: "100%", boxSizing: "border-box", height: "34px", padding: "0 8px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, color: V.ink, font: "400 12px/1 " + t.font }}
               />
-            </div>
-            <div>
-              <div style={{ font: "400 10px/1 " + t.font, color: V.ink2, marginBottom: "3px" }}>LOCAL PASSWORD</div>
-              <input
+            </FormField>
+            <FormField label="LOCAL PASSWORD">
+              <FormInput
                 type="password"
                 value={state.offlineAccountPassword || ""}
                 onChange={(e) => actions.setOfflineAccountPassword(e.target.value)}
                 style={{ width: "100%", boxSizing: "border-box", height: "34px", padding: "0 8px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, color: V.ink, font: "400 12px/1 " + t.font }}
               />
-            </div>
+            </FormField>
             <div style={{ display: "flex", gap: "8px", marginTop: "6px" }}>
               <div
                 onClick={actions.saveOfflineAccount}
@@ -123,13 +122,15 @@ export default function OfflineGrid() {
       <div style={{ border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, padding: "14px" }}>
         <div style={{ font: "600 10px/1 " + t.font, letterSpacing: ".22em", color: V.pri, marginBottom: "8px" }}>LOCAL ASSET & SL UPLOAD CENTER</div>
         <div style={{ display: "flex", gap: "8px", marginBottom: "10px" }}>
-          <input
+          <FormInput
+            aria-label="Asset title"
             value={state.assetName || ""}
             onChange={(e) => actions.setAssetName(e.target.value)}
             placeholder="Asset title..."
             style={{ flex: 2, height: "34px", padding: "0 8px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, color: V.ink, font: "400 12px/1 " + t.font }}
           />
-          <input
+          <FormInput
+            aria-label="Asset type"
             value={state.assetType || "Texture"}
             onChange={(e) => actions.setAssetType(e.target.value)}
             placeholder="Type..."

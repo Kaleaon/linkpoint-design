@@ -1,6 +1,8 @@
 import React from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
+import KInteractive from "../components/KInteractive.jsx";
+import FormInput from "../components/FormInput.jsx";
 
 export default function GridConsole() {
   const { state, actions } = useApp();
@@ -29,36 +31,34 @@ export default function GridConsole() {
           </span>
         </div>
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "6px" }}>
-          <input
+          <FormInput
+            aria-label="Filter console logs"
             value={state.consoleQuery || ""}
             onChange={(e) => actions.setConsoleQuery(e.target.value)}
             placeholder="filter logs..."
             style={{ height: "28px", padding: "0 8px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, color: V.ink, font: "400 11px/1 " + t.font }}
           />
-          <div
+          <KInteractive
             onClick={actions.copyConsoleLogs}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.copyConsoleLogs(); } }}
             style={{ padding: "6px 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf2, font: "700 10px/1 " + t.font, color: V.pri, cursor: "pointer" }}
-            role="button" aria-label="Copy logs" tabIndex={0}
+            label="Copy logs"
           >
             COPY
-          </div>
-          <div
+          </KInteractive>
+          <KInteractive
             onClick={actions.downloadConsoleLogs}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.downloadConsoleLogs(); } }}
             style={{ padding: "6px 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf2, font: "700 10px/1 " + t.font, color: V.pri, cursor: "pointer" }}
-            role="button" aria-label="Download logs" tabIndex={0}
+            label="Download logs"
           >
             DOWNLOAD
-          </div>
-          <div
+          </KInteractive>
+          <KInteractive
             onClick={actions.clearConsoleLogs}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.clearConsoleLogs(); } }}
             style={{ padding: "6px 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf2, font: "700 10px/1 " + t.font, color: "#FF6C6C", cursor: "pointer" }}
-            role="button" aria-label="Clear logs" tabIndex={0}
+            label="Clear logs"
           >
             CLEAR
-          </div>
+          </KInteractive>
         </div>
       </div>
 

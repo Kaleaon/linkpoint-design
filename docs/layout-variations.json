@@ -1,6 +1,5 @@
 {
-  "$schema": "https://kaleaon.github.io/linkpoint-design/layout-schema.v1.json",
-  "version": "1.0.0",
+  "$schema": "https://kaleaon.github.io/linkpoint-design/layout-schema.v2.json",
   "layouts": [
     {
       "id": "metro",
@@ -114,5 +113,50 @@
       "segLook": "fill",
       "description": "High-tech dystopian cyberpunk layout with wireframe borders, chamfered cuts, and HUD telemetry rails."
     }
-  ]
+  ],
+  "schemaVersion": 2,
+  "adaptation": {},
+  "metadata": {
+    "id": "migrated-theme",
+    "name": "Migrated Theme",
+    "description": "Auto-migrated schema v2 theme object",
+    "author": "Ktheme Migration",
+    "version": "1.0.0",
+    "tags": [
+      "migrated"
+    ],
+    "createdAt": "2026-10-04T19:40:09.623Z",
+    "updatedAt": "2026-10-04T19:40:09.623Z"
+  },
+  "colorScheme": {
+    "error": "#B91C1C",
+    "onError": "#FFFFFF",
+    "errorContainer": "#EF4444",
+    "onErrorContainer": "#FEF2F2",
+    "primary": "#1E3A8A",
+    "onPrimary": "#FFFFFF",
+    "primaryContainer": "#1E40AF",
+    "onPrimaryContainer": "#F8FAFC",
+    "secondary": "#B45309",
+    "onSecondary": "#FFFFFF",
+    "secondaryContainer": "#D97706",
+    "onSecondaryContainer": "#FFFBEB",
+    "tertiary": "#0F766E",
+    "onTertiary": "#FFFFFF",
+    "tertiaryContainer": "#0D9488",
+    "onTertiaryContainer": "#F0FDFA",
+    "background": "#0B1220",
+    "onBackground": "#E2E8F0",
+    "surface": "#111827",
+    "onSurface": "#E5E7EB",
+    "surfaceVariant": "#1F2937",
+    "onSurfaceVariant": "#D1D5DB",
+    "outline": "#6B7280",
+    "outlineVariant": "#4B5563",
+    "scrim": "#000000",
+    "inverseSurface": "#E5E7EB",
+    "inverseOnSurface": "#111827",
+    "inversePrimary": "#93C5FD"
+  },
+  "darkMode": true
 }
