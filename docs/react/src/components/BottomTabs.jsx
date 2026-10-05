@@ -2,6 +2,7 @@ import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL, TABS_NAV_IDS } from "../data/content.js";
 import Icon from "./Icon.jsx";
+import A11yControl from "./A11yControl.jsx";
 import { navActive } from "../theme/look.js";
 
 // Ported from the `isTabs` <sc-if> block — bottom tab bar (Ink Terminal,
@@ -17,9 +18,10 @@ export default function BottomTabs() {
       {items.map((n) => {
         const active = navActive(state.screen, n.id);
         return (
-          <div
+          <A11yControl
             key={n.id}
             onClick={() => actions.setScreen(n.id)}
+            aria-label={n.label}
             style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", padding: "6px 0", cursor: "pointer", color: active ? V.pri : V.ink2, position: "relative" }}
           >
             <Icon name={n.icon} size={22} />
@@ -29,7 +31,7 @@ export default function BottomTabs() {
                 {n.badge}
               </span>
             ) : null}
-          </div>
+          </A11yControl>
         );
       })}
     </div>

@@ -113,8 +113,6 @@ export default function Inventory() {
               onPointerLeave={handlePointerUpOrLeave}
               label={n.name}
               style={indent}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleRowClick(n); } }}
-              style={indent}
               role="button" aria-label={n.name} tabIndex={0}
             >
               {state.invSelectMode && !n.isFolder && (

@@ -5,6 +5,7 @@ import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { CBTN, CSUB, CPAD, CPADR, subView, setSub } from "../theme/constants.js";
 import Icon from "./Icon.jsx";
+import A11yControl from "./A11yControl.jsx";
 import ScreenBody from "./ScreenBody.jsx";
 import { navActive } from "../theme/look.js";
 
@@ -108,10 +109,10 @@ export default function ConsoleFrame() {
       <div style={cfRailCol}>
         <div style={cfArm}>LCARS 4701</div>
         {consoleNav.map((n, i) => (
-          <div key={i} onClick={n.pick} role="button" tabIndex={0} aria-label={n.label} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); n.pick(); } }} style={n.style}>
+          <A11yControl key={i} onClick={n.pick} aria-label={n.label || "Nav item"} style={n.style}>
             {n.code ? <span style={n.codeStyle}>{n.code}</span> : null}
             <span style={{ font: "inherit", letterSpacing: "inherit" }}>{n.label}</span>
-          </div>
+          </A11yControl>
         ))}
       </div>
 
@@ -130,19 +131,11 @@ export default function ConsoleFrame() {
             dis = !!b.off;
           const bg = dis ? V.surf : lit ? V.pri : V.surf2;
           return (
-            <div
+            <A11yControl
               key={k}
               onClick={() => actions.cPress(k)}
-              role="button"
-              tabIndex={dis ? -1 : 0}
+              disabled={dis}
               aria-label={k}
-              onKeyDown={(e) => {
-                if (dis) return;
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  actions.cPress(k);
-                }
-              }}
               style={{
                 position: "relative", flex: "1 1 0", minWidth: 0, display: "flex", flexDirection: "column",
                 alignItems: "center", justifyContent: "center", gap: "4px", background: bg,
@@ -154,33 +147,25 @@ export default function ConsoleFrame() {
               <Icon name={b.icon} size={19} />
               {C.wide ? <span style={{ font: "600 9.5px/1 " + t.dfont, letterSpacing: ".12em" }}>{b.label}</span> : null}
               {state.cEdit ? (
-                <span
+                <A11yControl
+                  as="span"
                   onClick={(e) => {
                     e.stopPropagation();
                     actions.removeDockSlot(k);
                   }}
-                  role="button"
-                  tabIndex={0}
                   aria-label={"Remove " + k}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      actions.removeDockSlot(k);
-                    }
-                  }}
                   style={{ position: "absolute", right: "3px", top: "3px", width: "24px", height: "24px", borderRadius: "12px", background: V.err, color: ink(V.err, [V.bg, V.ink]), font: "700 13px/24px " + t.dfont, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
                 >
                   &minus;
-                </span>
+                </A11yControl>
               ) : null}
-            </div>
+            </A11yControl>
           );
         })}
         {state.cEdit ? (
-          <div onClick={actions.addSlot} role="button" tabIndex={0} aria-label="Add slot" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.addSlot(); } }} style={{ flex: "0 0 " + (C.wide ? 84 : 56) + "px", display: "flex", alignItems: "center", justifyContent: "center", background: V.surf, border: "2px dashed " + V.outv, color: V.ink2, cursor: "pointer", borderRadius: "0 " + C.rad + "px " + C.rad + "px 0", font: "400 22px/1 " + t.dfont }}>
+          <A11yControl onClick={actions.addSlot} aria-label="Add slot" style={{ flex: "0 0 " + (C.wide ? 84 : 56) + "px", display: "flex", alignItems: "center", justifyContent: "center", background: V.surf, border: "2px dashed " + V.outv, color: V.ink2, cursor: "pointer", borderRadius: "0 " + C.rad + "px " + C.rad + "px 0", font: "400 22px/1 " + t.dfont }}>
             +
-          </div>
+          </A11yControl>
         ) : null}
       </div>
         </>
@@ -202,12 +187,12 @@ export default function ConsoleFrame() {
 
       {state.cEdit ? (
         <>
-          <div onClick={actions.endEdit} role="button" tabIndex={0} aria-label="Cancel edit" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.endEdit(); } }} style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,.66)", zIndex: 4 }} />
+          <A11yControl onClick={actions.endEdit} aria-label="Cancel edit" style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,.66)", zIndex: 4 }} />
           <div style={{ position: "absolute", left: C.rail + C.gap + "px", right: C.gap + "px", bottom: C.foot + C.dock + C.gap * 3 + "px", zIndex: 7, display: "flex", alignItems: "center", gap: "12px", height: "28px", padding: "0 14px", background: V.surf, color: V.ink2, font: "500 10.5px/1 " + t.font, letterSpacing: ".12em" }}>
             <span>DOCK EDIT — MINUS REMOVES, PLUS ADDS</span>
-            <span onClick={actions.endEdit} role="button" tabIndex={0} aria-label="Finish editing dock" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.endEdit(); } }} style={{ marginLeft: "auto", padding: "5px 16px", background: V.pri, color: ink(V.pri, [V.bg, V.onpri, V.ink]), font: "700 11px/1 " + t.dfont, letterSpacing: ".16em", cursor: "pointer" }}>
+            <A11yControl as="span" onClick={actions.endEdit} aria-label="Finish editing dock" style={{ marginLeft: "auto", padding: "5px 16px", background: V.pri, color: ink(V.pri, [V.bg, V.onpri, V.ink]), font: "700 11px/1 " + t.dfont, letterSpacing: ".16em", cursor: "pointer" }}>
               DONE
-            </span>
+            </A11yControl>
           </div>
         </>
       ) : null}
@@ -321,21 +306,21 @@ function ConsoleScene() {
                   <div onMouseDown={actions.flyDnDown} onMouseUp={actions.flyRelease} onMouseLeave={actions.flyRelease} style={mk(state.cHeld === "dn", V.sec)}>
                     DN
                   </div>
-                  <div onClick={actions.toggleRun} role="button" tabIndex={0} aria-label="Toggle run" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.toggleRun(); } }} style={mk(state.cRun, V.surf2)}>
+                  <A11yControl onClick={actions.toggleRun} aria-label="Toggle run" style={mk(state.cRun, V.surf2)}>
                     RUN
-                  </div>
-                  <div onClick={actions.togglePad} role="button" tabIndex={0} aria-label="Hide move pad" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.togglePad(); } }} style={{ ...mk(false, V.sec2), borderRadius: "0 0 " + C.rad + "px 0", font: "700 10px/1 " + t.dfont }}>
+                  </A11yControl>
+                  <A11yControl onClick={actions.togglePad} aria-label="Hide move pad" style={{ ...mk(false, V.sec2), borderRadius: "0 0 " + C.rad + "px 0", font: "700 10px/1 " + t.dfont }}>
                     HIDE
-                  </div>
+                  </A11yControl>
                 </>
               );
             })()}
           </div>
         </div>
       ) : (
-        <div onClick={actions.togglePad} role="button" tabIndex={0} aria-label="Show move pad" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.togglePad(); } }} style={{ position: "absolute", left: (C.wide ? 24 : 14) + "px", bottom: (C.wide ? 24 : 14) + "px", display: "flex", alignItems: "center", height: "34px", padding: "0 14px", background: V.surf2, color: ink(V.surf2, [V.ink, V.bg]), cursor: "pointer", borderLeft: "6px solid " + V.sec2, font: "700 11px/1 " + t.dfont, letterSpacing: ".16em" }}>
+        <A11yControl onClick={actions.togglePad} aria-label="Show move pad" style={{ position: "absolute", left: (C.wide ? 24 : 14) + "px", bottom: (C.wide ? 24 : 14) + "px", display: "flex", alignItems: "center", height: "34px", padding: "0 14px", background: V.surf2, color: ink(V.surf2, [V.ink, V.bg]), cursor: "pointer", borderLeft: "6px solid " + V.sec2, font: "700 11px/1 " + t.dfont, letterSpacing: ".16em" }}>
           MOVE PAD
-        </div>
+        </A11yControl>
       )}
     </div>
   );
