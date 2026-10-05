@@ -1,4 +1,4 @@
-import { useTheme } from "../context/ThemeContext.jsx";
+import { useThemeTokens } from "../context/ThemeContext.jsx";
 import { cardLooks, cardAccentStyle, actionButtonStyle } from "../theme/look.js";
 import Icon from "./Icon.jsx";
 import Toggle from "./Toggle.jsx";
@@ -8,7 +8,7 @@ import Toggle from "./Toggle.jsx";
 // toggle header row, optional body text, optional big stat, optional action
 // row.
 export default function Card({ c }) {
-  const { V, t, LK, pad } = useTheme();
+  const { V, t, LK, pad } = useThemeTokens();
   const looks = cardLooks(V, pad);
 
   // A `sect` entry is a group heading inside the list, not a card: it drops the

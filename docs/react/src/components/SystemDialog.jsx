@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useApp } from "../context/AppContext.jsx";
-import { useTheme } from "../context/ThemeContext.jsx";
+import { useThemeTokens } from "../context/ThemeContext.jsx";
 import { DIALOGS } from "../theme/dialogs.js";
 import { useFocusTrap } from "../hooks/useFocusTrap.js";
 import Icon from "./Icon.jsx";
@@ -10,12 +10,11 @@ import Icon from "./Icon.jsx";
 // lure, Pay L$, Region restart).
 export default function SystemDialog() {
   const { state, actions } = useApp();
-  const { V, t } = useTheme();
+  const { V, t } = useThemeTokens();
   const dialogRef = useRef(null);
-  const dlg = state.dialog && DIALOGS[state.dialog];
+  const dlg = state.dialog && (typeof state.dialog === "object" ? state.dialog : DIALOGS[state.dialog]);
 
   useFocusTrap(dialogRef, () => actions.setDialog(null), !!dlg);
-
   if (!dlg) return null;
 
   const btnBase = { flex: "1 1 40%", minHeight: "46px", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid " + V.outv, borderRadius: V.rs, font: "700 11px/1 " + t.font, letterSpacing: ".14em", color: V.ink, textAlign: "center", padding: "0 8px", cursor: "pointer" };
