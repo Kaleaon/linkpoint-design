@@ -129,6 +129,7 @@ export function useAppState() {
   const [lindenBalance, setLindenBalance] = useState(4250);
   const [exchangeRate, setExchangeRate] = useState(248.5);
   const [lastSyncedAt, setLastSyncedAt] = useState(() => new Date());
+  const [joystickVector, setJoystickVector] = useState({ x: 0, y: 0 });
 
   // ---- tick clock (componentDidMount's setInterval) ---------------------
   useEffect(() => {
@@ -490,6 +491,22 @@ export function useAppState() {
     else setCHeld(k);
   }, []);
 
+  const handleJoystickMove = useCallback((normX, normY) => {
+    setJoystickVector({ x: normX, y: normY });
+    if (Math.abs(normX) < 0.15 && Math.abs(normY) < 0.15) {
+      setCHeld("");
+    } else {
+      if (Math.abs(normY) >= Math.abs(normX)) {
+        setCHeld(normY < 0 ? "fwd" : "bck");
+      } else {
+        setCHeld(normX < 0 ? "lft" : "rgt");
+      }
+      if (Math.abs(normX) >= 0.15) {
+        setCHdg((h) => h + normX * 1.5);
+      }
+    }
+  }, []);
+
   const cPress = useCallback((k) => {
     const b = CBTN[k];
     if (b.off) {
@@ -726,7 +743,7 @@ export function useAppState() {
     state: {
       layout, palette, customTheme, device, screen, dialog, dense, tabs, chip, tileOk, invOpen, invSelectMode, invSelected, invMoveModal, invItems, dismissed, pinned, lureState,
       toggles, cond, hudOn, hudPos, hudPicker, target, targetPicker, navPeek,
-      cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
+      cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog, joystickVector,
       rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
       loginMode, loginGrid, loginBusy, loginError, customGrids, addGrid, addGridName, addGridHost,
       searchFrom, searchTab, searchQuery, searchState, reconnecting, toast, offlineRunning, offlineUser, offlineAccountModal, offlineAccountFirstName, offlineAccountLastName, offlineAccountPassword, oarFile, oarRegionName, oarCoords, oarPrims, assetName, assetType, localAssets, offlineCacheSize, consoleLevel, consoleQuery, consoleAutoscroll, consoleLogs,
@@ -739,7 +756,7 @@ export function useAppState() {
       cycleLayout, cyclePalette, setCond, setMenu,
       flR, flDrag, flFocus, flToggle, flClose,
       hudDrag, toggleHud, setHudPicker, setTarget, setTargetPicker, setNavPeek,
-      cf, cTap, cHold, cPress, sceneDown, sceneMove, sceneUp,
+      cf, cTap, cHold, cPress, sceneDown, sceneMove, sceneUp, handleJoystickMove,
       holdStart, holdEnd, endEdit, togglePad, toggleRun, flyUpDown, flyDnDown, flyRelease, addSlot, removeDockSlot,
       radarTap, radarHold, radarRelease, radarBlipPick,
       setRMode,
