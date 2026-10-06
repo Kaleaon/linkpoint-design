@@ -45,8 +45,8 @@ const FormSwitch = forwardRef(function FormSwitch(
   const ariaInvalid = ariaInvalidProp !== undefined ? ariaInvalidProp : context?.ariaInvalid;
   const ariaErrorMessage = ariaErrorMessageProp || context?.ariaErrorMessage;
 
-  const defaultTrackBg = isOn === false ? (V.surf2 || "#2a2d3a") : (V.priC || "#4f46e5");
-  const defaultKnobBg = isOn === false ? (V.ink2 || "#9ca3af") : (V.pri || "#818cf8");
+  const defaultTrackBg = isOn === false ? (V.surf2 || "#1B2A2D") : (V.priC || "#1F6640");
+  const defaultKnobBg = isOn === false ? (V.ink2 || "#A7C8BC") : (V.pri || "#6CFF9A");
 
   return (
     <span
