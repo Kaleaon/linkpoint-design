@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-10-05T06:57:39Z — upstream read through [`e253f1e`](https://github.com/Kaleaon/react-linkpoint/commit/e253f1e1e85d4496eb99e9b95978c04695860118)
-- **Open:** 226 · **Completed:** 2
+- **Last change:** 2026-10-06T06:22:21Z — upstream read through [`abce91a`](https://github.com/Kaleaon/react-linkpoint/commit/abce91a373e85314111c6976759f8d04954ba5d2)
+- **Open:** 242 · **Completed:** 2
 
 ## Open
 
@@ -103,6 +103,19 @@ Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/
 
 Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `docs/react/src/components/`
 
+- [ ] **`ecff596`** fix(types): mark onSuccess prop as optional in PayDialog
+  - 2026-10-05 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ecff5963174c62acad6668dd8269cdc4cff710e1)
+  - 1 file: `src/components/PayDialog.jsx`
+- [ ] **`c571959`** feat(a11y): wrap OutfitCarouselDrawer in FocusTrap with dialog ARIA semantics
+  - 2026-10-05 · Stitch Bot · [commit](https://github.com/Kaleaon/react-linkpoint/commit/c571959af9a8bff8aef6d54e9f68bd163f4e48fb)
+  - 2 files: `src/components/OutfitCarouselDrawer.tsx`, `src/components/__tests__/FocusTrap.test.tsx`
+- [ ] **`ab65e48`** feat(a11y): add skip navigation link and fix landmark regions (WCAG SC 2.4.1, SC 1.3.1, SC 2.4.7)
+  - 2026-10-04 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ab65e480959560b62af30b8e988f4c285af68360)
+  - 8 files: `src/App.tsx`, `src/components/ConsoleFrame.jsx`, `src/components/DesktopChrome.jsx`, `src/components/Header.jsx`, `src/components/ScreenBody.jsx`, `src/components/TileNav.jsx` _(+2 more)_
+  - also touches: Screens, Theme & tokens, Viewer & protocol features
+- [ ] **`7afa4c1`** feat: EconomyManager with local ledger caching and interactive pay modal
+  - 2026-10-04 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7afa4c186f20cfd94d438d18c00bc8a7c688d4d8)
+  - 1 file: `src/components/__tests__/PayDialog.test.tsx`
 - [ ] **`259b960`** feat(a11y): add FocusTrap component and standardized ARIA semantics for modal dialogs
   - 2026-10-04 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/259b960220debbb6ee7a61dc195aa613035ce249)
   - 7 files: `src/components/ErrorRecoveryModal.tsx`, `src/components/FocusTrap.jsx`, `src/components/InteractionDialog.jsx`, `src/components/InventoryTree.tsx`, `src/components/PayDialog.jsx`, `src/components/SystemDialog.jsx` _(+1 more)_
@@ -252,6 +265,30 @@ Mirror into: `docs/index.html` — the `render()` view-model · `docs/react/src/
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`e98a5a0`** Align TypeScript texture decoding with Lumiya
+  - 2026-10-05 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e98a5a0f0dbbe0184b2b5872f1c41a1174ce7c71)
+  - 27 files: `core/sl-asset-decoder.cjs`, `package.json`, `server.ts`, `src/components/AssetContainer.jsx`, `src/components/FocusTrap.jsx`, `src/components/InventoryTree.tsx` _(+21 more)_
+  - also touches: Components, State & data, Build & platform, Unclassified
+- [ ] **`a934d0c`** test: add live grid viewer smoke suite
+  - 2026-10-05 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/a934d0ca87d77a7467ac6b1d6c9e3d5219429aa8)
+  - 11 files: `LIVE_GRID_TESTING.md`, `package.json`, `scripts/build-wasm.mjs`, `scripts/live-grid-smoke.mjs`, `server.ts`, `src/linkpoint/__tests__/chat-protocol-adapter.test.ts` _(+5 more)_
+  - also touches: Build & platform, Docs & specs
+- [ ] **`7aa7f2b`** feat: WebAssembly SIMD spatial transform pipeline with SharedArrayBuffer bridge
+  - 2026-10-05 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7aa7f2be9e3fad63e75bedde17c4f0d7b89e2ab1)
+  - 11 files: `package.json`, `public/spatial.wasm`, `scripts/build-wasm.mjs`, `src/linkpoint/__tests__/spatial-pipeline.test.ts`, `src/linkpoint/coordinate-normalizer.ts`, `src/linkpoint/frustum.ts` _(+5 more)_
+  - also touches: Build & platform, Unclassified
+- [ ] **`2aaa523`** feat: subscribe to social event streams and map event names across bridge
+  - 2026-10-05 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/2aaa5232ea15e0c8c1f57c1f3c299b634fa690b1)
+  - 12 files: `core/sl-interactions.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/components/InteractionDialog.jsx`, `src/linkpoint/__tests__/interaction-dialog.test.tsx`, `src/linkpoint/__tests__/interactions.test.ts` _(+6 more)_
+  - also touches: Components, Unclassified
+- [ ] **`0e82e93`** fix(inventory): atomic reconciled inventory tree mutation and deduplication
+  - 2026-10-05 · stitch-agent · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0e82e9302ecd5f304abf7020bc258deafc224c96)
+  - 4 files: `src/components/InventoryTree.tsx`, `src/linkpoint/inventory.ts`, `src/linkpoint/phase2/inventory-core.ts`, `test_inventory_cache.py`
+  - also touches: Components, Unclassified
+- [ ] **`0559be0`** fix: update coordinate systems, payload limits, and tests
+  - 2026-10-05 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0559be018b5040df517c1fb5ad1300aaea07ae2a)
+  - 18 files: `.sl-cache/inventory_test-agent.json`, `android-kotlin/gradlew`, `android-kotlin/tools/j2k/make-fixtures.sh`, `android/gradlew`, `bun.lock`, `core/serializers.cjs` _(+12 more)_
+  - also touches: Build & platform, Unclassified
 - [ ] **`f9819fb`** Restore skeleton attachment point transforms
   - 2026-10-04 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f9819fbbe023beafe200417ef81d03d6e212b8e9)
   - 8 files: `RENDERING_STATUS.md`, `core/serializers.cjs`, `src/linkpoint/__tests__/scene-3d.test.ts`, `src/linkpoint/__tests__/viewer-session.test.ts`, `src/linkpoint/__tests__/world-hud.test.ts`, `src/linkpoint/__tests__/world-rigged-mesh.test.ts` _(+2 more)_
@@ -260,6 +297,12 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
   - 2026-10-04 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f568db1a33af78bd77020eca789dabe723e2880d)
   - 7 files: `core/viewer-session.cjs`, `src/linkpoint/__tests__/scene-3d.test.ts`, `src/linkpoint/__tests__/viewer-session.test.ts`, `src/linkpoint/__tests__/world-rigged-mesh.test.ts`, `src/linkpoint/__tests__/world.test.ts`, `src/linkpoint/scene-3d.ts` _(+1 more)_
   - also touches: Unclassified
+- [ ] **`f443420`** fix(test): cast world instance to any for private WorldViewer method calls in bento-attachments test
+  - 2026-10-04 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f4434208b5c6de0ab2ecc19e78be74f2a873612d)
+  - 1 file: `src/linkpoint/__tests__/bento-attachments.test.ts`
+- [ ] **`e987f1d`** feat: expand Bento skeleton, hierarchical matrix propagation & fix face texture hydration
+  - 2026-10-04 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e987f1dc864d6e7e3ab45f4294dfb69036724baa)
+  - 9 files: `src/linkpoint/__tests__/appearance-manager.test.ts`, `src/linkpoint/__tests__/avatar-skeleton.test.ts`, `src/linkpoint/__tests__/bento-attachments.test.ts`, `src/linkpoint/appearance-manager.ts`, `src/linkpoint/avatar-skeleton.ts`, `src/linkpoint/index.ts` _(+3 more)_
 - [ ] **`e1de125`** feat: implement CircuitContextManager and CoordinateNormalizer pipeline
   - 2026-10-04 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e1de1256168662af3e10449763553d86c6454a78)
   - 12 files: `src/linkpoint/__tests__/circuit-context.test.ts`, `src/linkpoint/__tests__/coordinate-normalizer.test.ts`, `src/linkpoint/__tests__/event-queue.test.ts`, `src/linkpoint/circuit-context.ts`, `src/linkpoint/coordinate-normalizer.ts`, `src/linkpoint/index.ts` _(+6 more)_
@@ -605,6 +648,9 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
 
 Mirror into: usually no design change — confirm `docs/react/` still builds the same way
 
+- [ ] **`6897c89`** fix(ci): bind matrix target to environment variable in release workflow
+  - 2026-10-05 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6897c894690d329196a8e48598d441179c3d63a7)
+  - 1 file: `.github/workflows/release.yml`
 - [ ] **`ad43d7e`** ci: itemize CI jobs and update workflow documentation
   - 2026-10-04 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ad43d7e4ce8db9a704bcb20267bf95af74de549e)
   - 2 files: `.github/workflows/ci.yml`, `README.md`
@@ -723,6 +769,17 @@ Mirror into: `docs/ROADMAP.md` · `docs/github.md` · `docs/mockup-to-react.yaml
 
 Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json`
 
+- [ ] **`3619fa8`** fix(ci): remove package-lock.json and ignore it to keep PR diff small for automated review
+  - 2026-10-05 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/3619fa84e82756b7aab4e55840f5105eb44018c6)
+  - 1 file: `.gitignore`
+- [ ] **`03f054b`** feat: implement dual-layer AIS transport WebDAV error recovery and legacy UDP fallback engine
+  - 2026-10-05 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/03f054b7616f66521732e8dbef898b425929b13c)
+  - 8 files: `android-kotlin/core/src/main/kotlin/app/linkpoint/core/inventory/AisClient.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/inventory/InventoryRepository.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/inventory/UdpInventoryDataSource.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/inventory/AisClientTest.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/inventory/InventoryRepositoryTest.kt`, `android-kotlin/gradle/libs.versions.toml` _(+2 more)_
+  - also touches: Viewer & protocol features
+- [ ] **`e61cb54`** feat(vectors): add shared test vectors and Vitest assertion suite
+  - 2026-10-04 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e61cb549158308a95e5e23d0008fae9638d9cded)
+  - 7 files: `src/__tests__/test-vectors.test.ts`, `test-vectors/math/quaternion_matrix_transform_vectors.json`, `test-vectors/mesh/llmesh_decompress_vectors.json`, `test-vectors/schemas/math_vectors_schema.json`, `test-vectors/schemas/mesh_vectors_schema.json`, `test-vectors/schemas/texture_vectors_schema.json` _(+1 more)_
+  - also touches: Tests
 - [ ] **`0664dae`** refactor(design): consume @linkpoint/design-system package and deprecate source cloning
   - 2026-10-04 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0664dae7abdec3358837fa8a0d68c39d548ba50c)
   - 68 files: `.github/workflows/sync-design.yml`, `bun.lock`, `package.json`, `packages/design-system/README.md`, `packages/design-system/package.json`, `packages/design-system/scripts/generate-tokens.js` _(+62 more)_
@@ -881,7 +938,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-10-05T06:57:39Z",
+ "generated": "2026-10-06T06:22:21Z",
  "items": [
   {
    "also": [
@@ -6377,9 +6434,367 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "962aa69",
    "subject": "sync: Share simulator sun phase telemetry in world viewer",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/962aa6926a84831daac8aacfa1ffc41b7c02cbfa"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-04",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/appearance-manager.test.ts",
+    "src/linkpoint/__tests__/avatar-skeleton.test.ts",
+    "src/linkpoint/__tests__/bento-attachments.test.ts",
+    "src/linkpoint/appearance-manager.ts",
+    "src/linkpoint/avatar-skeleton.ts",
+    "src/linkpoint/index.ts",
+    "src/linkpoint/phase2/avatar.ts",
+    "src/linkpoint/skinning.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "e987f1dc864d6e7e3ab45f4294dfb69036724baa",
+   "short": "e987f1d",
+   "subject": "feat: expand Bento skeleton, hierarchical matrix propagation & fix face texture hydration",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e987f1dc864d6e7e3ab45f4294dfb69036724baa"
+  },
+  {
+   "also": [
+    "screens",
+    "theme",
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-04",
+   "done": false,
+   "files": [
+    "src/App.tsx",
+    "src/components/ConsoleFrame.jsx",
+    "src/components/DesktopChrome.jsx",
+    "src/components/Header.jsx",
+    "src/components/ScreenBody.jsx",
+    "src/components/TileNav.jsx",
+    "src/index.css",
+    "src/linkpoint/__tests__/accessible-nav-components.test.tsx"
+   ],
+   "sha": "ab65e480959560b62af30b8e988f4c285af68360",
+   "short": "ab65e48",
+   "subject": "feat(a11y): add skip navigation link and fix landmark regions (WCAG SC 2.4.1, SC 1.3.1, SC 2.4.7)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ab65e480959560b62af30b8e988f4c285af68360"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-04",
+   "done": false,
+   "files": [
+    "src/components/__tests__/PayDialog.test.tsx"
+   ],
+   "sha": "7afa4c186f20cfd94d438d18c00bc8a7c688d4d8",
+   "short": "7afa4c1",
+   "subject": "feat: EconomyManager with local ledger caching and interactive pay modal",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/7afa4c186f20cfd94d438d18c00bc8a7c688d4d8"
+  },
+  {
+   "also": [
+    "tests"
+   ],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-04",
+   "done": false,
+   "files": [
+    "src/__tests__/test-vectors.test.ts",
+    "test-vectors/math/quaternion_matrix_transform_vectors.json",
+    "test-vectors/mesh/llmesh_decompress_vectors.json",
+    "test-vectors/schemas/math_vectors_schema.json",
+    "test-vectors/schemas/mesh_vectors_schema.json",
+    "test-vectors/schemas/texture_vectors_schema.json",
+    "test-vectors/textures/j2k_texture_decoder_vectors.json"
+   ],
+   "sha": "e61cb549158308a95e5e23d0008fae9638d9cded",
+   "short": "e61cb54",
+   "subject": "feat(vectors): add shared test vectors and Vitest assertion suite",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e61cb549158308a95e5e23d0008fae9638d9cded"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-04",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/bento-attachments.test.ts"
+   ],
+   "sha": "f4434208b5c6de0ab2ecc19e78be74f2a873612d",
+   "short": "f443420",
+   "subject": "fix(test): cast world instance to any for private WorldViewer method calls in bento-attachments test",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/f4434208b5c6de0ab2ecc19e78be74f2a873612d"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-05",
+   "done": false,
+   "files": [
+    "src/components/PayDialog.jsx"
+   ],
+   "sha": "ecff5963174c62acad6668dd8269cdc4cff710e1",
+   "short": "ecff596",
+   "subject": "fix(types): mark onSuccess prop as optional in PayDialog",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ecff5963174c62acad6668dd8269cdc4cff710e1"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-05",
+   "done": false,
+   "files": [
+    ".gitignore"
+   ],
+   "sha": "3619fa84e82756b7aab4e55840f5105eb44018c6",
+   "short": "3619fa8",
+   "subject": "fix(ci): remove package-lock.json and ignore it to keep PR diff small for automated review",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/3619fa84e82756b7aab4e55840f5105eb44018c6"
+  },
+  {
+   "also": [
+    "platform",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-10-05",
+   "done": false,
+   "files": [
+    ".sl-cache/inventory_test-agent.json",
+    "android-kotlin/gradlew",
+    "android-kotlin/tools/j2k/make-fixtures.sh",
+    "android/gradlew",
+    "bun.lock",
+    "core/serializers.cjs",
+    "core/sl-actions.cjs",
+    "core/sl-terrain.cjs",
+    "scripts/codex-setup.sh",
+    "server.ts",
+    "src/linkpoint/__tests__/bento-attachments.test.ts",
+    "src/linkpoint/__tests__/camera-3d.test.ts",
+    "src/linkpoint/__tests__/server-payload-limit.test.ts",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/__tests__/world-rigged-mesh.test.ts",
+    "src/linkpoint/camera-3d.ts",
+    "src/linkpoint/world.ts",
+    "src/server/sl-session.ts"
+   ],
+   "sha": "0559be018b5040df517c1fb5ad1300aaea07ae2a",
+   "short": "0559be0",
+   "subject": "fix: update coordinate systems, payload limits, and tests",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/0559be018b5040df517c1fb5ad1300aaea07ae2a"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-05",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/inventory/AisClient.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/inventory/InventoryRepository.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/inventory/UdpInventoryDataSource.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/inventory/AisClientTest.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/inventory/InventoryRepositoryTest.kt",
+    "android-kotlin/gradle/libs.versions.toml",
+    "src/linkpoint/__tests__/llsd-sentinel-inventory.test.ts",
+    "src/linkpoint/inventory.ts"
+   ],
+   "sha": "03f054b7616f66521732e8dbef898b425929b13c",
+   "short": "03f054b",
+   "subject": "feat: implement dual-layer AIS transport WebDAV error recovery and legacy UDP fallback engine",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/03f054b7616f66521732e8dbef898b425929b13c"
+  },
+  {
+   "also": [
+    "components",
+    "state",
+    "platform",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-10-05",
+   "done": false,
+   "files": [
+    "core/sl-asset-decoder.cjs",
+    "package.json",
+    "server.ts",
+    "src/components/AssetContainer.jsx",
+    "src/components/FocusTrap.jsx",
+    "src/components/InventoryTree.tsx",
+    "src/components/OutfitCarouselDrawer.tsx",
+    "src/context/AppContext.jsx",
+    "src/context/ThemeContext.jsx",
+    "src/hooks/useAppState.js",
+    "src/lib/llsd.test.ts",
+    "src/linkpoint/__tests__/camera-mode-velocity.test.ts",
+    "src/linkpoint/__tests__/scene-3d-environment.test.ts",
+    "src/linkpoint/__tests__/sl-message-types.test.ts",
+    "src/linkpoint/__tests__/spatial-touch-pods.test.tsx",
+    "src/linkpoint/__tests__/texture-decoder.test.ts",
+    "src/linkpoint/__tests__/world.test.ts",
+    "src/linkpoint/economy-manager.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/index.ts",
+    "src/linkpoint/offline/__tests__/password.test.ts",
+    "src/linkpoint/phase2/inventory-types.ts",
+    "src/linkpoint/sl-message-types.ts",
+    "src/linkpoint/texture-decoder.ts",
+    "src/linkpoint/types.ts",
+    "src/linkpoint/world.ts",
+    "tsconfig.json"
+   ],
+   "sha": "e98a5a0f0dbbe0184b2b5872f1c41a1174ce7c71",
+   "short": "e98a5a0",
+   "subject": "Align TypeScript texture decoding with Lumiya",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e98a5a0f0dbbe0184b2b5872f1c41a1174ce7c71"
+  },
+  {
+   "also": [
+    "platform",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-05",
+   "done": false,
+   "files": [
+    "package.json",
+    "public/spatial.wasm",
+    "scripts/build-wasm.mjs",
+    "src/linkpoint/__tests__/spatial-pipeline.test.ts",
+    "src/linkpoint/coordinate-normalizer.ts",
+    "src/linkpoint/frustum.ts",
+    "src/linkpoint/scene-3d.ts",
+    "src/linkpoint/spatial-memory-bridge.ts",
+    "src/linkpoint/spatial-pipeline.ts",
+    "src/wasm/spatial-wasm-binary.ts",
+    "src/wasm/spatial_engine.c"
+   ],
+   "sha": "7aa7f2be9e3fad63e75bedde17c4f0d7b89e2ab1",
+   "short": "7aa7f2b",
+   "subject": "feat: WebAssembly SIMD spatial transform pipeline with SharedArrayBuffer bridge",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/7aa7f2be9e3fad63e75bedde17c4f0d7b89e2ab1"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "Stitch Bot",
+   "date": "2026-10-05",
+   "done": false,
+   "files": [
+    "src/components/OutfitCarouselDrawer.tsx",
+    "src/components/__tests__/FocusTrap.test.tsx"
+   ],
+   "sha": "c571959af9a8bff8aef6d54e9f68bd163f4e48fb",
+   "short": "c571959",
+   "subject": "feat(a11y): wrap OutfitCarouselDrawer in FocusTrap with dialog ARIA semantics",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/c571959af9a8bff8aef6d54e9f68bd163f4e48fb"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-05",
+   "done": false,
+   "files": [
+    ".github/workflows/release.yml"
+   ],
+   "sha": "6897c894690d329196a8e48598d441179c3d63a7",
+   "short": "6897c89",
+   "subject": "fix(ci): bind matrix target to environment variable in release workflow",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/6897c894690d329196a8e48598d441179c3d63a7"
+  },
+  {
+   "also": [
+    "platform",
+    "docs"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-10-05",
+   "done": false,
+   "files": [
+    "LIVE_GRID_TESTING.md",
+    "package.json",
+    "scripts/build-wasm.mjs",
+    "scripts/live-grid-smoke.mjs",
+    "server.ts",
+    "src/linkpoint/__tests__/chat-protocol-adapter.test.ts",
+    "src/linkpoint/__tests__/sl-message-types.test.ts",
+    "src/linkpoint/chat-protocol-adapter.ts",
+    "src/linkpoint/chat.ts",
+    "src/linkpoint/sl-message-types.ts",
+    "tsconfig.json"
+   ],
+   "sha": "a934d0ca87d77a7467ac6b1d6c9e3d5219429aa8",
+   "short": "a934d0c",
+   "subject": "test: add live grid viewer smoke suite",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/a934d0ca87d77a7467ac6b1d6c9e3d5219429aa8"
+  },
+  {
+   "also": [
+    "components",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-05",
+   "done": false,
+   "files": [
+    "core/sl-interactions.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/components/InteractionDialog.jsx",
+    "src/linkpoint/__tests__/interaction-dialog.test.tsx",
+    "src/linkpoint/__tests__/interactions.test.ts",
+    "src/linkpoint/__tests__/notices.test.ts",
+    "src/linkpoint/__tests__/sl-interactions.test.ts",
+    "src/linkpoint/interactions.ts",
+    "src/linkpoint/notices.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts"
+   ],
+   "sha": "2aaa5232ea15e0c8c1f57c1f3c299b634fa690b1",
+   "short": "2aaa523",
+   "subject": "feat: subscribe to social event streams and map event names across bridge",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/2aaa5232ea15e0c8c1f57c1f3c299b634fa690b1"
+  },
+  {
+   "also": [
+    "components",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "stitch-agent",
+   "date": "2026-10-05",
+   "done": false,
+   "files": [
+    "src/components/InventoryTree.tsx",
+    "src/linkpoint/inventory.ts",
+    "src/linkpoint/phase2/inventory-core.ts",
+    "test_inventory_cache.py"
+   ],
+   "sha": "0e82e9302ecd5f304abf7020bc258deafc224c96",
+   "short": "0e82e93",
+   "subject": "fix(inventory): atomic reconciled inventory tree mutation and deduplication",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/0e82e9302ecd5f304abf7020bc258deafc224c96"
   }
  ],
- "last_sha": "e253f1e1e85d4496eb99e9b95978c04695860118",
+ "last_sha": "abce91a373e85314111c6976759f8d04954ba5d2",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
