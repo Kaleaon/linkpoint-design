@@ -12,8 +12,16 @@ const RINGS = [
 ];
 // sqrt scale: the close-range rings stay legible while 100m still fits the scope
 const rPix = (dm) => Math.min(84, 78 * Math.sqrt(Math.min(dm, 160) / 100));
-const bandTone = (V, dm) => (dm <= 10 ? V.pri : dm <= 20 ? V.ok : dm <= 100 ? V.info : V.ink2);
-const bandName = (dm) => (dm <= 10 ? "WHISPER" : dm <= 20 ? "CHAT" : dm <= 100 ? "SHOUT" : "OUT OF RANGE");
+const bandTone = (V, dm) =>
+  dm <= 10 ? V.pri : dm <= 20 ? V.ok : dm <= 100 ? V.info : V.ink2;
+const bandName = (dm) =>
+  dm <= 10
+    ? "WHISPER"
+    : dm <= 20
+      ? "CHAT"
+      : dm <= 100
+        ? "SHOUT"
+        : "OUT OF RANGE";
 
 // Ported from the `isRadar` <sc-if> block: mode switch, scope (rings + blips),
 // and the sorted list with tap-to-open actions / long-press moderator menu.
@@ -22,7 +30,9 @@ export default function Radar() {
   const { V, t, bleed, pad } = useTheme();
 
   const objMode = state.rMode === "OBJ";
-  const rSrc = (objMode ? RADAR_OBJECTS : RADAR_AVATARS).slice().sort((a, b) => a.distance - b.distance);
+  const rSrc = (objMode ? RADAR_OBJECTS : RADAR_AVATARS)
+    .slice()
+    .sort((a, b) => a.distance - b.distance);
 
   const actChip = (tone) => ({
     display: "flex",
@@ -39,9 +49,33 @@ export default function Radar() {
     whiteSpace: "nowrap",
   });
 
-  const rModeWrap = { flex: "none", display: "flex", alignItems: "center", gap: "6px", padding: bleed ? "10px 12px 10px" : "0 16px 10px" };
-  const rScope = { flex: "none", margin: bleed ? "0 0 4px" : "0 16px 10px", position: "relative", height: "172px", overflow: "hidden", border: bleed ? "none" : "1px solid " + V.outv, borderRadius: bleed ? 0 : V.rp, background: V.surf };
-  const rListWrap = { flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px", padding: bleed ? "0" : "0 16px 16px", background: bleed ? V.bg : "transparent" };
+  const rModeWrap = {
+    flex: "none",
+    display: "flex",
+    alignItems: "center",
+    gap: "6px",
+    padding: bleed ? "10px 12px 10px" : "0 16px 10px",
+  };
+  const rScope = {
+    flex: "none",
+    margin: bleed ? "0 0 4px" : "0 16px 10px",
+    position: "relative",
+    height: "172px",
+    overflow: "hidden",
+    border: bleed ? "none" : "1px solid " + V.outv,
+    borderRadius: bleed ? 0 : V.rp,
+    background: V.surf,
+  };
+  const rListWrap = {
+    flex: 1,
+    minHeight: 0,
+    overflowY: "auto",
+    display: "flex",
+    flexDirection: "column",
+    gap: bleed ? "4px" : "8px",
+    padding: bleed ? "0" : "0 16px 16px",
+    background: bleed ? V.bg : "transparent",
+  };
 
   return (
     <>
@@ -74,8 +108,19 @@ export default function Radar() {
             </KInteractive>
           );
         })}
-        <div style={{ marginLeft: "auto", font: "400 10px/1 " + t.font, color: V.ink2, letterSpacing: ".06em" }}>
-          {rSrc.length + (objMode ? " objects" : " avatars") + " · " + rSrc.filter((x) => x.distance <= 20).length + " in chat range"}
+        <div
+          style={{
+            marginLeft: "auto",
+            font: "400 10px/1 " + t.font,
+            color: V.ink2,
+            letterSpacing: ".06em",
+          }}
+        >
+          {rSrc.length +
+            (objMode ? " objects" : " avatars") +
+            " · " +
+            rSrc.filter((x) => x.distance <= 20).length +
+            " in chat range"}
         </div>
       </div>
 
@@ -84,7 +129,12 @@ export default function Radar() {
           style={{
             position: "absolute",
             inset: 0,
-            backgroundImage: "linear-gradient(" + V.outv + " 1px,transparent 1px),linear-gradient(90deg," + V.outv + " 1px,transparent 1px)",
+            backgroundImage:
+              "linear-gradient(" +
+              V.outv +
+              " 1px,transparent 1px),linear-gradient(90deg," +
+              V.outv +
+              " 1px,transparent 1px)",
             backgroundSize: "24px 24px",
             opacity: 0.35,
           }}
@@ -108,16 +158,69 @@ export default function Radar() {
             />
           );
         })}
-        <div style={{ position: "absolute", right: "10px", top: "9px", display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px" }}>
+        <div
+          style={{
+            position: "absolute",
+            right: "10px",
+            top: "9px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+            gap: "6px",
+          }}
+        >
           {RINGS.map(([, label], i) => (
-            <div key={label} style={{ display: "flex", alignItems: "center", gap: "5px", font: "500 8px/1 " + t.font, letterSpacing: ".1em", color: V.ink2, whiteSpace: "nowrap" }}>
-              <span style={{ width: "7px", height: "7px", flex: "none", borderRadius: "50%", border: "1px solid " + (i === 2 ? V.outv : V.pri), opacity: i === 2 ? 0.9 : i === 1 ? 0.7 : 0.5 }} />
+            <div
+              key={label}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                font: "500 8px/1 " + t.font,
+                letterSpacing: ".1em",
+                color: V.ink2,
+                whiteSpace: "nowrap",
+              }}
+            >
+              <span
+                style={{
+                  width: "7px",
+                  height: "7px",
+                  flex: "none",
+                  borderRadius: "50%",
+                  border: "1px solid " + (i === 2 ? V.outv : V.pri),
+                  opacity: i === 2 ? 0.9 : i === 1 ? 0.7 : 0.5,
+                }}
+              />
               {label}
             </div>
           ))}
         </div>
-        <div style={{ position: "absolute", left: "50%", top: "50%", width: "10px", height: "10px", margin: "-5px 0 0 -5px", borderRadius: "5px", background: V.pri, animation: "ping 2.6s ease-out infinite" }} />
-        <div style={{ position: "absolute", left: "50%", top: "50%", width: "9px", height: "9px", margin: "-4.5px 0 0 -4.5px", borderRadius: "5px", background: V.pri }} />
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            width: "10px",
+            height: "10px",
+            margin: "-5px 0 0 -5px",
+            borderRadius: "5px",
+            background: V.pri,
+            animation: "ping 2.6s ease-out infinite",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            width: "9px",
+            height: "9px",
+            margin: "-4.5px 0 0 -4.5px",
+            borderRadius: "5px",
+            background: V.pri,
+          }}
+        />
         {rSrc.map((r) => {
           const name = r.name,
             dm = r.distance,
@@ -172,8 +275,22 @@ export default function Radar() {
             </KInteractive>
           );
         })}
-        <div style={{ position: "absolute", left: "10px", bottom: "8px", font: "400 9px/1 " + t.font, letterSpacing: ".06em", color: V.ink2 }}>
-          {objMode ? "objects by distance" : "nearest " + (rSrc[0]?.distance ?? 0) + "m · " + bandName(rSrc[0]?.distance ?? 0).toLowerCase()}
+        <div
+          style={{
+            position: "absolute",
+            left: "10px",
+            bottom: "8px",
+            font: "400 9px/1 " + t.font,
+            letterSpacing: ".06em",
+            color: V.ink2,
+          }}
+        >
+          {objMode
+            ? "objects by distance"
+            : "nearest " +
+              (rSrc[0]?.distance ?? 0) +
+              "m · " +
+              bandName(rSrc[0]?.distance ?? 0).toLowerCase()}
         </div>
       </div>
 
@@ -188,15 +305,27 @@ export default function Radar() {
           const tone = bandTone(V, dm),
             open = state.rOpen === name,
             menu = state.rMenu === name;
-          const acts = (objMode ? ["INSPECT", "TOUCH", "DERENDER", "TRACK"] : ["PROFILE", "IM", "TRACK", "TELEPORT TO"]).map((label) => ({ label, style: actChip(null) }));
-          const mods = (objMode ? ["RETURN", "MUTE OWNER", "BLOCK", "REPORT"] : ["MUTE", "DERENDER", "FREEZE", "EJECT", "BAN", "REPORT"]).map((label) => ({ label, style: actChip(V.err) }));
+          const acts = (
+            objMode
+              ? ["INSPECT", "TOUCH", "DERENDER", "TRACK"]
+              : ["PROFILE", "IM", "TRACK", "TELEPORT TO"]
+          ).map((label) => ({ label, style: actChip(null) }));
+          const mods = (
+            objMode
+              ? ["RETURN", "MUTE OWNER", "BLOCK", "REPORT"]
+              : ["MUTE", "DERENDER", "FREEZE", "EJECT", "BAN", "REPORT"]
+          ).map((label) => ({ label, style: actChip(V.err) }));
           const wrap = {
             display: "flex",
             flexDirection: "column",
             gap: "6px",
             padding: open || menu ? "0 0 8px" : "0",
-            border: bleed ? "none" : "1px solid " + (open || menu ? tone : V.outv),
-            borderLeft: bleed ? "4px solid " + (open || menu ? tone : "transparent") : undefined,
+            border: bleed
+              ? "none"
+              : "1px solid " + (open || menu ? tone : V.outv),
+            borderLeft: bleed
+              ? "4px solid " + (open || menu ? tone : "transparent")
+              : undefined,
             borderRadius: bleed ? 0 : V.rs,
             background: V.surf,
           };
@@ -208,22 +337,63 @@ export default function Radar() {
                 onMouseUp={actions.radarRelease}
                 onMouseLeave={actions.radarRelease}
                 label={name}
-                style={{ display: "flex", alignItems: "center", gap: "12px", padding: pad, cursor: "pointer" }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  padding: pad,
+                  cursor: "pointer",
+                }}
               >
                 <Icon name={icon} size={22} style={{ color: V.pri }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ font: "400 14px/1.2 " + t.font, color: V.ink }}>{name}</div>
-                  <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "3px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  <div style={{ font: "400 14px/1.2 " + t.font, color: V.ink }}>
+                    {name}
+                  </div>
+                  <div
+                    style={{
+                      font: "400 11px/1.3 " + t.font,
+                      color: V.ink2,
+                      marginTop: "3px",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
                     {COMPASS[Math.round(brg / 22.5) % 16] + " · " + meta}
                   </div>
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px", flex: "none" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    flex: "none",
+                  }}
+                >
                   <ElevationBadge zDelta={zDelta} />
-                  <div style={{ padding: "4px 8px", border: "1px solid " + tone, borderRadius: V.rs, font: "400 11px/1 " + t.font, color: tone }}>{dm}m</div>
+                  <div
+                    style={{
+                      padding: "4px 8px",
+                      border: "1px solid " + tone,
+                      borderRadius: V.rs,
+                      font: "400 11px/1 " + t.font,
+                      color: tone,
+                    }}
+                  >
+                    {dm}m
+                  </div>
                 </div>
               </KInteractive>
               {open ? (
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", padding: "0 " + pad }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "6px",
+                    padding: "0 " + pad,
+                  }}
+                >
                   {acts.map((a, i) => (
                     <KInteractive key={i} label={a.label} style={a.style}>
                       {a.label}
@@ -232,9 +402,31 @@ export default function Radar() {
                 </div>
               ) : null}
               {menu ? (
-                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                  <div style={{ padding: "0 " + pad, font: "600 9px/1 " + t.dfont, letterSpacing: ".18em", color: V.err }}>{(objMode ? "OBJECT" : "MODERATOR") + " — LONG PRESS"}</div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", padding: "0 " + pad }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "6px",
+                  }}
+                >
+                  <div
+                    style={{
+                      padding: "0 " + pad,
+                      font: "600 9px/1 " + t.dfont,
+                      letterSpacing: ".18em",
+                      color: V.err,
+                    }}
+                  >
+                    {(objMode ? "OBJECT" : "MODERATOR") + " — LONG PRESS"}
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "6px",
+                      padding: "0 " + pad,
+                    }}
+                  >
                     {mods.map((a, i) => (
                       <KInteractive key={i} label={a.label} style={a.style}>
                         {a.label}

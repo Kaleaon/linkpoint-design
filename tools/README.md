@@ -4,7 +4,7 @@
 [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) — the
 real React app this repo designs for — and schedules them as a checklist in
 [`docs/react-linkpoint-todo.md`](../docs/react-linkpoint-todo.md), filed under
-the part of *this* repo each one implicates.
+the part of _this_ repo each one implicates.
 
 It exists because the two repos drift in both directions. Upstream already has
 `scripts/sync-design.ts`, which copies `docs/react/` **into** React-Linkpoint.
@@ -40,7 +40,7 @@ or straight on GitHub — and the next run keeps the tick and moves the item int
 `<!-- sync-state -->` JSON block at the end of that same file, so there is
 never a second file to drift out of step with it.
 
-A run only writes when the *list* moves. The timestamp and the upstream cursor
+A run only writes when the _list_ moves. The timestamp and the upstream cursor
 are excluded from that comparison, so a quiet week leaves the file untouched
 instead of producing timestamp-only commits.
 
@@ -57,15 +57,15 @@ triage rules. The parts worth knowing:
   most-specific-first. `**` spans directories, `*` does not. Add a rule
   whenever something lands in `Unclassified`.
 - **`skip_subjects`** — **the echo-loop guard.** Upstream's own sync commits
-  this repo's `docs/react/` back into its `src/` (e.g. `205b1a1`, *"import
-  design & layout work from linkpoint-design"*). Those are our own work coming
+  this repo's `docs/react/` back into its `src/` (e.g. `205b1a1`, _"import
+  design & layout work from linkpoint-design"_). Those are our own work coming
   home; scheduling them as work for us would loop forever. If upstream ever
   reworks its sync commit messages, update these patterns to match.
 - **`skip_paths`** — lockfiles, snapshots and the vendored `src/design/` copy.
   A commit touching nothing else is dropped entirely.
 - **`skip_authors`**, **`first_run_max_commits`**, **`include_merges`**.
 
-Commits with an identical subject *and* an identical file set are treated as
+Commits with an identical subject _and_ an identical file set are treated as
 one piece of work (upstream sometimes lands a branch commit and its squashed
 re-apply). The match is deliberately strict — upstream also has genuinely
 different commits sharing a subject, and those are both real work.

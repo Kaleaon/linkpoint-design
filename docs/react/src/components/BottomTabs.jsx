@@ -31,12 +31,15 @@ export default function BottomTabs() {
   return (
     <nav
       aria-label="Bottom Tabs Navigation"
-      style={{ flex: "none", display: "flex", background: V.surf, borderTop: "1px solid " + V.outv, padding: "6px 0 10px" }}
+      style={{
+        flex: "none",
+        display: "flex",
+        background: V.surf,
+        borderTop: "1px solid " + V.outv,
+        padding: "6px 0 10px",
+      }}
     >
-      <div
-        {...containerProps}
-        style={{ flex: 1, display: "flex" }}
-      >
+      <div {...containerProps} style={{ flex: 1, display: "flex" }}>
         {items.map((n, index) => {
           const active = navActive(state.screen, n.id);
           const tabProps = getTabProps(index);
@@ -44,12 +47,40 @@ export default function BottomTabs() {
             <div
               key={n.id}
               {...tabProps}
-              style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", padding: "6px 0", cursor: "pointer", color: active ? V.pri : V.ink2, position: "relative" }}
+              style={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "4px",
+                padding: "6px 0",
+                cursor: "pointer",
+                color: active ? V.pri : V.ink2,
+                position: "relative",
+              }}
             >
               <Icon name={n.icon} size={22} />
-              <span style={{ font: "600 9px/1 " + t.font, letterSpacing: ".14em" }}>{n.label}</span>
+              <span
+                style={{ font: "600 9px/1 " + t.font, letterSpacing: ".14em" }}
+              >
+                {n.label}
+              </span>
               {n.badge ? (
-                <span style={{ position: "absolute", top: "2px", right: "24%", minWidth: "16px", height: "16px", padding: "0 4px", borderRadius: "8px", background: V.bdg, color: V.onbdg, font: "700 9px/16px " + t.font, textAlign: "center" }}>
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "2px",
+                    right: "24%",
+                    minWidth: "16px",
+                    height: "16px",
+                    padding: "0 4px",
+                    borderRadius: "8px",
+                    background: V.bdg,
+                    color: V.onbdg,
+                    font: "700 9px/16px " + t.font,
+                    textAlign: "center",
+                  }}
+                >
                   {n.badge}
                 </span>
               ) : null}
@@ -60,4 +91,3 @@ export default function BottomTabs() {
     </nav>
   );
 }
-

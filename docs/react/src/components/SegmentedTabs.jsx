@@ -20,7 +20,10 @@ export default function SegmentedTabs() {
   // Unread counts live here rather than in CSUB — CSUB is the label model, a
   // badge is a per-tab decoration that only Chat currently has.
   const SEG_BADGE = { Chat: { IM: 3, GROUP: 1 } };
-  const tabs = CSUB[scr].map(([label]) => ({ label, badge: (SEG_BADGE[scr] || {})[label] }));
+  const tabs = CSUB[scr].map(([label]) => ({
+    label,
+    badge: (SEG_BADGE[scr] || {})[label],
+  }));
 
   const activeIndex = tabs.findIndex((x) => x.label === curSub);
 
@@ -40,28 +43,73 @@ export default function SegmentedTabs() {
   const segLook = LK.seg || "fill";
   const looks = segLooks(V, t.font);
   const base = looks[segLook];
-  const on = { background: V.priC, color: V.onpriC, borderBottom: "2px solid " + V.pri };
-  const onLook = segLook === "fill" ? { ...on, color: V.onpriC } : segLook === "pivot" ? { color: V.pri, fontWeight: 400 } : { color: V.pri, boxShadow: "inset 0 -2px 0 " + V.pri, letterSpacing: V.tls };
+  const on = {
+    background: V.priC,
+    color: V.onpriC,
+    borderBottom: "2px solid " + V.pri,
+  };
+  const onLook =
+    segLook === "fill"
+      ? { ...on, color: V.onpriC }
+      : segLook === "pivot"
+        ? { color: V.pri, fontWeight: 400 }
+        : {
+            color: V.pri,
+            boxShadow: "inset 0 -2px 0 " + V.pri,
+            letterSpacing: V.tls,
+          };
 
   const wrap = isFloat
-    ? { flex: "none", display: "flex", flexWrap: "wrap", margin: 0, borderBottom: "1px solid " + V.outv, background: V.surf }
+    ? {
+        flex: "none",
+        display: "flex",
+        flexWrap: "wrap",
+        margin: 0,
+        borderBottom: "1px solid " + V.outv,
+        background: V.surf,
+      }
     : segLook === "fill"
-    ? { flex: "none", display: "flex", margin: nav === "sweep" ? "12px 12px 10px 4px" : "2px 16px 10px", border: "1px solid " + V.outv, borderRadius: V.rs, overflow: "hidden" }
-    : { flex: "none", display: "flex", margin: "0 16px 8px", borderBottom: segLook === "text" ? "1px solid " + V.outv : "none", overflowX: "auto" };
+      ? {
+          flex: "none",
+          display: "flex",
+          margin: nav === "sweep" ? "12px 12px 10px 4px" : "2px 16px 10px",
+          border: "1px solid " + V.outv,
+          borderRadius: V.rs,
+          overflow: "hidden",
+        }
+      : {
+          flex: "none",
+          display: "flex",
+          margin: "0 16px 8px",
+          borderBottom: segLook === "text" ? "1px solid " + V.outv : "none",
+          overflowX: "auto",
+        };
 
   return (
     <div {...containerProps} style={wrap}>
       {tabs.map((x, index) => {
         const active = x.label === curSub;
-        const style = { ...base, ...(active ? onLook : null), ...(isFloat ? { minHeight: "28px", height: "28px", padding: "0 12px", flex: "none", borderRadius: 0, font: "600 9.5px/1 " + t.font, letterSpacing: ".1em" } : null) };
+        const style = {
+          ...base,
+          ...(active ? onLook : null),
+          ...(isFloat
+            ? {
+                minHeight: "28px",
+                height: "28px",
+                padding: "0 12px",
+                flex: "none",
+                borderRadius: 0,
+                font: "600 9.5px/1 " + t.font,
+                letterSpacing: ".1em",
+              }
+            : null),
+        };
         const tabProps = getTabProps(index);
         return (
-          <div
-            key={x.label}
-            {...tabProps}
-            style={style}
-          >
-            <span style={{ font: "inherit", letterSpacing: "inherit" }}>{x.label}</span>
+          <div key={x.label} {...tabProps} style={style}>
+            <span style={{ font: "inherit", letterSpacing: "inherit" }}>
+              {x.label}
+            </span>
             {x.badge ? (
               <span
                 style={{
@@ -86,4 +134,3 @@ export default function SegmentedTabs() {
     </div>
   );
 }
-

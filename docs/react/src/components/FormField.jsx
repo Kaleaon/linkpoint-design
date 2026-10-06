@@ -36,7 +36,8 @@ export function FormField({
     return `form-field-${fallbackIdCounter}`;
   });
 
-  const inputId = explicitId || (reactId ? `field-${reactId.replace(/:/g, "")}` : fallbackId);
+  const inputId =
+    explicitId || (reactId ? `field-${reactId.replace(/:/g, "")}` : fallbackId);
   const descText = description || helperText;
 
   const labelId = `${inputId}-label`;
@@ -46,7 +47,8 @@ export function FormField({
   const describedByParts = [];
   if (descId) describedByParts.push(descId);
   if (errorId) describedByParts.push(errorId);
-  const ariaDescribedBy = describedByParts.length > 0 ? describedByParts.join(" ") : undefined;
+  const ariaDescribedBy =
+    describedByParts.length > 0 ? describedByParts.join(" ") : undefined;
 
   const contextValue = {
     id: inputId,
@@ -63,8 +65,14 @@ export function FormField({
     return React.cloneElement(child, {
       id: child.props.id || inputId,
       "aria-describedby": child.props["aria-describedby"] || ariaDescribedBy,
-      "aria-invalid": child.props["aria-invalid"] !== undefined ? child.props["aria-invalid"] : (error ? true : undefined),
-      "aria-errormessage": child.props["aria-errormessage"] || (error ? errorId : undefined),
+      "aria-invalid":
+        child.props["aria-invalid"] !== undefined
+          ? child.props["aria-invalid"]
+          : error
+            ? true
+            : undefined,
+      "aria-errormessage":
+        child.props["aria-errormessage"] || (error ? errorId : undefined),
     });
   });
 
@@ -72,7 +80,12 @@ export function FormField({
     <FormFieldContext.Provider value={contextValue}>
       <div
         className={`form-field ${className}`}
-        style={{ display: "flex", flexDirection: "column", gap: "2px", ...style }}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "2px",
+          ...style,
+        }}
         {...props}
       >
         {label && (
@@ -82,14 +95,22 @@ export function FormField({
             style={{
               font: "400 10px/1 " + (t.font || "sans-serif"),
               letterSpacing: ".2em",
-              color: V.pri || "#818cf8",
+              color: V.pri,
               margin: "4px 0 2px",
               cursor: "pointer",
               ...labelStyle,
             }}
           >
             {label}
-            {required && <span aria-hidden="true" style={{ color: V.err || "#ef4444", marginLeft: "2px" }}> *</span>}
+            {required && (
+              <span
+                aria-hidden="true"
+                style={{ color: V.err, marginLeft: "2px" }}
+              >
+                {" "}
+                *
+              </span>
+            )}
           </label>
         )}
 
@@ -100,7 +121,7 @@ export function FormField({
             id={descId}
             style={{
               font: "400 10px/1.3 " + (t.font || "sans-serif"),
-              color: V.ink2 || "#9ca3af",
+              color: V.ink2,
               marginTop: "2px",
             }}
           >
@@ -113,7 +134,7 @@ export function FormField({
             id={errorId}
             style={{
               font: "400 10px/1.3 " + (t.font || "sans-serif"),
-              color: V.err || "#ef4444",
+              color: V.err,
               marginTop: "2px",
             }}
           >

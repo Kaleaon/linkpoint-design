@@ -18,7 +18,10 @@ function TestHarness() {
       <div data-testid="dialog">{state.dialog || "NONE"}</div>
       <div data-testid="toast">{state.toast}</div>
       <div data-testid="logs-count">{logs.length}</div>
-      <button data-testid="open-permissions" onClick={() => actions.setDialog("Permissions")}>
+      <button
+        data-testid="open-permissions"
+        onClick={() => actions.setDialog("Permissions")}
+      >
         Open Permissions
       </button>
       <SystemDialog />
