@@ -44,7 +44,12 @@ export default function ScreenBody() {
   const { norm, scr } = useThemeRuntime();
 
   const isLoading = state?.cond === "loading";
-  const cardsByScreen = buildCards({ state, actions, layoutName: LAYOUTS[state.layout].name, paletteName: PALETTES[state.palette].name });
+  const cardsByScreen = buildCards({
+    state,
+    actions,
+    layoutName: LAYOUTS[state.layout].name,
+    paletteName: PALETTES[state.palette].name,
+  });
   const isCardScreen = CARD_SCREENS.includes(scr);
   const curSub = subView(state, scr);
 
@@ -55,8 +60,25 @@ export default function ScreenBody() {
   ].includes(scr);
 
   return (
-    <div style={{ flex: 1, minWidth: 0, minHeight: "400px", display: "flex", position: "relative" }}>
-      <main aria-label="Main Content" style={{ flex: 1, minWidth: 0, minHeight: "400px", display: "flex", flexDirection: "column" }}>
+    <div
+      style={{
+        flex: 1,
+        minWidth: 0,
+        minHeight: "400px",
+        display: "flex",
+        position: "relative",
+      }}
+    >
+      <main
+        aria-label="Main Content"
+        style={{
+          flex: 1,
+          minWidth: 0,
+          minHeight: "400px",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <Header />
         <SegmentedTabs />
         <ChipRow />
@@ -86,7 +108,11 @@ export default function ScreenBody() {
         {!isLoading && norm && scr === "Diagnostics" && <Diagnostics />}
         {!isLoading && norm && scr === "Offline Grid" && <OfflineGrid />}
         {!isLoading && norm && scr === "Grid Console" && <GridConsole />}
-        {norm && isCardScreen && <CardList cards={(cardsByScreen[scr] || []).filter((c) => inSub(c, curSub))} />}
+        {norm && isCardScreen && (
+          <CardList
+            cards={(cardsByScreen[scr] || []).filter((c) => inSub(c, curSub))}
+          />
+        )}
         {scr === "Login" && <Login />}
         {scr === "Search" && <Search />}
         {!norm && <StateBlock />}

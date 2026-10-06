@@ -1,0 +1,42 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Run Pre-commit & Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Pre-commit
+        run: pip install pre-commit check-jsonschema
+
+      - name: Run Pre-commit Hooks
+        run: pre-commit run --all-files
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: docs/react/package-lock.json
+
+      - name: Install React Dependencies
+        run: cd docs/react && npm ci
+
+      - name: Run React Unit Tests
+        run: cd docs/react && npm test
