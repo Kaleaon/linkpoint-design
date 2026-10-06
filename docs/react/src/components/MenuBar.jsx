@@ -28,7 +28,7 @@ export default function MenuBar() {
   };
 
   return (
-    <div style={{ flex: "none", display: "flex", alignItems: "stretch", height: "32px", padding: "0 8px", background: V.surf, borderBottom: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv), position: "relative", zIndex: 80 }} onClick={() => state.menu && actions.setMenu(null)}>
+    <header aria-label="Desktop Menu Bar" style={{ flex: "none", display: "flex", alignItems: "stretch", height: "32px", padding: "0 8px", background: V.surf, borderBottom: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv), position: "relative", zIndex: 80 }} onClick={() => state.menu && actions.setMenu(null)}>
       {FMENU.map((mm) => {
         const open = state.menu === mm.label;
         const win = mm.items === "WINDOWS";
@@ -72,6 +72,6 @@ export default function MenuBar() {
       <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "16px", font: "500 10.5px/1 " + t.font, color: V.ink2, letterSpacing: ".06em" }}>
         {"L$ 2 480   ·   Heliotrope (Adult)   ·   64 FPS   ·   14:32"}
       </div>
-    </div>
+    </header>
   );
 }

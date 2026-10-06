@@ -12,7 +12,7 @@ export default function RailNav() {
   if (nav !== "rail" || immersive) return null;
 
   return (
-    <div style={{ flex: "none", width: "104px", background: V.surf, borderRight: "1px solid " + V.outv, display: "flex", flexDirection: "column", gap: "5px", padding: "12px 8px" }}>
+    <nav aria-label="Rail Navigation" style={{ flex: "none", width: "104px", background: V.surf, borderRight: "1px solid " + V.outv, display: "flex", flexDirection: "column", gap: "5px", padding: "12px 8px" }}>
       <div style={{ font: "700 13px/1.15 " + t.dfont, letterSpacing: ".2em", color: V.pri, padding: "2px 6px 14px" }}>
         LINK
         <br />
@@ -31,6 +31,6 @@ export default function RailNav() {
           </div>
         );
       })}
-    </div>
+    </nav>
   );
 }
