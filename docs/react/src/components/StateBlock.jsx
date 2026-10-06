@@ -6,11 +6,15 @@ import CrystalLoader from "./CrystalLoader.jsx";
 // Ported from the `stateBlock` computation + its <sc-if> template block —
 // the shared loading/empty/error UI shown in place of a screen's normal body.
 export default function StateBlock() {
-  const { state } = useApp();
+  const { state, actions } = useApp();
   const { V, t, condPack, stateBlockActive } = useTheme();
   if (!stateBlockActive || !condPack) return null;
   const isError = state.cond === "error";
   const isLoading = state.cond === "loading";
+
+  const handleAction = () => {
+    actions?.setCond?.("normal");
+  };
 
   return (
     <div
@@ -63,7 +67,9 @@ export default function StateBlock() {
         </div>
       ) : null}
       {condPack.btn ? (
-        <div
+        <button
+          type="button"
+          onClick={handleAction}
           style={{
             minHeight: "44px",
             padding: "0 22px",
@@ -76,10 +82,12 @@ export default function StateBlock() {
             font: "700 11px/1 " + t.font,
             letterSpacing: ".18em",
             cursor: "pointer",
+            border: "none",
+            outline: "none",
           }}
         >
           {condPack.btn}
-        </div>
+        </button>
       ) : null}
     </div>
   );
