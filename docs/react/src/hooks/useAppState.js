@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { EventBus, intentReducer } from "../../../shared/eventBus.js";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { DEVICES, FLOATERS, HUD_DEFAULT, HUDS, CBTN, GRIDS } from "../theme/constants.js";
@@ -156,6 +157,7 @@ export function useAppState() {
   }, [deviceForViewport]);
 
   // ---- timers / drag refs (were plain `this.x` fields on the class) -----
+  const eventBusRef = useRef(new EventBus());
   const cflRef = useRef(null); // console-nav tap flash timeout
   const clpRef = useRef(null); // console dock long-press-to-edit timeout
   const rlpRef = useRef(null); // radar row long-press timeout
@@ -745,6 +747,39 @@ export function useAppState() {
     [navMode, flFocus]
   );
 
+  const getEventBus = useCallback(() => eventBusRef.current, []);
+
+  const dispatchIntent = useCallback(
+    (type, payload = {}) => {
+      const bus = eventBusRef.current;
+      const intentEvent = bus.dispatch({ type, payload });
+
+      if (type === "DIALOG_ACTION" || type === "DIALOG_BUTTON_CLICK") {
+        setDialog(null);
+        const buttonLabel = payload.label || payload.actionId || "";
+        const dlgTitle = payload.title || "";
+        if (dlgTitle && buttonLabel) {
+          notify(dlgTitle.split(" ").slice(0, 4).join(" ") + " — " + buttonLabel);
+        } else if (buttonLabel) {
+          notify(buttonLabel);
+        }
+      } else if (type === "DIALOG_CLOSE" || type === "DIALOG_DISMISS") {
+        setDialog(null);
+      } else if (type === "FLOATER_MINIMIZE" || type === "FLOATER_TOGGLE") {
+        if (payload.id) flToggle(payload.id);
+      } else if (type === "FLOATER_CLOSE") {
+        if (payload.id) flClose(payload.id);
+      } else if (type === "NAVIGATE_SCREEN") {
+        if (payload.screen) screenPick(payload.screen);
+      } else if (type === "QUICK_CHAT_SUBMIT") {
+        if (payload.message) notify("Local Chat (" + payload.message + ")");
+      }
+
+      return intentEvent;
+    },
+    [flToggle, flClose, notify, screenPick]
+  );
+
   return {
     state: {
       layout, palette, customTheme, device, screen, dialog, dense, tabs, chip, tileOk, invOpen, invSelectMode, invSelected, invMoveModal, invItems, dismissed, pinned, lureState,
@@ -769,6 +804,7 @@ export function useAppState() {
       setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchTab, setSearchQuery, searchAdd, startIm, reconnect, notify,
       setPref, setTelemetryVerbosity, clearCache, clearAllCache, setCamPreset, toggleOfflineGrid, setOfflineAccountModal, setOfflineAccountFirstName, setOfflineAccountLastName, setOfflineAccountPassword, saveOfflineAccount, importOarBackup, setAssetName, setAssetType, addLocalAsset, setOfflineCacheSize, clearOfflineCache, setConsoleLevel, setConsoleQuery, setConsoleAutoscroll, clearConsoleLogs, copyConsoleLogs, downloadConsoleLogs,
       refreshBalance, setLindenBalance, setExchangeRate,
+      dispatchIntent, getEventBus,
     },
     T, D, navMode,
   };

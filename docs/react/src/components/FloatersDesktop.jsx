@@ -40,7 +40,7 @@ export default function FloatersDesktop() {
   const sendQuickChat = (e) => {
     e?.preventDefault();
     if (!quickMsg.trim()) return;
-    actions.notify("Local Chat (" + quickMsg.trim() + ")");
+    actions.dispatchIntent("QUICK_CHAT_SUBMIT", { message: quickMsg.trim() });
     setQuickMsg("");
   };
 
@@ -127,13 +127,13 @@ export default function FloatersDesktop() {
               <span
                 onClick={(e) => {
                   e.stopPropagation();
-                  actions.flToggle(f.id);
+                  actions.dispatchIntent("FLOATER_MINIMIZE", { id: f.id });
                 }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
                     e.stopPropagation();
-                    actions.flToggle(f.id);
+                    actions.dispatchIntent("FLOATER_MINIMIZE", { id: f.id });
                   }
                 }}
                 style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
@@ -144,13 +144,13 @@ export default function FloatersDesktop() {
               <span
                 onClick={(e) => {
                   e.stopPropagation();
-                  actions.flClose(f.id);
+                  actions.dispatchIntent("FLOATER_CLOSE", { id: f.id });
                 }}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
                     e.stopPropagation();
-                    actions.flClose(f.id);
+                    actions.dispatchIntent("FLOATER_CLOSE", { id: f.id });
                   }
                 }}
                 style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
@@ -228,7 +228,7 @@ export default function FloatersDesktop() {
           return (
             <div
               key={f.id}
-              onClick={() => actions.flToggle(f.id)}
+              onClick={() => actions.dispatchIntent("FLOATER_TOGGLE", { id: f.id })}
               style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", padding: "0 10px", cursor: "pointer", background: act ? V.pri : min ? "transparent" : V.surf2, color: act ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2, border: "1px solid " + (min ? V.outv : "transparent"), borderRadius: isSweepDesk ? "999px" : V.rs, font: isSweepDesk ? "700 10px/1 " + t.dfont : "500 10px/1 " + t.font, letterSpacing: isSweepDesk ? ".12em" : ".08em", whiteSpace: "nowrap" }}
             >
               {f.title}
