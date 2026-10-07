@@ -57,7 +57,8 @@ test("ConsoleFrame dock slot remove button size meets target requirements", () =
 
   // Centered vertical alignment
   expect(
-    fileContent.includes('alignItems: "center"') || fileContent.includes("lineHeight")
+    fileContent.includes('alignItems: "center"') ||
+      fileContent.includes("lineHeight"),
   ).toBe(true);
 });
 

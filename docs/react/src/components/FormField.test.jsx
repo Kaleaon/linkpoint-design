@@ -10,7 +10,7 @@ describe("Linkpoint React FormField & Controls", () => {
     render(
       <FormField label="AVATAR NAME">
         <FormInput placeholder="Avatar Name" />
-      </FormField>
+      </FormField>,
     );
 
     const label = screen.getByText("AVATAR NAME");
@@ -24,7 +24,7 @@ describe("Linkpoint React FormField & Controls", () => {
     render(
       <FormField label="LOGIN URI" description="e.g. login.example.com:8002">
         <FormInput placeholder="URI" />
-      </FormField>
+      </FormField>,
     );
 
     const input = screen.getByPlaceholderText("URI");
@@ -38,7 +38,7 @@ describe("Linkpoint React FormField & Controls", () => {
     render(
       <FormField label="GRID NAME" error="Grid name already exists">
         <FormInput placeholder="Grid Name" />
-      </FormField>
+      </FormField>,
     );
 
     const input = screen.getByPlaceholderText("Grid Name");
@@ -53,7 +53,7 @@ describe("Linkpoint React FormField & Controls", () => {
     render(
       <FormField label="ANIMATED LOGO">
         <FormSwitch checked={true} />
-      </FormField>
+      </FormField>,
     );
 
     const switchEl = screen.getByRole("switch");
