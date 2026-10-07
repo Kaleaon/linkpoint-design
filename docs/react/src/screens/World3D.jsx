@@ -104,7 +104,8 @@ export default function World3D() {
         style={{
           position: "absolute",
           inset: 0,
-          background: "linear-gradient(180deg, var(--md-sys-color-surface-variant, var(--ktheme-sky1)) 0%, var(--ktheme-sky2) 46%, var(--ktheme-gnd1) 46%, var(--md-sys-color-background, var(--ktheme-gnd2)) 100%)",
+          background:
+            "linear-gradient(180deg, var(--md-sys-color-surface-variant, var(--ktheme-sky1)) 0%, var(--ktheme-sky2) 46%, var(--ktheme-gnd1) 46%, var(--md-sys-color-background, var(--ktheme-gnd2)) 100%)",
         }}
       />
       <div

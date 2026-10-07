@@ -68,7 +68,8 @@ export default function GridConsole() {
               borderRadius: V.rs,
               background: "rgba(255,176,32,0.15)",
               font: "700 10px/1 " + t.font,
-              color: V.warn || "var(--md-sys-color-warning, var(--ktheme-warn))",
+              color:
+                V.warn || "var(--md-sys-color-warning, var(--ktheme-warn))",
             }}
           >
             WARN: {warnCount}
@@ -79,7 +80,10 @@ export default function GridConsole() {
               borderRadius: V.rs,
               font: "700 10px/1 " + t.font,
               background: errorCount > 0 ? "rgba(255,85,85,0.25)" : V.surf2,
-              color: errorCount > 0 ? (V.err || "var(--md-sys-color-error, var(--ktheme-err))") : V.ink2,
+              color:
+                errorCount > 0
+                  ? V.err || "var(--md-sys-color-error, var(--ktheme-err))"
+                  : V.ink2,
             }}
           >
             ERRORS: {errorCount}
@@ -164,15 +168,18 @@ export default function GridConsole() {
           padding: "10px",
           border: "1px solid " + V.outv,
           borderRadius: V.rs,
-          background: V.bg || "var(--md-sys-color-background, var(--ktheme-bg))",
+          background:
+            V.bg || "var(--md-sys-color-background, var(--ktheme-bg))",
           fontFamily: "'JetBrains Mono', monospace",
         }}
       >
         {logs.map((cl, i) => {
           let col = V.ink2;
           if (cl.level === "INFO") col = V.sec2 || V.pri;
-          if (cl.level === "WARN") col = V.warn || "var(--md-sys-color-warning, var(--ktheme-warn))";
-          if (cl.level === "ERROR" || cl.level === "FATAL") col = V.err || "var(--md-sys-color-error, var(--ktheme-err))";
+          if (cl.level === "WARN")
+            col = V.warn || "var(--md-sys-color-warning, var(--ktheme-warn))";
+          if (cl.level === "ERROR" || cl.level === "FATAL")
+            col = V.err || "var(--md-sys-color-error, var(--ktheme-err))";
           return (
             <div
               key={i}
