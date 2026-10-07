@@ -54,6 +54,10 @@ export function computeThemeRuntime(state, cf, tokens) {
 // the token set `V`, the device, the console geometry, and the handful of
 // screen-independent flags (isConsole/isFloat/bleed/bare/immersive/norm/
 // headLook/stateBlock) that every screen and chrome component needs.
+/**
+ * @deprecated Deprecated in favor of `@ktheme/react` <KthemeProvider> and `useKthemeToken()` dynamic token hooks.
+ * Kept for legacy compatibility layer with AppContext.
+ */
 export function computeTheme(state, cf) {
   const tokens = computeThemeTokens(state);
   const runtime = computeThemeRuntime(state, cf, tokens);
