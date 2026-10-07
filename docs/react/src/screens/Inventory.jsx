@@ -93,7 +93,7 @@ export default function Inventory() {
       <div style={invRecentStyle}>
         {INVENTORY_RECENTS.map((ir) => (
           <div key={ir} style={{ flex: "none", width: "62px" }}>
-            <div style={{ height: "62px", border: "1px solid " + V.outv, background: "repeating-linear-gradient(135deg,#1B2A2D 0 6px,#101A1C 6px 12px)" }} />
+            <div style={{ height: "62px", border: "1px solid " + V.outv, background: "repeating-linear-gradient(135deg, var(--md-sys-color-surface-variant, var(--ktheme-surf2)) 0 6px, var(--md-sys-color-surface, var(--ktheme-surf)) 6px 12px)" }} />
             <div style={{ font: "400 9px/1.3 " + t.font, color: V.ink2, marginTop: "4px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{ir}</div>
           </div>
         ))}
@@ -191,7 +191,7 @@ export default function Inventory() {
             </div>
             <div
               onClick={actions.invDeleteSelected}
-              style={{ flex: 1, height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, background: "rgba(255,108,108,0.15)", color: "#FF6C6C", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".1em", cursor: "pointer" }}
+              style={{ flex: 1, height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, background: "rgba(207,102,121,0.15)", color: V.err || "var(--md-sys-color-error, var(--ktheme-err))", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".1em", cursor: "pointer" }}
               role="button" tabIndex={0}
             >
               <Icon name="trash-2" size={16} /> DELETE

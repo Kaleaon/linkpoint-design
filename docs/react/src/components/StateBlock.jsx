@@ -105,9 +105,9 @@ export default function StateBlock() {
 
   const handleAction = () => {
     if (isError) {
-      actions.setCond("normal");
-      actions.attemptReconnection(1);
-    } else if (actions.setCond) {
+      actions?.setCond?.("normal");
+      actions?.attemptReconnection?.(1);
+    } else if (actions?.setCond) {
       actions.setCond("normal");
     }
   };
@@ -163,9 +163,9 @@ export default function StateBlock() {
         </div>
       ) : null}
       {condPack.btn ? (
-        <div
+        <button
+          type="button"
           onClick={handleAction}
-          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleAction(); } }}
           style={{
             minHeight: "44px",
             padding: "0 22px",
@@ -178,11 +178,13 @@ export default function StateBlock() {
             font: "700 11px/1 " + t.font,
             letterSpacing: ".18em",
             cursor: "pointer",
+            border: "none",
+            outline: "none",
           }}
           role="button" aria-label={condPack.btn} tabIndex={0}
         >
           {condPack.btn}
-        </div>
+        </button>
       ) : null}
     </div>
   );

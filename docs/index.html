@@ -19,6 +19,7 @@
 <script src="./rules.js"></script>
 <script src="./press.js"></script>
 <script src="./support.js"></script>
+<script type="module" src="./shared/eventBus.js"></script>
 </head>
 <body>
 <x-dc>
@@ -855,15 +856,15 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                   <div style="display:flex;flex-direction:column;gap:8px">
                     <div>
                       <div style="font:400 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-bottom:3px">FIRST NAME</div>
-                      <input value="{{ offlineAccountFirstName }}" onChange="{{ onOfflineAccountFirstNameChange }}" style="width:100%;box-sizing:border-box;height:34px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 12px/1 var(--font,'JetBrains Mono')" />
+                      <input aria-label="First Name" value="{{ offlineAccountFirstName }}" onChange="{{ onOfflineAccountFirstNameChange }}" style="width:100%;box-sizing:border-box;height:34px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 12px/1 var(--font,'JetBrains Mono')" />
                     </div>
                     <div>
                       <div style="font:400 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-bottom:3px">LAST NAME</div>
-                      <input value="{{ offlineAccountLastName }}" onChange="{{ onOfflineAccountLastNameChange }}" style="width:100%;box-sizing:border-box;height:34px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 12px/1 var(--font,'JetBrains Mono')" />
+                      <input aria-label="Last Name" value="{{ offlineAccountLastName }}" onChange="{{ onOfflineAccountLastNameChange }}" style="width:100%;box-sizing:border-box;height:34px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 12px/1 var(--font,'JetBrains Mono')" />
                     </div>
                     <div>
                       <div style="font:400 10px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-bottom:3px">LOCAL PASSWORD</div>
-                      <input type="password" value="{{ offlineAccountPassword }}" onChange="{{ onOfflineAccountPasswordChange }}" style="width:100%;box-sizing:border-box;height:34px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 12px/1 var(--font,'JetBrains Mono')" />
+                      <input aria-label="Local Password" type="password" value="{{ offlineAccountPassword }}" onChange="{{ onOfflineAccountPasswordChange }}" style="width:100%;box-sizing:border-box;height:34px;padding:0 8px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--bg,#0A1112);color:var(--ink,#D7F5E6);font:400 12px/1 var(--font,'JetBrains Mono')" />
                     </div>
                     <div style="display:flex;gap:8px;margin-top:6px">
                       <div onClick="{{ saveOfflineAccount }}" onKeyDown="{{ saveOfflineAccountKeyDown }}" style="flex:1;height:36px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer" role="button" aria-label="Save account" tabindex="0">SAVE ACCOUNT</div>
@@ -911,7 +912,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                   <span style="font:400 11px/1 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">Cache Allocation:</span>
                   <span style="font:700 12px/1 var(--font,'JetBrains Mono');color:var(--pri,#6CFF9A)">{{ offlineCacheSize }} MB</span>
                 </div>
-                <input type="range" min="256" max="100000" value="{{ offlineCacheSize }}" onChange="{{ onOfflineCacheSizeChange }}" style="width:100%;margin-bottom:10px" />
+                <input aria-label="Cache Allocation" type="range" min="256" max="100000" value="{{ offlineCacheSize }}" onChange="{{ onOfflineCacheSizeChange }}" style="width:100%;margin-bottom:10px" />
                 <div style="height:8px;border-radius:4px;background:var(--bg,#0A1112);overflow:hidden;margin-bottom:10px;border:1px solid var(--outv,#365047)">
                   <div style="{{ cacheGaugeStyle }}"></div>
                 </div>
@@ -1947,6 +1948,39 @@ class Component extends DCLogic {
       { ts: "16:32:10,012", level: "ERROR", tag: "[HYPERGRID]", msg: "Unable to resolve remote grid link test.osgrid.org:8002." },
       { ts: "16:33:01,500", level: "INFO", tag: "[LOCAL GRID]", msg: "Grid listener active on 127.0.0.1:9000." }
     ] };
+
+  dispatchIntent(type, payload = {}) {
+    if (!this.eventBus) {
+      const BusClass = (typeof window !== "undefined" && window.EventBus) || (typeof EventBus !== "undefined" && EventBus);
+      if (BusClass) {
+        this.eventBus = new BusClass();
+      }
+    }
+    if (this.eventBus) {
+      this.eventBus.dispatch({ type, payload });
+    }
+
+    if (type === "DIALOG_ACTION" || type === "DIALOG_BUTTON_CLICK") {
+      const buttonLabel = payload.label || payload.actionId || "";
+      const dlgTitle = payload.title || "";
+      if (dlgTitle && buttonLabel) {
+        this.notify(dlgTitle.split(" ").slice(0, 4).join(" ") + " — " + buttonLabel);
+      } else if (buttonLabel) {
+        this.notify(buttonLabel);
+      }
+      this.set("dialog", null);
+    } else if (type === "DIALOG_CLOSE" || type === "DIALOG_DISMISS") {
+      this.set("dialog", null);
+    } else if (type === "FLOATER_MINIMIZE" || type === "FLOATER_TOGGLE") {
+      if (payload.id) this.flToggle(payload.id);
+    } else if (type === "FLOATER_CLOSE") {
+      if (payload.id) this.flClose(payload.id);
+    } else if (type === "NAVIGATE_SCREEN") {
+      if (payload.screen) this.goScreen(payload.screen);
+    } else if (type === "QUICK_CHAT_SUBMIT") {
+      if (payload.message) this.notify("Local Chat (" + payload.message + ")");
+    }
+  }
 
   // ---- desktop floater window model -------------------------------------
   flR(id) { const f = FLOATERS.find(x => x.id === id) || { x: 24, y: 24, w: 320, h: 240 }; return { ...f, ...(this.state.flRect[id] || {}) }; }
@@ -3060,8 +3094,8 @@ class Component extends DCLogic {
     const dlg = s.dialog && DIALOGS[s.dialog];
     const dbBase = { flex: "1 1 40%", minHeight: "46px", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid " + V.outv, borderRadius: V.rs, font: "700 11px/1 " + t.font, letterSpacing: ".14em", color: V.ink, textAlign: "center", padding: "0 8px", cursor: "pointer" };
     const dialog = dlg ? { ...dlg, buttons: dlg.buttons.map(b => ({ label: b.label,
-      pick: () => { this.set("dialog", null); this.notify(dlg.title.split(" ").slice(0, 4).join(" ") + " — " + b.label); },
-      pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("dialog", null); this.notify(dlg.title.split(" ").slice(0, 4).join(" ") + " — " + b.label); } },
+      pick: () => this.dispatchIntent("DIALOG_BUTTON_CLICK", { dialogKey: s.dialog, actionId: b.label, label: b.label, title: dlg.title }),
+      pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.dispatchIntent("DIALOG_BUTTON_CLICK", { dialogKey: s.dialog, actionId: b.label, label: b.label, title: dlg.title }); } },
       style: M(dbBase, b.primary ? { background: V.pri, color: V.onpri, borderColor: V.pri } : b.dim ? { color: V.ink2 } : null) })) } : null;
 
     const detail = {
@@ -3265,12 +3299,12 @@ class Component extends DCLogic {
         if (e.key === "Enter") {
           e.preventDefault();
           const msg = (s.flQuickMsg || "").trim();
-          if (msg) { this.notify("Local Chat (" + msg + ")"); this.set("flQuickMsg", ""); }
+          if (msg) { this.dispatchIntent("QUICK_CHAT_SUBMIT", { message: msg }); this.set("flQuickMsg", ""); }
         }
       },
       flQuickSend: () => {
         const msg = (s.flQuickMsg || "").trim();
-        if (msg) { this.notify("Local Chat (" + msg + ")"); this.set("flQuickMsg", ""); }
+        if (msg) { this.dispatchIntent("QUICK_CHAT_SUBMIT", { message: msg }); this.set("flQuickMsg", ""); }
       },
       flQuickInputStyle: { width: "100%", height: "26px", padding: "0 8px", background: V.bg, color: V.ink,
         border: "1px solid " + V.outv, borderRadius: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "999px" : V.rs, font: "400 11px/1 " + t.font, outline: "none" },
@@ -3318,10 +3352,10 @@ toggleCamHudKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preven
           focus: () => this.flFocus(f.id),
           drag: (e) => this.flDrag(f.id, e, "move"),
           resize: (e) => this.flDrag(f.id, e, "size"),
-          min: (e) => { e.stopPropagation(); this.setState(st => ({ flMin: { ...st.flMin, [f.id]: true } })); },
-          minKey: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); this.flToggle(f.id); } },
-          close: (e) => { e.stopPropagation(); this.flClose(f.id); },
-          closeKey: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); this.flClose(f.id); } },
+          min: (e) => { e.stopPropagation(); this.dispatchIntent("FLOATER_MINIMIZE", { id: f.id }); },
+          minKey: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); this.dispatchIntent("FLOATER_MINIMIZE", { id: f.id }); } },
+          close: (e) => { e.stopPropagation(); this.dispatchIntent("FLOATER_CLOSE", { id: f.id }); },
+          closeKey: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); this.dispatchIntent("FLOATER_CLOSE", { id: f.id }); } },
           style: { position: "absolute", left: r.x + "px", top: r.y + "px", width: r.w + "px", height: r.h + "px",
             zIndex: 10 + Math.max(0, s.flZ.indexOf(f.id)), display: "flex", flexDirection: "column", background: V.surf,
             border: (isSweepDesk ? "2px solid " : "1px solid ") + (act ? V.pri : V.outv),
@@ -3346,7 +3380,7 @@ toggleCamHudKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preven
         padding: "0 8px", background: V.surf, borderTop: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "2px solid " + V.pri : "1px solid " + V.outv, zIndex: 60 },
       flTasks: FLOATERS.filter(f => s.flOpen[f.id]).map(f => {
         const min = !!s.flMin[f.id], act = f.id === scr && !min;
-        return { label: f.title, pick: () => this.flToggle(f.id),
+        return { label: f.title, pick: () => this.dispatchIntent("FLOATER_TOGGLE", { id: f.id }),
           style: { flex: "none", height: "26px", display: "flex", alignItems: "center", padding: "0 10px", cursor: "pointer",
             background: act ? V.pri : (min ? "transparent" : V.surf2),
             color: act ? this.ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2,
