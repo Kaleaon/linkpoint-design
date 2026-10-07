@@ -17,6 +17,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Checkout Ktheme dependency
+        uses: actions/checkout@v4
+        with:
+          repository: Kaleaon/Ktheme
+          path: '../Ktheme'
+
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
