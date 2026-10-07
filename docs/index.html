@@ -1393,7 +1393,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                 <div style="width:100%;margin-top:8px;border:1px solid var(--outv,#365047);border-radius:var(--rp,4px);background:var(--surf,#101A1C);padding:12px;display:flex;flex-direction:column;gap:6px">
                   <div style="display:flex;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);overflow:hidden;margin-bottom:2px">
                     <sc-for list="{{ loginTabs }}" as="lt" hint-placeholder-count="2">
-                      <div onClick="{{ lt.pick }}" style="{{ lt.style }}">{{ lt.label }}</div>
+                      <div onClick="{{ lt.pick }}" onKeyDown="{{ lt.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ lt.label }}" style="{{ lt.style }}">{{ lt.label }}</div>
                     </sc-for>
                   </div>
                   <sc-if value="{{ loginIsGrid }}" hint-placeholder-val="{{ true }}">
@@ -1401,7 +1401,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                       <div style="font:400 10px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;color:var(--pri,#6CFF9A);margin:6px 0 4px">GRID</div>
                       <div style="display:flex;flex-wrap:wrap;gap:6px">
                         <sc-for list="{{ loginGridChoices }}" as="gc" hint-placeholder-count="4">
-                          <div onClick="{{ gc.pick }}" style="{{ gc.style }}">{{ gc.label }}</div>
+                          <div onClick="{{ gc.pick }}" onKeyDown="{{ gc.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ gc.label }}" style="{{ gc.style }}">{{ gc.label }}</div>
                         </sc-for>
                       </div>
                       <sc-if value="{{ addGrid }}" hint-placeholder-val="{{ false }}">
@@ -1410,8 +1410,8 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                           <input value="{{ addGridNameVal }}" onChange="{{ addGridNamePick }}" placeholder="grid name" style="{{ addGridInputStyle }}" />
                           <input value="{{ addGridHostVal }}" onChange="{{ addGridHostPick }}" placeholder="login URI (e.g. login.example.com:8002)" style="{{ addGridInputStyle }}" />
                           <div style="display:flex;gap:6px;margin-top:8px">
-                            <div onClick="{{ cancelAddGrid }}" style="flex:1;text-align:center;padding:7px 0;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;color:var(--ink2,#A7C8BC);cursor:pointer">CANCEL</div>
-                            <div onClick="{{ saveCustomGrid }}" style="flex:1;text-align:center;padding:7px 0;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;cursor:pointer">ADD GRID</div>
+                            <div onClick="{{ cancelAddGrid }}" onKeyDown="{{ cancelAddGridKeyDown }}" role="button" tabindex="0" aria-label="Cancel adding grid" style="flex:1;text-align:center;padding:7px 0;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;color:var(--ink2,#A7C8BC);cursor:pointer">CANCEL</div>
+                            <div onClick="{{ saveCustomGrid }}" onKeyDown="{{ saveCustomGridKeyDown }}" role="button" tabindex="0" aria-label="Save custom grid" style="flex:1;text-align:center;padding:7px 0;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);font:600 10px/1 var(--font,'JetBrains Mono');letter-spacing:.14em;cursor:pointer">ADD GRID</div>
                           </div>
                         </div>
                       </sc-if>
@@ -1426,8 +1426,8 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                   <sc-if value="{{ loginOfflineHint }}" hint-placeholder-val="{{ false }}">
                     <div style="font:400 10px/1.4 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ loginOfflineHint }}</div>
                   </sc-if>
-                  <div onClick="{{ loginBtnPick }}" style="{{ loginBtnStyle }}"><i data-lucide="power" style="width:16px;height:16px"></i>{{ loginBtnLabel }}</div>
-                  <div onClick="{{ loginSettingsPick }}" style="margin-top:6px;height:40px;border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);color:var(--pri,#6CFF9A);border:1px solid var(--outv,#365047);display:flex;align-items:center;justify-content:center;gap:6px;font:700 12px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;cursor:pointer"><i data-lucide="settings" style="width:16px;height:16px"></i>SETTINGS</div>
+                  <div onClick="{{ loginBtnPick }}" onKeyDown="{{ loginBtnKeyDown }}" role="button" tabindex="0" aria-label="{{ loginBtnLabel }}" style="{{ loginBtnStyle }}"><i data-lucide="power" style="width:16px;height:16px"></i>{{ loginBtnLabel }}</div>
+                  <div onClick="{{ loginSettingsPick }}" onKeyDown="{{ loginSettingsKeyDown }}" role="button" tabindex="0" aria-label="Open Settings" style="margin-top:6px;height:40px;border-radius:var(--rs,4px);background:var(--surf2,#1B2A2D);color:var(--pri,#6CFF9A);border:1px solid var(--outv,#365047);display:flex;align-items:center;justify-content:center;gap:6px;font:700 12px/1 var(--font,'JetBrains Mono');letter-spacing:.22em;cursor:pointer"><i data-lucide="settings" style="width:16px;height:16px"></i>SETTINGS</div>
                   <sc-if value="{{ loginError }}" hint-placeholder-val="{{ false }}">
                     <div style="font:400 10px/1.4 var(--font,'JetBrains Mono');color:var(--err,#CF6679);margin-top:6px;border:1px solid var(--err,#CF6679);border-radius:var(--rs,4px);padding:6px">&gt; {{ loginError }}</div>
                   </sc-if>
@@ -3831,6 +3831,7 @@ profileMoreKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.prevent
       ]),
       loginTabs: [{ mode: "grid", label: "GRID LOGIN" }, { mode: "offline", label: "OFFLINE" }].map(x => ({
         label: x.label, pick: () => this.setLoginMode(x.mode),
+        pickKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.setLoginMode(x.mode); } },
         style: x.mode === s.loginMode
           ? { flex: 1, textAlign: "center", padding: "8px 0", background: V.priC, color: V.onpriC, borderBottom: "2px solid " + V.pri, font: "600 11.5px/1 " + t.font, letterSpacing: ".18em", cursor: "pointer" }
           : { flex: 1, textAlign: "center", padding: "8px 0", color: V.ink2, font: "600 11.5px/1 " + t.font, letterSpacing: ".18em", cursor: "pointer" },
@@ -3843,10 +3844,12 @@ profileMoreKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.prevent
       // pack the same as everything else on this screen.
       loginGridChoices: this.allGrids().map(g => ({
         label: g.label, pick: () => this.setLoginGrid(g.key),
+        pickKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.setLoginGrid(g.key); } },
         style: { flex: "1 1 80px", textAlign: "center", padding: "7px 4px", border: "1px solid " + (s.loginGrid === g.key ? V.pri : V.outv), borderRadius: V.rs,
           font: "600 10px/1 " + t.font, letterSpacing: ".04em", color: s.loginGrid === g.key ? V.pri : V.ink2, background: s.loginGrid === g.key ? V.priC : "transparent", cursor: "pointer" },
       })).concat([{
         label: "+ CUSTOM", pick: () => this.openAddGrid(),
+        pickKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.openAddGrid(); } },
         style: { flex: "1 1 80px", textAlign: "center", padding: "7px 4px", border: "1px dashed " + V.outv, borderRadius: V.rs,
           font: "600 10px/1 " + t.font, letterSpacing: ".04em", color: V.ink2, background: "transparent", cursor: "pointer" },
       }]),
@@ -3855,16 +3858,20 @@ profileMoreKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.prevent
       addGridHostVal: s.addGridHost, addGridHostPick: (e) => this.set("addGridHost", e.target.value),
       addGridInputStyle: { minHeight: "36px", height: "36px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 12px/1 " + t.font, color: V.ink, marginTop: "4px" },
       saveCustomGrid: () => this.saveCustomGrid(), cancelAddGrid: () => this.cancelAddGrid(),
+      saveCustomGridKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.saveCustomGrid(); } },
+      cancelAddGridKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.cancelAddGrid(); } },
       loginFields: s.loginMode === "grid"
         ? [{ label: "AVATAR NAME", value: "Ruth   /   Resident" }, { label: "PASSWORD", value: "••••••••" }]
         : [{ label: "AVATAR NAME", value: "Ruth Resident" }],
       loginOfflineHint: s.loginMode === "offline" ? "> Offline mode: no grid connection, chat stays local." : null,
       loginBtnLabel: s.loginBusy ? "CONNECTING…" : s.loginMode === "grid" ? "CONNECT TO GRID" : "ENTER OFFLINE",
       loginBtnPick: () => this.connectLogin(),
+      loginBtnKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.connectLogin(); } },
       loginBtnStyle: { marginTop: "10px", height: "42px", borderRadius: V.rs, background: V.pri, color: V.onpri, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px",
         font: "700 12px/1 " + t.font, letterSpacing: ".22em", cursor: "pointer", opacity: s.loginBusy ? .7 : 1 },
       loginError: s.loginError, loginShowHint: !s.loginError,
       loginSettingsPick: () => this.set("screen", "Settings"),
+      loginSettingsKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.set("screen", "Settings"); } },
       isOfflineGrid: scr === "Offline Grid" && norm,
       isGridConsole: scr === "Grid Console" && norm,
       offlineSub: curSub,
