@@ -27,20 +27,19 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: "pnpm"
-          cache-dependency-path: "docs/react/pnpm-lock.yaml"
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: "docs/react/package-lock.json"
 
       - name: Install React App Dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
         working-directory: docs/react
 
       - name: Build React App
-        run: pnpm run build
+        run: npm run build
         working-directory: docs/react
 
       - name: Run Accessibility Check
