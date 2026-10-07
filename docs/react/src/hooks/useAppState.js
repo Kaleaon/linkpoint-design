@@ -8,8 +8,8 @@ import { decodeSharedTheme, encodeSharedTheme, readSavedTheme, sanitizeTheme, th
 
 // Ported from the mockup's `state = {...}` initializer and its instance
 // methods (flR/flDrag/flFocus/flToggle/flClose, hudDrag/toggleHud, T/D/navMode,
-// set/setTab/dismiss/toggleSetting/pin/cycle, cf/cTap/cHold/cPress, and the
-// tick interval in componentDidMount). This hook is the state + actions layer;
+// set/setTab/dismiss/toggleSetting/pin/cycle, cf/cTap/cHold/cPress).
+// This hook is the state + actions layer;
 // theme/viewModel.js is the "renderVals()" computation layer that consumes it.
 export function useAppState() {
   const [layout, setLayout] = useState("terminal");
@@ -95,7 +95,6 @@ export function useAppState() {
   const [flRect, setFlRect] = useState({});
   const [flZ, setFlZ] = useState(["Map", "Inventory", "Friends", "Radar", "Chat"]);
   const [menu, setMenu] = useState(null);
-  const [tick, setTick] = useState(0);
   const [loginMode, setLoginModeState] = useState("grid");
   const [loginGrid, setLoginGrid] = useState("agni");
   const [loginBusy, setLoginBusy] = useState(false);
@@ -140,12 +139,6 @@ export function useAppState() {
   const [lindenBalance, setLindenBalance] = useState(4250);
   const [exchangeRate, setExchangeRate] = useState(248.5);
   const [lastSyncedAt, setLastSyncedAt] = useState(() => new Date());
-
-  // ---- tick clock (componentDidMount's setInterval) ---------------------
-  useEffect(() => {
-    const iv = setInterval(() => setTick((t) => t + 1), 1000);
-    return () => clearInterval(iv);
-  }, []);
 
   // Form factor is an implementation concern in the real app. The design
   // canvas exposes a manual device picker, but the React port follows its host
@@ -785,7 +778,7 @@ export function useAppState() {
       layout, palette, customTheme, device, screen, dialog, dense, tabs, chip, tileOk, invOpen, invSelectMode, invSelected, invMoveModal, invItems, dismissed, pinned, lureState,
       toggles, cond, hudOn, hudPos, hudPicker, target, targetPicker, navPeek,
       cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
-      rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
+      rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu,
       loginMode, loginGrid, loginBusy, loginError, customGrids, addGrid, addGridName, addGridHost,
       searchFrom, searchTab, searchQuery, searchState, reconnecting, toast, offlineRunning, offlineUser, offlineAccountModal, offlineAccountFirstName, offlineAccountLastName, offlineAccountPassword, oarFile, oarRegionName, oarCoords, oarPrims, assetName, assetType, localAssets, offlineCacheSize, consoleLevel, consoleQuery, consoleAutoscroll, consoleLogs,
       prefs, cacheCleared, camPreset, lindenBalance, exchangeRate, lastSyncedAt,
