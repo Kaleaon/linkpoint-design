@@ -36,7 +36,7 @@ export default function ScreenBody() {
 
   return (
     <div style={{ flex: 1, minWidth: 0, display: "flex", position: "relative" }}>
-      <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
+      <main aria-label="Main Content" style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
         <Header />
         <SegmentedTabs />
         <ChipRow />
@@ -57,7 +57,7 @@ export default function ScreenBody() {
         {scr === "Login" && <Login />}
         {scr === "Search" && <Search />}
         {!norm && <StateBlock />}
-      </div>
+      </main>
       <SplitDetail />
     </div>
   );
