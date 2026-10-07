@@ -161,9 +161,19 @@ async function startServerHarness(rootDirectory, requestedPort = 0) {
 }
 
 // Pure Node PNG Parser & Pixel Matcher Helper
+function paethPredictor(a, b, c) {
+  const p = a + b - c;
+  const pa = Math.abs(p - a);
+  const pb = Math.abs(p - b);
+  const pc = Math.abs(p - c);
+  if (pa <= pb && pa <= pc) return a;
+  if (pb <= pc) return b;
+  return c;
+}
+
 function parsePNG(buffer) {
   let offset = 8;
-  let width = 0, height = 0;
+  let width = 0, height = 0, colorType = 6, bitDepth = 8;
   const idatChunks = [];
   while (offset < buffer.length) {
     const length = buffer.readUInt32BE(offset);
@@ -171,6 +181,8 @@ function parsePNG(buffer) {
     if (type === 'IHDR') {
       width = buffer.readUInt32BE(offset + 8);
       height = buffer.readUInt32BE(offset + 12);
+      bitDepth = buffer[offset + 16];
+      colorType = buffer[offset + 17];
     } else if (type === 'IDAT') {
       idatChunks.push(buffer.subarray(offset + 8, offset + 8 + length));
     } else if (type === 'IEND') {
@@ -178,9 +190,67 @@ function parsePNG(buffer) {
     }
     offset += 12 + length;
   }
-  const idatCombined = Buffer.concat(idatChunks);
-  const raw = zlib.inflateSync(idatCombined);
-  return { width, height, raw };
+
+  const raw = zlib.inflateSync(Buffer.concat(idatChunks));
+  let bpp = 4;
+  if (colorType === 2) bpp = 3;      // RGB
+  else if (colorType === 6) bpp = 4; // RGBA
+  else if (colorType === 0) bpp = 1; // Grayscale
+  else if (colorType === 4) bpp = 2; // Grayscale + Alpha
+
+  const stride = width * bpp;
+  const rgba = new Uint8Array(width * height * 4);
+
+  let priorRow = new Uint8Array(stride);
+  let srcOffset = 0;
+
+  for (let y = 0; y < height; y++) {
+    const filterType = raw[srcOffset++];
+    const currentRow = new Uint8Array(stride);
+
+    for (let x = 0; x < stride; x++) {
+      const filtered = raw[srcOffset++];
+      const left = x >= bpp ? currentRow[x - bpp] : 0;
+      const above = priorRow[x];
+      const upperLeft = x >= bpp ? priorRow[x - bpp] : 0;
+
+      let recon = 0;
+      if (filterType === 0) recon = filtered;
+      else if (filterType === 1) recon = (filtered + left) & 0xff;
+      else if (filterType === 2) recon = (filtered + above) & 0xff;
+      else if (filterType === 3) recon = (filtered + Math.floor((left + above) / 2)) & 0xff;
+      else if (filterType === 4) recon = (filtered + paethPredictor(left, above, upperLeft)) & 0xff;
+      else recon = filtered;
+
+      currentRow[x] = recon;
+    }
+
+    const dstRowStart = y * width * 4;
+    for (let x = 0; x < width; x++) {
+      const dstPx = dstRowStart + x * 4;
+      const srcPx = x * bpp;
+      if (bpp === 4) {
+        rgba[dstPx] = currentRow[srcPx];
+        rgba[dstPx + 1] = currentRow[srcPx + 1];
+        rgba[dstPx + 2] = currentRow[srcPx + 2];
+        rgba[dstPx + 3] = currentRow[srcPx + 3];
+      } else if (bpp === 3) {
+        rgba[dstPx] = currentRow[srcPx];
+        rgba[dstPx + 1] = currentRow[srcPx + 1];
+        rgba[dstPx + 2] = currentRow[srcPx + 2];
+        rgba[dstPx + 3] = 255;
+      } else if (bpp === 1) {
+        rgba[dstPx] = currentRow[srcPx];
+        rgba[dstPx + 1] = currentRow[srcPx];
+        rgba[dstPx + 2] = currentRow[srcPx];
+        rgba[dstPx + 3] = 255;
+      }
+    }
+
+    priorRow = currentRow;
+  }
+
+  return { width, height, rgba };
 }
 
 function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
@@ -194,20 +264,16 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
 
     const totalPixels = pngA.width * pngA.height;
     let diffPixels = 0;
-    const bytesPerRow = 1 + pngA.width * 4;
 
-    for (let y = 0; y < pngA.height; y++) {
-      const rowStart = y * bytesPerRow + 1; // skip filter byte
-      for (let x = 0; x < pngA.width; x++) {
-        const px = rowStart + x * 4;
-        const dr = Math.abs(pngA.raw[px] - pngB.raw[px]);
-        const dg = Math.abs(pngA.raw[px + 1] - pngB.raw[px + 1]);
-        const db = Math.abs(pngA.raw[px + 2] - pngB.raw[px + 2]);
-        const da = Math.abs(pngA.raw[px + 3] - pngB.raw[px + 3]);
+    for (let i = 0; i < totalPixels; i++) {
+      const px = i * 4;
+      const dr = Math.abs(pngA.rgba[px] - pngB.rgba[px]);
+      const dg = Math.abs(pngA.rgba[px + 1] - pngB.rgba[px + 1]);
+      const db = Math.abs(pngA.rgba[px + 2] - pngB.rgba[px + 2]);
+      const da = Math.abs(pngA.rgba[px + 3] - pngB.rgba[px + 3]);
 
-        if (dr > colorThreshold || dg > colorThreshold || db > colorThreshold || da > colorThreshold) {
-          diffPixels++;
-        }
+      if (dr > colorThreshold || dg > colorThreshold || db > colorThreshold || da > colorThreshold) {
+        diffPixels++;
       }
     }
 
