@@ -1,0 +1,60 @@
+name: PR Validation
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          cache-dependency-path: 'docs/react/pnpm-lock.yaml'
+
+      - name: Install React App Dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: docs/react
+
+      - name: Build React App
+        run: pnpm run build
+        working-directory: docs/react
+
+      - name: Run Accessibility Check
+        run: bash test_a11y.sh
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python & Playwright Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright
+          playwright install chromium --with-deps
+
+      - name: Run Playwright E2E Tests
+        run: |
+          python -m http.server 8080 --directory docs/react/dist &
+          SERVER_PID=$!
+          sleep 2
+          python3 test_page_eval.py
+          kill $SERVER_PID
