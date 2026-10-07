@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-10-06T06:22:21Z — upstream read through [`abce91a`](https://github.com/Kaleaon/react-linkpoint/commit/abce91a373e85314111c6976759f8d04954ba5d2)
-- **Open:** 242 · **Completed:** 2
+- **Last change:** 2026-10-07T06:21:32Z — upstream read through [`8411aa4`](https://github.com/Kaleaon/react-linkpoint/commit/8411aa413421467a7fc450682f0d0136f307209a)
+- **Open:** 250 · **Completed:** 2
 
 ## Open
 
@@ -103,6 +103,10 @@ Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/
 
 Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `docs/react/src/components/`
 
+- [ ] **`2964aa8`** feat: implement workstation-class multi-pane viewport splitter engine and object inspector
+  - 2026-10-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/2964aa86057262c0e23d5c9f8387a9c7f1489dac)
+  - 4 files: `src/components/ObjectInspector.tsx`, `src/components/SplitPaneCompositor.tsx`, `src/components/__tests__/SplitPaneCompositor.test.tsx`, `src/screens/World3D.jsx`
+  - also touches: Screens
 - [ ] **`ecff596`** fix(types): mark onSuccess prop as optional in PayDialog
   - 2026-10-05 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ecff5963174c62acad6668dd8269cdc4cff710e1)
   - 1 file: `src/components/PayDialog.jsx`
@@ -265,10 +269,26 @@ Mirror into: `docs/index.html` — the `render()` view-model · `docs/react/src/
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`f1749db`** Fix rendering regressions and restore themed viewer screens, groups and settings
+  - 2026-10-06 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f1749dbfdcb418c42d1d0c5187a4a3d2208d9cb6)
+  - 41 files: `core/serializers.cjs`, `core/sl-appearance.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `docs/rendering-reference.md`, `docs/viewer-parity.md` _(+35 more)_
+  - also touches: Screens, Components, Theme & tokens, State & data, Docs & specs, Unclassified
+- [ ] **`8e0f4db`** feat(notices): preserve group notice attachment metadata and add interactive Attachment Banner
+  - 2026-10-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8e0f4db61dd9c3975a2a68daccd4f55051ac80a8)
+  - 10 files: `core/sl-interactions.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/notices.test.ts`, `src/linkpoint/__tests__/settings-and-tabs.test.tsx`, `src/linkpoint/__tests__/sl-interactions.test.ts` _(+4 more)_
+  - also touches: Screens, Unclassified
+- [ ] **`6f334ba`** Fix viewer audit findings in settings, chat, groups and cache behavior
+  - 2026-10-06 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6f334bab5275e1a9b32d508a2154531829014207)
+  - 20 files: `LUMIYA_FEATURE_AUDIT.md`, `LUMIYA_RENDERING_ANALYSIS.md`, `PARITY_ROADMAP.md`, `RENDERING_STATUS.md`, `ROADMAP.md`, `docs/followup-audit.md` _(+14 more)_
+  - also touches: Screens, Components, State & data, Docs & specs
 - [ ] **`e98a5a0`** Align TypeScript texture decoding with Lumiya
   - 2026-10-05 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e98a5a0f0dbbe0184b2b5872f1c41a1174ce7c71)
   - 27 files: `core/sl-asset-decoder.cjs`, `package.json`, `server.ts`, `src/components/AssetContainer.jsx`, `src/components/FocusTrap.jsx`, `src/components/InventoryTree.tsx` _(+21 more)_
   - also touches: Components, State & data, Build & platform, Unclassified
+- [ ] **`e52b641`** feat(inventory): virtualize inventory tree DOM nodes with windowed viewport rendering
+  - 2026-10-05 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e52b64108ce4a655d6ea2ef31fb3fb468c0e2056)
+  - 3 files: `src/components/InventoryTree.tsx`, `src/linkpoint/__tests__/inventory-tree-virtualization.test.tsx`, `src/linkpoint/phase2/inventory-core.ts`
+  - also touches: Components
 - [ ] **`a934d0c`** test: add live grid viewer smoke suite
   - 2026-10-05 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/a934d0ca87d77a7467ac6b1d6c9e3d5219429aa8)
   - 11 files: `LIVE_GRID_TESTING.md`, `package.json`, `scripts/build-wasm.mjs`, `scripts/live-grid-smoke.mjs`, `server.ts`, `src/linkpoint/__tests__/chat-protocol-adapter.test.ts` _(+5 more)_
@@ -648,6 +668,13 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
 
 Mirror into: usually no design change — confirm `docs/react/` still builds the same way
 
+- [ ] **`afd67c2`** Add Advanced Jules PR Reviewer workflow
+  - 2026-10-06 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/afd67c20dbae25c66325f1478155b189ea17ddfe)
+  - 1 file: `.github/workflows/run.yml`
+- [ ] **`6b784f3`** fix(ci): grant execute permissions to gradlew and repo shell scripts
+  - 2026-10-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6b784f394aa7701dc5691ddbd45505b2998c47a7)
+  - 4 files: `android-kotlin/gradlew`, `android-kotlin/tools/j2k/make-fixtures.sh`, `android/gradlew`, `scripts/codex-setup.sh`
+  - also touches: Unclassified
 - [ ] **`6897c89`** fix(ci): bind matrix target to environment variable in release workflow
   - 2026-10-05 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6897c894690d329196a8e48598d441179c3d63a7)
   - 1 file: `.github/workflows/release.yml`
@@ -769,6 +796,9 @@ Mirror into: `docs/ROADMAP.md` · `docs/github.md` · `docs/mockup-to-react.yaml
 
 Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json`
 
+- [ ] **`e7b1cc7`** fix(ci): bump Android Gradle Plugin to 8.6.0 for lifecycle-runtime-compose compatibility
+  - 2026-10-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e7b1cc7525b23f74eff3ad271af5ca3c3f9cb72f)
+  - 1 file: `android-kotlin/gradle/libs.versions.toml`
 - [ ] **`3619fa8`** fix(ci): remove package-lock.json and ignore it to keep PR diff small for automated review
   - 2026-10-05 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/3619fa84e82756b7aab4e55840f5105eb44018c6)
   - 1 file: `.gitignore`
@@ -938,7 +968,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-10-06T06:22:21Z",
+ "generated": "2026-10-07T06:21:32Z",
  "items": [
   {
    "also": [
@@ -6792,9 +6822,218 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "0e82e93",
    "subject": "fix(inventory): atomic reconciled inventory tree mutation and deduplication",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/0e82e9302ecd5f304abf7020bc258deafc224c96"
+  },
+  {
+   "also": [
+    "components"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-05",
+   "done": false,
+   "files": [
+    "src/components/InventoryTree.tsx",
+    "src/linkpoint/__tests__/inventory-tree-virtualization.test.tsx",
+    "src/linkpoint/phase2/inventory-core.ts"
+   ],
+   "sha": "e52b64108ce4a655d6ea2ef31fb3fb468c0e2056",
+   "short": "e52b641",
+   "subject": "feat(inventory): virtualize inventory tree DOM nodes with windowed viewport rendering",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e52b64108ce4a655d6ea2ef31fb3fb468c0e2056"
+  },
+  {
+   "also": [
+    "other"
+   ],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-06",
+   "done": false,
+   "files": [
+    "android-kotlin/gradlew",
+    "android-kotlin/tools/j2k/make-fixtures.sh",
+    "android/gradlew",
+    "scripts/codex-setup.sh"
+   ],
+   "sha": "6b784f394aa7701dc5691ddbd45505b2998c47a7",
+   "short": "6b784f3",
+   "subject": "fix(ci): grant execute permissions to gradlew and repo shell scripts",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/6b784f394aa7701dc5691ddbd45505b2998c47a7"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-06",
+   "done": false,
+   "files": [
+    "android-kotlin/gradle/libs.versions.toml"
+   ],
+   "sha": "e7b1cc7525b23f74eff3ad271af5ca3c3f9cb72f",
+   "short": "e7b1cc7",
+   "subject": "fix(ci): bump Android Gradle Plugin to 8.6.0 for lifecycle-runtime-compose compatibility",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e7b1cc7525b23f74eff3ad271af5ca3c3f9cb72f"
+  },
+  {
+   "also": [
+    "screens"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-06",
+   "done": false,
+   "files": [
+    "src/components/ObjectInspector.tsx",
+    "src/components/SplitPaneCompositor.tsx",
+    "src/components/__tests__/SplitPaneCompositor.test.tsx",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "2964aa86057262c0e23d5c9f8387a9c7f1489dac",
+   "short": "2964aa8",
+   "subject": "feat: implement workstation-class multi-pane viewport splitter engine and object inspector",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/2964aa86057262c0e23d5c9f8387a9c7f1489dac"
+  },
+  {
+   "also": [
+    "screens",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-06",
+   "done": false,
+   "files": [
+    "core/sl-interactions.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/notices.test.ts",
+    "src/linkpoint/__tests__/settings-and-tabs.test.tsx",
+    "src/linkpoint/__tests__/sl-interactions.test.ts",
+    "src/linkpoint/notices.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "8e0f4db61dd9c3975a2a68daccd4f55051ac80a8",
+   "short": "8e0f4db",
+   "subject": "feat(notices): preserve group notice attachment metadata and add interactive Attachment Banner",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8e0f4db61dd9c3975a2a68daccd4f55051ac80a8"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "Kaleaon",
+   "date": "2026-10-06",
+   "done": false,
+   "files": [
+    ".github/workflows/run.yml"
+   ],
+   "sha": "afd67c20dbae25c66325f1478155b189ea17ddfe",
+   "short": "afd67c2",
+   "subject": "Add Advanced Jules PR Reviewer workflow",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/afd67c20dbae25c66325f1478155b189ea17ddfe"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "theme",
+    "state",
+    "docs",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-10-06",
+   "done": false,
+   "files": [
+    "core/serializers.cjs",
+    "core/sl-appearance.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "docs/rendering-reference.md",
+    "docs/viewer-parity.md",
+    "docs/viewer-screen-inventory.csv",
+    "src/components/ConsoleFrame.jsx",
+    "src/components/DesktopChrome.jsx",
+    "src/components/RailNav.jsx",
+    "src/components/ScreenBody.jsx",
+    "src/components/TileNav.jsx",
+    "src/components/Toggle.jsx",
+    "src/data/content.js",
+    "src/hooks/useAppState.js",
+    "src/hooks/viewerSettings.js",
+    "src/index.css",
+    "src/linkpoint/__tests__/scene-3d.test.ts",
+    "src/linkpoint/__tests__/serializers-assets.test.ts",
+    "src/linkpoint/__tests__/sl-appearance.test.ts",
+    "src/linkpoint/__tests__/sl-asset-decoder.test.ts",
+    "src/linkpoint/__tests__/viewer-controls.test.tsx",
+    "src/linkpoint/__tests__/viewer-parity.test.tsx",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/__tests__/world-asset-updates.test.ts",
+    "src/linkpoint/__tests__/world-avatar-body.test.ts",
+    "src/linkpoint/__tests__/world-rigged-mesh.test.ts",
+    "src/linkpoint/__tests__/world-viewport-regression.test.tsx",
+    "src/linkpoint/__tests__/world.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/notifications.ts",
+    "src/linkpoint/phase2/groups.ts",
+    "src/linkpoint/scene-3d.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/LiveScreens.jsx",
+    "src/screens/ScreenDirectory.jsx",
+    "src/screens/Settings.jsx",
+    "src/screens/ViewerControls.jsx",
+    "src/screens/World3D.jsx",
+    "src/theme/constants.js"
+   ],
+   "sha": "f1749dbfdcb418c42d1d0c5187a4a3d2208d9cb6",
+   "short": "f1749db",
+   "subject": "Fix rendering regressions and restore themed viewer screens, groups and settings",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/f1749dbfdcb418c42d1d0c5187a4a3d2208d9cb6"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "state",
+    "docs"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-10-06",
+   "done": false,
+   "files": [
+    "LUMIYA_FEATURE_AUDIT.md",
+    "LUMIYA_RENDERING_ANALYSIS.md",
+    "PARITY_ROADMAP.md",
+    "RENDERING_STATUS.md",
+    "ROADMAP.md",
+    "docs/followup-audit.md",
+    "docs/viewer-parity.md",
+    "src/components/AccessibleChatLog.jsx",
+    "src/hooks/useAppState.js",
+    "src/hooks/viewerSettings.js",
+    "src/linkpoint/__tests__/cache-clearing.test.ts",
+    "src/linkpoint/__tests__/viewer-followup.test.tsx",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/chat.ts",
+    "src/linkpoint/local-cache.ts",
+    "src/linkpoint/notifications.ts",
+    "src/linkpoint/phase2/chat-extended.ts",
+    "src/screens/CacheScreen.jsx",
+    "src/screens/LiveScreens.jsx",
+    "src/screens/Settings.jsx"
+   ],
+   "sha": "6f334bab5275e1a9b32d508a2154531829014207",
+   "short": "6f334ba",
+   "subject": "Fix viewer audit findings in settings, chat, groups and cache behavior",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/6f334bab5275e1a9b32d508a2154531829014207"
   }
  ],
- "last_sha": "abce91a373e85314111c6976759f8d04954ba5d2",
+ "last_sha": "8411aa413421467a7fc450682f0d0136f307209a",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
