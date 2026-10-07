@@ -625,15 +625,23 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
 
           <sc-if value="{{ isMap }}" hint-placeholder-val="{{ false }}">
             <div style="{{ mapBoxStyle }}">
-              <div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr">
-                <sc-for list="{{ regions }}" as="g" hint-placeholder-count="4">
-                  <div style="{{ g.style }}">
-                    <span style="font:600 11px/1.25 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)">{{ g.name }}</span>
-                    <span style="font:400 9.5px/1.25 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ g.meta }}</span>
-                  </div>
-                </sc-for>
+              <div style="position:absolute;left:10px;top:10px;right:64px;z-index:12">
+                <div style="position:relative;display:flex;align-items:center">
+                  <input type="text" value="{{ mapSearch }}" onChange="{{ mapSearchChange }}" placeholder="Search region or <x, y, z>..." aria-label="Search map region or coordinates" style="{{ mapSearchInputStyle }}" />
+                </div>
               </div>
-              <div style="position:absolute;inset:0">{{ tileLayer }}</div>
+              <div style="{{ mapViewportStyle }}">
+                <div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr">
+                  <sc-for list="{{ regions }}" as="g" hint-placeholder-count="4">
+                    <div style="{{ g.style }}">
+                      <span style="font:600 11px/1.25 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)">{{ g.name }}</span>
+                      <span style="font:400 9.5px/1.25 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ g.meta }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="position:absolute;inset:0">{{ tileLayer }}</div>
+                <div style="position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:7px;background:var(--pri,#6CFF9A);border:2px solid var(--bg,#0A1112);box-shadow:0 0 8px var(--pri,#6CFF9A)"></div>
+              </div>
               <sc-if value="{{ mapMini }}" hint-placeholder-val="{{ false }}">
                 <div style="{{ mapMiniWrap }}">
                   <sc-for list="{{ mapMiniRows }}" as="mr" hint-placeholder-count="4">
@@ -641,11 +649,10 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                   </sc-for>
                 </div>
               </sc-if>
-              <div style="position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:7px;background:var(--pri,#6CFF9A);border:2px solid var(--bg,#0A1112)"></div>
-              <div style="position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px">
+              <div style="position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px;z-index:10">
                 <sc-for list="{{ mapBtns }}" as="mb" hint-placeholder-count="3"><div onClick="{{ mb.pick }}" onKeyDown="{{ mb.pickKeyDown }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--ink,#D7F5E6);cursor:pointer" role="button" aria-label="{{ mb.label }}" tabindex="0"><i data-lucide="{{ mb.icon }}" style="width:16px;height:16px"></i></div></sc-for>
               </div>
-              <div style="position:absolute;left:10px;bottom:10px;font:400 9.5px/1.35 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);background:var(--surf,#101A1C);border:1px solid var(--outv,#365047);padding:4px 6px;max-width:74%">{{ tileNote }}</div>
+              <div style="position:absolute;left:10px;bottom:10px;font:400 9.5px/1.35 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);background:var(--surf,#101A1C);border:1px solid var(--outv,#365047);padding:4px 6px;max-width:74%;z-index:10">{{ tileNote }}</div>
             </div>
             <div style="{{ mapFootStyle }}">
               <div onClick="{{ mapTeleport }}" style="flex:1;height:46px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:8px;font:700 12px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;cursor:pointer"><i data-lucide="zap" style="width:16px;height:16px"></i>TELEPORT</div>
@@ -3790,8 +3797,35 @@ toggleLogoAnimKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.prev
       invGridToggle: () => { this.setState(st => ({ invGrid: !st.invGrid })); this.notify(s.invGrid ? "List view" : "Grid view"); },
 invGridToggleKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState(st => ({ invGrid: !st.invGrid })); this.notify(this.state.invGrid ? "List view" : "Grid view"); } },
       invGridIcon: s.invGrid ? "list" : "layout-grid",
-      mapBtns: [["plus", "ZOOM IN"], ["minus", "ZOOM OUT"], ["locate-fixed", "RECENTER"]]
-        .map(([icon, label]) => ({ icon, label, pick: () => this.notify("Map — " + label), pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify("Map — " + label); } } })),
+      mapSearch: s.mapSearch || "",
+      mapSearchChange: (e) => {
+        const val = e.target.value;
+        this.setState({ mapSearch: val });
+        if (val.toLowerCase().includes("hollywood")) {
+          this.setState({ mapPanX: -60, mapPanY: 60 });
+        } else if (val.toLowerCase().includes("ahern")) {
+          this.setState({ mapPanX: 60, mapPanY: -60 });
+        } else if (val.toLowerCase().includes("sansara")) {
+          this.setState({ mapPanX: -60, mapPanY: -60 });
+        } else if (val.toLowerCase().includes("boom")) {
+          this.setState({ mapPanX: 60, mapPanY: 60 });
+        }
+      },
+      mapSearchInputStyle: {
+        width: "100%", height: "36px", paddingLeft: "12px", paddingRight: "10px",
+        borderRadius: V.rs, border: "1px solid " + V.outv, background: V.surf,
+        color: V.ink, font: "400 11.5px/1 " + t.font, outline: "none", boxShadow: "0 2px 8px rgba(0,0,0,0.25)"
+      },
+      mapViewportStyle: {
+        position: "absolute", inset: 0,
+        transform: "translate(" + (s.mapPanX || 0) + "px, " + (s.mapPanY || 0) + "px) scale(" + (s.mapZoom || 1.0) + ")",
+        transformOrigin: "center center", transition: "transform 0.15s ease-out"
+      },
+      mapBtns: [
+        { icon: "plus", label: "Zoom in", pick: () => this.setState(st => ({ mapZoom: Math.min(3.0, +((st.mapZoom || 1.0) + 0.25).toFixed(2)) })) },
+        { icon: "minus", label: "Zoom out", pick: () => this.setState(st => ({ mapZoom: Math.max(0.5, +((st.mapZoom || 1.0) - 0.25).toFixed(2)) })) },
+        { icon: "locate-fixed", label: "Recenter viewport", pick: () => this.setState({ mapZoom: 1.0, mapPanX: 0, mapPanY: 0, mapSearch: "" }) }
+      ].map(b => ({ ...b, pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); b.pick(); } } })),
       mapTeleport: () => { this.setState({ screen: "Map" }); this.notify("Teleporting to Da Boom — <1000, 1000>"); },
       mapStar: () => { this.pin("daBoom"); this.notify(s.pinned.daBoom ? "Da Boom — LANDMARK REMOVED" : "Da Boom — LANDMARK SAVED"); },
 mapStarKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.pin("daBoom"); this.notify(this.state.pinned.daBoom ? "Da Boom — LANDMARK REMOVED" : "Da Boom — LANDMARK SAVED"); } },
@@ -3801,7 +3835,7 @@ mapStarKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefa
       tileLayer: s.tileOk ? React.createElement("img", { src: "https://secondlife-maps-cdn.akamaized.net/map-1-1000-1000-objects.jpg", alt: "", onError: () => this.set("tileOk", false), style: { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: .9 } }) : null,
       tileNote: mapMini
         ? "minimap · north up · draw distance " + s.prefs.draw
-        : s.tileOk ? "live SL map tile · secondlife-maps-cdn" : "tile CDN unreachable — themed vector grid fallback",
+        : s.tileOk ? "live SL map tile · zoom " + (s.mapZoom || 1.0).toFixed(2) + "x" : "tile CDN unreachable — themed vector grid fallback",
       mapMini,
       mapMiniRows: [["REGION", "Da Boom"], ["POSITION", "<128, 128, 26>"], ["HEADING", "214° · SW"], ["DRAW", s.prefs.draw]]
         .map(([k, v]) => ({ k, v })),
