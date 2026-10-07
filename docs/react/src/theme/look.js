@@ -26,13 +26,15 @@ export function fullBorder(width, color) {
 }
 
 export function cardLooks(V, pad) {
+  const surfC = V.surfaceContainer || V.surf;
+  const surfLow = V.surfaceContainerLow || V.surf;
   return {
-    box: { ...fullBorder("1px", V.outv), borderRadius: V.rs || V.rp, background: V.surf, padding: pad },
-    flat: { ...sideBorder("Left", "4px", V.pri || "transparent"), borderRadius: "0px", background: V.surf, padding: pad },
-    soft: { ...fullBorder("1px", "rgba(255,255,255,0.18)"), borderRadius: V.rp, background: V.surf, padding: pad, boxShadow: "0 6px 20px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.30)" },
+    box: { ...fullBorder("1px", V.outv), borderRadius: V.rs || V.rp, background: surfC, padding: pad },
+    flat: { ...sideBorder("Left", "4px", V.pri || "transparent"), borderRadius: "0px", background: surfLow, padding: pad },
+    soft: { ...fullBorder("1px", "rgba(255,255,255,0.18)"), borderRadius: V.rp, background: surfLow, padding: pad, boxShadow: "0 6px 20px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.30)" },
     rule: { ...sideBorder("Top", "1px", V.outv), borderRadius: "0px", background: "transparent", padding: pad + " 2px" },
     quiet: { ...sideBorder("Bottom", "1px", V.outv), borderRadius: "0px", background: "transparent", padding: "4px 0 " + pad },
-    cap: { ...sideBorder("Left", "10px", V.sec2 || V.pri), borderRadius: "0 " + (V.rp || "22px") + " " + (V.rp || "22px") + " 0", background: V.surf, padding: pad },
+    cap: { ...sideBorder("Left", "10px", V.sec2 || V.pri), borderRadius: "0 " + (V.rp || "22px") + " " + (V.rp || "22px") + " 0", background: surfC, padding: pad },
   };
 }
 
@@ -56,12 +58,12 @@ export function actionButtonStyle(V, font, a) {
   };
   if (a.primary) return { ...base, background: V.pri, color: V.onpri, borderColor: V.pri };
   if (a.dim) return { ...base, color: V.err, borderColor: V.err };
-  return { ...base, background: V.surf2 };
+  return { ...base, background: V.surfaceContainerHigh || V.surf2 };
 }
 
 export function segLooks(V, font) {
   return {
-    fill: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", padding: "12px 0", cursor: "pointer", background: V.surf, color: V.ink2, font: "600 12px/1 " + font, letterSpacing: ".22em", borderRadius: V.rs === "999px" ? "999px" : "0" },
+    fill: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", padding: "12px 0", cursor: "pointer", background: V.surfaceContainer || V.surf, color: V.ink2, font: "600 12px/1 " + font, letterSpacing: ".22em", borderRadius: V.rs === "999px" ? "999px" : "0" },
     pivot: { flex: "none", display: "flex", alignItems: "baseline", justifyContent: "flex-start", gap: "8px", padding: "8px 20px 14px 0", cursor: "pointer", background: "transparent", color: V.ink2, font: "300 28px/1 " + font, textTransform: "lowercase", letterSpacing: "-.02em" },
     text: { flex: "none", display: "flex", alignItems: "center", justifyContent: "flex-start", gap: "6px", padding: "13px 20px 11px 0", cursor: "pointer", background: "transparent", color: V.ink2, font: "600 12px/1 " + font, letterSpacing: undefined },
   };
