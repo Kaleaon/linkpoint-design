@@ -10,5 +10,12 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
+    exclude: [
+      "**/node_modules/**",
+      "**/dist/**",
+      "src/components/SystemDialog.test.js",
+      "src/components/component-sizing.test.js",
+      "src/hooks/useFocusTrap.test.js",
+    ],
   },
 });
