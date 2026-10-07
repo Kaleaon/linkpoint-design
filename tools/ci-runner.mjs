@@ -93,18 +93,6 @@ process.on('SIGINT', () => { cleanup(); process.exit(130); });
 process.on('SIGTERM', () => { cleanup(); process.exit(143); });
 
 // Server Harness Helper
-async function findFreePort(startingPort = 0) {
-  if (startingPort > 0) return startingPort;
-  return new Promise((resolve, reject) => {
-    const srv = net.createServer();
-    srv.listen(0, '127.0.0.1', () => {
-      const port = srv.address().port;
-      srv.close(() => resolve(port));
-    });
-    srv.on('error', reject);
-  });
-}
-
 function getMimeType(filePath) {
   const ext = path.extname(filePath).toLowerCase();
   const map = {
@@ -124,7 +112,6 @@ function getMimeType(filePath) {
 }
 
 async function startServerHarness(rootDirectory, requestedPort = 0) {
-  const port = await findFreePort(requestedPort);
   const server = http.createServer((req, res) => {
     let reqUrl = req.url.split('?')[0];
     if (reqUrl === '/') reqUrl = '/index.html';
@@ -156,7 +143,8 @@ async function startServerHarness(rootDirectory, requestedPort = 0) {
   });
 
   return new Promise((resolve, reject) => {
-    server.listen(port, '127.0.0.1', () => {
+    server.listen(requestedPort || 0, '127.0.0.1', () => {
+      const port = server.address().port;
       activeServers.add(server);
       log(`Static server harness listening at http://127.0.0.1:${port}/ serving ${rootDirectory}`, 'info');
       resolve({
