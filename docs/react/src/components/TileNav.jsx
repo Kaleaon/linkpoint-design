@@ -3,6 +3,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL } from "../data/content.js";
 import Icon from "./Icon.jsx";
 import { navActive } from "../theme/look.js";
+import KInteractive from "./KInteractive.jsx";
 
 // Ported from the `isTiles` <sc-if> block — Metro's bottom tile strip.
 export default function TileNav() {
@@ -17,19 +18,12 @@ export default function TileNav() {
         const bg = active ? V.pri : V.surf;
         const fg = active ? V.onpri : V.ink;
         return (
-          <div
+          <KInteractive
+            as="button"
             key={n.id}
             onClick={() => actions.setScreen(n.id)}
-            role="button"
-            tabIndex={0}
-            aria-label={"Go to " + n.id}
+            label={"Go to " + n.id}
             aria-pressed={active}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                actions.setScreen(n.id);
-              }
-            }}
             style={{
               flex: 1, height: "64px", display: "flex", flexDirection: "column", justifyContent: "space-between",
               padding: "8px", cursor: "pointer", background: bg, color: fg, borderRadius: "0px",
@@ -41,7 +35,7 @@ export default function TileNav() {
               {active ? <span style={{ width: "6px", height: "6px", borderRadius: "0px", background: fg }} /> : null}
             </div>
             <span style={{ font: "300 11px/1 " + t.dfont, letterSpacing: ".02em", textTransform: "lowercase" }}>{n.tile}</span>
-          </div>
+          </KInteractive>
         );
       })}
     </nav>

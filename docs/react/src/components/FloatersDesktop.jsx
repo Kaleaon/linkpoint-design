@@ -8,6 +8,7 @@ import { FLOATERS, FBAR, CBTN } from "../theme/constants.js";
 import { LOCAL_MSGS, RADAR_AVATARS, FRIEND_ROWS, INVENTORY_SOURCE, REGIONS, buildCards } from "../data/content.js";
 import Icon from "./Icon.jsx";
 import ScreenBody from "./ScreenBody.jsx";
+import KInteractive from "./KInteractive.jsx";
 
 // Ported from the `isFloat` block: desktop SL isn't a screen stack, it's N
 // resizable windows over one scene (the `FLOATERS` window model — position,
@@ -71,8 +72,14 @@ export default function FloatersDesktop() {
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", borderBottom: "1px solid " + V.outv, paddingBottom: "4px" }}>
               <span style={{ font: "600 9px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>CAMERA CONTROLS</span>
-              <span onClick={() => setShowCamHud(false)} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setShowCamHud(false); } }} role="button" tabIndex={0} aria-label="Close Camera HUD" style={{ cursor: "pointer", color: V.ink2, fontSize: "12px", lineHeight: 1 }}>&times;</span>
-              <span onClick={() => setShowCamHud(false)} style={{ width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: V.ink2, fontSize: "12px", lineHeight: 1 }} aria-label="Close HUD">&times;</span>
+              <KInteractive
+                as="button"
+                onClick={() => setShowCamHud(false)}
+                label="Close Camera HUD"
+                style={{ width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: V.ink2, fontSize: "12px", lineHeight: 1 }}
+              >
+                &times;
+              </KInteractive>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 24px)", gap: "3px", justifyContent: "center" }}>
               <button type="button" onClick={() => actions.sceneMove({ clientX: 0, clientY: -10 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Up">
@@ -124,40 +131,28 @@ export default function FloatersDesktop() {
               )}
               <Icon name={f.icon} size={13} />
               <span style={{ flex: 1, minWidth: 0, font: "inherit", letterSpacing: "inherit", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{f.title}</span>
-              <span
+              <KInteractive
+                as="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   actions.dispatchIntent("FLOATER_MINIMIZE", { id: f.id });
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    actions.dispatchIntent("FLOATER_MINIMIZE", { id: f.id });
-                  }
-                }}
                 style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
-                role="button" tabIndex={0} aria-label="Minimize"
+                label="Minimize"
               >
                 &minus;
-              </span>
-              <span
+              </KInteractive>
+              <KInteractive
+                as="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   actions.dispatchIntent("FLOATER_CLOSE", { id: f.id });
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    actions.dispatchIntent("FLOATER_CLOSE", { id: f.id });
-                  }
-                }}
                 style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
-                role="button" tabIndex={0} aria-label="Close"
+                label="Close"
               >
                 &times;
-              </span>
+              </KInteractive>
             </div>
             {rows ? (
               <div style={{ flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column", gap: "1px", background: V.bg }}>
@@ -226,13 +221,16 @@ export default function FloatersDesktop() {
           const min = !!state.flMin[f.id];
           const act = f.id === state.screen && !min;
           return (
-            <div
+            <KInteractive
+              as="button"
               key={f.id}
+              label={f.title}
+              aria-pressed={act}
               onClick={() => actions.dispatchIntent("FLOATER_TOGGLE", { id: f.id })}
               style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", padding: "0 10px", cursor: "pointer", background: act ? V.pri : min ? "transparent" : V.surf2, color: act ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2, border: "1px solid " + (min ? V.outv : "transparent"), borderRadius: isSweepDesk ? "999px" : V.rs, font: isSweepDesk ? "700 10px/1 " + t.dfont : "500 10px/1 " + t.font, letterSpacing: isSweepDesk ? ".12em" : ".08em", whiteSpace: "nowrap" }}
             >
               {f.title}
-            </div>
+            </KInteractive>
           );
         })}
 
@@ -260,14 +258,18 @@ export default function FloatersDesktop() {
             dis = !!b.off;
           const bg = lit ? V.pri : V.surf2;
           return (
-            <div
+            <KInteractive
+              as="button"
               key={k}
+              label={b.label}
+              disabled={dis}
+              aria-pressed={lit}
               onClick={() => actions.cPress(k)}
               style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", gap: "6px", padding: "0 9px", background: dis ? "transparent" : bg, color: dis ? V.ink2 : ink(bg, [V.bg, V.onpri, V.ink]), border: "1px solid " + (dis ? V.outv : "transparent"), borderRadius: V.rs, cursor: dis ? "not-allowed" : "pointer", font: "600 9.5px/1 " + t.dfont, letterSpacing: ".1em", whiteSpace: "nowrap" }}
             >
               <Icon name={b.icon} size={13} />
               {b.label}
-            </div>
+            </KInteractive>
           );
         })}
       </div>

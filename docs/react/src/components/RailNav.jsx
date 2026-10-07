@@ -3,6 +3,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL } from "../data/content.js";
 import Icon from "./Icon.jsx";
 import { navActive } from "../theme/look.js";
+import KInteractive from "./KInteractive.jsx";
 
 // Ported from the `isRail` <sc-if> block — the left rail (Navy Gold, Rule &
 // Rail packs, or any pack on a split/tablet-width device).
@@ -21,14 +22,17 @@ export default function RailNav() {
       {NAV_ALL.map((n) => {
         const active = navActive(state.screen, n.id);
         return (
-          <div
+          <KInteractive
+            as="button"
             key={n.id}
+            label={n.label}
+            aria-pressed={active}
             onClick={() => actions.setScreen(n.id)}
-            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "5px", padding: "10px 4px", cursor: "pointer", borderRadius: V.navr, color: active ? V.onpriC : V.ink2, background: active ? V.priC : undefined }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "5px", padding: "10px 4px", cursor: "pointer", borderRadius: V.navr, color: active ? V.onpriC : V.ink2, background: active ? V.priC : undefined, width: "100%" }}
           >
             <Icon name={n.icon} size={20} />
             <span style={{ font: "600 8.5px/1 " + t.font, letterSpacing: ".1em" }}>{n.label}</span>
-          </div>
+          </KInteractive>
         );
       })}
     </nav>

@@ -1,39 +1,49 @@
 import React from "react";
 
 export function KInteractive({
-  as: Component = "div",
+  as: Component = "button",
   onClick,
   onKeyDown,
   children,
   label,
-  role = Component === "button" ? undefined : "button",
-  tabIndex = 0,
+  role,
+  tabIndex,
   disabled = false,
   className = "",
   style,
+  type,
   ...props
 }) {
+  const isButton = Component === "button";
+  const buttonType = isButton ? (type || "button") : undefined;
+
   const handleKeyDown = (e) => {
     if (disabled) return;
     if (onKeyDown) onKeyDown(e);
-    if (!e.defaultPrevented && (e.key === "Enter" || e.key === " ")) {
+    if (!e.defaultPrevented && !isButton && (e.key === "Enter" || e.key === " ")) {
       e.preventDefault();
       if (onClick) onClick(e);
     }
   };
 
   const handleClick = (e) => {
-    if (disabled) return;
+    if (disabled) {
+      e.preventDefault();
+      return;
+    }
     if (onClick) onClick(e);
   };
 
   const combinedClassName = `k-interactive ${className}`.trim();
+  const ariaLabel = label || props["aria-label"];
 
   return (
     <Component
-      role={role}
-      tabIndex={disabled ? -1 : tabIndex}
-      aria-label={label}
+      type={buttonType}
+      role={isButton ? role : (role || "button")}
+      tabIndex={isButton ? tabIndex : (disabled ? -1 : (tabIndex ?? 0))}
+      disabled={isButton ? disabled : undefined}
+      aria-label={ariaLabel}
       aria-disabled={disabled ? true : undefined}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
@@ -55,3 +65,4 @@ export function KButton({ children, ...props }) {
 }
 
 export default KInteractive;
+

@@ -5,6 +5,7 @@ import { PALETTES } from "../theme/palettes.js";
 import { HEAD } from "../data/content.js";
 import { SCREENS } from "../theme/constants.js";
 import Icon from "./Icon.jsx";
+import KInteractive from "./KInteractive.jsx";
 
 // Ported from the five header <sc-if> blocks (hasHeader/isSweepHead/
 // isPivotHead/isRuleHead/isPressHead) plus the shared title/subtitle lookup.
@@ -61,22 +62,15 @@ function StackHead({ title, subtitle, scr }) {
       ) : null}
       {headerIcons
         ? headerIcons.map((hi) => (
-            <div
+            <KInteractive
+              as="button"
               key={hi.icon}
               onClick={hi.pick}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  hi.pick();
-                }
-              }}
-              role="button"
-              aria-label={hi.label}
-              tabIndex={0}
+              label={hi.label}
               style={{ width: "44px", height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer" }}
             >
               <Icon name={hi.icon} size={18} />
-            </div>
+            </KInteractive>
           ))
         : null}
     </div>
@@ -106,16 +100,14 @@ function PivotHead({ title, subtitle, scr }) {
     <>
       <div style={{ flex: "none", padding: "14px 0 2px 16px", display: "flex", alignItems: "baseline", gap: "22px", overflow: "hidden" }}>
         <span style={{ flex: "none", font: "300 42px/1 " + t.dfont, color: V.ink, textTransform: "lowercase", letterSpacing: "-.02em" }}>{String(title || "").toLowerCase()}</span>
-        <span
+        <KInteractive
+          as="button"
           onClick={() => actions.setScreen(nextScr)}
-          role="button"
-          tabIndex={0}
-          aria-label={"Pivot to " + nextScr}
-          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setScreen(nextScr); } }}
+          label={"Pivot to " + nextScr}
           style={{ flex: "none", font: "300 42px/1 " + t.dfont, color: V.ink2, opacity: 0.35, cursor: "pointer", textTransform: "lowercase", letterSpacing: "-.02em" }}
         >
           {nextScr.toLowerCase()}
-        </span>
+        </KInteractive>
       </div>
       <div style={{ flex: "none", padding: "2px 16px 10px", font: "300 12px/1.4 " + t.font, color: V.ink2 }}>{subtitle}</div>
     </>

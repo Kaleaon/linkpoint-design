@@ -1,6 +1,7 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { FMENU, FLOATERS } from "../theme/constants.js";
+import KInteractive from "./KInteractive.jsx";
 
 // Ported from `fmBar`/`fmMenus` — the desktop-only File/Edit/View/World/
 // Build/Help bar with Firestorm-style interactive menu commands.
@@ -35,7 +36,11 @@ export default function MenuBar() {
         const items = win ? FLOATERS.map((f) => [f.title, state.flOpen[f.id] && !state.flMin[f.id] ? "✓" : ""]) : mm.items;
         return (
           <div key={mm.label} style={{ position: "relative" }}>
-            <div
+            <KInteractive
+              as="button"
+              label={mm.label}
+              aria-expanded={open}
+              aria-haspopup="true"
               onClick={(e) => {
                 e.stopPropagation();
                 actions.setMenu(state.menu === mm.label ? null : mm.label);
@@ -43,12 +48,15 @@ export default function MenuBar() {
               style={{ display: "flex", alignItems: "center", height: "100%", padding: "0 10px", cursor: "pointer", background: open ? V.pri : "transparent", color: open ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink, font: (isSweepDesk ? "700 11px/1 " + t.dfont : "500 11px/1 " + t.font), letterSpacing: (isSweepDesk ? ".12em" : ".04em"), borderRadius: isSweepDesk ? "999px" : V.rs, textTransform: isSweepDesk ? "uppercase" : "none" }}
             >
               {mm.label}
-            </div>
+            </KInteractive>
             {open ? (
-              <div style={{ position: "absolute", left: 0, top: "32px", minWidth: "216px", background: V.surf, border: "1px solid " + V.pri, boxShadow: "0 14px 34px rgba(0,0,0,.55)", padding: "3px 0", zIndex: 90, borderRadius: V.rp, overflow: "hidden" }}>
+              <div role="menu" aria-label={mm.label + " menu"} style={{ position: "absolute", left: 0, top: "32px", minWidth: "216px", background: V.surf, border: "1px solid " + V.pri, boxShadow: "0 14px 34px rgba(0,0,0,.55)", padding: "3px 0", zIndex: 90, borderRadius: V.rp, overflow: "hidden" }}>
                 {items.map((it, i) => (
-                  <div
+                  <KInteractive
+                    as="button"
                     key={i}
+                    role="menuitem"
+                    label={it[0] + (it[1] ? " " + it[1] : "")}
                     onClick={(e) => {
                       e.stopPropagation();
                       if (win) {
@@ -58,11 +66,11 @@ export default function MenuBar() {
                         handleMenuClick(mm.label, it[0]);
                       }
                     }}
-                    style={{ display: "flex", alignItems: "center", gap: "10px", minHeight: "32px", padding: "0 12px", cursor: "pointer", font: "400 11.5px/1 " + t.font, color: V.ink }}
+                    style={{ display: "flex", alignItems: "center", gap: "10px", width: "100%", minHeight: "32px", padding: "0 12px", cursor: "pointer", font: "400 11.5px/1 " + t.font, color: V.ink, textAlign: "left" }}
                   >
                     <span style={{ flex: 1, font: "inherit" }}>{it[0]}</span>
                     <span style={{ flex: "none", font: "400 10px/1 " + t.font, color: V.ink2, letterSpacing: ".06em" }}>{it[1]}</span>
-                  </div>
+                  </KInteractive>
                 ))}
               </div>
             ) : null}
