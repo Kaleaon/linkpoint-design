@@ -173,6 +173,9 @@ async function startServerHarness(rootDirectory, requestedPort = 0) {
         url: `http://127.0.0.1:${port}`,
         close: async () => {
           activeServers.delete(server);
+          if (typeof server.closeAllConnections === "function") {
+            server.closeAllConnections();
+          }
           return new Promise((res) => server.close(res));
         },
       });
@@ -633,13 +636,16 @@ async function taskVisualSuite() {
         const style = document.createElement("style");
         style.textContent =
           "* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }";
-        const target = document.head || document.documentElement;
-        if (target) {
-          target.appendChild(style);
-        } else {
-          document.addEventListener("DOMContentLoaded", () => {
-            (document.head || document.documentElement).appendChild(style);
-          });
+        const apply = () => {
+          const target = document.head || document.documentElement;
+          if (target && !style.parentNode) {
+            target.appendChild(style);
+          }
+        };
+        apply();
+        if (!style.parentNode) {
+          document.addEventListener("readystatechange", apply);
+          document.addEventListener("DOMContentLoaded", apply);
         }
       });
       await page.goto(targetUrl, { waitUntil: "domcontentloaded" });
@@ -650,15 +656,23 @@ async function taskVisualSuite() {
         const sweepBtn = page
           .getByText("Sweep Console", { exact: true })
           .first();
-        if (await sweepBtn.isVisible({ timeout: 1000 }).catch(() => false)) {
-          await sweepBtn.click();
-          await page.waitForTimeout(500);
-        }
+        await sweepBtn
+          .waitFor({ state: "attached", timeout: 5000 })
+          .catch(() => {});
+        await sweepBtn.scrollIntoViewIfNeeded().catch(() => {});
+        await sweepBtn.click({ timeout: 5000 }).catch(() => {});
+        await page.waitForTimeout(500);
+
         const lcarsBtn = page.getByText("LCARS Amber", { exact: true }).first();
-        if (await lcarsBtn.isVisible({ timeout: 1000 }).catch(() => false)) {
-          await lcarsBtn.click();
-          await page.waitForTimeout(500);
-        }
+        await lcarsBtn
+          .waitFor({ state: "attached", timeout: 5000 })
+          .catch(() => {});
+        await lcarsBtn.scrollIntoViewIfNeeded().catch(() => {});
+        await lcarsBtn.click({ timeout: 5000 }).catch(() => {});
+        await page.waitForTimeout(500);
+
+        await page.evaluate(() => window.scrollTo(0, 0));
+        await page.waitForTimeout(500);
       } catch (err) {
         log(
           `Interactive triggers warning for ${vp.name}: ${err.message}`,
