@@ -106,11 +106,7 @@ export default function SegmentedTabs() {
         };
         const tabProps = getTabProps(index);
         return (
-          <div
-            key={x.label}
-            {...tabProps}
-            style={style}
-          >
+          <div key={x.label} {...tabProps} style={style}>
             <span style={{ font: "inherit", letterSpacing: "inherit" }}>
               {x.label}
             </span>
@@ -138,4 +134,3 @@ export default function SegmentedTabs() {
     </div>
   );
 }
-

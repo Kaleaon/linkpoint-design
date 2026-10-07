@@ -246,25 +246,75 @@ export default function Login() {
               </div>
 
               {state.addGrid ? (
-                <div style={{ marginTop: "8px", border: "1px dashed " + V.outv, borderRadius: V.rs, padding: "8px" }}>
-                  <div style={{ font: "400 9.5px/1 " + t.font, letterSpacing: ".16em", color: V.ink2, marginBottom: "4px" }}>ADD CUSTOM GRID</div>
-                  <FormField label="GRID NAME" description="Name for the custom grid">
+                <div
+                  style={{
+                    marginTop: "8px",
+                    border: "1px dashed " + V.outv,
+                    borderRadius: V.rs,
+                    padding: "8px",
+                  }}
+                >
+                  <div
+                    style={{
+                      font: "400 9.5px/1 " + t.font,
+                      letterSpacing: ".16em",
+                      color: V.ink2,
+                      marginBottom: "4px",
+                    }}
+                  >
+                    ADD CUSTOM GRID
+                  </div>
+                  <FormField
+                    label="GRID NAME"
+                    description="Name for the custom grid"
+                  >
                     <FormInput
                       value={state.addGridName}
                       onChange={(e) => actions.setAddGridName(e.target.value)}
                       placeholder="grid name"
-                      style={{ minHeight: "36px", height: "36px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 12px/1 " + t.font, color: V.ink }}
+                      style={{
+                        minHeight: "36px",
+                        height: "36px",
+                        width: "100%",
+                        boxSizing: "border-box",
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "0 10px",
+                        border: "1px solid " + V.outv,
+                        borderRadius: V.rs,
+                        background: V.bg,
+                        font: "400 12px/1 " + t.font,
+                        color: V.ink,
+                      }}
                     />
                   </FormField>
-                  <FormField label="LOGIN URI" description="e.g. login.example.com:8002">
+                  <FormField
+                    label="LOGIN URI"
+                    description="e.g. login.example.com:8002"
+                  >
                     <FormInput
                       value={state.addGridHost}
                       onChange={(e) => actions.setAddGridHost(e.target.value)}
                       placeholder="login URI (e.g. login.example.com:8002)"
-                      style={{ minHeight: "36px", height: "36px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 12px/1 " + t.font, color: V.ink }}
+                      style={{
+                        minHeight: "36px",
+                        height: "36px",
+                        width: "100%",
+                        boxSizing: "border-box",
+                        display: "flex",
+                        alignItems: "center",
+                        padding: "0 10px",
+                        border: "1px solid " + V.outv,
+                        borderRadius: V.rs,
+                        background: V.bg,
+                        font: "400 12px/1 " + t.font,
+                        color: V.ink,
+                      }}
                     />
                   </FormField>
-                  <div style={{ display: "flex", gap: "6px", marginTop: "8px" }}>
+                  <div
+                    style={{ display: "flex", gap: "6px", marginTop: "8px" }}
+                  >
                     <div
                       onClick={actions.cancelAddGrid}
                       role="button"
@@ -326,7 +376,20 @@ export default function Login() {
               <FormInput
                 value={lf.value}
                 readOnly
-                style={{ minHeight: "36px", height: "36px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 12px/1 " + t.font, color: V.ink2 }}
+                style={{
+                  minHeight: "36px",
+                  height: "36px",
+                  width: "100%",
+                  boxSizing: "border-box",
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "0 10px",
+                  border: "1px solid " + V.outv,
+                  borderRadius: V.rs,
+                  background: V.bg,
+                  font: "400 12px/1 " + t.font,
+                  color: V.ink2,
+                }}
               />
             </FormField>
           ))}

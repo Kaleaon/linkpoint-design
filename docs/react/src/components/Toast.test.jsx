@@ -18,7 +18,7 @@ function renderToastWithState(toastText = "") {
       <ThemeContext.Provider value={mockThemeContext}>
         <Toast />
       </ThemeContext.Provider>
-    </AppContext.Provider>
+    </AppContext.Provider>,
   );
 }
 
@@ -51,7 +51,7 @@ describe("Toast Component Accessibility and ARIA Live Announcer", () => {
         <ThemeContext.Provider value={mockThemeContext}>
           <Toast />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const initialStatusEl = screen.getByRole("status");
@@ -64,7 +64,7 @@ describe("Toast Component Accessibility and ARIA Live Announcer", () => {
         <ThemeContext.Provider value={mockThemeContext}>
           <Toast />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const updatedStatusEl = screen.getByRole("status");
@@ -80,7 +80,7 @@ describe("Toast Component Accessibility and ARIA Live Announcer", () => {
         <ThemeContext.Provider value={mockThemeContext}>
           <Toast />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     expect(updatedStatusEl.textContent).toBe("");

@@ -19,7 +19,7 @@ const FormSwitch = forwardRef(function FormSwitch(
     className = "",
     ...props
   },
-  ref
+  ref,
 ) {
   const context = useContext(FormFieldContext);
 
@@ -42,11 +42,14 @@ const FormSwitch = forwardRef(function FormSwitch(
 
   const id = idProp || context?.id;
   const ariaDescribedBy = ariaDescribedByProp || context?.ariaDescribedBy;
-  const ariaInvalid = ariaInvalidProp !== undefined ? ariaInvalidProp : context?.ariaInvalid;
+  const ariaInvalid =
+    ariaInvalidProp !== undefined ? ariaInvalidProp : context?.ariaInvalid;
   const ariaErrorMessage = ariaErrorMessageProp || context?.ariaErrorMessage;
 
-  const defaultTrackBg = isOn === false ? (V.surf2 || "#2a2d3a") : (V.priC || "#4f46e5");
-  const defaultKnobBg = isOn === false ? (V.ink2 || "#9ca3af") : (V.pri || "#818cf8");
+  const defaultTrackBg =
+    isOn === false ? V.surf2 || "#2a2d3a" : V.priC || "#4f46e5";
+  const defaultKnobBg =
+    isOn === false ? V.ink2 || "#9ca3af" : V.pri || "#818cf8";
 
   return (
     <span

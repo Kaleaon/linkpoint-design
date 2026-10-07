@@ -46,5 +46,6 @@
 **Action:** When inspecting or adding icon-only controls or text-based spans acting as buttons (e.g., `navPeek` close, HUD panel close, target clear), verify they contain `role`, `tabIndex`, descriptive `aria-label`, and `onKeyDown` event listeners to match native `<button>` behavior.
 
 ## 2026-10-07 - Add Keyboard Accessibility to Interactive Login Screen Actions
+
 **Learning:** Even well-constructed custom HTML template frameworks often overlook full keyboard navigation on core screens like Login, where buttons (tabs, preset options, "ADD GRID", and the main "CONNECT TO GRID" toggles) might be functional to mouse users but completely dead to screen readers and keyboard users (pressing Enter or Space). Explicitly providing `onKeyDown` handlers inside `renderVals` that prevent default behavior on space bar prevents unwanted page scrolling and improves accessibility.
 **Action:** When inspecting or adding core interactive controls to screens (like login fields and connectivity toggles) in custom HTML templating, ensure they include `role="button"`, `tabindex="0"`, descriptive `aria-label`s, and corresponding `onKeyDown` listeners mirroring their `onClick` functionality.

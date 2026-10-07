@@ -15,7 +15,14 @@ export function computeThemeTokens(state) {
         c: { ...base.c, ...state.customTheme.colors },
       }
     : base;
-  const t = { name: L.name + " / " + P.name, nav: L.nav, font: L.font, dfont: L.dfont, note: L.note + "   Colour pack: " + P.note + ".", v: { ...P.c, ...L.s } };
+  const t = {
+    name: L.name + " / " + P.name,
+    nav: L.nav,
+    font: L.font,
+    dfont: L.dfont,
+    note: L.note + "   Colour pack: " + P.note + ".",
+    v: { ...P.c, ...L.s },
+  };
   const V = t.v;
   const pad = state.dense ? "8px" : V.pad;
   const LK = L.look;
@@ -33,7 +40,13 @@ export function computeThemeRuntime(state, cf, tokens) {
   if (d.desk) nav = "floaters";
   else if (tNav === "SWEEP") nav = "sweep";
   else if (d.split) nav = "rail";
-  else nav = tNav === "TILES" ? "tiles" : tNav === "RAIL" && d.w > 700 ? "rail" : "tabs";
+  else
+    nav =
+      tNav === "TILES"
+        ? "tiles"
+        : tNav === "RAIL" && d.w > 700
+          ? "rail"
+          : "tabs";
 
   const C = cf();
   const isConsole = nav === "sweep";
@@ -57,9 +70,33 @@ export function computeThemeRuntime(state, cf, tokens) {
   const norm = !stateBlockActive;
   const bare = ["3D View", "Login", "Search"].includes(scr);
   const immersive = scr === "3D View" && norm;
-  const headLook = bare || isFloat ? "none" : nav === "sweep" ? "sweep" : (tokens ? tokens.LK.head : LAYOUTS[state.layout].look.head);
+  const headLook =
+    bare || isFloat
+      ? "none"
+      : nav === "sweep"
+        ? "sweep"
+        : tokens
+          ? tokens.LK.head
+          : LAYOUTS[state.layout].look.head;
 
-  return { d, nav, scr, sel, condPack, bare, immersive, headLook, isSweepDesk, C, isConsole, consoleScene, isFloat, bleed, stateBlockActive, norm };
+  return {
+    d,
+    nav,
+    scr,
+    sel,
+    condPack,
+    bare,
+    immersive,
+    headLook,
+    isSweepDesk,
+    C,
+    isConsole,
+    consoleScene,
+    isFloat,
+    bleed,
+    stateBlockActive,
+    norm,
+  };
 }
 
 // Ported from the top of renderVals(): resolves the active layout+palette into

@@ -24,17 +24,49 @@ export const NAV_ALL = [
   { id: "Settings", label: "MORE", tile: "settings", icon: "settings" },
 ];
 // TABS nav (Ink Terminal, Aero Glass, Press) drops Inventory; rail/tiles/sweep keep all 7.
-export const TABS_NAV_IDS = ["Chat", "Friends", "Radar", "Map", "3D View", "Settings"];
+export const TABS_NAV_IDS = [
+  "Chat",
+  "Friends",
+  "Radar",
+  "Map",
+  "3D View",
+  "Settings",
+];
 
 export const IM_CHIPS = ["Nyx Vaher", "Kit Sandalwood", "Sable Ashgrove"];
 export const GROUP_CHIPS = ["Bay City Builders", "Ruthless Roofers"];
 
 export const REGION_META = {
-  "Hollywood": { name: "Bay City — Hollywood", coords: "<112, 44, 51>", rating: "Adult", avatars: "18 avatars online" },
-  "Bay City — Hollywood": { name: "Bay City — Hollywood", coords: "<112, 44, 51>", rating: "Adult", avatars: "18 avatars online" },
-  "Da Boom": { name: "Da Boom", coords: "<128, 128, 26>", rating: "General", avatars: "34 avatars online" },
-  "Ahern": { name: "Ahern Welcome Area", coords: "<128, 128, 24>", rating: "Moderate", avatars: "6 avatars online" },
-  "Sansara Ridge": { name: "Sansara Ridge", coords: "<64, 200, 88>", rating: "General", avatars: "2 avatars online" },
+  Hollywood: {
+    name: "Bay City — Hollywood",
+    coords: "<112, 44, 51>",
+    rating: "Adult",
+    avatars: "18 avatars online",
+  },
+  "Bay City — Hollywood": {
+    name: "Bay City — Hollywood",
+    coords: "<112, 44, 51>",
+    rating: "Adult",
+    avatars: "18 avatars online",
+  },
+  "Da Boom": {
+    name: "Da Boom",
+    coords: "<128, 128, 26>",
+    rating: "General",
+    avatars: "34 avatars online",
+  },
+  Ahern: {
+    name: "Ahern Welcome Area",
+    coords: "<128, 128, 24>",
+    rating: "Moderate",
+    avatars: "6 avatars online",
+  },
+  "Sansara Ridge": {
+    name: "Sansara Ridge",
+    coords: "<64, 200, 88>",
+    rating: "General",
+    avatars: "2 avatars online",
+  },
 };
 
 export function parseSlurl(text, explicitUrl, explicitTitle) {
@@ -43,7 +75,8 @@ export function parseSlurl(text, explicitUrl, explicitTitle) {
   let extractedUrl = null;
 
   if (!url && text) {
-    const slurlRegex = /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^\/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
+    const slurlRegex =
+      /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
     const match = text.match(slurlRegex);
     if (match) {
       extractedUrl = match[0];
@@ -59,12 +92,24 @@ export function parseSlurl(text, explicitUrl, explicitTitle) {
 
   if (!url) return null;
 
-  const slurlRegex = /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^\/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
+  const slurlRegex =
+    /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
   const match = url.match(slurlRegex);
-  let regKey = title || (match ? decodeURIComponent(match[1]).replace(/\+/g, " ") : "Unknown Region");
-  let coords = parsedCoords || (match ? `<${match[2] || 128}, ${match[3] || 128}, ${match[4] || 20}>` : "<128, 128, 26>");
+  let regKey =
+    title ||
+    (match
+      ? decodeURIComponent(match[1]).replace(/\+/g, " ")
+      : "Unknown Region");
+  let coords =
+    parsedCoords ||
+    (match
+      ? `<${match[2] || 128}, ${match[3] || 128}, ${match[4] || 20}>`
+      : "<128, 128, 26>");
 
-  const known = REGION_META[regKey] || REGION_META[regKey.split("—")[0].trim()] || REGION_META[Object.keys(REGION_META).find(k => regKey.includes(k))];
+  const known =
+    REGION_META[regKey] ||
+    REGION_META[regKey.split("—")[0].trim()] ||
+    REGION_META[Object.keys(REGION_META).find((k) => regKey.includes(k))];
 
   return {
     url,
@@ -77,40 +122,135 @@ export function parseSlurl(text, explicitUrl, explicitTitle) {
 }
 
 export const LOCAL_MSGS = [
-  { ts: "14:21", sender: "Nyx Vaher", text: "the roof build is up — teleport when you're free" },
-  { ts: "14:22", sender: "Ruth Resident", text: "on my way, just rezzing the last sculpt", me: true },
-  { ts: "14:24", sender: "System", text: "Kit Sandalwood is online.", sys: true },
-  { ts: "14:25", sender: "Kit Sandalwood", text: "@Ruth check the landmark, second floor entrance", linkTitle: "Bay City — Hollywood", linkUrl: "secondlife://Hollywood/112/44/51" },
-  { id: "lure-local-1", ts: "14:26", sender: "Kit Sandalwood", text: "Kit Sandalwood offers to teleport you", isLure: true, lureRegion: "Bay City — Hollywood", lureCoords: "<112, 44, 51>", lureMsg: "come see the build jam, we're on the roof" },
+  {
+    ts: "14:21",
+    sender: "Nyx Vaher",
+    text: "the roof build is up — teleport when you're free",
+  },
+  {
+    ts: "14:22",
+    sender: "Ruth Resident",
+    text: "on my way, just rezzing the last sculpt",
+    me: true,
+  },
+  {
+    ts: "14:24",
+    sender: "System",
+    text: "Kit Sandalwood is online.",
+    sys: true,
+  },
+  {
+    ts: "14:25",
+    sender: "Kit Sandalwood",
+    text: "@Ruth check the landmark, second floor entrance",
+    linkTitle: "Bay City — Hollywood",
+    linkUrl: "secondlife://Hollywood/112/44/51",
+  },
+  {
+    id: "lure-local-1",
+    ts: "14:26",
+    sender: "Kit Sandalwood",
+    text: "Kit Sandalwood offers to teleport you",
+    isLure: true,
+    lureRegion: "Bay City — Hollywood",
+    lureCoords: "<112, 44, 51>",
+    lureMsg: "come see the build jam, we're on the roof",
+  },
   { ts: "14:27", sender: "Ruth Resident", text: "got it 👍", me: true },
-  { ts: "14:28", sender: "Nyx Vaher", text: "or check the welcome area secondlife://Ahern/128/128/24" },
-  { ts: "14:29", sender: "Nyx Vaher", text: "bringing the light rig over, one sec" },
+  {
+    ts: "14:28",
+    sender: "Nyx Vaher",
+    text: "or check the welcome area secondlife://Ahern/128/128/24",
+  },
+  {
+    ts: "14:29",
+    sender: "Nyx Vaher",
+    text: "bringing the light rig over, one sec",
+  },
 ];
 
 export const IM_THREADS = {
   "Nyx Vaher": [
     { ts: "13:52", sender: "Nyx Vaher", text: "you still at the build site?" },
-    { ts: "13:53", sender: "Ruth Resident", text: "yeah, finishing the roof trim", me: true },
-    { ts: "13:54", sender: "Nyx Vaher", text: "send me the landmark when it's done" },
-    { ts: "13:58", sender: "Ruth Resident", text: "will do — maybe 10 more min", me: true },
+    {
+      ts: "13:53",
+      sender: "Ruth Resident",
+      text: "yeah, finishing the roof trim",
+      me: true,
+    },
+    {
+      ts: "13:54",
+      sender: "Nyx Vaher",
+      text: "send me the landmark when it's done",
+    },
+    {
+      ts: "13:58",
+      sender: "Ruth Resident",
+      text: "will do — maybe 10 more min",
+      me: true,
+    },
   ],
   "Kit Sandalwood": [
-    { ts: "13:40", sender: "Kit Sandalwood", text: "reslotted the brass texture, check inventory", linkTitle: "Bay City — Hollywood", linkUrl: "secondlife://Hollywood/112/44/51" },
-    { id: "lure-im-1", ts: "13:41", sender: "Kit Sandalwood", text: "offers to teleport you to Bay City — Hollywood <112, 44, 51>", isLure: true, lureRegion: "Bay City — Hollywood", lureCoords: "<112, 44, 51>", lureMsg: "come inspect the UV alignment in person" },
-    { ts: "13:47", sender: "Ruth Resident", text: "looking now, one sec", me: true },
+    {
+      ts: "13:40",
+      sender: "Kit Sandalwood",
+      text: "reslotted the brass texture, check inventory",
+      linkTitle: "Bay City — Hollywood",
+      linkUrl: "secondlife://Hollywood/112/44/51",
+    },
+    {
+      id: "lure-im-1",
+      ts: "13:41",
+      sender: "Kit Sandalwood",
+      text: "offers to teleport you to Bay City — Hollywood <112, 44, 51>",
+      isLure: true,
+      lureRegion: "Bay City — Hollywood",
+      lureCoords: "<112, 44, 51>",
+      lureMsg: "come inspect the UV alignment in person",
+    },
+    {
+      ts: "13:47",
+      sender: "Ruth Resident",
+      text: "looking now, one sec",
+      me: true,
+    },
   ],
-  "Sable Ashgrove": [{ ts: "yesterday", sender: "Sable Ashgrove", text: "the texture pack is in your inventory, no rush" }],
+  "Sable Ashgrove": [
+    {
+      ts: "yesterday",
+      sender: "Sable Ashgrove",
+      text: "the texture pack is in your inventory, no rush",
+    },
+  ],
 };
 
 export const GROUP_THREADS = {
   "Bay City Builders": [
-    { ts: "12:10", sender: "Marlowe Quill", text: "meeting moved to 6pm SLT at secondlife://Hollywood/112/44/51" },
+    {
+      ts: "12:10",
+      sender: "Marlowe Quill",
+      text: "meeting moved to 6pm SLT at secondlife://Hollywood/112/44/51",
+    },
     { ts: "12:12", sender: "Ruth Resident", text: "works for me", me: true },
-    { ts: "12:15", sender: "System", text: "Sable Ashgrove joined the group.", sys: true },
+    {
+      ts: "12:15",
+      sender: "System",
+      text: "Sable Ashgrove joined the group.",
+      sys: true,
+    },
   ],
   "Ruthless Roofers": [
-    { ts: "11:02", sender: "Oren Fairweather", text: "anyone have a spare roofing script?" },
-    { ts: "11:05", sender: "Ruth Resident", text: "I do, sending a copy now", me: true },
+    {
+      ts: "11:02",
+      sender: "Oren Fairweather",
+      text: "anyone have a spare roofing script?",
+    },
+    {
+      ts: "11:05",
+      sender: "Ruth Resident",
+      text: "I do, sending a copy now",
+      me: true,
+    },
     { ts: "11:06", sender: "Oren Fairweather", text: "you're a lifesaver" },
   ],
 };
@@ -127,25 +267,135 @@ export const FRIEND_ROWS = [
 ];
 
 // Grid residents who show up in Search but aren't friends yet.
-export const SEARCH_STRANGERS = ["Lyra Sunspire", "Cove Ashworth", "Petra Vantage", "Wren Halloway"];
+export const SEARCH_STRANGERS = [
+  "Lyra Sunspire",
+  "Cove Ashworth",
+  "Petra Vantage",
+  "Wren Halloway",
+];
 
 // Radar entities with explicit schema and relative altitude (zDelta)
 export const RADAR_AVATARS = [
-  { id: "av-nyx", name: "Nyx Vaher", distance: 8, bearing: 45, zDelta: 12, meta: "friend · typing · payment info used", icon: "user-round" },
-  { id: "av-kit", name: "Kit Sandalwood", distance: 17, bearing: 10, zDelta: 0, meta: "friend · voice active", icon: "user-round" },
-  { id: "av-marlowe", name: "Marlowe Quill", distance: 34, bearing: 95, zDelta: -4, meta: "age 14d · payment info on file", icon: "user" },
-  { id: "av-bramble", name: "Bramble Vex", distance: 48, bearing: 220, zDelta: 25, meta: "age 3y · no payment info", icon: "user" },
-  { id: "av-juno", name: "Juno Halcyon", distance: 112, bearing: 175, zDelta: -15, meta: "beyond shout range", icon: "user" },
-  { id: "av-wren", name: "Wren Ostara", distance: 146, bearing: 310, zDelta: 0, meta: "beyond draw distance", icon: "user" },
+  {
+    id: "av-nyx",
+    name: "Nyx Vaher",
+    distance: 8,
+    bearing: 45,
+    zDelta: 12,
+    meta: "friend · typing · payment info used",
+    icon: "user-round",
+  },
+  {
+    id: "av-kit",
+    name: "Kit Sandalwood",
+    distance: 17,
+    bearing: 10,
+    zDelta: 0,
+    meta: "friend · voice active",
+    icon: "user-round",
+  },
+  {
+    id: "av-marlowe",
+    name: "Marlowe Quill",
+    distance: 34,
+    bearing: 95,
+    zDelta: -4,
+    meta: "age 14d · payment info on file",
+    icon: "user",
+  },
+  {
+    id: "av-bramble",
+    name: "Bramble Vex",
+    distance: 48,
+    bearing: 220,
+    zDelta: 25,
+    meta: "age 3y · no payment info",
+    icon: "user",
+  },
+  {
+    id: "av-juno",
+    name: "Juno Halcyon",
+    distance: 112,
+    bearing: 175,
+    zDelta: -15,
+    meta: "beyond shout range",
+    icon: "user",
+  },
+  {
+    id: "av-wren",
+    name: "Wren Ostara",
+    distance: 146,
+    bearing: 310,
+    zDelta: 0,
+    meta: "beyond draw distance",
+    icon: "user",
+  },
 ];
 export const RADAR_OBJECTS = [
-  { id: "obj-lamp", name: "Vendor — Sunset Lamp v3", distance: 6, bearing: 60, zDelta: 0, meta: "Kit Sandalwood · 4 prims · 0.21ms", icon: "box" },
-  { id: "obj-fountain", name: "Particle fountain", distance: 14, bearing: 120, zDelta: -2, meta: "Linden Public · 240 particles/s", icon: "sparkles" },
-  { id: "obj-orb", name: "Security orb", distance: 22, bearing: 200, zDelta: 8, meta: "Marlowe Quill · scans every 5s", icon: "shield-alert" },
-  { id: "obj-dance", name: "Dance ball", distance: 31, bearing: 15, zDelta: 3, meta: "Juno Halcyon · 1 script · 0.04ms", icon: "circle-dot" },
-  { id: "obj-platform", name: "Rezzing platform", distance: 58, bearing: 285, zDelta: 45, meta: "you · 128 prims · no scripts", icon: "layers" },
+  {
+    id: "obj-lamp",
+    name: "Vendor — Sunset Lamp v3",
+    distance: 6,
+    bearing: 60,
+    zDelta: 0,
+    meta: "Kit Sandalwood · 4 prims · 0.21ms",
+    icon: "box",
+  },
+  {
+    id: "obj-fountain",
+    name: "Particle fountain",
+    distance: 14,
+    bearing: 120,
+    zDelta: -2,
+    meta: "Linden Public · 240 particles/s",
+    icon: "sparkles",
+  },
+  {
+    id: "obj-orb",
+    name: "Security orb",
+    distance: 22,
+    bearing: 200,
+    zDelta: 8,
+    meta: "Marlowe Quill · scans every 5s",
+    icon: "shield-alert",
+  },
+  {
+    id: "obj-dance",
+    name: "Dance ball",
+    distance: 31,
+    bearing: 15,
+    zDelta: 3,
+    meta: "Juno Halcyon · 1 script · 0.04ms",
+    icon: "circle-dot",
+  },
+  {
+    id: "obj-platform",
+    name: "Rezzing platform",
+    distance: 58,
+    bearing: 285,
+    zDelta: 45,
+    meta: "you · 128 prims · no scripts",
+    icon: "layers",
+  },
 ];
-export const COMPASS = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"];
+export const COMPASS = [
+  "N",
+  "NNE",
+  "NE",
+  "ENE",
+  "E",
+  "ESE",
+  "SE",
+  "SSE",
+  "S",
+  "SSW",
+  "SW",
+  "WSW",
+  "W",
+  "WNW",
+  "NW",
+  "NNW",
+];
 
 export const REGIONS = [
   ["Da Boom", "you are here · 34 avatars"],
@@ -176,38 +426,110 @@ export const INVENTORY_SOURCE = [
   ["Scripts", "file-code", 1, "Inventory", "v7"],
   ["Trash", "trash-2", 1, "Inventory", "v2"],
 ];
-export const INVENTORY_FOLDERS = ["Inventory", "Objects", "Clothing", "Body Parts", "Landmarks", "Textures", "Scripts", "Trash"];
-export const INVENTORY_RECENTS = ["Sunset Lamp v3", "Roof Kit", "Hollywood LM", "Brass texture"];
+export const INVENTORY_FOLDERS = [
+  "Inventory",
+  "Objects",
+  "Clothing",
+  "Body Parts",
+  "Landmarks",
+  "Textures",
+  "Scripts",
+  "Trash",
+];
+export const INVENTORY_RECENTS = [
+  "Sunset Lamp v3",
+  "Roof Kit",
+  "Hollywood LM",
+  "Brass texture",
+];
 
 // A real SL profile splits the resident record from their picks; the blocks
 // shown follow whichever sub-view is active.
 export const PROFILE_BLOCKS = {
   "2ND LIFE": [
-    { label: "2ND LIFE", body: "Builder, terraformer, occasional DJ. Bay City Builders officer. Ask me about mesh roofs." },
-    { label: "GROUPS", body: "Bay City Builders · Sansara Cartographers · Terraform Co-op" },
+    {
+      label: "2ND LIFE",
+      body: "Builder, terraformer, occasional DJ. Bay City Builders officer. Ask me about mesh roofs.",
+    },
+    {
+      label: "GROUPS",
+      body: "Bay City Builders · Sansara Cartographers · Terraform Co-op",
+    },
     { label: "REZZED", body: "2007-03-14 · 19 years · payment info on file" },
   ],
   PICKS: [
-    { label: "THE ROOF BUILD", body: "Bay City — Hollywood <112, 44, 51>. Mesh roof kit demo, up until the next build jam." },
-    { label: "AHERN WELCOME AREA", body: "Ahern <128, 128, 24>. Where I answer build questions on Thursdays." },
-    { label: "SANSARA RIDGE OVERLOOK", body: "Sansara Ridge <64, 200, 88>. Best sunset draw distance on the continent." },
+    {
+      label: "THE ROOF BUILD",
+      body: "Bay City — Hollywood <112, 44, 51>. Mesh roof kit demo, up until the next build jam.",
+    },
+    {
+      label: "AHERN WELCOME AREA",
+      body: "Ahern <128, 128, 24>. Where I answer build questions on Thursdays.",
+    },
+    {
+      label: "SANSARA RIDGE OVERLOOK",
+      body: "Sansara Ridge <64, 200, 88>. Best sunset draw distance on the continent.",
+    },
   ],
 };
 
 // Cache contents, in notional megabytes. Both the Cache screen and the Settings
 // row that links to it read this one table, so the totals can never disagree.
 export const CACHE_ROWS = [
-  { key: "tex",  icon: "image",          name: "Texture cache",       mb: 318, note: "4 812 textures · evicted least-recently-used" },
-  { key: "mesh", icon: "box",            name: "Mesh & object cache", mb: 96,  note: "1 204 rezzed assets · LOD levels 0-3" },
-  { key: "snd",  icon: "volume-2",       name: "Sound cache",         mb: 34,  note: "612 clips · gestures and ambient loops" },
-  { key: "inv",  icon: "folder",         name: "Inventory skeleton",  mb: 21,  note: "1 284 items · 42 folders · synced 14:32" },
-  { key: "map",  icon: "map",            name: "Map tiles",           mb: 12,  note: "96 region tiles · secondlife-maps-cdn" },
-  { key: "chat", icon: "message-square", name: "Chat & IM logs",      mb: 4,   note: "38 conversations · kept on device only" },
+  {
+    key: "tex",
+    icon: "image",
+    name: "Texture cache",
+    mb: 318,
+    note: "4 812 textures · evicted least-recently-used",
+  },
+  {
+    key: "mesh",
+    icon: "box",
+    name: "Mesh & object cache",
+    mb: 96,
+    note: "1 204 rezzed assets · LOD levels 0-3",
+  },
+  {
+    key: "snd",
+    icon: "volume-2",
+    name: "Sound cache",
+    mb: 34,
+    note: "612 clips · gestures and ambient loops",
+  },
+  {
+    key: "inv",
+    icon: "folder",
+    name: "Inventory skeleton",
+    mb: 21,
+    note: "1 284 items · 42 folders · synced 14:32",
+  },
+  {
+    key: "map",
+    icon: "map",
+    name: "Map tiles",
+    mb: 12,
+    note: "96 region tiles · secondlife-maps-cdn",
+  },
+  {
+    key: "chat",
+    icon: "message-square",
+    name: "Chat & IM logs",
+    mb: 4,
+    note: "38 conversations · kept on device only",
+  },
 ];
-export const cacheRows = (cleared = {}) => CACHE_ROWS.map((r) => ({ ...r, mb: cleared[r.key] ? 0 : r.mb }));
-export const cacheUsed = (cleared = {}) => cacheRows(cleared).reduce((n, r) => n + r.mb, 0);
+export const cacheRows = (cleared = {}) =>
+  CACHE_ROWS.map((r) => ({ ...r, mb: cleared[r.key] ? 0 : r.mb }));
+export const cacheUsed = (cleared = {}) =>
+  cacheRows(cleared).reduce((n, r) => n + r.mb, 0);
 
-export const HEAD = (layoutName, paletteName, cacheState = {}, balanceState = {}) => {
+export const HEAD = (
+  layoutName,
+  paletteName,
+  cacheState = {},
+  balanceState = {},
+) => {
   const linden = balanceState.lindenBalance ?? 4250;
   const rate = balanceState.exchangeRate ?? 248.5;
   const usd = (linden / rate).toFixed(2);
@@ -222,15 +544,29 @@ export const HEAD = (layoutName, paletteName, cacheState = {}, balanceState = {}
     Groups: ["GROUPS", "> 12 of 42 slots · 3 unread notices"],
     Notices: ["NOTIFICATIONS", "> 4 offline IMs queued · autoresponse ON"],
     Teleport: ["TELEPORT", "> 9 landmarks · 5 recent destinations"],
-    Settings: ["SETTINGS", "> " + layoutName + " layout / " + paletteName + " colour"],
-    Cache: ["CACHE", "> " + cacheUsed(cacheState.cleared) + " MB of " + cacheState.limit + " MB · " + cacheState.loc],
+    Settings: [
+      "SETTINGS",
+      "> " + layoutName + " layout / " + paletteName + " colour",
+    ],
+    Cache: [
+      "CACHE",
+      "> " +
+        cacheUsed(cacheState.cleared) +
+        " MB of " +
+        cacheState.limit +
+        " MB · " +
+        cacheState.loc,
+    ],
     Diagnostics: ["DIAGNOSTICS", "> grid connectivity probe · agni"],
     // These five screens existed but had no HEAD entry, so they fell through to
     // ["", ""] and rendered an empty header band above their card list.
     Outfits: ["OUTFITS", "> 1 worn · 14 saved · Ruth Resident"],
     Objects: ["OBJECTS", "> 4 nearby · 25 prims in draw distance"],
     Parcel: ["PARCEL", "> Linden Public Park · Da Boom · general"],
-    Transactions: ["L$ TRANSACTIONS", `> balance L$ ${formattedLinden} (~$${usd} USD) · 14 in the last 30 days`],
+    Transactions: [
+      "L$ TRANSACTIONS",
+      `> balance L$ ${formattedLinden} (~$${usd} USD) · 14 in the last 30 days`,
+    ],
     "Mute List": ["MUTE LIST", "> 6 blocked · 3 residents / 3 objects"],
     "3D View": ["", ""],
     Login: ["", ""],
@@ -248,16 +584,55 @@ export const DETAIL = {
       ["14:26 you", "packing it now"],
     ],
   },
-  Outfits: { title: "Urban Casual v2", sub: "outfit · 12 items worn · active outfit",
-    rows: [["BASE AVATAR", "Ruth Classic Mesh"], ["ATTACHMENTS", "8 rigged mesh items · 4 HUDs"], ["FOLDER", "My Outfits / Urban Casual v2"], ["ACTIONS", "Wear · Replace · Add · Take Off"]] },
-  Objects: { title: "Sunset Lamp v3", sub: "object · 4 prims · owner Kit Sandalwood",
-    rows: [["PARCEL", "Da Boom <128, 128, 26>"], ["PERMISSIONS", "copy · modify · no transfer"], ["SCRIPT STATE", "1 script running · 0.02ms CPU time"], ["ACTIONS", "Touch · Pay L$ · Inspect · Derezz"]] },
-  Parcel: { title: "Linden Public Park", sub: "parcel · 4096 sq.m. · general rating",
-    rows: [["OWNER", "Governor Linden"], ["PRIM USAGE", "1 240 / 1 875 prims (66%)"], ["AUDIO STREAM", "http://stream.sl-radio.net:8000/live"], ["FLAGS", "Voice Enabled · No Script Restrict · Edit Land"]] },
-  Transactions: { title: "L$ Balance: 4,250 (~$17.10 USD)", sub: "rate 1 USD = 248.5 L$ · 14 transactions in last 30 days",
-    rows: [["LAST PAYMENT", "+L$ 1,200 from Marlowe Quill"], ["TOTAL SPENT", "L$ 3,450 this month"], ["TOTAL EARNED", "L$ 8,900 this month"], ["FILTER", "All transactions"]] },
-  "Mute List": { title: "Blocked Entities", sub: "6 blocked items · 3 residents · 3 objects",
-    rows: [["SETTINGS", "Block text chat · voice · inventory offers"], ["LAST BLOCKED", "Spam Bot v4 (yesterday)"], ["STORAGE", "Synced with Second Life server"]] },
+  Outfits: {
+    title: "Urban Casual v2",
+    sub: "outfit · 12 items worn · active outfit",
+    rows: [
+      ["BASE AVATAR", "Ruth Classic Mesh"],
+      ["ATTACHMENTS", "8 rigged mesh items · 4 HUDs"],
+      ["FOLDER", "My Outfits / Urban Casual v2"],
+      ["ACTIONS", "Wear · Replace · Add · Take Off"],
+    ],
+  },
+  Objects: {
+    title: "Sunset Lamp v3",
+    sub: "object · 4 prims · owner Kit Sandalwood",
+    rows: [
+      ["PARCEL", "Da Boom <128, 128, 26>"],
+      ["PERMISSIONS", "copy · modify · no transfer"],
+      ["SCRIPT STATE", "1 script running · 0.02ms CPU time"],
+      ["ACTIONS", "Touch · Pay L$ · Inspect · Derezz"],
+    ],
+  },
+  Parcel: {
+    title: "Linden Public Park",
+    sub: "parcel · 4096 sq.m. · general rating",
+    rows: [
+      ["OWNER", "Governor Linden"],
+      ["PRIM USAGE", "1 240 / 1 875 prims (66%)"],
+      ["AUDIO STREAM", "http://stream.sl-radio.net:8000/live"],
+      ["FLAGS", "Voice Enabled · No Script Restrict · Edit Land"],
+    ],
+  },
+  Transactions: {
+    title: "L$ Balance: 4,250 (~$17.10 USD)",
+    sub: "rate 1 USD = 248.5 L$ · 14 transactions in last 30 days",
+    rows: [
+      ["LAST PAYMENT", "+L$ 1,200 from Marlowe Quill"],
+      ["TOTAL SPENT", "L$ 3,450 this month"],
+      ["TOTAL EARNED", "L$ 8,900 this month"],
+      ["FILTER", "All transactions"],
+    ],
+  },
+  "Mute List": {
+    title: "Blocked Entities",
+    sub: "6 blocked items · 3 residents · 3 objects",
+    rows: [
+      ["SETTINGS", "Block text chat · voice · inventory offers"],
+      ["LAST BLOCKED", "Spam Bot v4 (yesterday)"],
+      ["STORAGE", "Synced with Second Life server"],
+    ],
+  },
   Inventory: {
     title: "Sunset Lamp v3",
     sub: "object · 4 prims · copy / mod / no-transfer",
@@ -290,131 +665,468 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
   const opts = (vals) => vals.map((v) => ({ label: String(v), value: v }));
   return {
     Outfits: [
-      { sub: "WORN", icon: "shirt", title: "Urban Casual v2 (Active)", right: "WORN", body: "12 items · Mesh body, jacket, jeans, boots", actions: [{ label: "EDIT OUTFIT", primary: true, pick: () => actions.notify("Editing Urban Casual v2") }] },
-      { sub: "WORN", icon: "layers", title: "Worn attachments", right: "8", body: "Jacket, jeans, boots, hair, glasses · 4 HUDs on screen", actions: [{ label: "TAKE OFF ALL", dim: true, pick: () => actions.notify("Detached 8 attachments") }] },
-      { sub: "SAVED", icon: "user-check", title: "Cyberpunk Tactical", right: "SAVED", body: "15 items · Exo-suit, visor, combat boots", actions: [{ label: "WEAR OUTFIT", primary: true, pick: () => actions.notify("Wearing Cyberpunk Tactical") }] },
-      { sub: "SAVED", icon: "user-check", title: "Formal Eveningwear", right: "SAVED", body: "8 items · Tuxedo, dress shoes, watch", actions: [{ label: "WEAR OUTFIT", pick: () => actions.notify("Wearing Formal Eveningwear") }] },
-      { sub: "SAVED", icon: "folder-archive", title: "Beach & Swimwear", right: "SAVED", body: "5 items · Boardshorts, sunglasses, sandals", actions: [{ label: "WEAR OUTFIT", pick: () => actions.notify("Wearing Beach & Swimwear") }] },
+      {
+        sub: "WORN",
+        icon: "shirt",
+        title: "Urban Casual v2 (Active)",
+        right: "WORN",
+        body: "12 items · Mesh body, jacket, jeans, boots",
+        actions: [
+          {
+            label: "EDIT OUTFIT",
+            primary: true,
+            pick: () => actions.notify("Editing Urban Casual v2"),
+          },
+        ],
+      },
+      {
+        sub: "WORN",
+        icon: "layers",
+        title: "Worn attachments",
+        right: "8",
+        body: "Jacket, jeans, boots, hair, glasses · 4 HUDs on screen",
+        actions: [
+          {
+            label: "TAKE OFF ALL",
+            dim: true,
+            pick: () => actions.notify("Detached 8 attachments"),
+          },
+        ],
+      },
+      {
+        sub: "SAVED",
+        icon: "user-check",
+        title: "Cyberpunk Tactical",
+        right: "SAVED",
+        body: "15 items · Exo-suit, visor, combat boots",
+        actions: [
+          {
+            label: "WEAR OUTFIT",
+            primary: true,
+            pick: () => actions.notify("Wearing Cyberpunk Tactical"),
+          },
+        ],
+      },
+      {
+        sub: "SAVED",
+        icon: "user-check",
+        title: "Formal Eveningwear",
+        right: "SAVED",
+        body: "8 items · Tuxedo, dress shoes, watch",
+        actions: [
+          {
+            label: "WEAR OUTFIT",
+            pick: () => actions.notify("Wearing Formal Eveningwear"),
+          },
+        ],
+      },
+      {
+        sub: "SAVED",
+        icon: "folder-archive",
+        title: "Beach & Swimwear",
+        right: "SAVED",
+        body: "5 items · Boardshorts, sunglasses, sandals",
+        actions: [
+          {
+            label: "WEAR OUTFIT",
+            pick: () => actions.notify("Wearing Beach & Swimwear"),
+          },
+        ],
+      },
     ],
     Objects: [
-      { sub: "NEARBY", icon: "box", title: "Sunset Lamp v3", right: "4 prims", body: "Owner: Kit Sandalwood · Scripted dimmer", actions: [{ label: "TOUCH", primary: true, pick: () => actions.notify("Touched Sunset Lamp v3") }, { label: "INSPECT", pick: () => actions.setTab("Objects", "INSPECT") }] },
-      { sub: "NEARBY", icon: "door-closed", title: "Roof Access Door", right: "12 prims", body: "Owner: Da Boom Parcel · Auto-open script", actions: [{ label: "TOUCH", pick: () => actions.notify("Door activated") }] },
-      { sub: "NEARBY", icon: "armchair", title: "Lounge Chair Deluxe", right: "8 prims", body: "Owner: Nyx Vaher · 14 sit animations", actions: [{ label: "SIT", primary: true, pick: () => actions.notify("Sat on Lounge Chair") }] },
-      { sub: "NEARBY", icon: "trash-2", title: "Temp Build Platform", right: "1 prim", body: "Owner: Ruth Resident · Temporary object", actions: [{ label: "DEREZ / RETURN", dim: true, pick: () => actions.notify("Derezzed Temp Build Platform") }] },
+      {
+        sub: "NEARBY",
+        icon: "box",
+        title: "Sunset Lamp v3",
+        right: "4 prims",
+        body: "Owner: Kit Sandalwood · Scripted dimmer",
+        actions: [
+          {
+            label: "TOUCH",
+            primary: true,
+            pick: () => actions.notify("Touched Sunset Lamp v3"),
+          },
+          {
+            label: "INSPECT",
+            pick: () => actions.setTab("Objects", "INSPECT"),
+          },
+        ],
+      },
+      {
+        sub: "NEARBY",
+        icon: "door-closed",
+        title: "Roof Access Door",
+        right: "12 prims",
+        body: "Owner: Da Boom Parcel · Auto-open script",
+        actions: [
+          { label: "TOUCH", pick: () => actions.notify("Door activated") },
+        ],
+      },
+      {
+        sub: "NEARBY",
+        icon: "armchair",
+        title: "Lounge Chair Deluxe",
+        right: "8 prims",
+        body: "Owner: Nyx Vaher · 14 sit animations",
+        actions: [
+          {
+            label: "SIT",
+            primary: true,
+            pick: () => actions.notify("Sat on Lounge Chair"),
+          },
+        ],
+      },
+      {
+        sub: "NEARBY",
+        icon: "trash-2",
+        title: "Temp Build Platform",
+        right: "1 prim",
+        body: "Owner: Ruth Resident · Temporary object",
+        actions: [
+          {
+            label: "DEREZ / RETURN",
+            dim: true,
+            pick: () => actions.notify("Derezzed Temp Build Platform"),
+          },
+        ],
+      },
       // INSPECT is the selected object's record — the same fields the tablet's
       // split-detail pane shows, as cards for the devices that have no split pane.
-      { sub: "INSPECT", icon: "box", title: "Sunset Lamp v3", right: "selected", body: "Object · 4 prims · owner Kit Sandalwood · created 2026-08-14" },
-      { sub: "INSPECT", icon: "map-pin", title: "Position", right: "Da Boom", body: "<128, 128, 26> · rotation <0, 0, 41°> · scale <0.4, 0.4, 1.2>" },
-      { sub: "INSPECT", icon: "key", title: "Permissions", right: "copy / mod", body: "You can copy and modify this object. Transfer is not permitted." },
-      { sub: "INSPECT", icon: "file-code", title: "Scripts", right: "1 running", body: "dimmer.lsl · 0.02 ms CPU · listens on channel -142", actions: [{ label: "RESET SCRIPTS", dim: true, pick: () => actions.notify("Sunset Lamp v3 — scripts reset") }] },
-      { sub: "INSPECT", icon: "arrow-left", title: "Back to nearby", body: "Stop inspecting and return to the objects in draw distance.", actions: [{ label: "NEARBY OBJECTS", primary: true, pick: () => actions.setTab("Objects", "NEARBY") }] },
+      {
+        sub: "INSPECT",
+        icon: "box",
+        title: "Sunset Lamp v3",
+        right: "selected",
+        body: "Object · 4 prims · owner Kit Sandalwood · created 2026-08-14",
+      },
+      {
+        sub: "INSPECT",
+        icon: "map-pin",
+        title: "Position",
+        right: "Da Boom",
+        body: "<128, 128, 26> · rotation <0, 0, 41°> · scale <0.4, 0.4, 1.2>",
+      },
+      {
+        sub: "INSPECT",
+        icon: "key",
+        title: "Permissions",
+        right: "copy / mod",
+        body: "You can copy and modify this object. Transfer is not permitted.",
+      },
+      {
+        sub: "INSPECT",
+        icon: "file-code",
+        title: "Scripts",
+        right: "1 running",
+        body: "dimmer.lsl · 0.02 ms CPU · listens on channel -142",
+        actions: [
+          {
+            label: "RESET SCRIPTS",
+            dim: true,
+            pick: () => actions.notify("Sunset Lamp v3 — scripts reset"),
+          },
+        ],
+      },
+      {
+        sub: "INSPECT",
+        icon: "arrow-left",
+        title: "Back to nearby",
+        body: "Stop inspecting and return to the objects in draw distance.",
+        actions: [
+          {
+            label: "NEARBY OBJECTS",
+            primary: true,
+            pick: () => actions.setTab("Objects", "NEARBY"),
+          },
+        ],
+      },
     ],
     Parcel: [
-      { sub: "GENERAL", icon: "map-pin", title: "Linden Public Park", right: "4096 m²", body: "Sim: Da Boom <128, 128, 26> · Rating: General", actions: [{ label: "TELEPORT HERE", primary: true, pick: () => actions.setScreen("Map") }] },
-      { sub: "GENERAL", icon: "user", title: "Parcel Owner", right: "Governor Linden", body: "Group: Linden Department of Public Works" },
-      { sub: "GENERAL", icon: "layers", title: "Parcel Capacity", right: "1240 / 1875", body: "66% prim capacity used · 635 prims available", meter: 1240 / 1875 },
-      { sub: "GENERAL", icon: "flag", title: "Parcel flags", body: "Voice enabled · scripts allowed · terraform by group · no fly restriction" },
-      { sub: "MEDIA", icon: "radio", title: "Audio & music stream", body: "http://stream.sl-radio.net:8000/live", actions: [{ label: "PLAY STREAM", primary: true, pick: () => actions.notify("Playing region audio stream") }] },
-      { sub: "MEDIA", icon: "monitor-play", title: "Shared media", right: "MOAP", body: "https://bay-city-builds.example/board · 512×512 on 2 faces", actions: [{ label: "OPEN MEDIA", pick: () => actions.notify("Parcel media — opening") }] },
-      { sub: "MEDIA", icon: "play", title: "Autoplay parcel media", body: "Start this parcel's stream and shared media without asking each time.", toggle: true, on: toggles.mediaAuto, togglePick: () => actions.toggleSetting("mediaAuto") },
-      { sub: "MEDIA", icon: "volume-2", title: "Master volume", right: prefs.volume, body: "Shared with Settings › Sound & voice.", select: true, options: opts(["Muted", "25%", "50%", "70%", "100%"]), value: prefs.volume, onChange: (v) => actions.setPref("volume", v) },
+      {
+        sub: "GENERAL",
+        icon: "map-pin",
+        title: "Linden Public Park",
+        right: "4096 m²",
+        body: "Sim: Da Boom <128, 128, 26> · Rating: General",
+        actions: [
+          {
+            label: "TELEPORT HERE",
+            primary: true,
+            pick: () => actions.setScreen("Map"),
+          },
+        ],
+      },
+      {
+        sub: "GENERAL",
+        icon: "user",
+        title: "Parcel Owner",
+        right: "Governor Linden",
+        body: "Group: Linden Department of Public Works",
+      },
+      {
+        sub: "GENERAL",
+        icon: "layers",
+        title: "Parcel Capacity",
+        right: "1240 / 1875",
+        body: "66% prim capacity used · 635 prims available",
+        meter: 1240 / 1875,
+      },
+      {
+        sub: "GENERAL",
+        icon: "flag",
+        title: "Parcel flags",
+        body: "Voice enabled · scripts allowed · terraform by group · no fly restriction",
+      },
+      {
+        sub: "MEDIA",
+        icon: "radio",
+        title: "Audio & music stream",
+        body: "http://stream.sl-radio.net:8000/live",
+        actions: [
+          {
+            label: "PLAY STREAM",
+            primary: true,
+            pick: () => actions.notify("Playing region audio stream"),
+          },
+        ],
+      },
+      {
+        sub: "MEDIA",
+        icon: "monitor-play",
+        title: "Shared media",
+        right: "MOAP",
+        body: "https://bay-city-builds.example/board · 512×512 on 2 faces",
+        actions: [
+          {
+            label: "OPEN MEDIA",
+            pick: () => actions.notify("Parcel media — opening"),
+          },
+        ],
+      },
+      {
+        sub: "MEDIA",
+        icon: "play",
+        title: "Autoplay parcel media",
+        body: "Start this parcel's stream and shared media without asking each time.",
+        toggle: true,
+        on: toggles.mediaAuto,
+        togglePick: () => actions.toggleSetting("mediaAuto"),
+      },
+      {
+        sub: "MEDIA",
+        icon: "volume-2",
+        title: "Master volume",
+        right: prefs.volume,
+        body: "Shared with Settings › Sound & voice.",
+        select: true,
+        options: opts(["Muted", "25%", "50%", "70%", "100%"]),
+        value: prefs.volume,
+        onChange: (v) => actions.setPref("volume", v),
+      },
     ],
     // ALL lists every movement; PAYMENTS narrows to money leaving the account,
     // so the outgoing rows carry both tags and the incoming ones only ALL.
     Transactions: [
       {
-        sub: ["ALL"], icon: "arrow-down-left", title: "Received L$ 1,200", right: "5h ago", body: "From Marlowe Quill for “Roof Kit”", accent: "ok",
+        sub: ["ALL"],
+        icon: "arrow-down-left",
+        title: "Received L$ 1,200",
+        right: "5h ago",
+        body: "From Marlowe Quill for “Roof Kit”",
+        accent: "ok",
         actions: [
           {
             label: "VIEW RECEIPT",
             primary: true,
-            pick: () => actions.setDialog({
-              icon: "receipt",
-              kind: "ITEMIZED RECEIPT",
-              title: "Received L$ 1,200",
-              body: "Payment received from Marlowe Quill for “Roof Kit”.",
-              meta: "Transaction ID: TX-84920412 · Date: Today 14:32 SLT · Amount: L$ 1,200 (~$4.83 USD) · Status: Settled",
-              buttons: [{ label: "CLOSE", primary: true }]
-            })
-          }
-        ]
+            pick: () =>
+              actions.setDialog({
+                icon: "receipt",
+                kind: "ITEMIZED RECEIPT",
+                title: "Received L$ 1,200",
+                body: "Payment received from Marlowe Quill for “Roof Kit”.",
+                meta: "Transaction ID: TX-84920412 · Date: Today 14:32 SLT · Amount: L$ 1,200 (~$4.83 USD) · Status: Settled",
+                buttons: [{ label: "CLOSE", primary: true }],
+              }),
+          },
+        ],
       },
       {
-        sub: ["ALL", "PAYMENTS"], icon: "arrow-up-right", title: "Paid L$ 350", right: "Yesterday", body: "To Bay City Land Co. for Parcel Rent", accent: "sec",
+        sub: ["ALL", "PAYMENTS"],
+        icon: "arrow-up-right",
+        title: "Paid L$ 350",
+        right: "Yesterday",
+        body: "To Bay City Land Co. for Parcel Rent",
+        accent: "sec",
         actions: [
           {
             label: "VIEW RECEIPT",
             primary: true,
-            pick: () => actions.setDialog({
-              icon: "receipt",
-              kind: "ITEMIZED RECEIPT",
-              title: "Paid L$ 350",
-              body: "Payment sent to Bay City Land Co. for Parcel Rent.",
-              meta: "Transaction ID: TX-84918230 · Date: Yesterday 11:15 SLT · Amount: L$ 350 (~$1.41 USD) · Status: Settled",
-              buttons: [{ label: "CLOSE", primary: true }]
-            })
-          }
-        ]
+            pick: () =>
+              actions.setDialog({
+                icon: "receipt",
+                kind: "ITEMIZED RECEIPT",
+                title: "Paid L$ 350",
+                body: "Payment sent to Bay City Land Co. for Parcel Rent.",
+                meta: "Transaction ID: TX-84918230 · Date: Yesterday 11:15 SLT · Amount: L$ 350 (~$1.41 USD) · Status: Settled",
+                buttons: [{ label: "CLOSE", primary: true }],
+              }),
+          },
+        ],
       },
       {
-        sub: ["ALL", "PAYMENTS"], icon: "arrow-up-right", title: "Paid L$ 500", right: "Sep 12", body: "To Kit Sandalwood for Sculpted Light Rig",
+        sub: ["ALL", "PAYMENTS"],
+        icon: "arrow-up-right",
+        title: "Paid L$ 500",
+        right: "Sep 12",
+        body: "To Kit Sandalwood for Sculpted Light Rig",
         actions: [
           {
             label: "VIEW RECEIPT",
             primary: true,
-            pick: () => actions.setDialog({
-              icon: "receipt",
-              kind: "ITEMIZED RECEIPT",
-              title: "Paid L$ 500",
-              body: "Payment sent to Kit Sandalwood for Sculpted Light Rig.",
-              meta: "Transaction ID: TX-84890123 · Date: 2026-09-12 16:40 SLT · Amount: L$ 500 (~$2.01 USD) · Status: Settled",
-              buttons: [{ label: "CLOSE", primary: true }]
-            })
-          }
-        ]
+            pick: () =>
+              actions.setDialog({
+                icon: "receipt",
+                kind: "ITEMIZED RECEIPT",
+                title: "Paid L$ 500",
+                body: "Payment sent to Kit Sandalwood for Sculpted Light Rig.",
+                meta: "Transaction ID: TX-84890123 · Date: 2026-09-12 16:40 SLT · Amount: L$ 500 (~$2.01 USD) · Status: Settled",
+                buttons: [{ label: "CLOSE", primary: true }],
+              }),
+          },
+        ],
       },
       {
-        sub: ["ALL"], icon: "arrow-down-left", title: "Received L$ 2,500", right: "Sep 10", body: "From Event Payout · Build Jam Winner", accent: "ok",
+        sub: ["ALL"],
+        icon: "arrow-down-left",
+        title: "Received L$ 2,500",
+        right: "Sep 10",
+        body: "From Event Payout · Build Jam Winner",
+        accent: "ok",
         actions: [
           {
             label: "VIEW RECEIPT",
             primary: true,
-            pick: () => actions.setDialog({
-              icon: "receipt",
-              kind: "ITEMIZED RECEIPT",
-              title: "Received L$ 2,500",
-              body: "Event Payout received for Build Jam Winner.",
-              meta: "Transaction ID: TX-84872391 · Date: 2026-09-10 18:00 SLT · Amount: L$ 2,500 (~$10.06 USD) · Status: Settled",
-              buttons: [{ label: "CLOSE", primary: true }]
-            })
-          }
-        ]
+            pick: () =>
+              actions.setDialog({
+                icon: "receipt",
+                kind: "ITEMIZED RECEIPT",
+                title: "Received L$ 2,500",
+                body: "Event Payout received for Build Jam Winner.",
+                meta: "Transaction ID: TX-84872391 · Date: 2026-09-10 18:00 SLT · Amount: L$ 2,500 (~$10.06 USD) · Status: Settled",
+                buttons: [{ label: "CLOSE", primary: true }],
+              }),
+          },
+        ],
       },
       {
-        sub: ["ALL", "PAYMENTS"], icon: "arrow-up-right", title: "Paid L$ 99", right: "Sep 08", body: "To Aurora Dance Crew for Group Join Fee",
+        sub: ["ALL", "PAYMENTS"],
+        icon: "arrow-up-right",
+        title: "Paid L$ 99",
+        right: "Sep 08",
+        body: "To Aurora Dance Crew for Group Join Fee",
         actions: [
           {
             label: "VIEW RECEIPT",
             primary: true,
-            pick: () => actions.setDialog({
-              icon: "receipt",
-              kind: "ITEMIZED RECEIPT",
-              title: "Paid L$ 99",
-              body: "Group Join Fee paid to Aurora Dance Crew.",
-              meta: "Transaction ID: TX-84851204 · Date: 2026-09-08 09:20 SLT · Amount: L$ 99 (~$0.40 USD) · Status: Settled",
-              buttons: [{ label: "CLOSE", primary: true }]
-            })
-          }
-        ]
+            pick: () =>
+              actions.setDialog({
+                icon: "receipt",
+                kind: "ITEMIZED RECEIPT",
+                title: "Paid L$ 99",
+                body: "Group Join Fee paid to Aurora Dance Crew.",
+                meta: "Transaction ID: TX-84851204 · Date: 2026-09-08 09:20 SLT · Amount: L$ 99 (~$0.40 USD) · Status: Settled",
+                buttons: [{ label: "CLOSE", primary: true }],
+              }),
+          },
+        ],
       },
     ],
     "Mute List": [
-      { sub: "AVATARS", icon: "volume-x", title: "Griefing Spambot 9000", right: "AVATAR", body: "Muted text, voice & gestures · Sep 14", actions: [{ label: "UNMUTE", dim: true, pick: () => actions.notify("Unmuted Griefing Spambot 9000") }] },
-      { sub: "AVATARS", icon: "volume-x", title: "Rezday Confetti Bot", right: "AVATAR", body: "Muted text & particles · Sep 09", actions: [{ label: "UNMUTE", dim: true, pick: () => actions.notify("Unmuted Rezday Confetti Bot") }] },
-      { sub: "AVATARS", icon: "volume-x", title: "Marrow Ashdown", right: "AVATAR", body: "Muted voice only · Aug 28", actions: [{ label: "UNMUTE", dim: true, pick: () => actions.notify("Unmuted Marrow Ashdown") }] },
-      { sub: "OBJECTS", icon: "box", title: "Noisy Emitter Prim", right: "OBJECT", body: "Muted object sounds · Sep 11", actions: [{ label: "UNMUTE", dim: true, pick: () => actions.notify("Unmuted Noisy Emitter Prim") }] },
-      { sub: "OBJECTS", icon: "box", title: "Annoying Vendor Script", right: "OBJECT", body: "Muted chat spam · Sep 02", actions: [{ label: "UNMUTE", dim: true, pick: () => actions.notify("Unmuted Annoying Vendor Script") }] },
-      { sub: "OBJECTS", icon: "box", title: "Roadside Ad Board", right: "OBJECT", body: "Muted chat spam · Aug 30", actions: [{ label: "UNMUTE", dim: true, pick: () => actions.notify("Unmuted Roadside Ad Board") }] },
+      {
+        sub: "AVATARS",
+        icon: "volume-x",
+        title: "Griefing Spambot 9000",
+        right: "AVATAR",
+        body: "Muted text, voice & gestures · Sep 14",
+        actions: [
+          {
+            label: "UNMUTE",
+            dim: true,
+            pick: () => actions.notify("Unmuted Griefing Spambot 9000"),
+          },
+        ],
+      },
+      {
+        sub: "AVATARS",
+        icon: "volume-x",
+        title: "Rezday Confetti Bot",
+        right: "AVATAR",
+        body: "Muted text & particles · Sep 09",
+        actions: [
+          {
+            label: "UNMUTE",
+            dim: true,
+            pick: () => actions.notify("Unmuted Rezday Confetti Bot"),
+          },
+        ],
+      },
+      {
+        sub: "AVATARS",
+        icon: "volume-x",
+        title: "Marrow Ashdown",
+        right: "AVATAR",
+        body: "Muted voice only · Aug 28",
+        actions: [
+          {
+            label: "UNMUTE",
+            dim: true,
+            pick: () => actions.notify("Unmuted Marrow Ashdown"),
+          },
+        ],
+      },
+      {
+        sub: "OBJECTS",
+        icon: "box",
+        title: "Noisy Emitter Prim",
+        right: "OBJECT",
+        body: "Muted object sounds · Sep 11",
+        actions: [
+          {
+            label: "UNMUTE",
+            dim: true,
+            pick: () => actions.notify("Unmuted Noisy Emitter Prim"),
+          },
+        ],
+      },
+      {
+        sub: "OBJECTS",
+        icon: "box",
+        title: "Annoying Vendor Script",
+        right: "OBJECT",
+        body: "Muted chat spam · Sep 02",
+        actions: [
+          {
+            label: "UNMUTE",
+            dim: true,
+            pick: () => actions.notify("Unmuted Annoying Vendor Script"),
+          },
+        ],
+      },
+      {
+        sub: "OBJECTS",
+        icon: "box",
+        title: "Roadside Ad Board",
+        right: "OBJECT",
+        body: "Muted chat spam · Aug 30",
+        actions: [
+          {
+            label: "UNMUTE",
+            dim: true,
+            pick: () => actions.notify("Unmuted Roadside Ad Board"),
+          },
+        ],
+      },
     ],
     Friends: [
       ...(state.tabs.Friends === "ONLINE" || dismissed.friendReq
@@ -427,12 +1139,22 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
               body: "“met you at the Bay City build jam”",
               accent: "sec2",
               actions: [
-                { label: "DECLINE", dim: true, pick: () => actions.dismiss("friendReq") },
-                { label: "ACCEPT", primary: true, pick: () => actions.dismiss("friendReq") },
+                {
+                  label: "DECLINE",
+                  dim: true,
+                  pick: () => actions.dismiss("friendReq"),
+                },
+                {
+                  label: "ACCEPT",
+                  primary: true,
+                  pick: () => actions.dismiss("friendReq"),
+                },
               ],
             },
           ]),
-      ...FRIEND_ROWS.filter(([, , online]) => state.tabs.Friends !== "ONLINE" || online).map(([n, m, online, rights]) => ({
+      ...FRIEND_ROWS.filter(
+        ([, , online]) => state.tabs.Friends !== "ONLINE" || online,
+      ).map(([n, m, online, rights]) => ({
         title: n,
         body: m,
         icon: online ? "circle-dot" : "circle",
@@ -445,41 +1167,136 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
         ? []
         : [
             {
-              sub: "GROUPS", icon: "megaphone", title: "Notice · Bay City Builders", right: "2h",
-              body: "Build jam Saturday 14:00 SLT — landmark attached.", accent: "pri",
+              sub: "GROUPS",
+              icon: "megaphone",
+              title: "Notice · Bay City Builders",
+              right: "2h",
+              body: "Build jam Saturday 14:00 SLT — landmark attached.",
+              accent: "pri",
               actions: [
-                { label: "KEEP LANDMARK", pick: () => actions.dismiss("groupNotice") },
-                { label: "OPEN CHAT", primary: true, pick: () => { actions.setTab("Chat", "GROUP"); actions.setChip("Bay City Builders"); actions.setScreen("Chat"); } },
+                {
+                  label: "KEEP LANDMARK",
+                  pick: () => actions.dismiss("groupNotice"),
+                },
+                {
+                  label: "OPEN CHAT",
+                  primary: true,
+                  pick: () => {
+                    actions.setTab("Chat", "GROUP");
+                    actions.setChip("Bay City Builders");
+                    actions.setScreen("Chat");
+                  },
+                },
               ],
             },
           ]),
-      { sub: "GROUPS", icon: "users", title: "Bay City Builders", body: "412 members · officer · notices on", badge: 4,
-        actions: [{ label: "ROLES & ABILITIES", pick: () => actions.setTab("Groups", "ROLES") }] },
-      { sub: "GROUPS", icon: "users", title: "Sansara Cartographers", body: "88 members · member · notices on" },
-      { sub: "GROUPS", icon: "users", title: "Terraform Co-op", body: "1 204 members · member · muted", badge: 12 },
-      { sub: "GROUPS", icon: "users", title: "Mono Script Guild", body: "56 members · member · notices off" },
+      {
+        sub: "GROUPS",
+        icon: "users",
+        title: "Bay City Builders",
+        body: "412 members · officer · notices on",
+        badge: 4,
+        actions: [
+          {
+            label: "ROLES & ABILITIES",
+            pick: () => actions.setTab("Groups", "ROLES"),
+          },
+        ],
+      },
+      {
+        sub: "GROUPS",
+        icon: "users",
+        title: "Sansara Cartographers",
+        body: "88 members · member · notices on",
+      },
+      {
+        sub: "GROUPS",
+        icon: "users",
+        title: "Terraform Co-op",
+        body: "1 204 members · member · muted",
+        badge: 12,
+      },
+      {
+        sub: "GROUPS",
+        icon: "users",
+        title: "Mono Script Guild",
+        body: "56 members · member · notices off",
+      },
       ...(dismissed.groupInvite
         ? []
         : [
             {
-              sub: "GROUPS", icon: "user-plus", title: "Invite · Aurora Dance Crew",
-              body: "Nyx Vaher invited you — no join fee.", accent: "sec2",
+              sub: "GROUPS",
+              icon: "user-plus",
+              title: "Invite · Aurora Dance Crew",
+              body: "Nyx Vaher invited you — no join fee.",
+              accent: "sec2",
               actions: [
-                { label: "IGNORE", dim: true, pick: () => actions.dismiss("groupInvite") },
-                { label: "JOIN", primary: true, pick: () => actions.dismiss("groupInvite") },
+                {
+                  label: "IGNORE",
+                  dim: true,
+                  pick: () => actions.dismiss("groupInvite"),
+                },
+                {
+                  label: "JOIN",
+                  primary: true,
+                  pick: () => actions.dismiss("groupInvite"),
+                },
               ],
             },
           ]),
       // ROLES is scoped to the group you are an officer of — the one row whose
       // abilities you can actually act on.
       { sub: "ROLES", sect: true, title: "BAY CITY BUILDERS · ROLES" },
-      { sub: "ROLES", icon: "crown", title: "Owners", right: "2", body: "Full abilities · can assign every role, change land and eject members." },
-      { sub: "ROLES", icon: "shield", title: "Officers", right: "9", body: "Your role · send notices, invite members, deed and terraform land.", accent: "pri",
-        actions: [{ label: "SEND A NOTICE", primary: true, pick: () => actions.notify("Bay City Builders — compose notice") }] },
-      { sub: "ROLES", icon: "users", title: "Everyone", right: "412", body: "Default role · receive notices, chat in group, rez on group land." },
-      { sub: "ROLES", icon: "user-round-x", title: "Probation", right: "3", body: "No rez, no notices · assigned by an officer after an abuse report." },
-      { sub: "ROLES", icon: "arrow-left", title: "Back to groups", body: "Return to the list of groups you belong to.",
-        actions: [{ label: "ALL GROUPS", primary: true, pick: () => actions.setTab("Groups", "GROUPS") }] },
+      {
+        sub: "ROLES",
+        icon: "crown",
+        title: "Owners",
+        right: "2",
+        body: "Full abilities · can assign every role, change land and eject members.",
+      },
+      {
+        sub: "ROLES",
+        icon: "shield",
+        title: "Officers",
+        right: "9",
+        body: "Your role · send notices, invite members, deed and terraform land.",
+        accent: "pri",
+        actions: [
+          {
+            label: "SEND A NOTICE",
+            primary: true,
+            pick: () => actions.notify("Bay City Builders — compose notice"),
+          },
+        ],
+      },
+      {
+        sub: "ROLES",
+        icon: "users",
+        title: "Everyone",
+        right: "412",
+        body: "Default role · receive notices, chat in group, rez on group land.",
+      },
+      {
+        sub: "ROLES",
+        icon: "user-round-x",
+        title: "Probation",
+        right: "3",
+        body: "No rez, no notices · assigned by an officer after an abuse report.",
+      },
+      {
+        sub: "ROLES",
+        icon: "arrow-left",
+        title: "Back to groups",
+        body: "Return to the list of groups you belong to.",
+        actions: [
+          {
+            label: "ALL GROUPS",
+            primary: true,
+            pick: () => actions.setTab("Groups", "GROUPS"),
+          },
+        ],
+      },
     ],
     // IM is person-to-person traffic; SYSTEM is everything the grid itself sent.
     Notices: [
@@ -487,11 +1304,26 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
         ? []
         : [
             {
-              sub: "IM", icon: "message-square", title: "Offline IM · Sable Ashgrove", right: "yesterday",
+              sub: "IM",
+              icon: "message-square",
+              title: "Offline IM · Sable Ashgrove",
+              right: "yesterday",
               body: "“the texture pack is in your inventory, no rush”",
               actions: [
-                { label: "QUICK REPLY", primary: true, pick: () => { actions.dismiss("offlineIm"); actions.setTab("Chat", "IM"); actions.setChip("Sable Ashgrove"); actions.setScreen("Chat"); } },
-                { label: "MARK READ", pick: () => actions.dismiss("offlineIm") },
+                {
+                  label: "QUICK REPLY",
+                  primary: true,
+                  pick: () => {
+                    actions.dismiss("offlineIm");
+                    actions.setTab("Chat", "IM");
+                    actions.setChip("Sable Ashgrove");
+                    actions.setScreen("Chat");
+                  },
+                },
+                {
+                  label: "MARK READ",
+                  pick: () => actions.dismiss("offlineIm"),
+                },
               ],
             },
           ]),
@@ -499,38 +1331,152 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
         ? []
         : [
             {
-              sub: "IM", icon: "package", title: "Inventory offer · Nyx Vaher", right: "2h",
+              sub: "IM",
+              icon: "package",
+              title: "Inventory offer · Nyx Vaher",
+              right: "2h",
               body: "Bay City Landmark Pack · folder, 6 items",
               actions: [
-                { label: "DECLINE", dim: true, pick: () => actions.dismiss("invOffer") },
-                { label: "ACCEPT", primary: true, pick: () => actions.dismiss("invOffer") },
+                {
+                  label: "DECLINE",
+                  dim: true,
+                  pick: () => actions.dismiss("invOffer"),
+                },
+                {
+                  label: "ACCEPT",
+                  primary: true,
+                  pick: () => actions.dismiss("invOffer"),
+                },
               ],
             },
           ]),
-      { sub: "IM", icon: "message-square", title: "Offline IM · Kit Sandalwood", right: "2d", body: "“ping me when you’re back, the roof needs one more pass”",
-        actions: [{ label: "QUICK REPLY", primary: true, pick: () => { actions.setTab("Chat", "IM"); actions.setChip("Kit Sandalwood"); actions.setScreen("Chat"); } }] },
-      { sub: "SYSTEM", icon: "banknote", title: "Payment received", right: "5h", body: "Marlowe Quill paid you L$ 1 200 for “Roof Kit”." },
-      { sub: "SYSTEM", icon: "megaphone", title: "Group notice · Terraform Co-op", right: "8h", body: "Sim edge terraform freeze until Monday." },
-      { sub: "SYSTEM", icon: "alert-triangle", title: "Estate message · Da Boom", right: "1d", body: "Region restarted for maintenance at 03:12 SLT." },
-      { sub: "SYSTEM", icon: "bell-off", title: "Autoresponse is " + (toggles.autoresponse ? "ON" : "OFF"), body: "“On mobile — replies may be slow.” Sent 4 times today.",
-        toggle: true, on: toggles.autoresponse, togglePick: () => actions.toggleSetting("autoresponse") },
+      {
+        sub: "IM",
+        icon: "message-square",
+        title: "Offline IM · Kit Sandalwood",
+        right: "2d",
+        body: "“ping me when you’re back, the roof needs one more pass”",
+        actions: [
+          {
+            label: "QUICK REPLY",
+            primary: true,
+            pick: () => {
+              actions.setTab("Chat", "IM");
+              actions.setChip("Kit Sandalwood");
+              actions.setScreen("Chat");
+            },
+          },
+        ],
+      },
+      {
+        sub: "SYSTEM",
+        icon: "banknote",
+        title: "Payment received",
+        right: "5h",
+        body: "Marlowe Quill paid you L$ 1 200 for “Roof Kit”.",
+      },
+      {
+        sub: "SYSTEM",
+        icon: "megaphone",
+        title: "Group notice · Terraform Co-op",
+        right: "8h",
+        body: "Sim edge terraform freeze until Monday.",
+      },
+      {
+        sub: "SYSTEM",
+        icon: "alert-triangle",
+        title: "Estate message · Da Boom",
+        right: "1d",
+        body: "Region restarted for maintenance at 03:12 SLT.",
+      },
+      {
+        sub: "SYSTEM",
+        icon: "bell-off",
+        title: "Autoresponse is " + (toggles.autoresponse ? "ON" : "OFF"),
+        body: "“On mobile — replies may be slow.” Sent 4 times today.",
+        toggle: true,
+        on: toggles.autoresponse,
+        togglePick: () => actions.toggleSetting("autoresponse"),
+      },
     ],
     // LANDMARK is the saved places list; HISTORY is where you have actually been.
     Teleport: [
-      { sub: "HISTORY", icon: "history", title: "Recent · Bay City — Hollywood", right: "14:02", body: "<112, 44, 51> · adult · 18 avatars",
+      {
+        sub: "HISTORY",
+        icon: "history",
+        title: "Recent · Bay City — Hollywood",
+        right: "14:02",
+        body: "<112, 44, 51> · adult · 18 avatars",
         actions: [
-          { label: "TELEPORT", primary: true, pick: () => actions.setScreen("Map") },
-          { label: pinned.hollywood ? "PINNED" : "PIN", primary: pinned.hollywood, pick: () => actions.pin("hollywood") },
-        ] },
-      { sub: "HISTORY", icon: "history", title: "Recent · Sansara Ridge", right: "yesterday", body: "<64, 200, 88> · general" },
-      { sub: "HISTORY", icon: "history", title: "Recent · Ahern Welcome Area", right: "2d", body: "<128, 128, 24> · moderate · 6 avatars" },
-      { sub: "HISTORY", icon: "eraser", title: "Clear teleport history", body: "Removes the 5 recent destinations from this device.",
-        actions: [{ label: "CLEAR HISTORY", dim: true, pick: () => actions.notify("Teleport history cleared") }] },
-      { sub: "LANDMARK", icon: "star", title: "Home", body: "Da Boom <128, 128, 26>" },
-      { sub: "LANDMARK", icon: "star", title: "The Roof Build", body: "Bay City — Hollywood <112, 44, 51>" },
-      { sub: "LANDMARK", icon: "star", title: "Ahern Welcome Area", body: "Ahern <128, 128, 24>" },
-      { sub: "LANDMARK", icon: "star", title: "Sansara Ridge overlook", body: "Sansara Ridge <64, 200, 88>" },
-      { sub: "LANDMARK", icon: "map-pin", title: "Paste a SLURL", body: "secondlife:// … · or scan a QR from desktop" },
+          {
+            label: "TELEPORT",
+            primary: true,
+            pick: () => actions.setScreen("Map"),
+          },
+          {
+            label: pinned.hollywood ? "PINNED" : "PIN",
+            primary: pinned.hollywood,
+            pick: () => actions.pin("hollywood"),
+          },
+        ],
+      },
+      {
+        sub: "HISTORY",
+        icon: "history",
+        title: "Recent · Sansara Ridge",
+        right: "yesterday",
+        body: "<64, 200, 88> · general",
+      },
+      {
+        sub: "HISTORY",
+        icon: "history",
+        title: "Recent · Ahern Welcome Area",
+        right: "2d",
+        body: "<128, 128, 24> · moderate · 6 avatars",
+      },
+      {
+        sub: "HISTORY",
+        icon: "eraser",
+        title: "Clear teleport history",
+        body: "Removes the 5 recent destinations from this device.",
+        actions: [
+          {
+            label: "CLEAR HISTORY",
+            dim: true,
+            pick: () => actions.notify("Teleport history cleared"),
+          },
+        ],
+      },
+      {
+        sub: "LANDMARK",
+        icon: "star",
+        title: "Home",
+        body: "Da Boom <128, 128, 26>",
+      },
+      {
+        sub: "LANDMARK",
+        icon: "star",
+        title: "The Roof Build",
+        body: "Bay City — Hollywood <112, 44, 51>",
+      },
+      {
+        sub: "LANDMARK",
+        icon: "star",
+        title: "Ahern Welcome Area",
+        body: "Ahern <128, 128, 24>",
+      },
+      {
+        sub: "LANDMARK",
+        icon: "star",
+        title: "Sansara Ridge overlook",
+        body: "Sansara Ridge <64, 200, 88>",
+      },
+      {
+        sub: "LANDMARK",
+        icon: "map-pin",
+        title: "Paste a SLURL",
+        body: "secondlife:// … · or scan a QR from desktop",
+      },
     ],
     // Preferences, grouped the way a viewer's Preferences window is: a `sect` row
     // opens each group, so the list reads as sections rather than 30 loose rows.
@@ -542,10 +1488,14 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
         right:
           state.loginMode === "offline"
             ? "offline"
-            : "grid · " + ((actions.allGrids().find((g) => g.key === state.loginGrid) || {}).label || state.loginGrid),
+            : "grid · " +
+              ((actions.allGrids().find((g) => g.key === state.loginGrid) || {})
+                .label || state.loginGrid),
         body:
           "Ruth Resident · Da Boom · agent 22c4a5de-11 · sim link " +
-          (state.reconnecting ? "reconnecting…" : "LIVE · rx 18 204 / tx 6 118"),
+          (state.reconnecting
+            ? "reconnecting…"
+            : "LIVE · rx 18 204 / tx 6 118"),
       },
       {
         icon: "plug-zap",
@@ -564,15 +1514,65 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
         title: "Disconnect",
         body: "Ends this session and returns to the login screen.",
         accent: "err",
-        actions: [{ label: "DISCONNECT", dim: true, pick: () => actions.setScreen("Login") }],
+        actions: [
+          {
+            label: "DISCONNECT",
+            dim: true,
+            pick: () => actions.setScreen("Login"),
+          },
+        ],
       },
 
       { sect: true, title: "APPEARANCE" },
-      { icon: "palette", title: "Layout pack", right: layoutName, body: "6 layout packs: geometry, nav model, type and density. Colour is a separate pack.", actions: [{ label: "PREVIEW ALL", pick: () => actions.cycleLayout() }] },
-      { icon: "layout", title: "Nav layout", body: "Tabs, rail, tiles, sweep console or desktop floaters — set by the pack.", select: true, options: Object.entries(LAYOUTS).map(([k, x]) => ({ label: x.name, value: k })), value: state.layout, onChange: (v) => actions.setLayout(v) },
-      { icon: "droplets", title: "Colour pack", right: paletteName, body: "24 Ktheme palettes grouped by family; any pack drops into any layout (144 combinations).", actions: [{ label: "BROWSE PACKS", pick: () => actions.cyclePalette() }, { label: "SYSTEM MATCH", pick: () => actions.setPalette("ink") }] },
-      { icon: "droplet", title: "Colour palette", body: "Pick a palette directly instead of cycling through them.", select: true, options: Object.keys(PALETTES).map((k) => ({ label: PALETTES[k].name, value: k })), value: state.palette, onChange: (v) => actions.setPalette(v) },
-      { icon: "type", title: "Large type & high contrast", body: "Scales body to 18px, forces AA contrast, disables shimmer", toggle: true, on: toggles.largeType, togglePick: () => actions.toggleSetting("largeType") },
+      {
+        icon: "palette",
+        title: "Layout pack",
+        right: layoutName,
+        body: "6 layout packs: geometry, nav model, type and density. Colour is a separate pack.",
+        actions: [{ label: "PREVIEW ALL", pick: () => actions.cycleLayout() }],
+      },
+      {
+        icon: "layout",
+        title: "Nav layout",
+        body: "Tabs, rail, tiles, sweep console or desktop floaters — set by the pack.",
+        select: true,
+        options: Object.entries(LAYOUTS).map(([k, x]) => ({
+          label: x.name,
+          value: k,
+        })),
+        value: state.layout,
+        onChange: (v) => actions.setLayout(v),
+      },
+      {
+        icon: "droplets",
+        title: "Colour pack",
+        right: paletteName,
+        body: "24 Ktheme palettes grouped by family; any pack drops into any layout (144 combinations).",
+        actions: [
+          { label: "BROWSE PACKS", pick: () => actions.cyclePalette() },
+          { label: "SYSTEM MATCH", pick: () => actions.setPalette("ink") },
+        ],
+      },
+      {
+        icon: "droplet",
+        title: "Colour palette",
+        body: "Pick a palette directly instead of cycling through them.",
+        select: true,
+        options: Object.keys(PALETTES).map((k) => ({
+          label: PALETTES[k].name,
+          value: k,
+        })),
+        value: state.palette,
+        onChange: (v) => actions.setPalette(v),
+      },
+      {
+        icon: "type",
+        title: "Large type & high contrast",
+        body: "Scales body to 18px, forces AA contrast, disables shimmer",
+        toggle: true,
+        on: toggles.largeType,
+        togglePick: () => actions.toggleSetting("largeType"),
+      },
       {
         icon: "rows-3",
         title: "Compact density",
@@ -580,14 +1580,23 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
         toggle: true,
         on: dense,
         togglePick: () => actions.setDense(!dense),
-        actions: [{ label: dense ? "SWITCH TO COMFORTABLE" : "SWITCH TO COMPACT", primary: true, pick: () => actions.setDense(!dense) }],
+        actions: [
+          {
+            label: dense ? "SWITCH TO COMFORTABLE" : "SWITCH TO COMPACT",
+            primary: true,
+            pick: () => actions.setDense(!dense),
+          },
+        ],
       },
 
       { sect: true, title: "GRAPHICS & PERFORMANCE" },
       {
         icon: "activity",
         title: "Telemetry verbosity",
-        right: (prefs.telemetryVerbosity || "simple") === "advanced" ? "Advanced" : "Simple",
+        right:
+          (prefs.telemetryVerbosity || "simple") === "advanced"
+            ? "Advanced"
+            : "Simple",
         body: "Choose plain-language labels or raw protocol telemetry for HUD overlays.",
         select: true,
         options: [
@@ -595,34 +1604,184 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
           { label: "Advanced (Technical)", value: "advanced" },
         ],
         value: prefs.telemetryVerbosity || "simple",
-        onChange: (v) => (actions.setTelemetryVerbosity ? actions.setTelemetryVerbosity(v) : actions.setPref("telemetryVerbosity", v)),
+        onChange: (v) =>
+          actions.setTelemetryVerbosity
+            ? actions.setTelemetryVerbosity(v)
+            : actions.setPref("telemetryVerbosity", v),
       },
-      { icon: "eye", title: "Draw distance", right: prefs.draw, body: "How far objects and avatars stream in. Past 128 m mobile data and battery both suffer.", select: true, options: opts(["64 m", "96 m", "128 m", "192 m", "256 m"]), value: prefs.draw, onChange: (v) => actions.setPref("draw", v) },
-      { icon: "gauge", title: "Graphics quality", right: prefs.quality, body: "Preset for LOD factor, particle count, reflections and terrain detail.", select: true, options: opts(["Low", "Balanced", "High", "Ultra"]), value: prefs.quality, onChange: (v) => actions.setPref("quality", v) },
-      { icon: "activity", title: "Frame rate cap", right: prefs.fps, body: "Capping below the panel refresh is the single biggest battery win on mobile.", select: true, options: opts(["30 fps", "45 fps", "60 fps", "Uncapped"]), value: prefs.fps, onChange: (v) => actions.setPref("fps", v) },
-      { icon: "user-round-x", title: "Avatar complexity limit", right: prefs.complexity, body: "Avatars heavier than this render as a coloured silhouette (jellydoll).", select: true, options: opts(["20 000", "40 000", "80 000", "160 000", "No limit"]), value: prefs.complexity, onChange: (v) => actions.setPref("complexity", v) },
-      { icon: "sun", title: "Shadows & advanced lighting", body: "Off by default on mobile — roughly a third of the frame budget on a phone GPU.", toggle: true, on: toggles.shadows, togglePick: () => actions.toggleSetting("shadows") },
-      { icon: "battery-charging", title: "Battery saver", body: "Drops to 30 fps, stops object streaming and pauses the scene when backgrounded.", toggle: true, on: toggles.battery, togglePick: () => actions.toggleSetting("battery") },
+      {
+        icon: "eye",
+        title: "Draw distance",
+        right: prefs.draw,
+        body: "How far objects and avatars stream in. Past 128 m mobile data and battery both suffer.",
+        select: true,
+        options: opts(["64 m", "96 m", "128 m", "192 m", "256 m"]),
+        value: prefs.draw,
+        onChange: (v) => actions.setPref("draw", v),
+      },
+      {
+        icon: "gauge",
+        title: "Graphics quality",
+        right: prefs.quality,
+        body: "Preset for LOD factor, particle count, reflections and terrain detail.",
+        select: true,
+        options: opts(["Low", "Balanced", "High", "Ultra"]),
+        value: prefs.quality,
+        onChange: (v) => actions.setPref("quality", v),
+      },
+      {
+        icon: "activity",
+        title: "Frame rate cap",
+        right: prefs.fps,
+        body: "Capping below the panel refresh is the single biggest battery win on mobile.",
+        select: true,
+        options: opts(["30 fps", "45 fps", "60 fps", "Uncapped"]),
+        value: prefs.fps,
+        onChange: (v) => actions.setPref("fps", v),
+      },
+      {
+        icon: "user-round-x",
+        title: "Avatar complexity limit",
+        right: prefs.complexity,
+        body: "Avatars heavier than this render as a coloured silhouette (jellydoll).",
+        select: true,
+        options: opts(["20 000", "40 000", "80 000", "160 000", "No limit"]),
+        value: prefs.complexity,
+        onChange: (v) => actions.setPref("complexity", v),
+      },
+      {
+        icon: "sun",
+        title: "Shadows & advanced lighting",
+        body: "Off by default on mobile — roughly a third of the frame budget on a phone GPU.",
+        toggle: true,
+        on: toggles.shadows,
+        togglePick: () => actions.toggleSetting("shadows"),
+      },
+      {
+        icon: "battery-charging",
+        title: "Battery saver",
+        body: "Drops to 30 fps, stops object streaming and pauses the scene when backgrounded.",
+        toggle: true,
+        on: toggles.battery,
+        togglePick: () => actions.toggleSetting("battery"),
+      },
 
       { sect: true, title: "SOUND & VOICE" },
-      { icon: "volume-2", title: "Master volume", right: prefs.volume, body: "Ambient, gestures, object sounds and UI feedback.", select: true, options: opts(["Muted", "25%", "50%", "70%", "100%"]), value: prefs.volume, onChange: (v) => actions.setPref("volume", v) },
-      { icon: "mic", title: "Voice indicator", body: "Show speaking rings in radar and chat (listen-only on mobile)", toggle: true, on: toggles.voice, togglePick: () => actions.toggleSetting("voice") },
-      { icon: "radio", title: "Autoplay parcel media", body: "Start a parcel's audio stream and shared media without asking first.", toggle: true, on: toggles.mediaAuto, togglePick: () => actions.toggleSetting("mediaAuto") },
+      {
+        icon: "volume-2",
+        title: "Master volume",
+        right: prefs.volume,
+        body: "Ambient, gestures, object sounds and UI feedback.",
+        select: true,
+        options: opts(["Muted", "25%", "50%", "70%", "100%"]),
+        value: prefs.volume,
+        onChange: (v) => actions.setPref("volume", v),
+      },
+      {
+        icon: "mic",
+        title: "Voice indicator",
+        body: "Show speaking rings in radar and chat (listen-only on mobile)",
+        toggle: true,
+        on: toggles.voice,
+        togglePick: () => actions.toggleSetting("voice"),
+      },
+      {
+        icon: "radio",
+        title: "Autoplay parcel media",
+        body: "Start a parcel's audio stream and shared media without asking first.",
+        toggle: true,
+        on: toggles.mediaAuto,
+        togglePick: () => actions.toggleSetting("mediaAuto"),
+      },
 
       { sect: true, title: "CHAT & IM" },
-      { icon: "keyboard", title: "Chat channel commands", body: "/1 gestures, /me, /shout mapped to compose-bar shortcuts", toggle: true, on: toggles.chatCmds, togglePick: () => actions.toggleSetting("chatCmds") },
-      { icon: "clock", title: "Timestamps in local chat", body: "Prefix every line with its sim time, the way the desktop viewer does.", toggle: true, on: toggles.timestamps, togglePick: () => actions.toggleSetting("timestamps") },
-      { icon: "save", title: "Keep IM logs on device", body: "Conversations are stored locally and never uploaded. Counts against the cache budget.", toggle: true, on: toggles.imLogs, togglePick: () => actions.toggleSetting("imLogs") },
-      { icon: "languages", title: "Translate incoming chat", right: prefs.translate, body: "Machine translation of local chat and IMs into your language.", select: true, options: opts(["Off", "English", "Deutsch", "Français", "日本語", "Português"]), value: prefs.translate, onChange: (v) => actions.setPref("translate", v) },
-      { icon: "pencil-line", title: "Send typing indicator", body: "Let the other side see that you are composing a reply.", toggle: true, on: toggles.typingSent, togglePick: () => actions.toggleSetting("typingSent") },
-      { icon: "bell-off", title: "Autoresponse while away", body: "“On mobile — replies may be slow.” Sent 4 times today.", toggle: true, on: toggles.autoresponse, togglePick: () => actions.toggleSetting("autoresponse") },
+      {
+        icon: "keyboard",
+        title: "Chat channel commands",
+        body: "/1 gestures, /me, /shout mapped to compose-bar shortcuts",
+        toggle: true,
+        on: toggles.chatCmds,
+        togglePick: () => actions.toggleSetting("chatCmds"),
+      },
+      {
+        icon: "clock",
+        title: "Timestamps in local chat",
+        body: "Prefix every line with its sim time, the way the desktop viewer does.",
+        toggle: true,
+        on: toggles.timestamps,
+        togglePick: () => actions.toggleSetting("timestamps"),
+      },
+      {
+        icon: "save",
+        title: "Keep IM logs on device",
+        body: "Conversations are stored locally and never uploaded. Counts against the cache budget.",
+        toggle: true,
+        on: toggles.imLogs,
+        togglePick: () => actions.toggleSetting("imLogs"),
+      },
+      {
+        icon: "languages",
+        title: "Translate incoming chat",
+        right: prefs.translate,
+        body: "Machine translation of local chat and IMs into your language.",
+        select: true,
+        options: opts([
+          "Off",
+          "English",
+          "Deutsch",
+          "Français",
+          "日本語",
+          "Português",
+        ]),
+        value: prefs.translate,
+        onChange: (v) => actions.setPref("translate", v),
+      },
+      {
+        icon: "pencil-line",
+        title: "Send typing indicator",
+        body: "Let the other side see that you are composing a reply.",
+        toggle: true,
+        on: toggles.typingSent,
+        togglePick: () => actions.toggleSetting("typingSent"),
+      },
+      {
+        icon: "bell-off",
+        title: "Autoresponse while away",
+        body: "“On mobile — replies may be slow.” Sent 4 times today.",
+        toggle: true,
+        on: toggles.autoresponse,
+        togglePick: () => actions.toggleSetting("autoresponse"),
+      },
 
       { sect: true, title: "NOTIFICATIONS" },
-      { icon: "bell", title: "Push notifications", body: "IMs, group notices, teleport offers · quick reply from the shade", toggle: true, on: toggles.push, togglePick: () => actions.toggleSetting("push") },
-      { icon: "layout-dashboard", title: "Widgets", body: "Unread IMs, nearby count, L$ balance — lock-screen glance" },
+      {
+        icon: "bell",
+        title: "Push notifications",
+        body: "IMs, group notices, teleport offers · quick reply from the shade",
+        toggle: true,
+        on: toggles.push,
+        togglePick: () => actions.toggleSetting("push"),
+      },
+      {
+        icon: "layout-dashboard",
+        title: "Widgets",
+        body: "Unread IMs, nearby count, L$ balance — lock-screen glance",
+      },
 
       { sect: true, title: "PRIVACY & SAFETY" },
-      { icon: "shield", title: "Mute & block list", right: "6", body: "3 residents · 3 objects", actions: [{ label: "OPEN MUTE LIST", primary: true, pick: () => actions.setScreen("Mute List") }] },
+      {
+        icon: "shield",
+        title: "Mute & block list",
+        right: "6",
+        body: "3 residents · 3 objects",
+        actions: [
+          {
+            label: "OPEN MUTE LIST",
+            primary: true,
+            pick: () => actions.setScreen("Mute List"),
+          },
+        ],
+      },
       // The Permissions dialog tells the resident grants "can be revoked from
       // Settings › Scripted objects" — until now there was no such row to go to.
       {
@@ -631,35 +1790,101 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
         right: "4 granted",
         body: "Animate, attach and take-controls grants held by HUDs and objects you have touched.",
         actions: [
-          { label: "REVIEW GRANTS", pick: () => actions.setDialog("Permissions") },
-          { label: "REVOKE ALL", dim: true, pick: () => actions.notify("All scripted-object permissions revoked") },
+          {
+            label: "REVIEW GRANTS",
+            pick: () => actions.setDialog("Permissions"),
+          },
+          {
+            label: "REVOKE ALL",
+            dim: true,
+            pick: () =>
+              actions.notify("All scripted-object permissions revoked"),
+          },
         ],
       },
-      { icon: "eye-off", title: "Show me as online", body: "When off, friends see you offline and your map position is hidden.", toggle: true, on: toggles.showOnline, togglePick: () => actions.toggleSetting("showOnline") },
-      { icon: "lock", title: "RestrainedLove (RLV)", body: "Enable RLV script commands for viewer control & interactions", toggle: true, on: toggles.rlv, togglePick: () => actions.toggleSetting("rlv") },
-      { icon: "badge-alert", title: "Maturity rating", right: prefs.maturity, body: "Which regions and search results this account is allowed to reach.", select: true, options: opts(["General", "Moderate", "Adult"]), value: prefs.maturity, onChange: (v) => actions.setPref("maturity", v) },
+      {
+        icon: "eye-off",
+        title: "Show me as online",
+        body: "When off, friends see you offline and your map position is hidden.",
+        toggle: true,
+        on: toggles.showOnline,
+        togglePick: () => actions.toggleSetting("showOnline"),
+      },
+      {
+        icon: "lock",
+        title: "RestrainedLove (RLV)",
+        body: "Enable RLV script commands for viewer control & interactions",
+        toggle: true,
+        on: toggles.rlv,
+        togglePick: () => actions.toggleSetting("rlv"),
+      },
+      {
+        icon: "badge-alert",
+        title: "Maturity rating",
+        right: prefs.maturity,
+        body: "Which regions and search results this account is allowed to reach.",
+        select: true,
+        options: opts(["General", "Moderate", "Adult"]),
+        value: prefs.maturity,
+        onChange: (v) => actions.setPref("maturity", v),
+      },
 
       { sect: true, title: "NETWORK & STORAGE" },
-      { icon: "gauge", title: "Bandwidth limit", right: prefs.bandwidth, body: "Ceiling for asset streaming. Lower it on a metered connection.", select: true, options: opts(["500 kbps", "1 500 kbps", "3 000 kbps", "Unlimited"]), value: prefs.bandwidth, onChange: (v) => actions.setPref("bandwidth", v) },
+      {
+        icon: "gauge",
+        title: "Bandwidth limit",
+        right: prefs.bandwidth,
+        body: "Ceiling for asset streaming. Lower it on a metered connection.",
+        select: true,
+        options: opts(["500 kbps", "1 500 kbps", "3 000 kbps", "Unlimited"]),
+        value: prefs.bandwidth,
+        onChange: (v) => actions.setPref("bandwidth", v),
+      },
       {
         icon: "hard-drive",
         title: "Cache & storage",
         right: used + " / " + prefs.cacheLimit + " MB",
-        body: "Texture, mesh, sound and inventory caches · " + prefs.cacheLoc.toLowerCase() + ".",
+        body:
+          "Texture, mesh, sound and inventory caches · " +
+          prefs.cacheLoc.toLowerCase() +
+          ".",
         meter: used / prefs.cacheLimit,
-        actions: [{ label: "OPEN CACHE MANAGER", primary: true, pick: () => actions.setScreen("Cache") }],
+        actions: [
+          {
+            label: "OPEN CACHE MANAGER",
+            primary: true,
+            pick: () => actions.setScreen("Cache"),
+          },
+        ],
       },
-      { icon: "activity", title: "Connection diagnostics", body: "Latency, DNS, TLS handshake and sim circuit counters.", actions: [{ label: "RUN PROBE", pick: () => actions.setScreen("Diagnostics") }] },
+      {
+        icon: "activity",
+        title: "Connection diagnostics",
+        body: "Latency, DNS, TLS handshake and sim circuit counters.",
+        actions: [
+          { label: "RUN PROBE", pick: () => actions.setScreen("Diagnostics") },
+        ],
+      },
 
       { sect: true, title: "ABOUT" },
       {
         icon: "info",
         title: "Linkpoint Mobile",
         right: "2.0",
-        body: "build 2026.09.21 · " + ((actions.allGrids().find((g) => g.key === state.loginGrid) || {}).host || "offline") + " · open source, AGPL-3.0",
+        body:
+          "build 2026.09.21 · " +
+          ((actions.allGrids().find((g) => g.key === state.loginGrid) || {})
+            .host || "offline") +
+          " · open source, AGPL-3.0",
         actions: [
-          { label: "RELEASE NOTES", pick: () => actions.notify("Release notes — 2.0 (2026.09.21)") },
-          { label: "REPORT A BUG", pick: () => actions.notify("Bug report — opening issue tracker") },
+          {
+            label: "RELEASE NOTES",
+            pick: () => actions.notify("Release notes — 2.0 (2026.09.21)"),
+          },
+          {
+            label: "REPORT A BUG",
+            pick: () => actions.notify("Bug report — opening issue tracker"),
+          },
         ],
       },
     ],
@@ -670,11 +1895,21 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
         icon: "hard-drive",
         title: "Disk cache",
         right: used + " / " + prefs.cacheLimit + " MB",
-        body: free + " MB free before the oldest assets start being evicted. Clearing a cache is safe — anything still in use is refetched from the sim.",
+        body:
+          free +
+          " MB free before the oldest assets start being evicted. Clearing a cache is safe — anything still in use is refetched from the sim.",
         meter: used / prefs.cacheLimit,
         actions: [
-          { label: "CLEAR ALL", dim: true, pick: () => actions.clearAllCache() },
-          { label: "REFRESH", pick: () => actions.notify("Cache recalculated — " + used + " MB in use") },
+          {
+            label: "CLEAR ALL",
+            dim: true,
+            pick: () => actions.clearAllCache(),
+          },
+          {
+            label: "REFRESH",
+            pick: () =>
+              actions.notify("Cache recalculated — " + used + " MB in use"),
+          },
         ],
       },
       { sect: true, title: "BY ASSET TYPE" },
@@ -684,7 +1919,16 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
         right: r.mb + " MB",
         body: r.mb === 0 ? "empty · refills as assets are requested" : r.note,
         meter: r.mb / (prefs.cacheLimit || 1),
-        actions: r.mb === 0 ? null : [{ label: "CLEAR", dim: true, pick: () => actions.clearCache(r.key, r.name) }],
+        actions:
+          r.mb === 0
+            ? null
+            : [
+                {
+                  label: "CLEAR",
+                  dim: true,
+                  pick: () => actions.clearCache(r.key, r.name),
+                },
+              ],
       })),
       { sect: true, title: "POLICY" },
       {
@@ -693,7 +1937,10 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
         right: prefs.cacheLimit + " MB",
         body: "A bigger cache means fewer refetches and a longer first-visit wait after you clear it.",
         select: true,
-        options: [128, 256, 512, 1024, 2048].map((v) => ({ label: v + " MB", value: v })),
+        options: [128, 256, 512, 1024, 2048].map((v) => ({
+          label: v + " MB",
+          value: v,
+        })),
         value: prefs.cacheLimit,
         onChange: (v) => actions.setPref("cacheLimit", Number(v)),
       },
@@ -707,29 +1954,105 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
         value: prefs.cacheLoc,
         onChange: (v) => actions.setPref("cacheLoc", v),
       },
-      { icon: "trash-2", title: "Clear cache on exit", body: "Frees the space every time you log out, at the cost of a cold start next session.", toggle: true, on: toggles.cacheOnExit, togglePick: () => actions.toggleSetting("cacheOnExit") },
+      {
+        icon: "trash-2",
+        title: "Clear cache on exit",
+        body: "Frees the space every time you log out, at the cost of a cold start next session.",
+        toggle: true,
+        on: toggles.cacheOnExit,
+        togglePick: () => actions.toggleSetting("cacheOnExit"),
+      },
       {
         icon: "refresh-cw",
         title: "Rebuild inventory skeleton",
         body: "Refetch all 1 284 items and 42 folders from the grid. Use this when inventory looks wrong.",
-        actions: [{ label: "REBUILD NOW", pick: () => actions.notify("Inventory skeleton rebuilding — 1 284 items") }],
+        actions: [
+          {
+            label: "REBUILD NOW",
+            pick: () =>
+              actions.notify("Inventory skeleton rebuilding — 1 284 items"),
+          },
+        ],
       },
     ],
     // AGNI and ADITI are two different grids, so the probe reports two different
     // sets of numbers — the tabs used to be highlight-only.
     Diagnostics: [
-      { sub: "AGNI", title: "LATENCY", big: "84", body: "> excellent · agni · round trip", tone: "ok" },
-      { sub: "AGNI", title: "DNS", right: "12 ms", body: "OK · login.agni.lindenlab.com", accent: "ok" },
-      { sub: "AGNI", title: "TCP / TLS", right: "38 ms", body: "OK · handshake reachable", accent: "ok" },
-      { sub: "AGNI", title: "SIM CIRCUIT", right: "live", body: "rx 18 204 / tx 6 118 packets · 0.2% loss" },
-      { sub: "AGNI", title: "ENDPOINT", body: "viewer Linkpoint Mobile 2.0 · server_time 2026-09-10T14:32:07Z" },
-      { sub: "AGNI", title: "CAPS", body: "display names OK · event queue OK · avatar picker OK · inventory skeleton OK" },
-      { sub: "ADITI", title: "LATENCY", big: "212", body: "> fair · aditi · round trip", tone: "sec2" },
-      { sub: "ADITI", title: "DNS", right: "34 ms", body: "OK · login.aditi.lindenlab.com", accent: "ok" },
-      { sub: "ADITI", title: "TCP / TLS", right: "96 ms", body: "OK · handshake reachable · beta certificate", accent: "ok" },
-      { sub: "ADITI", title: "SIM CIRCUIT", right: "idle", body: "no agent on this grid · last session 2026-08-30" },
-      { sub: "ADITI", title: "ENDPOINT", body: "viewer Linkpoint Mobile 2.0 · server_time 2026-09-10T14:32:11Z · beta channel" },
-      { sub: "ADITI", title: "CAPS", body: "display names OK · event queue OK · avatar picker DEGRADED · inventory skeleton OK", accent: "sec2" },
+      {
+        sub: "AGNI",
+        title: "LATENCY",
+        big: "84",
+        body: "> excellent · agni · round trip",
+        tone: "ok",
+      },
+      {
+        sub: "AGNI",
+        title: "DNS",
+        right: "12 ms",
+        body: "OK · login.agni.lindenlab.com",
+        accent: "ok",
+      },
+      {
+        sub: "AGNI",
+        title: "TCP / TLS",
+        right: "38 ms",
+        body: "OK · handshake reachable",
+        accent: "ok",
+      },
+      {
+        sub: "AGNI",
+        title: "SIM CIRCUIT",
+        right: "live",
+        body: "rx 18 204 / tx 6 118 packets · 0.2% loss",
+      },
+      {
+        sub: "AGNI",
+        title: "ENDPOINT",
+        body: "viewer Linkpoint Mobile 2.0 · server_time 2026-09-10T14:32:07Z",
+      },
+      {
+        sub: "AGNI",
+        title: "CAPS",
+        body: "display names OK · event queue OK · avatar picker OK · inventory skeleton OK",
+      },
+      {
+        sub: "ADITI",
+        title: "LATENCY",
+        big: "212",
+        body: "> fair · aditi · round trip",
+        tone: "sec2",
+      },
+      {
+        sub: "ADITI",
+        title: "DNS",
+        right: "34 ms",
+        body: "OK · login.aditi.lindenlab.com",
+        accent: "ok",
+      },
+      {
+        sub: "ADITI",
+        title: "TCP / TLS",
+        right: "96 ms",
+        body: "OK · handshake reachable · beta certificate",
+        accent: "ok",
+      },
+      {
+        sub: "ADITI",
+        title: "SIM CIRCUIT",
+        right: "idle",
+        body: "no agent on this grid · last session 2026-08-30",
+      },
+      {
+        sub: "ADITI",
+        title: "ENDPOINT",
+        body: "viewer Linkpoint Mobile 2.0 · server_time 2026-09-10T14:32:11Z · beta channel",
+      },
+      {
+        sub: "ADITI",
+        title: "CAPS",
+        body: "display names OK · event queue OK · avatar picker DEGRADED · inventory skeleton OK",
+        accent: "sec2",
+      },
     ],
   };
 }
