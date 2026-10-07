@@ -633,7 +633,14 @@ async function taskVisualSuite() {
         const style = document.createElement("style");
         style.textContent =
           "* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }";
-        document.documentElement.appendChild(style);
+        const target = document.head || document.documentElement;
+        if (target) {
+          target.appendChild(style);
+        } else {
+          document.addEventListener("DOMContentLoaded", () => {
+            (document.head || document.documentElement).appendChild(style);
+          });
+        }
       });
       await page.goto(targetUrl, { waitUntil: "domcontentloaded" });
       await page.waitForTimeout(1000);
