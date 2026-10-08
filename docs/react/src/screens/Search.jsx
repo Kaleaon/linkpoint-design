@@ -174,7 +174,7 @@ export default function Search() {
           value={state.searchQuery}
           onChange={(e) => actions.setSearchQuery(e.target.value)}
           placeholder={tab === "SEARCH" ? "resident name (min 2 chars)" : "filter by name"}
-          style={{ flex: 1, minWidth: 0, border: "none", background: "transparent", font: "400 13px/1 " + t.font, color: V.ink, outline: "none" }}
+          style={{ flex: 1, minWidth: 0, border: "none", background: "transparent", font: "400 13px/1 " + t.font, color: V.ink }}
         />
       </div>
 
