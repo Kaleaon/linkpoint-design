@@ -132,11 +132,12 @@ export default function Inventory() {
         <div style={{ margin: bleed ? "8px 10px 10px" : "8px 16px 12px", padding: "10px", border: "1px solid " + V.pri, borderRadius: V.rs, background: V.surf2, boxShadow: "0 6px 20px rgba(0,0,0,0.4)", display: "flex", flexDirection: "column", gap: "8px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span style={{ font: "700 11px/1 " + t.font, color: V.pri, letterSpacing: ".12em" }}>{state.invSelected.length} SELECTED</span>
-            <span onClick={actions.toggleInvSelectMode} style={{ font: "600 10px/1 " + t.font, color: V.ink2, cursor: "pointer" }} role="button" tabIndex={0}>CANCEL</span>
+            <span onClick={actions.toggleInvSelectMode} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.toggleInvSelectMode(); } }} style={{ font: "600 10px/1 " + t.font, color: V.ink2, cursor: "pointer" }} role="button" tabIndex={0}>CANCEL</span>
           </div>
           <div style={{ display: "flex", gap: "8px" }}>
             <div
               onClick={actions.invWearSelected}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.invWearSelected(); } }}
               style={{ flex: 1, height: "44px", borderRadius: V.rs, background: V.pri, color: V.onpri, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".1em", cursor: "pointer" }}
               role="button" tabIndex={0}
             >
@@ -144,6 +145,7 @@ export default function Inventory() {
             </div>
             <div
               onClick={actions.invOpenMoveModal}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.invOpenMoveModal(); } }}
               style={{ flex: 1, height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, color: V.ink, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".1em", cursor: "pointer" }}
               role="button" tabIndex={0}
             >
@@ -151,6 +153,7 @@ export default function Inventory() {
             </div>
             <div
               onClick={actions.invDeleteSelected}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.invDeleteSelected(); } }}
               style={{ flex: 1, height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, background: "rgba(207,102,121,0.15)", color: V.err || "var(--md-sys-color-error, var(--ktheme-err))", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".1em", cursor: "pointer" }}
               role="button" tabIndex={0}
             >
@@ -164,13 +167,14 @@ export default function Inventory() {
         <div style={{ margin: bleed ? "8px 10px 10px" : "8px 16px 12px", padding: "12px", border: "1px solid " + V.pri, borderRadius: V.rs, background: V.surf2, display: "flex", flexDirection: "column", gap: "10px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span style={{ font: "700 11px/1 " + t.font, color: V.pri, letterSpacing: ".12em" }}>MOVE TO FOLDER</span>
-            <span onClick={actions.invCloseMoveModal} style={{ font: "600 10px/1 " + t.font, color: V.ink2, cursor: "pointer" }} role="button" tabIndex={0}>CANCEL</span>
+            <span onClick={actions.invCloseMoveModal} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.invCloseMoveModal(); } }} style={{ font: "600 10px/1 " + t.font, color: V.ink2, cursor: "pointer" }} role="button" tabIndex={0}>CANCEL</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
             {targetFolders.map((folder) => (
               <div
                 key={folder}
                 onClick={() => actions.invMoveSelected(folder)}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.invMoveSelected(folder); } }}
                 style={{ height: "44px", padding: "0 12px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}
                 role="button" tabIndex={0}
               >

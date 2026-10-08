@@ -37,3 +37,7 @@
 ## 2026-10-07 - Add Keyboard Accessibility to Interactive Login Screen Actions
 **Learning:** Even well-constructed custom HTML template frameworks often overlook full keyboard navigation on core screens like Login, where buttons (tabs, preset options, "ADD GRID", and the main "CONNECT TO GRID" toggles) might be functional to mouse users but completely dead to screen readers and keyboard users (pressing Enter or Space). Explicitly providing `onKeyDown` handlers inside `renderVals` that prevent default behavior on space bar prevents unwanted page scrolling and improves accessibility.
 **Action:** When inspecting or adding core interactive controls to screens (like login fields and connectivity toggles) in custom HTML templating, ensure they include `role="button"`, `tabindex="0"`, descriptive `aria-label`s, and corresponding `onKeyDown` listeners mirroring their `onClick` functionality.
+
+## 2026-10-08 - Keyboard Handlers Dropped During React Porting
+**Learning:** When porting interactive features (like custom div/span multi-select toolbars in the Inventory screen) from vanilla HTML templates to React, developers sometimes carry over the `role="button"` and `tabIndex={0}` properties but mistakenly drop the explicit `onKeyDown` handlers required for Enter/Space keyboard activation, breaking accessibility.
+**Action:** When auditing React ports of HTML templates, explicitly cross-reference the source HTML to ensure that all `onClick` behaviors are accurately mapped with accompanying `onKeyDown` handlers.
