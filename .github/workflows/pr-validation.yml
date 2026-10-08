@@ -24,7 +24,7 @@ jobs:
           path: 'Ktheme'
 
       - name: Symlink Ktheme to parent directory
-        run: ln -s "$GITHUB_WORKSPACE/Ktheme" "$GITHUB_WORKSPACE/../Ktheme"
+        run: rm -rf "$GITHUB_WORKSPACE/../Ktheme" && ln -s "$GITHUB_WORKSPACE/Ktheme" "$GITHUB_WORKSPACE/../Ktheme"
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
