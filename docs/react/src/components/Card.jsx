@@ -96,7 +96,13 @@ export default function Card({ c }) {
             {c.badge}
           </span>
         ) : null}
-        {c.toggle ? <Toggle on={c.on} onClick={c.togglePick} aria-label={c.title || "Toggle switch"} /> : null}
+        {c.toggle ? (
+          <Toggle
+            on={c.on}
+            onClick={c.togglePick}
+            aria-label={c.title || "Toggle switch"}
+          />
+        ) : null}
         {c.select ? (
           <select
             value={c.value}

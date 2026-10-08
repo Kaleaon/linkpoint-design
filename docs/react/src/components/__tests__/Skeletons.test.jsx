@@ -2,7 +2,11 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
-import { SkeletonCardList, SkeletonTree, SkeletonDetail } from "../Skeletons.jsx";
+import {
+  SkeletonCardList,
+  SkeletonTree,
+  SkeletonDetail,
+} from "../Skeletons.jsx";
 import CardList from "../CardList.jsx";
 import Inventory from "../../screens/Inventory.jsx";
 import Search from "../../screens/Search.jsx";
@@ -43,7 +47,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     const { container } = render(
       <ThemeContext.Provider value={mockThemeTokens}>
         <SkeletonCardList count={4} />
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>,
     );
 
     const cardListEl = screen.getByTestId("skeleton-card-list");
@@ -61,7 +65,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     render(
       <ThemeContext.Provider value={mockThemeTokens}>
         <SkeletonTree count={6} />
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>,
     );
 
     const treeEl = screen.getByTestId("skeleton-tree");
@@ -79,20 +83,29 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     render(
       <ThemeContext.Provider value={mockThemeTokens}>
         <SkeletonDetail />
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>,
     );
 
     const detailEl = screen.getByTestId("skeleton-detail");
     expect(detailEl).toBeInTheDocument();
     expect(detailEl.style.minHeight).toBe("320px");
 
-    expect(screen.getByTestId("skeleton-detail-header")).toHaveClass("skeleton-shimmer");
-    expect(screen.getByTestId("skeleton-detail-footer")).toHaveClass("skeleton-shimmer");
+    expect(screen.getByTestId("skeleton-detail-header")).toHaveClass(
+      "skeleton-shimmer",
+    );
+    expect(screen.getByTestId("skeleton-detail-footer")).toHaveClass(
+      "skeleton-shimmer",
+    );
   });
 
   it("renders SkeletonCardList in CardList component when state.cond === 'loading'", () => {
     const mockAppContext = {
-      state: { cond: "loading", screen: "Friends", layout: "default", palette: "default" },
+      state: {
+        cond: "loading",
+        screen: "Friends",
+        layout: "default",
+        palette: "default",
+      },
       actions: {},
     };
 
@@ -101,7 +114,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={mockThemeTokens}>
           <CardList cards={[]} />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const skeletonEl = screen.getByTestId("skeleton-card-list");
@@ -120,7 +133,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={{ ...mockThemeTokens, scr: "Inventory" }}>
           <Inventory />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const treeSkeleton = screen.getByTestId("skeleton-tree");
@@ -130,7 +143,13 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
 
   it("renders SkeletonCardList in Search screen results area when state.cond === 'loading'", () => {
     const mockAppContext = {
-      state: { cond: "loading", screen: "Search", searchTab: "FRIENDS", searchQuery: "", searchState: {} },
+      state: {
+        cond: "loading",
+        screen: "Search",
+        searchTab: "FRIENDS",
+        searchQuery: "",
+        searchState: {},
+      },
       actions: {},
     };
 
@@ -139,7 +158,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={{ ...mockThemeTokens, scr: "Search" }}>
           <Search />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const skeletonEl = screen.getByTestId("skeleton-card-list");
@@ -164,7 +183,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={splitThemeTokens}>
           <SplitDetail />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const skeletonDetail = screen.getByTestId("skeleton-detail");
@@ -194,7 +213,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={emptyThemeTokens}>
           <StateBlock />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const stateBlock = screen.getByTestId("state-block");
