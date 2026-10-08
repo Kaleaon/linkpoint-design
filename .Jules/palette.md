@@ -53,3 +53,6 @@
 ## 2026-10-21 - Keyboard Access for Hold-to-Activate Controls
 **Learning:** For 'hold-to-activate' custom buttons relying on `onMouseDown` and `onMouseUp` pairs (like continuous movement pads or camera panning controls), adding standard `role="button"` and `tabindex="0"` attributes is insufficient. Keyboard accessibility requires adding matching `onKeyDown` and `onKeyUp` handlers for the Enter and Space keys to initiate and release the action respectively.
 **Action:** When implementing or inspecting continuous action controls mapped to mouse down/up, always provide corresponding `onKeyDown` and `onKeyUp` listeners that trigger the same state changes.
+## 2026-10-08 - Keyboard Handlers Dropped During React Porting
+**Learning:** When porting interactive features (like custom div/span multi-select toolbars in the Inventory screen) from vanilla HTML templates to React, developers sometimes carry over the `role="button"` and `tabIndex={0}` properties but mistakenly drop the explicit `onKeyDown` handlers required for Enter/Space keyboard activation, breaking accessibility.
+**Action:** When auditing React ports of HTML templates, explicitly cross-reference the source HTML to ensure that all `onClick` behaviors are accurately mapped with accompanying `onKeyDown` handlers.
