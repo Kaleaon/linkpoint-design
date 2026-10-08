@@ -18,7 +18,14 @@ export default function SplitDetail() {
 
   if (isLoading) {
     return (
-      <div style={{ flex: "none", width: "44%", minHeight: "320px", display: "flex" }}>
+      <div
+        style={{
+          flex: "none",
+          width: "44%",
+          minHeight: "320px",
+          display: "flex",
+        }}
+      >
         <SkeletonDetail style={{ minHeight: "320px" }} />
       </div>
     );

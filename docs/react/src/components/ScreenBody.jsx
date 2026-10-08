@@ -54,11 +54,19 @@ export default function ScreenBody() {
   const isCardScreen = CARD_SCREENS.includes(scr);
   const curSub = subView(state, scr);
 
-  const customLoadingScreen = ["Inventory", "Search", ...CARD_SCREENS].includes(scr);
+  const customLoadingScreen = ["Inventory", "Search", ...CARD_SCREENS].includes(
+    scr,
+  );
 
   return (
     <div
-      style={{ flex: 1, minWidth: 0, minHeight: "400px", display: "flex", position: "relative" }}
+      style={{
+        flex: 1,
+        minWidth: 0,
+        minHeight: "400px",
+        display: "flex",
+        position: "relative",
+      }}
     >
       <main
         aria-label="Main Content"
@@ -73,7 +81,9 @@ export default function ScreenBody() {
         <Header />
         <SegmentedTabs />
         <ChipRow />
-        {isLoading && !customLoadingScreen && scr !== "Login" && <SkeletonCardList style={{ minHeight: "320px" }} />}
+        {isLoading && !customLoadingScreen && scr !== "Login" && (
+          <SkeletonCardList style={{ minHeight: "320px" }} />
+        )}
         {!isLoading && norm && scr === "Chat" && <Chat />}
         {!isLoading && norm && scr === "Radar" && <Radar />}
         {!isLoading && norm && scr === "Map" && <Map />}
