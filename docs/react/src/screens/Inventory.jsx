@@ -5,6 +5,7 @@ import { INVENTORY_SOURCE, INVENTORY_FOLDERS, INVENTORY_RECENTS } from "../data/
 import Icon from "../components/Icon.jsx";
 import KInteractive from "../components/KInteractive.jsx";
 import { subView } from "../theme/constants.js";
+import { SkeletonTree } from "../components/Skeletons.jsx";
 
 // Ported from the `isTree` <sc-if> block: search/grid toolbar, recent-items
 // strip, and the folder tree with multi-selection batch action bar support.
@@ -15,9 +16,11 @@ export default function Inventory() {
   const timerRef = useRef(null);
   const isLongPressRef = useRef(false);
 
+  const isLoading = state?.cond === "loading";
+
   const invToolStyle = { flex: "none", display: "flex", gap: "8px", padding: bleed ? "0 0 8px 10px" : "2px 16px 10px" };
   const invRecentStyle = { flex: "none", display: "flex", gap: "8px", overflowX: "auto", padding: bleed ? "0 0 8px 10px" : "0 16px 10px" };
-  const invListStyle = { flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column", gap: bleed ? C.gap + "px" : 0, background: bleed ? V.bg : "transparent" };
+  const invListStyle = { flex: 1, minHeight: "320px", overflowY: "auto", display: "flex", flexDirection: "column", gap: bleed ? C.gap + "px" : 0, background: bleed ? V.bg : "transparent" };
 
   const curSub = subView(state, "Inventory");
   const rawItems = state.invItems || INVENTORY_SOURCE.map(([name, icon, depth, parent, ver, tags]) => ({ name, icon, depth, parent, ver, tags: tags || [] }));
@@ -100,16 +103,8 @@ export default function Inventory() {
       </div>
 
       <div style={invListStyle}>
-        {state.asyncQueryState?.inventory?.status === "loading" ? (
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px", padding: "12px 16px" }}>
-            {[1, 2, 3, 4].map((idx) => (
-              <div key={idx} style={{ height: "36px", display: "flex", alignItems: "center", gap: "12px", borderBottom: "1px solid " + V.outv, opacity: 0.6 }}>
-                <div style={{ width: "16px", height: "16px", borderRadius: "3px", background: V.surf2 }} />
-                <div style={{ width: "16px", height: "16px", borderRadius: "3px", background: V.surf2 }} />
-                <div style={{ flex: 1, height: "12px", borderRadius: "3px", background: V.surf2 }} />
-              </div>
-            ))}
-          </div>
+        {isLoading || state.asyncQueryState?.inventory?.status === "loading" ? (
+          <SkeletonTree style={{ minHeight: "320px" }} />
         ) : state.asyncQueryState?.inventory?.status === "timeout" || state.asyncQueryState?.inventory?.status === "error" ? (
           <div style={{ margin: "16px", border: "1px solid #FF6C6C", borderRadius: V.rs, background: V.surf2, padding: "20px 16px", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
             <div style={{ width: "44px", height: "44px", borderRadius: V.rs, border: "1px solid #FF6C6C", display: "flex", alignItems: "center", justifyContent: "center", color: "#FF6C6C" }}>

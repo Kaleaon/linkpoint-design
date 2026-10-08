@@ -3,6 +3,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { FRIEND_ROWS, RADAR_AVATARS, SEARCH_STRANGERS, IM_CHIPS } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
 import FormInput from "../components/FormInput.jsx";
+import { SkeletonCardList } from "../components/Skeletons.jsx";
 
 const TABS = [
   { id: "FRIENDS", label: "FRIENDS", icon: "users" },
@@ -122,8 +123,10 @@ export default function Search() {
     emptyText = q.length < 2 ? "> type a name to search the grid" : "> no residents match";
   }
 
+  const isLoading = state?.cond === "loading";
+
   return (
-    <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
+    <div style={{ flex: 1, minHeight: "400px", display: "flex", flexDirection: "column" }}>
       <div style={{ flex: "none", display: "flex", alignItems: "center", gap: "8px", padding: "14px 16px 10px" }}>
         <div
           onClick={() => actions.setScreen(state.searchFrom || "Friends")}
@@ -178,20 +181,9 @@ export default function Search() {
         />
       </div>
 
-      <div style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "0 16px 16px", display: "flex", flexDirection: "column", gap: "8px" }}>
-        {state.asyncQueryState?.search?.status === "loading" ? (
-          <div style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "10px 0" }}>
-            {[1, 2, 3].map((idx) => (
-              <div key={idx} style={{ height: "52px", borderRadius: V.rs, border: "1px solid " + V.outv, background: V.surf, padding: "10px 12px", display: "flex", alignItems: "center", gap: "12px", opacity: 0.6 }}>
-                <div style={{ width: "24px", height: "24px", borderRadius: "50%", background: V.surf2 }} />
-                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px" }}>
-                  <div style={{ width: "120px", height: "12px", borderRadius: "3px", background: V.surf2 }} />
-                  <div style={{ width: "80px", height: "10px", borderRadius: "3px", background: V.surf2 }} />
-                </div>
-                <div style={{ width: "48px", height: "24px", borderRadius: V.rs, background: V.surf2 }} />
-              </div>
-            ))}
-          </div>
+      <div style={{ flex: 1, minHeight: "300px", overflowY: "auto", padding: "0 16px 16px", display: "flex", flexDirection: "column", gap: "8px" }}>
+        {isLoading || state.asyncQueryState?.search?.status === "loading" ? (
+          <SkeletonCardList style={{ minHeight: "300px" }} />
         ) : state.asyncQueryState?.search?.status === "timeout" || state.asyncQueryState?.search?.status === "error" ? (
           <div style={{ border: "1px solid #FF6C6C", borderRadius: V.rs, background: V.surf2, padding: "20px 16px", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
             <div style={{ width: "44px", height: "44px", borderRadius: V.rs, border: "1px solid #FF6C6C", display: "flex", alignItems: "center", justifyContent: "center", color: "#FF6C6C" }}>

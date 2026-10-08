@@ -132,3 +132,29 @@ select:focus-visible {
     transform: rotate(1.1deg);
   }
 }
+
+/* GPU-accelerated opacity shimmer animation for contextual skeletons */
+@keyframes skeleton-shimmer {
+  0% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0.45;
+  }
+}
+
+.skeleton-shimmer {
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  will-change: opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer {
+    animation: none !important;
+    opacity: 0.65;
+  }
+}
+
