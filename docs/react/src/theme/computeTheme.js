@@ -3,6 +3,25 @@ import { PALETTES } from "./palettes.js";
 import { DEVICES, STATES } from "./constants.js";
 import { pickInk } from "./color.js";
 
+function getLuminance(hex) {
+  if (!hex || typeof hex !== "string") return 0;
+  const cleanHex = hex.replace("#", "");
+  const fullHex = cleanHex.length === 3 ? cleanHex.split("").map((c) => c + c).join("") : cleanHex;
+  const num = parseInt(fullHex, 16);
+  if (isNaN(num)) return 0;
+  const r = ((num >> 16) & 255) / 255;
+  const g = ((num >> 8) & 255) / 255;
+  const b = (num & 255) / 255;
+  const a = [r, g, b].map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
+  return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+}
+
+function getContrastRatio(hex1, hex2) {
+  const l1 = getLuminance(hex1);
+  const l2 = getLuminance(hex2);
+  return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+}
+
 // Resolves static visual design tokens (V, t, pad, LK, ink)
 export function computeThemeTokens(state) {
   const L = LAYOUTS[state.layout];
@@ -12,6 +31,21 @@ export function computeThemeTokens(state) {
     : base;
   const t = { name: L.name + " / " + P.name, nav: L.nav, font: L.font, dfont: L.dfont, note: L.note + "   Colour pack: " + P.note + ".", v: { ...P.c, ...L.s } };
   const V = t.v;
+
+  let focusRing = V.pri;
+  if (getContrastRatio(focusRing, V.bg) < 3.0) {
+    if (V.sec2 && getContrastRatio(V.sec2, V.bg) >= 3.0) {
+      focusRing = V.sec2;
+    } else if (V.ink && getContrastRatio(V.ink, V.bg) >= 3.0) {
+      focusRing = V.ink;
+    }
+  }
+  const isLightBg = getLuminance(V.bg) >= 0.5;
+  const focusRingShadow = isLightBg ? "rgba(0, 0, 0, 0.4)" : "rgba(0, 0, 0, 0.6)";
+
+  V.focusRing = focusRing;
+  V.focusRingShadow = focusRingShadow;
+
   const pad = state.dense ? "8px" : V.pad;
   const LK = L.look;
   const ink = (bg, candidates) => pickInk(bg, candidates);
