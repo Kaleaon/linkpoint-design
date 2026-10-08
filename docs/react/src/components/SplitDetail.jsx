@@ -1,17 +1,32 @@
 import { useTheme } from "../context/ThemeContext.jsx";
+import { useApp } from "../context/AppContext.jsx";
 import { DETAIL } from "../data/content.js";
 import Icon from "./Icon.jsx";
+import { SkeletonDetail } from "./Skeletons.jsx";
 
 // Ported from the `isSplit` <sc-if> block — the 44% detail pane shown next to
 // Chat/Inventory/Radar on split (tablet/foldable) devices.
 export default function SplitDetail() {
   const { V, t, d, isFloat, scr } = useTheme();
+  const { state } = useApp();
+
   const isSplit = d.split && !isFloat && ["Chat", "Inventory", "Radar"].includes(scr);
   if (!isSplit) return null;
+
+  const isLoading = state?.cond === "loading";
+
+  if (isLoading) {
+    return (
+      <div style={{ flex: "none", width: "44%", minHeight: "320px", display: "flex" }}>
+        <SkeletonDetail style={{ minHeight: "320px" }} />
+      </div>
+    );
+  }
+
   const dd = DETAIL[scr] || DETAIL.Chat;
 
   return (
-    <div style={{ flex: "none", width: "44%", borderLeft: "1px solid " + V.outv, background: V.surf, display: "flex", flexDirection: "column" }}>
+    <div style={{ flex: "none", width: "44%", minHeight: "320px", borderLeft: "1px solid " + V.outv, background: V.surf, display: "flex", flexDirection: "column" }}>
       <div style={{ flex: "none", padding: "14px 16px 10px", borderBottom: "1px solid " + V.outv }}>
         <div style={{ font: "600 13px/1.2 " + t.font, color: V.ink }}>{dd.title}</div>
         <div style={{ font: "400 10.5px/1.4 " + t.font, color: V.ink2, marginTop: "4px" }}>{dd.sub}</div>
