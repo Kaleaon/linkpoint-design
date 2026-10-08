@@ -18,9 +18,12 @@ export default function StateBlock() {
 
   return (
     <div
+      data-testid="state-block"
       style={{
         flex: 1,
-        minHeight: 0,
+        minHeight: "320px",
+        width: "100%",
+        boxSizing: "border-box",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

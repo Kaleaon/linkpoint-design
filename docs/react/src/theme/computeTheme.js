@@ -41,7 +41,7 @@ export function computeThemeRuntime(state, cf, tokens) {
   const sel = (n) => scr === n;
 
   const condPack = state.cond === "normal" ? null : STATES[state.cond][scr] || STATES[state.cond]._;
-  const stateBlockActive = !!condPack && !["Login", "Settings", "Cache", "Search"].includes(scr);
+  const stateBlockActive = !!condPack && state.cond !== "loading" && !["Login", "Settings", "Cache", "Search"].includes(scr);
   const norm = !stateBlockActive;
   const bare = ["3D View", "Login", "Search"].includes(scr);
   const immersive = scr === "3D View" && norm;
