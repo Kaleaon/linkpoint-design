@@ -190,16 +190,114 @@ export default function Radar() {
             menu = state.rMenu === name;
           const acts = (objMode ? ["INSPECT", "TOUCH", "DERENDER", "TRACK"] : ["PROFILE", "IM", "TRACK", "TELEPORT TO"]).map((label) => ({ label, style: actChip(null) }));
           const mods = (objMode ? ["RETURN", "MUTE OWNER", "BLOCK", "REPORT"] : ["MUTE", "DERENDER", "FREEZE", "EJECT", "BAN", "REPORT"]).map((label) => ({ label, style: actChip(V.err) }));
-          const wrap = {
-            display: "flex",
-            flexDirection: "column",
-            gap: "6px",
-            padding: open || menu ? "0 0 8px" : "0",
-            border: bleed ? "none" : "1px solid " + (open || menu ? tone : V.outv),
-            borderLeft: bleed ? "4px solid " + (open || menu ? tone : "transparent") : undefined,
-            borderRadius: bleed ? 0 : V.rs,
-            background: V.surf,
+          const wrap = bleed
+            ? {
+                display: "flex",
+                flexDirection: "column",
+                gap: "6px",
+                padding: open || menu ? "0 0 8px" : "0",
+                borderLeft: "4px solid " + (open || menu ? tone : "transparent"),
+                borderRadius: 0,
+                background: V.bg,
+              }
+            : {
+                display: "flex",
+                flexDirection: "column",
+                gap: "6px",
+                padding: open || menu ? "0 0 8px" : "0",
+                borderTop: "1px solid " + (open || menu ? tone : V.outv),
+                borderRight: "1px solid " + (open || menu ? tone : V.outv),
+                borderBottom: "1px solid " + (open || menu ? tone : V.outv),
+                borderLeft: "1px solid " + (open || menu ? tone : V.outv),
+                borderRadius: V.rs,
+                background: V.surf,
+              };
+          const handleAction = (label) => {
+            if (objMode) {
+              switch (label) {
+                case "INSPECT":
+                  actions.notify("Inspecting object: " + name);
+                  break;
+                case "TOUCH":
+                  actions.notify("Touched " + name);
+                  break;
+                case "DERENDER":
+                  actions.notify("Derendered object: " + name);
+                  break;
+                case "TRACK":
+                  actions.notify("Tracking object: " + name);
+                  break;
+                default:
+                  actions.notify(label + " — " + name);
+                  break;
+              }
+            } else {
+              switch (label) {
+                case "PROFILE":
+                  actions.openSearch("Radar", "SEARCH");
+                  break;
+                case "IM":
+                  actions.startIm(name);
+                  break;
+                case "TRACK":
+                  actions.notify("Tracking avatar: " + name);
+                  break;
+                case "TELEPORT TO":
+                  actions.teleportToRegion(name);
+                  break;
+                default:
+                  actions.notify(label + " — " + name);
+                  break;
+              }
+            }
           };
+
+          const handleModeration = (label) => {
+            if (objMode) {
+              switch (label) {
+                case "RETURN":
+                  actions.notify("Returned object: " + name);
+                  break;
+                case "MUTE OWNER":
+                  actions.notify("Muted owner of " + name);
+                  break;
+                case "BLOCK":
+                  actions.notify("Blocked object: " + name);
+                  break;
+                case "REPORT":
+                  actions.notify("Reported object: " + name);
+                  break;
+                default:
+                  actions.notify(label + " — " + name);
+                  break;
+              }
+            } else {
+              switch (label) {
+                case "MUTE":
+                  actions.notify("Muted avatar: " + name);
+                  break;
+                case "DERENDER":
+                  actions.notify("Derendered avatar: " + name);
+                  break;
+                case "FREEZE":
+                  actions.notify("Froze avatar: " + name);
+                  break;
+                case "EJECT":
+                  actions.notify("Ejected avatar: " + name);
+                  break;
+                case "BAN":
+                  actions.notify("Banned avatar: " + name);
+                  break;
+                case "REPORT":
+                  actions.notify("Reported avatar: " + name);
+                  break;
+                default:
+                  actions.notify(label + " — " + name);
+                  break;
+              }
+            }
+          };
+
           return (
             <div key={r.id || name} style={wrap}>
               <KInteractive
@@ -225,7 +323,7 @@ export default function Radar() {
               {open ? (
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", padding: "0 " + pad }}>
                   {acts.map((a, i) => (
-                    <KInteractive key={i} label={a.label} style={a.style}>
+                    <KInteractive key={i} onClick={() => handleAction(a.label)} label={a.label} style={a.style}>
                       {a.label}
                     </KInteractive>
                   ))}
@@ -236,7 +334,7 @@ export default function Radar() {
                   <div style={{ padding: "0 " + pad, font: "600 9px/1 " + t.dfont, letterSpacing: ".18em", color: V.err }}>{(objMode ? "OBJECT" : "MODERATOR") + " — LONG PRESS"}</div>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", padding: "0 " + pad }}>
                     {mods.map((a, i) => (
-                      <KInteractive key={i} label={a.label} style={a.style}>
+                      <KInteractive key={i} onClick={() => handleModeration(a.label)} label={a.label} style={a.style}>
                         {a.label}
                       </KInteractive>
                     ))}
