@@ -37,6 +37,7 @@ function getModalRootNode() {
 
 export default function AccessibleDialogPortal({
   isOpen = true,
+  isModal = true,
   onClose,
   triggerElement,
   ariaLabel,
@@ -62,12 +63,12 @@ export default function AccessibleDialogPortal({
     if (!isOpen) return;
 
     const recordedTrigger = triggerElement || (typeof document !== "undefined" ? document.activeElement : null);
-    focusStack.registerPortal(portalId, recordedTrigger);
+    focusStack.registerPortal(portalId, recordedTrigger, isModal);
 
     return () => {
       focusStack.unregisterPortal(portalId, recordedTrigger);
     };
-  }, [isOpen, portalId, triggerElement]);
+  }, [isOpen, portalId, triggerElement, isModal]);
 
   // Initial focus scheduling when portal opens
   useEffect(() => {
