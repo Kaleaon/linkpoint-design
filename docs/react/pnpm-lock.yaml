@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@ktheme/react':
-        specifier: file:../../../../Ktheme/packages/react
-        version: file:../../../../Ktheme/packages/react(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: file:../../../Ktheme/packages/react
+        version: file:../../../Ktheme/packages/react(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react:
         specifier: ^0.451.0
         version: 0.451.0(react@18.3.1)
@@ -353,8 +353,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@ktheme/react@file:../../../../Ktheme/packages/react':
-    resolution: {directory: ../../../../Ktheme/packages/react, type: directory}
+  '@ktheme/react@file:../../../Ktheme/packages/react':
+    resolution: {directory: ../../../Ktheme/packages/react, type: directory}
     peerDependencies:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
@@ -1366,7 +1366,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
 
-  '@ktheme/react@file:../../../../Ktheme/packages/react(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@ktheme/react@file:../../../Ktheme/packages/react(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)

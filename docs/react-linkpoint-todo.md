@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-10-07T06:21:32Z — upstream read through [`8411aa4`](https://github.com/Kaleaon/react-linkpoint/commit/8411aa413421467a7fc450682f0d0136f307209a)
-- **Open:** 250 · **Completed:** 2
+- **Last change:** 2026-10-09T06:22:47Z — upstream read through [`dec4590`](https://github.com/Kaleaon/react-linkpoint/commit/dec4590b2f247951d88810364093322467951761)
+- **Open:** 283 · **Completed:** 2
 
 ## Open
 
@@ -23,6 +23,10 @@ is tracked by hand in [`github.md`](github.md).
 
 Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/react/src/screens/`
 
+- [ ] **`b41fa47`** feat(a11y): integrate FormField component for validation and ARIA accessibility
+  - 2026-10-07 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b41fa47cafb92c45157df4caf01d172774585795)
+  - 9 files: `src/components/FormField.jsx`, `src/components/__tests__/FormField.test.tsx`, `src/linkpoint/chat.ts`, `src/screens/CacheScreen.jsx`, `src/screens/Login.jsx`, `src/screens/Radar.jsx` _(+3 more)_
+  - also touches: Components, Viewer & protocol features
 - [ ] **`6473f1b`** Fix radar list layout and add profile, friend, zoom, message actions
   - 2026-10-04 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6473f1b1706eb3f2b46d7552b2b4cf9e74ea5472)
   - 2 files: `src/linkpoint/world.ts`, `src/screens/Radar.jsx`
@@ -103,6 +107,10 @@ Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/
 
 Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `docs/react/src/components/`
 
+- [ ] **`16841f6`** Sweep: make or honestly disable actions that claimed success without doing anything
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/16841f6785e373221dec4deefa4902e1298306fa)
+  - 12 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `scripts/fake-data-rules.mjs`, `src/components/DesktopChrome.jsx`, `src/components/FloatersDesktop.jsx`, `src/components/Header.jsx` _(+6 more)_
+  - also touches: Screens, Viewer & protocol features, Build & platform, Unclassified
 - [ ] **`2964aa8`** feat: implement workstation-class multi-pane viewport splitter engine and object inspector
   - 2026-10-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/2964aa86057262c0e23d5c9f8387a9c7f1489dac)
   - 4 files: `src/components/ObjectInspector.tsx`, `src/components/SplitPaneCompositor.tsx`, `src/components/__tests__/SplitPaneCompositor.test.tsx`, `src/screens/World3D.jsx`
@@ -269,6 +277,66 @@ Mirror into: `docs/index.html` — the `render()` view-model · `docs/react/src/
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`e22f2a0`** Retry friends loading and failed mesh/asset downloads
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e22f2a0f769b112fd96af43e9a2f7a82ff43a253)
+  - 8 files: `core/viewer-session.cjs`, `src/linkpoint/__tests__/friends-retry.test.ts`, `src/linkpoint/__tests__/viewer-session.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/sl-bridge.ts`, `src/linkpoint/world.ts` _(+2 more)_
+  - also touches: Screens, Unclassified
+- [ ] **`d9addf4`** fix(chat): resolve duplicated ChatManager members left by two independent restorations
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d9addf42335facb707a473b046d70d4b9a7bfbcc)
+  - 1 file: `src/linkpoint/chat.ts`
+- [ ] **`d282493`** Outfit viewer: show the real avatar and outfit, remove demo data
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d282493ca25dedda4cdff7e29ea0779df5ec446d)
+  - 11 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `scripts/fake-data-rules.mjs`, `src/components/OutfitCarouselDrawer.tsx`, `src/linkpoint/__tests__/fake-data-scanner.test.ts`, `src/linkpoint/__tests__/outfit-viewer.test.tsx` _(+5 more)_
+  - also touches: Screens, Components, Build & platform, Unclassified
+- [ ] **`cb22e51`** feat(voice): rebuild VoiceManager on the official SL WebRTC protocol; cite sources for controls
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/cb22e51a388b0778ff3a3b272cc368fd72da2621)
+  - 10 files: `core/viewer-session.cjs`, `src/linkpoint/__tests__/agent-controls.test.ts`, `src/linkpoint/__tests__/voice.test.ts`, `src/linkpoint/agent-controls.ts`, `src/linkpoint/app.ts`, `src/linkpoint/key-bindings.ts` _(+4 more)_
+  - also touches: Unclassified
+- [ ] **`c926417`** feat(wind): decode the simulator's wind layer and feed it to flexi prims and particles
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/c9264179ecc1269cd2144c0188b32b0cd24c4f6d)
+  - 8 files: `core/sl-wind.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/flexi.test.ts`, `src/linkpoint/__tests__/sl-wind.test.ts`, `src/linkpoint/__tests__/wind.test.ts`, `src/linkpoint/sl-connection-full.ts` _(+2 more)_
+  - also touches: Unclassified
+- [ ] **`abf4595`** feat(voice): reconnect on the viewer's retry schedule after a failure or drop
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/abf45956385114627fc333de1a3adc8af03ac550)
+  - 4 files: `src/linkpoint/__tests__/voice-protocol.test.ts`, `src/linkpoint/__tests__/voice.test.ts`, `src/linkpoint/voice-protocol.ts`, `src/linkpoint/voice.ts`
+- [ ] **`94f8637`** feat(world): warn once when an update strips an object's mesh or sculpt
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/94f8637384a6bd91762c1e2e5e2755dc3511f26c)
+  - 2 files: `src/linkpoint/__tests__/world-asset-updates.test.ts`, `src/linkpoint/world.ts`
+- [ ] **`66c95ab`** feat(sound): official SL sound rules, categories, listener, UI sounds; provenance doc
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/66c95aba71c98ef9953de09b3ce3128888a2b7aa)
+  - 13 files: `core/sl-sounds.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `docs/official-sources.md`, `src/linkpoint/__tests__/audio.test.ts`, `src/linkpoint/__tests__/sl-sounds.test.ts` _(+7 more)_
+  - also touches: Docs & specs, Unclassified
+- [ ] **`40b6bb1`** fix(audio): drop sounds stopped, removed or replaced while downloading; free waiters on failed fetch
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/40b6bb1dd0e62f3a078f1a4894f9b60cfb1e3cf2)
+  - 2 files: `src/linkpoint/__tests__/audio.test.ts`, `src/linkpoint/audio.ts`
+- [ ] **`1dd0f1f`** fix(chat): restore ChatManager code lost to a truncation marker in 6f334ba
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1dd0f1f09864ec686c472a626051742e965089b5)
+  - 1 file: `src/linkpoint/chat.ts`
+- [ ] **`177e8cb`** fix(friends): keep a friend's known name when presence arrives without one; refresh the list on accept
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/177e8cb198e1ff5522e954815f72a03b05e30a9f)
+  - 5 files: `core/viewer-session.cjs`, `docs/official-sources.md`, `src/linkpoint/__tests__/friends-names.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/phase2/friends-extended.ts`
+  - also touches: Docs & specs, Unclassified
+- [ ] **`15240fe`** feat(voice): SL WebRTC voice wire format from the official viewer
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/15240fe047b54945580bf265d467f2319a85b156)
+  - 2 files: `src/linkpoint/__tests__/voice-protocol.test.ts`, `src/linkpoint/voice-protocol.ts`
+- [ ] **`14787ad`** feat(graphics): official particle and flexible-prim simulation; surface asset failures
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/14787ad1f481a515d66bb2f418e3b4bab8cdc979)
+  - 14 files: `core/serializers.cjs`, `core/viewer-session.cjs`, `docs/official-sources.md`, `src/linkpoint/__tests__/flexi.test.ts`, `src/linkpoint/__tests__/flexible.test.ts`, `src/linkpoint/__tests__/particles-official.test.ts` _(+8 more)_
+  - also touches: Docs & specs, Unclassified
+- [ ] **`0ef6aed`** Standard SL camera controls: Alt/Ctrl+Alt keys, Alt+drag, Alt+click, Esc, M
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0ef6aed41fb6f368183c14aba6dee99c67facec7)
+  - 4 files: `src/linkpoint/__tests__/camera-keyboard.test.ts`, `src/linkpoint/camera-controls.ts`, `src/linkpoint/camera-keyboard.ts`, `src/linkpoint/world.ts`
+- [ ] **`0dcfe35`** Resolve friend names the library leaves as 'Unknown Friend'
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0dcfe35ad82a63adea1871a51b79c88b24c57a84)
+  - 3 files: `core/viewer-session.cjs`, `src/linkpoint/__tests__/viewer-session.test.ts`, `src/linkpoint/phase2/friends-extended.ts`
+  - also touches: Unclassified
+- [ ] **`fd7aad7`** feat: implement flexi prim dynamics and full llParticleSystem parity
+  - 2026-10-07 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/fd7aad7425f77468abf83369c276586b7cdd1030)
+  - 7 files: `src/linkpoint/__tests__/flexi.test.ts`, `src/linkpoint/__tests__/particles.test.ts`, `src/linkpoint/chat.ts`, `src/linkpoint/graphics-3d.ts`, `src/linkpoint/particles.ts`, `src/linkpoint/scene-3d.ts` _(+1 more)_
+- [ ] **`7f9ecbb`** feat(voice): WebAudio 3D spatial voice engine with automated region re-provisioning
+  - 2026-10-07 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7f9ecbbd7a6a4d31e430727871c7576c178e34f0)
+  - 6 files: `src/linkpoint/__tests__/voice.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/chat.ts`, `src/linkpoint/voice.ts`, `src/screens/Chat.jsx`, `src/screens/Radar.jsx`
+  - also touches: Screens
 - [ ] **`f1749db`** Fix rendering regressions and restore themed viewer screens, groups and settings
   - 2026-10-06 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f1749dbfdcb418c42d1d0c5187a4a3d2208d9cb6)
   - 41 files: `core/serializers.cjs`, `core/sl-appearance.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `docs/rendering-reference.md`, `docs/viewer-parity.md` _(+35 more)_
@@ -297,6 +365,10 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
   - 2026-10-05 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7aa7f2be9e3fad63e75bedde17c4f0d7b89e2ab1)
   - 11 files: `package.json`, `public/spatial.wasm`, `scripts/build-wasm.mjs`, `src/linkpoint/__tests__/spatial-pipeline.test.ts`, `src/linkpoint/coordinate-normalizer.ts`, `src/linkpoint/frustum.ts` _(+5 more)_
   - also touches: Build & platform, Unclassified
+- [ ] **`30284b8`** feat(controls): official SL key bindings, agent control flags, tap-tap-hold run, nudge and auto-fly
+  - 2026-10-05 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/30284b8a0b274f92bbc889b8c50ef462ce0ff1ef)
+  - 9 files: `core/viewer-session.cjs`, `src/linkpoint/__tests__/agent-controls.test.ts`, `src/linkpoint/__tests__/agent-keyboard.test.ts`, `src/linkpoint/agent-controls.ts`, `src/linkpoint/agent-keyboard.ts`, `src/linkpoint/key-bindings.ts` _(+3 more)_
+  - also touches: Unclassified
 - [ ] **`2aaa523`** feat: subscribe to social event streams and map event names across bridge
   - 2026-10-05 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/2aaa5232ea15e0c8c1f57c1f3c299b634fa690b1)
   - 12 files: `core/sl-interactions.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/components/InteractionDialog.jsx`, `src/linkpoint/__tests__/interaction-dialog.test.tsx`, `src/linkpoint/__tests__/interactions.test.ts` _(+6 more)_
@@ -668,6 +740,9 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
 
 Mirror into: usually no design change — confirm `docs/react/` still builds the same way
 
+- [ ] **`6e0b739`** Add GitHub Actions workflow for Fly.io deployment
+  - 2026-10-08 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6e0b739b84704b179b0e35102394a8c6f250b7a8)
+  - 1 file: `.github/workflows/fly-deploy.yml`
 - [ ] **`afd67c2`** Add Advanced Jules PR Reviewer workflow
   - 2026-10-06 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/afd67c20dbae25c66325f1478155b189ea17ddfe)
   - 1 file: `.github/workflows/run.yml`
@@ -775,6 +850,9 @@ Mirror into: usually no design change — confirm `docs/react/` still builds the
 
 Mirror into: `docs/ROADMAP.md` · `docs/github.md` · `docs/mockup-to-react.yaml`
 
+- [ ] **`e7203f2`** docs: backend deployment guide for SL connectivity on Vercel
+  - 2026-10-08 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e7203f27be50dd97a14129fb6f134738f48a6096)
+  - 1 file: `docs/backend-deployment.md`
 - [ ] **`0a15bbc`** chore: remove metadata.json
   - 2026-10-03 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0a15bbc0c0d0dc6778a65182a25ba9bb3670bf9b)
   - 1 file: `metadata.json`
@@ -796,6 +874,39 @@ Mirror into: `docs/ROADMAP.md` · `docs/github.md` · `docs/mockup-to-react.yaml
 
 Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json`
 
+- [ ] **`dec4590`** fix(docker): bundle server.ts as ESM (import.meta.url needs it)
+  - 2026-10-08 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/dec4590b2f247951d88810364093322467951761)
+  - 1 file: `Dockerfile`
+- [ ] **`d912304`** deploy: add Dockerfile for the SL backend (Vercel can't host UDP)
+  - 2026-10-08 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d9123044d3eb32ef19bf05ba5ef4a90aac54613e)
+  - 1 file: `Dockerfile`
+- [ ] **`bb0314e`** fix(docker): bundle server.ts with esbuild, run plain node (fix OOM)
+  - 2026-10-08 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/bb0314e5ede97c1279e441fb7c4756f9532fc740)
+  - 1 file: `Dockerfile`
+- [ ] **`acee7c0`** fix(docker): install ca-certificates for git https
+  - 2026-10-08 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/acee7c0928464322a87f2d492b1cc84586866b28)
+  - 1 file: `Dockerfile`
+- [ ] **`8698ce0`** deploy: add .dockerignore for the SL backend (Vercel can't host UDP)
+  - 2026-10-08 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8698ce0611c0cd0f7725108d80aa71b93b9fd769)
+  - 1 file: `.dockerignore`
+- [ ] **`6b6486c`** fix(docker): copy full source before npm install (postinstall needs src/)
+  - 2026-10-08 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6b6486ce9ca8e0da4dbefc0e5feb4aa75529d2c5)
+  - 1 file: `Dockerfile`
+- [ ] **`566f569`** fix(docker): install git — a dependency resolves from a git URL
+  - 2026-10-08 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/566f5696bec7edd89666c64a51b9f85be1d37ef3)
+  - 1 file: `Dockerfile`
+- [ ] **`49b1fde`** fix(deploy): stop 'npm install' crashing on Vercel with legacy-peer-deps
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/49b1fde7a90ac00077806dcf256b7c0c6cc5753b)
+  - 1 file: `.npmrc`
+- [ ] **`1fe717b`** fix(docker): copy scripts/ before npm install for postinstall hook
+  - 2026-10-08 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1fe717b7c6d2e17b7de17e4b8263e699e298445d)
+  - 1 file: `Dockerfile`
+- [ ] **`18b0ae0`** deploy: add fly.toml for the SL backend (Vercel can't host UDP)
+  - 2026-10-08 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/18b0ae0f689311f25dd3c3e32b32769f9efcf061)
+  - 1 file: `fly.toml`
+- [ ] **`0de9b66`** fix(docker): rewrite ssh git URLs to https for public deps
+  - 2026-10-08 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0de9b668d795248fd2687033943162bf3e9f0217)
+  - 1 file: `Dockerfile`
 - [ ] **`e7b1cc7`** fix(ci): bump Android Gradle Plugin to 8.6.0 for lifecycle-runtime-compose compatibility
   - 2026-10-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e7b1cc7525b23f74eff3ad271af5ca3c3f9cb72f)
   - 1 file: `android-kotlin/gradle/libs.versions.toml`
@@ -968,7 +1079,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-10-07T06:21:32Z",
+ "generated": "2026-10-09T06:22:47Z",
  "items": [
   {
    "also": [
@@ -7031,9 +7142,617 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "6f334ba",
    "subject": "Fix viewer audit findings in settings, chat, groups and cache behavior",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/6f334bab5275e1a9b32d508a2154531829014207"
+  },
+  {
+   "also": [
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-05",
+   "done": false,
+   "files": [
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/agent-controls.test.ts",
+    "src/linkpoint/__tests__/agent-keyboard.test.ts",
+    "src/linkpoint/agent-controls.ts",
+    "src/linkpoint/agent-keyboard.ts",
+    "src/linkpoint/key-bindings.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "30284b8a0b274f92bbc889b8c50ef462ce0ff1ef",
+   "short": "30284b8",
+   "subject": "feat(controls): official SL key bindings, agent control flags, tap-tap-hold run, nudge and auto-fly",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/30284b8a0b274f92bbc889b8c50ef462ce0ff1ef"
+  },
+  {
+   "also": [
+    "screens"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-07",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/voice.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/chat.ts",
+    "src/linkpoint/voice.ts",
+    "src/screens/Chat.jsx",
+    "src/screens/Radar.jsx"
+   ],
+   "sha": "7f9ecbbd7a6a4d31e430727871c7576c178e34f0",
+   "short": "7f9ecbb",
+   "subject": "feat(voice): WebAudio 3D spatial voice engine with automated region re-provisioning",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/7f9ecbbd7a6a4d31e430727871c7576c178e34f0"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-07",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/flexi.test.ts",
+    "src/linkpoint/__tests__/particles.test.ts",
+    "src/linkpoint/chat.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/particles.ts",
+    "src/linkpoint/scene-3d.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "fd7aad7425f77468abf83369c276586b7cdd1030",
+   "short": "fd7aad7",
+   "subject": "feat: implement flexi prim dynamics and full llParticleSystem parity",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/fd7aad7425f77468abf83369c276586b7cdd1030"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "src/linkpoint/chat.ts"
+   ],
+   "sha": "1dd0f1f09864ec686c472a626051742e965089b5",
+   "short": "1dd0f1f",
+   "subject": "fix(chat): restore ChatManager code lost to a truncation marker in 6f334ba",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1dd0f1f09864ec686c472a626051742e965089b5"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/voice-protocol.test.ts",
+    "src/linkpoint/voice-protocol.ts"
+   ],
+   "sha": "15240fe047b54945580bf265d467f2319a85b156",
+   "short": "15240fe",
+   "subject": "feat(voice): SL WebRTC voice wire format from the official viewer",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/15240fe047b54945580bf265d467f2319a85b156"
+  },
+  {
+   "also": [
+    "components",
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-07",
+   "done": false,
+   "files": [
+    "src/components/FormField.jsx",
+    "src/components/__tests__/FormField.test.tsx",
+    "src/linkpoint/chat.ts",
+    "src/screens/CacheScreen.jsx",
+    "src/screens/Login.jsx",
+    "src/screens/Radar.jsx",
+    "src/screens/Search.jsx",
+    "src/screens/Settings.jsx",
+    "src/screens/__tests__/FormFieldScreenIntegration.test.tsx"
+   ],
+   "sha": "b41fa47cafb92c45157df4caf01d172774585795",
+   "short": "b41fa47",
+   "subject": "feat(a11y): integrate FormField component for validation and ARIA accessibility",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/b41fa47cafb92c45157df4caf01d172774585795"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "src/linkpoint/chat.ts"
+   ],
+   "sha": "d9addf42335facb707a473b046d70d4b9a7bfbcc",
+   "short": "d9addf4",
+   "subject": "fix(chat): resolve duplicated ChatManager members left by two independent restorations",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d9addf42335facb707a473b046d70d4b9a7bfbcc"
+  },
+  {
+   "also": [
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/agent-controls.test.ts",
+    "src/linkpoint/__tests__/voice.test.ts",
+    "src/linkpoint/agent-controls.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/key-bindings.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/voice-protocol.ts",
+    "src/linkpoint/voice.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "cb22e51a388b0778ff3a3b272cc368fd72da2621",
+   "short": "cb22e51",
+   "subject": "feat(voice): rebuild VoiceManager on the official SL WebRTC protocol; cite sources for controls",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/cb22e51a388b0778ff3a3b272cc368fd72da2621"
+  },
+  {
+   "also": [
+    "docs",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "core/sl-sounds.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "docs/official-sources.md",
+    "src/linkpoint/__tests__/audio.test.ts",
+    "src/linkpoint/__tests__/sl-sounds.test.ts",
+    "src/linkpoint/__tests__/sound-standards.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/audio.ts",
+    "src/linkpoint/camera-3d.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/sound-standards.ts"
+   ],
+   "sha": "66c95aba71c98ef9953de09b3ce3128888a2b7aa",
+   "short": "66c95ab",
+   "subject": "feat(sound): official SL sound rules, categories, listener, UI sounds; provenance doc",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/66c95aba71c98ef9953de09b3ce3128888a2b7aa"
+  },
+  {
+   "also": [
+    "docs",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "core/serializers.cjs",
+    "core/viewer-session.cjs",
+    "docs/official-sources.md",
+    "src/linkpoint/__tests__/flexi.test.ts",
+    "src/linkpoint/__tests__/flexible.test.ts",
+    "src/linkpoint/__tests__/particles-official.test.ts",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/__tests__/world-asset-updates.test.ts",
+    "src/linkpoint/flexible.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/particles.ts",
+    "src/linkpoint/scene-3d.ts",
+    "src/linkpoint/sl-math.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "14787ad1f481a515d66bb2f418e3b4bab8cdc979",
+   "short": "14787ad",
+   "subject": "feat(graphics): official particle and flexible-prim simulation; surface asset failures",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/14787ad1f481a515d66bb2f418e3b4bab8cdc979"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    ".npmrc"
+   ],
+   "sha": "49b1fde7a90ac00077806dcf256b7c0c6cc5753b",
+   "short": "49b1fde",
+   "subject": "fix(deploy): stop 'npm install' crashing on Vercel with legacy-peer-deps",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/49b1fde7a90ac00077806dcf256b7c0c6cc5753b"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/audio.test.ts",
+    "src/linkpoint/audio.ts"
+   ],
+   "sha": "40b6bb1dd0e62f3a078f1a4894f9b60cfb1e3cf2",
+   "short": "40b6bb1",
+   "subject": "fix(audio): drop sounds stopped, removed or replaced while downloading; free waiters on failed fetch",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/40b6bb1dd0e62f3a078f1a4894f9b60cfb1e3cf2"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/world-asset-updates.test.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "94f8637384a6bd91762c1e2e5e2755dc3511f26c",
+   "short": "94f8637",
+   "subject": "feat(world): warn once when an update strips an object's mesh or sculpt",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/94f8637384a6bd91762c1e2e5e2755dc3511f26c"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Kaleaon",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "Dockerfile"
+   ],
+   "sha": "d9123044d3eb32ef19bf05ba5ef4a90aac54613e",
+   "short": "d912304",
+   "subject": "deploy: add Dockerfile for the SL backend (Vercel can't host UDP)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d9123044d3eb32ef19bf05ba5ef4a90aac54613e"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Kaleaon",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    ".dockerignore"
+   ],
+   "sha": "8698ce0611c0cd0f7725108d80aa71b93b9fd769",
+   "short": "8698ce0",
+   "subject": "deploy: add .dockerignore for the SL backend (Vercel can't host UDP)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8698ce0611c0cd0f7725108d80aa71b93b9fd769"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Kaleaon",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "fly.toml"
+   ],
+   "sha": "18b0ae0f689311f25dd3c3e32b32769f9efcf061",
+   "short": "18b0ae0",
+   "subject": "deploy: add fly.toml for the SL backend (Vercel can't host UDP)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/18b0ae0f689311f25dd3c3e32b32769f9efcf061"
+  },
+  {
+   "also": [
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "core/sl-wind.cjs",
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/flexi.test.ts",
+    "src/linkpoint/__tests__/sl-wind.test.ts",
+    "src/linkpoint/__tests__/wind.test.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/wind.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "c9264179ecc1269cd2144c0188b32b0cd24c4f6d",
+   "short": "c926417",
+   "subject": "feat(wind): decode the simulator's wind layer and feed it to flexi prims and particles",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/c9264179ecc1269cd2144c0188b32b0cd24c4f6d"
+  },
+  {
+   "also": [],
+   "area": "docs",
+   "author": "Kaleaon",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "docs/backend-deployment.md"
+   ],
+   "sha": "e7203f27be50dd97a14129fb6f134738f48a6096",
+   "short": "e7203f2",
+   "subject": "docs: backend deployment guide for SL connectivity on Vercel",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e7203f27be50dd97a14129fb6f134738f48a6096"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/voice-protocol.test.ts",
+    "src/linkpoint/__tests__/voice.test.ts",
+    "src/linkpoint/voice-protocol.ts",
+    "src/linkpoint/voice.ts"
+   ],
+   "sha": "abf45956385114627fc333de1a3adc8af03ac550",
+   "short": "abf4595",
+   "subject": "feat(voice): reconnect on the viewer's retry schedule after a failure or drop",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/abf45956385114627fc333de1a3adc8af03ac550"
+  },
+  {
+   "also": [
+    "docs",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "core/viewer-session.cjs",
+    "docs/official-sources.md",
+    "src/linkpoint/__tests__/friends-names.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/phase2/friends-extended.ts"
+   ],
+   "sha": "177e8cb198e1ff5522e954815f72a03b05e30a9f",
+   "short": "177e8cb",
+   "subject": "fix(friends): keep a friend's known name when presence arrives without one; refresh the list on accept",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/177e8cb198e1ff5522e954815f72a03b05e30a9f"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "Kaleaon",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    ".github/workflows/fly-deploy.yml"
+   ],
+   "sha": "6e0b739b84704b179b0e35102394a8c6f250b7a8",
+   "short": "6e0b739",
+   "subject": "Add GitHub Actions workflow for Fly.io deployment",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/6e0b739b84704b179b0e35102394a8c6f250b7a8"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Kaleaon",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "Dockerfile"
+   ],
+   "sha": "566f5696bec7edd89666c64a51b9f85be1d37ef3",
+   "short": "566f569",
+   "subject": "fix(docker): install git \u2014 a dependency resolves from a git URL",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/566f5696bec7edd89666c64a51b9f85be1d37ef3"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Kaleaon",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "Dockerfile"
+   ],
+   "sha": "0de9b668d795248fd2687033943162bf3e9f0217",
+   "short": "0de9b66",
+   "subject": "fix(docker): rewrite ssh git URLs to https for public deps",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/0de9b668d795248fd2687033943162bf3e9f0217"
+  },
+  {
+   "also": [
+    "screens",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/friends-retry.test.ts",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/LiveScreens.jsx",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "e22f2a0f769b112fd96af43e9a2f7a82ff43a253",
+   "short": "e22f2a0",
+   "subject": "Retry friends loading and failed mesh/asset downloads",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e22f2a0f769b112fd96af43e9a2f7a82ff43a253"
+  },
+  {
+   "also": [
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/phase2/friends-extended.ts"
+   ],
+   "sha": "0dcfe35ad82a63adea1871a51b79c88b24c57a84",
+   "short": "0dcfe35",
+   "subject": "Resolve friend names the library leaves as 'Unknown Friend'",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/0dcfe35ad82a63adea1871a51b79c88b24c57a84"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Kaleaon",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "Dockerfile"
+   ],
+   "sha": "acee7c0928464322a87f2d492b1cc84586866b28",
+   "short": "acee7c0",
+   "subject": "fix(docker): install ca-certificates for git https",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/acee7c0928464322a87f2d492b1cc84586866b28"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "platform",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "scripts/fake-data-rules.mjs",
+    "src/components/OutfitCarouselDrawer.tsx",
+    "src/linkpoint/__tests__/fake-data-scanner.test.ts",
+    "src/linkpoint/__tests__/outfit-viewer.test.tsx",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/screens/OutfitViewer.jsx",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "d282493ca25dedda4cdff7e29ea0779df5ec446d",
+   "short": "d282493",
+   "subject": "Outfit viewer: show the real avatar and outfit, remove demo data",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d282493ca25dedda4cdff7e29ea0779df5ec446d"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/camera-keyboard.test.ts",
+    "src/linkpoint/camera-controls.ts",
+    "src/linkpoint/camera-keyboard.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "0ef6aed41fb6f368183c14aba6dee99c67facec7",
+   "short": "0ef6aed",
+   "subject": "Standard SL camera controls: Alt/Ctrl+Alt keys, Alt+drag, Alt+click, Esc, M",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/0ef6aed41fb6f368183c14aba6dee99c67facec7"
+  },
+  {
+   "also": [
+    "screens",
+    "viewer",
+    "platform",
+    "other"
+   ],
+   "area": "components",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "scripts/fake-data-rules.mjs",
+    "src/components/DesktopChrome.jsx",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/Header.jsx",
+    "src/components/MenuBar.jsx",
+    "src/linkpoint/__tests__/fake-data-scanner.test.ts",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/screens/Radar.jsx",
+    "src/screens/Search.jsx"
+   ],
+   "sha": "16841f6785e373221dec4deefa4902e1298306fa",
+   "short": "16841f6",
+   "subject": "Sweep: make or honestly disable actions that claimed success without doing anything",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/16841f6785e373221dec4deefa4902e1298306fa"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Kaleaon",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "Dockerfile"
+   ],
+   "sha": "1fe717b7c6d2e17b7de17e4b8263e699e298445d",
+   "short": "1fe717b",
+   "subject": "fix(docker): copy scripts/ before npm install for postinstall hook",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1fe717b7c6d2e17b7de17e4b8263e699e298445d"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Kaleaon",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "Dockerfile"
+   ],
+   "sha": "6b6486ce9ca8e0da4dbefc0e5feb4aa75529d2c5",
+   "short": "6b6486c",
+   "subject": "fix(docker): copy full source before npm install (postinstall needs src/)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/6b6486ce9ca8e0da4dbefc0e5feb4aa75529d2c5"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Kaleaon",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "Dockerfile"
+   ],
+   "sha": "bb0314e5ede97c1279e441fb7c4756f9532fc740",
+   "short": "bb0314e",
+   "subject": "fix(docker): bundle server.ts with esbuild, run plain node (fix OOM)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/bb0314e5ede97c1279e441fb7c4756f9532fc740"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Kaleaon",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "Dockerfile"
+   ],
+   "sha": "dec4590b2f247951d88810364093322467951761",
+   "short": "dec4590",
+   "subject": "fix(docker): bundle server.ts as ESM (import.meta.url needs it)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/dec4590b2f247951d88810364093322467951761"
   }
  ],
- "last_sha": "8411aa413421467a7fc450682f0d0136f307209a",
+ "last_sha": "dec4590b2f247951d88810364093322467951761",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"

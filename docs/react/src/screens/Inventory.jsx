@@ -5,6 +5,7 @@ import { INVENTORY_SOURCE, INVENTORY_FOLDERS, INVENTORY_RECENTS } from "../data/
 import Icon from "../components/Icon.jsx";
 import KInteractive from "../components/KInteractive.jsx";
 import { subView } from "../theme/constants.js";
+import { SkeletonTree } from "../components/Skeletons.jsx";
 
 // Ported from the `isTree` <sc-if> block: search/grid toolbar, recent-items
 // strip, and the folder tree with multi-selection batch action bar support.
@@ -15,9 +16,11 @@ export default function Inventory() {
   const timerRef = useRef(null);
   const isLongPressRef = useRef(false);
 
+  const isLoading = state?.cond === "loading";
+
   const invToolStyle = { flex: "none", display: "flex", gap: "8px", padding: bleed ? "0 0 8px 10px" : "2px 16px 10px" };
   const invRecentStyle = { flex: "none", display: "flex", gap: "8px", overflowX: "auto", padding: bleed ? "0 0 8px 10px" : "0 16px 10px" };
-  const invListStyle = { flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column", gap: bleed ? C.gap + "px" : 0, background: bleed ? V.bg : "transparent" };
+  const invListStyle = { flex: 1, minHeight: "320px", overflowY: "auto", display: "flex", flexDirection: "column", gap: bleed ? C.gap + "px" : 0, background: bleed ? V.bg : "transparent" };
 
   const curSub = subView(state, "Inventory");
   const rawItems = state.invItems || INVENTORY_SOURCE.map(([name, icon, depth, parent, ver, tags]) => ({ name, icon, depth, parent, ver, tags: tags || [] }));
@@ -100,32 +103,36 @@ export default function Inventory() {
       </div>
 
       <div style={invListStyle}>
-        {nodes.map((n) => {
-          const indent = bleed
-            ? { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 12px", paddingLeft: 10 + n.depth * 16 + "px", background: n.isSelected ? V.priC : V.surf, borderLeft: "4px solid " + (n.isSelected ? V.pri : n.depth === 0 ? V.pri : n.depth === 1 ? V.sec2 : "transparent"), cursor: "pointer" }
-            : { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 16px", paddingLeft: 16 + n.depth * 18 + "px", background: n.isSelected ? V.priC : "transparent", borderBottom: "1px solid " + V.outv, cursor: "pointer" };
-          return (
-            <KInteractive
-              key={n.name}
-              onClick={() => handleRowClick(n)}
-              onPointerDown={() => handlePointerDown(n)}
-              onPointerUp={handlePointerUpOrLeave}
-              onPointerLeave={handlePointerUpOrLeave}
-              label={n.name}
-              style={indent}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleRowClick(n); } }}
-              role="button" aria-label={n.name} tabIndex={0}
-            >
-              {state.invSelectMode && !n.isFolder && (
-                <Icon name={n.isSelected ? "check-square" : "square"} size={16} style={{ color: V.pri, flexShrink: 0 }} />
-              )}
-              <Icon name={n.chev} size={16} style={{ color: V.pri, flexShrink: 0 }} />
-              <Icon name={n.icon} size={16} style={{ color: V.sec2, flexShrink: 0 }} />
-              <span style={{ flex: 1, font: "400 13px/1.2 " + t.font, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{n.name}</span>
-              <span style={{ font: "400 10px/1 " + t.font, color: V.ink2 }}>{n.ver}</span>
-            </KInteractive>
-          );
-        })}
+        {isLoading ? (
+          <SkeletonTree style={{ minHeight: "320px" }} />
+        ) : (
+          nodes.map((n) => {
+            const indent = bleed
+              ? { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 12px", paddingLeft: 10 + n.depth * 16 + "px", background: n.isSelected ? V.priC : V.surf, borderLeft: "4px solid " + (n.isSelected ? V.pri : n.depth === 0 ? V.pri : n.depth === 1 ? V.sec2 : "transparent"), cursor: "pointer" }
+              : { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 16px", paddingLeft: 16 + n.depth * 18 + "px", background: n.isSelected ? V.priC : "transparent", borderBottom: "1px solid " + V.outv, cursor: "pointer" };
+            return (
+              <KInteractive
+                key={n.name}
+                onClick={() => handleRowClick(n)}
+                onPointerDown={() => handlePointerDown(n)}
+                onPointerUp={handlePointerUpOrLeave}
+                onPointerLeave={handlePointerUpOrLeave}
+                label={n.name}
+                style={indent}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleRowClick(n); } }}
+                role="button" aria-label={n.name} tabIndex={0}
+              >
+                {state.invSelectMode && !n.isFolder && (
+                  <Icon name={n.isSelected ? "check-square" : "square"} size={16} style={{ color: V.pri, flexShrink: 0 }} />
+                )}
+                <Icon name={n.chev} size={16} style={{ color: V.pri, flexShrink: 0 }} />
+                <Icon name={n.icon} size={16} style={{ color: V.sec2, flexShrink: 0 }} />
+                <span style={{ flex: 1, font: "400 13px/1.2 " + t.font, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{n.name}</span>
+                <span style={{ font: "400 10px/1 " + t.font, color: V.ink2 }}>{n.ver}</span>
+              </KInteractive>
+            );
+          })
+        )}
       </div>
 
       {hasSelected && (

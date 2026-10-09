@@ -24,6 +24,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Checkout Ktheme repository
+        uses: actions/checkout@v4
+        with:
+          repository: Kaleaon/Ktheme
+          path: '../Ktheme'
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
