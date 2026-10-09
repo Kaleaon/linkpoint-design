@@ -22,6 +22,7 @@ jobs:
         with:
           repository: Kaleaon/Ktheme
           path: 'Ktheme'
+          token: ''
 
       - name: Symlink Ktheme to parent directory
         run: ln -s "$PWD/Ktheme" "$PWD/../Ktheme"
