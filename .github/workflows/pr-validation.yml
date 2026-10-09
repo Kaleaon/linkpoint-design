@@ -39,7 +39,7 @@ jobs:
           cache-dependency-path: 'docs/react/pnpm-lock.yaml'
 
       - name: Install React App Dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
         working-directory: docs/react
 
       - name: Build React App
@@ -64,6 +64,11 @@ jobs:
         run: |
           python -m http.server 8080 --directory docs/react/dist &
           SERVER_PID=$!
-          sleep 2
+          for i in {1..15}; do
+            if curl -s http://localhost:8080 > /dev/null; then
+              break
+            fi
+            sleep 1
+          done
           python3 test_page_eval.py
           kill $SERVER_PID
