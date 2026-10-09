@@ -183,9 +183,10 @@ export default function FloatersDesktop() {
       {flFocused ? (
         <AccessibleDialogPortal
           isOpen={true}
+          isModal={false}
           onClose={() => actions.dispatchIntent("FLOATER_CLOSE", { id: state.screen })}
           ariaLabel={`${state.screen} Floater Overlay`}
-          role="dialog"
+          role="region"
         >
           <div
             style={{

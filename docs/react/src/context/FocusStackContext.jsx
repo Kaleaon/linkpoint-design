@@ -4,13 +4,21 @@ const FocusStackContext = createContext(null);
 
 export function FocusStackProvider({ children }) {
   const triggerStackRef = useRef([]);
-  const activePortalsRef = useRef(new Set());
+  const activePortalsRef = useRef(new Map());
 
   const updateBackgroundState = useCallback(() => {
     const appRoot = document.getElementById("app-root") || document.getElementById("root");
     if (!appRoot) return;
 
-    if (activePortalsRef.current.size > 0) {
+    let hasModal = false;
+    for (const portal of activePortalsRef.current.values()) {
+      if (portal.isModal) {
+        hasModal = true;
+        break;
+      }
+    }
+
+    if (hasModal) {
       appRoot.setAttribute("aria-hidden", "true");
       appRoot.setAttribute("inert", "");
     } else {
@@ -54,9 +62,9 @@ export function FocusStackProvider({ children }) {
     return false;
   }, []);
 
-  const registerPortal = useCallback((id, triggerElement) => {
+  const registerPortal = useCallback((id, triggerElement, isModal = true) => {
     if (!id) return;
-    activePortalsRef.current.add(id);
+    activePortalsRef.current.set(id, { triggerElement, isModal });
     pushTrigger(triggerElement);
     updateBackgroundState();
   }, [pushTrigger, updateBackgroundState]);
