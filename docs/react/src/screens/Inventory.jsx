@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { INVENTORY_SOURCE, INVENTORY_FOLDERS, INVENTORY_RECENTS } from "../data/content.js";
@@ -13,6 +13,7 @@ export default function Inventory() {
   const { state, actions } = useApp();
   const { V, t, bleed, pad, C } = useTheme();
 
+  const [searchQuery, setSearchQuery] = useState("");
   const timerRef = useRef(null);
   const isLongPressRef = useRef(false);
 
@@ -33,9 +34,14 @@ export default function Inventory() {
     return { name, icon, ver, parent, depth, isFolder, open, isSelected, tags: tags || [], chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "dot" };
   });
 
-  const nodes = curSub === "ALL"
+  const baseNodes = curSub === "ALL"
     ? all.filter((n) => n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false))
     : all.filter((n) => n.tags.includes(curSub.toLowerCase())).map((n) => ({ ...n, depth: 0, isFolder: false, chev: "dot" }));
+
+  const trimmedQuery = searchQuery.trim().toLowerCase();
+  const nodes = trimmedQuery
+    ? (curSub === "ALL" ? all : baseNodes).filter((n) => n.name.toLowerCase().includes(trimmedQuery))
+    : baseNodes;
 
   const handlePointerDown = (n) => {
     if (n.isFolder) return;
@@ -73,7 +79,14 @@ export default function Inventory() {
       <div style={invToolStyle}>
         <div style={{ flex: 1, height: "44px", display: "flex", alignItems: "center", gap: "8px", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf }}>
           <Icon name="search" size={15} style={{ opacity: 0.55 }} />
-          <span style={{ font: "400 12px/1 " + t.font, color: V.ink2 }}>filter inventory…</span>
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="filter inventory…"
+            aria-label="Filter inventory"
+            style={{ flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent", font: "400 12px/1 " + t.font, color: V.ink }}
+          />
         </div>
         <div
           onClick={actions.toggleInvSelectMode}
