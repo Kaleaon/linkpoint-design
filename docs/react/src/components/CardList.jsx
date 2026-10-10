@@ -105,11 +105,11 @@ export default function CardList({ cards }) {
             height: `${indicatorHeight}px`,
             overflow: "hidden",
             transition: refreshing ? "height 0.2s ease" : "none",
-            color: V ? V.pri : "#00f0ff",
+            color: V ? V.pri : "var(--pri)",
             fontSize: "12px",
             fontWeight: "600",
             fontFamily: t ? t.font : "sans-serif",
-            borderBottom: "1px dashed " + (V ? V.outv : "#333"),
+            borderBottom: "1px dashed " + (V ? V.outv : "var(--outv)"),
             marginBottom: "4px",
           }}
         >
@@ -118,10 +118,18 @@ export default function CardList({ cards }) {
             size={16}
             style={{
               transform: `rotate(${pullDistance * 5}deg)`,
-              transition: refreshing ? "transform 0.8s linear infinite" : "none",
+              transition: refreshing
+                ? "transform 0.8s linear infinite"
+                : "none",
             }}
           />
-          <span>{refreshing ? "Syncing balance..." : pullDistance > 40 ? "Release to sync" : "Pull to sync balance"}</span>
+          <span>
+            {refreshing
+              ? "Syncing balance..."
+              : pullDistance > 40
+                ? "Release to sync"
+                : "Pull to sync balance"}
+          </span>
         </div>
       )}
       {cards.map((c, i) => (

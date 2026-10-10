@@ -2,9 +2,9 @@ name: PR Validation
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
   push:
-    branches: [ main ]
+    branches: [main]
 
 permissions:
   contents: read
@@ -27,21 +27,23 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 10
-
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'pnpm'
-          cache-dependency-path: 'docs/react/pnpm-lock.yaml'
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: "docs/react/package-lock.json"
 
       - name: Install React App Dependencies
-        run: pnpm install --frozen-lockfile
+        run: npm ci
         working-directory: docs/react
 
       - name: Build React App
-        run: pnpm run build
+        run: npm run build
         working-directory: docs/react
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
 
       - name: Run Accessibility Check
         run: bash test_a11y.sh
@@ -49,7 +51,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install Python & Playwright Dependencies
         run: |
