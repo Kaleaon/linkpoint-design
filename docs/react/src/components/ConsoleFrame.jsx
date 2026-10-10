@@ -1,5 +1,6 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
+import { useTelemetryTick } from "../hooks/useTelemetryTick.js";
 import { NAV_ALL, HEAD } from "../data/content.js";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
@@ -21,7 +22,7 @@ const SIM_COORD = { x: 128, y: 64, z: 42 };
 export default function ConsoleFrame() {
   const { state, actions } = useApp();
   const { V, t, C, ink, consoleScene } = useTheme();
-  const tick = state.tick || 0;
+  const tick = useTelemetryTick();
   const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
 
   const cfBar = { position: "absolute", left: 0, top: 0, right: 0, height: C.bar + "px", background: V.pri, borderRadius: Math.round(C.bar * 0.66) + "px 0 0 0" };
