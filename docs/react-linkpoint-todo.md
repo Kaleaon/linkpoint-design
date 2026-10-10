@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-10-09T06:22:47Z — upstream read through [`dec4590`](https://github.com/Kaleaon/react-linkpoint/commit/dec4590b2f247951d88810364093322467951761)
-- **Open:** 283 · **Completed:** 2
+- **Last change:** 2026-10-10T06:20:55Z — upstream read through [`00f24d0`](https://github.com/Kaleaon/react-linkpoint/commit/00f24d0d6f9c0c211fef523b58a9721ba00891b8)
+- **Open:** 314 · **Completed:** 2
 
 ## Open
 
@@ -107,6 +107,21 @@ Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/
 
 Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `docs/react/src/components/`
 
+- [ ] **`6d38b43`** feat(a11y): adopt FormField component across PayDialog, FloatersDesktop, and CacheScreen
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6d38b43fb94a53e7713d721590cfb39dddc3bed4)
+  - 4 files: `src/components/FloatersDesktop.jsx`, `src/components/FormField.jsx`, `src/components/PayDialog.jsx`, `src/screens/__tests__/FormFieldScreenIntegration.test.tsx`
+  - also touches: Screens
+- [ ] **`3fbec56`** fix(a11y): enforce minimum touch target dimensions across mobile navigation
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/3fbec5674bad82698a3335489c09e288e65b6ea7)
+  - 4 files: `src/components/BottomTabs.jsx`, `src/components/Header.jsx`, `src/components/TouchTarget.tsx`, `src/components/__tests__/TouchTargetSizes.test.tsx`
+- [ ] **`1a165f5`** refactor(a11y): migrate ErrorRecoveryModal and SystemDialog to native HTML dialog elements
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1a165f57f6c2f8a1048b414140565a65cd5a772b)
+  - 4 files: `src/components/ErrorRecoveryModal.tsx`, `src/components/SystemDialog.jsx`, `src/index.css`, `vitest.setup.ts`
+  - also touches: Theme & tokens, Tests
+- [ ] **`0947c4a`** feat(a11y): enhance global LiveRegionAnnouncer service with persistent DOM singleton and 1000ms queue linger
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0947c4a0c003052294dd7e1d292153eddabe1df6)
+  - 5 files: `src/components/LiveRegionAnnouncerComponent.jsx`, `src/components/Toast.jsx`, `src/linkpoint/__tests__/live-region-announcer.test.ts`, `src/screens/Chat.jsx`, `src/services/LiveRegionAnnouncer.ts`
+  - also touches: Screens, Viewer & protocol features, Unclassified
 - [ ] **`16841f6`** Sweep: make or honestly disable actions that claimed success without doing anything
   - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/16841f6785e373221dec4deefa4902e1298306fa)
   - 12 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `scripts/fake-data-rules.mjs`, `src/components/DesktopChrome.jsx`, `src/components/FloatersDesktop.jsx`, `src/components/Header.jsx` _(+6 more)_
@@ -233,6 +248,10 @@ Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `do
 
 Mirror into: `docs/index.html` — `PALETTES` / `LAYOUTS` · `docs/react/src/theme/` · the `docs/*.json` colour packs
 
+- [ ] **`3cbe293`** feat(a11y): integrate ensureMinContrast into theme token resolution and re-bind AssetContainer
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/3cbe2934d528814ce3085cebfa47ce66452b0120)
+  - 5 files: `packages/design-system/src/tokens/index.ts`, `src/components/AssetContainer.jsx`, `src/theme/__tests__/contrast.test.ts`, `src/theme/computeTheme.js`, `src/theme/customTheme.js`
+  - also touches: Components, Unclassified
 - [ ] **`9e29888`** feat: implement unified cross-surface layout state and control toolbar
   - 2026-10-04 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/9e2988835120f0d4a928db81d4f8e9332f334a47)
   - 5 files: `src/components/ThemeStudio.jsx`, `src/hooks/useAppState.js`, `src/linkpoint/__tests__/layout-control-toolbar.test.tsx`, `src/theme/computeTheme.js`, `src/theme/customTheme.js`
@@ -277,6 +296,46 @@ Mirror into: `docs/index.html` — the `render()` view-model · `docs/react/src/
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`e3c34ad`** feat(inventory): implement atomic folder reconciler and consolidate InventoryCore into InventoryManager
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e3c34ade9896a5ba0a3c947b40bbcf0d5fafbd75)
+  - 4 files: `src/linkpoint/__tests__/atomic-inventory-reconciler.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/inventory.ts`, `src/linkpoint/phase2/inventory-core.ts`
+- [ ] **`da13a95`** fix(llsd): strip custom Lumiya keys from outbound network payloads
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/da13a959a08b4191b1f880c3e0f4d43f27845971)
+  - 2 files: `src/linkpoint/__tests__/sl-viewer-standards.test.ts`, `src/linkpoint/lumiya/LumiyaLLSDUtils.ts`
+- [ ] **`ccf2560`** feat: secondary set indexing for online friends and pending requests
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ccf2560314ebfe73c72c169950f5e66ee8649ecf)
+  - 2 files: `src/linkpoint/__tests__/friends-indexing.test.ts`, `src/linkpoint/phase2/friends-extended.ts`
+- [ ] **`b9d4df5`** feat: direct grid RPC mute sync with localStorage fallback
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b9d4df5092f8ff683cd8cb1cb4685eb5c0e98c76)
+  - 3 files: `src/linkpoint/__tests__/mute-storage-sync.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/phase2/chat-extended.ts`
+- [ ] **`9245ccb`** feat: transmit explicit decline protocol response on teleport lure dismissal
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/9245ccb13bfa66fcf233dca880eef141de71fc45)
+  - 9 files: `core/sl-interactions.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/components/InteractionDialog.jsx`, `src/linkpoint/__tests__/interaction-dialog.test.tsx`, `src/linkpoint/__tests__/sl-interactions.test.ts` _(+3 more)_
+  - also touches: Components, Unclassified
+- [ ] **`65b488b`** feat: transactional IndexedDB storage and reactive delta selectors
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/65b488b7e7c3f688d99f0210c34fdb04ff7f62a0)
+  - 12 files: `src/linkpoint/__tests__/indexeddb-delta-selectors.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/contacts.ts`, `src/linkpoint/delta-selectors.ts`, `src/linkpoint/idb-worker.ts`, `src/linkpoint/indexeddb-store.ts` _(+6 more)_
+- [ ] **`60a71c2`** fix(wind): normalize wind vector scaling by defaulting WIND_SCALE_HACK to 1.0
+  - 2026-10-09 · Stitch Agent · [commit](https://github.com/Kaleaon/react-linkpoint/commit/60a71c2ae84e368a19c8d88e4f6d8d5144dda4f2)
+  - 3 files: `src/linkpoint/__tests__/flexi.test.ts`, `src/linkpoint/__tests__/wind.test.ts`, `src/linkpoint/wind.ts`
+- [ ] **`326e73e`** fix(world): repair keyMode method declaration
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/326e73e9ded3f74d3d8fc5e3d3bac061bb5fd5b1)
+  - 1 file: `src/linkpoint/world.ts`
+- [ ] **`21069d9`** style: format test file with prettier
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/21069d9afd3bcae45b52ed68f88bd59fe19b15ee)
+  - 1 file: `src/linkpoint/__tests__/atomic-inventory-reconciler.test.ts`
+- [ ] **`1ff57a7`** Configure ESLint v9 Flat Config, Prettier, Husky pre-commit hooks, and CI workflow
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1ff57a71909da57b16f3281a7421d442b7f92fa2)
+  - 445 files: `.github/workflows/ci.yml`, `.github/workflows/live.yml`, `.github/workflows/release.yml`, `.husky/pre-commit`, `.prettierignore`, `.prettierrc` _(+439 more)_
+  - also touches: Screens, Components, Theme & tokens, State & data, Tests, Build & platform, Docs & specs, Unclassified
+- [ ] **`13b2213`** feat(notices): dual-transport HTTP capability fallback with TTL notice caching
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/13b221353c6c384b6f70d11d3ca403634761c072)
+  - 7 files: `src/linkpoint/__tests__/groups-dual-transport.test.ts`, `src/linkpoint/__tests__/notices.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/notices.ts`, `src/linkpoint/phase2/capabilities.ts`, `src/linkpoint/phase2/groups.ts` _(+1 more)_
+  - also touches: Screens
+- [ ] **`ed6bd12`** feat(voice): push-to-talk from LLVoiceClient (use/toggle/follow-key, middle mouse toggle)
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ed6bd12a8e0618153983f2defb026a1364bddef3)
+  - 8 files: `src/hooks/useAppState.js`, `src/hooks/viewerSettings.js`, `src/linkpoint/__tests__/voice-ptt.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/voice-input.ts`, `src/linkpoint/voice.ts` _(+2 more)_
+  - also touches: Screens, State & data
 - [ ] **`e22f2a0`** Retry friends loading and failed mesh/asset downloads
   - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e22f2a0f769b112fd96af43e9a2f7a82ff43a253)
   - 8 files: `core/viewer-session.cjs`, `src/linkpoint/__tests__/friends-retry.test.ts`, `src/linkpoint/__tests__/viewer-session.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/sl-bridge.ts`, `src/linkpoint/world.ts` _(+2 more)_
@@ -296,19 +355,45 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
   - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/c9264179ecc1269cd2144c0188b32b0cd24c4f6d)
   - 8 files: `core/sl-wind.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/flexi.test.ts`, `src/linkpoint/__tests__/sl-wind.test.ts`, `src/linkpoint/__tests__/wind.test.ts`, `src/linkpoint/sl-connection-full.ts` _(+2 more)_
   - also touches: Unclassified
+- [ ] **`c72a1ac`** feat(mute): grid mute list - Xfer download, add/remove on the grid, flag rules from LLMuteList, chat/sound/voice filtering
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/c72a1ac0a0953bb1fb1dec40d9faf99293244556)
+  - 15 files: `core/sl-mutelist.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `package.json`, `src/linkpoint/__tests__/mute-list.test.ts`, `src/linkpoint/__tests__/sl-mutelist.test.ts` _(+9 more)_
+  - also touches: Build & platform, Unclassified
+- [ ] **`bd9f710`** feat(sound): sound-local parcels from ParcelOverlay and the agent parcel (canHearSound)
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/bd9f71092e14b8c01c54767cd732e6579e754321)
+  - 6 files: `core/sl-parcel-sound.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/parcel-sound.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/parcel-sound.ts`, `src/linkpoint/sl-connection-full.ts`
+  - also touches: Unclassified
+- [ ] **`b6a568b`** Wear and remove items, outfits, shape editing, detach, offer teleport, sitting camera keys
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b6a568b4b0e88096efa9e1183c084e4e1693b34f)
+  - 15 files: `core/sl-outfit.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `scripts/fake-data-rules.mjs`, `src/linkpoint/__tests__/camera-keyboard.test.ts`, `src/linkpoint/__tests__/outfit-viewer.test.tsx` _(+9 more)_
+  - also touches: Screens, Build & platform, Unclassified
 - [ ] **`abf4595`** feat(voice): reconnect on the viewer's retry schedule after a failure or drop
   - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/abf45956385114627fc333de1a3adc8af03ac550)
   - 4 files: `src/linkpoint/__tests__/voice-protocol.test.ts`, `src/linkpoint/__tests__/voice.test.ts`, `src/linkpoint/voice-protocol.ts`, `src/linkpoint/voice.ts`
 - [ ] **`94f8637`** feat(world): warn once when an update strips an object's mesh or sculpt
   - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/94f8637384a6bd91762c1e2e5e2755dc3511f26c)
   - 2 files: `src/linkpoint/__tests__/world-asset-updates.test.ts`, `src/linkpoint/world.ts`
+- [ ] **`7e39764`** Send a new participant's mute and gain to every voice connection
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7e39764800abe6fa943d7fc306a3200a591d3b6e)
+  - 1 file: `src/linkpoint/voice.ts`
 - [ ] **`66c95ab`** feat(sound): official SL sound rules, categories, listener, UI sounds; provenance doc
   - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/66c95aba71c98ef9953de09b3ce3128888a2b7aa)
   - 13 files: `core/sl-sounds.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `docs/official-sources.md`, `src/linkpoint/__tests__/audio.test.ts`, `src/linkpoint/__tests__/sl-sounds.test.ts` _(+7 more)_
   - also touches: Docs & specs, Unclassified
+- [ ] **`5f5300a`** feat(voice): cross-region voice (neighbour connections), parcel-driven voice channel choice
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/5f5300ad5e03fb3695e06a0cb4364cff9070445b)
+  - 12 files: `core/sl-neighbors.cjs`, `core/viewer-session.cjs`, `package.json`, `src/linkpoint/__tests__/sl-neighbors.test.ts`, `src/linkpoint/__tests__/voice-neighbors.test.ts`, `src/linkpoint/app.ts` _(+6 more)_
+  - also touches: Build & platform, Unclassified
+- [ ] **`4b695eb`** Retry failed animations; fall back to published avatar meshes and animations
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/4b695eb4b066f9d17592fb55c0f13349fa2ac0fa)
+  - 4 files: `src/linkpoint/__tests__/avatar-animator.test.ts`, `src/linkpoint/__tests__/avatar-body.test.ts`, `src/linkpoint/avatar-animator.ts`, `src/linkpoint/avatar-body.ts`
 - [ ] **`40b6bb1`** fix(audio): drop sounds stopped, removed or replaced while downloading; free waiters on failed fetch
   - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/40b6bb1dd0e62f3a078f1a4894f9b60cfb1e3cf2)
   - 2 files: `src/linkpoint/__tests__/audio.test.ts`, `src/linkpoint/audio.ts`
+- [ ] **`23fc650`** feat(rlv): RLV from Firestorm's RLVa - command table, restrictions, chat/IM/movement/teleport enforcement
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/23fc65096b52d2fc2e587b27edd5399372377450)
+  - 18 files: `core/viewer-session.cjs`, `docs/official-sources.md`, `docs/rlv.md`, `src/hooks/useAppState.js`, `src/linkpoint/__tests__/interaction-dialog.test.tsx`, `src/linkpoint/__tests__/rlv-chat.test.ts` _(+12 more)_
+  - also touches: Screens, State & data, Docs & specs, Unclassified
 - [ ] **`1dd0f1f`** fix(chat): restore ChatManager code lost to a truncation marker in 6f334ba
   - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1dd0f1f09864ec686c472a626051742e965089b5)
   - 1 file: `src/linkpoint/chat.ts`
@@ -316,6 +401,10 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
   - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/177e8cb198e1ff5522e954815f72a03b05e30a9f)
   - 5 files: `core/viewer-session.cjs`, `docs/official-sources.md`, `src/linkpoint/__tests__/friends-names.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/phase2/friends-extended.ts`
   - also touches: Docs & specs, Unclassified
+- [ ] **`165330d`** feat(controls): gamepad movement through the viewer's joystick algorithm; docs for wind effects, mute list, parcel sound, cross-region voice
+  - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/165330d79036c869f6c9b032160d42355ebe8cf0)
+  - 10 files: `docs/official-sources.md`, `src/hooks/useAppState.js`, `src/hooks/viewerSettings.js`, `src/linkpoint/__tests__/joystick.test.ts`, `src/linkpoint/agent-controls.ts`, `src/linkpoint/agent-keyboard.ts` _(+4 more)_
+  - also touches: Screens, State & data, Docs & specs
 - [ ] **`15240fe`** feat(voice): SL WebRTC voice wire format from the official viewer
   - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/15240fe047b54945580bf265d467f2319a85b156)
   - 2 files: `src/linkpoint/__tests__/voice-protocol.test.ts`, `src/linkpoint/voice-protocol.ts`
@@ -740,6 +829,15 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
 
 Mirror into: usually no design change — confirm `docs/react/` still builds the same way
 
+- [ ] **`f68af36`** ci: optimize CI caching, path filters, and Kotlin test execution
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f68af36a3aec9c02cc98c04527ff583a700c24eb)
+  - 1 file: `.github/workflows/ci.yml`
+- [ ] **`7440708`** fix(ci): reconstruct standalone PR reviewer and harden Fly.io deployment
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/74407085351d14e269af1feb1a6e47f3de790c45)
+  - 3 files: `.github/workflows/ci.yml`, `.github/workflows/fly-deploy.yml`, `.github/workflows/run.yml`
+- [ ] **`676f2ba`** ci: standardize upload-artifact and centralize release verification and attestations
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/676f2ba0ebe63b3f028daf6d9c331a696fb62db8)
+  - 1 file: `.github/workflows/release.yml`
 - [ ] **`6e0b739`** Add GitHub Actions workflow for Fly.io deployment
   - 2026-10-08 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6e0b739b84704b179b0e35102394a8c6f250b7a8)
   - 1 file: `.github/workflows/fly-deploy.yml`
@@ -874,6 +972,15 @@ Mirror into: `docs/ROADMAP.md` · `docs/github.md` · `docs/mockup-to-react.yaml
 
 Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json`
 
+- [ ] **`e429a30`** perf: optimize JPEG2000 buffer generation with tile pattern replication
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e429a30bb3195aa70f772e8b13946b0f45ea506e)
+  - 2 files: `test_texture_decoder.py`, `texture_decoder.py`
+- [ ] **`9313850`** refactor: remove unreferenced root Python prototype scripts
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/93138502f9fe66379ad9dc8bacb8a97ccfd3606f)
+  - 5 files: `avatar_renderer.py`, `inventory_cache.py`, `test_inventory_cache.py`, `test_texture_decoder.py`, `texture_decoder.py`
+- [ ] **`6bab46e`** feat: batch multi-row SQL execution in inventory cache
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6bab46edac6daef11fa7407533ce94ef791e71ba)
+  - 2 files: `inventory_cache.py`, `test_inventory_cache.py`
 - [ ] **`dec4590`** fix(docker): bundle server.ts as ESM (import.meta.url needs it)
   - 2026-10-08 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/dec4590b2f247951d88810364093322467951761)
   - 1 file: `Dockerfile`
@@ -1079,7 +1186,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-10-09T06:22:47Z",
+ "generated": "2026-10-10T06:20:55Z",
  "items": [
   {
    "also": [
@@ -7750,9 +7857,1076 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "dec4590",
    "subject": "fix(docker): bundle server.ts as ESM (import.meta.url needs it)",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/dec4590b2f247951d88810364093322467951761"
+  },
+  {
+   "also": [
+    "screens",
+    "platform",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "core/sl-outfit.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "scripts/fake-data-rules.mjs",
+    "src/linkpoint/__tests__/camera-keyboard.test.ts",
+    "src/linkpoint/__tests__/outfit-viewer.test.tsx",
+    "src/linkpoint/__tests__/sl-outfit.test.ts",
+    "src/linkpoint/__tests__/world-sitting-and-stats.test.ts",
+    "src/linkpoint/avatar-data/shape-params.json",
+    "src/linkpoint/camera-controls.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/OutfitViewer.jsx",
+    "src/screens/Radar.jsx",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "b6a568b4b0e88096efa9e1183c084e4e1693b34f",
+   "short": "b6a568b",
+   "subject": "Wear and remove items, outfits, shape editing, detach, offer teleport, sitting camera keys",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/b6a568b4b0e88096efa9e1183c084e4e1693b34f"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/avatar-animator.test.ts",
+    "src/linkpoint/__tests__/avatar-body.test.ts",
+    "src/linkpoint/avatar-animator.ts",
+    "src/linkpoint/avatar-body.ts"
+   ],
+   "sha": "4b695eb4b066f9d17592fb55c0f13349fa2ac0fa",
+   "short": "4b695eb",
+   "subject": "Retry failed animations; fall back to published avatar meshes and animations",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/4b695eb4b066f9d17592fb55c0f13349fa2ac0fa"
+  },
+  {
+   "also": [
+    "screens",
+    "state",
+    "docs",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "core/viewer-session.cjs",
+    "docs/official-sources.md",
+    "docs/rlv.md",
+    "src/hooks/useAppState.js",
+    "src/linkpoint/__tests__/interaction-dialog.test.tsx",
+    "src/linkpoint/__tests__/rlv-chat.test.ts",
+    "src/linkpoint/__tests__/rlv-handler.test.ts",
+    "src/linkpoint/__tests__/rlv.test.ts",
+    "src/linkpoint/agent-controls.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/chat.ts",
+    "src/linkpoint/interactions.ts",
+    "src/linkpoint/rlv-data.ts",
+    "src/linkpoint/rlv-handler.ts",
+    "src/linkpoint/rlv.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/Settings.jsx"
+   ],
+   "sha": "23fc65096b52d2fc2e587b27edd5399372377450",
+   "short": "23fc650",
+   "subject": "feat(rlv): RLV from Firestorm's RLVa - command table, restrictions, chat/IM/movement/teleport enforcement",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/23fc65096b52d2fc2e587b27edd5399372377450"
+  },
+  {
+   "also": [
+    "screens",
+    "state"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "src/hooks/useAppState.js",
+    "src/hooks/viewerSettings.js",
+    "src/linkpoint/__tests__/voice-ptt.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/voice-input.ts",
+    "src/linkpoint/voice.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/Settings.jsx"
+   ],
+   "sha": "ed6bd12a8e0618153983f2defb026a1364bddef3",
+   "short": "ed6bd12",
+   "subject": "feat(voice): push-to-talk from LLVoiceClient (use/toggle/follow-key, middle mouse toggle)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ed6bd12a8e0618153983f2defb026a1364bddef3"
+  },
+  {
+   "also": [
+    "platform",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "core/sl-mutelist.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "package.json",
+    "src/linkpoint/__tests__/mute-list.test.ts",
+    "src/linkpoint/__tests__/sl-mutelist.test.ts",
+    "src/linkpoint/__tests__/voice.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/chat.ts",
+    "src/linkpoint/mute-list.ts",
+    "src/linkpoint/phase2/chat-extended.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/voice.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "c72a1ac0a0953bb1fb1dec40d9faf99293244556",
+   "short": "c72a1ac",
+   "subject": "feat(mute): grid mute list - Xfer download, add/remove on the grid, flag rules from LLMuteList, chat/sound/voice filtering",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/c72a1ac0a0953bb1fb1dec40d9faf99293244556"
+  },
+  {
+   "also": [
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "core/sl-parcel-sound.cjs",
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/parcel-sound.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/parcel-sound.ts",
+    "src/linkpoint/sl-connection-full.ts"
+   ],
+   "sha": "bd9f71092e14b8c01c54767cd732e6579e754321",
+   "short": "bd9f710",
+   "subject": "feat(sound): sound-local parcels from ParcelOverlay and the agent parcel (canHearSound)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/bd9f71092e14b8c01c54767cd732e6579e754321"
+  },
+  {
+   "also": [
+    "platform",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "core/sl-neighbors.cjs",
+    "core/viewer-session.cjs",
+    "package.json",
+    "src/linkpoint/__tests__/sl-neighbors.test.ts",
+    "src/linkpoint/__tests__/voice-neighbors.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/parcel-sound.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/voice-neighbor.ts",
+    "src/linkpoint/voice-protocol.ts",
+    "src/linkpoint/voice.ts"
+   ],
+   "sha": "5f5300ad5e03fb3695e06a0cb4364cff9070445b",
+   "short": "5f5300a",
+   "subject": "feat(voice): cross-region voice (neighbour connections), parcel-driven voice channel choice",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/5f5300ad5e03fb3695e06a0cb4364cff9070445b"
+  },
+  {
+   "also": [
+    "screens",
+    "state",
+    "docs"
+   ],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "docs/official-sources.md",
+    "src/hooks/useAppState.js",
+    "src/hooks/viewerSettings.js",
+    "src/linkpoint/__tests__/joystick.test.ts",
+    "src/linkpoint/agent-controls.ts",
+    "src/linkpoint/agent-keyboard.ts",
+    "src/linkpoint/gamepad.ts",
+    "src/linkpoint/joystick.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/Settings.jsx"
+   ],
+   "sha": "165330d79036c869f6c9b032160d42355ebe8cf0",
+   "short": "165330d",
+   "subject": "feat(controls): gamepad movement through the viewer's joystick algorithm; docs for wind effects, mute list, parcel sound, cross-region voice",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/165330d79036c869f6c9b032160d42355ebe8cf0"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "Claude",
+   "date": "2026-10-08",
+   "done": false,
+   "files": [
+    "src/linkpoint/voice.ts"
+   ],
+   "sha": "7e39764800abe6fa943d7fc306a3200a591d3b6e",
+   "short": "7e39764",
+   "subject": "Send a new participant's mute and gain to every voice connection",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/7e39764800abe6fa943d7fc306a3200a591d3b6e"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "Stitch Agent",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/flexi.test.ts",
+    "src/linkpoint/__tests__/wind.test.ts",
+    "src/linkpoint/wind.ts"
+   ],
+   "sha": "60a71c2ae84e368a19c8d88e4f6d8d5144dda4f2",
+   "short": "60a71c2",
+   "subject": "fix(wind): normalize wind vector scaling by defaulting WIND_SCALE_HACK to 1.0",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/60a71c2ae84e368a19c8d88e4f6d8d5144dda4f2"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/sl-viewer-standards.test.ts",
+    "src/linkpoint/lumiya/LumiyaLLSDUtils.ts"
+   ],
+   "sha": "da13a959a08b4191b1f880c3e0f4d43f27845971",
+   "short": "da13a95",
+   "subject": "fix(llsd): strip custom Lumiya keys from outbound network payloads",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/da13a959a08b4191b1f880c3e0f4d43f27845971"
+  },
+  {
+   "also": [
+    "screens"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/groups-dual-transport.test.ts",
+    "src/linkpoint/__tests__/notices.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/notices.ts",
+    "src/linkpoint/phase2/capabilities.ts",
+    "src/linkpoint/phase2/groups.ts",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "13b221353c6c384b6f70d11d3ca403634761c072",
+   "short": "13b2213",
+   "subject": "feat(notices): dual-transport HTTP capability fallback with TTL notice caching",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/13b221353c6c384b6f70d11d3ca403634761c072"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "326e73e9ded3f74d3d8fc5e3d3bac061bb5fd5b1",
+   "short": "326e73e",
+   "subject": "fix(world): repair keyMode method declaration",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/326e73e9ded3f74d3d8fc5e3d3bac061bb5fd5b1"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "test_texture_decoder.py",
+    "texture_decoder.py"
+   ],
+   "sha": "e429a30bb3195aa70f772e8b13946b0f45ea506e",
+   "short": "e429a30",
+   "subject": "perf: optimize JPEG2000 buffer generation with tile pattern replication",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e429a30bb3195aa70f772e8b13946b0f45ea506e"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "inventory_cache.py",
+    "test_inventory_cache.py"
+   ],
+   "sha": "6bab46edac6daef11fa7407533ce94ef791e71ba",
+   "short": "6bab46e",
+   "subject": "feat: batch multi-row SQL execution in inventory cache",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/6bab46edac6daef11fa7407533ce94ef791e71ba"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/fly-deploy.yml",
+    ".github/workflows/run.yml"
+   ],
+   "sha": "74407085351d14e269af1feb1a6e47f3de790c45",
+   "short": "7440708",
+   "subject": "fix(ci): reconstruct standalone PR reviewer and harden Fly.io deployment",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/74407085351d14e269af1feb1a6e47f3de790c45"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/indexeddb-delta-selectors.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/contacts.ts",
+    "src/linkpoint/delta-selectors.ts",
+    "src/linkpoint/idb-worker.ts",
+    "src/linkpoint/indexeddb-store.ts",
+    "src/linkpoint/inventory.ts",
+    "src/linkpoint/local-cache.ts",
+    "src/linkpoint/migration.ts",
+    "src/linkpoint/phase2/friends-extended.ts",
+    "src/linkpoint/phase2/inventory-core.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "65b488b7e7c3f688d99f0210c34fdb04ff7f62a0",
+   "short": "65b488b",
+   "subject": "feat: transactional IndexedDB storage and reactive delta selectors",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/65b488b7e7c3f688d99f0210c34fdb04ff7f62a0"
+  },
+  {
+   "also": [
+    "screens",
+    "viewer",
+    "other"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/components/LiveRegionAnnouncerComponent.jsx",
+    "src/components/Toast.jsx",
+    "src/linkpoint/__tests__/live-region-announcer.test.ts",
+    "src/screens/Chat.jsx",
+    "src/services/LiveRegionAnnouncer.ts"
+   ],
+   "sha": "0947c4a0c003052294dd7e1d292153eddabe1df6",
+   "short": "0947c4a",
+   "subject": "feat(a11y): enhance global LiveRegionAnnouncer service with persistent DOM singleton and 1000ms queue linger",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/0947c4a0c003052294dd7e1d292153eddabe1df6"
+  },
+  {
+   "also": [
+    "theme",
+    "tests"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/components/ErrorRecoveryModal.tsx",
+    "src/components/SystemDialog.jsx",
+    "src/index.css",
+    "vitest.setup.ts"
+   ],
+   "sha": "1a165f57f6c2f8a1048b414140565a65cd5a772b",
+   "short": "1a165f5",
+   "subject": "refactor(a11y): migrate ErrorRecoveryModal and SystemDialog to native HTML dialog elements",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1a165f57f6c2f8a1048b414140565a65cd5a772b"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    ".github/workflows/release.yml"
+   ],
+   "sha": "676f2ba0ebe63b3f028daf6d9c331a696fb62db8",
+   "short": "676f2ba",
+   "subject": "ci: standardize upload-artifact and centralize release verification and attestations",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/676f2ba0ebe63b3f028daf6d9c331a696fb62db8"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "theme",
+    "state",
+    "tests",
+    "platform",
+    "docs",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/live.yml",
+    ".github/workflows/release.yml",
+    ".husky/pre-commit",
+    ".prettierignore",
+    ".prettierrc",
+    "ARCHITECTURE.md",
+    "CONTACTS_AND_CALENDAR.md",
+    "DESIGN_DICTIONARY.md",
+    "FAKE_DATA_POLICY.md",
+    "LINKPOINT_DESIGN_OFFLINE_SPEC.md",
+    "LUMIYA_FEATURE_AUDIT.md",
+    "LUMIYA_RENDERING_ANALYSIS.md",
+    "PARITY_ROADMAP.md",
+    "README.md",
+    "RENDERING_STATUS.md",
+    "ROADMAP.md",
+    "TPV_COMPLIANCE.md",
+    "babel.config.js",
+    "benchmark.ts",
+    "bun.lock",
+    "core/serializers.cjs",
+    "core/sl-actions.cjs",
+    "core/sl-animations.cjs",
+    "core/sl-appearance.cjs",
+    "core/sl-asset-decoder.cjs",
+    "core/sl-interactions.cjs",
+    "core/sl-mutelist.cjs",
+    "core/sl-neighbors.cjs",
+    "core/sl-outfit.cjs",
+    "core/sl-parcel-sound.cjs",
+    "core/sl-profile-photo.cjs",
+    "core/sl-sounds.cjs",
+    "core/sl-terrain.cjs",
+    "core/sl-wind.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "docs/followup-audit.md",
+    "docs/official-sources.md",
+    "docs/rendering-reference.md",
+    "docs/rlv.md",
+    "docs/viewer-parity.md",
+    "electron-builder.config.js",
+    "electron/app-protocol.cjs",
+    "electron/main.cjs",
+    "eslint.config.mjs",
+    "firebase-applet-config.json",
+    "index.html",
+    "package.json",
+    "public/avatar/meshes.json",
+    "public/demo.html",
+    "public/service-worker.js",
+    "scripts/build-desktop.mjs",
+    "scripts/build-materials.mjs",
+    "scripts/build-wasm.mjs",
+    "scripts/check-fake-data.mjs",
+    "scripts/check-source-imports.mjs",
+    "scripts/fake-data-rules.mjs",
+    "scripts/live-grid-smoke.mjs",
+    "scripts/patch-metaverse.cjs",
+    "scripts/sync-design.ts",
+    "server.ts",
+    "src/App.tsx",
+    "src/__tests__/test-vectors.test.ts",
+    "src/components/AccessibleChatLog.jsx",
+    "src/components/AssetContainer.jsx",
+    "src/components/BottomTabs.jsx",
+    "src/components/Card.jsx",
+    "src/components/CardList.jsx",
+    "src/components/ChipRow.jsx",
+    "src/components/ConsoleFrame.jsx",
+    "src/components/ContactAvatar.jsx",
+    "src/components/ControlPanels.jsx",
+    "src/components/CrystalLoader.jsx",
+    "src/components/DesktopChrome.jsx",
+    "src/components/DeviceFrame.jsx",
+    "src/components/ErrorBoundary.jsx",
+    "src/components/ErrorRecoveryModal.tsx",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/FocusTrap.jsx",
+    "src/components/FormField.jsx",
+    "src/components/Header.jsx",
+    "src/components/Icon.jsx",
+    "src/components/InteractionDialog.jsx",
+    "src/components/InventoryTree.tsx",
+    "src/components/LinkpointLogo.jsx",
+    "src/components/LiveRegionAnnouncerComponent.jsx",
+    "src/components/MenuBar.jsx",
+    "src/components/MobileOverlayControls.tsx",
+    "src/components/ObjectInspector.tsx",
+    "src/components/OutfitCarouselDrawer.tsx",
+    "src/components/PayDialog.jsx",
+    "src/components/RailNav.jsx",
+    "src/components/ScreenBody.jsx",
+    "src/components/SegmentedTabs.jsx",
+    "src/components/Shell.jsx",
+    "src/components/SkeletonLoader.jsx",
+    "src/components/SplitDetail.jsx",
+    "src/components/SplitPaneCompositor.tsx",
+    "src/components/StateBlock.jsx",
+    "src/components/StatusBar.jsx",
+    "src/components/SystemDialog.jsx",
+    "src/components/ThemeStudio.jsx",
+    "src/components/TileNav.jsx",
+    "src/components/Toast.jsx",
+    "src/components/Toggle.jsx",
+    "src/components/TouchTarget.tsx",
+    "src/components/ViewModeSwitcher.jsx",
+    "src/components/ViewportCanvas.tsx",
+    "src/components/__tests__/FocusTrap.test.tsx",
+    "src/components/__tests__/FormField.test.tsx",
+    "src/components/__tests__/PayDialog.test.tsx",
+    "src/components/__tests__/SplitPaneCompositor.test.tsx",
+    "src/components/__tests__/TouchTargetSizes.test.tsx",
+    "src/components/__tests__/ViewportCanvas.test.tsx",
+    "src/components/cameraReadout.js",
+    "src/components/linkpointCrystal.js",
+    "src/components/menuStatus.js",
+    "src/context/AppContext.jsx",
+    "src/context/ErrorRecoveryContext.tsx",
+    "src/context/ThemeContext.jsx",
+    "src/context/TickContext.jsx",
+    "src/context/__tests__/TickContext.test.jsx",
+    "src/custom.d.ts",
+    "src/data/content.js",
+    "src/data/slTypes.ts",
+    "src/hooks/useAppState.js",
+    "src/hooks/useGoogleEnabled.js",
+    "src/hooks/viewerSettings.js",
+    "src/index.css",
+    "src/lib/llsd.test.ts",
+    "src/lib/llsd.ts",
+    "src/linkpoint/__tests__/accessible-chat-log.test.tsx",
+    "src/linkpoint/__tests__/accessible-nav-components.test.tsx",
+    "src/linkpoint/__tests__/agent-controls.test.ts",
+    "src/linkpoint/__tests__/agent-keyboard.test.ts",
+    "src/linkpoint/__tests__/app-protocol.test.ts",
+    "src/linkpoint/__tests__/asset-hydration-ui.test.tsx",
+    "src/linkpoint/__tests__/atmosphere.test.ts",
+    "src/linkpoint/__tests__/audio.test.ts",
+    "src/linkpoint/__tests__/auth.test.ts",
+    "src/linkpoint/__tests__/avatar-animation.test.ts",
+    "src/linkpoint/__tests__/avatar-animator.test.ts",
+    "src/linkpoint/__tests__/avatar-body.test.ts",
+    "src/linkpoint/__tests__/avatar-skeleton.test.ts",
+    "src/linkpoint/__tests__/bento-attachments.test.ts",
+    "src/linkpoint/__tests__/cache-clearing.test.ts",
+    "src/linkpoint/__tests__/calendar-screen.test.tsx",
+    "src/linkpoint/__tests__/calendar-time.test.ts",
+    "src/linkpoint/__tests__/camera-3d.test.ts",
+    "src/linkpoint/__tests__/camera-keyboard.test.ts",
+    "src/linkpoint/__tests__/camera-mode-velocity.test.ts",
+    "src/linkpoint/__tests__/chat-protocol-adapter.test.ts",
+    "src/linkpoint/__tests__/chat.test.ts",
+    "src/linkpoint/__tests__/circuit-context.test.ts",
+    "src/linkpoint/__tests__/contact-photo.test.ts",
+    "src/linkpoint/__tests__/contacts-screen.test.tsx",
+    "src/linkpoint/__tests__/contacts.test.ts",
+    "src/linkpoint/__tests__/coordinate-normalizer.test.ts",
+    "src/linkpoint/__tests__/cors-handler.test.ts",
+    "src/linkpoint/__tests__/design-system-package.test.tsx",
+    "src/linkpoint/__tests__/desk-style.test.ts",
+    "src/linkpoint/__tests__/desktop-packaging.test.ts",
+    "src/linkpoint/__tests__/diagnostics-panel.test.tsx",
+    "src/linkpoint/__tests__/diagnostics-view.test.ts",
+    "src/linkpoint/__tests__/economy-manager.test.ts",
+    "src/linkpoint/__tests__/eep-region-environment.test.ts",
+    "src/linkpoint/__tests__/eep.test.ts",
+    "src/linkpoint/__tests__/errorRecovery.test.ts",
+    "src/linkpoint/__tests__/errorRecoveryUI.test.tsx",
+    "src/linkpoint/__tests__/event-queue.test.ts",
+    "src/linkpoint/__tests__/fabricated-data.test.ts",
+    "src/linkpoint/__tests__/fake-data-scanner.test.ts",
+    "src/linkpoint/__tests__/flexi.test.ts",
+    "src/linkpoint/__tests__/flexible.test.ts",
+    "src/linkpoint/__tests__/form-accessibility.test.tsx",
+    "src/linkpoint/__tests__/friends-retry.test.ts",
+    "src/linkpoint/__tests__/frustum.test.ts",
+    "src/linkpoint/__tests__/graphics-3d-destroy-race.test.ts",
+    "src/linkpoint/__tests__/grid-directory-search.test.tsx",
+    "src/linkpoint/__tests__/groups-dual-transport.test.ts",
+    "src/linkpoint/__tests__/hud-controls.test.tsx",
+    "src/linkpoint/__tests__/hud.test.ts",
+    "src/linkpoint/__tests__/ics.test.ts",
+    "src/linkpoint/__tests__/indexeddb-delta-selectors.test.ts",
+    "src/linkpoint/__tests__/interaction-dialog.test.tsx",
+    "src/linkpoint/__tests__/interactions.test.ts",
+    "src/linkpoint/__tests__/inventory-tree-virtualization.test.tsx",
+    "src/linkpoint/__tests__/inventory-tree.test.tsx",
+    "src/linkpoint/__tests__/joystick.test.ts",
+    "src/linkpoint/__tests__/keyboard-motion.test.ts",
+    "src/linkpoint/__tests__/ktheme-theme-switching.test.tsx",
+    "src/linkpoint/__tests__/layout-control-toolbar.test.tsx",
+    "src/linkpoint/__tests__/live-region-announcer.test.ts",
+    "src/linkpoint/__tests__/llsd-sentinel-inventory.test.ts",
+    "src/linkpoint/__tests__/login-failure.test.ts",
+    "src/linkpoint/__tests__/login-mfa-ui.test.tsx",
+    "src/linkpoint/__tests__/map-tiles.test.ts",
+    "src/linkpoint/__tests__/menu-status.test.ts",
+    "src/linkpoint/__tests__/mute-list.test.ts",
+    "src/linkpoint/__tests__/notices.test.ts",
+    "src/linkpoint/__tests__/outfit-viewer.test.tsx",
+    "src/linkpoint/__tests__/parcel-sound.test.ts",
+    "src/linkpoint/__tests__/particles-official.test.ts",
+    "src/linkpoint/__tests__/particles.test.ts",
+    "src/linkpoint/__tests__/preferences.test.ts",
+    "src/linkpoint/__tests__/primitives-3d.test.ts",
+    "src/linkpoint/__tests__/primitives-winding.test.ts",
+    "src/linkpoint/__tests__/proxy-permit.test.ts",
+    "src/linkpoint/__tests__/proxy-policy.test.ts",
+    "src/linkpoint/__tests__/rate-limited-fetch.test.ts",
+    "src/linkpoint/__tests__/ray-pick.test.ts",
+    "src/linkpoint/__tests__/renderer-materials.test.ts",
+    "src/linkpoint/__tests__/rlv-chat.test.ts",
+    "src/linkpoint/__tests__/rlv-handler.test.ts",
+    "src/linkpoint/__tests__/rlv.test.ts",
+    "src/linkpoint/__tests__/runtime-ui-data.test.ts",
+    "src/linkpoint/__tests__/scene-3d-environment.test.ts",
+    "src/linkpoint/__tests__/scene-3d-hud.test.ts",
+    "src/linkpoint/__tests__/scene-3d.test.ts",
+    "src/linkpoint/__tests__/serializers-assets.test.ts",
+    "src/linkpoint/__tests__/settings-and-tabs.test.tsx",
+    "src/linkpoint/__tests__/skinning.test.ts",
+    "src/linkpoint/__tests__/sky.test.ts",
+    "src/linkpoint/__tests__/sl-actions-client.test.ts",
+    "src/linkpoint/__tests__/sl-actions.test.ts",
+    "src/linkpoint/__tests__/sl-animations.test.ts",
+    "src/linkpoint/__tests__/sl-appearance.test.ts",
+    "src/linkpoint/__tests__/sl-asset-decoder.test.ts",
+    "src/linkpoint/__tests__/sl-interactions.test.ts",
+    "src/linkpoint/__tests__/sl-login.test.ts",
+    "src/linkpoint/__tests__/sl-message-types.test.ts",
+    "src/linkpoint/__tests__/sl-mutelist.test.ts",
+    "src/linkpoint/__tests__/sl-neighbors.test.ts",
+    "src/linkpoint/__tests__/sl-outfit.test.ts",
+    "src/linkpoint/__tests__/sl-profile-photo.test.ts",
+    "src/linkpoint/__tests__/sl-sounds.test.ts",
+    "src/linkpoint/__tests__/sl-viewer-standards.test.ts",
+    "src/linkpoint/__tests__/sl-volume.test.ts",
+    "src/linkpoint/__tests__/sl-wind.test.ts",
+    "src/linkpoint/__tests__/sound-standards.test.ts",
+    "src/linkpoint/__tests__/spatial-pipeline.test.ts",
+    "src/linkpoint/__tests__/spatial-touch-pods.test.tsx",
+    "src/linkpoint/__tests__/style-shorthand.test.ts",
+    "src/linkpoint/__tests__/system-dialog-teleport.test.tsx",
+    "src/linkpoint/__tests__/terrain.test.ts",
+    "src/linkpoint/__tests__/texture-decoder.test.ts",
+    "src/linkpoint/__tests__/three-d-exit.test.tsx",
+    "src/linkpoint/__tests__/touch-target.test.tsx",
+    "src/linkpoint/__tests__/ui-helpers.tsx",
+    "src/linkpoint/__tests__/viewer-api.test.ts",
+    "src/linkpoint/__tests__/viewer-controls.test.tsx",
+    "src/linkpoint/__tests__/viewer-followup.test.tsx",
+    "src/linkpoint/__tests__/viewer-parity.test.tsx",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/__tests__/voice-neighbors.test.ts",
+    "src/linkpoint/__tests__/voice-protocol.test.ts",
+    "src/linkpoint/__tests__/voice-ptt.test.ts",
+    "src/linkpoint/__tests__/voice.test.ts",
+    "src/linkpoint/__tests__/wind.test.ts",
+    "src/linkpoint/__tests__/windlight.test.ts",
+    "src/linkpoint/__tests__/world-animation-loader.test.ts",
+    "src/linkpoint/__tests__/world-asset-updates.test.ts",
+    "src/linkpoint/__tests__/world-avatar-body.test.ts",
+    "src/linkpoint/__tests__/world-hud.test.ts",
+    "src/linkpoint/__tests__/world-init-race.test.ts",
+    "src/linkpoint/__tests__/world-prim-volume.test.ts",
+    "src/linkpoint/__tests__/world-rigged-mesh.test.ts",
+    "src/linkpoint/__tests__/world-sitting-and-stats.test.ts",
+    "src/linkpoint/__tests__/world-terrain-materials.test.ts",
+    "src/linkpoint/__tests__/world-viewport-regression.test.tsx",
+    "src/linkpoint/__tests__/world.test.ts",
+    "src/linkpoint/__tests__/xmlParser.test.ts",
+    "src/linkpoint/agent-controls.ts",
+    "src/linkpoint/agent-keyboard.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/appearance-manager.ts",
+    "src/linkpoint/atmosphere.ts",
+    "src/linkpoint/audio.ts",
+    "src/linkpoint/auth.ts",
+    "src/linkpoint/avatar-animation.ts",
+    "src/linkpoint/avatar-animator.ts",
+    "src/linkpoint/avatar-body.ts",
+    "src/linkpoint/avatar-data/shape-params.json",
+    "src/linkpoint/avatar-data/skeleton.json",
+    "src/linkpoint/avatar-skeleton.ts",
+    "src/linkpoint/binaryParser.ts",
+    "src/linkpoint/binarySerializer.ts",
+    "src/linkpoint/calendar-time.ts",
+    "src/linkpoint/camera-3d.ts",
+    "src/linkpoint/camera-controls.ts",
+    "src/linkpoint/camera-keyboard.ts",
+    "src/linkpoint/chat-protocol-adapter.ts",
+    "src/linkpoint/chat.ts",
+    "src/linkpoint/circuit-context.ts",
+    "src/linkpoint/contact-photo.ts",
+    "src/linkpoint/contacts.ts",
+    "src/linkpoint/coordinate-normalizer.ts",
+    "src/linkpoint/cors-handler.ts",
+    "src/linkpoint/currency-formatter.ts",
+    "src/linkpoint/delta-selectors.ts",
+    "src/linkpoint/economy-manager.ts",
+    "src/linkpoint/eep.ts",
+    "src/linkpoint/errorRecovery.ts",
+    "src/linkpoint/fabricated-data.ts",
+    "src/linkpoint/firestorm/FirestormLLSDUtils.ts",
+    "src/linkpoint/flexible.ts",
+    "src/linkpoint/frustum.ts",
+    "src/linkpoint/gamepad.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/hud.ts",
+    "src/linkpoint/ics.ts",
+    "src/linkpoint/idb-worker.ts",
+    "src/linkpoint/index.ts",
+    "src/linkpoint/indexeddb-store.ts",
+    "src/linkpoint/interactions.ts",
+    "src/linkpoint/inventory.ts",
+    "src/linkpoint/joystick.ts",
+    "src/linkpoint/key-bindings.ts",
+    "src/linkpoint/keyboard-motion.ts",
+    "src/linkpoint/linkpoint/LinkpointLLSDUtils.ts",
+    "src/linkpoint/llsd.ts",
+    "src/linkpoint/local-cache.ts",
+    "src/linkpoint/lumiya/LumiyaLLSDUtils.ts",
+    "src/linkpoint/map-tiles.ts",
+    "src/linkpoint/mfa-store.ts",
+    "src/linkpoint/mute-list.ts",
+    "src/linkpoint/notices.ts",
+    "src/linkpoint/notifications.ts",
+    "src/linkpoint/offline/CacheManager.ts",
+    "src/linkpoint/offline/GridConsole.ts",
+    "src/linkpoint/offline/GridConsolePanel.tsx",
+    "src/linkpoint/offline/LocalAssetManager.ts",
+    "src/linkpoint/offline/LocalGridManager.ts",
+    "src/linkpoint/offline/LocalGridServer.ts",
+    "src/linkpoint/offline/OARParser.ts",
+    "src/linkpoint/offline/OfflineManagerView.tsx",
+    "src/linkpoint/offline/__tests__/gridConsole.test.ts",
+    "src/linkpoint/offline/__tests__/offlineModule.test.ts",
+    "src/linkpoint/offline/__tests__/password.test.ts",
+    "src/linkpoint/offline/password.ts",
+    "src/linkpoint/parcel-sound.ts",
+    "src/linkpoint/particles.ts",
+    "src/linkpoint/phase2/avatar-params.ts",
+    "src/linkpoint/phase2/avatar.ts",
+    "src/linkpoint/phase2/capabilities.ts",
+    "src/linkpoint/phase2/chat-extended.ts",
+    "src/linkpoint/phase2/event-queue.ts",
+    "src/linkpoint/phase2/friends-extended.ts",
+    "src/linkpoint/phase2/groups.ts",
+    "src/linkpoint/phase2/inventory-core.ts",
+    "src/linkpoint/phase2/inventory-ops.ts",
+    "src/linkpoint/phase2/inventory-types.ts",
+    "src/linkpoint/phase2/objects-extended.ts",
+    "src/linkpoint/preferences.ts",
+    "src/linkpoint/primitives-3d.ts",
+    "src/linkpoint/proxy-permit.ts",
+    "src/linkpoint/proxy-policy.ts",
+    "src/linkpoint/rate-limited-fetch.ts",
+    "src/linkpoint/ray-pick.ts",
+    "src/linkpoint/renderer/materials.ts",
+    "src/linkpoint/rlv-data.ts",
+    "src/linkpoint/rlv-handler.ts",
+    "src/linkpoint/rlv.ts",
+    "src/linkpoint/scene-3d.ts",
+    "src/linkpoint/secondlife/SecondLifeLLSDUtils.ts",
+    "src/linkpoint/skinning.ts",
+    "src/linkpoint/sky.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/sl-math.ts",
+    "src/linkpoint/sl-message-types.ts",
+    "src/linkpoint/sl-protocol-real.ts",
+    "src/linkpoint/sl-volume.ts",
+    "src/linkpoint/sound-standards.ts",
+    "src/linkpoint/spatial-memory-bridge.ts",
+    "src/linkpoint/spatial-pipeline.ts",
+    "src/linkpoint/terrain.ts",
+    "src/linkpoint/texture-decoder.ts",
+    "src/linkpoint/types.ts",
+    "src/linkpoint/utils.test.ts",
+    "src/linkpoint/utils.ts",
+    "src/linkpoint/voice-input.ts",
+    "src/linkpoint/voice-neighbor.ts",
+    "src/linkpoint/voice-protocol.ts",
+    "src/linkpoint/voice.ts",
+    "src/linkpoint/wind.ts",
+    "src/linkpoint/windlight.ts",
+    "src/linkpoint/world.ts",
+    "src/linkpoint/xmlParser.ts",
+    "src/linkpoint/xmlSerializer.ts",
+    "src/linkpoint/xmlrpc-client.test.ts",
+    "src/linkpoint/xmlrpc-client.ts",
+    "src/main.tsx",
+    "src/screens/CacheScreen.jsx",
+    "src/screens/CalendarScreen.jsx",
+    "src/screens/Chat.jsx",
+    "src/screens/ContactsScreen.jsx",
+    "src/screens/DiagnosticsPanel.jsx",
+    "src/screens/HudControls.jsx",
+    "src/screens/Inventory.jsx",
+    "src/screens/LiveScreens.jsx",
+    "src/screens/Login.jsx",
+    "src/screens/LumiyaTools.jsx",
+    "src/screens/Map.jsx",
+    "src/screens/OutfitViewer.jsx",
+    "src/screens/Profile.jsx",
+    "src/screens/Radar.jsx",
+    "src/screens/ScreenDirectory.jsx",
+    "src/screens/Search.jsx",
+    "src/screens/Settings.jsx",
+    "src/screens/ViewerControls.jsx",
+    "src/screens/World3D.jsx",
+    "src/screens/__tests__/FormFieldScreenIntegration.test.tsx",
+    "src/screens/diagnosticsView.js",
+    "src/server/llsd-assistant.ts",
+    "src/server/sl-session.ts",
+    "src/services/LiveRegionAnnouncer.ts",
+    "src/services/__tests__/google-api.test.ts",
+    "src/services/__tests__/google-calendar.test.ts",
+    "src/services/__tests__/google-contacts.test.ts",
+    "src/services/google.ts",
+    "src/services/googleApi.ts",
+    "src/services/googleAuth.ts",
+    "src/services/googleCalendar.ts",
+    "src/services/googleContacts.ts",
+    "src/theme/ThemeContext.tsx",
+    "src/theme/__tests__/contrast.test.ts",
+    "src/theme/color.js",
+    "src/theme/computeTheme.js",
+    "src/theme/constants.js",
+    "src/theme/contrast.ts",
+    "src/theme/customTheme.js",
+    "src/theme/deskStyle.js",
+    "src/theme/layouts.js",
+    "src/theme/look.js",
+    "src/theme/palettes.js",
+    "src/theme/tokens.ts",
+    "src/viewer/RlvContext.tsx",
+    "src/viewer/ViewerContext.tsx",
+    "src/vite-env.d.ts",
+    "test-vectors/math/quaternion_matrix_transform_vectors.json",
+    "tsconfig.json",
+    "vite.config.mts",
+    "vitest.setup.ts"
+   ],
+   "sha": "1ff57a71909da57b16f3281a7421d442b7f92fa2",
+   "short": "1ff57a7",
+   "subject": "Configure ESLint v9 Flat Config, Prettier, Husky pre-commit hooks, and CI workflow",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1ff57a71909da57b16f3281a7421d442b7f92fa2"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "avatar_renderer.py",
+    "inventory_cache.py",
+    "test_inventory_cache.py",
+    "test_texture_decoder.py",
+    "texture_decoder.py"
+   ],
+   "sha": "93138502f9fe66379ad9dc8bacb8a97ccfd3606f",
+   "short": "9313850",
+   "subject": "refactor: remove unreferenced root Python prototype scripts",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/93138502f9fe66379ad9dc8bacb8a97ccfd3606f"
+  },
+  {
+   "also": [
+    "components",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "core/sl-interactions.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/components/InteractionDialog.jsx",
+    "src/linkpoint/__tests__/interaction-dialog.test.tsx",
+    "src/linkpoint/__tests__/sl-interactions.test.ts",
+    "src/linkpoint/interactions.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts"
+   ],
+   "sha": "9245ccb13bfa66fcf233dca880eef141de71fc45",
+   "short": "9245ccb",
+   "subject": "feat: transmit explicit decline protocol response on teleport lure dismissal",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/9245ccb13bfa66fcf233dca880eef141de71fc45"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml"
+   ],
+   "sha": "f68af36a3aec9c02cc98c04527ff583a700c24eb",
+   "short": "f68af36",
+   "subject": "ci: optimize CI caching, path filters, and Kotlin test execution",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/f68af36a3aec9c02cc98c04527ff583a700c24eb"
+  },
+  {
+   "also": [
+    "screens"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/components/FloatersDesktop.jsx",
+    "src/components/FormField.jsx",
+    "src/components/PayDialog.jsx",
+    "src/screens/__tests__/FormFieldScreenIntegration.test.tsx"
+   ],
+   "sha": "6d38b43fb94a53e7713d721590cfb39dddc3bed4",
+   "short": "6d38b43",
+   "subject": "feat(a11y): adopt FormField component across PayDialog, FloatersDesktop, and CacheScreen",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/6d38b43fb94a53e7713d721590cfb39dddc3bed4"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/mute-storage-sync.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/phase2/chat-extended.ts"
+   ],
+   "sha": "b9d4df5092f8ff683cd8cb1cb4685eb5c0e98c76",
+   "short": "b9d4df5",
+   "subject": "feat: direct grid RPC mute sync with localStorage fallback",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/b9d4df5092f8ff683cd8cb1cb4685eb5c0e98c76"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/atomic-inventory-reconciler.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/inventory.ts",
+    "src/linkpoint/phase2/inventory-core.ts"
+   ],
+   "sha": "e3c34ade9896a5ba0a3c947b40bbcf0d5fafbd75",
+   "short": "e3c34ad",
+   "subject": "feat(inventory): implement atomic folder reconciler and consolidate InventoryCore into InventoryManager",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e3c34ade9896a5ba0a3c947b40bbcf0d5fafbd75"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/components/BottomTabs.jsx",
+    "src/components/Header.jsx",
+    "src/components/TouchTarget.tsx",
+    "src/components/__tests__/TouchTargetSizes.test.tsx"
+   ],
+   "sha": "3fbec5674bad82698a3335489c09e288e65b6ea7",
+   "short": "3fbec56",
+   "subject": "fix(a11y): enforce minimum touch target dimensions across mobile navigation",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/3fbec5674bad82698a3335489c09e288e65b6ea7"
+  },
+  {
+   "also": [
+    "components",
+    "other"
+   ],
+   "area": "theme",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "packages/design-system/src/tokens/index.ts",
+    "src/components/AssetContainer.jsx",
+    "src/theme/__tests__/contrast.test.ts",
+    "src/theme/computeTheme.js",
+    "src/theme/customTheme.js"
+   ],
+   "sha": "3cbe2934d528814ce3085cebfa47ce66452b0120",
+   "short": "3cbe293",
+   "subject": "feat(a11y): integrate ensureMinContrast into theme token resolution and re-bind AssetContainer",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/3cbe2934d528814ce3085cebfa47ce66452b0120"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/friends-indexing.test.ts",
+    "src/linkpoint/phase2/friends-extended.ts"
+   ],
+   "sha": "ccf2560314ebfe73c72c169950f5e66ee8649ecf",
+   "short": "ccf2560",
+   "subject": "feat: secondary set indexing for online friends and pending requests",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ccf2560314ebfe73c72c169950f5e66ee8649ecf"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/atomic-inventory-reconciler.test.ts"
+   ],
+   "sha": "21069d9afd3bcae45b52ed68f88bd59fe19b15ee",
+   "short": "21069d9",
+   "subject": "style: format test file with prettier",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/21069d9afd3bcae45b52ed68f88bd59fe19b15ee"
   }
  ],
- "last_sha": "dec4590b2f247951d88810364093322467951761",
+ "last_sha": "00f24d0d6f9c0c211fef523b58a9721ba00891b8",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
