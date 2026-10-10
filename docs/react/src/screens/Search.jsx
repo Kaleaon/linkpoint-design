@@ -182,12 +182,40 @@ export default function Search() {
       </div>
 
       <div style={{ flex: 1, minHeight: "300px", overflowY: "auto", padding: "0 16px 16px", display: "flex", flexDirection: "column", gap: "8px" }}>
-        {isLoading ? (
+        {isLoading || state.asyncQueryState?.search?.status === "loading" ? (
           <SkeletonCardList style={{ minHeight: "300px" }} />
+        ) : state.asyncQueryState?.search?.status === "timeout" || state.asyncQueryState?.search?.status === "error" ? (
+          <div style={{ border: "1px solid #FF6C6C", borderRadius: V.rs, background: V.surf2, padding: "20px 16px", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+            <div style={{ width: "44px", height: "44px", borderRadius: V.rs, border: "1px solid #FF6C6C", display: "flex", alignItems: "center", justifyContent: "center", color: "#FF6C6C" }}>
+              <Icon name="wifi-off" size={22} />
+            </div>
+            <div>
+              <div style={{ font: "700 14px/1.3 " + t.dfont, color: V.ink }}>SEARCH QUERY TIMEOUT</div>
+              <div style={{ font: "400 11.5px/1.5 " + t.font, color: V.ink2, marginTop: "4px", maxWidth: "280px" }}>
+                High grid server load prevented search query from completing. Centralized recovery injected.
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                actions.runAsyncQuery("search", () => new Promise((resolve) => setTimeout(resolve, 300)));
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.runAsyncQuery("search", () => new Promise((resolve) => setTimeout(resolve, 300)));
+                }
+              }}
+              style={{ padding: "0 20px", height: "36px", borderRadius: V.rs, background: V.pri, color: V.onpri, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".14em", cursor: "pointer" }}
+              role="button" aria-label="Retry Search" tabIndex={0}
+            >
+              <Icon name="refresh-cw" size={14} />
+              RETRY SEARCH
+            </div>
+          </div>
         ) : (
           <>
             {rows}
-            {rows.length === 0 ? (
+            {rows && rows.length === 0 ? (
               <div style={{ padding: "40px 0", textAlign: "center", font: "400 12px/1.5 " + t.font, color: V.ink2 }}>{emptyText}</div>
             ) : null}
           </>

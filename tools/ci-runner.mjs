@@ -240,7 +240,7 @@ async function getPlaywrightBrowser() {
 
   const launchOpts = {
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--font-render-hinting=none', '--force-color-profile=srgb']
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--font-render-hinting=none', '--force-color-profile=srgb']
   };
 
   if (executablePath) {
@@ -332,7 +332,11 @@ async function taskA11yAudit() {
   let browser;
   try {
     browser = await getPlaywrightBrowser();
-    const page = await browser.newPage();
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.route('**/*fonts.googleapis.com*', route => route.abort());
+    await page.route('**/*fonts.gstatic.com*', route => route.abort());
+    await page.route('**/*unpkg.com*', route => route.abort());
     await page.goto(targetUrl, { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(1000);
 
@@ -521,7 +525,11 @@ async function taskVisualSuite() {
 
     for (const vp of viewports) {
       log(`Capturing visual snapshots for viewport: ${vp.name} (${vp.width}x${vp.height})`, 'info');
-      const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
+      const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+      const page = await context.newPage();
+      await page.route('**/*fonts.googleapis.com*', route => route.abort());
+      await page.route('**/*fonts.gstatic.com*', route => route.abort());
+      await page.route('**/*unpkg.com*', route => route.abort());
       await page.addInitScript(() => {
         const style = document.createElement('style');
         style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
@@ -567,7 +575,7 @@ async function taskVisualSuite() {
         }
       }
 
-      await page.close();
+      await context.close();
     }
 
     if (allMatched) {

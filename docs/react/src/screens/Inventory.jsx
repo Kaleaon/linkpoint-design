@@ -103,8 +103,36 @@ export default function Inventory() {
       </div>
 
       <div style={invListStyle}>
-        {isLoading ? (
+        {isLoading || state.asyncQueryState?.inventory?.status === "loading" ? (
           <SkeletonTree style={{ minHeight: "320px" }} />
+        ) : state.asyncQueryState?.inventory?.status === "timeout" || state.asyncQueryState?.inventory?.status === "error" ? (
+          <div style={{ margin: "16px", border: "1px solid #FF6C6C", borderRadius: V.rs, background: V.surf2, padding: "20px 16px", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
+            <div style={{ width: "44px", height: "44px", borderRadius: V.rs, border: "1px solid #FF6C6C", display: "flex", alignItems: "center", justifyContent: "center", color: "#FF6C6C" }}>
+              <Icon name="package-x" size={22} />
+            </div>
+            <div>
+              <div style={{ font: "700 14px/1.3 " + t.dfont, color: V.ink }}>INVENTORY FETCH TIMEOUT</div>
+              <div style={{ font: "400 11.5px/1.5 " + t.font, color: V.ink2, marginTop: "4px", maxWidth: "280px" }}>
+                Asset server timeout while loading resident inventory. Managed async query recovery injected.
+              </div>
+            </div>
+            <div
+              onClick={() => {
+                actions.runAsyncQuery("inventory", () => new Promise((resolve) => setTimeout(resolve, 300)));
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.runAsyncQuery("inventory", () => new Promise((resolve) => setTimeout(resolve, 300)));
+                }
+              }}
+              style={{ padding: "0 20px", height: "36px", borderRadius: V.rs, background: V.pri, color: V.onpri, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".14em", cursor: "pointer" }}
+              role="button" aria-label="Retry Inventory Fetch" tabIndex={0}
+            >
+              <Icon name="refresh-cw" size={14} />
+              RETRY INVENTORY FETCH
+            </div>
+          </div>
         ) : (
           nodes.map((n) => {
             const indent = bleed

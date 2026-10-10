@@ -7,7 +7,7 @@ import { subView, inSub } from "../theme/constants.js";
 import Header from "./Header.jsx";
 import SegmentedTabs from "./SegmentedTabs.jsx";
 import ChipRow from "./ChipRow.jsx";
-import StateBlock from "./StateBlock.jsx";
+import StateBlock, { GlobalErrorBoundary } from "./StateBlock.jsx";
 import CardList from "./CardList.jsx";
 import SplitDetail from "./SplitDetail.jsx";
 import { SkeletonCardList } from "./Skeletons.jsx";
@@ -44,24 +44,26 @@ export default function ScreenBody() {
         <Header />
         <SegmentedTabs />
         <ChipRow />
-        {isLoading && !customLoadingScreen && scr !== "Login" && <SkeletonCardList style={{ minHeight: "320px" }} />}
-        {!isLoading && norm && scr === "Chat" && <Chat />}
-        {!isLoading && norm && scr === "Radar" && <Radar />}
-        {!isLoading && norm && scr === "Map" && <Map />}
-        {!isLoading && norm && scr === "3D View" && (
-          <>
-            <World3D />
-            <World3DActionBar />
-          </>
-        )}
-        {norm && scr === "Inventory" && <Inventory />}
-        {!isLoading && norm && scr === "Profile" && <Profile />}
-        {!isLoading && norm && scr === "Offline Grid" && <OfflineGrid />}
-        {!isLoading && norm && scr === "Grid Console" && <GridConsole />}
-        {norm && isCardScreen && <CardList cards={(cardsByScreen[scr] || []).filter((c) => inSub(c, curSub))} />}
-        {scr === "Login" && <Login />}
-        {scr === "Search" && <Search />}
-        {!norm && <StateBlock />}
+        <GlobalErrorBoundary onReset={() => actions.setCond && actions.setCond("normal")}>
+          {isLoading && !customLoadingScreen && scr !== "Login" && <SkeletonCardList style={{ minHeight: "320px" }} />}
+          {!isLoading && norm && scr === "Chat" && <Chat />}
+          {!isLoading && norm && scr === "Radar" && <Radar />}
+          {!isLoading && norm && scr === "Map" && <Map />}
+          {!isLoading && norm && scr === "3D View" && (
+            <>
+              <World3D />
+              <World3DActionBar />
+            </>
+          )}
+          {norm && scr === "Inventory" && <Inventory />}
+          {!isLoading && norm && scr === "Profile" && <Profile />}
+          {!isLoading && norm && scr === "Offline Grid" && <OfflineGrid />}
+          {!isLoading && norm && scr === "Grid Console" && <GridConsole />}
+          {norm && isCardScreen && <CardList cards={(cardsByScreen[scr] || []).filter((c) => inSub(c, curSub))} />}
+          {scr === "Login" && <Login />}
+          {scr === "Search" && <Search />}
+          {!norm && <StateBlock />}
+        </GlobalErrorBoundary>
       </main>
       <SplitDetail />
     </div>
