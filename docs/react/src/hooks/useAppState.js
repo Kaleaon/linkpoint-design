@@ -6,6 +6,36 @@ import { DEVICES, FLOATERS, HUD_DEFAULT, HUDS, CBTN, GRIDS } from "../theme/cons
 import { CACHE_ROWS, INVENTORY_SOURCE } from "../data/content.js";
 import { decodeSharedTheme, encodeSharedTheme, readSavedTheme, sanitizeTheme, themeFromPalette, THEME_STORAGE_KEY } from "../theme/customTheme.js";
 
+export const LINKPOINT_ACCOUNTS_KEY = "linkpoint_stored_accounts";
+
+export const obscureToken = (plainText) => {
+  if (!plainText) return "";
+  try {
+    return btoa(unescape(encodeURIComponent(plainText)));
+  } catch {
+    return plainText;
+  }
+};
+
+export const unobscureToken = (token) => {
+  if (!token) return "";
+  try {
+    return decodeURIComponent(escape(atob(token)));
+  } catch {
+    return token;
+  }
+};
+
+const DEFAULT_STORED_ACCOUNTS = [
+  {
+    id: "acc-ruth-agni",
+    profileLabel: "Ruth Resident (Agni)",
+    avatarName: "Ruth Resident",
+    gridKey: "agni",
+    token: obscureToken("••••••••"),
+  },
+];
+
 // Ported from the mockup's `state = {...}` initializer and its instance
 // methods (flR/flDrag/flFocus/flToggle/flClose, hudDrag/toggleHud, T/D/navMode,
 // set/setTab/dismiss/toggleSetting/pin/cycle, cf/cTap/cHold/cPress, and the
@@ -96,6 +126,27 @@ export function useAppState() {
   const [flZ, setFlZ] = useState(["Map", "Inventory", "Friends", "Radar", "Chat"]);
   const [menu, setMenu] = useState(null);
   const [tick, setTick] = useState(0);
+  const [storedAccounts, setStoredAccounts] = useState(() => {
+    try {
+      const val = localStorage.getItem(LINKPOINT_ACCOUNTS_KEY);
+      if (val) {
+        const parsed = JSON.parse(val);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch {}
+    return DEFAULT_STORED_ACCOUNTS;
+  });
+  const [selectedAccountId, setSelectedAccountId] = useState(() => {
+    return storedAccounts.length > 0 ? storedAccounts[0].id : "";
+  });
+  const [loginAvatarName, setLoginAvatarNameState] = useState(() => {
+    return storedAccounts.length > 0 ? storedAccounts[0].avatarName : "Ruth Resident";
+  });
+  const [loginPassword, setLoginPasswordState] = useState(() => {
+    return storedAccounts.length > 0 ? unobscureToken(storedAccounts[0].token) : "••••••••";
+  });
   const [loginMode, setLoginModeState] = useState("grid");
   const [loginGrid, setLoginGrid] = useState("agni");
   const [loginBusy, setLoginBusy] = useState(false);
@@ -308,6 +359,122 @@ export function useAppState() {
   }, [palette]);
 
   // ---- login (setLoginMode/setLoginGrid/connectLogin) --------------------
+  const setLoginAvatarName = useCallback((name) => {
+    setLoginAvatarNameState(name);
+    setSelectedAccountId((currId) => {
+      const match = storedAccounts.find((a) => a.id === currId);
+      if (match && match.avatarName !== name) {
+        return "";
+      }
+      return currId;
+    });
+  }, [storedAccounts]);
+
+  const setLoginPassword = useCallback((pass) => {
+    setLoginPasswordState(pass);
+    setSelectedAccountId((currId) => {
+      const match = storedAccounts.find((a) => a.id === currId);
+      if (match && unobscureToken(match.token) !== pass) {
+        return "";
+      }
+      return currId;
+    });
+  }, [storedAccounts]);
+
+  const selectAccountProfile = useCallback((accId) => {
+    setSelectedAccountId(accId);
+    if (!accId) return;
+    const match = storedAccounts.find((a) => a.id === accId);
+    if (match) {
+      setLoginAvatarNameState(match.avatarName || "");
+      setLoginPasswordState(unobscureToken(match.token) || "");
+      if (match.gridKey) {
+        setLoginGrid(match.gridKey);
+      }
+    }
+  }, [storedAccounts]);
+
+  const saveAccountProfile = useCallback((customLabel) => {
+    const avatarName = (loginAvatarName || "").trim();
+    const password = loginPassword || "";
+    const gridKey = loginGrid || "agni";
+
+    if (!avatarName) {
+      notify("Avatar Name is required to save a profile.");
+      return null;
+    }
+
+    const gridObj = GRIDS.concat(customGrids).find((g) => g.key === gridKey);
+    const gridLabel = gridObj ? gridObj.label : gridKey;
+    const label = (customLabel || "").trim() || `${avatarName} (${gridLabel})`;
+
+    let existingIndex = storedAccounts.findIndex(
+      (a) => a.id === selectedAccountId || (a.avatarName === avatarName && a.gridKey === gridKey)
+    );
+
+    let updatedAccounts;
+    let savedId;
+
+    if (existingIndex >= 0) {
+      savedId = storedAccounts[existingIndex].id;
+      const updatedAcc = {
+        ...storedAccounts[existingIndex],
+        profileLabel: label,
+        avatarName,
+        gridKey,
+        token: obscureToken(password),
+      };
+      updatedAccounts = [...storedAccounts];
+      updatedAccounts[existingIndex] = updatedAcc;
+    } else {
+      savedId = "acc-" + Date.now();
+      const newAcc = {
+        id: savedId,
+        profileLabel: label,
+        avatarName,
+        gridKey,
+        token: obscureToken(password),
+      };
+      updatedAccounts = [...storedAccounts, newAcc];
+    }
+
+    setStoredAccounts(updatedAccounts);
+    setSelectedAccountId(savedId);
+
+    try {
+      localStorage.setItem(LINKPOINT_ACCOUNTS_KEY, JSON.stringify(updatedAccounts));
+    } catch (err) {
+      console.warn("Failed to write accounts to LocalStorage:", err);
+    }
+
+    notify(`Saved profile: ${label}`);
+    return savedId;
+  }, [loginAvatarName, loginPassword, loginGrid, selectedAccountId, storedAccounts, customGrids, notify]);
+
+  const removeAccountProfile = useCallback((accId) => {
+    const targetId = accId || selectedAccountId;
+    if (!targetId) return;
+
+    const targetAcc = storedAccounts.find((a) => a.id === targetId);
+    const updatedAccounts = storedAccounts.filter((a) => a.id !== targetId);
+
+    setStoredAccounts(updatedAccounts);
+
+    try {
+      localStorage.setItem(LINKPOINT_ACCOUNTS_KEY, JSON.stringify(updatedAccounts));
+    } catch (err) {
+      console.warn("Failed to write accounts to LocalStorage:", err);
+    }
+
+    if (selectedAccountId === targetId) {
+      setSelectedAccountId("");
+      setLoginAvatarNameState("");
+      setLoginPasswordState("");
+    }
+
+    notify(`Removed profile: ${targetAcc?.profileLabel || targetId}`);
+  }, [selectedAccountId, storedAccounts, notify]);
+
   // All known grids: the built-in Second Life / OpenSim presets plus
   // whatever the resident has added themselves this session.
   const allGrids = useCallback(() => GRIDS.concat(customGrids), [customGrids]);
@@ -786,6 +953,7 @@ export function useAppState() {
       toggles, cond, hudOn, hudPos, hudPicker, target, targetPicker, navPeek,
       cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
       rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
+      storedAccounts, selectedAccountId, loginAvatarName, loginPassword,
       loginMode, loginGrid, loginBusy, loginError, customGrids, addGrid, addGridName, addGridHost,
       searchFrom, searchTab, searchQuery, searchState, reconnecting, toast, offlineRunning, offlineUser, offlineAccountModal, offlineAccountFirstName, offlineAccountLastName, offlineAccountPassword, oarFile, oarRegionName, oarCoords, oarPrims, assetName, assetType, localAssets, offlineCacheSize, consoleLevel, consoleQuery, consoleAutoscroll, consoleLogs,
       prefs, cacheCleared, camPreset, lindenBalance, exchangeRate, lastSyncedAt,
@@ -802,6 +970,7 @@ export function useAppState() {
       radarTap, radarHold, radarRelease, radarBlipPick,
       setRMode,
       setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchTab, setSearchQuery, searchAdd, startIm, reconnect, notify,
+      setLoginAvatarName, setLoginPassword, selectAccountProfile, saveAccountProfile, removeAccountProfile,
       setPref, setTelemetryVerbosity, clearCache, clearAllCache, setCamPreset, toggleOfflineGrid, setOfflineAccountModal, setOfflineAccountFirstName, setOfflineAccountLastName, setOfflineAccountPassword, saveOfflineAccount, importOarBackup, setAssetName, setAssetType, addLocalAsset, setOfflineCacheSize, clearOfflineCache, setConsoleLevel, setConsoleQuery, setConsoleAutoscroll, clearConsoleLogs, copyConsoleLogs, downloadConsoleLogs,
       refreshBalance, setLindenBalance, setExchangeRate,
       dispatchIntent, getEventBus,
