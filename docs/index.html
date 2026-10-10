@@ -232,8 +232,8 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
             </sc-for>
           </div>
           <div style="display:flex;flex-direction:column;gap:4px">
-            <div onMouseDown="{{ flyUpDown }}" onMouseUp="{{ flyRelease }}" onMouseLeave="{{ flyRelease }}" style="{{ cfFly.up }}">UP</div>
-            <div onMouseDown="{{ flyDnDown }}" onMouseUp="{{ flyRelease }}" onMouseLeave="{{ flyRelease }}" style="{{ cfFly.dn }}">DN</div>
+            <div role="button" tabindex="0" aria-label="Fly Up" onMouseDown="{{ flyUpDown }}" onMouseUp="{{ flyRelease }}" onMouseLeave="{{ flyRelease }}" onKeyDown="{{ flyUpDownKeyDown }}" onKeyUp="{{ flyReleaseKeyUp }}" style="{{ cfFly.up }}">UP</div>
+            <div role="button" tabindex="0" aria-label="Fly Down" onMouseDown="{{ flyDnDown }}" onMouseUp="{{ flyRelease }}" onMouseLeave="{{ flyRelease }}" onKeyDown="{{ flyDnDownKeyDown }}" onKeyUp="{{ flyReleaseKeyUp }}" style="{{ cfFly.dn }}">DN</div>
             <div onClick="{{ toggleRun }}" style="{{ cfFly.run }}">RUN</div>
             <div onClick="{{ togglePad }}" style="{{ cfFly.hide }}">HIDE</div>
           </div>
@@ -3641,8 +3641,11 @@ sendChatKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDef
       toggleRun: () => this.setState(st => ({ cRun: !st.cRun })),
       flyDown: (k) => () => this.setState({ cHeld: k }),
       flyUpDown: () => this.setState({ cHeld: "up" }),
+      flyUpDownKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "up" }); } },
       flyDnDown: () => this.setState({ cHeld: "dn" }),
+      flyDnDownKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "dn" }); } },
       flyRelease: () => this.setState({ cHeld: "" }),
+      flyReleaseKeyUp: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "" }); } },
       addSlot: () => this.setState(st => {
         const miss = Object.keys(CBTN).filter(k => st.cDock.indexOf(k) < 0);
         return miss.length ? { cDock: st.cDock.concat(miss[0]) } : { cReason: "PALETTE EMPTY" };
