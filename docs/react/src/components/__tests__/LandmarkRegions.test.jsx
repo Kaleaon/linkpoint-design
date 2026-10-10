@@ -6,7 +6,10 @@ import RailNav from "../RailNav.jsx";
 import BottomTabs from "../BottomTabs.jsx";
 import TileNav from "../TileNav.jsx";
 import { AppContext } from "../../context/AppContext.jsx";
-import { ThemeTokensContext, ThemeRuntimeContext } from "../../context/ThemeContext.jsx";
+import {
+  ThemeTokensContext,
+  ThemeRuntimeContext,
+} from "../../context/ThemeContext.jsx";
 
 const mockAppState = {
   screen: "Chat",
@@ -83,11 +86,13 @@ describe("Semantic HTML5 Landmark Region Wrappers", () => {
   it("MenuBar renders <header aria-label='Desktop Menu Bar'> landmark banner region", () => {
     const floatTokens = { ...mockTokens, isFloat: true };
     render(
-      <AppContext.Provider value={{ state: mockAppState, actions: mockAppActions }}>
+      <AppContext.Provider
+        value={{ state: mockAppState, actions: mockAppActions }}
+      >
         <ThemeTokensContext.Provider value={floatTokens}>
           <MenuBar />
         </ThemeTokensContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const banner = screen.getByRole("banner", { name: "Desktop Menu Bar" });
@@ -97,13 +102,15 @@ describe("Semantic HTML5 Landmark Region Wrappers", () => {
 
   it("ScreenBody renders <main aria-label='Main Content'> landmark main region", () => {
     render(
-      <AppContext.Provider value={{ state: mockAppState, actions: mockAppActions }}>
+      <AppContext.Provider
+        value={{ state: mockAppState, actions: mockAppActions }}
+      >
         <ThemeRuntimeContext.Provider value={mockRuntime}>
           <ThemeTokensContext.Provider value={mockTokens}>
             <ScreenBody />
           </ThemeTokensContext.Provider>
         </ThemeRuntimeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const main = screen.getByRole("main", { name: "Main Content" });
@@ -114,11 +121,13 @@ describe("Semantic HTML5 Landmark Region Wrappers", () => {
   it("RailNav renders <nav aria-label='Rail Navigation'> landmark region", () => {
     const railTokens = { ...mockTokens, nav: "rail", immersive: false };
     render(
-      <AppContext.Provider value={{ state: mockAppState, actions: mockAppActions }}>
+      <AppContext.Provider
+        value={{ state: mockAppState, actions: mockAppActions }}
+      >
         <ThemeTokensContext.Provider value={railTokens}>
           <RailNav />
         </ThemeTokensContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const nav = screen.getByRole("navigation", { name: "Rail Navigation" });
@@ -129,14 +138,18 @@ describe("Semantic HTML5 Landmark Region Wrappers", () => {
   it("BottomTabs renders <nav aria-label='Bottom Tabs Navigation'> landmark region", () => {
     const tabsTokens = { ...mockTokens, nav: "tabs", immersive: false };
     render(
-      <AppContext.Provider value={{ state: mockAppState, actions: mockAppActions }}>
+      <AppContext.Provider
+        value={{ state: mockAppState, actions: mockAppActions }}
+      >
         <ThemeTokensContext.Provider value={tabsTokens}>
           <BottomTabs />
         </ThemeTokensContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
-    const nav = screen.getByRole("navigation", { name: "Bottom Tabs Navigation" });
+    const nav = screen.getByRole("navigation", {
+      name: "Bottom Tabs Navigation",
+    });
     expect(nav).toBeTruthy();
     expect(nav.tagName).toBe("NAV");
   });
@@ -144,11 +157,13 @@ describe("Semantic HTML5 Landmark Region Wrappers", () => {
   it("TileNav renders <nav aria-label='Tile Navigation'> landmark region", () => {
     const tileTokens = { ...mockTokens, nav: "tiles", immersive: false };
     render(
-      <AppContext.Provider value={{ state: mockAppState, actions: mockAppActions }}>
+      <AppContext.Provider
+        value={{ state: mockAppState, actions: mockAppActions }}
+      >
         <ThemeTokensContext.Provider value={tileTokens}>
           <TileNav />
         </ThemeTokensContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const nav = screen.getByRole("navigation", { name: "Tile Navigation" });

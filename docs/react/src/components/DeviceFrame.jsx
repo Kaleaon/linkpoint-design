@@ -17,15 +17,39 @@ export default function DeviceFrame() {
   const { state } = useApp();
   const { V, t, isFloat, isConsole } = useTheme();
 
-  const frameStyle = { position: "relative", overflow: "hidden", background: V.bg, color: V.ink, fontFamily: t.font, display: "flex", flexDirection: "column", width: "100%", height: "100%" };
-  const cfWrap = { flex: 1, minHeight: 0, minWidth: 0, position: "relative", display: "flex", overflow: "hidden", background: V.bg };
+  const frameStyle = {
+    position: "relative",
+    overflow: "hidden",
+    background: V.bg,
+    color: V.ink,
+    fontFamily: t.font,
+    display: "flex",
+    flexDirection: "column",
+    width: "100%",
+    height: "100%",
+  };
+  const cfWrap = {
+    flex: 1,
+    minHeight: 0,
+    minWidth: 0,
+    position: "relative",
+    display: "flex",
+    overflow: "hidden",
+    background: V.bg,
+  };
 
   return (
     <div className="device-frame">
       <div style={frameStyle}>
         <MenuBar />
         <div style={cfWrap}>
-          {isConsole ? <ConsoleFrame /> : isFloat ? <FloatersDesktop /> : <Shell />}
+          {isConsole ? (
+            <ConsoleFrame />
+          ) : isFloat ? (
+            <FloatersDesktop />
+          ) : (
+            <Shell />
+          )}
           <ControlPanels />
           <SystemDialog />
           <Toast />

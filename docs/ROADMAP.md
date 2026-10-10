@@ -51,6 +51,7 @@ work.
 While testing these against a live browser, also found and fixed two
 real, pre-existing bugs in the mockup (both also present, or avoided, in
 the React port — see its commit history for specifics):
+
 - The `cards` renderer's action-button mapping dropped every action's
   `pick` handler, so **every** card action in the whole app (friend
   accept/decline, group notice/invite, notice quick-reply, teleport pin,
@@ -68,13 +69,14 @@ Life Mobile Viewer-src.html`, two `Sweep Frame *` and three `Vessel Viewer
 *` single-frame explorations, `iconic-previews.html`). They'd forked
 silently: `index.html`/`Linkpoint Mobile.dc.html` had picked up the
 "every card action needs a real `onClick`" fix and the rebrand, but had
-*lost* the five gaps this file says were "closed 2026-09-16" — Login's
+_lost_ the five gaps this file says were "closed 2026-09-16" — Login's
 Agni/Aditi flow, the Search screen, Friends' rights icons, and the
 Settings session/reconnect/disconnect cards were only ever present in the
 older, stale `GridLink Mobile.dc.html`. Neither file alone was complete.
 
 Before deleting the extra files, all of that was re-merged into
 `docs/index.html`, which is now the **one** mockup HTML page:
+
 - Login: GRID LOGIN/OFFLINE toggle, grid picker, connecting → error state.
 - Grid picker now also lists **OSgrid** and **Kitely** alongside Agni/Aditi
   — SL's own two grids plus a couple of well-known OpenSim grids, so the
@@ -108,8 +110,9 @@ Before deleting the extra files, all of that was re-merged into
   two can't drift apart.
 
 Two more real, confirmed bugs turned up while doing this (both are a
-*template*-level footgun, not a JS one — see "DSL binding limits" below)
+_template_-level footgun, not a JS one — see "DSL binding limits" below)
 and are fixed in `index.html`:
+
 - The Login screen's own "SETTINGS" quick-link button did nothing —
   `onClick="{{ () => this.set('screen','Settings') }}"`. An inline arrow
   function inside `{{ }}` never runs; the fix names it (`loginSettingsPick`)
@@ -338,25 +341,25 @@ the tag too so a heading never outlives its rows. `sub` takes an array when a
 row belongs to more than one view (Transactions' outgoing rows are in both
 ALL and PAYMENTS).
 
-| Screen | Sub-views | Behaviour |
-| --- | --- | --- |
-| Chat | LOCAL / IM / GROUP | already worked |
-| Radar | AVATAR / OBJECT | already worked via its own pill row |
-| Friends | ALL / ONLINE | already worked; CSUB's order now matches the tabs |
-| 3D View | CAM / GFX | camera presets, or a tap-to-cycle graphics strip |
-| Map | WORLD / MINI | four-region grid, or a centred position readout |
-| Inventory | ALL / RECENT / WORN | tree, or a flat list of tagged leaves |
-| Profile | 2ND LIFE / PICKS | resident record, or the three picks |
-| Groups | GROUPS / ROLES | group list, or Bay City Builders' roles |
-| Notices | IM / SYSTEM | person-to-person, or grid-sent |
-| Teleport | LANDMARK / HISTORY | saved places, or where you have been |
-| Outfits | WORN / SAVED | what you have on, or the wardrobe |
-| Objects | NEARBY / INSPECT | draw-distance list, or the selected record |
-| Parcel | GENERAL / MEDIA | land and capacity, or stream and MOAP |
-| Transactions | ALL / PAYMENTS | everything, or money leaving |
-| Mute List | AVATARS / OBJECTS | blocked residents, or blocked objects |
-| Diagnostics | AGNI / ADITI | two grids, two sets of numbers |
-| Settings / Cache | PREFS / CACHE | navigation between the two screens |
+| Screen           | Sub-views           | Behaviour                                         |
+| ---------------- | ------------------- | ------------------------------------------------- |
+| Chat             | LOCAL / IM / GROUP  | already worked                                    |
+| Radar            | AVATAR / OBJECT     | already worked via its own pill row               |
+| Friends          | ALL / ONLINE        | already worked; CSUB's order now matches the tabs |
+| 3D View          | CAM / GFX           | camera presets, or a tap-to-cycle graphics strip  |
+| Map              | WORLD / MINI        | four-region grid, or a centred position readout   |
+| Inventory        | ALL / RECENT / WORN | tree, or a flat list of tagged leaves             |
+| Profile          | 2ND LIFE / PICKS    | resident record, or the three picks               |
+| Groups           | GROUPS / ROLES      | group list, or Bay City Builders' roles           |
+| Notices          | IM / SYSTEM         | person-to-person, or grid-sent                    |
+| Teleport         | LANDMARK / HISTORY  | saved places, or where you have been              |
+| Outfits          | WORN / SAVED        | what you have on, or the wardrobe                 |
+| Objects          | NEARBY / INSPECT    | draw-distance list, or the selected record        |
+| Parcel           | GENERAL / MEDIA     | land and capacity, or stream and MOAP             |
+| Transactions     | ALL / PAYMENTS      | everything, or money leaving                      |
+| Mute List        | AVATARS / OBJECTS   | blocked residents, or blocked objects             |
+| Diagnostics      | AGNI / ADITI        | two grids, two sets of numbers                    |
+| Settings / Cache | PREFS / CACHE       | navigation between the two screens                |
 
 Diagnostics is worth calling out separately: its AGNI / ADITI tab strip
 already existed and already highlighted, but the card list under it was a
@@ -373,7 +376,7 @@ message, a fifth transaction, and Objects' INSPECT record.
 
 `rModes` and `objMode` use `"OBJ"`, but the Radar sub-nav handler set
 `rMode` to `"OB"` — a value nothing matches. The LCARS Radar OBJECT segment
-therefore did nothing even though it was one of the two screens that *had* a
+therefore did nothing even though it was one of the two screens that _had_ a
 handler. Both ports now write `"OBJ"`.
 
 React's camera preset row (FRONT / ORBIT / MOUSELOOK) was also decorative —

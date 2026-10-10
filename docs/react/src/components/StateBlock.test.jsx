@@ -42,7 +42,7 @@ describe("StateBlock Component", () => {
         <ThemeContext.Provider value={mockThemeContext}>
           <StateBlock />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const button = screen.getByRole("button", { name: "RETRY CONNECTION" });
@@ -77,7 +77,7 @@ describe("StateBlock Component", () => {
         <ThemeContext.Provider value={emptyThemeContext}>
           <StateBlock />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const button = screen.getByRole("button", { name: "REFRESH" });
@@ -104,7 +104,7 @@ describe("StateBlock Component", () => {
         <ThemeContext.Provider value={inactiveThemeContext}>
           <StateBlock />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     expect(container.firstChild).toBeNull();
