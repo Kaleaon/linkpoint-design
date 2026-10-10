@@ -39,9 +39,15 @@ jobs:
         run: pnpm install --frozen-lockfile
         working-directory: docs/react
 
+      - name: Install Root Dependencies
+        run: npm ci || npm install
+
       - name: Build React App
         run: pnpm run build
         working-directory: docs/react
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
 
       - name: Run Accessibility Check
         run: bash test_a11y.sh
