@@ -1,5 +1,5 @@
 import { test, assert } from "vitest";
-import { lum, ratio, pickInk, lumCache } from "./color.js";
+import { lum, ratio, pickInk, lumCache, hexToRgba } from "./color.js";
 
 test("lum: returns consistent luminance for hex inputs and caches results", () => {
   lumCache.clear();
@@ -99,3 +99,18 @@ test("pickInk: hoists background luminance so bg lum is calculated once and cach
     assert.equal(lumCache.has(c), true);
   }
 });
+
+test("hexToRgba: converts 3-character and 6-character hex colors to rgba strings", () => {
+  assert.equal(hexToRgba("#6CFF9A", 0.12), "rgba(108, 255, 154, 0.12)");
+  assert.equal(hexToRgba("#6CFF9A"), "rgba(108, 255, 154, 1)");
+  assert.equal(hexToRgba("#fff", 0.5), "rgba(255, 255, 255, 0.5)");
+  assert.equal(hexToRgba("00f0ff", 0.8), "rgba(0, 240, 255, 0.8)");
+});
+
+test("hexToRgba: handles invalid, non-hex, null, or undefined inputs gracefully", () => {
+  assert.equal(hexToRgba("rgba(108, 255, 154, 0.12)", 0.5), "rgba(108, 255, 154, 0.12)");
+  assert.equal(hexToRgba("invalid-color", 0.2), "invalid-color");
+  assert.equal(hexToRgba(null), null);
+  assert.equal(hexToRgba(undefined), undefined);
+});
+
