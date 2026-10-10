@@ -6,7 +6,7 @@ os.makedirs("docs/screenshots/desktop_verify", exist_ok=True)
 
 async def capture():
     async with async_playwright() as p:
-        browser = await p.chromium.launch()
+        browser = await p.chromium.launch(args=['--disable-dev-shm-usage', '--no-sandbox'])
         page = await browser.new_page(viewport={"width": 1440, "height": 900})
 
         # 1. Capture index.html
