@@ -61,7 +61,7 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
 .pick:hover{background:rgba(255,255,255,.07)}
 .tag{padding:6px 9px;border:1px solid rgba(255,255,255,.16);border-radius:5px;cursor:pointer;font:500 10.5px/1 "JetBrains Mono",monospace;color:rgba(255,255,255,.78)}
 .tag:hover{border-color:#6CFF9A;color:#6CFF9A}
-button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #6CFF9A;outline-offset:2px}
+button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--k-focus-ring, currentColor);outline-offset:2px;box-shadow:0 0 0 1px var(--k-focus-ring-shadow, rgba(0,0,0,0.6))}
 @media(max-width:760px){.dv-turn{padding-top:22px}.dv-opts>*,.dv-opt,.dv-opt>div{max-width:calc(100vw - 32px)}.dv-opt>div{overflow-x:auto}.dv-thd{flex-wrap:wrap}}
 @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
 @keyframes ping{0%{transform:scale(.5);opacity:.85}100%{transform:scale(2.4);opacity:0}}
@@ -1451,7 +1451,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
               </div>
               <div style="flex:none;margin:0 16px 10px;height:44px;display:flex;align-items:center;gap:8px;padding:0 12px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C)">
                 <i data-lucide="search" style="width:16px;height:16px;color:var(--ink2,#A7C8BC)"></i>
-                <input value="{{ searchQuery }}" sc-camel-on-input="{{ searchQueryPick }}" placeholder="resident name (min 2 chars)" style="flex:1;min-width:0;border:none;outline:none;background:transparent;font:400 13px/1 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)" />
+                <input value="{{ searchQuery }}" sc-camel-on-input="{{ searchQueryPick }}" placeholder="resident name (min 2 chars)" style="flex:1;min-width:0;border:none;background:transparent;font:400 13px/1 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)" />
               </div>
               <div style="flex:1;min-height:0;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:8px">
                 <sc-for list="{{ searchResults }}" as="sr" hint-placeholder-count="4">
@@ -3307,7 +3307,7 @@ class Component extends DCLogic {
         if (msg) { this.dispatchIntent("QUICK_CHAT_SUBMIT", { message: msg }); this.set("flQuickMsg", ""); }
       },
       flQuickInputStyle: { width: "100%", height: "26px", padding: "0 8px", background: V.bg, color: V.ink,
-        border: "1px solid " + V.outv, borderRadius: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "999px" : V.rs, font: "400 11px/1 " + t.font, outline: "none" },
+        border: "1px solid " + V.outv, borderRadius: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "999px" : V.rs, font: "400 11px/1 " + t.font },
       flQuickBtnStyle: { height: "26px", padding: "0 10px", background: V.pri, color: this.ink(V.pri, [V.bg, V.onpri, V.ink]),
         border: "none", borderRadius: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "999px" : V.rs,
         font: "700 9.5px/1 " + t.dfont, letterSpacing: ".12em", cursor: "pointer", flex: "none" },
@@ -3435,7 +3435,7 @@ toggleCamHudKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preven
 sendChatKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.sendChat(chatChannelKey, chatReplier); } },
       composeChange: (e) => this.set("composeText", e.target.value),
       composeKeyDown: (e) => { if (e.key === "Enter") { e.preventDefault(); this.sendChat(chatChannelKey, chatReplier); } },
-      composeInputStyle: { flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent",
+      composeInputStyle: { flex: 1, minWidth: 0, border: "none", background: "transparent",
         font: "400 13px/1 " + t.font, color: V.ink },
       cfWrap: { flex: 1, minHeight: 0, minWidth: 0, position: "relative", display: "flex", overflow: "hidden", background: V.bg },
       isConsole, consoleScene,
@@ -3763,7 +3763,7 @@ toggleLogoAnimKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.prev
       invRecents: ["Sunset Lamp v3", "Roof Kit", "Hollywood LM", "Brass texture"]
         .map(name => ({ name, pick: () => this.notify(name + " — OPEN"), pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify(name + " — OPEN"); } } })),
       invFilter: s.invFilter, invFilterChange: (e) => this.set("invFilter", e.target.value),
-      invFilterInputStyle: { flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent",
+      invFilterInputStyle: { flex: 1, minWidth: 0, border: "none", background: "transparent",
         font: "400 12px/1 " + t.font, color: V.ink },
       invSelectMode: !!s.invSelectMode,
       invSelectedCount: (s.invSelected || []).length,

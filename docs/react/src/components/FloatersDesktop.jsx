@@ -205,7 +205,7 @@ export default function FloatersDesktop() {
               placeholder="Nearby Chat..."
               style={{
                 width: "100%", height: "26px", padding: "0 8px", background: V.bg, color: V.ink,
-                border: "1px solid " + V.outv, borderRadius: isSweepDesk ? "999px" : V.rs, font: "400 11px/1 " + t.font, outline: "none"
+                border: "1px solid " + V.outv, borderRadius: isSweepDesk ? "999px" : V.rs, font: "400 11px/1 " + t.font
               }}
             />
           </div>

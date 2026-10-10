@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useMemo, useEffect } from "react";
 import { useApp } from "./AppContext.jsx";
 import { computeThemeTokens, computeThemeRuntime } from "../theme/computeTheme.js";
 
@@ -18,6 +18,17 @@ export function ThemeProvider({ children }) {
     () => computeThemeRuntime(state, actions.cf, tokens),
     [state.device, state.screen, state.cond, state.layout, state.palette, state.customTheme, actions.cf, tokens]
   );
+
+  useEffect(() => {
+    if (typeof document !== "undefined" && document.documentElement && tokens?.V) {
+      if (tokens.V.focusRing) {
+        document.documentElement.style.setProperty("--k-focus-ring", tokens.V.focusRing);
+      }
+      if (tokens.V.focusRingShadow) {
+        document.documentElement.style.setProperty("--k-focus-ring-shadow", tokens.V.focusRingShadow);
+      }
+    }
+  }, [tokens]);
 
   return (
     <ThemeTokensContext.Provider value={tokens}>
