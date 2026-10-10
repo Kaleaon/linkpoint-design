@@ -158,3 +158,36 @@ select:focus-visible {
   }
 }
 
+.theme-studio-alert {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid #ef4444;
+  color: #fca5a5;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+.theme-studio-alert-message {
+  flex: 1;
+  word-break: break-word;
+}
+
+.theme-studio-alert-dismiss {
+  background: transparent;
+  border: none;
+  color: #fca5a5;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.theme-studio-alert-dismiss:hover {
+  color: #ffffff;
+}
