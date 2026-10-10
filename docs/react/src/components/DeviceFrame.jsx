@@ -21,7 +21,7 @@ export default function DeviceFrame() {
   const cfWrap = { flex: 1, minHeight: 0, minWidth: 0, position: "relative", display: "flex", overflow: "hidden", background: V.bg };
 
   return (
-    <div className="device-frame">
+    <div className="device-frame" id="app-root">
       <div style={frameStyle}>
         <MenuBar />
         <div style={cfWrap}>
