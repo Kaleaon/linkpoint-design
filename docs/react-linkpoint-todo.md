@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-10-10T06:20:55Z — upstream read through [`00f24d0`](https://github.com/Kaleaon/react-linkpoint/commit/00f24d0d6f9c0c211fef523b58a9721ba00891b8)
-- **Open:** 314 · **Completed:** 2
+- **Last change:** 2026-10-11T06:21:00Z — upstream read through [`c89517e`](https://github.com/Kaleaon/react-linkpoint/commit/c89517ee5dfb225baacfc01f878ae17269e028ab)
+- **Open:** 335 · **Completed:** 2
 
 ## Open
 
@@ -107,13 +107,39 @@ Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/
 
 Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `docs/react/src/components/`
 
+- [ ] **`edc63bb`** feat(accessibility): implement shared AccessibleButton component and key listener hook
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/edc63bb28bf74a77a9f90eb2f466059555a2cb77)
+  - 12 files: `packages/design-system/src/react/AccessibleButton.tsx`, `packages/design-system/src/react/Card.tsx`, `packages/design-system/src/react/TileNav.tsx`, `packages/design-system/src/react/index.ts`, `src/components/AccessibleButton.jsx`, `src/components/AccessibleButton.tsx` _(+6 more)_
+  - also touches: Screens, Viewer & protocol features, Unclassified
+- [ ] **`d2491c9`** feat: modernize crystal logo with CSS transform animation engine and reduced motion support
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d2491c91d5c78f02b4bbc9f1a67eb121856d4296)
+  - 3 files: `src/components/LinkpointLogo.jsx`, `src/components/linkpointCrystal.js`, `src/linkpoint/__tests__/linkpoint-logo.test.tsx`
+  - also touches: Viewer & protocol features
+- [ ] **`bccc313`** fix(CrystalLoader): call useId unconditionally and format code
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/bccc313163c7fe87b7275927d92a476c45214833)
+  - 3 files: `src/components/SkeletonLoader.jsx`, `src/components/__tests__/CrystalLoader.test.tsx`, `src/linkpoint/__tests__/grid-directory-search.test.tsx`
+  - also touches: Viewer & protocol features
+- [ ] **`a349f16`** style: format files with Prettier to pass CI format check
+  - 2026-10-09 · stitch · [commit](https://github.com/Kaleaon/react-linkpoint/commit/a349f16c464a2f166034adaa4f16968457f7437b)
+  - 3 files: `src/components/SystemDialog.jsx`, `src/components/TeleportCrystalHero.jsx`, `src/components/__tests__/TeleportCrystalHero.test.tsx`
+- [ ] **`99c7daa`** fix(ui): use React useId hook for CrystalLoader gradient SVG IDs
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/99c7daa9989bef7d4163e4c5493c85734c117184)
+  - 2 files: `src/components/CrystalLoader.jsx`, `src/components/__tests__/CrystalLoader.test.tsx`
 - [ ] **`6d38b43`** feat(a11y): adopt FormField component across PayDialog, FloatersDesktop, and CacheScreen
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6d38b43fb94a53e7713d721590cfb39dddc3bed4)
   - 4 files: `src/components/FloatersDesktop.jsx`, `src/components/FormField.jsx`, `src/components/PayDialog.jsx`, `src/screens/__tests__/FormFieldScreenIntegration.test.tsx`
   - also touches: Screens
+- [ ] **`6c70b24`** style: format accessible button files with Prettier
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6c70b246d25fc1a55a388370cd16f26599014962)
+  - 3 files: `src/components/AccessibleButton.jsx`, `src/components/AccessibleButton.tsx`, `src/linkpoint/__tests__/accessible-button.test.tsx`
+  - also touches: Viewer & protocol features
 - [ ] **`3fbec56`** fix(a11y): enforce minimum touch target dimensions across mobile navigation
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/3fbec5674bad82698a3335489c09e288e65b6ea7)
   - 4 files: `src/components/BottomTabs.jsx`, `src/components/Header.jsx`, `src/components/TouchTarget.tsx`, `src/components/__tests__/TouchTargetSizes.test.tsx`
+- [ ] **`2cd94e8`** feat: implement polymorphic CrystalLoader and branded skeleton system
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/2cd94e88bd7087986078fdf8651dbc6a5f6c04da)
+  - 7 files: `src/components/CrystalLoader.jsx`, `src/components/PayDialog.jsx`, `src/components/SkeletonLoader.jsx`, `src/components/__tests__/CrystalLoader.test.tsx`, `src/index.css`, `src/linkpoint/__tests__/grid-directory-search.test.tsx` _(+1 more)_
+  - also touches: Screens, Theme & tokens, Viewer & protocol features
 - [ ] **`1a165f5`** refactor(a11y): migrate ErrorRecoveryModal and SystemDialog to native HTML dialog elements
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1a165f57f6c2f8a1048b414140565a65cd5a772b)
   - 4 files: `src/components/ErrorRecoveryModal.tsx`, `src/components/SystemDialog.jsx`, `src/index.css`, `vitest.setup.ts`
@@ -122,6 +148,10 @@ Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `do
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0947c4a0c003052294dd7e1d292153eddabe1df6)
   - 5 files: `src/components/LiveRegionAnnouncerComponent.jsx`, `src/components/Toast.jsx`, `src/linkpoint/__tests__/live-region-announcer.test.ts`, `src/screens/Chat.jsx`, `src/services/LiveRegionAnnouncer.ts`
   - also touches: Screens, Viewer & protocol features, Unclassified
+- [ ] **`052d4c1`** feat: add TeleportCrystalHero component to SystemDialog teleport modal sheet
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/052d4c1fcb9883b9df8fbd3a3cf343934661807a)
+  - 5 files: `bun.lock`, `src/components/SystemDialog.jsx`, `src/components/TeleportCrystalHero.jsx`, `src/components/__tests__/TeleportCrystalHero.test.tsx`, `src/linkpoint/__tests__/system-dialog-teleport.test.tsx`
+  - also touches: Viewer & protocol features, Unclassified
 - [ ] **`16841f6`** Sweep: make or honestly disable actions that claimed success without doing anything
   - 2026-10-08 · Claude · [commit](https://github.com/Kaleaon/react-linkpoint/commit/16841f6785e373221dec4deefa4902e1298306fa)
   - 12 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `scripts/fake-data-rules.mjs`, `src/components/DesktopChrome.jsx`, `src/components/FloatersDesktop.jsx`, `src/components/Header.jsx` _(+6 more)_
@@ -296,9 +326,24 @@ Mirror into: `docs/index.html` — the `render()` view-model · `docs/react/src/
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`d71091e`** feat: implement on-demand historical group notice retrieval via grid RPC
+  - 2026-10-10 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d71091e52f0e9dc65258461f960c7c7f25dadcc6)
+  - 9 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/historical-notices-rpc.test.ts`, `src/linkpoint/__tests__/viewer-parity.test.tsx`, `src/linkpoint/app.ts`, `src/linkpoint/notices.ts` _(+3 more)_
+  - also touches: Screens, Unclassified
+- [ ] **`704150e`** fix: restore core LLSD parser/serializer modules and correct logo animation transform order
+  - 2026-10-10 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/704150e56a4f3b7e729a761f4afaa7d98bfb64c5)
+  - 8 files: `src/components/LinkpointLogo.jsx`, `src/lib/llsd.test.ts`, `src/lib/llsd.ts`, `src/linkpoint/__tests__/linkpoint-logo.test.tsx`, `src/linkpoint/binaryParser.ts`, `src/linkpoint/binarySerializer.ts` _(+2 more)_
+  - also touches: Components
+- [ ] **`f251f3a`** refactor: delete orphaned LLSD parser and serializer modules
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f251f3af3ea8b7d5d3f2948e695e052636132e67)
+  - 6 files: `src/lib/llsd.test.ts`, `src/lib/llsd.ts`, `src/linkpoint/binaryParser.ts`, `src/linkpoint/binarySerializer.ts`, `src/linkpoint/index.ts`, `src/linkpoint/xmlSerializer.ts`
 - [ ] **`e3c34ad`** feat(inventory): implement atomic folder reconciler and consolidate InventoryCore into InventoryManager
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e3c34ade9896a5ba0a3c947b40bbcf0d5fafbd75)
   - 4 files: `src/linkpoint/__tests__/atomic-inventory-reconciler.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/inventory.ts`, `src/linkpoint/phase2/inventory-core.ts`
+- [ ] **`dd6483c`** fix(mute): resolve rebase formatting and ensure local storage compatibility
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/dd6483c5709297ca15e3d41e7eb5068138ed3c21)
+  - 6 files: `src/linkpoint/__tests__/mute-storage-sync.test.ts`, `src/linkpoint/__tests__/persistent-mute-sync.test.ts`, `src/linkpoint/indexeddb-store.ts`, `src/linkpoint/mute-list.ts`, `src/linkpoint/phase2/chat-extended.ts`, `src/screens/LiveScreens.jsx`
+  - also touches: Screens
 - [ ] **`da13a95`** fix(llsd): strip custom Lumiya keys from outbound network payloads
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/da13a959a08b4191b1f880c3e0f4d43f27845971)
   - 2 files: `src/linkpoint/__tests__/sl-viewer-standards.test.ts`, `src/linkpoint/lumiya/LumiyaLLSDUtils.ts`
@@ -308,16 +353,31 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
 - [ ] **`b9d4df5`** feat: direct grid RPC mute sync with localStorage fallback
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b9d4df5092f8ff683cd8cb1cb4685eb5c0e98c76)
   - 3 files: `src/linkpoint/__tests__/mute-storage-sync.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/phase2/chat-extended.ts`
+- [ ] **`a58f3cc`** feat: proactive background group notice synchronization engine
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/a58f3cce776208ce6e42d4d79021ab0ffcf9d72e)
+  - 7 files: `src/linkpoint/__tests__/group-notice-sync-engine.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/group-notice-sync-engine.ts`, `src/linkpoint/index.ts`, `src/linkpoint/indexeddb-store.ts`, `src/linkpoint/notices.ts` _(+1 more)_
+  - also touches: Screens
 - [ ] **`9245ccb`** feat: transmit explicit decline protocol response on teleport lure dismissal
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/9245ccb13bfa66fcf233dca880eef141de71fc45)
   - 9 files: `core/sl-interactions.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/components/InteractionDialog.jsx`, `src/linkpoint/__tests__/interaction-dialog.test.tsx`, `src/linkpoint/__tests__/sl-interactions.test.ts` _(+3 more)_
   - also touches: Components, Unclassified
+- [ ] **`819eb5f`** feat(mute): implement persistent local caching and dual-tier grid synchronized mute engine
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/819eb5fb587da3f9eeb7082d0c1f844b0109a3fa)
+  - 6 files: `src/linkpoint/__tests__/persistent-mute-sync.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/indexeddb-store.ts`, `src/linkpoint/mute-list.ts`, `src/linkpoint/phase2/chat-extended.ts`, `src/screens/LiveScreens.jsx`
+  - also touches: Screens
+- [ ] **`7469ed4`** ci: fix setup-bun cache input placement and packageManager version declaration
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7469ed4905e06aee69852918458fa81e600f63d7)
+  - 4 files: `.github/workflows/ci.yml`, `package.json`, `src/linkpoint/__tests__/mute-storage-sync.test.ts`, `src/linkpoint/app.ts`
+  - also touches: Build & platform
 - [ ] **`65b488b`** feat: transactional IndexedDB storage and reactive delta selectors
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/65b488b7e7c3f688d99f0210c34fdb04ff7f62a0)
   - 12 files: `src/linkpoint/__tests__/indexeddb-delta-selectors.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/contacts.ts`, `src/linkpoint/delta-selectors.ts`, `src/linkpoint/idb-worker.ts`, `src/linkpoint/indexeddb-store.ts` _(+6 more)_
 - [ ] **`60a71c2`** fix(wind): normalize wind vector scaling by defaulting WIND_SCALE_HACK to 1.0
   - 2026-10-09 · Stitch Agent · [commit](https://github.com/Kaleaon/react-linkpoint/commit/60a71c2ae84e368a19c8d88e4f6d8d5144dda4f2)
   - 3 files: `src/linkpoint/__tests__/flexi.test.ts`, `src/linkpoint/__tests__/wind.test.ts`, `src/linkpoint/wind.ts`
+- [ ] **`58df56f`** style: format code with prettier
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/58df56fd66288e7711fd47ecc7569141072f5147)
+  - 2 files: `src/linkpoint/__tests__/mute-storage-sync.test.ts`, `src/linkpoint/app.ts`
 - [ ] **`326e73e`** fix(world): repair keyMode method declaration
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/326e73e9ded3f74d3d8fc5e3d3bac061bb5fd5b1)
   - 1 file: `src/linkpoint/world.ts`
@@ -832,6 +892,18 @@ Mirror into: usually no design change — confirm `docs/react/` still builds the
 - [ ] **`f68af36`** ci: optimize CI caching, path filters, and Kotlin test execution
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f68af36a3aec9c02cc98c04527ff583a700c24eb)
   - 1 file: `.github/workflows/ci.yml`
+- [ ] **`ec2faeb`** fix(ci): declare packageManager in package.json for setup-bun
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ec2faeba42fcca55dd3ea0092318d530bf16d644)
+  - 1 file: `package.json`
+- [ ] **`d157838`** ci: remove unsupported cache parameter from setup-node
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d15783867c1b8c1eb0ce114524db93b2692bcc35)
+  - 1 file: `.github/workflows/ci.yml`
+- [ ] **`9acc7d2`** fix(ci): set valid packageManager bun version 1.2.14 and clean up setup-bun inputs
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/9acc7d263b7e0e87e57669a3c5beb02ae2f760e4)
+  - 2 files: `.github/workflows/ci.yml`, `package.json`
+- [ ] **`8276342`** fix(ci): set ELECTRON_SKIP_BINARY_DOWNLOAD=1 on bun install in Task 1
+  - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/82763420c8fdbfbf886807ebab1838954d8fd26c)
+  - 1 file: `.github/workflows/ci.yml`
 - [ ] **`7440708`** fix(ci): reconstruct standalone PR reviewer and harden Fly.io deployment
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/74407085351d14e269af1feb1a6e47f3de790c45)
   - 3 files: `.github/workflows/ci.yml`, `.github/workflows/fly-deploy.yml`, `.github/workflows/run.yml`
@@ -972,6 +1044,9 @@ Mirror into: `docs/ROADMAP.md` · `docs/github.md` · `docs/mockup-to-react.yaml
 
 Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json`
 
+- [ ] **`fa458a4`** Skip Vercel builds for Stitch bot branches (ignoreCommand)
+  - 2026-10-10 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/fa458a4587023df83f0b4a0e78c54466fa860619)
+  - 1 file: `vercel.json`
 - [ ] **`e429a30`** perf: optimize JPEG2000 buffer generation with tile pattern replication
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e429a30bb3195aa70f772e8b13946b0f45ea506e)
   - 2 files: `test_texture_decoder.py`, `texture_decoder.py`
@@ -1186,7 +1261,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-10-10T06:20:55Z",
+ "generated": "2026-10-11T06:21:00Z",
  "items": [
   {
    "also": [
@@ -8924,9 +8999,404 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "21069d9",
    "subject": "style: format test file with prettier",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/21069d9afd3bcae45b52ed68f88bd59fe19b15ee"
+  },
+  {
+   "also": [
+    "screens",
+    "viewer",
+    "other"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "packages/design-system/src/react/AccessibleButton.tsx",
+    "packages/design-system/src/react/Card.tsx",
+    "packages/design-system/src/react/TileNav.tsx",
+    "packages/design-system/src/react/index.ts",
+    "src/components/AccessibleButton.jsx",
+    "src/components/AccessibleButton.tsx",
+    "src/components/Card.jsx",
+    "src/components/TileNav.jsx",
+    "src/components/Toggle.jsx",
+    "src/linkpoint/__tests__/accessible-button.test.tsx",
+    "src/linkpoint/world.ts",
+    "src/screens/Settings.jsx"
+   ],
+   "sha": "edc63bb28bf74a77a9f90eb2f466059555a2cb77",
+   "short": "edc63bb",
+   "subject": "feat(accessibility): implement shared AccessibleButton component and key listener hook",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/edc63bb28bf74a77a9f90eb2f466059555a2cb77"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/lib/llsd.test.ts",
+    "src/lib/llsd.ts",
+    "src/linkpoint/binaryParser.ts",
+    "src/linkpoint/binarySerializer.ts",
+    "src/linkpoint/index.ts",
+    "src/linkpoint/xmlSerializer.ts"
+   ],
+   "sha": "f251f3af3ea8b7d5d3f2948e695e052636132e67",
+   "short": "f251f3a",
+   "subject": "refactor: delete orphaned LLSD parser and serializer modules",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/f251f3af3ea8b7d5d3f2948e695e052636132e67"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/components/AccessibleButton.jsx",
+    "src/components/AccessibleButton.tsx",
+    "src/linkpoint/__tests__/accessible-button.test.tsx"
+   ],
+   "sha": "6c70b246d25fc1a55a388370cd16f26599014962",
+   "short": "6c70b24",
+   "subject": "style: format accessible button files with Prettier",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/6c70b246d25fc1a55a388370cd16f26599014962"
+  },
+  {
+   "also": [
+    "platform"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml",
+    "package.json",
+    "src/linkpoint/__tests__/mute-storage-sync.test.ts",
+    "src/linkpoint/app.ts"
+   ],
+   "sha": "7469ed4905e06aee69852918458fa81e600f63d7",
+   "short": "7469ed4",
+   "subject": "ci: fix setup-bun cache input placement and packageManager version declaration",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/7469ed4905e06aee69852918458fa81e600f63d7"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/components/CrystalLoader.jsx",
+    "src/components/__tests__/CrystalLoader.test.tsx"
+   ],
+   "sha": "99c7daa9989bef7d4163e4c5493c85734c117184",
+   "short": "99c7daa",
+   "subject": "fix(ui): use React useId hook for CrystalLoader gradient SVG IDs",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/99c7daa9989bef7d4163e4c5493c85734c117184"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml"
+   ],
+   "sha": "d15783867c1b8c1eb0ce114524db93b2692bcc35",
+   "short": "d157838",
+   "subject": "ci: remove unsupported cache parameter from setup-node",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d15783867c1b8c1eb0ce114524db93b2692bcc35"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "package.json"
+   ],
+   "sha": "ec2faeba42fcca55dd3ea0092318d530bf16d644",
+   "short": "ec2faeb",
+   "subject": "fix(ci): declare packageManager in package.json for setup-bun",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ec2faeba42fcca55dd3ea0092318d530bf16d644"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml",
+    "package.json"
+   ],
+   "sha": "9acc7d263b7e0e87e57669a3c5beb02ae2f760e4",
+   "short": "9acc7d2",
+   "subject": "fix(ci): set valid packageManager bun version 1.2.14 and clean up setup-bun inputs",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/9acc7d263b7e0e87e57669a3c5beb02ae2f760e4"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/mute-storage-sync.test.ts",
+    "src/linkpoint/app.ts"
+   ],
+   "sha": "58df56fd66288e7711fd47ecc7569141072f5147",
+   "short": "58df56f",
+   "subject": "style: format code with prettier",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/58df56fd66288e7711fd47ecc7569141072f5147"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml"
+   ],
+   "sha": "82763420c8fdbfbf886807ebab1838954d8fd26c",
+   "short": "8276342",
+   "subject": "fix(ci): set ELECTRON_SKIP_BINARY_DOWNLOAD=1 on bun install in Task 1",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/82763420c8fdbfbf886807ebab1838954d8fd26c"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "Kaleaon",
+   "date": "2026-10-10",
+   "done": false,
+   "files": [
+    "vercel.json"
+   ],
+   "sha": "fa458a4587023df83f0b4a0e78c54466fa860619",
+   "short": "fa458a4",
+   "subject": "Skip Vercel builds for Stitch bot branches (ignoreCommand)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/fa458a4587023df83f0b4a0e78c54466fa860619"
+  },
+  {
+   "also": [
+    "screens"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/persistent-mute-sync.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/indexeddb-store.ts",
+    "src/linkpoint/mute-list.ts",
+    "src/linkpoint/phase2/chat-extended.ts",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "819eb5fb587da3f9eeb7082d0c1f844b0109a3fa",
+   "short": "819eb5f",
+   "subject": "feat(mute): implement persistent local caching and dual-tier grid synchronized mute engine",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/819eb5fb587da3f9eeb7082d0c1f844b0109a3fa"
+  },
+  {
+   "also": [
+    "screens"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/mute-storage-sync.test.ts",
+    "src/linkpoint/__tests__/persistent-mute-sync.test.ts",
+    "src/linkpoint/indexeddb-store.ts",
+    "src/linkpoint/mute-list.ts",
+    "src/linkpoint/phase2/chat-extended.ts",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "dd6483c5709297ca15e3d41e7eb5068138ed3c21",
+   "short": "dd6483c",
+   "subject": "fix(mute): resolve rebase formatting and ensure local storage compatibility",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/dd6483c5709297ca15e3d41e7eb5068138ed3c21"
+  },
+  {
+   "also": [
+    "screens",
+    "theme",
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/components/CrystalLoader.jsx",
+    "src/components/PayDialog.jsx",
+    "src/components/SkeletonLoader.jsx",
+    "src/components/__tests__/CrystalLoader.test.tsx",
+    "src/index.css",
+    "src/linkpoint/__tests__/grid-directory-search.test.tsx",
+    "src/screens/Search.jsx"
+   ],
+   "sha": "2cd94e88bd7087986078fdf8651dbc6a5f6c04da",
+   "short": "2cd94e8",
+   "subject": "feat: implement polymorphic CrystalLoader and branded skeleton system",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/2cd94e88bd7087986078fdf8651dbc6a5f6c04da"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/components/SkeletonLoader.jsx",
+    "src/components/__tests__/CrystalLoader.test.tsx",
+    "src/linkpoint/__tests__/grid-directory-search.test.tsx"
+   ],
+   "sha": "bccc313163c7fe87b7275927d92a476c45214833",
+   "short": "bccc313",
+   "subject": "fix(CrystalLoader): call useId unconditionally and format code",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/bccc313163c7fe87b7275927d92a476c45214833"
+  },
+  {
+   "also": [
+    "screens"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/group-notice-sync-engine.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/group-notice-sync-engine.ts",
+    "src/linkpoint/index.ts",
+    "src/linkpoint/indexeddb-store.ts",
+    "src/linkpoint/notices.ts",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "a58f3cce776208ce6e42d4d79021ab0ffcf9d72e",
+   "short": "a58f3cc",
+   "subject": "feat: proactive background group notice synchronization engine",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/a58f3cce776208ce6e42d4d79021ab0ffcf9d72e"
+  },
+  {
+   "also": [
+    "viewer",
+    "other"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "bun.lock",
+    "src/components/SystemDialog.jsx",
+    "src/components/TeleportCrystalHero.jsx",
+    "src/components/__tests__/TeleportCrystalHero.test.tsx",
+    "src/linkpoint/__tests__/system-dialog-teleport.test.tsx"
+   ],
+   "sha": "052d4c1fcb9883b9df8fbd3a3cf343934661807a",
+   "short": "052d4c1",
+   "subject": "feat: add TeleportCrystalHero component to SystemDialog teleport modal sheet",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/052d4c1fcb9883b9df8fbd3a3cf343934661807a"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "stitch",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/components/SystemDialog.jsx",
+    "src/components/TeleportCrystalHero.jsx",
+    "src/components/__tests__/TeleportCrystalHero.test.tsx"
+   ],
+   "sha": "a349f16c464a2f166034adaa4f16968457f7437b",
+   "short": "a349f16",
+   "subject": "style: format files with Prettier to pass CI format check",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/a349f16c464a2f166034adaa4f16968457f7437b"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-09",
+   "done": false,
+   "files": [
+    "src/components/LinkpointLogo.jsx",
+    "src/components/linkpointCrystal.js",
+    "src/linkpoint/__tests__/linkpoint-logo.test.tsx"
+   ],
+   "sha": "d2491c91d5c78f02b4bbc9f1a67eb121856d4296",
+   "short": "d2491c9",
+   "subject": "feat: modernize crystal logo with CSS transform animation engine and reduced motion support",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d2491c91d5c78f02b4bbc9f1a67eb121856d4296"
+  },
+  {
+   "also": [
+    "components"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-10",
+   "done": false,
+   "files": [
+    "src/components/LinkpointLogo.jsx",
+    "src/lib/llsd.test.ts",
+    "src/lib/llsd.ts",
+    "src/linkpoint/__tests__/linkpoint-logo.test.tsx",
+    "src/linkpoint/binaryParser.ts",
+    "src/linkpoint/binarySerializer.ts",
+    "src/linkpoint/index.ts",
+    "src/linkpoint/xmlSerializer.ts"
+   ],
+   "sha": "704150e56a4f3b7e729a761f4afaa7d98bfb64c5",
+   "short": "704150e",
+   "subject": "fix: restore core LLSD parser/serializer modules and correct logo animation transform order",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/704150e56a4f3b7e729a761f4afaa7d98bfb64c5"
+  },
+  {
+   "also": [
+    "screens",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-10",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/historical-notices-rpc.test.ts",
+    "src/linkpoint/__tests__/viewer-parity.test.tsx",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/notices.ts",
+    "src/linkpoint/phase2/groups.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "d71091e52f0e9dc65258461f960c7c7f25dadcc6",
+   "short": "d71091e",
+   "subject": "feat: implement on-demand historical group notice retrieval via grid RPC",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d71091e52f0e9dc65258461f960c7c7f25dadcc6"
   }
  ],
- "last_sha": "00f24d0d6f9c0c211fef523b58a9721ba00891b8",
+ "last_sha": "c89517ee5dfb225baacfc01f878ae17269e028ab",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
