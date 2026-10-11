@@ -325,7 +325,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
       </div>
       <div style="{{ flDividerStyle }}"></div>
       <sc-for list="{{ flTasks }}" as="tk" hint-placeholder-count="4">
-        <div onClick="{{ tk.pick }}" style="{{ tk.style }}">{{ tk.label }}</div>
+        <div onClick="{{ tk.pick }}" onKeyDown="{{ tk.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ tk.label }}" style="{{ tk.style }}">{{ tk.label }}</div>
       </sc-for>
       <div style="flex:1;min-width:8px"></div>
       <div onClick="{{ toggleCamHud }}" onKeyDown="{{ toggleCamHudKeyDown }}" style="{{ camHudBtnStyle }}" role="button" tabindex="0" aria-label="Toggle Camera HUD">
@@ -333,7 +333,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
         <span>CAM HUD</span>
       </div>
       <sc-for list="{{ flTools }}" as="tl" hint-placeholder-count="8">
-        <div onClick="{{ tl.press }}" style="{{ tl.style }}">
+        <div onClick="{{ tl.press }}" onKeyDown="{{ tl.pressKeyDown }}" role="button" tabindex="0" aria-label="{{ tl.label }}" style="{{ tl.style }}">
           <i data-lucide="{{ tl.icon }}" style="width:14px;height:14px;flex:none"></i>
           <span style="font:inherit;letter-spacing:inherit">{{ tl.label }}</span>
         </div>
@@ -3381,6 +3381,7 @@ toggleCamHudKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preven
       flTasks: FLOATERS.filter(f => s.flOpen[f.id]).map(f => {
         const min = !!s.flMin[f.id], act = f.id === scr && !min;
         return { label: f.title, pick: () => this.dispatchIntent("FLOATER_TOGGLE", { id: f.id }),
+          pickKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.dispatchIntent("FLOATER_TOGGLE", { id: f.id }); } },
           style: { flex: "none", height: "26px", display: "flex", alignItems: "center", padding: "0 10px", cursor: "pointer",
             background: act ? V.pri : (min ? "transparent" : V.surf2),
             color: act ? this.ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2,
@@ -3393,6 +3394,7 @@ toggleCamHudKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preven
         const b = CBTN[k], lit = !!(s.cTog || {})[k], dis = !!b.off;
         const bg = lit ? V.pri : V.surf2;
         return { icon: b.icon, label: b.label, press: () => this.cPress(k),
+          pressKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.cPress(k); } },
           style: { flex: "none", height: "26px", display: "flex", alignItems: "center", gap: "6px", padding: "0 9px",
             background: dis ? "transparent" : bg, color: dis ? V.ink2 : this.ink(bg, [V.bg, V.onpri, V.ink]),
             border: "1px solid " + (dis ? V.outv : "transparent"),
