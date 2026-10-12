@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-10-11T06:21:00Z — upstream read through [`c89517e`](https://github.com/Kaleaon/react-linkpoint/commit/c89517ee5dfb225baacfc01f878ae17269e028ab)
-- **Open:** 335 · **Completed:** 2
+- **Last change:** 2026-10-12T06:33:27Z — upstream read through [`4bb0fd7`](https://github.com/Kaleaon/react-linkpoint/commit/4bb0fd71a32df3ee4bd35fdfad68353f7f3836ea)
+- **Open:** 337 · **Completed:** 2
 
 ## Open
 
@@ -326,6 +326,10 @@ Mirror into: `docs/index.html` — the `render()` view-model · `docs/react/src/
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`d974fad`** Refine viewer rendering, audio, voice and LCARS layouts
+  - 2026-10-11 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d974fadf6fa5674dbb9e1f79398ed040fd605717)
+  - 76 files: `.gitignore`, `.prettierignore`, `README.md`, `bun.lock`, `docs/DESIGN_LANGUAGE.md`, `docs/official-sources.md` _(+70 more)_
+  - also touches: Screens, Components, Theme & tokens, State & data, Tests, Build & platform, Docs & specs, Unclassified
 - [ ] **`d71091e`** feat: implement on-demand historical group notice retrieval via grid RPC
   - 2026-10-10 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d71091e52f0e9dc65258461f960c7c7f25dadcc6)
   - 9 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/historical-notices-rpc.test.ts`, `src/linkpoint/__tests__/viewer-parity.test.tsx`, `src/linkpoint/app.ts`, `src/linkpoint/notices.ts` _(+3 more)_
@@ -334,6 +338,10 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
   - 2026-10-10 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/704150e56a4f3b7e729a761f4afaa7d98bfb64c5)
   - 8 files: `src/components/LinkpointLogo.jsx`, `src/lib/llsd.test.ts`, `src/lib/llsd.ts`, `src/linkpoint/__tests__/linkpoint-logo.test.tsx`, `src/linkpoint/binaryParser.ts`, `src/linkpoint/binarySerializer.ts` _(+2 more)_
   - also touches: Components
+- [ ] **`240412f`** feat: auto-sync friends, inline contact inspector, and debounced note auto-save
+  - 2026-10-10 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/240412f52eee1fb5224f00a39790421b496fd83b)
+  - 7 files: `src/linkpoint/__tests__/app.test.ts`, `src/linkpoint/__tests__/contacts-screen.test.tsx`, `src/linkpoint/__tests__/settings-and-tabs.test.tsx`, `src/linkpoint/app.ts`, `src/screens/ContactsScreen.jsx`, `src/screens/LiveScreens.jsx` _(+1 more)_
+  - also touches: Screens, Theme & tokens
 - [ ] **`f251f3a`** refactor: delete orphaned LLSD parser and serializer modules
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f251f3af3ea8b7d5d3f2948e695e052636132e67)
   - 6 files: `src/lib/llsd.test.ts`, `src/lib/llsd.ts`, `src/linkpoint/binaryParser.ts`, `src/linkpoint/binarySerializer.ts`, `src/linkpoint/index.ts`, `src/linkpoint/xmlSerializer.ts`
@@ -1261,7 +1269,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-10-11T06:21:00Z",
+ "generated": "2026-10-12T06:33:27Z",
  "items": [
   {
    "also": [
@@ -9394,9 +9402,130 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "d71091e",
    "subject": "feat: implement on-demand historical group notice retrieval via grid RPC",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/d71091e52f0e9dc65258461f960c7c7f25dadcc6"
+  },
+  {
+   "also": [
+    "screens",
+    "theme"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-10",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/app.test.ts",
+    "src/linkpoint/__tests__/contacts-screen.test.tsx",
+    "src/linkpoint/__tests__/settings-and-tabs.test.tsx",
+    "src/linkpoint/app.ts",
+    "src/screens/ContactsScreen.jsx",
+    "src/screens/LiveScreens.jsx",
+    "src/theme/constants.js"
+   ],
+   "sha": "240412f52eee1fb5224f00a39790421b496fd83b",
+   "short": "240412f",
+   "subject": "feat: auto-sync friends, inline contact inspector, and debounced note auto-save",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/240412f52eee1fb5224f00a39790421b496fd83b"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "theme",
+    "state",
+    "tests",
+    "platform",
+    "docs",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "Kaleaon",
+   "date": "2026-10-11",
+   "done": false,
+   "files": [
+    ".gitignore",
+    ".prettierignore",
+    "README.md",
+    "bun.lock",
+    "docs/DESIGN_LANGUAGE.md",
+    "docs/official-sources.md",
+    "docs/rendering-reference.md",
+    "docs/viewer-parity.md",
+    "eslint.config.mjs",
+    "package.json",
+    "packages/design-system/README.md",
+    "packages/design-system/src/__tests__/lcars.test.ts",
+    "packages/design-system/src/css/index.ts",
+    "packages/design-system/src/react/Card.tsx",
+    "packages/design-system/src/react/ConsoleFrame.tsx",
+    "packages/design-system/src/react/LcarsChrome.tsx",
+    "packages/design-system/src/react/SectionHeading.tsx",
+    "packages/design-system/src/react/index.ts",
+    "packages/design-system/src/tokens/contrast.ts",
+    "packages/design-system/src/tokens/index.ts",
+    "packages/design-system/src/tokens/lcars.ts",
+    "src/components/Card.jsx",
+    "src/components/ChipRow.jsx",
+    "src/components/ConsoleFrame.jsx",
+    "src/components/DesktopChrome.jsx",
+    "src/components/DeviceFrame.jsx",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/Header.jsx",
+    "src/components/MobileOverlayControls.tsx",
+    "src/components/ScreenBody.jsx",
+    "src/components/SegmentedTabs.jsx",
+    "src/components/Toast.jsx",
+    "src/components/Toggle.jsx",
+    "src/components/ViewportCanvas.tsx",
+    "src/components/VoiceDevices.jsx",
+    "src/components/__tests__/LcarsFrame.test.tsx",
+    "src/components/__tests__/ViewportCanvas.test.tsx",
+    "src/components/holdControl.js",
+    "src/hooks/useAppState.js",
+    "src/hooks/viewerSettings.js",
+    "src/index.css",
+    "src/linkpoint/__tests__/audio.test.ts",
+    "src/linkpoint/__tests__/avatar-animator.test.ts",
+    "src/linkpoint/__tests__/desk-style.test.ts",
+    "src/linkpoint/__tests__/flexi.test.ts",
+    "src/linkpoint/__tests__/graphics-3d-destroy-race.test.ts",
+    "src/linkpoint/__tests__/scene-3d.test.ts",
+    "src/linkpoint/__tests__/skinning.test.ts",
+    "src/linkpoint/__tests__/voice-settings.test.tsx",
+    "src/linkpoint/__tests__/voice.test.ts",
+    "src/linkpoint/__tests__/world-asset-updates.test.ts",
+    "src/linkpoint/__tests__/world-init-race.test.ts",
+    "src/linkpoint/__tests__/world-terrain-materials.test.ts",
+    "src/linkpoint/__tests__/world.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/audio.ts",
+    "src/linkpoint/avatar-animator.ts",
+    "src/linkpoint/avatar-skeleton.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/scene-3d.ts",
+    "src/linkpoint/sound-standards.ts",
+    "src/linkpoint/voice-neighbor.ts",
+    "src/linkpoint/voice-protocol.ts",
+    "src/linkpoint/voice.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/LiveScreens.jsx",
+    "src/screens/Settings.jsx",
+    "src/screens/World3D.jsx",
+    "src/theme/ThemeContext.tsx",
+    "src/theme/__tests__/contrast.test.ts",
+    "src/theme/computeTheme.js",
+    "src/theme/customTheme.js",
+    "src/theme/deskStyle.js",
+    "src/theme/look.js",
+    "tsconfig.json",
+    "vitest.config.mts"
+   ],
+   "sha": "d974fadf6fa5674dbb9e1f79398ed040fd605717",
+   "short": "d974fad",
+   "subject": "Refine viewer rendering, audio, voice and LCARS layouts",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d974fadf6fa5674dbb9e1f79398ed040fd605717"
   }
  ],
- "last_sha": "c89517ee5dfb225baacfc01f878ae17269e028ab",
+ "last_sha": "4bb0fd71a32df3ee4bd35fdfad68353f7f3836ea",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
