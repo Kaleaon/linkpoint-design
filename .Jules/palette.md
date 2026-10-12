@@ -37,3 +37,7 @@
 ## 2026-10-07 - Add Keyboard Accessibility to Interactive Login Screen Actions
 **Learning:** Even well-constructed custom HTML template frameworks often overlook full keyboard navigation on core screens like Login, where buttons (tabs, preset options, "ADD GRID", and the main "CONNECT TO GRID" toggles) might be functional to mouse users but completely dead to screen readers and keyboard users (pressing Enter or Space). Explicitly providing `onKeyDown` handlers inside `renderVals` that prevent default behavior on space bar prevents unwanted page scrolling and improves accessibility.
 **Action:** When inspecting or adding core interactive controls to screens (like login fields and connectivity toggles) in custom HTML templating, ensure they include `role="button"`, `tabindex="0"`, descriptive `aria-label`s, and corresponding `onKeyDown` listeners mirroring their `onClick` functionality.
+
+## 2026-10-12 - Keyboard Accessibility for Dock Editor and Flyout Controls
+**Learning:** Custom controls like "DONE", "+", "RUN", and "HIDE" used in the Dock Editor and Flyout menus inside `docs/index.html` were implemented as clickable `<span>` or `<div>` elements but lacked essential keyboard and screen reader accessibility, rendering them unusable without a mouse.
+**Action:** When implementing custom text-based buttons or action triggers in the HTML DSL, verify they are accompanied by `role="button"`, `tabindex="0"`, a descriptive `aria-label`, and `onKeyDown` bindings matching the `onClick` functionality to ensure parity and robust accessibility.
