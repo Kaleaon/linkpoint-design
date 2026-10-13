@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-10-12T06:33:27Z — upstream read through [`4bb0fd7`](https://github.com/Kaleaon/react-linkpoint/commit/4bb0fd71a32df3ee4bd35fdfad68353f7f3836ea)
-- **Open:** 337 · **Completed:** 2
+- **Last change:** 2026-10-13T06:25:10Z — upstream read through [`2a4f19d`](https://github.com/Kaleaon/react-linkpoint/commit/2a4f19d3ea2ea9051866749f298a510066118956)
+- **Open:** 338 · **Completed:** 2
 
 ## Open
 
@@ -334,6 +334,10 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
   - 2026-10-10 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d71091e52f0e9dc65258461f960c7c7f25dadcc6)
   - 9 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/historical-notices-rpc.test.ts`, `src/linkpoint/__tests__/viewer-parity.test.tsx`, `src/linkpoint/app.ts`, `src/linkpoint/notices.ts` _(+3 more)_
   - also touches: Screens, Unclassified
+- [ ] **`b1b49fc`** feat: implement chat typing indicator transmission to grid
+  - 2026-10-10 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b1b49fcad9a8452cf223f84a7ea2dd1eb1476e35)
+  - 5 files: `src/linkpoint/__tests__/chat-protocol-adapter.test.ts`, `src/linkpoint/__tests__/chat.test.ts`, `src/linkpoint/chat-protocol-adapter.ts`, `src/linkpoint/chat.ts`, `src/screens/Chat.jsx`
+  - also touches: Screens
 - [ ] **`704150e`** fix: restore core LLSD parser/serializer modules and correct logo animation transform order
   - 2026-10-10 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/704150e56a4f3b7e729a761f4afaa7d98bfb64c5)
   - 8 files: `src/components/LinkpointLogo.jsx`, `src/lib/llsd.test.ts`, `src/lib/llsd.ts`, `src/linkpoint/__tests__/linkpoint-logo.test.tsx`, `src/linkpoint/binaryParser.ts`, `src/linkpoint/binarySerializer.ts` _(+2 more)_
@@ -1269,7 +1273,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-10-12T06:33:27Z",
+ "generated": "2026-10-13T06:25:10Z",
  "items": [
   {
    "also": [
@@ -9523,9 +9527,29 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "d974fad",
    "subject": "Refine viewer rendering, audio, voice and LCARS layouts",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/d974fadf6fa5674dbb9e1f79398ed040fd605717"
+  },
+  {
+   "also": [
+    "screens"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-10",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/chat-protocol-adapter.test.ts",
+    "src/linkpoint/__tests__/chat.test.ts",
+    "src/linkpoint/chat-protocol-adapter.ts",
+    "src/linkpoint/chat.ts",
+    "src/screens/Chat.jsx"
+   ],
+   "sha": "b1b49fcad9a8452cf223f84a7ea2dd1eb1476e35",
+   "short": "b1b49fc",
+   "subject": "feat: implement chat typing indicator transmission to grid",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/b1b49fcad9a8452cf223f84a7ea2dd1eb1476e35"
   }
  ],
- "last_sha": "4bb0fd71a32df3ee4bd35fdfad68353f7f3836ea",
+ "last_sha": "2a4f19d3ea2ea9051866749f298a510066118956",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
