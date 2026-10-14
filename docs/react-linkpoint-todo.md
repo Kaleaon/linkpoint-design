@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-10-13T06:25:10Z — upstream read through [`2a4f19d`](https://github.com/Kaleaon/react-linkpoint/commit/2a4f19d3ea2ea9051866749f298a510066118956)
-- **Open:** 338 · **Completed:** 2
+- **Last change:** 2026-10-14T06:20:55Z — upstream read through [`f724871`](https://github.com/Kaleaon/react-linkpoint/commit/f7248718c943537acb101cc72b9194a9b700942a)
+- **Open:** 347 · **Completed:** 2
 
 ## Open
 
@@ -23,6 +23,14 @@ is tracked by hand in [`github.md`](github.md).
 
 Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/react/src/screens/`
 
+- [ ] **`f4abe5d`** fix(a11y): standardize reduced motion CSS overrides and add motion hook guard
+  - 2026-10-13 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f4abe5d116a41913eabced4f5a3c8c985516ed49)
+  - 7 files: `src/components/ConsoleFrame.jsx`, `src/components/__tests__/ConsoleFrameMotion.test.tsx`, `src/hooks/__tests__/usePrefersReducedMotion.test.tsx`, `src/hooks/usePrefersReducedMotion.js`, `src/index.css`, `src/screens/Radar.jsx` _(+1 more)_
+  - also touches: Components, Theme & tokens, State & data
+- [ ] **`d4dc163`** Standardize Search and Radar sub-nav tabs using SegmentedTabs and CSUB
+  - 2026-10-12 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d4dc1633217d19f31e7a77741f0f048a22beb84a)
+  - 6 files: `src/components/ScreenBody.jsx`, `src/components/SegmentedTabs.jsx`, `src/screens/Radar.jsx`, `src/screens/Search.jsx`, `src/screens/__tests__/SearchRadarTabsIntegration.test.tsx`, `src/theme/constants.js`
+  - also touches: Components, Theme & tokens
 - [ ] **`b41fa47`** feat(a11y): integrate FormField component for validation and ARIA accessibility
   - 2026-10-07 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b41fa47cafb92c45157df4caf01d172774585795)
   - 9 files: `src/components/FormField.jsx`, `src/components/__tests__/FormField.test.tsx`, `src/linkpoint/chat.ts`, `src/screens/CacheScreen.jsx`, `src/screens/Login.jsx`, `src/screens/Radar.jsx` _(+3 more)_
@@ -107,6 +115,21 @@ Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/
 
 Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `docs/react/src/components/`
 
+- [ ] **`c59515e`** feat: centralize mini crystal geometry and dynamically scope SVG element IDs
+  - 2026-10-13 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/c59515e0c88997919e96668a856070de8a8f4e17)
+  - 6 files: `src/components/CrystalLoader.jsx`, `src/components/LinkpointLogo.jsx`, `src/components/TeleportCrystalHero.jsx`, `src/components/__tests__/TeleportCrystalHero.test.tsx`, `src/components/linkpointCrystal.js`, `src/linkpoint/__tests__/linkpoint-logo.test.tsx`
+  - also touches: Viewer & protocol features
+- [ ] **`8280248`** feat: embed crystal brand badges in component placeholders and asset containers
+  - 2026-10-12 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/82802481dac7b52edf0b030d55058c8c8c16a679)
+  - 3 files: `src/components/AssetContainer.jsx`, `src/components/SkeletonLoader.jsx`, `src/components/__tests__/CrystalLoader.test.tsx`
+- [ ] **`6cf5980`** fix(SegmentedTabs): move hook declarations above early return statement
+  - 2026-10-12 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6cf5980aaf95ca72aa4cdb860c11968e63cac756)
+  - 2 files: `src/components/SegmentedTabs.jsx`, `src/theme/constants.js`
+  - also touches: Theme & tokens
+- [ ] **`44451a0`** feat: integrate LinkpointLogo across Login screen, Header modes, and DesktopChrome
+  - 2026-10-12 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/44451a0dcc7673fb380c98f2dee9e6c4d17a2d0c)
+  - 4 files: `src/components/DesktopChrome.jsx`, `src/components/Header.jsx`, `src/linkpoint/__tests__/linkpoint-logo.test.tsx`, `src/screens/Login.jsx`
+  - also touches: Screens, Viewer & protocol features
 - [ ] **`edc63bb`** feat(accessibility): implement shared AccessibleButton component and key listener hook
   - 2026-10-09 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/edc63bb28bf74a77a9f90eb2f466059555a2cb77)
   - 12 files: `packages/design-system/src/react/AccessibleButton.tsx`, `packages/design-system/src/react/Card.tsx`, `packages/design-system/src/react/TileNav.tsx`, `packages/design-system/src/react/index.ts`, `src/components/AccessibleButton.jsx`, `src/components/AccessibleButton.tsx` _(+6 more)_
@@ -326,10 +349,18 @@ Mirror into: `docs/index.html` — the `render()` view-model · `docs/react/src/
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`ca1c497`** feat: live WebGL avatar morph, texture baking, and AgentSetAppearance dispatch
+  - 2026-10-12 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ca1c4978aeb20b3f7ccdf879251abd6f33f4c903)
+  - 11 files: `core/sl-outfit.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/appearance-manager.test.ts`, `src/linkpoint/__tests__/avatar-bake-engine.test.ts`, `src/linkpoint/__tests__/sl-outfit.test.ts` _(+5 more)_
+  - also touches: Screens, Unclassified
 - [ ] **`d974fad`** Refine viewer rendering, audio, voice and LCARS layouts
   - 2026-10-11 · Kaleaon · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d974fadf6fa5674dbb9e1f79398ed040fd605717)
   - 76 files: `.gitignore`, `.prettierignore`, `README.md`, `bun.lock`, `docs/DESIGN_LANGUAGE.md`, `docs/official-sources.md` _(+70 more)_
   - also touches: Screens, Components, Theme & tokens, State & data, Tests, Build & platform, Docs & specs, Unclassified
+- [ ] **`fb04715`** feat: implement dual-transport economy sync engine with capability query priority and incremental cursor delta sync
+  - 2026-10-10 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/fb047150c674df7da8b52fe84d1441904abc5bc8)
+  - 7 files: `src/linkpoint/__tests__/economy-sync-engine.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/economy-manager.ts`, `src/linkpoint/indexeddb-store.ts`, `src/linkpoint/phase2/economy-sync-engine.ts`, `src/linkpoint/sl-bridge.ts` _(+1 more)_
+  - also touches: Screens
 - [ ] **`d71091e`** feat: implement on-demand historical group notice retrieval via grid RPC
   - 2026-10-10 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d71091e52f0e9dc65258461f960c7c7f25dadcc6)
   - 9 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/historical-notices-rpc.test.ts`, `src/linkpoint/__tests__/viewer-parity.test.tsx`, `src/linkpoint/app.ts`, `src/linkpoint/notices.ts` _(+3 more)_
@@ -342,6 +373,10 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
   - 2026-10-10 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/704150e56a4f3b7e729a761f4afaa7d98bfb64c5)
   - 8 files: `src/components/LinkpointLogo.jsx`, `src/lib/llsd.test.ts`, `src/lib/llsd.ts`, `src/linkpoint/__tests__/linkpoint-logo.test.tsx`, `src/linkpoint/binaryParser.ts`, `src/linkpoint/binarySerializer.ts` _(+2 more)_
   - also touches: Components
+- [ ] **`6b29100`** feat: centralize async data state store and onboarding state machine
+  - 2026-10-10 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/6b29100e899573e9171ce5e34be71448ddc8dc4b)
+  - 9 files: `src/components/AsyncDataBoundary.jsx`, `src/components/StateBlock.jsx`, `src/hooks/useAppState.js`, `src/linkpoint/__tests__/async-data-store-onboarding.test.tsx`, `src/linkpoint/app.ts`, `src/linkpoint/chat.ts` _(+3 more)_
+  - also touches: Screens, Components, State & data
 - [ ] **`240412f`** feat: auto-sync friends, inline contact inspector, and debounced note auto-save
   - 2026-10-10 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/240412f52eee1fb5224f00a39790421b496fd83b)
   - 7 files: `src/linkpoint/__tests__/app.test.ts`, `src/linkpoint/__tests__/contacts-screen.test.tsx`, `src/linkpoint/__tests__/settings-and-tabs.test.tsx`, `src/linkpoint/app.ts`, `src/screens/ContactsScreen.jsx`, `src/screens/LiveScreens.jsx` _(+1 more)_
@@ -1273,7 +1308,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-10-13T06:25:10Z",
+ "generated": "2026-10-14T06:20:55Z",
  "items": [
   {
    "also": [
@@ -9547,9 +9582,204 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "b1b49fc",
    "subject": "feat: implement chat typing indicator transmission to grid",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/b1b49fcad9a8452cf223f84a7ea2dd1eb1476e35"
+  },
+  {
+   "also": [
+    "screens"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-10",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/economy-sync-engine.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/economy-manager.ts",
+    "src/linkpoint/indexeddb-store.ts",
+    "src/linkpoint/phase2/economy-sync-engine.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "fb047150c674df7da8b52fe84d1441904abc5bc8",
+   "short": "fb04715",
+   "subject": "feat: implement dual-transport economy sync engine with capability query priority and incremental cursor delta sync",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/fb047150c674df7da8b52fe84d1441904abc5bc8"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "state"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-10",
+   "done": false,
+   "files": [
+    "src/components/AsyncDataBoundary.jsx",
+    "src/components/StateBlock.jsx",
+    "src/hooks/useAppState.js",
+    "src/linkpoint/__tests__/async-data-store-onboarding.test.tsx",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/chat.ts",
+    "src/linkpoint/inventory.ts",
+    "src/linkpoint/phase2/groups.ts",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "6b29100e899573e9171ce5e34be71448ddc8dc4b",
+   "short": "6b29100",
+   "subject": "feat: centralize async data state store and onboarding state machine",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/6b29100e899573e9171ce5e34be71448ddc8dc4b"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-12",
+   "done": false,
+   "files": [
+    "src/components/AssetContainer.jsx",
+    "src/components/SkeletonLoader.jsx",
+    "src/components/__tests__/CrystalLoader.test.tsx"
+   ],
+   "sha": "82802481dac7b52edf0b030d55058c8c8c16a679",
+   "short": "8280248",
+   "subject": "feat: embed crystal brand badges in component placeholders and asset containers",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/82802481dac7b52edf0b030d55058c8c8c16a679"
+  },
+  {
+   "also": [
+    "screens",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-12",
+   "done": false,
+   "files": [
+    "core/sl-outfit.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/appearance-manager.test.ts",
+    "src/linkpoint/__tests__/avatar-bake-engine.test.ts",
+    "src/linkpoint/__tests__/sl-outfit.test.ts",
+    "src/linkpoint/appearance-manager.ts",
+    "src/linkpoint/avatar-bake-engine.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/OutfitViewer.jsx"
+   ],
+   "sha": "ca1c4978aeb20b3f7ccdf879251abd6f33f4c903",
+   "short": "ca1c497",
+   "subject": "feat: live WebGL avatar morph, texture baking, and AgentSetAppearance dispatch",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ca1c4978aeb20b3f7ccdf879251abd6f33f4c903"
+  },
+  {
+   "also": [
+    "components",
+    "theme"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-12",
+   "done": false,
+   "files": [
+    "src/components/ScreenBody.jsx",
+    "src/components/SegmentedTabs.jsx",
+    "src/screens/Radar.jsx",
+    "src/screens/Search.jsx",
+    "src/screens/__tests__/SearchRadarTabsIntegration.test.tsx",
+    "src/theme/constants.js"
+   ],
+   "sha": "d4dc1633217d19f31e7a77741f0f048a22beb84a",
+   "short": "d4dc163",
+   "subject": "Standardize Search and Radar sub-nav tabs using SegmentedTabs and CSUB",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d4dc1633217d19f31e7a77741f0f048a22beb84a"
+  },
+  {
+   "also": [
+    "theme"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-12",
+   "done": false,
+   "files": [
+    "src/components/SegmentedTabs.jsx",
+    "src/theme/constants.js"
+   ],
+   "sha": "6cf5980aaf95ca72aa4cdb860c11968e63cac756",
+   "short": "6cf5980",
+   "subject": "fix(SegmentedTabs): move hook declarations above early return statement",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/6cf5980aaf95ca72aa4cdb860c11968e63cac756"
+  },
+  {
+   "also": [
+    "screens",
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-12",
+   "done": false,
+   "files": [
+    "src/components/DesktopChrome.jsx",
+    "src/components/Header.jsx",
+    "src/linkpoint/__tests__/linkpoint-logo.test.tsx",
+    "src/screens/Login.jsx"
+   ],
+   "sha": "44451a0dcc7673fb380c98f2dee9e6c4d17a2d0c",
+   "short": "44451a0",
+   "subject": "feat: integrate LinkpointLogo across Login screen, Header modes, and DesktopChrome",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/44451a0dcc7673fb380c98f2dee9e6c4d17a2d0c"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-13",
+   "done": false,
+   "files": [
+    "src/components/CrystalLoader.jsx",
+    "src/components/LinkpointLogo.jsx",
+    "src/components/TeleportCrystalHero.jsx",
+    "src/components/__tests__/TeleportCrystalHero.test.tsx",
+    "src/components/linkpointCrystal.js",
+    "src/linkpoint/__tests__/linkpoint-logo.test.tsx"
+   ],
+   "sha": "c59515e0c88997919e96668a856070de8a8f4e17",
+   "short": "c59515e",
+   "subject": "feat: centralize mini crystal geometry and dynamically scope SVG element IDs",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/c59515e0c88997919e96668a856070de8a8f4e17"
+  },
+  {
+   "also": [
+    "components",
+    "theme",
+    "state"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-10-13",
+   "done": false,
+   "files": [
+    "src/components/ConsoleFrame.jsx",
+    "src/components/__tests__/ConsoleFrameMotion.test.tsx",
+    "src/hooks/__tests__/usePrefersReducedMotion.test.tsx",
+    "src/hooks/usePrefersReducedMotion.js",
+    "src/index.css",
+    "src/screens/Radar.jsx",
+    "src/screens/__tests__/RadarMotion.test.tsx"
+   ],
+   "sha": "f4abe5d116a41913eabced4f5a3c8c985516ed49",
+   "short": "f4abe5d",
+   "subject": "fix(a11y): standardize reduced motion CSS overrides and add motion hook guard",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/f4abe5d116a41913eabced4f5a3c8c985516ed49"
   }
  ],
- "last_sha": "2a4f19d3ea2ea9051866749f298a510066118956",
+ "last_sha": "f7248718c943537acb101cc72b9194a9b700942a",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
