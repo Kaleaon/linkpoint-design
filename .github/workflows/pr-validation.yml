@@ -21,7 +21,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Kaleaon/Ktheme
-          path: '../Ktheme'
+          path: 'Ktheme'
+
+      - name: Symlink Ktheme to sibling directory
+        run: ln -s "$GITHUB_WORKSPACE/Ktheme" "$GITHUB_WORKSPACE/../Ktheme"
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
