@@ -250,6 +250,18 @@ async function getPlaywrightBrowser() {
   return await playwright.chromium.launch(launchOpts);
 }
 
+async function navigateWithRetry(page, url, options = {}, retries = 3, delayMs = 500) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      return await page.goto(url, options);
+    } catch (err) {
+      if (attempt === retries) throw err;
+      log(`page.goto failed on attempt ${attempt}/${retries} (${err.message}). Retrying in ${delayMs}ms...`, 'warn');
+      await new Promise(r => setTimeout(r, delayMs));
+    }
+  }
+}
+
 // TASK 1: Unit Tests
 async function taskUnitTests() {
   log('Running Unit Test Suite...', 'header');
@@ -333,7 +345,7 @@ async function taskA11yAudit() {
   try {
     browser = await getPlaywrightBrowser();
     const page = await browser.newPage();
-    await page.goto(targetUrl, { waitUntil: 'domcontentloaded' });
+    await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(1000);
 
     const auditResults = await page.evaluate(() => {
@@ -527,7 +539,7 @@ async function taskVisualSuite() {
         style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
         document.documentElement.appendChild(style);
       });
-      await page.goto(targetUrl, { waitUntil: 'domcontentloaded' });
+      await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(1000);
 
       // Attempt interactive panel triggers if available
