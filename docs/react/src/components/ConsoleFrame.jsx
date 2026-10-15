@@ -1,7 +1,7 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL, HEAD } from "../data/content.js";
-import { LAYOUTS } from "../theme/layouts.js";
+import { LAYOUTS, resolveLayout } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { CBTN, CSUB, CPAD, CPADR, subView, setSub } from "../theme/constants.js";
 import Icon from "./Icon.jsx";
@@ -24,10 +24,12 @@ export default function ConsoleFrame() {
   const tick = state.tick || 0;
   const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
 
-  const cfBar = { position: "absolute", left: 0, top: 0, right: 0, height: C.bar + "px", background: V.pri, borderRadius: Math.round(C.bar * 0.66) + "px 0 0 0" };
-  const cfBarEnd = { position: "absolute", right: 0, top: 0, width: (C.wide ? 104 : 66) + "px", height: C.bar + "px", background: V.sec2 };
+  const cfBar = { position: "absolute", left: 0, top: 0, right: (C.wide ? 108 : 70) + "px", height: C.bar + "px", background: V.pri, borderRadius: Math.round(C.bar * 0.66) + "px 0 0 0" };
+  const cfBarEnd = { position: "absolute", right: 0, top: 0, width: (C.wide ? 104 : 66) + "px", height: C.bar + "px", background: V.sec2, borderRadius: "0 " + Math.round(C.bar * 0.66) + "px " + Math.round(C.bar * 0.66) + "px 0" };
   const cfBarGap = { position: "absolute", right: (C.wide ? 108 : 70) + "px", top: 0, width: C.gap + "px", height: C.bar + "px", background: V.bg };
-  const headMap = HEAD(LAYOUTS[state.layout].name, PALETTES[state.palette].name, { cleared: state.cacheCleared, limit: state.prefs.cacheLimit, loc: state.prefs.cacheLoc });
+  const L = resolveLayout(state.layout);
+  const P = PALETTES[state.palette] || PALETTES.lcars;
+  const headMap = HEAD(L.name, P.name, { cleared: state.cacheCleared, limit: state.prefs.cacheLimit, loc: state.prefs.cacheLoc });
   const cfTitleText = consoleScene ? SIM_NAME : (headMap[state.screen] || ["", ""])[0];
   const cfTitle = {
     position: "absolute", right: (C.wide ? 128 : 84) + "px", left: C.rail + C.gap + "px", top: 0, height: C.bar + "px",
@@ -118,15 +120,20 @@ export default function ConsoleFrame() {
       <div style={cfCurveFill} />
       <div style={cfCurveCut} />
 
-      <div style={cfRailCol}>
+      <nav aria-label="Console Navigation" style={cfRailCol}>
         <div style={cfArm}>LCARS 4701</div>
-        {consoleNav.map((n, i) => (
-          <div key={i} onClick={n.pick} role="button" tabIndex={0} aria-label={n.label} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); n.pick(); } }} style={n.style}>
-            {n.code ? <span style={n.codeStyle}>{n.code}</span> : null}
-            <span style={{ font: "inherit", letterSpacing: "inherit" }}>{n.label}</span>
-          </div>
-        ))}
-      </div>
+        {consoleNav.map((n, i) => {
+          if (!n.label && !n.code) {
+            return <div key={i} aria-hidden="true" style={n.style} />;
+          }
+          return (
+            <div key={i} onClick={n.pick} role="button" tabIndex={0} aria-label={n.label} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); n.pick(); } }} style={n.style}>
+              {n.code ? <span style={n.codeStyle}>{n.code}</span> : null}
+              <span style={{ font: "inherit", letterSpacing: "inherit" }}>{n.label}</span>
+            </div>
+          );
+        })}
+      </nav>
 
       {consoleScene ? (
         <>

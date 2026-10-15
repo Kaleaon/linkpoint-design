@@ -18,6 +18,9 @@
 <script src="./glass.js"></script>
 <script src="./rules.js"></script>
 <script src="./press.js"></script>
+<script src="./modern_glass.js"></script>
+<script src="./material3.js"></script>
+<script src="./cyberpunk.js"></script>
 <script src="./support.js"></script>
 <script type="module" src="./shared/eventBus.js"></script>
 </head>
@@ -1703,6 +1706,25 @@ const LEGACY_PALETTES = {
 
 // Layout packs: geometry, nav model, type, density. No colour.
 const LAYOUTS = window.LAYOUTS;
+const PRIMARY_LAYOUT_KEYS = [
+  "terminal",
+  "lcars",
+  "metro",
+  "frutiger_aero",
+  "art_deco",
+  "press",
+  "modern_glass",
+  "material3",
+  "cyberpunk",
+];
+const LAYOUT_ALIASES = {
+  sweep: "lcars",
+  tiles: "metro",
+  glass: "frutiger_aero",
+  rules: "art_deco",
+};
+window.PRIMARY_LAYOUT_KEYS = PRIMARY_LAYOUT_KEYS;
+window.LAYOUT_ALIASES = LAYOUT_ALIASES;
 
 // Colour packs lifted from Ktheme's preset catalog. Any pack drops into any layout.
 const mkPal = (name, c, note, light) => ({ name, note, light: !!light, c });
@@ -2053,7 +2075,9 @@ class Component extends DCLogic {
   }
 
   T() {
-    const L = LAYOUTS[this.state.layout], P = PALETTES[this.state.palette];
+    const rawKey = this.state.layout;
+    const lKey = LAYOUTS[rawKey] ? rawKey : (LAYOUT_ALIASES[rawKey] && LAYOUTS[LAYOUT_ALIASES[rawKey]]) ? LAYOUT_ALIASES[rawKey] : "terminal";
+    const L = LAYOUTS[lKey] || LAYOUTS.terminal, P = PALETTES[this.state.palette] || PALETTES.ink;
     return { name: L.name + " / " + P.name, nav: L.nav, font: L.font, dfont: L.dfont,
       note: L.note + "   Colour pack: " + P.note + ".", v: { ...P.c, ...L.s } };
   }
@@ -2353,7 +2377,8 @@ class Component extends DCLogic {
     // Flush console rows: no card border, a 4px state bar on the left edge, gap-separated
     // on the page ground. Radar established it; Chat and Inventory now share it.
     const bleed = isConsole || isFloat;
-    const LK = LAYOUTS[s.layout].look;
+    const lObj = LAYOUTS[s.layout] || (LAYOUT_ALIASES[s.layout] && LAYOUTS[LAYOUT_ALIASES[s.layout]]) || LAYOUTS.terminal;
+    const LK = lObj.look;
     const themeVars = { ...Object.fromEntries(Object.entries(V).map(([k, x]) => ["--" + k, x])), "--font": t.font, "--dfont": t.dfont, "--pad": pad };
     const on = { background: V.priC, color: V.onpriC, borderBottom: "2px solid " + V.pri };
     const scr = s.screen;
@@ -2427,7 +2452,7 @@ class Component extends DCLogic {
       Inventory: ["INVENTORY", "> 1 284 items · 42 folders · Ruth Resident"], Profile: ["PROFILE", "> resident record · nyx.vaher"],
       Groups: ["GROUPS", "> 12 of 42 slots · 3 unread notices"], Notices: ["NOTIFICATIONS", "> 4 offline IMs queued · autoresponse ON"],
       Teleport: ["TELEPORT", "> 9 landmarks · 5 recent destinations"],
-      Settings: ["SETTINGS", "> " + LAYOUTS[s.layout].name + " layout / " + PALETTES[s.palette].name + " colour"],
+      Settings: ["SETTINGS", "> " + lObj.name + " layout / " + PALETTES[s.palette].name + " colour"],
       Cache: ["CACHE", "> " + cacheUsed + " MB of " + s.prefs.cacheLimit + " MB · " + s.prefs.cacheLoc],
       Diagnostics: ["DIAGNOSTICS", "> grid connectivity probe · agni"],
       // These five screens existed but had no HEAD entry, so they fell through to
@@ -2941,8 +2966,8 @@ class Component extends DCLogic {
           actions: [{ label: "DISCONNECT", dim: true, pick: () => this.goScreen("Login") }] },
 
         { sect: true, title: "APPEARANCE" },
-        { icon: "palette", title: "Layout pack", right: LAYOUTS[s.layout].name, body: "6 layout packs: geometry, nav model, type and density. Colour is a separate pack.", actions: [{ label: "PREVIEW ALL", pick: () => this.cycle(LAYOUTS, "layout") }] },
-        { icon: "layout", title: "Nav layout", body: "Tabs, rail, tiles, sweep console or desktop floaters \u2014 set by the pack.", select: true, options: Object.entries(LAYOUTS).map(([k, x]) => ({ label: x.name, value: k })), value: s.layout, onChange: (v) => this.set("layout", v) },
+        { icon: "palette", title: "Layout pack", right: lObj.name, body: "9 layout packs: geometry, nav model, type and density. Colour is a separate pack.", actions: [{ label: "PREVIEW ALL", pick: () => this.cycle(LAYOUTS, "layout") }] },
+        { icon: "layout", title: "Nav layout", body: "Tabs, rail, tiles, sweep console or desktop floaters — set by the pack.", select: true, options: PRIMARY_LAYOUT_KEYS.filter(k => LAYOUTS[k]).map(k => ({ label: LAYOUTS[k].name, value: k })), value: s.layout, onChange: (v) => this.set("layout", v) },
         { icon: "droplets", title: "Colour pack", right: PALETTES[s.palette].name, body: "24 Ktheme palettes grouped by family; any pack drops into any layout (144 combinations).", actions: [{ label: "BROWSE PACKS", pick: () => this.cycle(PALETTES, "palette") }, { label: "SYSTEM MATCH", pick: () => this.set("palette", "ink") }] },
         { icon: "droplet", title: "Colour palette", body: "Pick a palette directly instead of cycling through them.", select: true, options: Object.keys(PALETTES).map(k => ({ label: PALETTES[k].name, value: k })), value: s.palette, onChange: (v) => this.set("palette", v) },
         { icon: "type", title: "Large type & high contrast", body: "Scales body to 18px, forces AA contrast, disables shimmer", toggle: true, on: s.toggles.largeType, togglePick: () => this.toggleSetting("largeType") },
@@ -3035,19 +3060,22 @@ class Component extends DCLogic {
       ],
     };
     const CARD_LOOKS = {
-      box:   { border: "1px solid " + V.outv, borderRadius: V.rp, background: V.surf, padding: pad },
-      flat:  { border: "none", borderLeft: "4px solid transparent", borderRadius: "0", background: V.surf, padding: pad },
-      soft:  { border: "none", borderRadius: V.rp, background: V.surf, padding: pad, boxShadow: "0 3px 12px rgba(0,0,0,.20), inset 0 1px 0 rgba(255,255,255,.16)" },
-      rule:  { border: "none", borderTop: "1px solid " + V.outv, borderRadius: "0", background: "transparent", padding: pad + " 2px" },
-      quiet: { border: "none", borderBottom: "1px solid " + V.outv, borderRadius: "0", background: "transparent", padding: "4px 0 " + pad },
-      cap:   { border: "none", borderLeft: "9px solid " + V.sec2, borderRadius: "0 " + V.rp + " " + V.rp + " 0", background: V.surf, padding: pad },
+      box:     { border: "1px solid " + V.outv, borderRadius: V.rp, background: V.surf, padding: pad },
+      flat:    { border: "none", borderLeft: "4px solid transparent", borderRadius: "0", background: V.surf, padding: pad },
+      soft:    { border: "1px solid " + (V.outv || "rgba(255,255,255,.18)"), borderRadius: V.rp, background: V.surf, padding: pad, boxShadow: "0 6px 20px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.24)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" },
+      rule:    { border: "none", borderTop: "1px solid " + V.outv, borderRadius: "0", background: "transparent", padding: pad + " 2px" },
+      quiet:   { border: "none", borderBottom: "1px solid " + V.outv, borderRadius: "0", background: "transparent", padding: "4px 0 " + pad },
+      cap:     { border: "none", borderLeft: "9px solid " + V.sec2, borderRadius: "0 " + V.rp + " " + V.rp + " 0", background: V.surf, padding: pad },
+      tonal:   { border: "none", borderRadius: V.rp || "16px", background: V.surf2 || V.surf, padding: pad, boxShadow: "0 2px 8px rgba(0,0,0,.18)" },
+      chamfer: { border: "1px solid " + (V.pri || V.outv), borderRadius: "0px", background: V.surf, padding: pad, clipPath: "polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))" },
     };
     const cardBase = CARD_LOOKS[LK.card] || CARD_LOOKS.box;
     const accentOn = (accent) => !accent ? null
-      : LK.card === "box" ? { borderColor: accent }
+      : LK.card === "box" || LK.card === "chamfer" ? { borderColor: accent }
       : LK.card === "flat" || LK.card === "cap" ? { borderLeftColor: accent }
       : LK.card === "quiet" ? { borderBottomColor: accent }
       : LK.card === "rule" ? { borderTopColor: accent }
+      : LK.card === "tonal" ? { outline: "2px solid " + accent, outlineOffset: "-2px" }
       : { boxShadow: "inset 3px 0 0 " + accent + ", 0 3px 12px rgba(0,0,0,.20)" };
     const actBase = { flex: 1, height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, display: "flex", alignItems: "center", justifyContent: "center", font: "700 10.5px/1 " + t.font, letterSpacing: ".16em", color: V.ink, cursor: "pointer" };
     // Teleport's starred/recent rows have no action buttons but are the real-app
@@ -3685,8 +3713,14 @@ openTargetPickerKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.pr
         ? { position: "absolute", left: "50%", top: "7px", transform: "translateX(-50%)", width: "11px", height: "11px", borderRadius: "50%", background: "#000" }
         : null,
       skinNote: t.note,
-      layoutList: Object.entries(LAYOUTS).map(([k, x]) => ({ name: x.name, nav: x.nav, pick: () => this.set("layout", k),
-        swatch: { width: "22px", height: "22px", flex: "none", borderRadius: x.s.rs === "999px" ? "11px 2px 11px 2px" : x.s.rs, border: "1px solid " + (s.layout === k ? V.pri : "rgba(255,255,255,.3)"), background: s.layout === k ? V.pri : "rgba(255,255,255,.08)" } })),
+      layoutList: PRIMARY_LAYOUT_KEYS.filter(k => LAYOUTS[k]).map(k => {
+        const x = LAYOUTS[k];
+        const active = s.layout === k || (LAYOUT_ALIASES[s.layout] === k);
+        return {
+          name: x.name, nav: x.nav, pick: () => this.set("layout", k),
+          swatch: { width: "22px", height: "22px", flex: "none", borderRadius: x.s.rs === "999px" ? "11px 2px 11px 2px" : x.s.rs, border: "1px solid " + (active ? V.pri : "rgba(255,255,255,.3)"), background: active ? V.pri : "rgba(255,255,255,.08)" }
+        };
+      }),
       paletteFams: FAMILIES.map(fm => ({ name: fm.name, items: fm.keys.filter(k => PALETTES[k]).map(k => {
         const x = PALETTES[k];
         return { name: x.name, pick: () => this.set("palette", k),
@@ -4001,15 +4035,18 @@ downloadConsoleLogsKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e
         { label: "filled 24px", items: ["message-square", "users", "radar", "map", "folder", "settings"].map(n => ({ name: n, style: { width: "24px", height: "24px", color: "#6CFF9A", strokeWidth: 2.6 } })) },
         { label: "duotone 16px", items: ["message-square", "users", "radar", "map", "folder", "settings"].map(n => ({ name: n, style: { width: "16px", height: "16px", color: "#6CFF9A", strokeWidth: 1.2, opacity: .7 } })) },
       ],
-      shapeRows: Object.entries(LAYOUTS).map(([k, x]) => ({
-        name: x.name, spec: "radius " + x.s.rs + " / panel " + x.s.rp + " \u00b7 pad " + x.s.pad + " \u00b7 track " + x.s.tls + " \u00b7 " + x.nav.toLowerCase(),
-        box: { width: "26px", height: "26px", flex: "none", border: "1px solid " + V.pri, borderRadius: x.s.rs, background: V.surf },
-      })),
+      shapeRows: PRIMARY_LAYOUT_KEYS.filter(k => LAYOUTS[k]).map(k => {
+        const x = LAYOUTS[k];
+        return {
+          name: x.name, spec: "radius " + x.s.rs + " / panel " + x.s.rp + " · pad " + x.s.pad + " · track " + x.s.tls + " · " + x.nav.toLowerCase(),
+          box: { width: "26px", height: "26px", flex: "none", border: "1px solid " + V.pri, borderRadius: x.s.rs, background: V.surf },
+        };
+      }),
       anatomy: [
         { name: "ROW", spec: "44px min · dot 10px · title 14px · meta 10px · 1px divider · gap 12px" },
         { name: "CHIP", spec: "44px · pad 14px · radius token · dot or icon 14px · badge 18px pill" },
         { name: "BUBBLE", spec: "max 88% · pad 8/10 · head 10px accent · body 13px · sent = primaryContainer" },
-        { name: "CARD", spec: "treatment per pack (box / flat / soft / rule / quiet / cap) · pad token · accent recoloured to whichever edge that pack uses · action row 44px" },
+        { name: "CARD", spec: "treatment per pack (box / flat / soft / rule / quiet / cap / tonal / chamfer) · pad token · accent recoloured to whichever edge that pack uses · action row 44px" },
         { name: "STATE", spec: "62px icon plate · title 15px · body max 300px · optional 4px progress · dashed log · 44px action" },
         { name: "HUD", spec: "grip bar 26px · 1px primary frame · body grid per kind · drag anywhere on the panel · x closes" },
       ],

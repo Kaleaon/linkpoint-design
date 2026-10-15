@@ -94,7 +94,7 @@
       "motionProfile": "STANDARD",
       "font": "system-ui, -apple-system, sans-serif",
       "displayFont": "system-ui, sans-serif",
-      "cardLook": "quiet",
+      "cardLook": "tonal",
       "headLook": "stack",
       "segLook": "fill",
       "description": "Material Design 3 layout with rounded pill containers, expressive tonal elevation, and dynamic color integration."
@@ -108,10 +108,24 @@
       "motionProfile": "EXPRESSIVE",
       "font": "\"JetBrains Mono\", monospace",
       "displayFont": "\"JetBrains Mono\", monospace",
-      "cardLook": "box",
+      "cardLook": "chamfer",
       "headLook": "sweep",
       "segLook": "fill",
       "description": "High-tech dystopian cyberpunk layout with wireframe borders, chamfered cuts, and HUD telemetry rails."
+    },
+    {
+      "id": "press",
+      "name": "Press",
+      "navModel": "TABS",
+      "cornerProfile": "SHARP",
+      "densityProfile": "COMFORTABLE",
+      "motionProfile": "STANDARD",
+      "font": "\"Source Serif 4\", Georgia, serif",
+      "displayFont": "\"Jost\", sans-serif",
+      "cardLook": "quiet",
+      "headLook": "editorial",
+      "segLook": "text",
+      "description": "Editorial layout with high-legibility serif body typography, 2px micro-radii, and generous leading for bright sunlight and reading mode."
     }
   ],
   "schemaVersion": 2,
