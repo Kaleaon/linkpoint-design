@@ -27,6 +27,7 @@ function TestWrapper({ children }) {
       sec2: "#880088",
     },
     t: { font: "sans-serif", dfont: "monospace" },
+    ink: (bg, candidates) => (candidates && candidates[0]) || "#000000",
   };
 
   return (
@@ -80,6 +81,7 @@ describe("World3D - Interactive Touch Joystick Overlay", () => {
       const mockThemeContext = {
         V: { pri: "#00f0ff", onpri: "#000", surf: "#111", outv: "#333", ink: "#fff", ink2: "#aaa", rs: "4px" },
         t: { font: "sans-serif", dfont: "monospace" },
+        ink: (bg, candidates) => (candidates && candidates[0]) || "#000000",
       };
       return (
         <AppContext.Provider value={{ state, actions }}>
@@ -140,6 +142,7 @@ describe("World3D - Interactive Touch Joystick Overlay", () => {
       const mockThemeContext = {
         V: { pri: "#00f0ff", onpri: "#000", surf: "#111", outv: "#333", ink: "#fff", ink2: "#aaa", rs: "4px" },
         t: { font: "sans-serif", dfont: "monospace" },
+        ink: (bg, candidates) => (candidates && candidates[0]) || "#000000",
       };
       return (
         <AppContext.Provider value={{ state, actions }}>
