@@ -37,3 +37,7 @@
 ## 2026-10-07 - Add Keyboard Accessibility to Interactive Login Screen Actions
 **Learning:** Even well-constructed custom HTML template frameworks often overlook full keyboard navigation on core screens like Login, where buttons (tabs, preset options, "ADD GRID", and the main "CONNECT TO GRID" toggles) might be functional to mouse users but completely dead to screen readers and keyboard users (pressing Enter or Space). Explicitly providing `onKeyDown` handlers inside `renderVals` that prevent default behavior on space bar prevents unwanted page scrolling and improves accessibility.
 **Action:** When inspecting or adding core interactive controls to screens (like login fields and connectivity toggles) in custom HTML templating, ensure they include `role="button"`, `tabindex="0"`, descriptive `aria-label`s, and corresponding `onKeyDown` listeners mirroring their `onClick` functionality.
+
+## 2024-11-20 - Add ARIA Labels and Keyboard Access to Search Back Buttons
+**Learning:** When porting or maintaining icon-only navigation elements (like header "Go back" chevron buttons) created with `<div>`, they often lack basic accessibility attributes. For these to function as interactive buttons for all users, they must receive semantic traits.
+**Action:** When inspecting or adding icon-only navigation controls built with `div` or `span` tags, ensure they have `role="button"`, `tabIndex={0}`, an explicit `aria-label` (e.g., "Go back"), and `onKeyDown` handlers for Space and Enter that call `e.preventDefault()` to mirror native `<button>` behavior.
