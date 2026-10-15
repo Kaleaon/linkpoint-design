@@ -21,8 +21,10 @@ import Login from "../screens/Login.jsx";
 import Search from "../screens/Search.jsx";
 import OfflineGrid from "../screens/OfflineGrid.jsx";
 import GridConsole from "../screens/GridConsole.jsx";
+import Outfits from "../screens/Outfits.jsx";
+import Parcel from "../screens/Parcel.jsx";
 
-const CARD_SCREENS = ["Friends", "Groups", "Notices", "Teleport", "Outfits", "Objects", "Parcel", "Transactions", "Mute List", "Settings", "Cache", "Diagnostics"];
+const CARD_SCREENS = ["Friends", "Groups", "Notices", "Teleport", "Objects", "Transactions", "Mute List", "Settings", "Cache", "Diagnostics"];
 
 // Ported from the big content column inside `shellStyle` (headers -> segTabs
 // -> chips -> the 13 screens' bodies), plus the split-view detail pane that
@@ -36,7 +38,7 @@ export default function ScreenBody() {
   const isCardScreen = CARD_SCREENS.includes(scr);
   const curSub = subView(state, scr);
 
-  const customLoadingScreen = ["Inventory", "Search", ...CARD_SCREENS].includes(scr);
+  const customLoadingScreen = ["Inventory", "Search", "Outfits", "Parcel", ...CARD_SCREENS].includes(scr);
 
   return (
     <div style={{ flex: 1, minWidth: 0, minHeight: "400px", display: "flex", position: "relative" }}>
@@ -56,6 +58,8 @@ export default function ScreenBody() {
         )}
         {norm && scr === "Inventory" && <Inventory />}
         {!isLoading && norm && scr === "Profile" && <Profile />}
+        {!isLoading && norm && scr === "Outfits" && <Outfits />}
+        {!isLoading && norm && scr === "Parcel" && <Parcel />}
         {!isLoading && norm && scr === "Offline Grid" && <OfflineGrid />}
         {!isLoading && norm && scr === "Grid Console" && <GridConsole />}
         {norm && isCardScreen && <CardList cards={(cardsByScreen[scr] || []).filter((c) => inSub(c, curSub))} />}

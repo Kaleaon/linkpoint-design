@@ -7,6 +7,7 @@ import { CBTN, CSUB, CPAD, CPADR, subView, setSub } from "../theme/constants.js"
 import Icon from "./Icon.jsx";
 import ScreenBody from "./ScreenBody.jsx";
 import { navActive } from "../theme/look.js";
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
 
 // The 3D View's sim/location — shared by the in-scene region tag and the
 // console's own top bar so the two never disagree.
@@ -21,6 +22,7 @@ const SIM_COORD = { x: 128, y: 64, z: 42 };
 export default function ConsoleFrame() {
   const { state, actions } = useApp();
   const { V, t, C, ink, consoleScene } = useTheme();
+  const reducedMotion = usePrefersReducedMotion();
   const tick = state.tick || 0;
   const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
 
@@ -168,7 +170,7 @@ export default function ConsoleFrame() {
                 alignItems: "center", justifyContent: "center", gap: "4px", background: bg,
                 color: dis ? V.ink2 : ink(bg, [V.bg, V.onpri, V.ink]), opacity: dis ? 0.72 : 1, cursor: dis ? "not-allowed" : "pointer",
                 borderRadius: i === 0 ? C.rad + "px 0 0 " + C.rad + "px" : i === state.cDock.length - 1 && !state.cEdit ? "0 " + C.rad + "px " + C.rad + "px 0" : "0",
-                animation: state.cEdit ? "wig .42s ease-in-out infinite" : "none", animationDelay: (i % 4) * 0.07 + "s",
+                animation: state.cEdit ? (reducedMotion ? "none" : "wig .42s ease-in-out infinite") : "none", animationDelay: (i % 4) * 0.07 + "s",
               }}
             >
               <Icon name={b.icon} size={19} />
@@ -286,6 +288,7 @@ function buildConsoleNav({ state, actions, V, t, C, ink }) {
 function ConsoleScene() {
   const { state, actions } = useApp();
   const { V, t, C, ink } = useTheme();
+  const reducedMotion = usePrefersReducedMotion();
   const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
 
   const cfScene = {
@@ -293,7 +296,7 @@ function ConsoleScene() {
     bottom: C.foot + C.dock + C.gap * 3 + "px", borderRadius: C.rad + "px 0 0 0", overflow: "hidden", cursor: "grab",
     background: "linear-gradient(180deg," + V.sky1 + " 0%," + V.sky2 + " 46%," + V.gnd + " 46%," + V.gnd2 + " 100%)",
   };
-  const cfParallax = { position: "absolute", inset: 0, transform: "translate(" + (-state.cHdg * 0.9).toFixed(1) + "px," + (state.cPitch * 0.8).toFixed(1) + "px)", transition: state.cDrag ? "none" : "transform .35s ease-out" };
+  const cfParallax = { position: "absolute", inset: 0, transform: reducedMotion ? "none" : "translate(" + (-state.cHdg * 0.9).toFixed(1) + "px," + (state.cPitch * 0.8).toFixed(1) + "px)", transition: reducedMotion || state.cDrag ? "none" : "transform .35s ease-out" };
   // The console scene has one readout strip, so 3D View's CAM/GFX sub-views swap
   // what it reports rather than adding a second strip to the LCARS frame.
   const regionRead =

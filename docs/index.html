@@ -1857,10 +1857,9 @@ const CSUB = {
   Parcel:        [["GENERAL", "\u00b7 01"], ["MEDIA", "\u00b7 02"]],
   Transactions:  [["ALL", "\u00b7 01"], ["PAYMENTS", "\u00b7 02"]],
   "Mute List":   [["AVATARS", "\u00b7 01"], ["OBJECTS", "\u00b7 02"]],
-  "Offline Grid": [["STATUS", "· 01"], ["ACCOUNT", "· 02"], ["OAR", "· 03"], ["ASSETS", "· 04"], ["CACHE", "· 05"]],
-  "Grid Console": [["ALL", "· 01"], ["ERRORS", "· 02"]],
   "Offline Grid": [["STATUS", "\u00b7 01"], ["ACCOUNT", "\u00b7 02"], ["OAR", "\u00b7 03"], ["ASSETS", "\u00b7 04"], ["CACHE", "\u00b7 05"]],
   "Grid Console": [["ALL", "\u00b7 01"], ["ERRORS", "\u00b7 02"]],
+  Search:        [["FRIENDS", "\u00b7 01"], ["NEARBY", "\u00b7 02"], ["SEARCH", "\u00b7 03"]],
 };
 
 // Movement pad: turning is drag-to-look, so the pad is a cross with a camera-mode centre.
@@ -2104,6 +2103,7 @@ class Component extends DCLogic {
     // Radar's sub-view predates this table and still lives in `rMode`, because
     // its own AVATARS/OBJECTS pill row owns that state.
     if (scr === "Radar") return this.state.rMode === "OBJ" ? "OBJECT" : "AVATAR";
+    if (scr === "Search") return this.state.searchTab || "FRIENDS";
     // Preferences and Cache are two screens, not two tabs, so the sub-view is
     // simply which of them you are on.
     if (scr === "Settings" || scr === "Cache") return scr === "Cache" ? "CACHE" : "PREFS";
@@ -2112,6 +2112,7 @@ class Component extends DCLogic {
   }
   setSub(scr, label) {
     if (scr === "Radar") { this.set("rMode", label === "AVATAR" ? "AV" : "OBJ"); return; }
+    if (scr === "Search") { this.set("searchTab", label); return; }
     if (scr === "Settings" || scr === "Cache") { this.goScreen(label === "CACHE" ? "Cache" : "Settings"); return; }
     this.setTab(scr, label);
   }
@@ -2495,10 +2496,9 @@ class Component extends DCLogic {
     // badge is a per-tab decoration that only Chat currently has.
     const SEG_BADGE = { Chat: { IM: 3, GROUP: 1 } };
     const segTabs =
-      // Radar draws its own AVATARS/OBJECTS pill row inside the screen body, and
       // 3D View is immersive with no header to hang a strip under — it carries
-      // its CAM/GFX switch in-scene instead. Both still get the LCARS sub-nav.
-      (!CSUB[scr] || scr === "Radar" || scr === "3D View") ? null
+      // its CAM/GFX switch in-scene instead.
+      (!CSUB[scr] || scr === "3D View") ? null
       : CSUB[scr].map(([label]) => ({
           label, badge: (SEG_BADGE[scr] || {})[label],
           pick: () => this.setSub(scr, label),

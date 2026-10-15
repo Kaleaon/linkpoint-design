@@ -93,6 +93,7 @@ export const CSUB = {
   "Mute List":   [["AVATARS", "· 01"], ["OBJECTS", "· 02"]],
   "Offline Grid": [["STATUS", "· 01"], ["ACCOUNT", "· 02"], ["OAR", "· 03"], ["ASSETS", "· 04"], ["CACHE", "· 05"]],
   "Grid Console": [["ALL", "· 01"], ["ERRORS", "· 02"]],
+  Search:        [["FRIENDS", "· 01"], ["NEARBY", "· 02"], ["SEARCH", "· 03"]],
 };
 
 // The screen's current sub-view: `tabs[screen]` when it is one of that screen's
@@ -106,12 +107,14 @@ export const subView = (state, scr) => {
   const subs = (CSUB[scr] || []).map((x) => x[0]);
   if (!subs.length) return null;
   if (scr === "Radar") return state.rMode === "OBJ" ? "OBJECT" : "AVATAR";
+  if (scr === "Search") return state.searchTab || "FRIENDS";
   if (scr === "Settings" || scr === "Cache") return scr === "Cache" ? "CACHE" : "PREFS";
   const cur = state.tabs[scr];
   return subs.includes(cur) ? cur : subs[0];
 };
 export const setSub = (actions, scr, label) => {
   if (scr === "Radar") return actions.setRMode(label === "AVATAR" ? "AV" : "OBJ");
+  if (scr === "Search") return actions.setSearchTab(label);
   if (scr === "Settings" || scr === "Cache") return actions.setScreen(label === "CACHE" ? "Cache" : "Settings");
   return actions.setTab(scr, label);
 };

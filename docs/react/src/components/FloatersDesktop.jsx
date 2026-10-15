@@ -8,6 +8,8 @@ import { FLOATERS, FBAR, CBTN } from "../theme/constants.js";
 import { LOCAL_MSGS, RADAR_AVATARS, FRIEND_ROWS, INVENTORY_SOURCE, REGIONS, buildCards } from "../data/content.js";
 import Icon from "./Icon.jsx";
 import ScreenBody from "./ScreenBody.jsx";
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
+import RadialPieMenu from "./RadialPieMenu.jsx";
 
 // Ported from the `isFloat` block: desktop SL isn't a screen stack, it's N
 // resizable windows over one scene (the `FLOATERS` window model — position,
@@ -18,8 +20,32 @@ import ScreenBody from "./ScreenBody.jsx";
 export default function FloatersDesktop() {
   const { state, actions } = useApp();
   const { V, t, ink, isSweepDesk } = useTheme();
+  const reducedMotion = usePrefersReducedMotion();
   const [quickMsg, setQuickMsg] = useState("");
   const [showCamHud, setShowCamHud] = useState(true);
+  const [pieMenu, setPieMenu] = useState(null);
+
+  const openPieMenu = (target, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setPieMenu({
+      target,
+      x: Math.max(120, Math.min(window.innerWidth - 120, e.clientX)),
+      y: Math.max(120, Math.min(window.innerHeight - 120, e.clientY)),
+    });
+  };
+
+  const handlePieSelect = (actionId, target) => {
+    setPieMenu(null);
+    if (actionId === "touch") actions.notify(`Touched ${target.name}`);
+    else if (actionId === "pay") actions.setDialog({ icon: "banknote", kind: "PAY L$", title: `Pay ${target.name}`, body: `Enter L$ amount to transfer.`, meta: "Current Balance: L$ 4,250", buttons: [{ label: "CANCEL" }, { label: "PAY L$ 50", primary: true }] });
+    else if (actionId === "profile") { actions.setScreen("Profile"); actions.notify(`Opened profile: ${target.name}`); }
+    else if (actionId === "mute") actions.notify(`Muted ${target.name}`);
+    else if (actionId === "inspect") { actions.setScreen("Objects"); actions.setTab("Objects", "INSPECT"); }
+    else if (actionId === "track") actions.notify(`Tracking beacon placed on ${target.name}`);
+    else if (actionId === "take") actions.notify(`Took ${target.name} into inventory`);
+    else if (actionId === "sit") { actions.cHold("sit"); actions.notify(`Sitting on ${target.name}`); }
+  };
 
   const cardsByScreen = buildCards({ state, actions, layoutName: LAYOUTS[state.layout].name, paletteName: PALETTES[state.palette].name });
   const fBody = buildFBody(state, cardsByScreen);
@@ -29,13 +55,13 @@ export default function FloatersDesktop() {
     background: "linear-gradient(180deg," + V.sky1 + " 0%," + V.sky2 + " 52%," + V.gnd + " 52%," + V.gnd2 + " 100%)",
   };
   const flHorizon = {
-    position: "absolute", inset: "-20% -40%", transform: "translate(" + (-state.cHdg * 0.9).toFixed(1) + "px," + (state.cPitch * 0.8).toFixed(1) + "px)",
-    transition: state.cDrag ? "none" : "transform .35s ease-out", opacity: 0.45, backgroundImage: "repeating-linear-gradient(90deg," + V.outv + " 0 1px,transparent 1px 104px)",
+    position: "absolute", inset: "-20% -40%", transform: reducedMotion ? "none" : "translate(" + (-state.cHdg * 0.9).toFixed(1) + "px," + (state.cPitch * 0.8).toFixed(1) + "px)",
+    transition: reducedMotion || state.cDrag ? "none" : "transform .35s ease-out", opacity: 0.45, backgroundImage: "repeating-linear-gradient(90deg," + V.outv + " 0 1px,transparent 1px 104px)",
   };
   const regionRead = "HELIOTROPE · 128,64,42 · HDG " + String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(3, "0") + "° " + (state.cPitch > 2 ? "DN" : state.cPitch < -2 ? "UP" : "LVL");
 
   const openFloaters = FLOATERS.filter((f) => state.flOpen[f.id] && !state.flMin[f.id]);
-  const flFocused = state.flOpen[state.screen] && !state.flMin[state.screen] ? actions.flR(state.screen) : null;
+  const flFocused = state.flOpen[state.screen] && !state.flMin[state.screen] && !state.flShade?.[state.screen] ? actions.flR(state.screen) : null;
 
   const sendQuickChat = (e) => {
     e?.preventDefault();
@@ -52,6 +78,7 @@ export default function FloatersDesktop() {
         onMouseUp={actions.sceneUp}
         onMouseLeave={actions.sceneUp}
         onClick={() => state.menu && actions.setMenu(null)}
+        onContextMenu={(e) => openPieMenu({ name: "Heliotrope Land", type: "parcel" }, e)}
         style={flScene}
       >
         <div style={flHorizon} />
@@ -109,20 +136,22 @@ export default function FloatersDesktop() {
       {openFloaters.map((f) => {
         const r = actions.flR(f.id);
         const act = f.id === state.screen;
-        const rows = act ? null : fBody[f.id] || [];
+        const isShaded = !!state.flShade?.[f.id];
+        const rows = act || isShaded ? null : fBody[f.id] || [];
         return (
           <div
             key={f.id}
             onMouseDown={() => actions.flFocus(f.id)}
             style={{
-              position: "absolute", left: r.x + "px", top: r.y + "px", width: r.w + "px", height: r.h + "px",
+              position: "absolute", left: r.x + "px", top: r.y + "px", width: r.w + "px", height: (isShaded ? FBAR : r.h) + "px",
               zIndex: 10 + Math.max(0, state.flZ.indexOf(f.id)), display: "flex", flexDirection: "column", background: V.surf,
-              border: (isSweepDesk ? "2px solid " : "1px solid ") + (act ? V.pri : V.outv), borderRadius: isSweepDesk ? "22px 22px 14px 14px" : V.rp, overflow: "hidden",
+              border: (isSweepDesk ? "2px solid " : "1px solid ") + (act ? V.pri : V.outv), borderRadius: isSweepDesk ? (isShaded ? "22px" : "22px 22px 14px 14px") : (isShaded ? V.rs : V.rp), overflow: "hidden",
               boxShadow: act ? "0 18px 48px rgba(0,0,0,.65)" : "0 6px 18px rgba(0,0,0,.34)",
             }}
           >
             <div
               onMouseDown={(e) => actions.flDrag(f.id, e, "move")}
+              onDoubleClick={() => actions.dispatchIntent("FLOATER_SHADE", { id: f.id })}
               style={{ flex: "none", height: FBAR + "px", display: "flex", alignItems: "center", gap: "7px", padding: isSweepDesk ? "0 5px 0 0" : "0 5px 0 9px", background: act ? V.pri : V.surf2, color: act ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2, font: "700 10.5px/1 " + t.dfont, letterSpacing: ".14em", cursor: "move", userSelect: "none" }}
             >
               {isSweepDesk && (
@@ -132,6 +161,23 @@ export default function FloatersDesktop() {
               )}
               <Icon name={f.icon} size={13} />
               <span style={{ flex: 1, minWidth: 0, font: "inherit", letterSpacing: "inherit", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{f.title}</span>
+              <span
+                onClick={(e) => {
+                  e.stopPropagation();
+                  actions.dispatchIntent("FLOATER_SHADE", { id: f.id });
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    actions.dispatchIntent("FLOATER_SHADE", { id: f.id });
+                  }
+                }}
+                style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
+                role="button" tabIndex={0} aria-label={isShaded ? "Unshade (Expand)" : "Shade (Rollup)"}
+              >
+                <Icon name={isShaded ? "chevron-down" : "chevron-up"} size={11} />
+              </span>
               <span
                 onClick={(e) => {
                   e.stopPropagation();
@@ -167,22 +213,26 @@ export default function FloatersDesktop() {
                 &times;
               </span>
             </div>
-            {rows ? (
-              <div style={{ flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column", gap: "1px", background: V.bg }}>
-                {rows.map((row, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px", minHeight: "26px", padding: "0 10px", background: V.surf }}>
-                    <span style={{ flex: 1, minWidth: 0, font: "400 11.5px/1.2 " + t.font, color: V.ink, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{row.a}</span>
-                    <span style={{ flex: "none", font: "400 10px/1 " + t.font, color: V.ink2 }}>{row.b}</span>
+            {!isShaded && (
+              <>
+                {rows ? (
+                  <div style={{ flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column", gap: "1px", background: V.bg }}>
+                    {rows.map((row, i) => (
+                      <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px", minHeight: "26px", padding: "0 10px", background: V.surf }}>
+                        <span style={{ flex: 1, minWidth: 0, font: "400 11.5px/1.2 " + t.font, color: V.ink, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{row.a}</span>
+                        <span style={{ flex: "none", font: "400 10px/1 " + t.font, color: V.ink2 }}>{row.b}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div style={{ flex: 1, minHeight: 0, background: V.bg }} />
+                ) : (
+                  <div style={{ flex: 1, minHeight: 0, background: V.bg }} />
+                )}
+                <div
+                  onMouseDown={(e) => actions.flDrag(f.id, e, "size")}
+                  style={{ position: "absolute", right: 0, bottom: 0, width: "15px", height: "15px", cursor: "nwse-resize", background: "linear-gradient(135deg,transparent 0 52%," + (act ? V.pri : V.outv) + " 52% 100%)" }}
+                />
+              </>
             )}
-            <div
-              onMouseDown={(e) => actions.flDrag(f.id, e, "size")}
-              style={{ position: "absolute", right: 0, bottom: 0, width: "15px", height: "15px", cursor: "nwse-resize", background: "linear-gradient(135deg,transparent 0 52%," + (act ? V.pri : V.outv) + " 52% 100%)" }}
-            />
           </div>
         );
       })}
@@ -279,6 +329,16 @@ export default function FloatersDesktop() {
           );
         })}
       </div>
+
+      {pieMenu && (
+        <RadialPieMenu
+          target={pieMenu.target}
+          x={pieMenu.x}
+          y={pieMenu.y}
+          onSelect={handlePieSelect}
+          onClose={() => setPieMenu(null)}
+        />
+      )}
     </div>
   );
 }
