@@ -5,6 +5,7 @@ import { PALETTES } from "../theme/palettes.js";
 import { HEAD } from "../data/content.js";
 import { SCREENS } from "../theme/constants.js";
 import Icon from "./Icon.jsx";
+import Heading from "./Heading.jsx";
 
 // Ported from the five header <sc-if> blocks (hasHeader/isSweepHead/
 // isPivotHead/isRuleHead/isPressHead) plus the shared title/subtitle lookup.
@@ -52,7 +53,7 @@ function StackHead({ title, subtitle, scr }) {
   return (
     <div style={{ flex: "none", display: "flex", alignItems: "center", gap: "12px", padding: "12px 16px 8px" }}>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ font: "700 21px/1.05 " + t.dfont, letterSpacing: V.tls, color: V.pri }}>{title}</div>
+        <Heading level={1} style={{ font: "700 21px/1.05 " + t.dfont, letterSpacing: V.tls, color: V.pri }}>{title}</Heading>
         <div style={{ font: "400 11px/1.4 " + t.font, color: V.ink2, marginTop: "4px" }}>{subtitle}</div>
       </div>
       {showLink ? (
@@ -104,7 +105,7 @@ function SweepHead({ title, subtitle, scr }) {
       <div style={{ flex: "none", display: "flex", alignItems: "center", gap: "6px", padding: "10px 12px 6px 4px" }}>
         <span style={{ display: "flex", alignItems: "center", height: "16px", padding: "0 8px", background: V.sec2, borderRadius: "8px 0 0 8px", flex: "none", font: "700 8.5px/1 " + t.dfont, color: V.bg, letterSpacing: ".1em" }}>01-4471</span>
         <span style={{ flex: 1, height: "6px", background: V.surf2 }} />
-        <span style={{ font: "700 22px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri, flex: "none", textTransform: "uppercase" }}>{title}</span>
+        <Heading level={1} style={{ font: "700 22px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri, flex: "none", textTransform: "uppercase" }}>{title}</Heading>
         {showLink ? (
           <span style={{ display: "flex", alignItems: "center", height: "18px", padding: "0 8px", background: V.ok, color: V.bg, borderRadius: "9px", font: "700 9px/1 " + t.dfont, letterSpacing: ".12em" }}>
             LINK
@@ -151,7 +152,7 @@ function PivotHead({ title, subtitle, scr }) {
     <div style={{ flex: "none", padding: "14px 16px 4px" }}>
       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "16px" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: "22px", overflow: "hidden", minWidth: 0, flex: 1 }}>
-          <span style={{ flex: "none", font: "300 42px/1 " + t.dfont, color: V.ink, textTransform: "lowercase", letterSpacing: "-.02em" }}>{String(title || "").toLowerCase()}</span>
+          <Heading level={1} style={{ flex: "none", font: "300 42px/1 " + t.dfont, color: V.ink, textTransform: "lowercase", letterSpacing: "-.02em" }}>{String(title || "").toLowerCase()}</Heading>
           <span
             onClick={() => actions.setScreen(nextScr)}
             role="button"
@@ -216,7 +217,7 @@ function RuleHead({ title, subtitle, scr }) {
       <div style={{ height: "1px", background: V.pri }} />
       <div style={{ height: "3px", borderBottom: "1px solid " + V.pri }} />
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", position: "relative", padding: "12px 0 10px" }}>
-        <div style={{ textAlign: "center", font: "600 15px/1.1 " + t.dfont, letterSpacing: V.tls, color: V.pri, textIndent: V.tls }}>{title}</div>
+        <Heading level={1} style={{ textAlign: "center", font: "600 15px/1.1 " + t.dfont, letterSpacing: V.tls, color: V.pri, textIndent: V.tls }}>{title}</Heading>
         {(showLink || (headerIcons && headerIcons.length)) && (
           <div style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)", display: "flex", alignItems: "center", gap: "6px" }}>
             {showLink && (
@@ -269,7 +270,7 @@ function EditorialHead({ title, subtitle, scr }) {
   return (
     <div style={{ flex: "none", padding: "18px 18px 10px", borderBottom: "2px solid " + V.ink }}>
       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "12px" }}>
-        <div style={{ font: "600 27px/1.12 " + t.font, letterSpacing: "-.01em", color: V.ink, textTransform: "capitalize" }}>{title}</div>
+        <Heading level={1} style={{ font: "600 27px/1.12 " + t.font, letterSpacing: "-.01em", color: V.ink, textTransform: "capitalize" }}>{title}</Heading>
         {(showLink || (headerIcons && headerIcons.length)) && (
           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
             {showLink && (
