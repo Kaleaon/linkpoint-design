@@ -383,11 +383,21 @@ export default function Chat() {
     borderRadius: nav === "sweep" ? "0 " + V.rs + " " + V.rs + " 0" : V.rs,
   };
 
-  const voiceChannel = curTab === "IM" ? `Direct Voice · ${activeChip}` : curTab === "GROUP" ? `Group Voice · ${activeChip}` : "Spatial Voice · Heliotrope";
+  const voiceChannel =
+    curTab === "IM"
+      ? `Direct Voice · ${activeChip}`
+      : curTab === "GROUP"
+        ? `Group Voice · ${activeChip}`
+        : "Spatial Voice · Heliotrope";
 
   return (
     <>
-      <div style={{ flex: "none", padding: bleed ? "4px 10px 4px" : "4px 12px 6px" }}>
+      <div
+        style={{
+          flex: "none",
+          padding: bleed ? "4px 10px 4px" : "4px 12px 6px",
+        }}
+      >
         <VoiceChatBar channelName={voiceChannel} />
       </div>
       <div style={chatBodyStyle}>

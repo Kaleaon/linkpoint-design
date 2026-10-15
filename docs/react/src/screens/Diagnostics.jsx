@@ -68,7 +68,15 @@ export default function Diagnostics() {
           gap: "10px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "10px",
+            flexWrap: "wrap",
+          }}
+        >
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <div
               style={{
@@ -87,16 +95,34 @@ export default function Diagnostics() {
               <Icon name="activity" size={22} />
             </div>
             <div>
-              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>Simulator Telemetry & Diagnostics</div>
-              <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
-                Connected grid: <span style={{ color: V.pri, fontWeight: 700 }}>{curSub} ({curSub === "AGNI" ? "Production Main Grid" : "Beta Test Grid"})</span> · Region: Da Boom
+              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>
+                Simulator Telemetry & Diagnostics
+              </div>
+              <div
+                style={{
+                  font: "400 11px/1.3 " + t.font,
+                  color: V.ink2,
+                  marginTop: "2px",
+                }}
+              >
+                Connected grid:{" "}
+                <span style={{ color: V.pri, fontWeight: 700 }}>
+                  {curSub} (
+                  {curSub === "AGNI"
+                    ? "Production Main Grid"
+                    : "Beta Test Grid"}
+                  )
+                </span>{" "}
+                · Region: Da Boom
               </div>
             </div>
           </div>
 
           <KInteractive
             as="button"
-            onClick={() => actions.notify("Diagnostics snapshot dumped to log file")}
+            onClick={() =>
+              actions.notify("Diagnostics snapshot dumped to log file")
+            }
             style={actBtn(false)}
             aria-label="Dump logs"
           >
@@ -107,7 +133,13 @@ export default function Diagnostics() {
       </div>
 
       {/* Real-time KPI Cards Grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: bleed ? "6px" : "10px" }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+          gap: bleed ? "6px" : "10px",
+        }}
+      >
         {/* Simulator FPS */}
         <div
           style={{
@@ -120,11 +152,27 @@ export default function Diagnostics() {
             gap: "4px",
           }}
         >
-          <span style={{ font: "700 10.5px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em" }}>SIMULATOR FPS</span>
-          <div style={{ font: "700 22px/1.1 " + t.mfont, color: simFps >= 40 ? (V.ok || "#22c55e") : (V.warn || "#f59e0b") }}>
-            {simFps} <span style={{ fontSize: "12px", color: V.ink2 }}>/ 45.0</span>
+          <span
+            style={{
+              font: "700 10.5px/1 " + t.dfont,
+              color: V.ink2,
+              letterSpacing: ".1em",
+            }}
+          >
+            SIMULATOR FPS
+          </span>
+          <div
+            style={{
+              font: "700 22px/1.1 " + t.mfont,
+              color: simFps >= 40 ? V.ok || "#22c55e" : V.warn || "#f59e0b",
+            }}
+          >
+            {simFps}{" "}
+            <span style={{ fontSize: "12px", color: V.ink2 }}>/ 45.0</span>
           </div>
-          <span style={{ font: "400 10.5px/1 " + t.font, color: V.ink2 }}>Target 45 Hz physics loop</span>
+          <span style={{ font: "400 10.5px/1 " + t.font, color: V.ink2 }}>
+            Target 45 Hz physics loop
+          </span>
         </div>
 
         {/* Time Dilation */}
@@ -139,11 +187,27 @@ export default function Diagnostics() {
             gap: "4px",
           }}
         >
-          <span style={{ font: "700 10.5px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em" }}>TIME DILATION</span>
-          <div style={{ font: "700 22px/1.1 " + t.mfont, color: timeDilation >= 0.95 ? (V.ok || "#22c55e") : (V.err || "#dc2626") }}>
+          <span
+            style={{
+              font: "700 10.5px/1 " + t.dfont,
+              color: V.ink2,
+              letterSpacing: ".1em",
+            }}
+          >
+            TIME DILATION
+          </span>
+          <div
+            style={{
+              font: "700 22px/1.1 " + t.mfont,
+              color:
+                timeDilation >= 0.95 ? V.ok || "#22c55e" : V.err || "#dc2626",
+            }}
+          >
             {timeDilation}
           </div>
-          <span style={{ font: "400 10.5px/1 " + t.font, color: V.ink2 }}>1.000 = Real-time sync</span>
+          <span style={{ font: "400 10.5px/1 " + t.font, color: V.ink2 }}>
+            1.000 = Real-time sync
+          </span>
         </div>
 
         {/* Ping / Latency */}
@@ -158,11 +222,26 @@ export default function Diagnostics() {
             gap: "4px",
           }}
         >
-          <span style={{ font: "700 10.5px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em" }}>PING / RTT</span>
-          <div style={{ font: "700 22px/1.1 " + t.mfont, color: ping < 80 ? (V.ok || "#22c55e") : (V.warn || "#f59e0b") }}>
+          <span
+            style={{
+              font: "700 10.5px/1 " + t.dfont,
+              color: V.ink2,
+              letterSpacing: ".1em",
+            }}
+          >
+            PING / RTT
+          </span>
+          <div
+            style={{
+              font: "700 22px/1.1 " + t.mfont,
+              color: ping < 80 ? V.ok || "#22c55e" : V.warn || "#f59e0b",
+            }}
+          >
             {ping} ms
           </div>
-          <span style={{ font: "400 10.5px/1 " + t.font, color: V.ink2 }}>Linden Lab Dallas Host</span>
+          <span style={{ font: "400 10.5px/1 " + t.font, color: V.ink2 }}>
+            Linden Lab Dallas Host
+          </span>
         </div>
 
         {/* Packet Loss */}
@@ -177,16 +256,37 @@ export default function Diagnostics() {
             gap: "4px",
           }}
         >
-          <span style={{ font: "700 10.5px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em" }}>PACKET LOSS</span>
-          <div style={{ font: "700 22px/1.1 " + t.mfont, color: packetLoss < 0.1 ? (V.ok || "#22c55e") : (V.err || "#dc2626") }}>
+          <span
+            style={{
+              font: "700 10.5px/1 " + t.dfont,
+              color: V.ink2,
+              letterSpacing: ".1em",
+            }}
+          >
+            PACKET LOSS
+          </span>
+          <div
+            style={{
+              font: "700 22px/1.1 " + t.mfont,
+              color: packetLoss < 0.1 ? V.ok || "#22c55e" : V.err || "#dc2626",
+            }}
+          >
             {packetLoss}%
           </div>
-          <span style={{ font: "400 10.5px/1 " + t.font, color: V.ink2 }}>UDP reliability channel</span>
+          <span style={{ font: "400 10.5px/1 " + t.font, color: V.ink2 }}>
+            UDP reliability channel
+          </span>
         </div>
       </div>
 
       {/* Detailed Diagnostics Breakdown */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: bleed ? "6px" : "10px" }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: bleed ? "6px" : "10px",
+        }}
+      >
         {/* Simulator & Physics Metrics */}
         <div
           style={{
@@ -199,23 +299,46 @@ export default function Diagnostics() {
             gap: "8px",
           }}
         >
-          <div style={{ font: "700 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em" }}>SIMULATOR & PHYSICS ENGINE</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px", font: "400 12px/1.4 " + t.font }}>
+          <div
+            style={{
+              font: "700 11px/1 " + t.dfont,
+              color: V.ink2,
+              letterSpacing: ".1em",
+            }}
+          >
+            SIMULATOR & PHYSICS ENGINE
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "6px",
+              font: "400 12px/1.4 " + t.font,
+            }}
+          >
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <span style={{ color: V.ink2 }}>Physics Engine:</span>
-              <span style={{ fontWeight: 600, color: V.ink }}>Havok 2026.1 Sub-step</span>
+              <span style={{ fontWeight: 600, color: V.ink }}>
+                Havok 2026.1 Sub-step
+              </span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <span style={{ color: V.ink2 }}>Total In-World Prims:</span>
-              <span style={{ fontFamily: t.mfont, color: V.ink }}>14 280 / 15 000 (95.2%)</span>
+              <span style={{ fontFamily: t.mfont, color: V.ink }}>
+                14 280 / 15 000 (95.2%)
+              </span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <span style={{ color: V.ink2 }}>Active Script Count:</span>
-              <span style={{ fontFamily: t.mfont, color: V.ink }}>1 204 running</span>
+              <span style={{ fontFamily: t.mfont, color: V.ink }}>
+                1 204 running
+              </span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <span style={{ color: V.ink2 }}>Script Engine Frame Time:</span>
-              <span style={{ fontFamily: t.mfont, color: V.pri }}>0.82 ms / 22.2 ms</span>
+              <span style={{ fontFamily: t.mfont, color: V.pri }}>
+                0.82 ms / 22.2 ms
+              </span>
             </div>
           </div>
         </div>
@@ -232,23 +355,46 @@ export default function Diagnostics() {
             gap: "8px",
           }}
         >
-          <div style={{ font: "700 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em" }}>NETWORK & PROTOCOL STACK</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px", font: "400 12px/1.4 " + t.font }}>
+          <div
+            style={{
+              font: "700 11px/1 " + t.dfont,
+              color: V.ink2,
+              letterSpacing: ".1em",
+            }}
+          >
+            NETWORK & PROTOCOL STACK
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "6px",
+              font: "400 12px/1.4 " + t.font,
+            }}
+          >
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <span style={{ color: V.ink2 }}>Simulator Host:</span>
-              <span style={{ fontFamily: t.mfont, color: V.ink }}>sim10428.agni.lindenlab.com</span>
+              <span style={{ fontFamily: t.mfont, color: V.ink }}>
+                sim10428.agni.lindenlab.com
+              </span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <span style={{ color: V.ink2 }}>UDP Inbound Bandwidth:</span>
-              <span style={{ fontFamily: t.mfont, color: V.ink }}>128.4 kbps</span>
+              <span style={{ fontFamily: t.mfont, color: V.ink }}>
+                128.4 kbps
+              </span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <span style={{ color: V.ink2 }}>UDP Outbound Bandwidth:</span>
-              <span style={{ fontFamily: t.mfont, color: V.ink }}>18.2 kbps</span>
+              <span style={{ fontFamily: t.mfont, color: V.ink }}>
+                18.2 kbps
+              </span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <span style={{ color: V.ink2 }}>Server Software Channel:</span>
-              <span style={{ fontWeight: 600, color: V.ink }}>Second Life Server 2026-09-28</span>
+              <span style={{ fontWeight: 600, color: V.ink }}>
+                Second Life Server 2026-09-28
+              </span>
             </div>
           </div>
         </div>

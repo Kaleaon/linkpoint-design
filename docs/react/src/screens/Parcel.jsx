@@ -11,8 +11,12 @@ export default function Parcel() {
   const curSub = subView(state, "Parcel") || "GENERAL";
 
   const [streamPlaying, setStreamPlaying] = useState(false);
-  const [streamUrl, setStreamUrl] = useState("http://stream.sl-radio.net:8000/live");
-  const [mediaUrl, setMediaUrl] = useState("https://bay-city-builds.example/board");
+  const [streamUrl, setStreamUrl] = useState(
+    "http://stream.sl-radio.net:8000/live",
+  );
+  const [mediaUrl, setMediaUrl] = useState(
+    "https://bay-city-builds.example/board",
+  );
 
   const primUsed = 1240;
   const primCap = 1875;
@@ -36,7 +40,17 @@ export default function Parcel() {
   });
 
   return (
-    <div style={{ flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column", gap: bleed ? "6px" : "10px", padding: bleed ? "8px 0 16px" : "8px 16px 16px" }}>
+    <div
+      style={{
+        flex: 1,
+        minHeight: 0,
+        overflowY: "auto",
+        display: "flex",
+        flexDirection: "column",
+        gap: bleed ? "6px" : "10px",
+        padding: bleed ? "8px 0 16px" : "8px 16px 16px",
+      }}
+    >
       {/* Parcel Hero Card */}
       <div
         style={{
@@ -50,12 +64,27 @@ export default function Parcel() {
           gap: "10px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            gap: "12px",
+          }}
+        >
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Icon name="map-pin" size={24} style={{ color: V.pri }} />
             <div>
-              <div style={{ font: "700 16px/1.2 " + t.dfont, color: V.ink }}>Linden Public Park</div>
-              <div style={{ font: "400 11.5px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
+              <div style={{ font: "700 16px/1.2 " + t.dfont, color: V.ink }}>
+                Linden Public Park
+              </div>
+              <div
+                style={{
+                  font: "400 11.5px/1.3 " + t.font,
+                  color: V.ink2,
+                  marginTop: "2px",
+                }}
+              >
                 Da Boom &lt;128, 128, 26&gt; · 4,096 m²
               </div>
             </div>
@@ -76,19 +105,36 @@ export default function Parcel() {
         </div>
 
         <div style={{ font: "400 12px/1.6 " + t.font, color: V.ink2 }}>
-          Historic green public reserve on the continent of Sansara. Open for public events, gatherings, and building exploration.
+          Historic green public reserve on the continent of Sansara. Open for
+          public events, gatherings, and building exploration.
         </div>
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-          <KInteractive label="Teleport here" onClick={() => actions.teleportToRegion("Da Boom", "<128, 128, 26>")} style={actBtn(true)}>
+          <KInteractive
+            label="Teleport here"
+            onClick={() =>
+              actions.teleportToRegion("Da Boom", "<128, 128, 26>")
+            }
+            style={actBtn(true)}
+          >
             <Icon name="zap" size={14} />
             TELEPORT HERE
           </KInteractive>
-          <KInteractive label="Create landmark" onClick={() => actions.saveLandmark("Linden Public Park")} style={actBtn(false)}>
+          <KInteractive
+            label="Create landmark"
+            onClick={() => actions.saveLandmark("Linden Public Park")}
+            style={actBtn(false)}
+          >
             <Icon name="star" size={14} />
             LANDMARK
           </KInteractive>
-          <KInteractive label="Region info" onClick={() => actions.notify("Region: Da Boom · Server 2026.09 · Channel Main")} style={actBtn(false)}>
+          <KInteractive
+            label="Region info"
+            onClick={() =>
+              actions.notify("Region: Da Boom · Server 2026.09 · Channel Main")
+            }
+            style={actBtn(false)}
+          >
             <Icon name="info" size={14} />
             ABOUT REGION
           </KInteractive>
@@ -110,10 +156,26 @@ export default function Parcel() {
               gap: "8px",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
                 <Icon name="layers" size={16} style={{ color: V.pri }} />
-                <span style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>PARCEL PRIM CAPACITY</span>
+                <span
+                  style={{
+                    font: "700 11px/1 " + t.dfont,
+                    letterSpacing: ".14em",
+                    color: V.pri,
+                  }}
+                >
+                  PARCEL PRIM CAPACITY
+                </span>
               </div>
               <span style={{ font: "700 12px/1 " + t.font, color: V.ink }}>
                 {primUsed} / {primCap} prims ({Math.round(primRatio * 100)}%)
@@ -121,7 +183,15 @@ export default function Parcel() {
             </div>
 
             {/* Progress Bar */}
-            <div style={{ width: "100%", height: "8px", background: V.surf2, borderRadius: "4px", overflow: "hidden" }}>
+            <div
+              style={{
+                width: "100%",
+                height: "8px",
+                background: V.surf2,
+                borderRadius: "4px",
+                overflow: "hidden",
+              }}
+            >
               <div
                 style={{
                   width: `${primRatio * 100}%`,
@@ -136,24 +206,62 @@ export default function Parcel() {
               {primCap - primUsed} prims available for rezzing on this parcel.
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))", gap: "8px", marginTop: "4px" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
+                gap: "8px",
+                marginTop: "4px",
+              }}
+            >
               {[
                 { label: "OWNER PRIMS", count: 840 },
                 { label: "GROUP PRIMS", count: 320 },
                 { label: "OTHERS PRIMS", count: 80 },
                 { label: "TEMP PRIMS", count: 0 },
               ].map((p) => (
-                <div key={p.label} style={{ padding: "8px", background: V.surf2, borderRadius: V.rs }}>
-                  <div style={{ font: "600 8.5px/1 " + t.dfont, letterSpacing: ".1em", color: V.ink2 }}>{p.label}</div>
-                  <div style={{ font: "700 14px/1.2 " + t.font, color: V.ink, marginTop: "4px" }}>{p.count}</div>
+                <div
+                  key={p.label}
+                  style={{
+                    padding: "8px",
+                    background: V.surf2,
+                    borderRadius: V.rs,
+                  }}
+                >
+                  <div
+                    style={{
+                      font: "600 8.5px/1 " + t.dfont,
+                      letterSpacing: ".1em",
+                      color: V.ink2,
+                    }}
+                  >
+                    {p.label}
+                  </div>
+                  <div
+                    style={{
+                      font: "700 14px/1.2 " + t.font,
+                      color: V.ink,
+                      marginTop: "4px",
+                    }}
+                  >
+                    {p.count}
+                  </div>
                 </div>
               ))}
             </div>
 
-            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "4px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginTop: "4px",
+              }}
+            >
               <KInteractive
                 label="Return others' prims"
-                onClick={() => actions.notify("Returned 80 unassociated prims to inventory")}
+                onClick={() =>
+                  actions.notify("Returned 80 unassociated prims to inventory")
+                }
                 style={{
                   minHeight: "44px",
                   padding: "0 12px",
@@ -185,23 +293,77 @@ export default function Parcel() {
               gap: "10px",
             }}
           >
-            <div style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>OWNERSHIP &amp; ACCESS</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "10px" }}>
+            <div
+              style={{
+                font: "700 11px/1 " + t.dfont,
+                letterSpacing: ".14em",
+                color: V.pri,
+              }}
+            >
+              OWNERSHIP &amp; ACCESS
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+                gap: "10px",
+              }}
+            >
               <div>
-                <div style={{ font: "500 10px/1 " + t.font, color: V.ink2 }}>PARCEL OWNER</div>
-                <div style={{ font: "600 13px/1.3 " + t.font, color: V.ink, marginTop: "3px" }}>Governor Linden</div>
+                <div style={{ font: "500 10px/1 " + t.font, color: V.ink2 }}>
+                  PARCEL OWNER
+                </div>
+                <div
+                  style={{
+                    font: "600 13px/1.3 " + t.font,
+                    color: V.ink,
+                    marginTop: "3px",
+                  }}
+                >
+                  Governor Linden
+                </div>
               </div>
               <div>
-                <div style={{ font: "500 10px/1 " + t.font, color: V.ink2 }}>GROUP DEED</div>
-                <div style={{ font: "600 13px/1.3 " + t.font, color: V.ink, marginTop: "3px" }}>Linden Dept. of Public Works</div>
+                <div style={{ font: "500 10px/1 " + t.font, color: V.ink2 }}>
+                  GROUP DEED
+                </div>
+                <div
+                  style={{
+                    font: "600 13px/1.3 " + t.font,
+                    color: V.ink,
+                    marginTop: "3px",
+                  }}
+                >
+                  Linden Dept. of Public Works
+                </div>
               </div>
               <div>
-                <div style={{ font: "500 10px/1 " + t.font, color: V.ink2 }}>SALE STATUS</div>
-                <div style={{ font: "600 13px/1.3 " + t.font, color: V.ink, marginTop: "3px" }}>Not for sale</div>
+                <div style={{ font: "500 10px/1 " + t.font, color: V.ink2 }}>
+                  SALE STATUS
+                </div>
+                <div
+                  style={{
+                    font: "600 13px/1.3 " + t.font,
+                    color: V.ink,
+                    marginTop: "3px",
+                  }}
+                >
+                  Not for sale
+                </div>
               </div>
               <div>
-                <div style={{ font: "500 10px/1 " + t.font, color: V.ink2 }}>SNAPSHOT ACCESS</div>
-                <div style={{ font: "600 13px/1.3 " + t.font, color: V.ink, marginTop: "3px" }}>Public allowed</div>
+                <div style={{ font: "500 10px/1 " + t.font, color: V.ink2 }}>
+                  SNAPSHOT ACCESS
+                </div>
+                <div
+                  style={{
+                    font: "600 13px/1.3 " + t.font,
+                    color: V.ink,
+                    marginTop: "3px",
+                  }}
+                >
+                  Public allowed
+                </div>
               </div>
             </div>
           </div>
@@ -218,8 +380,22 @@ export default function Parcel() {
               gap: "10px",
             }}
           >
-            <div style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>PARCEL FLAGS</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "8px" }}>
+            <div
+              style={{
+                font: "700 11px/1 " + t.dfont,
+                letterSpacing: ".14em",
+                color: V.pri,
+              }}
+            >
+              PARCEL FLAGS
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+                gap: "8px",
+              }}
+            >
               {[
                 { name: "Voice Chat", ok: true },
                 { name: "Run Scripts", ok: true },
@@ -229,9 +405,27 @@ export default function Parcel() {
                 { name: "Create Objects", ok: false },
                 { name: "Edit Terrain", ok: false },
               ].map((flag) => (
-                <div key={flag.name} style={{ display: "flex", alignItems: "center", gap: "8px", padding: "6px 8px", background: V.surf2, borderRadius: V.rs }}>
-                  <Icon name={flag.ok ? "check" : "x"} size={14} style={{ color: flag.ok ? V.ok || V.pri : V.ink2 }} />
-                  <span style={{ font: "500 11px/1.2 " + t.font, color: V.ink }}>{flag.name}</span>
+                <div
+                  key={flag.name}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    padding: "6px 8px",
+                    background: V.surf2,
+                    borderRadius: V.rs,
+                  }}
+                >
+                  <Icon
+                    name={flag.ok ? "check" : "x"}
+                    size={14}
+                    style={{ color: flag.ok ? V.ok || V.pri : V.ink2 }}
+                  />
+                  <span
+                    style={{ font: "500 11px/1.2 " + t.font, color: V.ink }}
+                  >
+                    {flag.name}
+                  </span>
                 </div>
               ))}
             </div>
@@ -254,10 +448,26 @@ export default function Parcel() {
               gap: "10px",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
                 <Icon name="radio" size={18} style={{ color: V.pri }} />
-                <span style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>PARCEL AUDIO STREAM</span>
+                <span
+                  style={{
+                    font: "700 11px/1 " + t.dfont,
+                    letterSpacing: ".14em",
+                    color: V.pri,
+                  }}
+                >
+                  PARCEL AUDIO STREAM
+                </span>
               </div>
               <span
                 style={{
@@ -274,7 +484,15 @@ export default function Parcel() {
             </div>
 
             <div>
-              <div style={{ font: "500 10px/1 " + t.font, color: V.ink2, marginBottom: "4px" }}>AUDIO URL</div>
+              <div
+                style={{
+                  font: "500 10px/1 " + t.font,
+                  color: V.ink2,
+                  marginBottom: "4px",
+                }}
+              >
+                AUDIO URL
+              </div>
               <input
                 type="text"
                 value={streamUrl}
@@ -296,10 +514,16 @@ export default function Parcel() {
 
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <KInteractive
-                label={streamPlaying ? "Stop audio stream" : "Play audio stream"}
+                label={
+                  streamPlaying ? "Stop audio stream" : "Play audio stream"
+                }
                 onClick={() => {
                   setStreamPlaying(!streamPlaying);
-                  actions.notify(streamPlaying ? "Stream playback stopped" : "Connecting to parcel audio stream...");
+                  actions.notify(
+                    streamPlaying
+                      ? "Stream playback stopped"
+                      : "Connecting to parcel audio stream...",
+                  );
                 }}
                 style={actBtn(!streamPlaying)}
               >
@@ -307,8 +531,17 @@ export default function Parcel() {
                 {streamPlaying ? "STOP STREAM" : "PLAY STREAM"}
               </KInteractive>
 
-              <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "5px" }}>
-                <span style={{ font: "500 10px/1 " + t.font, color: V.ink2 }}>VOL:</span>
+              <div
+                style={{
+                  marginLeft: "auto",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "5px",
+                }}
+              >
+                <span style={{ font: "500 10px/1 " + t.font, color: V.ink2 }}>
+                  VOL:
+                </span>
                 {["Muted", "25%", "50%", "70%", "100%"].map((v) => {
                   const on = state.prefs.volume === v;
                   return (
@@ -347,11 +580,27 @@ export default function Parcel() {
           >
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <Icon name="monitor-play" size={18} style={{ color: V.pri }} />
-              <span style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>SHARED MEDIA (MOAP)</span>
+              <span
+                style={{
+                  font: "700 11px/1 " + t.dfont,
+                  letterSpacing: ".14em",
+                  color: V.pri,
+                }}
+              >
+                SHARED MEDIA (MOAP)
+              </span>
             </div>
 
             <div>
-              <div style={{ font: "500 10px/1 " + t.font, color: V.ink2, marginBottom: "4px" }}>MEDIA URL</div>
+              <div
+                style={{
+                  font: "500 10px/1 " + t.font,
+                  color: V.ink2,
+                  marginBottom: "4px",
+                }}
+              >
+                MEDIA URL
+              </div>
               <input
                 type="text"
                 value={mediaUrl}
@@ -371,13 +620,22 @@ export default function Parcel() {
               />
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "8px",
+              }}
+            >
               <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2 }}>
                 Dimensions: 512 × 512 · Texture face 2 · HTML5 WebGL
               </div>
               <KInteractive
                 label="Reload media"
-                onClick={() => actions.notify("Reloaded parcel shared media texture")}
+                onClick={() =>
+                  actions.notify("Reloaded parcel shared media texture")
+                }
                 style={actBtn(false)}
               >
                 <Icon name="refresh-cw" size={13} />

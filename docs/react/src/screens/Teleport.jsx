@@ -145,14 +145,21 @@ export default function Teleport() {
 
   const togglePin = (lmId) => {
     setLandmarks((prev) =>
-      prev.map((lm) => (lm.id === lmId ? { ...lm, pinned: !lm.pinned } : lm))
+      prev.map((lm) => (lm.id === lmId ? { ...lm, pinned: !lm.pinned } : lm)),
     );
   };
 
-  const categories = ["ALL", "Favorites", "Build Sites", "Social", "Nature", "Clubs"];
+  const categories = [
+    "ALL",
+    "Favorites",
+    "Build Sites",
+    "Social",
+    "Nature",
+    "Clubs",
+  ];
 
   const filteredLandmarks = landmarks.filter(
-    (lm) => category === "ALL" || lm.category === category
+    (lm) => category === "ALL" || lm.category === category,
   );
 
   return (
@@ -180,13 +187,26 @@ export default function Teleport() {
           gap: "10px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "10px",
+            flexWrap: "wrap",
+          }}
+        >
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <Icon name="zap" size={20} style={{ color: V.pri }} />
             <div>
-              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>Teleport & Places</div>
+              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>
+                Teleport & Places
+              </div>
               <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2 }}>
-                Current region: <span style={{ color: V.ink, fontWeight: 600 }}>Da Boom &lt;128, 128, 26&gt;</span>
+                Current region:{" "}
+                <span style={{ color: V.ink, fontWeight: 600 }}>
+                  Da Boom &lt;128, 128, 26&gt;
+                </span>
               </div>
             </div>
           </div>
@@ -194,7 +214,9 @@ export default function Teleport() {
           <div style={{ display: "flex", gap: "6px" }}>
             <KInteractive
               as="button"
-              onClick={() => triggerTeleport("Home (Da Boom)", "<128, 128, 26>")}
+              onClick={() =>
+                triggerTeleport("Home (Da Boom)", "<128, 128, 26>")
+              }
               style={actBtn(true)}
               aria-label="Teleport home"
             >
@@ -204,7 +226,11 @@ export default function Teleport() {
 
             <KInteractive
               as="button"
-              onClick={() => actions.notify("Home location set to current position <128, 128, 26>")}
+              onClick={() =>
+                actions.notify(
+                  "Home location set to current position <128, 128, 26>",
+                )
+              }
               style={actBtn(false)}
               aria-label="Set home here"
             >
@@ -215,7 +241,15 @@ export default function Teleport() {
         </div>
 
         {/* SLURL Input Bar */}
-        <form onSubmit={handleSlurlTeleport} style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
+        <form
+          onSubmit={handleSlurlTeleport}
+          style={{
+            display: "flex",
+            gap: "8px",
+            alignItems: "center",
+            flexWrap: "wrap",
+          }}
+        >
           <div
             style={{
               flex: 1,
@@ -250,7 +284,12 @@ export default function Teleport() {
               <button
                 type="button"
                 onClick={() => setSlurlInput("")}
-                style={{ background: "transparent", border: "none", color: V.ink2, cursor: "pointer" }}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  color: V.ink2,
+                  cursor: "pointer",
+                }}
                 aria-label="Clear input"
               >
                 <Icon name="x" size={13} />
@@ -274,7 +313,14 @@ export default function Teleport() {
       {curSub === "LANDMARK" && (
         <>
           {/* Category Pills */}
-          <div style={{ display: "flex", gap: "6px", overflowX: "auto", paddingBottom: "2px" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "6px",
+              overflowX: "auto",
+              paddingBottom: "2px",
+            }}
+          >
             {categories.map((cat) => {
               const active = category === cat;
               return (
@@ -301,7 +347,13 @@ export default function Teleport() {
           </div>
 
           {/* Landmarks List */}
-          <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: bleed ? "4px" : "8px",
+            }}
+          >
             {filteredLandmarks.map((lm) => (
               <div
                 key={lm.id}
@@ -316,8 +368,21 @@ export default function Teleport() {
                   gap: "8px",
                 }}
               >
-                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "10px" }}>
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    justifyContent: "space-between",
+                    gap: "10px",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: "10px",
+                    }}
+                  >
                     <div
                       style={{
                         width: "36px",
@@ -335,15 +400,53 @@ export default function Teleport() {
                       <Icon name="map-pin" size={18} />
                     </div>
                     <div>
-                      <div style={{ font: "700 14px/1.2 " + t.dfont, color: V.ink }}>{lm.name}</div>
-                      <div style={{ font: "400 11.5px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
+                      <div
+                        style={{
+                          font: "700 14px/1.2 " + t.dfont,
+                          color: V.ink,
+                        }}
+                      >
+                        {lm.name}
+                      </div>
+                      <div
+                        style={{
+                          font: "400 11.5px/1.3 " + t.font,
+                          color: V.ink2,
+                          marginTop: "2px",
+                        }}
+                      >
                         {lm.region} {lm.coords} · {lm.notes}
                       </div>
-                      <div style={{ display: "flex", gap: "6px", alignItems: "center", marginTop: "4px" }}>
-                        <span style={{ font: "600 10px/1 " + t.mfont, padding: "2px 6px", borderRadius: "3px", background: V.surf2, color: V.ink2, border: "1px solid " + V.outv }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "6px",
+                          alignItems: "center",
+                          marginTop: "4px",
+                        }}
+                      >
+                        <span
+                          style={{
+                            font: "600 10px/1 " + t.mfont,
+                            padding: "2px 6px",
+                            borderRadius: "3px",
+                            background: V.surf2,
+                            color: V.ink2,
+                            border: "1px solid " + V.outv,
+                          }}
+                        >
                           {lm.maturity}
                         </span>
-                        <span style={{ font: "600 10px/1 " + t.mfont, padding: "2px 6px", borderRadius: "3px", background: V.surf2, color: V.pri, border: "1px solid " + V.outv }}>
+                        <span
+                          style={{
+                            font: "600 10px/1 " + t.mfont,
+                            padding: "2px 6px",
+                            borderRadius: "3px",
+                            background: V.surf2,
+                            color: V.pri,
+                            border: "1px solid " + V.outv,
+                          }}
+                        >
                           👥 {lm.avatars} in region
                         </span>
                       </div>
@@ -365,7 +468,16 @@ export default function Teleport() {
                   </button>
                 </div>
 
-                <div style={{ display: "flex", gap: "6px", borderTop: "1px solid " + V.outv, paddingTop: "8px", flexWrap: "wrap", justifyContent: "flex-end" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "6px",
+                    borderTop: "1px solid " + V.outv,
+                    paddingTop: "8px",
+                    flexWrap: "wrap",
+                    justifyContent: "flex-end",
+                  }}
+                >
                   <KInteractive
                     as="button"
                     onClick={() => triggerTeleport(lm.name, lm.coords)}
@@ -407,9 +519,28 @@ export default function Teleport() {
 
       {/* HISTORY SUB-VIEW */}
       {curSub === "HISTORY" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 4px" }}>
-            <span style={{ font: "600 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: bleed ? "4px" : "8px",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "0 4px",
+            }}
+          >
+            <span
+              style={{
+                font: "600 11px/1 " + t.dfont,
+                color: V.ink2,
+                letterSpacing: ".08em",
+              }}
+            >
               RECENT TELEPORT LOCATIONS ({history.length})
             </span>
             <KInteractive
@@ -427,7 +558,14 @@ export default function Teleport() {
           </div>
 
           {history.length === 0 ? (
-            <div style={{ padding: "32px", textAlign: "center", color: V.ink2, font: "400 13px/1.4 " + t.font }}>
+            <div
+              style={{
+                padding: "32px",
+                textAlign: "center",
+                color: V.ink2,
+                font: "400 13px/1.4 " + t.font,
+              }}
+            >
               Teleport history is empty.
             </div>
           ) : (
@@ -438,7 +576,10 @@ export default function Teleport() {
                   padding: pad,
                   background: V.surf,
                   border: bleed ? "none" : "1px solid " + V.outv,
-                  borderLeft: h.timestamp === "Current Region" ? "4px solid " + V.pri : undefined,
+                  borderLeft:
+                    h.timestamp === "Current Region"
+                      ? "4px solid " + V.pri
+                      : undefined,
                   borderRadius: bleed ? 0 : V.rp,
                   display: "flex",
                   alignItems: "center",
@@ -446,7 +587,9 @@ export default function Teleport() {
                   gap: "10px",
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                >
                   <div
                     style={{
                       width: "36px",
@@ -464,8 +607,21 @@ export default function Teleport() {
                     <Icon name="history" size={18} />
                   </div>
                   <div>
-                    <div style={{ font: "700 13.5px/1.2 " + t.dfont, color: V.ink }}>{h.region}</div>
-                    <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
+                    <div
+                      style={{
+                        font: "700 13.5px/1.2 " + t.dfont,
+                        color: V.ink,
+                      }}
+                    >
+                      {h.region}
+                    </div>
+                    <div
+                      style={{
+                        font: "400 11px/1.3 " + t.font,
+                        color: V.ink2,
+                        marginTop: "2px",
+                      }}
+                    >
                       {h.coords} · {h.timestamp} ({h.duration})
                     </div>
                   </div>
