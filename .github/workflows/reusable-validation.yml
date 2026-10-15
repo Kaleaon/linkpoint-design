@@ -32,9 +32,9 @@ jobs:
 
       - name: Move Ktheme to parent workspace
         run: |
-          mkdir -p ../../Ktheme
-          mv Ktheme/* ../../Ktheme/
-          mv Ktheme/.* ../../Ktheme/ 2>/dev/null || true
+          mkdir -p ../Ktheme
+          mv Ktheme/* ../Ktheme/
+          mv Ktheme/.* ../Ktheme/ 2>/dev/null || true
           rm -rf Ktheme
 
       - name: Set up Node.js
