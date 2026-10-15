@@ -16,9 +16,15 @@ function createMockDOM() {
     },
     dispatchKeyDown: (eventData) => {
       if (listeners["keydown"]) {
-        listeners["keydown"].forEach((h) => h({ ...eventData, preventDefault: () => {}, stopPropagation: () => {} }));
+        listeners["keydown"].forEach((h) =>
+          h({
+            ...eventData,
+            preventDefault: () => {},
+            stopPropagation: () => {},
+          }),
+        );
       }
-    }
+    },
   };
 
   return { windowMock, listeners };
@@ -37,11 +43,13 @@ test("useFocusTrap attach and cleanup event listener", () => {
   global.document = { activeElement: null };
 
   let escapeTriggered = false;
-  const onEscape = () => { escapeTriggered = true; };
+  const onEscape = () => {
+    escapeTriggered = true;
+  };
 
   const mockContainer = {
     querySelector: () => null,
-    querySelectorAll: () => []
+    querySelectorAll: () => [],
   };
   const ref = { current: mockContainer };
 

@@ -207,12 +207,16 @@ export default function Objects() {
   const [selectedId, setSelectedId] = useState(NEARBY_OBJECTS[0].id);
   const [trackedId, setTrackedId] = useState(null);
 
-  const selectedObj = NEARBY_OBJECTS.find((o) => o.id === selectedId) || NEARBY_OBJECTS[0];
+  const selectedObj =
+    NEARBY_OBJECTS.find((o) => o.id === selectedId) || NEARBY_OBJECTS[0];
 
   const filteredObjects = NEARBY_OBJECTS.filter((obj) => {
     if (query.trim()) {
       const q = query.toLowerCase();
-      if (!obj.name.toLowerCase().includes(q) && !obj.owner.toLowerCase().includes(q)) {
+      if (
+        !obj.name.toLowerCase().includes(q) &&
+        !obj.owner.toLowerCase().includes(q)
+      ) {
         return false;
       }
     }
@@ -232,13 +236,14 @@ export default function Objects() {
     justifyContent: "center",
     gap: "6px",
     cursor: "pointer",
-    background: primary ? V.pri : danger ? (V.err || "#dc2626") : V.surf2,
+    background: primary ? V.pri : danger ? V.err || "#dc2626" : V.surf2,
     color: primary
       ? ink(V.pri, [V.bg, V.onpri, V.ink])
       : danger
-      ? "#fff"
-      : V.ink,
-    border: "1px solid " + (primary ? V.pri : danger ? (V.err || "#dc2626") : V.outv),
+        ? "#fff"
+        : V.ink,
+    border:
+      "1px solid " + (primary ? V.pri : danger ? V.err || "#dc2626" : V.outv),
     borderRadius: V.rs,
     font: "700 10.5px/1 " + t.dfont,
     letterSpacing: ".1em",
@@ -287,19 +292,48 @@ export default function Objects() {
               gap: "10px",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", flexWrap: "wrap" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "10px",
+                flexWrap: "wrap",
+              }}
+            >
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
                 <Icon name="box" size={20} style={{ color: V.pri }} />
                 <div>
-                  <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>Nearby Objects</div>
-                  <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2 }}>
-                    {NEARBY_OBJECTS.length} objects in draw distance (96m) · {NEARBY_OBJECTS.reduce((acc, o) => acc + o.prims, 0)} total prims
+                  <div
+                    style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}
+                  >
+                    Nearby Objects
+                  </div>
+                  <div
+                    style={{ font: "400 11px/1.3 " + t.font, color: V.ink2 }}
+                  >
+                    {NEARBY_OBJECTS.length} objects in draw distance (96m) ·{" "}
+                    {NEARBY_OBJECTS.reduce((acc, o) => acc + o.prims, 0)} total
+                    prims
                   </div>
                 </div>
               </div>
 
               {/* Search Box */}
-              <div style={{ display: "flex", alignItems: "center", gap: "6px", background: V.surf2, border: "1px solid " + V.outv, borderRadius: V.rs, padding: "0 10px", minHeight: "44px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  background: V.surf2,
+                  border: "1px solid " + V.outv,
+                  borderRadius: V.rs,
+                  padding: "0 10px",
+                  minHeight: "44px",
+                }}
+              >
                 <Icon name="search" size={15} style={{ color: V.ink2 }} />
                 <input
                   type="text"
@@ -319,7 +353,13 @@ export default function Objects() {
                 {query && (
                   <button
                     onClick={() => setQuery("")}
-                    style={{ background: "transparent", border: "none", color: V.ink2, cursor: "pointer", padding: "4px" }}
+                    style={{
+                      background: "transparent",
+                      border: "none",
+                      color: V.ink2,
+                      cursor: "pointer",
+                      padding: "4px",
+                    }}
                     aria-label="Clear filter"
                   >
                     <Icon name="x" size={13} />
@@ -329,37 +369,61 @@ export default function Objects() {
             </div>
 
             {/* Filter Chips */}
-            <div style={{ display: "flex", gap: "6px", overflowX: "auto", paddingBottom: "2px" }}>
-              {["ALL", "SCRIPTED", "MINE", "PHYSICAL", "PHANTOM", "TEMP"].map((f) => {
-                const active = filter === f;
-                return (
-                  <button
-                    key={f}
-                    onClick={() => setFilter(f)}
-                    style={{
-                      minHeight: "36px",
-                      padding: "0 10px",
-                      borderRadius: V.rs,
-                      background: active ? V.pri : V.surf2,
-                      color: active ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2,
-                      border: "1px solid " + (active ? V.pri : V.outv),
-                      font: "700 10px/1 " + t.dfont,
-                      letterSpacing: ".08em",
-                      cursor: "pointer",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {f}
-                  </button>
-                );
-              })}
+            <div
+              style={{
+                display: "flex",
+                gap: "6px",
+                overflowX: "auto",
+                paddingBottom: "2px",
+              }}
+            >
+              {["ALL", "SCRIPTED", "MINE", "PHYSICAL", "PHANTOM", "TEMP"].map(
+                (f) => {
+                  const active = filter === f;
+                  return (
+                    <button
+                      key={f}
+                      onClick={() => setFilter(f)}
+                      style={{
+                        minHeight: "36px",
+                        padding: "0 10px",
+                        borderRadius: V.rs,
+                        background: active ? V.pri : V.surf2,
+                        color: active
+                          ? ink(V.pri, [V.bg, V.onpri, V.ink])
+                          : V.ink2,
+                        border: "1px solid " + (active ? V.pri : V.outv),
+                        font: "700 10px/1 " + t.dfont,
+                        letterSpacing: ".08em",
+                        cursor: "pointer",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {f}
+                    </button>
+                  );
+                },
+              )}
             </div>
           </div>
 
           {/* Objects List */}
-          <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: bleed ? "4px" : "8px",
+            }}
+          >
             {filteredObjects.length === 0 ? (
-              <div style={{ padding: "32px", textAlign: "center", color: V.ink2, font: "400 13px/1.4 " + t.font }}>
+              <div
+                style={{
+                  padding: "32px",
+                  textAlign: "center",
+                  color: V.ink2,
+                  font: "400 13px/1.4 " + t.font,
+                }}
+              >
                 No nearby objects match your filter.
               </div>
             ) : (
@@ -371,16 +435,35 @@ export default function Objects() {
                     style={{
                       padding: pad,
                       background: V.surf,
-                      border: bleed ? "none" : "1px solid " + (isTracked ? V.pri : V.outv),
-                      borderLeft: isTracked ? "4px solid " + V.pri : bleed ? "1px solid " + V.outv : undefined,
+                      border: bleed
+                        ? "none"
+                        : "1px solid " + (isTracked ? V.pri : V.outv),
+                      borderLeft: isTracked
+                        ? "4px solid " + V.pri
+                        : bleed
+                          ? "1px solid " + V.outv
+                          : undefined,
                       borderRadius: bleed ? 0 : V.rp,
                       display: "flex",
                       flexDirection: "column",
                       gap: "10px",
                     }}
                   >
-                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "10px" }}>
-                      <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        justifyContent: "space-between",
+                        gap: "10px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "flex-start",
+                          gap: "10px",
+                        }}
+                      >
                         <div
                           style={{
                             width: "36px",
@@ -398,26 +481,85 @@ export default function Objects() {
                           <Icon name={obj.icon || "box"} size={18} />
                         </div>
                         <div>
-                          <div style={{ font: "700 13.5px/1.2 " + t.dfont, color: V.ink }}>{obj.name}</div>
-                          <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
-                            Owner: <span style={{ color: V.ink }}>{obj.owner}</span> · {obj.prims} prims ({obj.landImpact} LI)
+                          <div
+                            style={{
+                              font: "700 13.5px/1.2 " + t.dfont,
+                              color: V.ink,
+                            }}
+                          >
+                            {obj.name}
                           </div>
-                          <div style={{ display: "flex", gap: "6px", alignItems: "center", marginTop: "4px", flexWrap: "wrap" }}>
-                            <span style={{ font: "600 10px/1 " + t.mfont, padding: "2px 6px", borderRadius: "3px", background: V.surf2, color: V.ink2, border: "1px solid " + V.outv }}>
+                          <div
+                            style={{
+                              font: "400 11px/1.3 " + t.font,
+                              color: V.ink2,
+                              marginTop: "2px",
+                            }}
+                          >
+                            Owner:{" "}
+                            <span style={{ color: V.ink }}>{obj.owner}</span> ·{" "}
+                            {obj.prims} prims ({obj.landImpact} LI)
+                          </div>
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "6px",
+                              alignItems: "center",
+                              marginTop: "4px",
+                              flexWrap: "wrap",
+                            }}
+                          >
+                            <span
+                              style={{
+                                font: "600 10px/1 " + t.mfont,
+                                padding: "2px 6px",
+                                borderRadius: "3px",
+                                background: V.surf2,
+                                color: V.ink2,
+                                border: "1px solid " + V.outv,
+                              }}
+                            >
                               {obj.distance}m · {obj.bearing} · {obj.zDelta}
                             </span>
                             {obj.scripted && (
-                              <span style={{ font: "600 10px/1 " + t.mfont, padding: "2px 6px", borderRadius: "3px", background: V.surf2, color: V.pri, border: "1px solid " + V.outv }}>
+                              <span
+                                style={{
+                                  font: "600 10px/1 " + t.mfont,
+                                  padding: "2px 6px",
+                                  borderRadius: "3px",
+                                  background: V.surf2,
+                                  color: V.pri,
+                                  border: "1px solid " + V.outv,
+                                }}
+                              >
                                 ⚡ {obj.cpuTime}
                               </span>
                             )}
                             {obj.temporary && (
-                              <span style={{ font: "600 10px/1 " + t.mfont, padding: "2px 6px", borderRadius: "3px", background: V.surf2, color: V.warn || "#f59e0b", border: "1px solid " + V.outv }}>
+                              <span
+                                style={{
+                                  font: "600 10px/1 " + t.mfont,
+                                  padding: "2px 6px",
+                                  borderRadius: "3px",
+                                  background: V.surf2,
+                                  color: V.warn || "#f59e0b",
+                                  border: "1px solid " + V.outv,
+                                }}
+                              >
                                 TEMP
                               </span>
                             )}
                             {obj.phantom && (
-                              <span style={{ font: "600 10px/1 " + t.mfont, padding: "2px 6px", borderRadius: "3px", background: V.surf2, color: V.ink2, border: "1px solid " + V.outv }}>
+                              <span
+                                style={{
+                                  font: "600 10px/1 " + t.mfont,
+                                  padding: "2px 6px",
+                                  borderRadius: "3px",
+                                  background: V.surf2,
+                                  color: V.ink2,
+                                  border: "1px solid " + V.outv,
+                                }}
+                              >
                                 PHANTOM
                               </span>
                             )}
@@ -442,7 +584,15 @@ export default function Objects() {
                     </div>
 
                     {/* Action buttons row */}
-                    <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", borderTop: "1px solid " + V.outv, paddingTop: "8px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "6px",
+                        flexWrap: "wrap",
+                        borderTop: "1px solid " + V.outv,
+                        paddingTop: "8px",
+                      }}
+                    >
                       <KInteractive
                         as="button"
                         onClick={() => actions.notify(`Touched ${obj.name}`)}
@@ -485,7 +635,9 @@ export default function Objects() {
 
                       <KInteractive
                         as="button"
-                        onClick={() => actions.notify(`Took ${obj.name} to Inventory`)}
+                        onClick={() =>
+                          actions.notify(`Took ${obj.name} to Inventory`)
+                        }
                         style={actBtn(false)}
                         aria-label={`Take ${obj.name}`}
                       >
@@ -516,7 +668,14 @@ export default function Objects() {
       {curSub === "INSPECT" && (
         <>
           {/* Back button and quick switcher */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "8px",
+            }}
+          >
             <KInteractive
               as="button"
               onClick={() => actions.setTab("Objects", "NEARBY")}
@@ -563,14 +722,31 @@ export default function Objects() {
                 <Icon name="box" size={24} />
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ font: "700 16px/1.2 " + t.dfont, color: V.ink }}>{selectedObj.name}</div>
-                <div style={{ font: "400 11px/1.3 " + t.mfont, color: V.ink2, marginTop: "2px", wordBreak: "break-all" }}>
+                <div style={{ font: "700 16px/1.2 " + t.dfont, color: V.ink }}>
+                  {selectedObj.name}
+                </div>
+                <div
+                  style={{
+                    font: "400 11px/1.3 " + t.mfont,
+                    color: V.ink2,
+                    marginTop: "2px",
+                    wordBreak: "break-all",
+                  }}
+                >
                   UUID: {selectedObj.uuid}
                 </div>
               </div>
             </div>
 
-            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", borderTop: "1px solid " + V.outv, paddingTop: "8px" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "8px",
+                flexWrap: "wrap",
+                borderTop: "1px solid " + V.outv,
+                paddingTop: "8px",
+              }}
+            >
               <KInteractive
                 as="button"
                 onClick={() => actions.notify(`Touched ${selectedObj.name}`)}
@@ -590,8 +766,17 @@ export default function Objects() {
                     body: `Select an amount to pay to ${selectedObj.owner}:`,
                     meta: `Object UUID: ${selectedObj.uuid}`,
                     buttons: [
-                      { label: "PAY L$ 10", pick: () => actions.notify(`Paid L$ 10 to ${selectedObj.owner}`) },
-                      { label: "PAY L$ 50", primary: true, pick: () => actions.notify(`Paid L$ 50 to ${selectedObj.owner}`) },
+                      {
+                        label: "PAY L$ 10",
+                        pick: () =>
+                          actions.notify(`Paid L$ 10 to ${selectedObj.owner}`),
+                      },
+                      {
+                        label: "PAY L$ 50",
+                        primary: true,
+                        pick: () =>
+                          actions.notify(`Paid L$ 50 to ${selectedObj.owner}`),
+                      },
                       { label: "CANCEL", dim: true },
                     ],
                   })
@@ -604,7 +789,9 @@ export default function Objects() {
 
               <KInteractive
                 as="button"
-                onClick={() => actions.notify(`${selectedObj.name} — scripts reset`)}
+                onClick={() =>
+                  actions.notify(`${selectedObj.name} — scripts reset`)
+                }
                 style={actBtn(false)}
               >
                 <Icon name="refresh-cw" size={13} />
@@ -623,7 +810,13 @@ export default function Objects() {
           </div>
 
           {/* Details Grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: bleed ? "6px" : "10px" }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: bleed ? "6px" : "10px",
+            }}
+          >
             {/* Ownership Card */}
             <div
               style={{
@@ -636,19 +829,46 @@ export default function Objects() {
                 gap: "8px",
               }}
             >
-              <div style={{ font: "700 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em" }}>OWNERSHIP & CREATION</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px", font: "400 12px/1.4 " + t.font }}>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div
+                style={{
+                  font: "700 11px/1 " + t.dfont,
+                  color: V.ink2,
+                  letterSpacing: ".1em",
+                }}
+              >
+                OWNERSHIP & CREATION
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                  font: "400 12px/1.4 " + t.font,
+                }}
+              >
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <span style={{ color: V.ink2 }}>Owner:</span>
-                  <span style={{ fontWeight: 600, color: V.ink }}>{selectedObj.owner}</span>
+                  <span style={{ fontWeight: 600, color: V.ink }}>
+                    {selectedObj.owner}
+                  </span>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <span style={{ color: V.ink2 }}>Creator:</span>
-                  <span style={{ fontWeight: 600, color: V.ink }}>{selectedObj.creator}</span>
+                  <span style={{ fontWeight: 600, color: V.ink }}>
+                    {selectedObj.creator}
+                  </span>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <span style={{ color: V.ink2 }}>Group:</span>
-                  <span style={{ fontWeight: 600, color: V.ink }}>{selectedObj.group}</span>
+                  <span style={{ fontWeight: 600, color: V.ink }}>
+                    {selectedObj.group}
+                  </span>
                 </div>
               </div>
             </div>
@@ -665,23 +885,54 @@ export default function Objects() {
                 gap: "8px",
               }}
             >
-              <div style={{ font: "700 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em" }}>TRANSFORM & GEOMETRY</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px", font: "400 12px/1.4 " + t.font }}>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div
+                style={{
+                  font: "700 11px/1 " + t.dfont,
+                  color: V.ink2,
+                  letterSpacing: ".1em",
+                }}
+              >
+                TRANSFORM & GEOMETRY
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                  font: "400 12px/1.4 " + t.font,
+                }}
+              >
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <span style={{ color: V.ink2 }}>Position:</span>
-                  <span style={{ fontFamily: t.mfont, color: V.ink }}>{selectedObj.pos}</span>
+                  <span style={{ fontFamily: t.mfont, color: V.ink }}>
+                    {selectedObj.pos}
+                  </span>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <span style={{ color: V.ink2 }}>Rotation:</span>
-                  <span style={{ fontFamily: t.mfont, color: V.ink }}>{selectedObj.rot}</span>
+                  <span style={{ fontFamily: t.mfont, color: V.ink }}>
+                    {selectedObj.rot}
+                  </span>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <span style={{ color: V.ink2 }}>Scale:</span>
-                  <span style={{ fontFamily: t.mfont, color: V.ink }}>{selectedObj.scale}</span>
+                  <span style={{ fontFamily: t.mfont, color: V.ink }}>
+                    {selectedObj.scale}
+                  </span>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <span style={{ color: V.ink2 }}>Prims / Land Impact:</span>
-                  <span style={{ fontWeight: 600, color: V.ink }}>{selectedObj.prims} prims · {selectedObj.landImpact} LI</span>
+                  <span style={{ fontWeight: 600, color: V.ink }}>
+                    {selectedObj.prims} prims · {selectedObj.landImpact} LI
+                  </span>
                 </div>
               </div>
             </div>
@@ -698,22 +949,111 @@ export default function Objects() {
                 gap: "8px",
               }}
             >
-              <div style={{ font: "700 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em" }}>PERMISSIONS MATRIX</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px", font: "400 12px/1.4 " + t.font }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div
+                style={{
+                  font: "700 11px/1 " + t.dfont,
+                  color: V.ink2,
+                  letterSpacing: ".1em",
+                }}
+              >
+                PERMISSIONS MATRIX
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                  font: "400 12px/1.4 " + t.font,
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <span style={{ color: V.ink2 }}>Your Rights:</span>
-                  <div style={{ display: "flex", gap: "6px", fontFamily: t.mfont, fontSize: "11px" }}>
-                    <span style={{ color: selectedObj.perms.mod ? V.ok || "#22c55e" : V.ink2 }}>MOD</span>
-                    <span style={{ color: selectedObj.perms.copy ? V.ok || "#22c55e" : V.ink2 }}>COPY</span>
-                    <span style={{ color: selectedObj.perms.trans ? V.ok || "#22c55e" : V.ink2 }}>TRANS</span>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "6px",
+                      fontFamily: t.mfont,
+                      fontSize: "11px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: selectedObj.perms.mod
+                          ? V.ok || "#22c55e"
+                          : V.ink2,
+                      }}
+                    >
+                      MOD
+                    </span>
+                    <span
+                      style={{
+                        color: selectedObj.perms.copy
+                          ? V.ok || "#22c55e"
+                          : V.ink2,
+                      }}
+                    >
+                      COPY
+                    </span>
+                    <span
+                      style={{
+                        color: selectedObj.perms.trans
+                          ? V.ok || "#22c55e"
+                          : V.ink2,
+                      }}
+                    >
+                      TRANS
+                    </span>
                   </div>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <span style={{ color: V.ink2 }}>Next Owner:</span>
-                  <div style={{ display: "flex", gap: "6px", fontFamily: t.mfont, fontSize: "11px" }}>
-                    <span style={{ color: selectedObj.nextPerms.mod ? V.ok || "#22c55e" : V.ink2 }}>MOD</span>
-                    <span style={{ color: selectedObj.nextPerms.copy ? V.ok || "#22c55e" : V.ink2 }}>COPY</span>
-                    <span style={{ color: selectedObj.nextPerms.trans ? V.ok || "#22c55e" : V.ink2 }}>TRANS</span>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "6px",
+                      fontFamily: t.mfont,
+                      fontSize: "11px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        color: selectedObj.nextPerms.mod
+                          ? V.ok || "#22c55e"
+                          : V.ink2,
+                      }}
+                    >
+                      MOD
+                    </span>
+                    <span
+                      style={{
+                        color: selectedObj.nextPerms.copy
+                          ? V.ok || "#22c55e"
+                          : V.ink2,
+                      }}
+                    >
+                      COPY
+                    </span>
+                    <span
+                      style={{
+                        color: selectedObj.nextPerms.trans
+                          ? V.ok || "#22c55e"
+                          : V.ink2,
+                      }}
+                    >
+                      TRANS
+                    </span>
                   </div>
                 </div>
               </div>
@@ -731,23 +1071,54 @@ export default function Objects() {
                 gap: "8px",
               }}
             >
-              <div style={{ font: "700 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em" }}>SCRIPT ENGINE & RUNTIME</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px", font: "400 12px/1.4 " + t.font }}>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div
+                style={{
+                  font: "700 11px/1 " + t.dfont,
+                  color: V.ink2,
+                  letterSpacing: ".1em",
+                }}
+              >
+                SCRIPT ENGINE & RUNTIME
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                  font: "400 12px/1.4 " + t.font,
+                }}
+              >
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <span style={{ color: V.ink2 }}>Active Scripts:</span>
-                  <span style={{ fontWeight: 600, color: V.ink }}>{selectedObj.scriptsCount} running</span>
+                  <span style={{ fontWeight: 600, color: V.ink }}>
+                    {selectedObj.scriptsCount} running
+                  </span>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <span style={{ color: V.ink2 }}>CPU Frame Time:</span>
-                  <span style={{ fontFamily: t.mfont, color: V.pri }}>{selectedObj.cpuTime}</span>
+                  <span style={{ fontFamily: t.mfont, color: V.pri }}>
+                    {selectedObj.cpuTime}
+                  </span>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <span style={{ color: V.ink2 }}>Script Memory:</span>
-                  <span style={{ fontFamily: t.mfont, color: V.ink }}>{selectedObj.memory}</span>
+                  <span style={{ fontFamily: t.mfont, color: V.ink }}>
+                    {selectedObj.memory}
+                  </span>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
                   <span style={{ color: V.ink2 }}>Listen Channel:</span>
-                  <span style={{ fontFamily: t.mfont, color: V.ink }}>{selectedObj.channel}</span>
+                  <span style={{ fontFamily: t.mfont, color: V.ink }}>
+                    {selectedObj.channel}
+                  </span>
                 </div>
               </div>
             </div>

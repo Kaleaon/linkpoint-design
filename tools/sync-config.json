@@ -18,11 +18,7 @@
     "are this repo's own work coming back, so they must never be scheduled as work",
     "for this repo -- that is the echo loop these patterns exist to break."
   ],
-  "skip_authors": [
-    "github-actions[bot]",
-    "github-actions",
-    "dependabot[bot]"
-  ],
+  "skip_authors": ["github-actions[bot]", "github-actions", "dependabot[bot]"],
   "skip_subjects": [
     "(?i)\\b(sync|synced|syncing|import|imported)\\b.*\\blinkpoint-design\\b",
     "(?i)^(chore|feat|fix)\\(design\\):\\s*(auto-)?(sync|import)",
@@ -48,60 +44,125 @@
     {
       "id": "screens",
       "title": "Screens",
-      "match": ["src/screens/**", "src/views/**", "app/**", "App.tsx", "src/App.tsx"],
-      "targets": ["`docs/index.html` — screen templates + `SCREENS`/`CSUB`", "`docs/react/src/screens/`"]
+      "match": [
+        "src/screens/**",
+        "src/views/**",
+        "app/**",
+        "App.tsx",
+        "src/App.tsx"
+      ],
+      "targets": [
+        "`docs/index.html` — screen templates + `SCREENS`/`CSUB`",
+        "`docs/react/src/screens/`"
+      ]
     },
     {
       "id": "components",
       "title": "Components",
       "match": ["src/components/**", "src/ui/**"],
-      "targets": ["`docs/index.html` — shared renderers (cards, header, tabs)", "`docs/react/src/components/`"]
+      "targets": [
+        "`docs/index.html` — shared renderers (cards, header, tabs)",
+        "`docs/react/src/components/`"
+      ]
     },
     {
       "id": "theme",
       "title": "Theme & tokens",
-      "match": ["src/theme/**", "src/index.css", "**/*.css", "public/manifest.webmanifest"],
-      "targets": ["`docs/index.html` — `PALETTES` / `LAYOUTS`", "`docs/react/src/theme/`", "the `docs/*.json` colour packs"]
+      "match": [
+        "src/theme/**",
+        "src/index.css",
+        "**/*.css",
+        "public/manifest.webmanifest"
+      ],
+      "targets": [
+        "`docs/index.html` — `PALETTES` / `LAYOUTS`",
+        "`docs/react/src/theme/`",
+        "the `docs/*.json` colour packs"
+      ]
     },
     {
       "id": "state",
       "title": "State & data",
-      "match": ["src/context/**", "src/hooks/**", "src/data/**", "src/store/**"],
-      "targets": ["`docs/index.html` — the `render()` view-model", "`docs/react/src/{context,hooks,data}/`"]
+      "match": [
+        "src/context/**",
+        "src/hooks/**",
+        "src/data/**",
+        "src/store/**"
+      ],
+      "targets": [
+        "`docs/index.html` — the `render()` view-model",
+        "`docs/react/src/{context,hooks,data}/`"
+      ]
     },
     {
       "id": "viewer",
       "title": "Viewer & protocol features",
-      "match": ["src/linkpoint/**", "src/viewer/**", "src/lib/**", "LLSD-java/**", "server.ts", "benchmark.ts"],
-      "targets": ["`docs/ROADMAP.md` — decide whether the mockup has to model this surface yet"]
+      "match": [
+        "src/linkpoint/**",
+        "src/viewer/**",
+        "src/lib/**",
+        "LLSD-java/**",
+        "server.ts",
+        "benchmark.ts"
+      ],
+      "targets": [
+        "`docs/ROADMAP.md` — decide whether the mockup has to model this surface yet"
+      ]
     },
     {
       "id": "tests",
       "title": "Tests",
-      "match": ["src/__tests__/**", "**/__tests__/**", "**/*.test.*", "**/*.spec.*", "vitest.setup.ts"],
-      "targets": ["the headless verification pass over `docs/index.html` + `docs/react/` (see `docs/ROADMAP.md`)"]
+      "match": [
+        "src/__tests__/**",
+        "**/__tests__/**",
+        "**/*.test.*",
+        "**/*.spec.*",
+        "vitest.setup.ts"
+      ],
+      "targets": [
+        "the headless verification pass over `docs/index.html` + `docs/react/` (see `docs/ROADMAP.md`)"
+      ]
     },
     {
       "id": "platform",
       "title": "Build & platform",
       "match": [
-        "package.json", "*.config.*", "tsconfig.json", "babel.config.js", "app.json",
-        ".env.example", "*.patch", "*.diff",
-        "android/**", "ios/**", "electron/**", "public/**", "scripts/**", ".github/**"
+        "package.json",
+        "*.config.*",
+        "tsconfig.json",
+        "babel.config.js",
+        "app.json",
+        ".env.example",
+        "*.patch",
+        "*.diff",
+        "android/**",
+        "ios/**",
+        "electron/**",
+        "public/**",
+        "scripts/**",
+        ".github/**"
       ],
-      "targets": ["usually no design change — confirm `docs/react/` still builds the same way"]
+      "targets": [
+        "usually no design change — confirm `docs/react/` still builds the same way"
+      ]
     },
     {
       "id": "docs",
       "title": "Docs & specs",
       "match": ["*.md", "docs/**", "metadata.json", "*.html"],
-      "targets": ["`docs/ROADMAP.md`", "`docs/github.md`", "`docs/mockup-to-react.yaml`"]
+      "targets": [
+        "`docs/ROADMAP.md`",
+        "`docs/github.md`",
+        "`docs/mockup-to-react.yaml`"
+      ]
     }
   ],
 
   "default_area": {
     "id": "other",
     "title": "Unclassified",
-    "targets": ["triage by hand, then add a matching rule to `tools/sync-config.json`"]
+    "targets": [
+      "triage by hand, then add a matching rule to `tools/sync-config.json`"
+    ]
   }
 }

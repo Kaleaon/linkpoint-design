@@ -11,13 +11,14 @@ const FormInput = forwardRef(function FormInput(
     className = "",
     ...props
   },
-  ref
+  ref,
 ) {
   const context = useContext(FormFieldContext);
 
   const id = idProp || context?.id;
   const ariaDescribedBy = ariaDescribedByProp || context?.ariaDescribedBy;
-  const ariaInvalid = ariaInvalidProp !== undefined ? ariaInvalidProp : context?.ariaInvalid;
+  const ariaInvalid =
+    ariaInvalidProp !== undefined ? ariaInvalidProp : context?.ariaInvalid;
   const ariaErrorMessage = ariaErrorMessageProp || context?.ariaErrorMessage;
 
   return (

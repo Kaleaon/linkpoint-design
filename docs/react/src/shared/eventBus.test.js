@@ -7,7 +7,10 @@ describe("EventBus Unit Tests", () => {
     const listener = vi.fn();
     const unsubscribe = bus.subscribe(listener);
 
-    const intent = { type: "DIALOG_ACTION", payload: { actionId: "confirm", label: "ALLOW" } };
+    const intent = {
+      type: "DIALOG_ACTION",
+      payload: { actionId: "confirm", label: "ALLOW" },
+    };
     bus.dispatch(intent);
 
     expect(listener).toHaveBeenCalledTimes(1);
@@ -15,8 +18,8 @@ describe("EventBus Unit Tests", () => {
       expect.objectContaining({
         type: "DIALOG_ACTION",
         payload: { actionId: "confirm", label: "ALLOW" },
-        timestamp: expect.any(String)
-      })
+        timestamp: expect.any(String),
+      }),
     );
 
     unsubscribe();
@@ -26,7 +29,10 @@ describe("EventBus Unit Tests", () => {
 
   it("serializes payloads and logs history", () => {
     const bus = new EventBus();
-    bus.dispatchIntent("FLOATER_TOGGLE", { id: "Chat", domNode: { fake: true } });
+    bus.dispatchIntent("FLOATER_TOGGLE", {
+      id: "Chat",
+      domNode: { fake: true },
+    });
 
     const logs = bus.getLogs();
     expect(logs).toHaveLength(1);
@@ -58,13 +64,18 @@ describe("intentReducer Unit Tests", () => {
     flOpen: { Chat: true, Radar: true },
     flMin: { Chat: false, Radar: false },
     flZ: ["Radar", "Chat"],
-    screen: "Chat"
+    screen: "Chat",
   };
 
   it("handles DIALOG_ACTION and DIALOG_BUTTON_CLICK", () => {
     const intent = {
       type: "DIALOG_ACTION",
-      payload: { dialogKey: "Permissions", actionId: "ALLOW ALWAYS", label: "ALLOW ALWAYS", title: "“Aurora Dance HUD” wants to animate" }
+      payload: {
+        dialogKey: "Permissions",
+        actionId: "ALLOW ALWAYS",
+        label: "ALLOW ALWAYS",
+        title: "“Aurora Dance HUD” wants to animate",
+      },
     };
 
     const nextState = intentReducer(initialState, intent);
@@ -73,7 +84,10 @@ describe("intentReducer Unit Tests", () => {
   });
 
   it("handles DIALOG_CLOSE and DIALOG_DISMISS", () => {
-    const intent = { type: "DIALOG_CLOSE", payload: { dialogKey: "Permissions" } };
+    const intent = {
+      type: "DIALOG_CLOSE",
+      payload: { dialogKey: "Permissions" },
+    };
     const nextState = intentReducer(initialState, intent);
     expect(nextState.dialog).toBeNull();
   });
@@ -96,7 +110,10 @@ describe("intentReducer Unit Tests", () => {
   });
 
   it("handles QUICK_CHAT_SUBMIT", () => {
-    const intent = { type: "QUICK_CHAT_SUBMIT", payload: { message: "Hello Grid!" } };
+    const intent = {
+      type: "QUICK_CHAT_SUBMIT",
+      payload: { message: "Hello Grid!" },
+    };
     const nextState = intentReducer(initialState, intent);
     expect(nextState.toast).toBe("Local Chat (Hello Grid!)");
   });
