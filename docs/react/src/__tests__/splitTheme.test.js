@@ -192,7 +192,7 @@ describe("Split Theme Context Architecture", () => {
       if (key === "cyberpunk") {
         expect(tokens.LK.card).toBe("chamfer");
         expect(tokens.V.rs).toBe("0px");
-        expect(runtime.nav).toBe("rail");
+        expect(tokens.t.nav.toLowerCase()).toBe("rail");
       }
       if (key === "press") {
         expect(tokens.LK.card).toBe("quiet");
