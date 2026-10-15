@@ -1446,7 +1446,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
           <sc-if value="{{ isSearchScreen }}" hint-placeholder-val="{{ false }}">
             <div style="flex:1;min-height:0;display:flex;flex-direction:column">
               <div style="flex:none;display:flex;align-items:center;gap:8px;padding:14px 16px 10px">
-                <div onClick="{{ searchBack }}" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer"><i data-lucide="chevron-left" style="width:22px;height:22px"></i></div>
+                <div onClick="{{ searchBack }}" onKeyDown="{{ searchBackKeyDown }}" role="button" tabindex="0" aria-label="Go back" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer"><i data-lucide="chevron-left" style="width:22px;height:22px"></i></div>
                 <div>
                   <div style="font:700 18px/1 var(--dfont,'JetBrains Mono');letter-spacing:.16em;color:var(--pri,#6CFF9A)">FIND RESIDENTS</div>
                   <div style="font:400 10.5px/1.3 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:2px">&gt; search the grid to IM or add a friend</div>
@@ -4044,6 +4044,7 @@ copyConsoleLogsKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.pre
 downloadConsoleLogsKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify("Downloading opensim-grid-log.txt..."); } },
       isSearchScreen: s.screen === "Search",
       searchBack: () => this.set("screen", s.searchFrom || "Friends"),
+      searchBackKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("screen", s.searchFrom || "Friends"); } },
       searchQuery: s.searchQuery, searchQueryPick: (e) => this.set("searchQuery", e.target.value),
       searchResults: searchResultsList,
       searchEmptyText: searchQ.length < 2 ? "> type a name to search the grid" : "> no residents match",

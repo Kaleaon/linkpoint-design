@@ -47,3 +47,6 @@
 ## 2026-10-12 - Keyboard Accessibility for Dock Editor and Flyout Controls
 **Learning:** Custom controls like "DONE", "+", "RUN", and "HIDE" used in the Dock Editor and Flyout menus inside `docs/index.html` were implemented as clickable `<span>` or `<div>` elements but lacked essential keyboard and screen reader accessibility, rendering them unusable without a mouse.
 **Action:** When implementing custom text-based buttons or action triggers in the HTML DSL, verify they are accompanied by `role="button"`, `tabindex="0"`, a descriptive `aria-label`, and `onKeyDown` bindings matching the `onClick` functionality to ensure parity and robust accessibility.
+## 2024-11-20 - Add ARIA Labels and Keyboard Access to Search Back Buttons
+**Learning:** When porting or maintaining icon-only navigation elements (like header "Go back" chevron buttons) created with `<div>`, they often lack basic accessibility attributes. For these to function as interactive buttons for all users, they must receive semantic traits.
+**Action:** When inspecting or adding icon-only navigation controls built with `div` or `span` tags, ensure they have `role="button"`, `tabIndex={0}`, an explicit `aria-label` (e.g., "Go back"), and `onKeyDown` handlers for Space and Enter that call `e.preventDefault()` to mirror native `<button>` behavior.
