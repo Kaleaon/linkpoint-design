@@ -13,12 +13,7 @@ export default function Login() {
   const [animatedLogo, setAnimatedLogo] = useState(true);
 
   const isGrid = state.loginMode === "grid";
-  const fields = isGrid
-    ? [
-        { label: "AVATAR NAME", value: "Ruth   /   Resident" },
-        { label: "PASSWORD", value: "••••••••" },
-      ]
-    : [{ label: "AVATAR NAME", value: "Ruth Resident" }];
+  const hasSavedAccounts = Boolean(state.storedAccounts && state.storedAccounts.length > 0);
 
   return (
     <div style={{ flex: 1, minHeight: 0, position: "relative", overflowY: "auto" }}>
@@ -184,15 +179,128 @@ export default function Login() {
             </div>
           ) : null}
 
-          {fields.map((lf) => (
-            <FormField key={lf.label} label={lf.label}>
+          {hasSavedAccounts ? (
+            <FormField label="SAVED PROFILE" description="Select a saved avatar profile">
+              <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                <select
+                  value={state.selectedAccountId || ""}
+                  onChange={(e) => actions.selectAccountProfile(e.target.value)}
+                  aria-label="Select saved account profile"
+                  style={{
+                    flex: 1,
+                    minHeight: "36px",
+                    height: "36px",
+                    boxSizing: "border-box",
+                    padding: "0 10px",
+                    border: "1px solid " + V.outv,
+                    borderRadius: V.rs,
+                    background: V.bg,
+                    font: "400 12px/1 " + t.font,
+                    color: V.ink,
+                    outline: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  <option value="">-- Custom Profile --</option>
+                  {state.storedAccounts.map((acc) => (
+                    <option key={acc.id} value={acc.id}>
+                      {acc.profileLabel || `${acc.avatarName} (${acc.gridKey})`}
+                    </option>
+                  ))}
+                </select>
+                {state.selectedAccountId ? (
+                  <div
+                    onClick={() => actions.removeAccountProfile(state.selectedAccountId)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        actions.removeAccountProfile(state.selectedAccountId);
+                      }
+                    }}
+                    aria-label="Remove Profile"
+                    title="Remove Profile"
+                    style={{
+                      height: "36px",
+                      padding: "0 10px",
+                      border: "1px solid " + V.err,
+                      borderRadius: V.rs,
+                      background: V.surf,
+                      color: V.err,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "4px",
+                      font: "600 10px/1 " + t.font,
+                      letterSpacing: ".1em",
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    <Icon name="trash" size={13} />
+                    REMOVE
+                  </div>
+                ) : null}
+              </div>
+            </FormField>
+          ) : null}
+
+          <FormField label="AVATAR NAME">
+            <FormInput
+              value={state.loginAvatarName || ""}
+              onChange={(e) => actions.setLoginAvatarName(e.target.value)}
+              placeholder="e.g. Ruth Resident"
+              aria-label="Avatar Name"
+              style={{ minHeight: "36px", height: "36px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 12px/1 " + t.font, color: V.ink }}
+            />
+          </FormField>
+
+          {isGrid ? (
+            <FormField label="PASSWORD">
               <FormInput
-                value={lf.value}
-                readOnly
-                style={{ minHeight: "36px", height: "36px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 12px/1 " + t.font, color: V.ink2 }}
+                type="password"
+                value={state.loginPassword || ""}
+                onChange={(e) => actions.setLoginPassword(e.target.value)}
+                placeholder="••••••••"
+                aria-label="Password"
+                style={{ minHeight: "36px", height: "36px", width: "100%", boxSizing: "border-box", display: "flex", alignItems: "center", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg, font: "400 12px/1 " + t.font, color: V.ink }}
               />
             </FormField>
-          ))}
+          ) : null}
+
+          <div style={{ display: "flex", gap: "6px", marginTop: "2px" }}>
+            <div
+              onClick={() => actions.saveAccountProfile()}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.saveAccountProfile();
+                }
+              }}
+              aria-label="Save Profile"
+              style={{
+                flex: 1,
+                height: "34px",
+                borderRadius: V.rs,
+                background: V.surf2,
+                color: V.pri,
+                border: "1px solid " + V.outv,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "6px",
+                font: "600 10.5px/1 " + t.font,
+                letterSpacing: ".14em",
+                cursor: "pointer",
+              }}
+            >
+              <Icon name="bookmark" size={13} />
+              SAVE PROFILE
+            </div>
+          </div>
 
           {!isGrid ? (
             <div style={{ font: "400 10px/1.4 " + t.font, color: V.ink2 }}>&gt; Offline mode: no grid connection, chat stays local.</div>
