@@ -11,7 +11,12 @@ import { useRef, useCallback, useEffect } from "react";
  * @param {string} options.ariaLabel - Accessible label for the tablist container.
  * @returns {Object} { containerProps, getTabProps }
  */
-export function useTabNavigation({ itemCount, activeIndex, onSelect, ariaLabel }) {
+export function useTabNavigation({
+  itemCount,
+  activeIndex,
+  onSelect,
+  ariaLabel,
+}) {
   const tabRefs = useRef([]);
   const isKeyboardNav = useRef(false);
 
@@ -28,7 +33,11 @@ export function useTabNavigation({ itemCount, activeIndex, onSelect, ariaLabel }
   // Focus newly active tab if selection change was triggered via keyboard navigation
   useEffect(() => {
     if (isKeyboardNav.current) {
-      if (safeActiveIndex >= 0 && safeActiveIndex < itemCount && tabRefs.current[safeActiveIndex]) {
+      if (
+        safeActiveIndex >= 0 &&
+        safeActiveIndex < itemCount &&
+        tabRefs.current[safeActiveIndex]
+      ) {
         tabRefs.current[safeActiveIndex].focus();
       }
       isKeyboardNav.current = false;

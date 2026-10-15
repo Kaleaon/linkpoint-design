@@ -12,42 +12,140 @@ export default function SystemDialog() {
   const { state, actions } = useApp();
   const { V, t } = useThemeTokens();
   const dialogRef = useRef(null);
-  const dlg = state.dialog && (typeof state.dialog === "object" ? state.dialog : DIALOGS[state.dialog]);
+  const dlg =
+    state.dialog &&
+    (typeof state.dialog === "object" ? state.dialog : DIALOGS[state.dialog]);
 
-  useFocusTrap(dialogRef, () => actions.dispatchIntent("DIALOG_CLOSE", { dialogKey: state.dialog }), !!dlg);
+  useFocusTrap(
+    dialogRef,
+    () => actions.dispatchIntent("DIALOG_CLOSE", { dialogKey: state.dialog }),
+    !!dlg
+  );
   if (!dlg) return null;
 
-  const btnBase = { flex: "1 1 40%", minHeight: "46px", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid " + V.outv, borderRadius: V.rs, font: "700 11px/1 " + t.font, letterSpacing: ".14em", color: V.ink, textAlign: "center", padding: "0 8px", cursor: "pointer" };
+  const btnBase = {
+    flex: "1 1 40%",
+    minHeight: "46px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    border: "1px solid " + V.outv,
+    borderRadius: V.rs,
+    font: "700 11px/1 " + t.font,
+    letterSpacing: ".14em",
+    color: V.ink,
+    textAlign: "center",
+    padding: "0 8px",
+    cursor: "pointer",
+  };
 
   return (
-    <div style={{ position: "absolute", inset: 0, zIndex: 9, background: "rgba(0,0,0,.62)", display: "flex", alignItems: "flex-end" }}>
+    <div
+      style={{
+        position: "absolute",
+        inset: 0,
+        zIndex: 9,
+        background: "rgba(0,0,0,.62)",
+        display: "flex",
+        alignItems: "flex-end",
+      }}
+    >
       <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby="dialog-title"
         aria-describedby="dialog-desc"
-        style={{ width: "100%", background: V.surf, borderTop: "1px solid " + V.pri, borderRadius: V.rl + " " + V.rl + " 0 0", padding: "18px 16px 22px" }}
+        style={{
+          width: "100%",
+          background: V.surf,
+          borderTop: "1px solid " + V.pri,
+          borderRadius: V.rl + " " + V.rl + " 0 0",
+          padding: "18px 16px 22px",
+        }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "9px", marginBottom: "10px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "9px",
+            marginBottom: "10px",
+          }}
+        >
           <Icon name={dlg.icon} size={18} style={{ color: V.pri }} />
-          <span style={{ flex: 1, font: "600 12px/1 " + t.font, letterSpacing: ".2em", color: V.pri }}>{dlg.kind}</span>
           <span
-            onClick={() => actions.dispatchIntent("DIALOG_CLOSE", { dialogKey: state.dialog })}
+            style={{
+              flex: 1,
+              font: "600 12px/1 " + t.font,
+              letterSpacing: ".2em",
+              color: V.pri,
+            }}
+          >
+            {dlg.kind}
+          </span>
+          <span
+            onClick={() =>
+              actions.dispatchIntent("DIALOG_CLOSE", {
+                dialogKey: state.dialog,
+              })
+            }
             role="button"
             tabIndex={0}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.dispatchIntent("DIALOG_CLOSE", { dialogKey: state.dialog }); } }}
-            style={{ font: "400 11px/1 " + t.font, color: V.ink2, cursor: "pointer" }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                actions.dispatchIntent("DIALOG_CLOSE", {
+                  dialogKey: state.dialog,
+                });
+              }
+            }}
+            style={{
+              font: "400 11px/1 " + t.font,
+              color: V.ink2,
+              cursor: "pointer",
+            }}
           >
             CLOSE
           </span>
         </div>
-        <div id="dialog-title" style={{ font: "600 15px/1.35 " + t.font, color: V.ink }}>{dlg.title}</div>
-        <div id="dialog-desc" style={{ font: "400 12.5px/1.65 " + t.font, color: V.ink2, marginTop: "8px" }}>{dlg.body}</div>
+        <div
+          id="dialog-title"
+          style={{ font: "600 15px/1.35 " + t.font, color: V.ink }}
+        >
+          {dlg.title}
+        </div>
+        <div
+          id="dialog-desc"
+          style={{
+            font: "400 12.5px/1.65 " + t.font,
+            color: V.ink2,
+            marginTop: "8px",
+          }}
+        >
+          {dlg.body}
+        </div>
         {dlg.meta ? (
-          <div style={{ marginTop: "10px", border: "1px dashed " + V.outv, borderRadius: V.rs, padding: "9px", font: "400 11px/1.6 " + t.font, color: V.ink2 }}>{dlg.meta}</div>
+          <div
+            style={{
+              marginTop: "10px",
+              border: "1px dashed " + V.outv,
+              borderRadius: V.rs,
+              padding: "9px",
+              font: "400 11px/1.6 " + t.font,
+              color: V.ink2,
+            }}
+          >
+            {dlg.meta}
+          </div>
         ) : null}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "14px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "8px",
+            marginTop: "14px",
+          }}
+        >
           {/* Every button closes the sheet and posts a toast via central intent dispatch */}
           {dlg.buttons.map((b, i) => (
             <div
@@ -58,7 +156,7 @@ export default function SystemDialog() {
                   dialogKey: state.dialog,
                   actionId: b.label,
                   label: b.label,
-                  title: dlg.title
+                  title: dlg.title,
                 });
               }}
               role="button"
@@ -70,11 +168,18 @@ export default function SystemDialog() {
                     dialogKey: state.dialog,
                     actionId: b.label,
                     label: b.label,
-                    title: dlg.title
+                    title: dlg.title,
                   });
                 }
               }}
-              style={{ ...btnBase, ...(b.primary ? { background: V.pri, color: V.onpri, borderColor: V.pri } : b.dim ? { color: V.ink2 } : null) }}
+              style={{
+                ...btnBase,
+                ...(b.primary
+                  ? { background: V.pri, color: V.onpri, borderColor: V.pri }
+                  : b.dim
+                    ? { color: V.ink2 }
+                    : null),
+              }}
             >
               {b.label}
             </div>

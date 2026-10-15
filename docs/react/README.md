@@ -24,13 +24,13 @@ row, and its rail wordmark (was still "GRIDLINK") are now ported in too.
 
 Translation key used throughout:
 
-| `.dc.html` DSL | React |
-|---|---|
-| `{{ x }}` | `{x}` |
+| `.dc.html` DSL                                   | React                     |
+| ------------------------------------------------ | ------------------------- |
+| `{{ x }}`                                        | `{x}`                     |
 | `<sc-for list="{{ list }}" as="item">…</sc-for>` | `{list.map(item => (…))}` |
-| `<sc-if value="{{ cond }}">…</sc-if>` | `{cond && (…)}` |
-| `sc-camel-on-click="{{ x.pick }}"` | `onClick={x.pick}` |
-| `style="{{ x.style }}"` (already a JS object) | `style={x.style}` |
+| `<sc-if value="{{ cond }}">…</sc-if>`            | `{cond && (…)}`           |
+| `sc-camel-on-click="{{ x.pick }}"`               | `onClick={x.pick}`        |
+| `style="{{ x.style }}"` (already a JS object)    | `style={x.style}`         |
 
 ## What's here
 
@@ -114,7 +114,7 @@ settings toggle, desktop floaters) all produced the expected visual result.
   device picker or fixed-size frame.
 - Nav adapts per layout pack exactly like the source: bottom tabs, a left
   rail, a bottom tile strip, the LCARS "sweep console" elbow frame (which
-  takes over chrome for *every* screen, not just 3D View — see below), and
+  takes over chrome for _every_ screen, not just 3D View — see below), and
   the desktop floating-window model.
 - Interactive: palette/layout/device/screen pickers, COMFORTABLE/COMPACT
   density, Chat's LOCAL/IM/GROUP segmented tabs + IM/GROUP chip picker,
@@ -136,7 +136,7 @@ settings toggle, desktop floaters) all produced the expected visual result.
 
 - **Dead `isSweep` branch omitted.** In the source, `isConsole` is defined
   as `nav === "sweep"` and the separate `isSweep` flag is defined as
-  `nav === "sweep" && !isConsole` — which is *always false*, so the
+  `nav === "sweep" && !isConsole` — which is _always false_, so the
   decorative left "sweepNav" sidebar markup (a plain nav list with a
   wordmark, distinct from the LCARS console frame) can never render in the
   original either. This port skips reproducing that unreachable markup
