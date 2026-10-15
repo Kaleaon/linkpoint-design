@@ -28,7 +28,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Kaleaon/Ktheme
-          path: '../Ktheme'
+          path: 'Ktheme-temp'
+
+      - name: Move Ktheme to correct relative path
+        run: mv Ktheme-temp ../Ktheme
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
