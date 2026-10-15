@@ -130,10 +130,6 @@ export default function Search() {
       <div style={{ flex: "none", display: "flex", alignItems: "center", gap: "8px", padding: "14px 16px 10px" }}>
         <div
           onClick={() => actions.setScreen(state.searchFrom || "Friends")}
-          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setScreen(state.searchFrom || "Friends"); } }}
-          role="button"
-          tabIndex={0}
-          aria-label="Go back"
           style={{ width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer" }}
         >
           <Icon name="chevron-left" size={22} />
