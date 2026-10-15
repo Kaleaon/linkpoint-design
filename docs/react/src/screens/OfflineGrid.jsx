@@ -4,6 +4,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import Icon from "../components/Icon.jsx";
 import FormField from "../components/FormField.jsx";
 import FormInput from "../components/FormInput.jsx";
+import Heading from "../components/Heading.jsx";
 
 export default function OfflineGrid() {
   const { state, actions } = useApp();
@@ -19,8 +20,8 @@ export default function OfflineGrid() {
       <div style={{ border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, padding: "14px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div>
-            <div style={{ font: "600 10px/1 " + t.font, letterSpacing: ".22em", color: V.pri }}>LOCAL GRID ENGINE</div>
-            <div style={{ font: "700 15px/1.3 " + t.dfont, marginTop: "4px", color: V.ink }}>OpenSim Local Server</div>
+            <Heading level={2} style={{ font: "600 10px/1 " + t.font, letterSpacing: ".22em", color: V.pri }}>LOCAL GRID ENGINE</Heading>
+            <Heading level={3} style={{ font: "700 15px/1.3 " + t.dfont, marginTop: "4px", color: V.ink }}>OpenSim Local Server</Heading>
           </div>
           <div
             onClick={actions.toggleOfflineGrid}
@@ -55,7 +56,7 @@ export default function OfflineGrid() {
 
       {state.offlineAccountModal && (
         <div style={{ border: "1px solid " + V.pri, borderRadius: V.rs, background: V.surf2, padding: "14px" }}>
-          <div style={{ font: "700 12px/1 " + t.font, letterSpacing: ".18em", color: V.pri, marginBottom: "10px" }}>FIRST-TIME ACCOUNT SETUP</div>
+          <Heading level={3} style={{ font: "700 12px/1 " + t.font, letterSpacing: ".18em", color: V.pri, marginBottom: "10px" }}>FIRST-TIME ACCOUNT SETUP</Heading>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <FormField label="FIRST NAME">
               <FormInput
@@ -102,7 +103,7 @@ export default function OfflineGrid() {
       )}
 
       <div style={{ border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, padding: "14px" }}>
-        <div style={{ font: "600 10px/1 " + t.font, letterSpacing: ".22em", color: V.pri, marginBottom: "8px" }}>OAR REGION BACKUP IMPORTER</div>
+        <Heading level={2} style={{ font: "600 10px/1 " + t.font, letterSpacing: ".22em", color: V.pri, marginBottom: "8px" }}>OAR REGION BACKUP IMPORTER</Heading>
         <div style={{ border: "1px dashed " + V.outv, borderRadius: V.rs, padding: "12px", textAlign: "center", background: V.bg, marginBottom: "10px" }}>
           <Icon name="file-up" size={20} />
           <div style={{ font: "600 11px/1.3 " + t.font, marginTop: "4px" }}>{state.oarFile || "A1_Grid_Region_v2.oar"}</div>
@@ -120,7 +121,7 @@ export default function OfflineGrid() {
       </div>
 
       <div style={{ border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, padding: "14px" }}>
-        <div style={{ font: "600 10px/1 " + t.font, letterSpacing: ".22em", color: V.pri, marginBottom: "8px" }}>LOCAL ASSET & SL UPLOAD CENTER</div>
+        <Heading level={2} style={{ font: "600 10px/1 " + t.font, letterSpacing: ".22em", color: V.pri, marginBottom: "8px" }}>LOCAL ASSET & SL UPLOAD CENTER</Heading>
         <div style={{ display: "flex", gap: "8px", marginBottom: "10px" }}>
           <FormInput
             aria-label="Asset title"
@@ -166,7 +167,7 @@ export default function OfflineGrid() {
       </div>
 
       <div style={{ border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, padding: "14px" }}>
-        <div style={{ font: "600 10px/1 " + t.font, letterSpacing: ".22em", color: V.pri, marginBottom: "8px" }}>STORAGE & CACHE SIZING MANAGER</div>
+        <Heading level={2} style={{ font: "600 10px/1 " + t.font, letterSpacing: ".22em", color: V.pri, marginBottom: "8px" }}>STORAGE & CACHE SIZING MANAGER</Heading>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "6px" }}>
           <span style={{ font: "400 11px/1 " + t.font, color: V.ink2 }}>Cache Allocation:</span>
           <span style={{ font: "700 12px/1 " + t.font, color: V.pri }}>{cacheSize} MB</span>
