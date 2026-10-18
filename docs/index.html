@@ -820,8 +820,8 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                 </div>
               </div>
               <div style="display:flex;gap:8px;padding:14px 16px">
-                <div onClick="{{ profileIm }}" style="flex:1;height:44px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer"><i data-lucide="message-square" style="width:16px;height:16px"></i>IM</div>
-                <div onClick="{{ profileOfferTp }}" style="flex:1;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer"><i data-lucide="zap" style="width:16px;height:16px"></i>OFFER TP</div>
+                <div onClick="{{ profileIm }}" onKeyDown="{{ profileImKeyDown }}" role="button" tabindex="0" aria-label="Send IM" style="flex:1;height:44px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer"><i data-lucide="message-square" style="width:16px;height:16px"></i>IM</div>
+                <div onClick="{{ profileOfferTp }}" onKeyDown="{{ profileOfferTpKeyDown }}" role="button" tabindex="0" aria-label="Offer Teleport" style="flex:1;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer"><i data-lucide="zap" style="width:16px;height:16px"></i>OFFER TP</div>
                 <div onClick="{{ profileMore }}" onKeyDown="{{ profileMoreKeyDown }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;cursor:pointer" role="button" aria-label="More options" tabindex="0"><i data-lucide="more-horizontal" style="width:18px;height:18px"></i></div>
               </div>
               <sc-for list="{{ profileBlocks }}" as="pb" hint-placeholder-count="3">
@@ -3901,7 +3901,9 @@ mapStarKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefa
       actionBar: [{ icon: "armchair", label: "SIT" }, { icon: "footprints", label: "RUN" }, { icon: "plane", label: "FLY" }, { icon: "hand", label: "TOUCH" }]
         .map(a => ({ ...a, pick: () => this.notify("Nyx Vaher — " + a.label) })),
       profileIm: () => { this.setTab("Chat", "IM"); this.set("chip", "Nyx Vaher"); this.setState({ screen: "Chat" }); },
+      profileImKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setTab("Chat", "IM"); this.set("chip", "Nyx Vaher"); this.setState({ screen: "Chat" }); } },
       profileOfferTp: () => this.notify("Nyx Vaher — TELEPORT OFFER SENT"),
+      profileOfferTpKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify("Nyx Vaher — TELEPORT OFFER SENT"); } },
       profileMore: () => this.notify("Nyx Vaher — MORE OPTIONS"),
 profileMoreKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify("Nyx Vaher — MORE OPTIONS"); } },
       // A real SL profile splits the resident record from their picks; the blocks
