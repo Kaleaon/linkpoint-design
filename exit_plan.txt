@@ -1,4 +1,0 @@
-1. Complete Pre-commit Steps
-   - Complete pre-commit steps to ensure proper testing, verification, review, and reflection are done.
-2. Submit Change
-   - Submit the changes with a PR named "CI: Fix Ktheme checkout path"
