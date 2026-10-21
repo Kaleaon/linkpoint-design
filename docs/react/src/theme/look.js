@@ -70,6 +70,14 @@ export function cardAccentStyle(cardKind, V, accent) {
   return { boxShadow: "inset 4px 0 0 " + accent + ", 0 4px 16px rgba(0,0,0,.25)" };
 }
 
+export function panelLook(V, LK, pad, accent) {
+  const cardKind = LK?.card || "box";
+  const looks = cardLooks(V, pad);
+  const base = looks[cardKind] || looks.box;
+  const acc = cardAccentStyle(cardKind, V, accent);
+  return { ...base, ...acc };
+}
+
 export function actionButtonStyle(V, font, a) {
   const isPill = V.rs === "999px";
   const isFlat = V.rs === "0px";
