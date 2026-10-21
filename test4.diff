@@ -1,0 +1,9 @@
+<<<<<<< SEARCH
+        <sc-if value="{{ cfPadShut }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ togglePad }}" style="{{ cfPadShow }}">MOVE PAD</div>
+        </sc-if>
+=======
+        <sc-if value="{{ cfPadShut }}" hint-placeholder-val="{{ false }}">
+          <div onClick="{{ togglePad }}" role="button" tabindex="0" aria-label="Show move pad" onKeyDown="{{ togglePadKeyDown }}" style="{{ cfPadShow }}">MOVE PAD</div>
+        </sc-if>
+>>>>>>> REPLACE

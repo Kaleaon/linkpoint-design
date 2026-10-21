@@ -1,0 +1,7 @@
+<<<<<<< SEARCH
+              <div onMouseDown="{{ p.down }}" onMouseUp="{{ p.up }}" onMouseLeave="{{ p.up }}" style="{{ p.style }}">
+                <sc-if value="{{ p.icon }}" hint-placeholder-val="{{ true }}"><i data-lucide="{{ p.icon }}" style="width:19px;height:19px"></i></sc-if>
+=======
+              <div onMouseDown="{{ p.down }}" onMouseUp="{{ p.up }}" onMouseLeave="{{ p.up }}" role="button" tabindex="0" aria-label="{{ p.ariaLabel }}" onKeyDown="{{ p.pKeyDown }}" onKeyUp="{{ p.pKeyUp }}" style="{{ p.style }}">
+                <sc-if value="{{ p.icon }}" hint-placeholder-val="{{ true }}"><i data-lucide="{{ p.icon }}" style="width:19px;height:19px"></i></sc-if>
+>>>>>>> REPLACE

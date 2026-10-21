@@ -37,3 +37,7 @@
 ## 2026-10-07 - Add Keyboard Accessibility to Interactive Login Screen Actions
 **Learning:** Even well-constructed custom HTML template frameworks often overlook full keyboard navigation on core screens like Login, where buttons (tabs, preset options, "ADD GRID", and the main "CONNECT TO GRID" toggles) might be functional to mouse users but completely dead to screen readers and keyboard users (pressing Enter or Space). Explicitly providing `onKeyDown` handlers inside `renderVals` that prevent default behavior on space bar prevents unwanted page scrolling and improves accessibility.
 **Action:** When inspecting or adding core interactive controls to screens (like login fields and connectivity toggles) in custom HTML templating, ensure they include `role="button"`, `tabindex="0"`, descriptive `aria-label`s, and corresponding `onKeyDown` listeners mirroring their `onClick` functionality.
+
+## 2026-10-21 - Keyboard Access for Hold-to-Activate Controls
+**Learning:** For 'hold-to-activate' custom buttons relying on `onMouseDown` and `onMouseUp` pairs (like continuous movement pads or camera panning controls), adding standard `role="button"` and `tabindex="0"` attributes is insufficient. Keyboard accessibility requires adding matching `onKeyDown` and `onKeyUp` handlers for the Enter and Space keys to initiate and release the action respectively.
+**Action:** When implementing or inspecting continuous action controls mapped to mouse down/up, always provide corresponding `onKeyDown` and `onKeyUp` listeners that trigger the same state changes.

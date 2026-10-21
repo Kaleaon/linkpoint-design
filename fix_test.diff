@@ -1,0 +1,13 @@
+<<<<<<< SEARCH
+      if (key === "cyberpunk") {
+        expect(tokens.LK.card).toBe("chamfer");
+        expect(tokens.V.rs).toBe("0px");
+        expect(runtime.nav).toBe("rail");
+      }
+=======
+      if (key === "cyberpunk") {
+        expect(tokens.LK.card).toBe("chamfer");
+        expect(tokens.V.rs).toBe("0px");
+        expect(runtime.nav).toBe("RAIL");
+      }
+>>>>>>> REPLACE
