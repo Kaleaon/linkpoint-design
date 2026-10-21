@@ -228,23 +228,23 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
         <div style="{{ cfPadWrap }}">
           <div style="{{ cfPadGrid }}">
             <sc-for list="{{ cfPad }}" as="p" hint-placeholder-count="9">
-              <div onMouseDown="{{ p.down }}" onMouseUp="{{ p.up }}" onMouseLeave="{{ p.up }}" style="{{ p.style }}">
+              <div onMouseDown="{{ p.down }}" onMouseUp="{{ p.up }}" onMouseLeave="{{ p.up }}" role="button" tabindex="0" aria-label="{{ p.ariaLabel }}" onKeyDown="{{ p.pKeyDown }}" onKeyUp="{{ p.pKeyUp }}" style="{{ p.style }}">
                 <sc-if value="{{ p.icon }}" hint-placeholder-val="{{ true }}"><i data-lucide="{{ p.icon }}" style="width:19px;height:19px"></i></sc-if>
                 <sc-if value="{{ p.label }}" hint-placeholder-val="{{ false }}"><span style="font:inherit;letter-spacing:inherit">{{ p.label }}</span></sc-if>
               </div>
             </sc-for>
           </div>
           <div style="display:flex;flex-direction:column;gap:4px">
-            <div onMouseDown="{{ flyUpDown }}" onMouseUp="{{ flyRelease }}" onMouseLeave="{{ flyRelease }}" style="{{ cfFly.up }}">UP</div>
-            <div onMouseDown="{{ flyDnDown }}" onMouseUp="{{ flyRelease }}" onMouseLeave="{{ flyRelease }}" style="{{ cfFly.dn }}">DN</div>
-            <div onClick="{{ toggleRun }}" style="{{ cfFly.run }}">RUN</div>
-            <div onClick="{{ togglePad }}" style="{{ cfFly.hide }}">HIDE</div>
+            <div onMouseDown="{{ flyUpDown }}" onMouseUp="{{ flyRelease }}" onMouseLeave="{{ flyRelease }}" role="button" tabindex="0" aria-label="Fly Up" onKeyDown="{{ flyUpDownKeyDown }}" onKeyUp="{{ flyReleaseKeyUp }}" style="{{ cfFly.up }}">UP</div>
+            <div onMouseDown="{{ flyDnDown }}" onMouseUp="{{ flyRelease }}" onMouseLeave="{{ flyRelease }}" role="button" tabindex="0" aria-label="Fly Down" onKeyDown="{{ flyDnDownKeyDown }}" onKeyUp="{{ flyReleaseKeyUp }}" style="{{ cfFly.dn }}">DN</div>
+            <div onClick="{{ toggleRun }}" role="button" tabindex="0" aria-label="Toggle run" onKeyDown="{{ toggleRunKeyDown }}" style="{{ cfFly.run }}">RUN</div>
+            <div onClick="{{ togglePad }}" role="button" tabindex="0" aria-label="Hide move pad" onKeyDown="{{ togglePadKeyDown }}" style="{{ cfFly.hide }}">HIDE</div>
           </div>
         </div>
         </sc-if>
 
         <sc-if value="{{ cfPadShut }}" hint-placeholder-val="{{ false }}">
-          <div onClick="{{ togglePad }}" style="{{ cfPadShow }}">MOVE PAD</div>
+          <div onClick="{{ togglePad }}" role="button" tabindex="0" aria-label="Show move pad" onKeyDown="{{ togglePadKeyDown }}" style="{{ cfPadShow }}">MOVE PAD</div>
         </sc-if>
       </div>
       </sc-if>
@@ -259,7 +259,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
           </div>
         </sc-for>
         <sc-if value="{{ cEdit }}" hint-placeholder-val="{{ false }}">
-          <div onClick="{{ addSlot }}" style="{{ cfAdd }}">+</div>
+          <div onClick="{{ addSlot }}" onKeyDown="{{ addSlotKeyDown }}" role="button" tabindex="0" aria-label="Add slot" style="{{ cfAdd }}">+</div>
         </sc-if>
       </div>
       </sc-if>
@@ -270,10 +270,10 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
       </div>
 
       <sc-if value="{{ cEdit }}" hint-placeholder-val="{{ false }}">
-        <div onClick="{{ endEdit }}" style="{{ cfScrim }}"></div>
+        <div onClick="{{ endEdit }}" onKeyDown="{{ endEditKeyDown }}" role="button" tabindex="0" aria-label="End edit" style="{{ cfScrim }}"></div>
         <div style="{{ cfEditStrip }}">
           <span>DOCK EDIT — MINUS REMOVES, PLUS ADDS</span>
-          <span onClick="{{ endEdit }}" style="{{ cfEditDone }}">DONE</span>
+          <span onClick="{{ endEdit }}" onKeyDown="{{ endEditKeyDown }}" role="button" tabindex="0" aria-label="Finish editing dock" style="{{ cfEditDone }}">DONE</span>
         </div>
       </sc-if>
     </div>
@@ -328,7 +328,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
       </div>
       <div style="{{ flDividerStyle }}"></div>
       <sc-for list="{{ flTasks }}" as="tk" hint-placeholder-count="4">
-        <div onClick="{{ tk.pick }}" style="{{ tk.style }}">{{ tk.label }}</div>
+        <div onClick="{{ tk.pick }}" onKeyDown="{{ tk.pickKeyDown }}" role="button" tabindex="0" aria-label="{{ tk.label }}" style="{{ tk.style }}">{{ tk.label }}</div>
       </sc-for>
       <div style="flex:1;min-width:8px"></div>
       <div onClick="{{ toggleCamHud }}" onKeyDown="{{ toggleCamHudKeyDown }}" style="{{ camHudBtnStyle }}" role="button" tabindex="0" aria-label="Toggle Camera HUD">
@@ -336,7 +336,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
         <span>CAM HUD</span>
       </div>
       <sc-for list="{{ flTools }}" as="tl" hint-placeholder-count="8">
-        <div onClick="{{ tl.press }}" style="{{ tl.style }}">
+        <div onClick="{{ tl.press }}" onKeyDown="{{ tl.pressKeyDown }}" role="button" tabindex="0" aria-label="{{ tl.label }}" style="{{ tl.style }}">
           <i data-lucide="{{ tl.icon }}" style="width:14px;height:14px;flex:none"></i>
           <span style="font:inherit;letter-spacing:inherit">{{ tl.label }}</span>
         </div>
@@ -820,8 +820,8 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                 </div>
               </div>
               <div style="display:flex;gap:8px;padding:14px 16px">
-                <div onClick="{{ profileIm }}" style="flex:1;height:44px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer"><i data-lucide="message-square" style="width:16px;height:16px"></i>IM</div>
-                <div onClick="{{ profileOfferTp }}" style="flex:1;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer"><i data-lucide="zap" style="width:16px;height:16px"></i>OFFER TP</div>
+                <div onClick="{{ profileIm }}" onKeyDown="{{ profileImKeyDown }}" role="button" tabindex="0" aria-label="Send IM" style="flex:1;height:44px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer"><i data-lucide="message-square" style="width:16px;height:16px"></i>IM</div>
+                <div onClick="{{ profileOfferTp }}" onKeyDown="{{ profileOfferTpKeyDown }}" role="button" tabindex="0" aria-label="Offer Teleport" style="flex:1;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;gap:6px;font:700 11px/1 var(--font,'JetBrains Mono');letter-spacing:.16em;cursor:pointer"><i data-lucide="zap" style="width:16px;height:16px"></i>OFFER TP</div>
                 <div onClick="{{ profileMore }}" onKeyDown="{{ profileMoreKeyDown }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);display:flex;align-items:center;justify-content:center;cursor:pointer" role="button" aria-label="More options" tabindex="0"><i data-lucide="more-horizontal" style="width:18px;height:18px"></i></div>
               </div>
               <sc-for list="{{ profileBlocks }}" as="pb" hint-placeholder-count="3">
@@ -1446,7 +1446,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
           <sc-if value="{{ isSearchScreen }}" hint-placeholder-val="{{ false }}">
             <div style="flex:1;min-height:0;display:flex;flex-direction:column">
               <div style="flex:none;display:flex;align-items:center;gap:8px;padding:14px 16px 10px">
-                <div onClick="{{ searchBack }}" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer"><i data-lucide="chevron-left" style="width:22px;height:22px"></i></div>
+                <div onClick="{{ searchBack }}" onKeyDown="{{ searchBackKeyDown }}" role="button" tabindex="0" aria-label="Go back" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--pri,#6CFF9A);cursor:pointer"><i data-lucide="chevron-left" style="width:22px;height:22px"></i></div>
                 <div>
                   <div style="font:700 18px/1 var(--dfont,'JetBrains Mono');letter-spacing:.16em;color:var(--pri,#6CFF9A)">FIND RESIDENTS</div>
                   <div style="font:400 10.5px/1.3 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);margin-top:2px">&gt; search the grid to IM or add a friend</div>
@@ -3410,6 +3410,7 @@ toggleCamHudKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preven
       flTasks: FLOATERS.filter(f => s.flOpen[f.id]).map(f => {
         const min = !!s.flMin[f.id], act = f.id === scr && !min;
         return { label: f.title, pick: () => this.dispatchIntent("FLOATER_TOGGLE", { id: f.id }),
+          pickKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.dispatchIntent("FLOATER_TOGGLE", { id: f.id }); } },
           style: { flex: "none", height: "26px", display: "flex", alignItems: "center", padding: "0 10px", cursor: "pointer",
             background: act ? V.pri : (min ? "transparent" : V.surf2),
             color: act ? this.ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2,
@@ -3422,6 +3423,7 @@ toggleCamHudKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preven
         const b = CBTN[k], lit = !!(s.cTog || {})[k], dis = !!b.off;
         const bg = lit ? V.pri : V.surf2;
         return { icon: b.icon, label: b.label, press: () => this.cPress(k),
+          pressKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.cPress(k); } },
           style: { flex: "none", height: "26px", display: "flex", alignItems: "center", gap: "6px", padding: "0 9px",
             background: dis ? "transparent" : bg, color: dis ? V.ink2 : this.ink(bg, [V.bg, V.onpri, V.ink]),
             border: "1px solid " + (dis ? V.outv : "transparent"),
@@ -3640,6 +3642,9 @@ sendChatKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDef
         const bg = active ? V.pri : base;
         return { icon: p.icon, label: p.k === "cam" ? (s.cCam === "ORBIT" ? "ORBIT" : "MOUSE") : "",
           down: () => this.cHold(p.k), up: () => this.setState({ cHeld: "" }),
+          pKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.cHold(p.k); } },
+          pKeyUp: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "" }); } },
+          ariaLabel: p.k === "cam" ? (s.cCam === "ORBIT" ? "Orbit Camera" : "Mouse Camera") : p.k,
           style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "2px",
             cursor: "pointer", background: bg, color: this.ink(bg, [V.bg, V.onpri, V.ink]),
             opacity: .92, borderRadius: CPADR[i] || "0", font: "700 8px/1 " + t.dfont, letterSpacing: ".08em" } };
@@ -3666,16 +3671,33 @@ sendChatKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDef
       holdStart: () => { this.clp = setTimeout(() => this.setState({ cEdit: true }), 480); },
       holdEnd: () => clearTimeout(this.clp),
       endEdit: () => this.setState({ cEdit: false }),
+      endEditKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cEdit: false }); } },
       togglePad: () => this.setState(st => ({ cPad: !st.cPad })),
+      togglePadKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState(st => ({ cPad: !st.cPad })); } },
       toggleRun: () => this.setState(st => ({ cRun: !st.cRun })),
+      toggleRunKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState(st => ({ cRun: !st.cRun })); } },
       flyDown: (k) => () => this.setState({ cHeld: k }),
       flyUpDown: () => this.setState({ cHeld: "up" }),
+      flyUpDownKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "up" }); } },
       flyDnDown: () => this.setState({ cHeld: "dn" }),
+      flyDnDownKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "dn" }); } },
       flyRelease: () => this.setState({ cHeld: "" }),
+      flyUpKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "up" }); } },
+      flyDnKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "dn" }); } },
+      flyReleaseKeyUp: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "" }); } },
       addSlot: () => this.setState(st => {
         const miss = Object.keys(CBTN).filter(k => st.cDock.indexOf(k) < 0);
         return miss.length ? { cDock: st.cDock.concat(miss[0]) } : { cReason: "PALETTE EMPTY" };
       }),
+      addSlotKeyDown: (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          this.setState(st => {
+            const miss = Object.keys(CBTN).filter(k => st.cDock.indexOf(k) < 0);
+            return miss.length ? { cDock: st.cDock.concat(miss[0]) } : { cReason: "PALETTE EMPTY" };
+          });
+        }
+      },
       hasSeg: !!segTabs && norm,      isPivotHead: headLook === "pivot", isRuleHead: headLook === "rule", isPressHead: headLook === "editorial",
       pivotTitle: (title || "").toLowerCase(), pivotNext: nextScr.toLowerCase(),
       condList: [["normal", "NORMAL"], ["loading", "LOADING"], ["empty", "EMPTY"], ["error", "ERROR"]].map(([k, n]) => ({
@@ -3884,7 +3906,9 @@ mapStarKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefa
       actionBar: [{ icon: "armchair", label: "SIT" }, { icon: "footprints", label: "RUN" }, { icon: "plane", label: "FLY" }, { icon: "hand", label: "TOUCH" }]
         .map(a => ({ ...a, pick: () => this.notify("Nyx Vaher — " + a.label) })),
       profileIm: () => { this.setTab("Chat", "IM"); this.set("chip", "Nyx Vaher"); this.setState({ screen: "Chat" }); },
+      profileImKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setTab("Chat", "IM"); this.set("chip", "Nyx Vaher"); this.setState({ screen: "Chat" }); } },
       profileOfferTp: () => this.notify("Nyx Vaher — TELEPORT OFFER SENT"),
+      profileOfferTpKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify("Nyx Vaher — TELEPORT OFFER SENT"); } },
       profileMore: () => this.notify("Nyx Vaher — MORE OPTIONS"),
 profileMoreKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify("Nyx Vaher — MORE OPTIONS"); } },
       // A real SL profile splits the resident record from their picks; the blocks
@@ -4027,6 +4051,7 @@ copyConsoleLogsKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.pre
 downloadConsoleLogsKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify("Downloading opensim-grid-log.txt..."); } },
       isSearchScreen: s.screen === "Search",
       searchBack: () => this.set("screen", s.searchFrom || "Friends"),
+      searchBackKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("screen", s.searchFrom || "Friends"); } },
       searchQuery: s.searchQuery, searchQueryPick: (e) => this.set("searchQuery", e.target.value),
       searchResults: searchResultsList,
       searchEmptyText: searchQ.length < 2 ? "> type a name to search the grid" : "> no residents match",
