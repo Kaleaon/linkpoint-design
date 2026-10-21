@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { subView } from "../theme/constants.js";
+import { panelLook } from "../theme/look.js";
 import Icon from "../components/Icon.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import SegmentedMeter from "../components/SegmentedMeter.jsx";
 
 const NEARBY_OBJECTS = [
   {
@@ -199,8 +201,9 @@ const NEARBY_OBJECTS = [
 
 export default function Objects() {
   const { state, actions } = useApp();
-  const { V, t, bleed, pad, ink } = useTheme();
+  const { V, t, LK, bleed, pad, ink } = useTheme();
   const curSub = subView(state, "Objects") || "NEARBY";
+  const cardStyle = (accent) => panelLook(V, LK, pad, accent);
 
   const [filter, setFilter] = useState("ALL");
   const [query, setQuery] = useState("");
@@ -275,24 +278,16 @@ export default function Objects() {
       {curSub === "NEARBY" && (
         <>
           {/* Summary / Search Header */}
-          <div
-            style={{
-              padding: pad,
-              background: V.surf,
-              border: bleed ? "none" : "1px solid " + V.outv,
-              borderLeft: bleed ? "4px solid " + V.pri : undefined,
-              borderRadius: bleed ? 0 : V.rp,
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-            }}
-          >
+          <div style={{ ...cardStyle(V.pri), display: "flex", flexDirection: "column", gap: "10px" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", flexWrap: "wrap" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <Icon name="box" size={20} style={{ color: V.pri }} />
                 <div>
-                  <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>Nearby Objects</div>
-                  <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2 }}>
+                  <div style={{ font: "700 9px/1 " + t.dfont, letterSpacing: ".18em", color: V.sec2 || V.pri }}>
+                    [OPS-04-8921] OBJECT REGISTRATION DIRECTORY
+                  </div>
+                  <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink, marginTop: "2px" }}>Nearby Objects</div>
+                  <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
                     {NEARBY_OBJECTS.length} objects in draw distance (96m) · {NEARBY_OBJECTS.reduce((acc, o) => acc + o.prims, 0)} total prims
                   </div>
                 </div>
@@ -369,11 +364,7 @@ export default function Objects() {
                   <div
                     key={obj.id}
                     style={{
-                      padding: pad,
-                      background: V.surf,
-                      border: bleed ? "none" : "1px solid " + (isTracked ? V.pri : V.outv),
-                      borderLeft: isTracked ? "4px solid " + V.pri : bleed ? "1px solid " + V.outv : undefined,
-                      borderRadius: bleed ? 0 : V.rp,
+                      ...cardStyle(isTracked ? V.pri : undefined),
                       display: "flex",
                       flexDirection: "column",
                       gap: "10px",
@@ -398,7 +389,10 @@ export default function Objects() {
                           <Icon name={obj.icon || "box"} size={18} />
                         </div>
                         <div>
-                          <div style={{ font: "700 13.5px/1.2 " + t.dfont, color: V.ink }}>{obj.name}</div>
+                          <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>
+                            [OBJ-{obj.id.replace("obj-", "").slice(0, 4).toUpperCase()}]
+                          </div>
+                          <div style={{ font: "700 13.5px/1.2 " + t.dfont, color: V.ink, marginTop: "1px" }}>{obj.name}</div>
                           <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
                             Owner: <span style={{ color: V.ink }}>{obj.owner}</span> · {obj.prims} prims ({obj.landImpact} LI)
                           </div>
@@ -533,18 +527,7 @@ export default function Objects() {
           </div>
 
           {/* Object Header Card */}
-          <div
-            style={{
-              padding: pad,
-              background: V.surf,
-              border: bleed ? "none" : "1px solid " + V.outv,
-              borderLeft: bleed ? "4px solid " + V.pri : undefined,
-              borderRadius: bleed ? 0 : V.rp,
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-            }}
-          >
+          <div style={{ ...cardStyle(V.pri), display: "flex", flexDirection: "column", gap: "10px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
               <div
                 style={{
@@ -563,8 +546,11 @@ export default function Objects() {
                 <Icon name="box" size={24} />
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ font: "700 16px/1.2 " + t.dfont, color: V.ink }}>{selectedObj.name}</div>
-                <div style={{ font: "400 11px/1.3 " + t.mfont, color: V.ink2, marginTop: "2px", wordBreak: "break-all" }}>
+                <div style={{ font: "700 9px/1 " + t.dfont, letterSpacing: ".18em", color: V.sec2 || V.pri }}>
+                  [ENG-02-3104] PRIM ARCHITECTURE INSPECTOR
+                </div>
+                <div style={{ font: "700 16px/1.2 " + t.dfont, color: V.ink, marginTop: "2px" }}>{selectedObj.name}</div>
+                <div style={{ font: "400 11px/1.3 " + (t.mfont || t.font), color: V.ink2, marginTop: "2px", wordBreak: "break-all" }}>
                   UUID: {selectedObj.uuid}
                 </div>
               </div>
@@ -625,18 +611,11 @@ export default function Objects() {
           {/* Details Grid */}
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: bleed ? "6px" : "10px" }}>
             {/* Ownership Card */}
-            <div
-              style={{
-                padding: pad,
-                background: V.surf,
-                border: bleed ? "none" : "1px solid " + V.outv,
-                borderRadius: bleed ? 0 : V.rp,
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px",
-              }}
-            >
-              <div style={{ font: "700 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em" }}>OWNERSHIP & CREATION</div>
+            <div style={{ ...cardStyle(), display: "flex", flexDirection: "column", gap: "8px" }}>
+              <div>
+                <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>[ENG-02-OWNR]</div>
+                <div style={{ font: "700 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em", marginTop: "2px" }}>OWNERSHIP &amp; CREATION</div>
+              </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "6px", font: "400 12px/1.4 " + t.font }}>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <span style={{ color: V.ink2 }}>Owner:</span>
@@ -654,30 +633,23 @@ export default function Objects() {
             </div>
 
             {/* Transform & Spatial Card */}
-            <div
-              style={{
-                padding: pad,
-                background: V.surf,
-                border: bleed ? "none" : "1px solid " + V.outv,
-                borderRadius: bleed ? 0 : V.rp,
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px",
-              }}
-            >
-              <div style={{ font: "700 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em" }}>TRANSFORM & GEOMETRY</div>
+            <div style={{ ...cardStyle(), display: "flex", flexDirection: "column", gap: "8px" }}>
+              <div>
+                <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>[ENG-02-XFRM]</div>
+                <div style={{ font: "700 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em", marginTop: "2px" }}>TRANSFORM &amp; GEOMETRY</div>
+              </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "6px", font: "400 12px/1.4 " + t.font }}>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <span style={{ color: V.ink2 }}>Position:</span>
-                  <span style={{ fontFamily: t.mfont, color: V.ink }}>{selectedObj.pos}</span>
+                  <span style={{ fontFamily: t.mfont || t.font, color: V.ink }}>{selectedObj.pos}</span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <span style={{ color: V.ink2 }}>Rotation:</span>
-                  <span style={{ fontFamily: t.mfont, color: V.ink }}>{selectedObj.rot}</span>
+                  <span style={{ fontFamily: t.mfont || t.font, color: V.ink }}>{selectedObj.rot}</span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <span style={{ color: V.ink2 }}>Scale:</span>
-                  <span style={{ fontFamily: t.mfont, color: V.ink }}>{selectedObj.scale}</span>
+                  <span style={{ fontFamily: t.mfont || t.font, color: V.ink }}>{selectedObj.scale}</span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <span style={{ color: V.ink2 }}>Prims / Land Impact:</span>
@@ -687,22 +659,15 @@ export default function Objects() {
             </div>
 
             {/* Permissions Matrix */}
-            <div
-              style={{
-                padding: pad,
-                background: V.surf,
-                border: bleed ? "none" : "1px solid " + V.outv,
-                borderRadius: bleed ? 0 : V.rp,
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px",
-              }}
-            >
-              <div style={{ font: "700 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em" }}>PERMISSIONS MATRIX</div>
+            <div style={{ ...cardStyle(), display: "flex", flexDirection: "column", gap: "8px" }}>
+              <div>
+                <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>[ENG-02-PERM]</div>
+                <div style={{ font: "700 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em", marginTop: "2px" }}>PERMISSIONS MATRIX</div>
+              </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "6px", font: "400 12px/1.4 " + t.font }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ color: V.ink2 }}>Your Rights:</span>
-                  <div style={{ display: "flex", gap: "6px", fontFamily: t.mfont, fontSize: "11px" }}>
+                  <div style={{ display: "flex", gap: "6px", fontFamily: t.mfont || t.font, fontSize: "11px" }}>
                     <span style={{ color: selectedObj.perms.mod ? V.ok || "#22c55e" : V.ink2 }}>MOD</span>
                     <span style={{ color: selectedObj.perms.copy ? V.ok || "#22c55e" : V.ink2 }}>COPY</span>
                     <span style={{ color: selectedObj.perms.trans ? V.ok || "#22c55e" : V.ink2 }}>TRANS</span>
@@ -710,7 +675,7 @@ export default function Objects() {
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <span style={{ color: V.ink2 }}>Next Owner:</span>
-                  <div style={{ display: "flex", gap: "6px", fontFamily: t.mfont, fontSize: "11px" }}>
+                  <div style={{ display: "flex", gap: "6px", fontFamily: t.mfont || t.font, fontSize: "11px" }}>
                     <span style={{ color: selectedObj.nextPerms.mod ? V.ok || "#22c55e" : V.ink2 }}>MOD</span>
                     <span style={{ color: selectedObj.nextPerms.copy ? V.ok || "#22c55e" : V.ink2 }}>COPY</span>
                     <span style={{ color: selectedObj.nextPerms.trans ? V.ok || "#22c55e" : V.ink2 }}>TRANS</span>
@@ -720,34 +685,37 @@ export default function Objects() {
             </div>
 
             {/* Script Telemetry Card */}
-            <div
-              style={{
-                padding: pad,
-                background: V.surf,
-                border: bleed ? "none" : "1px solid " + V.outv,
-                borderRadius: bleed ? 0 : V.rp,
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px",
-              }}
-            >
-              <div style={{ font: "700 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em" }}>SCRIPT ENGINE & RUNTIME</div>
+            <div style={{ ...cardStyle(), display: "flex", flexDirection: "column", gap: "8px" }}>
+              <div>
+                <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>[ENG-02-LSL]</div>
+                <div style={{ font: "700 11px/1 " + t.dfont, color: V.ink2, letterSpacing: ".1em", marginTop: "2px" }}>SCRIPT ENGINE &amp; RUNTIME</div>
+              </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "6px", font: "400 12px/1.4 " + t.font }}>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <span style={{ color: V.ink2 }}>Active Scripts:</span>
                   <span style={{ fontWeight: 600, color: V.ink }}>{selectedObj.scriptsCount} running</span>
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <span style={{ color: V.ink2 }}>CPU Frame Time:</span>
-                  <span style={{ fontFamily: t.mfont, color: V.pri }}>{selectedObj.cpuTime}</span>
+                <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span style={{ color: V.ink2 }}>CPU Frame Time:</span>
+                    <span style={{ fontFamily: t.mfont || t.font, color: V.pri }}>{selectedObj.cpuTime}</span>
+                  </div>
+                  <SegmentedMeter
+                    value={Math.round((parseFloat(selectedObj.cpuTime) || 0.05) * 1000)}
+                    max={250}
+                    segments={16}
+                    height={6}
+                    gap={2}
+                    label="Script CPU Frame Time"
+                  />
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <span style={{ color: V.ink2 }}>Script Memory:</span>
-                  <span style={{ fontFamily: t.mfont, color: V.ink }}>{selectedObj.memory}</span>
+                  <span style={{ fontFamily: t.mfont || t.font, color: V.ink }}>{selectedObj.memory}</span>
                 </div>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                   <span style={{ color: V.ink2 }}>Listen Channel:</span>
-                  <span style={{ fontFamily: t.mfont, color: V.ink }}>{selectedObj.channel}</span>
+                  <span style={{ fontFamily: t.mfont || t.font, color: V.ink }}>{selectedObj.channel}</span>
                 </div>
               </div>
             </div>

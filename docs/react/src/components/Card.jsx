@@ -6,6 +6,7 @@ import {
 } from "../theme/look.js";
 import Icon from "./Icon.jsx";
 import Toggle from "./Toggle.jsx";
+import SegmentedMeter from "./SegmentedMeter.jsx";
 
 // Ported from the CARDS.map(...) block + the `isCards` template section
 // (sc-if value="{{ isCards }}"). One card renders: icon+title+right/badge/
@@ -154,25 +155,36 @@ export default function Card({ c }) {
         </div>
       ) : null}
       {meterPct != null ? (
-        <div
-          style={{
-            height: "4px",
-            borderRadius: "2px",
-            background: V.surf2,
-            overflow: "hidden",
-            marginTop: "10px",
-          }}
-        >
+        LK.card === "cap" || LK.card === "chamfer" ? (
+          <SegmentedMeter
+            value={meterPct}
+            max={100}
+            segments={16}
+            height={6}
+            gap={2}
+            style={{ marginTop: "10px" }}
+          />
+        ) : (
           <div
             style={{
-              width: meterPct + "%",
-              height: "100%",
-              background:
-                c.meter > 0.9 ? V.err : c.meter > 0.7 ? V.sec2 : V.pri,
-              transition: "width .2s ease",
+              height: "4px",
+              borderRadius: "2px",
+              background: V.surf2,
+              overflow: "hidden",
+              marginTop: "10px",
             }}
-          />
-        </div>
+          >
+            <div
+              style={{
+                width: meterPct + "%",
+                height: "100%",
+                background:
+                  c.meter > 0.9 ? V.err : c.meter > 0.7 ? V.sec2 : V.pri,
+                transition: "width .2s ease",
+              }}
+            />
+          </div>
+        )
       ) : null}
       {c.actions && c.actions.length ? (
         <div style={{ display: "flex", gap: "8px", marginTop: "11px" }}>

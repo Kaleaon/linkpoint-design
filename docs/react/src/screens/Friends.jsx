@@ -4,6 +4,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { subView } from "../theme/constants.js";
 import Icon from "../components/Icon.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import { panelLook } from "../theme/look.js";
 
 const INITIAL_FRIENDS = [
   {
@@ -64,8 +65,9 @@ const INITIAL_FRIENDS = [
 
 export default function Friends() {
   const { state, actions } = useApp();
-  const { V, t, bleed, pad, ink } = useTheme();
+  const { V, t, LK, bleed, pad, ink } = useTheme();
   const curSub = subView(state, "Friends") || "ALL";
+  const cardStyle = (accent) => panelLook(V, LK, pad, accent);
 
   const [friends, setFriends] = useState(INITIAL_FRIENDS);
   const [query, setQuery] = useState("");
@@ -129,18 +131,7 @@ export default function Friends() {
       }}
     >
       {/* Header Banner */}
-      <div
-        style={{
-          padding: pad,
-          background: V.surf,
-          border: bleed ? "none" : "1px solid " + V.outv,
-          borderLeft: bleed ? "4px solid " + V.pri : undefined,
-          borderRadius: bleed ? 0 : V.rp,
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-        }}
-      >
+      <div style={{ ...cardStyle(V.pri), display: "flex", flexDirection: "column", gap: "10px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <div
@@ -160,7 +151,10 @@ export default function Friends() {
               <Icon name="users" size={22} />
             </div>
             <div>
-              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>Friends List</div>
+              <div style={{ font: "700 9px/1 " + t.dfont, letterSpacing: ".18em", color: V.sec2 || V.pri }}>
+                [COM-03-9120] RESIDENT CONTACT DIRECTORY
+              </div>
+              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink, marginTop: "2px" }}>Friends List</div>
               <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
                 {onlineFriends.length} online · {friends.length} total contacts
               </div>
@@ -287,11 +281,7 @@ export default function Friends() {
             <div
               key={f.id}
               style={{
-                padding: pad,
-                background: V.surf,
-                border: bleed ? "none" : "1px solid " + V.outv,
-                borderLeft: f.online ? "4px solid " + (V.ok || "#22c55e") : undefined,
-                borderRadius: bleed ? 0 : V.rp,
+                ...cardStyle(f.online ? (V.ok || "#22c55e") : undefined),
                 display: "flex",
                 flexDirection: "column",
                 gap: "10px",
@@ -331,7 +321,10 @@ export default function Friends() {
                   </div>
 
                   <div>
-                    <div style={{ font: "700 14px/1.2 " + t.dfont, color: V.ink }}>{f.name}</div>
+                    <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>
+                      [FRN-{f.id.replace("fr-", "").padStart(3, "0")}]
+                    </div>
+                    <div style={{ font: "700 14px/1.2 " + t.dfont, color: V.ink, marginTop: "1px" }}>{f.name}</div>
                     <div style={{ font: "400 11.5px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
                       {f.status}
                     </div>

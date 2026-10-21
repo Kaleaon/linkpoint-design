@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { subView } from "../theme/constants.js";
+import { panelLook } from "../theme/look.js";
 import Icon from "../components/Icon.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import BlockKeypad from "../components/BlockKeypad.jsx";
 
 const LANDMARKS_DATA = [
   {
@@ -105,13 +107,15 @@ const TELEPORT_HISTORY = [
 
 export default function Teleport() {
   const { state, actions } = useApp();
-  const { V, t, bleed, pad, ink } = useTheme();
+  const { V, t, LK, bleed, pad, ink } = useTheme();
   const curSub = subView(state, "Teleport") || "LANDMARK";
+  const cardStyle = (accent) => panelLook(V, LK, pad, accent);
 
   const [slurlInput, setSlurlInput] = useState("");
   const [category, setCategory] = useState("ALL");
   const [history, setHistory] = useState(TELEPORT_HISTORY);
   const [landmarks, setLandmarks] = useState(LANDMARKS_DATA);
+  const [keypadConfig, setKeypadConfig] = useState(null);
 
   const actBtn = (primary = false) => ({
     minHeight: "44px",
@@ -136,6 +140,25 @@ export default function Teleport() {
     const target = slurlInput.trim();
     actions.notify(`Teleporting to ${target}...`);
     actions.setScreen("Map");
+  };
+
+  const openCoordKeypad = () => {
+    setKeypadConfig({
+      title: "SIM COORDINATE VECTOR",
+      subtitle: "Enter X, Y, or Z vector coordinates (e.g. 128)",
+      systemCode: "NAV-01-COORD",
+      initialValue: "128",
+      unit: "<XYZ>",
+      unitPosition: "suffix",
+      presets: [64, 128, 192, 256],
+      max: 512,
+      onConfirm: (val) => {
+        setSlurlInput((prev) => (prev ? `${prev}/${val}` : `secondlife://Da%20Boom/${val}/${val}/26`));
+        actions.notify(`Coordinate vector set: ${val}`);
+        setKeypadConfig(null);
+      },
+      onCancel: () => setKeypadConfig(null),
+    });
   };
 
   const triggerTeleport = (placeName, coords) => {
@@ -168,24 +191,16 @@ export default function Teleport() {
       }}
     >
       {/* SLURL Teleport Resolver Bar */}
-      <div
-        style={{
-          padding: pad,
-          background: V.surf,
-          border: bleed ? "none" : "1px solid " + V.outv,
-          borderLeft: bleed ? "4px solid " + V.pri : undefined,
-          borderRadius: bleed ? 0 : V.rp,
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-        }}
-      >
+      <div style={{ ...cardStyle(V.pri), display: "flex", flexDirection: "column", gap: "10px" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <Icon name="zap" size={20} style={{ color: V.pri }} />
             <div>
-              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>Teleport & Places</div>
-              <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2 }}>
+              <div style={{ font: "700 9px/1 " + t.dfont, letterSpacing: ".18em", color: V.sec2 || V.pri }}>
+                [NAV-01-8012] SPATIAL COORDINATE BEACONS
+              </div>
+              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink, marginTop: "2px" }}>Teleport &amp; Places</div>
+              <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
                 Current region: <span style={{ color: V.ink, fontWeight: 600 }}>Da Boom &lt;128, 128, 26&gt;</span>
               </div>
             </div>
@@ -260,12 +275,23 @@ export default function Teleport() {
 
           <KInteractive
             as="button"
+            type="button"
+            onClick={openCoordKeypad}
+            style={actBtn(false)}
+            aria-label="Open coordinate numeric keypad"
+          >
+            <Icon name="grid" size={13} />
+            <span>KEYPAD COORDS</span>
+          </KInteractive>
+
+          <KInteractive
+            as="button"
             type="submit"
             style={actBtn(true)}
             aria-label="Teleport to SLURL"
           >
             <Icon name="send" size={13} />
-            <span>RESOLVE & TELEPORT</span>
+            <span>RESOLVE &amp; TELEPORT</span>
           </KInteractive>
         </form>
       </div>
@@ -306,11 +332,7 @@ export default function Teleport() {
               <div
                 key={lm.id}
                 style={{
-                  padding: pad,
-                  background: V.surf,
-                  border: bleed ? "none" : "1px solid " + V.outv,
-                  borderLeft: lm.pinned ? "4px solid " + V.pri : undefined,
-                  borderRadius: bleed ? 0 : V.rp,
+                  ...cardStyle(lm.pinned ? V.pri : undefined),
                   display: "flex",
                   flexDirection: "column",
                   gap: "8px",
@@ -335,15 +357,18 @@ export default function Teleport() {
                       <Icon name="map-pin" size={18} />
                     </div>
                     <div>
-                      <div style={{ font: "700 14px/1.2 " + t.dfont, color: V.ink }}>{lm.name}</div>
+                      <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>
+                        [NAV-01-LMK]
+                      </div>
+                      <div style={{ font: "700 14px/1.2 " + t.dfont, color: V.ink, marginTop: "1px" }}>{lm.name}</div>
                       <div style={{ font: "400 11.5px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
                         {lm.region} {lm.coords} · {lm.notes}
                       </div>
                       <div style={{ display: "flex", gap: "6px", alignItems: "center", marginTop: "4px" }}>
-                        <span style={{ font: "600 10px/1 " + t.mfont, padding: "2px 6px", borderRadius: "3px", background: V.surf2, color: V.ink2, border: "1px solid " + V.outv }}>
+                        <span style={{ font: "600 10px/1 " + (t.mfont || t.font), padding: "2px 6px", borderRadius: "3px", background: V.surf2, color: V.ink2, border: "1px solid " + V.outv }}>
                           {lm.maturity}
                         </span>
-                        <span style={{ font: "600 10px/1 " + t.mfont, padding: "2px 6px", borderRadius: "3px", background: V.surf2, color: V.pri, border: "1px solid " + V.outv }}>
+                        <span style={{ font: "600 10px/1 " + (t.mfont || t.font), padding: "2px 6px", borderRadius: "3px", background: V.surf2, color: V.pri, border: "1px solid " + V.outv }}>
                           👥 {lm.avatars} in region
                         </span>
                       </div>
@@ -435,11 +460,7 @@ export default function Teleport() {
               <div
                 key={h.id}
                 style={{
-                  padding: pad,
-                  background: V.surf,
-                  border: bleed ? "none" : "1px solid " + V.outv,
-                  borderLeft: h.timestamp === "Current Region" ? "4px solid " + V.pri : undefined,
-                  borderRadius: bleed ? 0 : V.rp,
+                  ...cardStyle(h.timestamp === "Current Region" ? V.pri : undefined),
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
@@ -464,7 +485,10 @@ export default function Teleport() {
                     <Icon name="history" size={18} />
                   </div>
                   <div>
-                    <div style={{ font: "700 13.5px/1.2 " + t.dfont, color: V.ink }}>{h.region}</div>
+                    <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>
+                      [NAV-01-HIST]
+                    </div>
+                    <div style={{ font: "700 13.5px/1.2 " + t.dfont, color: V.ink, marginTop: "1px" }}>{h.region}</div>
                     <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
                       {h.coords} · {h.timestamp} ({h.duration})
                     </div>
@@ -487,6 +511,9 @@ export default function Teleport() {
           )}
         </div>
       )}
+
+      {/* Block-Matrix Numeric Keypad Modal */}
+      {keypadConfig && <BlockKeypad {...keypadConfig} />}
     </div>
   );
 }

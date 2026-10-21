@@ -6,7 +6,7 @@ import Icon from "../components/Icon.jsx";
 
 // Ported from the `isProfile` <sc-if> block.
 export default function Profile() {
-  const { state } = useApp();
+  const { state, actions: { startIm, notify } } = useApp();
   const { V, t } = useTheme();
   return (
     <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
@@ -58,6 +58,16 @@ export default function Profile() {
       </div>
       <div style={{ display: "flex", gap: "8px", padding: "14px 16px" }}>
         <div
+          role="button"
+          tabIndex={0}
+          aria-label="Send IM"
+          onClick={() => startIm("Nyx Vaher")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              startIm("Nyx Vaher");
+            }
+          }}
           style={{
             flex: 1,
             height: "44px",
@@ -70,12 +80,23 @@ export default function Profile() {
             gap: "6px",
             font: "700 11px/1 " + t.font,
             letterSpacing: ".16em",
+            cursor: "pointer",
           }}
         >
           <Icon name="message-square" size={16} />
           IM
         </div>
         <div
+          role="button"
+          tabIndex={0}
+          aria-label="Offer Teleport"
+          onClick={() => notify("Nyx Vaher — TELEPORT OFFER SENT")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              notify("Nyx Vaher — TELEPORT OFFER SENT");
+            }
+          }}
           style={{
             flex: 1,
             height: "44px",
@@ -87,12 +108,23 @@ export default function Profile() {
             gap: "6px",
             font: "700 11px/1 " + t.font,
             letterSpacing: ".16em",
+            cursor: "pointer",
           }}
         >
           <Icon name="zap" size={16} />
           OFFER TP
         </div>
         <div
+          role="button"
+          tabIndex={0}
+          aria-label="More options"
+          onClick={() => notify("Nyx Vaher — MORE OPTIONS")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              notify("Nyx Vaher — MORE OPTIONS");
+            }
+          }}
           style={{
             width: "44px",
             height: "44px",
@@ -101,6 +133,7 @@ export default function Profile() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            cursor: "pointer",
           }}
         >
           <Icon name="more-horizontal" size={18} />

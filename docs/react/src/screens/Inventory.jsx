@@ -329,6 +329,12 @@ export default function Inventory() {
             </span>
             <span
               onClick={actions.toggleInvSelectMode}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.toggleInvSelectMode();
+                }
+              }}
               style={{
                 font: "600 10px/1 " + t.font,
                 color: V.ink2,
@@ -343,6 +349,12 @@ export default function Inventory() {
           <div style={{ display: "flex", gap: "8px" }}>
             <div
               onClick={actions.invWearSelected}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.invWearSelected();
+                }
+              }}
               style={{
                 flex: 1,
                 height: "44px",
@@ -364,6 +376,12 @@ export default function Inventory() {
             </div>
             <div
               onClick={actions.invOpenMoveModal}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.invOpenMoveModal();
+                }
+              }}
               style={{
                 flex: 1,
                 height: "44px",
@@ -386,6 +404,12 @@ export default function Inventory() {
             </div>
             <div
               onClick={actions.invDeleteSelected}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.invDeleteSelected();
+                }
+              }}
               style={{
                 flex: 1,
                 height: "44px",
@@ -441,6 +465,12 @@ export default function Inventory() {
             </span>
             <span
               onClick={actions.invCloseMoveModal}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.invCloseMoveModal();
+                }
+              }}
               style={{
                 font: "600 10px/1 " + t.font,
                 color: V.ink2,
@@ -457,6 +487,12 @@ export default function Inventory() {
               <div
                 key={folder}
                 onClick={() => actions.invMoveSelected(folder)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    actions.invMoveSelected(folder);
+                  }
+                }}
                 style={{
                   height: "44px",
                   padding: "0 12px",

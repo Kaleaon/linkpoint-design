@@ -274,6 +274,15 @@ export default function Search() {
       >
         <div
           onClick={() => actions.setScreen(state.searchFrom || "Friends")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              actions.setScreen(state.searchFrom || "Friends");
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label="Go back"
           style={{
             width: "36px",
             height: "36px",
