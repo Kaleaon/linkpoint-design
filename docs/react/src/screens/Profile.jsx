@@ -7,7 +7,7 @@ import Heading from "../components/Heading.jsx";
 
 // Ported from the `isProfile` <sc-if> block.
 export default function Profile() {
-  const { state } = useApp();
+  const { state, actions: { startIm, notify } } = useApp();
   const { V, t } = useTheme();
   return (
     <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
@@ -22,15 +22,15 @@ export default function Profile() {
         </div>
       </div>
       <div style={{ display: "flex", gap: "8px", padding: "14px 16px" }}>
-        <div style={{ flex: 1, height: "44px", borderRadius: V.rs, background: V.pri, color: V.onpri, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".16em" }}>
+        <div role="button" tabIndex={0} aria-label="Send IM" onClick={() => startIm("Nyx Vaher")} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); startIm("Nyx Vaher"); } }} style={{ flex: 1, height: "44px", borderRadius: V.rs, background: V.pri, color: V.onpri, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".16em", cursor: "pointer" }}>
           <Icon name="message-square" size={16} />
           IM
         </div>
-        <div style={{ flex: 1, height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".16em" }}>
+        <div role="button" tabIndex={0} aria-label="Offer Teleport" onClick={() => notify("Nyx Vaher — TELEPORT OFFER SENT")} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); notify("Nyx Vaher — TELEPORT OFFER SENT"); } }} style={{ flex: 1, height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".16em", cursor: "pointer" }}>
           <Icon name="zap" size={16} />
           OFFER TP
         </div>
-        <div style={{ width: "44px", height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div role="button" tabIndex={0} aria-label="More options" onClick={() => notify("Nyx Vaher — MORE OPTIONS")} onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); notify("Nyx Vaher — MORE OPTIONS"); } }} style={{ width: "44px", height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
           <Icon name="more-horizontal" size={18} />
         </div>
       </div>

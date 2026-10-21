@@ -13,10 +13,9 @@ export default function SegmentedTabs() {
 
   if (!norm) return null;
   const curSub = subView(state, scr);
-  // Radar draws its own AVATARS/OBJECTS pill row inside the screen body, and 3D
-  // View is immersive with no header to hang a strip under — it carries its
-  // CAM/GFX switch in-scene instead. Both still get the LCARS sub-nav.
-  if (!CSUB[scr] || scr === "Radar" || scr === "3D View") return null;
+  // 3D View is immersive with no header to hang a strip under — it carries its
+  // CAM/GFX switch in-scene instead.
+  if (!CSUB[scr] || scr === "3D View") return null;
   // Unread counts live here rather than in CSUB — CSUB is the label model, a
   // badge is a per-tab decoration that only Chat currently has.
   const SEG_BADGE = { Chat: { IM: 3, GROUP: 1 } };

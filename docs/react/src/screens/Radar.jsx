@@ -4,6 +4,8 @@ import { RADAR_AVATARS, RADAR_OBJECTS, COMPASS } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
 import ElevationBadge from "../components/ElevationBadge.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import { panelLook } from "../theme/look.js";
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
 
 const RINGS = [
   [10, "WHISPER 10m"],
@@ -19,7 +21,8 @@ const bandName = (dm) => (dm <= 10 ? "WHISPER" : dm <= 20 ? "CHAT" : dm <= 100 ?
 // and the sorted list with tap-to-open actions / long-press moderator menu.
 export default function Radar() {
   const { state, actions } = useApp();
-  const { V, t, bleed, pad } = useTheme();
+  const { V, t, LK, bleed, pad } = useTheme();
+  const reducedMotion = usePrefersReducedMotion();
 
   const objMode = state.rMode === "OBJ";
   const rSrc = (objMode ? RADAR_OBJECTS : RADAR_AVATARS).slice().sort((a, b) => a.distance - b.distance);
@@ -39,44 +42,56 @@ export default function Radar() {
     whiteSpace: "nowrap",
   });
 
-  const rModeWrap = { flex: "none", display: "flex", alignItems: "center", gap: "6px", padding: bleed ? "10px 12px 10px" : "0 16px 10px" };
-  const rScope = { flex: "none", margin: bleed ? "0 0 4px" : "0 16px 10px", position: "relative", height: "172px", overflow: "hidden", border: bleed ? "none" : "1px solid " + V.outv, borderRadius: bleed ? 0 : V.rp, background: V.surf };
+  const rScope = { ...panelLook(V, LK, 0), flex: "none", margin: bleed ? "0 0 4px" : "0 16px 10px", position: "relative", height: "172px", overflow: "hidden" };
   const rListWrap = { flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px", padding: bleed ? "0" : "0 16px 16px", background: bleed ? V.bg : "transparent" };
+
+  const handleAction = (label, name) => {
+    if (label === "PROFILE") {
+      actions.setScreen("Profile");
+      actions.notify(`Opened profile: ${name}`);
+    } else if (label === "IM") {
+      actions.startIm(name);
+    } else if (label === "TRACK") {
+      actions.notify(`Tracking beacon placed on ${name}`);
+    } else if (label === "TELEPORT TO") {
+      actions.teleportToRegion("Da Boom", "<128, 128, 26>");
+    } else if (label === "OFFER TELEPORT") {
+      actions.notify(`Teleport offer sent to ${name}`);
+    } else if (label === "INSPECT") {
+      actions.setScreen("Objects");
+      actions.setTab("Objects", "INSPECT");
+    } else if (label === "TOUCH") {
+      actions.notify(`Touched object: ${name}`);
+    } else if (label === "DERENDER") {
+      actions.notify(`Derendered ${name} (client-side)`);
+    } else if (label === "FREEZE") {
+      actions.notify(`Froze avatar: ${name}`);
+    } else if (label === "EJECT") {
+      actions.notify(`Ejected ${name} from parcel`);
+    } else if (label === "BAN") {
+      actions.notify(`Banned ${name} from parcel and estate`);
+    } else if (label === "REPORT") {
+      actions.notify(`Abuse report dialog opened for ${name}`);
+    } else if (label === "RETURN") {
+      actions.notify(`Returned ${name} to owner inventory`);
+    } else if (label === "MUTE OWNER") {
+      actions.notify(`Muted owner of ${name}`);
+    } else if (label === "BLOCK") {
+      actions.notify(`Blocked object: ${name}`);
+    } else if (label === "MUTE") {
+      actions.notify(`Muted text, voice & gestures for ${name}`);
+    }
+  };
 
   return (
     <>
-      <div style={rModeWrap}>
-        {[
-          ["AV", "AVATARS"],
-          ["OBJ", "OBJECTS"],
-        ].map(([k, label]) => {
-          const on = state.rMode === k;
-          return (
-            <KInteractive
-              key={k}
-              onClick={() => actions.setRMode(k)}
-              label={label}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                minHeight: "44px",
-                padding: "0 13px",
-                cursor: "pointer",
-                font: "600 10.5px/1 " + t.dfont,
-                letterSpacing: ".14em",
-                borderRadius: V.rs,
-                background: on ? V.pri : "transparent",
-                color: on ? V.onpri : V.ink2,
-                border: "1px solid " + (on ? V.pri : V.outv),
-              }}
-            >
-              {label}
-            </KInteractive>
-          );
-        })}
-        <div style={{ marginLeft: "auto", font: "400 10px/1 " + t.font, color: V.ink2, letterSpacing: ".06em" }}>
+      <div style={{ flex: "none", display: "flex", alignItems: "center", justifyContent: "space-between", padding: bleed ? "6px 12px 8px" : "2px 16px 8px" }}>
+        <span style={{ font: "700 10px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>
+          {objMode ? "[TAC-02-8921] NEARBY OBJECT RADAR" : "[TAC-01-4472] SENSOR RANGE · CENSUS"}
+        </span>
+        <span style={{ font: "400 10px/1 " + t.font, color: V.ink2, letterSpacing: ".06em" }}>
           {rSrc.length + (objMode ? " objects" : " avatars") + " · " + rSrc.filter((x) => x.distance <= 20).length + " in chat range"}
-        </div>
+        </span>
       </div>
 
       <div style={rScope}>
@@ -116,7 +131,7 @@ export default function Radar() {
             </div>
           ))}
         </div>
-        <div style={{ position: "absolute", left: "50%", top: "50%", width: "10px", height: "10px", margin: "-5px 0 0 -5px", borderRadius: "5px", background: V.pri, animation: "ping 2.6s ease-out infinite" }} />
+        <div style={{ position: "absolute", left: "50%", top: "50%", width: "10px", height: "10px", margin: "-5px 0 0 -5px", borderRadius: "5px", background: V.pri, animation: reducedMotion ? "none" : "ping 2.6s ease-out infinite" }} />
         <div style={{ position: "absolute", left: "50%", top: "50%", width: "9px", height: "9px", margin: "-4.5px 0 0 -4.5px", borderRadius: "5px", background: V.pri }} />
         {rSrc.map((r) => {
           const name = r.name,
@@ -188,17 +203,14 @@ export default function Radar() {
           const tone = bandTone(V, dm),
             open = state.rOpen === name,
             menu = state.rMenu === name;
-          const acts = (objMode ? ["INSPECT", "TOUCH", "DERENDER", "TRACK"] : ["PROFILE", "IM", "TRACK", "TELEPORT TO"]).map((label) => ({ label, style: actChip(null) }));
+          const acts = (objMode ? ["INSPECT", "TOUCH", "DERENDER", "TRACK"] : ["PROFILE", "IM", "TRACK", "TELEPORT TO", "OFFER TELEPORT"]).map((label) => ({ label, style: actChip(null) }));
           const mods = (objMode ? ["RETURN", "MUTE OWNER", "BLOCK", "REPORT"] : ["MUTE", "DERENDER", "FREEZE", "EJECT", "BAN", "REPORT"]).map((label) => ({ label, style: actChip(V.err) }));
           const wrap = {
+            ...panelLook(V, LK, 0, open || menu ? tone : undefined),
             display: "flex",
             flexDirection: "column",
             gap: "6px",
             padding: open || menu ? "0 0 8px" : "0",
-            border: bleed ? "none" : "1px solid " + (open || menu ? tone : V.outv),
-            borderLeft: bleed ? "4px solid " + (open || menu ? tone : "transparent") : undefined,
-            borderRadius: bleed ? 0 : V.rs,
-            background: V.surf,
           };
           return (
             <div key={r.id || name} style={wrap}>
@@ -225,7 +237,7 @@ export default function Radar() {
               {open ? (
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", padding: "0 " + pad }}>
                   {acts.map((a, i) => (
-                    <KInteractive key={i} label={a.label} style={a.style}>
+                    <KInteractive key={i} onClick={() => handleAction(a.label, name)} label={`${a.label} ${name}`} style={a.style}>
                       {a.label}
                     </KInteractive>
                   ))}
@@ -236,7 +248,7 @@ export default function Radar() {
                   <div style={{ padding: "0 " + pad, font: "600 9px/1 " + t.dfont, letterSpacing: ".18em", color: V.err }}>{(objMode ? "OBJECT" : "MODERATOR") + " — LONG PRESS"}</div>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", padding: "0 " + pad }}>
                     {mods.map((a, i) => (
-                      <KInteractive key={i} label={a.label} style={a.style}>
+                      <KInteractive key={i} onClick={() => handleAction(a.label, name)} label={`${a.label} ${name}`} style={a.style}>
                         {a.label}
                       </KInteractive>
                     ))}
