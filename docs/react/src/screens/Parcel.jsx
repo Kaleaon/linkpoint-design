@@ -2,13 +2,16 @@ import { useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { subView } from "../theme/constants.js";
+import { panelLook } from "../theme/look.js";
 import Icon from "../components/Icon.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import SegmentedMeter from "../components/SegmentedMeter.jsx";
 
 export default function Parcel() {
   const { state, actions } = useApp();
-  const { V, t, bleed, pad, ink } = useTheme();
+  const { V, t, LK, bleed, pad, ink } = useTheme();
   const curSub = subView(state, "Parcel") || "GENERAL";
+  const cardStyle = (accent) => panelLook(V, LK, pad, accent);
 
   const [streamPlaying, setStreamPlaying] = useState(false);
   const [streamUrl, setStreamUrl] = useState("http://stream.sl-radio.net:8000/live");
@@ -38,23 +41,13 @@ export default function Parcel() {
   return (
     <div style={{ flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column", gap: bleed ? "6px" : "10px", padding: bleed ? "8px 0 16px" : "8px 16px 16px" }}>
       {/* Parcel Hero Card */}
-      <div
-        style={{
-          padding: pad,
-          background: V.surf,
-          border: bleed ? "none" : "1px solid " + V.outv,
-          borderLeft: bleed ? "4px solid " + V.pri : undefined,
-          borderRadius: bleed ? 0 : V.rp,
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-        }}
-      >
+      <div style={{ ...cardStyle(V.pri), display: "flex", flexDirection: "column", gap: "10px" }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Icon name="map-pin" size={24} style={{ color: V.pri }} />
             <div>
-              <div style={{ font: "700 16px/1.2 " + t.dfont, color: V.ink }}>Linden Public Park</div>
+              <div style={{ font: "700 9px/1 " + t.dfont, letterSpacing: ".18em", color: V.sec2 || V.pri }}>[ENV-01-7720] PARCEL DOMAIN & BOUNDS</div>
+              <div style={{ font: "700 16px/1.2 " + t.dfont, color: V.ink, marginTop: "2px" }}>Linden Public Park</div>
               <div style={{ font: "400 11.5px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
                 Da Boom &lt;128, 128, 26&gt; · 4,096 m²
               </div>
@@ -99,39 +92,30 @@ export default function Parcel() {
       {curSub === "GENERAL" && (
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           {/* Prim / Land Capacity */}
-          <div
-            style={{
-              padding: pad,
-              background: V.surf,
-              border: bleed ? "none" : "1px solid " + V.outv,
-              borderRadius: bleed ? 0 : V.rp,
-              display: "flex",
-              flexDirection: "column",
-              gap: "8px",
-            }}
-          >
+          <div style={{ ...cardStyle(V.pri), display: "flex", flexDirection: "column", gap: "8px" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <Icon name="layers" size={16} style={{ color: V.pri }} />
-                <span style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>PARCEL PRIM CAPACITY</span>
+                <div>
+                  <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".16em", color: V.sec2 || V.pri }}>[OPS-03-5512] RESOURCE ALLOCATION</div>
+                  <span style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>PARCEL PRIM CAPACITY</span>
+                </div>
               </div>
               <span style={{ font: "700 12px/1 " + t.font, color: V.ink }}>
                 {primUsed} / {primCap} prims ({Math.round(primRatio * 100)}%)
               </span>
             </div>
 
-            {/* Progress Bar */}
-            <div style={{ width: "100%", height: "8px", background: V.surf2, borderRadius: "4px", overflow: "hidden" }}>
-              <div
-                style={{
-                  width: `${primRatio * 100}%`,
-                  height: "100%",
-                  background: primRatio > 0.9 ? V.err : V.pri,
-                  borderRadius: "4px",
-                  transition: "width .3s ease",
-                }}
-              />
-            </div>
+            {/* Discrete Segmented Chunky Bar Meter */}
+            <SegmentedMeter
+              value={primUsed}
+              max={primCap}
+              segments={24}
+              height={12}
+              gap={2}
+              label="Parcel prim capacity"
+              showReadout={false}
+            />
             <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2 }}>
               {primCap - primUsed} prims available for rezzing on this parcel.
             </div>
@@ -174,18 +158,11 @@ export default function Parcel() {
           </div>
 
           {/* Ownership & Group */}
-          <div
-            style={{
-              padding: pad,
-              background: V.surf,
-              border: bleed ? "none" : "1px solid " + V.outv,
-              borderRadius: bleed ? 0 : V.rp,
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-            }}
-          >
-            <div style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>OWNERSHIP &amp; ACCESS</div>
+          <div style={{ ...cardStyle(), display: "flex", flexDirection: "column", gap: "10px" }}>
+            <div>
+              <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".16em", color: V.sec2 || V.pri }}>[SEC-02-4190] PARCEL TITLE &amp; ESTATE RECORDS</div>
+              <div style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri, marginTop: "2px" }}>OWNERSHIP &amp; ACCESS</div>
+            </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "10px" }}>
               <div>
                 <div style={{ font: "500 10px/1 " + t.font, color: V.ink2 }}>PARCEL OWNER</div>
@@ -207,18 +184,11 @@ export default function Parcel() {
           </div>
 
           {/* Parcel Rules & Flags */}
-          <div
-            style={{
-              padding: pad,
-              background: V.surf,
-              border: bleed ? "none" : "1px solid " + V.outv,
-              borderRadius: bleed ? 0 : V.rp,
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-            }}
-          >
-            <div style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>PARCEL FLAGS</div>
+          <div style={{ ...cardStyle(), display: "flex", flexDirection: "column", gap: "10px" }}>
+            <div>
+              <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".16em", color: V.sec2 || V.pri }}>[SEC-03-1204] SIMULATOR PERMISSIONS &amp; FLAGS</div>
+              <div style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri, marginTop: "2px" }}>PARCEL FLAGS</div>
+            </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "8px" }}>
               {[
                 { name: "Voice Chat", ok: true },
@@ -243,21 +213,14 @@ export default function Parcel() {
       {curSub === "MEDIA" && (
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           {/* Audio / Music Stream */}
-          <div
-            style={{
-              padding: pad,
-              background: V.surf,
-              border: bleed ? "none" : "1px solid " + V.outv,
-              borderRadius: bleed ? 0 : V.rp,
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-            }}
-          >
+          <div style={{ ...cardStyle(V.pri), display: "flex", flexDirection: "column", gap: "10px" }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                 <Icon name="radio" size={18} style={{ color: V.pri }} />
-                <span style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>PARCEL AUDIO STREAM</span>
+                <div>
+                  <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".16em", color: V.sec2 || V.pri }}>[COM-02-1840] SPATIAL AUDIO STREAM</div>
+                  <span style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>PARCEL AUDIO STREAM</span>
+                </div>
               </div>
               <span
                 style={{
@@ -334,20 +297,13 @@ export default function Parcel() {
           </div>
 
           {/* Shared Media (MOAP) */}
-          <div
-            style={{
-              padding: pad,
-              background: V.surf,
-              border: bleed ? "none" : "1px solid " + V.outv,
-              borderRadius: bleed ? 0 : V.rp,
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-            }}
-          >
+          <div style={{ ...cardStyle(), display: "flex", flexDirection: "column", gap: "10px" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
               <Icon name="monitor-play" size={18} style={{ color: V.pri }} />
-              <span style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>SHARED MEDIA (MOAP)</span>
+              <div>
+                <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".16em", color: V.sec2 || V.pri }}>[MED-01-3310] SHARED MEDIA &amp; PRIM FACES</div>
+                <span style={{ font: "700 11px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>SHARED MEDIA (MOAP)</span>
+              </div>
             </div>
 
             <div>
