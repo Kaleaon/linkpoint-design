@@ -92,6 +92,7 @@ export function useAppState() {
   const [cDock, setCDock] = useState(["fly", "sit", "snap", "mini", "inv", "home", "ao", "sun"]);
   const [flOpen, setFlOpen] = useState({ Chat: true, Radar: true, Friends: true, Inventory: true, Map: true });
   const [flMin, setFlMin] = useState({});
+  const [flShade, setFlShade] = useState({});
   const [flRect, setFlRect] = useState({});
   const [flZ, setFlZ] = useState(["Map", "Inventory", "Friends", "Radar", "Chat"]);
   const [menu, setMenu] = useState(null);
@@ -469,8 +470,13 @@ export function useAppState() {
     [flMin]
   );
 
+  const flToggleShade = useCallback((id) => {
+    setFlShade((s) => ({ ...s, [id]: !s[id] }));
+  }, []);
+
   const flClose = useCallback((id) => {
     setFlOpen((o) => ({ ...o, [id]: false }));
+    setFlShade((s) => ({ ...s, [id]: false }));
     setMenu(null);
   }, []);
 
@@ -767,6 +773,8 @@ export function useAppState() {
         setDialog(null);
       } else if (type === "FLOATER_MINIMIZE" || type === "FLOATER_TOGGLE") {
         if (payload.id) flToggle(payload.id);
+      } else if (type === "FLOATER_SHADE") {
+        if (payload.id) flToggleShade(payload.id);
       } else if (type === "FLOATER_CLOSE") {
         if (payload.id) flClose(payload.id);
       } else if (type === "NAVIGATE_SCREEN") {
@@ -777,7 +785,7 @@ export function useAppState() {
 
       return intentEvent;
     },
-    [flToggle, flClose, notify, screenPick]
+    [flToggle, flToggleShade, flClose, notify, screenPick]
   );
 
   return {
@@ -785,7 +793,7 @@ export function useAppState() {
       layout, palette, customTheme, device, screen, dialog, dense, tabs, chip, tileOk, invOpen, invSelectMode, invSelected, invMoveModal, invItems, dismissed, pinned, lureState,
       toggles, cond, hudOn, hudPos, hudPicker, target, targetPicker, navPeek,
       cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
-      rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
+      rMode, rOpen, rMenu, cDock, flOpen, flMin, flShade, flRect, flZ, menu, tick,
       loginMode, loginGrid, loginBusy, loginError, customGrids, addGrid, addGridName, addGridHost,
       searchFrom, searchTab, searchQuery, searchState, reconnecting, toast, offlineRunning, offlineUser, offlineAccountModal, offlineAccountFirstName, offlineAccountLastName, offlineAccountPassword, oarFile, oarRegionName, oarCoords, oarPrims, assetName, assetType, localAssets, offlineCacheSize, consoleLevel, consoleQuery, consoleAutoscroll, consoleLogs,
       prefs, cacheCleared, camPreset, lindenBalance, exchangeRate, lastSyncedAt,
@@ -795,7 +803,7 @@ export function useAppState() {
       allGrids, openAddGrid, cancelAddGrid, saveCustomGrid, setAddGridName, setAddGridHost,
       setTab, setChip, setTileOk, toggleInvFolder, toggleInvSelectMode, toggleInvSelectedItem, invLongPressItem, invWearSelected, invOpenMoveModal, invCloseMoveModal, invMoveSelected, invDeleteSelected, dismiss, toggleSetting, pin, respondLure, teleportToRegion, saveLandmark,
       cycleLayout, cyclePalette, setCond, setMenu,
-      flR, flDrag, flFocus, flToggle, flClose,
+      flR, flDrag, flFocus, flToggle, flToggleShade, flClose,
       hudDrag, toggleHud, setHudPicker, setTarget, setTargetPicker, setNavPeek,
       cf, cTap, cHold, cPress, sceneDown, sceneMove, sceneUp,
       holdStart, holdEnd, endEdit, togglePad, toggleRun, flyUpDown, flyDnDown, flyRelease, addSlot, removeDockSlot,

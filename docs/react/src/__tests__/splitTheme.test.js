@@ -123,4 +123,122 @@ describe("Split Theme Context Architecture", () => {
     expect(runtimeComponentRenders).toBe(1);
     expect(compositeComponentRenders).toBe(1);
   });
+
+  it("resolves all canonical layout variations and legacy aliases without error", () => {
+    const canonicalLayouts = [
+      "terminal",
+      "lcars",
+      "metro",
+      "frutiger_aero",
+      "art_deco",
+      "press",
+      "modern_glass",
+      "material3",
+      "cyberpunk",
+    ];
+    const legacyAliases = ["sweep", "tiles", "glass", "rules"];
+    const allKeys = [...canonicalLayouts, ...legacyAliases];
+    const mockCf = () => ({ gap: 4, cur: 40, rad: 36, rail: 84, bar: 70, dock: 52, foot: 30, wide: false });
+
+    for (const key of allKeys) {
+      const state = {
+        layout: key,
+        palette: "ink",
+        customTheme: null,
+        dense: false,
+        device: "and",
+        screen: "Chat",
+        cond: "normal",
+      };
+
+      const tokens = computeThemeTokens(state);
+      expect(tokens).toBeDefined();
+      expect(tokens.V).toBeDefined();
+      expect(tokens.t.name).toBeDefined();
+      expect(tokens.LK.card).toBeDefined();
+      expect(tokens.LK.head).toBeDefined();
+
+      const runtime = computeThemeRuntime(state, mockCf, tokens);
+      expect(runtime).toBeDefined();
+      expect(runtime.nav).toBeDefined();
+
+      // Check specific layout design invariants
+      if (key === "lcars" || key === "sweep") {
+        expect(runtime.nav).toBe("sweep");
+        expect(tokens.V.rs).toBe("999px");
+        expect(tokens.LK.card).toBe("cap");
+      }
+      if (key === "metro" || key === "tiles") {
+        expect(runtime.nav).toBe("tiles");
+        expect(tokens.V.rs).toBe("0px");
+        expect(tokens.LK.card).toBe("flat");
+        expect(tokens.LK.head).toBe("pivot");
+      }
+      if (key === "frutiger_aero" || key === "glass") {
+        expect(runtime.nav).toBe("tabs");
+        expect(tokens.V.rs).toBe("12px");
+        expect(tokens.LK.card).toBe("soft");
+      }
+      if (key === "art_deco" || key === "rules") {
+        expect(tokens.V.rs).toBe("0px");
+        expect(tokens.LK.card).toBe("rule");
+        expect(tokens.LK.head).toBe("rule");
+      }
+      if (key === "material3") {
+        expect(tokens.LK.card).toBe("tonal");
+        expect(tokens.V.rs).toBe("12px");
+        expect(runtime.nav).toBe("tabs");
+      }
+      if (key === "cyberpunk") {
+        expect(tokens.LK.card).toBe("chamfer");
+        expect(tokens.V.rs).toBe("0px");
+        expect(runtime.nav).toBe("tabs");
+      }
+      if (key === "press") {
+        expect(tokens.LK.card).toBe("quiet");
+        expect(tokens.LK.head).toBe("editorial");
+        expect(runtime.nav).toBe("tabs");
+      }
+      if (key === "modern_glass") {
+        expect(tokens.LK.card).toBe("soft");
+        expect(tokens.V.rs).toBe("14px");
+        expect(runtime.nav).toBe("tabs");
+      }
+    }
+  });
+
+  it("verifies isSweepDesk desktop adaptation on both lcars and sweep keys", () => {
+    const mockCf = () => ({ gap: 4, cur: 40, rad: 36, rail: 84, bar: 70, dock: 52, foot: 30, wide: false });
+
+    for (const key of ["lcars", "sweep"]) {
+      const state = {
+        layout: key,
+        palette: "lcars",
+        customTheme: null,
+        dense: false,
+        device: "desk",
+        screen: "Chat",
+        cond: "normal",
+      };
+      const tokens = computeThemeTokens(state);
+      const runtime = computeThemeRuntime(state, mockCf, tokens);
+      expect(runtime.isFloat).toBe(true);
+      expect(runtime.isSweepDesk).toBe(true);
+    }
+
+    // Metro desktop floater is NOT sweep desk
+    const metroState = {
+      layout: "metro",
+      palette: "metro",
+      customTheme: null,
+      dense: false,
+      device: "desk",
+      screen: "Chat",
+      cond: "normal",
+    };
+    const metroTokens = computeThemeTokens(metroState);
+    const metroRuntime = computeThemeRuntime(metroState, mockCf, metroTokens);
+    expect(metroRuntime.isFloat).toBe(true);
+    expect(metroRuntime.isSweepDesk).toBe(false);
+  });
 });
