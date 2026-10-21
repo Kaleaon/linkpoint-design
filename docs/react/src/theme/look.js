@@ -29,20 +29,51 @@ export function cardLooks(V, pad) {
   return {
     box: { ...fullBorder("1px", V.outv), borderRadius: V.rs || V.rp, background: V.surf, padding: pad },
     flat: { ...sideBorder("Left", "4px", V.pri || "transparent"), borderRadius: "0px", background: V.surf, padding: pad },
-    soft: { ...fullBorder("1px", "rgba(255,255,255,0.18)"), borderRadius: V.rp, background: V.surf, padding: pad, boxShadow: "0 6px 20px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.30)" },
-    rule: { ...sideBorder("Top", "1px", V.outv), borderRadius: "0px", background: "transparent", padding: pad + " 2px" },
-    quiet: { ...sideBorder("Bottom", "1px", V.outv), borderRadius: "0px", background: "transparent", padding: "4px 0 " + pad },
-    cap: { ...sideBorder("Left", "10px", V.sec2 || V.pri), borderRadius: "0 " + (V.rp || "22px") + " " + (V.rp || "22px") + " 0", background: V.surf, padding: pad },
+    soft: {
+      ...fullBorder("1px", V.outv || "rgba(255,255,255,0.18)"),
+      borderRadius: V.rp,
+      background: V.surf,
+      padding: pad,
+      boxShadow: "0 6px 20px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.30)",
+      backdropFilter: "blur(12px)",
+      WebkitBackdropFilter: "blur(12px)",
+    },
+    rule: { ...sideBorder("Top", "1px", V.outv), borderRadius: "0px", background: V.surf, padding: pad + " 2px" },
+    quiet: { ...sideBorder("Bottom", "1px", V.outv), borderRadius: "0px", background: V.surf, padding: "4px 0 " + pad },
+    cap: { ...sideBorder("Left", "6px", V.sec2 || V.pri), borderRadius: "0px", background: V.surf, padding: pad },
+    tonal: {
+      border: "none",
+      borderRadius: V.rp || "16px",
+      background: V.surf2 || V.surf,
+      padding: pad,
+      boxShadow: "0 2px 8px rgba(0,0,0,.18)",
+    },
+    chamfer: {
+      ...fullBorder("1px", V.pri || V.outv),
+      borderRadius: "0px",
+      background: V.surf,
+      padding: pad,
+      clipPath: "polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))",
+    },
   };
 }
 
 export function cardAccentStyle(cardKind, V, accent) {
   if (!accent) return null;
-  if (cardKind === "box") return { borderTopColor: accent, borderRightColor: accent, borderBottomColor: accent, borderLeftColor: accent };
+  if (cardKind === "box" || cardKind === "chamfer") return { borderTopColor: accent, borderRightColor: accent, borderBottomColor: accent, borderLeftColor: accent };
   if (cardKind === "flat" || cardKind === "cap") return { borderLeftColor: accent };
   if (cardKind === "quiet") return { borderBottomColor: accent };
   if (cardKind === "rule") return { borderTopColor: accent };
+  if (cardKind === "tonal") return { outline: "2px solid " + accent, outlineOffset: "-2px" };
   return { boxShadow: "inset 4px 0 0 " + accent + ", 0 4px 16px rgba(0,0,0,.25)" };
+}
+
+export function panelLook(V, LK, pad, accent) {
+  const cardKind = LK?.card || "box";
+  const looks = cardLooks(V, pad);
+  const base = looks[cardKind] || looks.box;
+  const acc = cardAccentStyle(cardKind, V, accent);
+  return { ...base, ...acc };
 }
 
 export function actionButtonStyle(V, font, a) {

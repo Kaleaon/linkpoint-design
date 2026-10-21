@@ -1,4 +1,4 @@
-import { LAYOUTS } from "./layouts.js";
+import { LAYOUTS, resolveLayout } from "./layouts.js";
 import { PALETTES } from "./palettes.js";
 import { DEVICES, STATES } from "./constants.js";
 import { pickInk } from "./color.js";
@@ -24,8 +24,8 @@ function getContrastRatio(hex1, hex2) {
 
 // Resolves static visual design tokens (V, t, pad, LK, ink)
 export function computeThemeTokens(state) {
-  const L = LAYOUTS[state.layout];
-  const base = PALETTES[state.palette];
+  const L = resolveLayout(state.layout);
+  const base = PALETTES[state.palette] || PALETTES.ink;
   const P = state.customTheme?.active
     ? { ...base, name: state.customTheme.name, note: "A custom, shareable colour theme.", c: { ...base.c, ...state.customTheme.colors } }
     : base;
@@ -55,8 +55,9 @@ export function computeThemeTokens(state) {
 
 // Resolves dynamic runtime viewport, screen, and navigation state
 export function computeThemeRuntime(state, cf, tokens) {
-  const d = DEVICES[state.device];
-  const tNav = tokens ? tokens.t.nav : LAYOUTS[state.layout].nav;
+  const d = DEVICES[state.device] || DEVICES.and;
+  const L = resolveLayout(state.layout);
+  const tNav = tokens ? tokens.t.nav : L.nav;
 
   let nav;
   if (d.desk) nav = "floaters";
@@ -68,7 +69,7 @@ export function computeThemeRuntime(state, cf, tokens) {
   const isConsole = nav === "sweep";
   const consoleScene = isConsole && state.screen === "3D View" && state.cond === "normal";
   const isFloat = nav === "floaters";
-  const isSweepDesk = isFloat && (state.layout === "sweep" || tNav === "SWEEP");
+  const isSweepDesk = isFloat && (state.layout === "sweep" || state.layout === "lcars" || tNav === "SWEEP");
   const bleed = isConsole || isFloat;
 
   const scr = state.screen;
@@ -79,7 +80,7 @@ export function computeThemeRuntime(state, cf, tokens) {
   const norm = !stateBlockActive;
   const bare = ["3D View", "Login", "Search"].includes(scr);
   const immersive = scr === "3D View" && norm;
-  const headLook = bare || isFloat ? "none" : nav === "sweep" ? "sweep" : (tokens ? tokens.LK.head : LAYOUTS[state.layout].look.head);
+  const headLook = bare || isFloat ? "none" : nav === "sweep" ? "sweep" : (tokens ? tokens.LK.head : L.look.head);
 
   return { d, nav, scr, sel, condPack, bare, immersive, headLook, isSweepDesk, C, isConsole, consoleScene, isFloat, bleed, stateBlockActive, norm };
 }
