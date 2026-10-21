@@ -193,6 +193,7 @@ describe("Split Theme Context Architecture", () => {
         expect(tokens.LK.card).toBe("chamfer");
         expect(tokens.V.rs).toBe("0px");
         expect(tokens.t.nav.toLowerCase()).toBe("rail");
+        expect(runtime.nav).toBe("tabs");
       }
       if (key === "press") {
         expect(tokens.LK.card).toBe("quiet");
