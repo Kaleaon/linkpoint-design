@@ -237,14 +237,14 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
           <div style="display:flex;flex-direction:column;gap:4px">
             <div role="button" tabindex="0" aria-label="Fly Up" onMouseDown="{{ flyUpDown }}" onMouseUp="{{ flyRelease }}" onMouseLeave="{{ flyRelease }}" onKeyDown="{{ flyUpDownKeyDown }}" onKeyUp="{{ flyReleaseKeyUp }}" style="{{ cfFly.up }}">UP</div>
             <div role="button" tabindex="0" aria-label="Fly Down" onMouseDown="{{ flyDnDown }}" onMouseUp="{{ flyRelease }}" onMouseLeave="{{ flyRelease }}" onKeyDown="{{ flyDnDownKeyDown }}" onKeyUp="{{ flyReleaseKeyUp }}" style="{{ cfFly.dn }}">DN</div>
-            <div onClick="{{ toggleRun }}" style="{{ cfFly.run }}">RUN</div>
-            <div onClick="{{ togglePad }}" style="{{ cfFly.hide }}">HIDE</div>
+            <div onClick="{{ toggleRun }}" onKeyDown="{{ toggleRunKeyDown }}" role="button" tabindex="0" aria-label="Toggle run" style="{{ cfFly.run }}">RUN</div>
+            <div onClick="{{ togglePad }}" onKeyDown="{{ togglePadKeyDown }}" role="button" tabindex="0" aria-label="Hide move pad" style="{{ cfFly.hide }}">HIDE</div>
           </div>
         </div>
         </sc-if>
 
         <sc-if value="{{ cfPadShut }}" hint-placeholder-val="{{ false }}">
-          <div onClick="{{ togglePad }}" style="{{ cfPadShow }}">MOVE PAD</div>
+          <div onClick="{{ togglePad }}" onKeyDown="{{ togglePadKeyDown }}" role="button" tabindex="0" aria-label="Show move pad" style="{{ cfPadShow }}">MOVE PAD</div>
         </sc-if>
       </div>
       </sc-if>
@@ -259,7 +259,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
           </div>
         </sc-for>
         <sc-if value="{{ cEdit }}" hint-placeholder-val="{{ false }}">
-          <div onClick="{{ addSlot }}" style="{{ cfAdd }}">+</div>
+          <div onClick="{{ addSlot }}" onKeyDown="{{ addSlotKeyDown }}" role="button" tabindex="0" aria-label="Add slot" style="{{ cfAdd }}">+</div>
         </sc-if>
       </div>
       </sc-if>
@@ -270,10 +270,10 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
       </div>
 
       <sc-if value="{{ cEdit }}" hint-placeholder-val="{{ false }}">
-        <div onClick="{{ endEdit }}" style="{{ cfScrim }}"></div>
+        <div onClick="{{ endEdit }}" onKeyDown="{{ endEditKeyDown }}" role="button" tabindex="0" aria-label="End edit" style="{{ cfScrim }}"></div>
         <div style="{{ cfEditStrip }}">
           <span>DOCK EDIT — MINUS REMOVES, PLUS ADDS</span>
-          <span onClick="{{ endEdit }}" style="{{ cfEditDone }}">DONE</span>
+          <span onClick="{{ endEdit }}" onKeyDown="{{ endEditKeyDown }}" role="button" tabindex="0" aria-label="Finish editing dock" style="{{ cfEditDone }}">DONE</span>
         </div>
       </sc-if>
     </div>
@@ -3668,8 +3668,11 @@ sendChatKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDef
       holdStart: () => { this.clp = setTimeout(() => this.setState({ cEdit: true }), 480); },
       holdEnd: () => clearTimeout(this.clp),
       endEdit: () => this.setState({ cEdit: false }),
+      endEditKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cEdit: false }); } },
       togglePad: () => this.setState(st => ({ cPad: !st.cPad })),
+      togglePadKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState(st => ({ cPad: !st.cPad })); } },
       toggleRun: () => this.setState(st => ({ cRun: !st.cRun })),
+      toggleRunKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState(st => ({ cRun: !st.cRun })); } },
       flyDown: (k) => () => this.setState({ cHeld: k }),
       flyUpDown: () => this.setState({ cHeld: "up" }),
       flyUpDownKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "up" }); } },
@@ -3681,6 +3684,15 @@ sendChatKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDef
         const miss = Object.keys(CBTN).filter(k => st.cDock.indexOf(k) < 0);
         return miss.length ? { cDock: st.cDock.concat(miss[0]) } : { cReason: "PALETTE EMPTY" };
       }),
+      addSlotKeyDown: (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          this.setState(st => {
+            const miss = Object.keys(CBTN).filter(k => st.cDock.indexOf(k) < 0);
+            return miss.length ? { cDock: st.cDock.concat(miss[0]) } : { cReason: "PALETTE EMPTY" };
+          });
+        }
+      },
       hasSeg: !!segTabs && norm,      isPivotHead: headLook === "pivot", isRuleHead: headLook === "rule", isPressHead: headLook === "editorial",
       pivotTitle: (title || "").toLowerCase(), pivotNext: nextScr.toLowerCase(),
       condList: [["normal", "NORMAL"], ["loading", "LOADING"], ["empty", "EMPTY"], ["error", "ERROR"]].map(([k, n]) => ({
