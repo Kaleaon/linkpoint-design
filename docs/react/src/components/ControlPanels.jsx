@@ -1,4 +1,6 @@
 import { useApp } from "../context/AppContext.jsx";
+import { useThemeTokens } from "../context/ThemeContext.jsx";
+import { hexToRgba } from "../theme/color.js";
 import { LAYOUTS, PRIMARY_LAYOUT_KEYS, LAYOUT_ALIASES } from "../theme/layouts.js";
 import { PALETTES, FAMILIES } from "../theme/palettes.js";
 import { DEVICES, SCREENS } from "../theme/constants.js";
@@ -10,6 +12,17 @@ import ThemeStudio from "./ThemeStudio.jsx";
 // palette/layout/device/screen/condition/dialog combination.
 export default function ControlPanels() {
   const { state, actions } = useApp();
+
+  let V = {};
+  try {
+    const themeCtx = useThemeTokens();
+    if (themeCtx) {
+      V = themeCtx.V || {};
+    }
+  } catch (e) {
+    // Fallback if rendered outside ThemeProvider
+  }
+  const priColor = V.pri || "#6CFF9A";
 
   return (
     <aside className="sidepanels" aria-label="Prototype controls">
@@ -24,7 +37,7 @@ export default function ControlPanels() {
                 <span
                   style={{
                     width: "22px", height: "22px", flex: "none", borderRadius: x.s.rs === "999px" ? "11px 2px 11px 2px" : x.s.rs,
-                    border: "1px solid " + (active ? "#6CFF9A" : "rgba(255,255,255,.3)"), background: active ? "#6CFF9A" : "rgba(255,255,255,.08)",
+                    border: "1px solid " + (active ? priColor : "rgba(255,255,255,.3)"), background: active ? priColor : "rgba(255,255,255,.08)",
                   }}
                 />
                 <span style={{ font: "500 11.5px/1.3 'JetBrains Mono',monospace", color: "rgba(255,255,255,.85)", flex: 1 }}>{x.name}</span>
@@ -100,7 +113,7 @@ export default function ControlPanels() {
                 onClick={() => actions.setScreen(s)}
                 style={
                   active
-                    ? { borderColor: "#6CFF9A", color: "#6CFF9A", background: "rgba(108,255,154,.12)" }
+                    ? { borderColor: priColor, color: priColor, background: hexToRgba(priColor, 0.12) }
                     : undefined
                 }
               >
@@ -124,7 +137,7 @@ export default function ControlPanels() {
               className="tag"
               aria-pressed={state.cond === k}
               onClick={() => actions.setCond(k)}
-              style={{ borderColor: state.cond === k ? "#6CFF9A" : "rgba(255,255,255,.18)", color: state.cond === k ? "#6CFF9A" : "rgba(255,255,255,.6)", borderRadius: "4px", padding: "6px 9px", font: "600 9.5px/1 'JetBrains Mono',monospace", letterSpacing: ".12em", cursor: "pointer" }}
+              style={{ borderColor: state.cond === k ? priColor : "rgba(255,255,255,.18)", color: state.cond === k ? priColor : "rgba(255,255,255,.6)", borderRadius: "4px", padding: "6px 9px", font: "600 9.5px/1 'JetBrains Mono',monospace", letterSpacing: ".12em", cursor: "pointer" }}
             >
               {n}
             </button>
@@ -144,3 +157,4 @@ export default function ControlPanels() {
     </aside>
   );
 }
+
