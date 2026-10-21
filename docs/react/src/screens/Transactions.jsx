@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { subView } from "../theme/constants.js";
+import { panelLook } from "../theme/look.js";
 import Icon from "../components/Icon.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import BlockKeypad from "../components/BlockKeypad.jsx";
 
 const TRANSACTIONS_DATA = [
   {
@@ -88,11 +90,13 @@ const TRANSACTIONS_DATA = [
 
 export default function Transactions() {
   const { state, actions } = useApp();
-  const { V, t, bleed, pad, ink } = useTheme();
+  const { V, t, LK, bleed, pad, ink } = useTheme();
   const curSub = subView(state, "Transactions") || "ALL";
+  const cardStyle = (accent) => panelLook(V, LK, pad, accent);
 
   const [query, setQuery] = useState("");
   const [balance, setBalance] = useState(4250);
+  const [keypadConfig, setKeypadConfig] = useState(null);
 
   const filteredTx = TRANSACTIONS_DATA.filter((tx) => {
     if (curSub === "PAYMENTS" && tx.type !== "debit") return false;
@@ -130,13 +134,9 @@ export default function Transactions() {
     actions.setDialog({
       icon: "receipt",
       kind: "ITEMIZED RECEIPT",
-      title: `${
-        tx.type === "credit" ? "Received" : "Paid"
-      } L$ ${tx.amount.toLocaleString()}`,
+      title: `${tx.type === "credit" ? "Received" : "Paid"} L$ ${tx.amount.toLocaleString()}`,
       body: `${tx.category}: ${tx.description}`,
-      meta: `Transaction ID: ${tx.id.toUpperCase()} · Counterpart: ${
-        tx.counterpart
-      } · Date: ${tx.date} · Rate: ~${tx.usd} USD · Status: ${tx.status}`,
+      meta: `Transaction ID: ${tx.id.toUpperCase()} · Counterpart: ${tx.counterpart} · Date: ${tx.date} · Rate: ~${tx.usd} USD · Status: ${tx.status}`,
       buttons: [
         {
           label: "VIEW PROFILE",
@@ -150,12 +150,49 @@ export default function Transactions() {
     });
   };
 
+  const openBuyKeypad = () => {
+    setKeypadConfig({
+      title: "BUY LINDEN DOLLARS",
+      subtitle: "Enter exact custom amount to purchase via LindeX (Rate: ~248.5 L$/USD)",
+      systemCode: "FIN-01-BUY",
+      initialValue: 1000,
+      presets: [500, 1000, 2500, 5000],
+      onConfirm: (amt) => {
+        setBalance((b) => b + amt);
+        actions.notify(`Purchased L$ ${amt.toLocaleString()} via LindeX`);
+        setKeypadConfig(null);
+      },
+      onCancel: () => setKeypadConfig(null),
+    });
+  };
+
+  const openSendKeypad = () => {
+    setKeypadConfig({
+      title: "SEND LINDEN DOLLARS",
+      subtitle: `Available Balance: L$ ${balance.toLocaleString()}`,
+      systemCode: "FIN-01-SEND",
+      initialValue: 100,
+      presets: [50, 100, 250, 500],
+      max: balance,
+      onConfirm: (amt) => {
+        if (balance >= amt) {
+          setBalance((b) => b - amt);
+          actions.notify(`Sent L$ ${amt.toLocaleString()} to recipient`);
+          setKeypadConfig(null);
+        } else {
+          actions.notify("Insufficient L$ balance");
+        }
+      },
+      onCancel: () => setKeypadConfig(null),
+    });
+  };
+
   const buyLindenDollars = () => {
     actions.setDialog({
       icon: "banknote",
       kind: "LINDEX EXCHANGE",
       title: "Buy Linden Dollars (L$)",
-      body: "Choose an amount to purchase instantly via your billing info on file:",
+      body: "Choose a package or enter a custom amount via keypad:",
       meta: "LindeX Exchange Rate: ~248.5 L$/USD · Billing on file: Visa (...4412)",
       buttons: [
         {
@@ -174,11 +211,8 @@ export default function Transactions() {
           },
         },
         {
-          label: "L$ 5,000 ($20.12)",
-          pick: () => {
-            setBalance((b) => b + 5000);
-            actions.notify("Purchased L$ 5,000 via LindeX");
-          },
+          label: "CUSTOM AMOUNT (KEYPAD)...",
+          pick: () => openBuyKeypad(),
         },
         { label: "CANCEL", dim: true },
       ],
@@ -190,7 +224,7 @@ export default function Transactions() {
       icon: "send",
       kind: "TRANSFER FUNDS",
       title: "Send Linden Dollars",
-      body: "Send money to a resident currently in region or from your friends list:",
+      body: "Send money to a resident currently in region or choose custom amount:",
       meta: "Current Balance: L$ " + balance.toLocaleString(),
       buttons: [
         {
@@ -216,17 +250,17 @@ export default function Transactions() {
             }
           },
         },
+        {
+          label: "CUSTOM AMOUNT (KEYPAD)...",
+          pick: () => openSendKeypad(),
+        },
         { label: "CANCEL", dim: true },
       ],
     });
   };
 
-  const totalCredit = TRANSACTIONS_DATA.filter(
-    (tx) => tx.type === "credit",
-  ).reduce((a, b) => a + b.amount, 0);
-  const totalDebit = TRANSACTIONS_DATA.filter(
-    (tx) => tx.type === "debit",
-  ).reduce((a, b) => a + b.amount, 0);
+  const totalCredit = TRANSACTIONS_DATA.filter((tx) => tx.type === "credit").reduce((a, b) => a + b.amount, 0);
+  const totalDebit = TRANSACTIONS_DATA.filter((tx) => tx.type === "debit").reduce((a, b) => a + b.amount, 0);
 
   return (
     <div
@@ -241,27 +275,8 @@ export default function Transactions() {
       }}
     >
       {/* Balance Summary Hero Banner */}
-      <div
-        style={{
-          padding: pad,
-          background: V.surf,
-          border: bleed ? "none" : "1px solid " + V.outv,
-          borderLeft: bleed ? "4px solid " + (V.ok || "#22c55e") : undefined,
-          borderRadius: bleed ? 0 : V.rp,
-          display: "flex",
-          flexDirection: "column",
-          gap: "12px",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-start",
-            justifyContent: "space-between",
-            gap: "12px",
-            flexWrap: "wrap",
-          }}
-        >
+      <div style={{ ...cardStyle(V.ok || "#22c55e"), display: "flex", flexDirection: "column", gap: "12px" }}>
+        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <div
               style={{
@@ -280,33 +295,14 @@ export default function Transactions() {
               <Icon name="banknote" size={24} />
             </div>
             <div>
-              <div
-                style={{
-                  font: "700 11px/1 " + t.dfont,
-                  color: V.ink2,
-                  letterSpacing: ".1em",
-                }}
-              >
-                CURRENT L$ BALANCE
+              <div style={{ font: "700 9px/1 " + t.dfont, letterSpacing: ".18em", color: V.sec2 || V.pri }}>
+                [FIN-01-3829] CURRENT L$ BALANCE &amp; LINDEX
               </div>
-              <div
-                style={{
-                  font: "700 24px/1.1 " + t.dfont,
-                  color: V.ink,
-                  marginTop: "2px",
-                }}
-              >
+              <div style={{ font: "700 24px/1.1 " + t.dfont, color: V.ink, marginTop: "2px" }}>
                 L$ {balance.toLocaleString()}
               </div>
-              <div
-                style={{
-                  font: "400 11.5px/1.3 " + t.font,
-                  color: V.ink2,
-                  marginTop: "2px",
-                }}
-              >
-                ≈ ${(balance / 248.5).toFixed(2)} USD (LindeX benchmark ~248.5
-                L$/USD)
+              <div style={{ font: "400 11.5px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
+                ≈ ${(balance / 248.5).toFixed(2)} USD (LindeX benchmark ~248.5 L$/USD)
               </div>
             </div>
           </div>
@@ -335,9 +331,7 @@ export default function Transactions() {
 
             <KInteractive
               as="button"
-              onClick={() =>
-                actions.notify("Transaction history exported to CSV")
-              }
+              onClick={() => actions.notify("Transaction history exported to CSV")}
               style={actBtn(false)}
               aria-label="Export transaction ledger"
             >
@@ -358,80 +352,33 @@ export default function Transactions() {
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-            <span
-              style={{
-                font: "600 10.5px/1 " + t.dfont,
-                color: V.ink2,
-                letterSpacing: ".08em",
-              }}
-            >
-              30D EARNED
-            </span>
-            <span
-              style={{
-                font: "700 13px/1.2 " + t.mfont,
-                color: V.ok || "#22c55e",
-              }}
-            >
+            <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>[FIN-01-30D1]</div>
+            <span style={{ font: "600 10.5px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>30D EARNED</span>
+            <span style={{ font: "700 13px/1.2 " + (t.mfont || t.font), color: V.ok || "#22c55e" }}>
               +L$ {totalCredit.toLocaleString()}
             </span>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-            <span
-              style={{
-                font: "600 10.5px/1 " + t.dfont,
-                color: V.ink2,
-                letterSpacing: ".08em",
-              }}
-            >
-              30D SPENT
-            </span>
-            <span
-              style={{
-                font: "700 13px/1.2 " + t.mfont,
-                color: V.warn || "#f59e0b",
-              }}
-            >
+            <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>[FIN-01-30D2]</div>
+            <span style={{ font: "600 10.5px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>30D SPENT</span>
+            <span style={{ font: "700 13px/1.2 " + (t.mfont || t.font), color: V.warn || "#f59e0b" }}>
               -L$ {totalDebit.toLocaleString()}
             </span>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-            <span
-              style={{
-                font: "600 10.5px/1 " + t.dfont,
-                color: V.ink2,
-                letterSpacing: ".08em",
-              }}
-            >
-              NET CASH FLOW
-            </span>
-            <span
-              style={{
-                font: "700 13px/1.2 " + t.mfont,
-                color:
-                  totalCredit >= totalDebit
-                    ? V.ok || "#22c55e"
-                    : V.err || "#dc2626",
-              }}
-            >
-              {totalCredit >= totalDebit ? "+" : ""}L${" "}
-              {(totalCredit - totalDebit).toLocaleString()}
+            <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>[FIN-01-FLOW]</div>
+            <span style={{ font: "600 10.5px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>NET CASH FLOW</span>
+            <span style={{ font: "700 13px/1.2 " + (t.mfont || t.font), color: totalCredit >= totalDebit ? (V.ok || "#22c55e") : (V.err || "#dc2626") }}>
+              {totalCredit >= totalDebit ? "+" : ""}L$ {(totalCredit - totalDebit).toLocaleString()}
             </span>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-            <span
-              style={{
-                font: "600 10.5px/1 " + t.dfont,
-                color: V.ink2,
-                letterSpacing: ".08em",
-              }}
-            >
-              TRANSACTIONS
-            </span>
-            <span style={{ font: "700 13px/1.2 " + t.mfont, color: V.ink }}>
+            <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>[FIN-01-CENS]</div>
+            <span style={{ font: "600 10.5px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>TRANSACTIONS</span>
+            <span style={{ font: "700 13px/1.2 " + (t.mfont || t.font), color: V.ink }}>
               {TRANSACTIONS_DATA.length} records
             </span>
           </div>
@@ -441,14 +388,12 @@ export default function Transactions() {
       {/* Filter & Search Bar */}
       <div
         style={{
+          ...cardStyle(),
           display: "flex",
           alignItems: "center",
           gap: "8px",
-          background: V.surf,
-          padding: "6px 12px",
-          border: bleed ? "none" : "1px solid " + V.outv,
-          borderRadius: bleed ? 0 : V.rp,
           minHeight: "44px",
+          padding: "6px 12px",
         }}
       >
         <Icon name="search" size={16} style={{ color: V.ink2 }} />
@@ -470,13 +415,7 @@ export default function Transactions() {
         {query && (
           <button
             onClick={() => setQuery("")}
-            style={{
-              background: "transparent",
-              border: "none",
-              color: V.ink2,
-              cursor: "pointer",
-              padding: "4px",
-            }}
+            style={{ background: "transparent", border: "none", color: V.ink2, cursor: "pointer", padding: "4px" }}
             aria-label="Clear search"
           >
             <Icon name="x" size={14} />
@@ -485,22 +424,9 @@ export default function Transactions() {
       </div>
 
       {/* Itemized Transactions List */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: bleed ? "4px" : "8px",
-        }}
-      >
+      <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
         {filteredTx.length === 0 ? (
-          <div
-            style={{
-              padding: "32px",
-              textAlign: "center",
-              color: V.ink2,
-              font: "400 13px/1.4 " + t.font,
-            }}
-          >
+          <div style={{ padding: "32px", textAlign: "center", color: V.ink2, font: "400 13px/1.4 " + t.font }}>
             No transaction records match your criteria.
           </div>
         ) : (
@@ -510,34 +436,14 @@ export default function Transactions() {
               <div
                 key={tx.id}
                 style={{
-                  padding: pad,
-                  background: V.surf,
-                  border: bleed ? "none" : "1px solid " + V.outv,
-                  borderLeft: bleed
-                    ? "4px solid " +
-                      (isCredit ? V.ok || "#22c55e" : V.sec || "#f59e0b")
-                    : undefined,
-                  borderRadius: bleed ? 0 : V.rp,
+                  ...cardStyle(isCredit ? (V.ok || "#22c55e") : (V.sec || "#f59e0b")),
                   display: "flex",
                   flexDirection: "column",
                   gap: "8px",
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "flex-start",
-                    justifyContent: "space-between",
-                    gap: "10px",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "flex-start",
-                      gap: "10px",
-                    }}
-                  >
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "10px" }}>
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
                     <div
                       style={{
                         width: "36px",
@@ -548,70 +454,27 @@ export default function Transactions() {
                         alignItems: "center",
                         justifyContent: "center",
                         flexShrink: 0,
-                        color: isCredit
-                          ? V.ok || "#22c55e"
-                          : V.sec || "#f59e0b",
+                        color: isCredit ? (V.ok || "#22c55e") : (V.sec || "#f59e0b"),
                         border: "1px solid " + V.outv,
                       }}
                     >
-                      <Icon
-                        name={isCredit ? "arrow-down-left" : "arrow-up-right"}
-                        size={18}
-                      />
+                      <Icon name={isCredit ? "arrow-down-left" : "arrow-up-right"} size={18} />
                     </div>
                     <div>
-                      <div
-                        style={{
-                          font: "700 13.5px/1.2 " + t.dfont,
-                          color: V.ink,
-                        }}
-                      >
-                        {isCredit ? "Received" : "Paid"} L${" "}
-                        {tx.amount.toLocaleString()}
+                      <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>
+                        [TXN-{tx.id.replace("tx-", "").slice(0, 6)}]
                       </div>
-                      <div
-                        style={{
-                          font: "400 11.5px/1.3 " + t.font,
-                          color: V.ink2,
-                          marginTop: "2px",
-                        }}
-                      >
-                        {isCredit ? "From" : "To"}:{" "}
-                        <span style={{ fontWeight: 600, color: V.ink }}>
-                          {tx.counterpart}
-                        </span>{" "}
-                        · {tx.description}
+                      <div style={{ font: "700 13.5px/1.2 " + t.dfont, color: V.ink, marginTop: "1px" }}>
+                        {isCredit ? "Received" : "Paid"} L$ {tx.amount.toLocaleString()}
                       </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: "6px",
-                          alignItems: "center",
-                          marginTop: "4px",
-                        }}
-                      >
-                        <span
-                          style={{
-                            font: "600 10px/1 " + t.mfont,
-                            padding: "2px 6px",
-                            borderRadius: "3px",
-                            background: V.surf2,
-                            color: V.ink2,
-                            border: "1px solid " + V.outv,
-                          }}
-                        >
+                      <div style={{ font: "400 11.5px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
+                        {isCredit ? "From" : "To"}: <span style={{ fontWeight: 600, color: V.ink }}>{tx.counterpart}</span> · {tx.description}
+                      </div>
+                      <div style={{ display: "flex", gap: "6px", alignItems: "center", marginTop: "4px" }}>
+                        <span style={{ font: "600 10px/1 " + (t.mfont || t.font), padding: "2px 6px", borderRadius: "3px", background: V.surf2, color: V.ink2, border: "1px solid " + V.outv }}>
                           {tx.category}
                         </span>
-                        <span
-                          style={{
-                            font: "600 10px/1 " + t.mfont,
-                            padding: "2px 6px",
-                            borderRadius: "3px",
-                            background: V.surf2,
-                            color: V.ink2,
-                            border: "1px solid " + V.outv,
-                          }}
-                        >
+                        <span style={{ font: "600 10px/1 " + (t.mfont || t.font), padding: "2px 6px", borderRadius: "3px", background: V.surf2, color: V.ink2, border: "1px solid " + V.outv }}>
                           {tx.timestamp}
                         </span>
                       </div>
@@ -622,36 +485,20 @@ export default function Transactions() {
                   <div style={{ textAlign: "right", flexShrink: 0 }}>
                     <div
                       style={{
-                        font: "700 14px/1.2 " + t.mfont,
-                        color: isCredit
-                          ? V.ok || "#22c55e"
-                          : V.sec || "#f59e0b",
+                        font: "700 14px/1.2 " + (t.mfont || t.font),
+                        color: isCredit ? (V.ok || "#22c55e") : (V.sec || "#f59e0b"),
                       }}
                     >
                       {isCredit ? "+" : "-"}L$ {tx.amount.toLocaleString()}
                     </div>
-                    <div
-                      style={{
-                        font: "400 10.5px/1.2 " + t.font,
-                        color: V.ink2,
-                        marginTop: "2px",
-                      }}
-                    >
+                    <div style={{ font: "400 10.5px/1.2 " + t.font, color: V.ink2, marginTop: "2px" }}>
                       ≈ {tx.usd} USD
                     </div>
                   </div>
                 </div>
 
                 {/* Card Actions */}
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "6px",
-                    borderTop: "1px solid " + V.outv,
-                    paddingTop: "8px",
-                    justifyContent: "flex-end",
-                  }}
-                >
+                <div style={{ display: "flex", gap: "6px", borderTop: "1px solid " + V.outv, paddingTop: "8px", justifyContent: "flex-end" }}>
                   <KInteractive
                     as="button"
                     onClick={() => openReceipt(tx)}
@@ -680,6 +527,9 @@ export default function Transactions() {
           })
         )}
       </div>
+
+      {/* Block-Matrix Numeric Keypad Modal */}
+      {keypadConfig && <BlockKeypad {...keypadConfig} />}
     </div>
   );
 }

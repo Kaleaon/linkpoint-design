@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert";
+import http from "node:http";
 import { pathToFileURL } from "node:url";
 
 const cwd = process.cwd();
@@ -462,6 +463,65 @@ async function runTestSuite() {
     );
   } catch (err) {
     fail("Color Engine Verification", err);
+  }
+
+  // -------------------------------------------------------------
+  // TEST 8: LIVE HTTP SERVER & ASSET INTEGRITY
+  // -------------------------------------------------------------
+  try {
+    const server = http.createServer((req, res) => {
+      let reqPath = req.url.split("?")[0];
+      if (reqPath === "/") reqPath = "/docs/index.html";
+      const safePath = path.normalize(reqPath).replace(/^(\.\.[\/\\])+/, "");
+      const fullPath = path.join(cwd, safePath);
+
+      if (fs.existsSync(fullPath) && !fs.statSync(fullPath).isDirectory()) {
+        const ext = path.extname(fullPath).toLowerCase();
+        const mimeMap = {
+          ".html": "text/html; charset=utf-8",
+          ".js": "application/javascript; charset=utf-8",
+          ".jsx": "application/javascript; charset=utf-8",
+          ".mjs": "application/javascript; charset=utf-8",
+          ".json": "application/json; charset=utf-8",
+          ".css": "text/css; charset=utf-8",
+          ".svg": "image/svg+xml",
+        };
+        res.writeHead(200, { "Content-Type": mimeMap[ext] || "application/octet-stream" });
+        res.end(fs.readFileSync(fullPath));
+      } else {
+        res.writeHead(404, { "Content-Type": "text/plain" });
+        res.end("Not Found");
+      }
+    });
+
+    await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+    const port = server.address().port;
+
+    async function fetchUrl(relPath) {
+      return new Promise((resolve, reject) => {
+        http.get(`http://127.0.0.1:${port}${relPath}`, (res) => {
+          let body = "";
+          res.on("data", (chunk) => { body += chunk; });
+          res.on("end", () => resolve({ status: res.statusCode, headers: res.headers, body }));
+        }).on("error", reject);
+      });
+    }
+
+    const indexRes = await fetchUrl("/docs/index.html");
+    assert.strictEqual(indexRes.status, 200, "docs/index.html must return 200 OK");
+    assert(indexRes.headers["content-type"].includes("text/html"), "docs/index.html must have text/html Content-Type");
+    assert(indexRes.body.includes("Linkpoint"), "docs/index.html must contain Linkpoint title");
+    assert(indexRes.body.includes("SCREENS"), "docs/index.html must contain SCREENS array");
+    assert(indexRes.body.includes("CSUB"), "docs/index.html must contain CSUB array");
+
+    const reactIndex = await fetchUrl("/docs/react/index.html");
+    assert.strictEqual(reactIndex.status, 200, "docs/react/index.html must return 200 OK");
+    assert(reactIndex.body.includes("<div id=\"root\">"), "docs/react/index.html must contain root mount div");
+
+    server.close();
+    pass("Live HTTP Server & Asset Loading", `Served and verified docs/index.html and docs/react/index.html at http://127.0.0.1:${port}`);
+  } catch (err) {
+    fail("Live HTTP Server Test", err);
   }
 
   // -------------------------------------------------------------
