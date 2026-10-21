@@ -24,14 +24,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Checkout Ktheme repository
-        uses: actions/checkout@v4
-        with:
-          repository: Kaleaon/Ktheme
-          path: 'Ktheme-temp'
-
-      - name: Move Ktheme to correct relative path
-        run: mv Ktheme-temp ../Ktheme
+      - name: Clone Ktheme repository
+        run: git clone --depth 1 https://github.com/Kaleaon/Ktheme.git ../Ktheme
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
