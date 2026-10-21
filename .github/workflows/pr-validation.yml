@@ -17,8 +17,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Checkout Ktheme repository
-        run: git clone https://github.com/Kaleaon/Ktheme.git ../Ktheme
+      - name: Clone Ktheme repository
+        run: git clone --depth 1 https://github.com/Kaleaon/Ktheme.git ../Ktheme
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
