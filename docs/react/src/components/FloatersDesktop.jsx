@@ -299,6 +299,7 @@ export default function FloatersDesktop() {
               role="button"
               tabIndex={0}
               onClick={() => actions.dispatchIntent("FLOATER_TOGGLE", { id: f.id })}
+              aria-label={f.title}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
@@ -339,6 +340,10 @@ export default function FloatersDesktop() {
             <div
               key={k}
               onClick={() => actions.cPress(k)}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.cPress(k); } }}
+              role="button"
+              tabIndex={0}
+              aria-label={b.label}
               style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", gap: "6px", padding: "0 9px", background: dis ? "transparent" : bg, color: dis ? V.ink2 : ink(bg, [V.bg, V.onpri, V.ink]), border: "1px solid " + (dis ? V.outv : "transparent"), borderRadius: V.rs, cursor: dis ? "not-allowed" : "pointer", font: "600 9.5px/1 " + t.dfont, letterSpacing: ".1em", whiteSpace: "nowrap" }}
             >
               <Icon name={b.icon} size={13} />
