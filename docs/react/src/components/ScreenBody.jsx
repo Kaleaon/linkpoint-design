@@ -23,8 +23,18 @@ import OfflineGrid from "../screens/OfflineGrid.jsx";
 import GridConsole from "../screens/GridConsole.jsx";
 import Outfits from "../screens/Outfits.jsx";
 import Parcel from "../screens/Parcel.jsx";
+import Objects from "../screens/Objects.jsx";
+import Transactions from "../screens/Transactions.jsx";
+import MuteList from "../screens/MuteList.jsx";
+import Teleport from "../screens/Teleport.jsx";
+import Friends from "../screens/Friends.jsx";
+import Groups from "../screens/Groups.jsx";
+import Notices from "../screens/Notices.jsx";
+import Settings from "../screens/Settings.jsx";
+import Cache from "../screens/Cache.jsx";
+import Diagnostics from "../screens/Diagnostics.jsx";
 
-const CARD_SCREENS = ["Friends", "Groups", "Notices", "Teleport", "Objects", "Transactions", "Mute List", "Settings", "Cache", "Diagnostics"];
+const CARD_SCREENS = [];
 
 // Ported from the big content column inside `shellStyle` (headers -> segTabs
 // -> chips -> the 13 screens' bodies), plus the split-view detail pane that
@@ -38,7 +48,11 @@ export default function ScreenBody() {
   const isCardScreen = CARD_SCREENS.includes(scr);
   const curSub = subView(state, scr);
 
-  const customLoadingScreen = ["Inventory", "Search", "Outfits", "Parcel", ...CARD_SCREENS].includes(scr);
+  const customLoadingScreen = [
+    "Inventory", "Search", "Outfits", "Parcel", "Objects", "Transactions",
+    "Mute List", "Teleport", "Friends", "Groups", "Notices", "Settings",
+    "Cache", "Diagnostics"
+  ].includes(scr);
 
   return (
     <div style={{ flex: 1, minWidth: 0, minHeight: "400px", display: "flex", position: "relative" }}>
@@ -60,6 +74,16 @@ export default function ScreenBody() {
         {!isLoading && norm && scr === "Profile" && <Profile />}
         {!isLoading && norm && scr === "Outfits" && <Outfits />}
         {!isLoading && norm && scr === "Parcel" && <Parcel />}
+        {!isLoading && norm && scr === "Objects" && <Objects />}
+        {!isLoading && norm && scr === "Transactions" && <Transactions />}
+        {!isLoading && norm && scr === "Mute List" && <MuteList />}
+        {!isLoading && norm && scr === "Teleport" && <Teleport />}
+        {!isLoading && norm && scr === "Friends" && <Friends />}
+        {!isLoading && norm && scr === "Groups" && <Groups />}
+        {!isLoading && norm && scr === "Notices" && <Notices />}
+        {!isLoading && norm && scr === "Settings" && <Settings />}
+        {!isLoading && norm && scr === "Cache" && <Cache />}
+        {!isLoading && norm && scr === "Diagnostics" && <Diagnostics />}
         {!isLoading && norm && scr === "Offline Grid" && <OfflineGrid />}
         {!isLoading && norm && scr === "Grid Console" && <GridConsole />}
         {norm && isCardScreen && <CardList cards={(cardsByScreen[scr] || []).filter((c) => inSub(c, curSub))} />}

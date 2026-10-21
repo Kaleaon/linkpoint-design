@@ -4,6 +4,7 @@ import { RADAR_AVATARS, RADAR_OBJECTS, COMPASS } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
 import ElevationBadge from "../components/ElevationBadge.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import { panelLook } from "../theme/look.js";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
 
 const RINGS = [
@@ -20,7 +21,7 @@ const bandName = (dm) => (dm <= 10 ? "WHISPER" : dm <= 20 ? "CHAT" : dm <= 100 ?
 // and the sorted list with tap-to-open actions / long-press moderator menu.
 export default function Radar() {
   const { state, actions } = useApp();
-  const { V, t, bleed, pad } = useTheme();
+  const { V, t, LK, bleed, pad } = useTheme();
   const reducedMotion = usePrefersReducedMotion();
 
   const objMode = state.rMode === "OBJ";
@@ -41,52 +42,14 @@ export default function Radar() {
     whiteSpace: "nowrap",
   });
 
-  const rScope = { flex: "none", margin: bleed ? "0 0 4px" : "0 16px 10px", position: "relative", height: "172px", overflow: "hidden", border: bleed ? "none" : "1px solid " + V.outv, borderRadius: bleed ? 0 : V.rp, background: V.surf };
+  const rScope = { ...panelLook(V, LK, 0), flex: "none", margin: bleed ? "0 0 4px" : "0 16px 10px", position: "relative", height: "172px", overflow: "hidden" };
   const rListWrap = { flex: 1, minHeight: 0, overflowY: "auto", display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px", padding: bleed ? "0" : "0 16px 16px", background: bleed ? V.bg : "transparent" };
-
-  const handleAction = (label, name) => {
-    if (label === "PROFILE") {
-      actions.setScreen("Profile");
-      actions.notify(`Opened profile: ${name}`);
-    } else if (label === "IM") {
-      actions.startIm(name);
-    } else if (label === "TRACK") {
-      actions.notify(`Tracking beacon placed on ${name}`);
-    } else if (label === "TELEPORT TO") {
-      actions.teleportToRegion("Da Boom", "<128, 128, 26>");
-    } else if (label === "OFFER TELEPORT") {
-      actions.notify(`Teleport offer sent to ${name}`);
-    } else if (label === "INSPECT") {
-      actions.setScreen("Objects");
-      actions.setTab("Objects", "INSPECT");
-    } else if (label === "TOUCH") {
-      actions.notify(`Touched object: ${name}`);
-    } else if (label === "DERENDER") {
-      actions.notify(`Derendered ${name} (client-side)`);
-    } else if (label === "FREEZE") {
-      actions.notify(`Froze avatar: ${name}`);
-    } else if (label === "EJECT") {
-      actions.notify(`Ejected ${name} from parcel`);
-    } else if (label === "BAN") {
-      actions.notify(`Banned ${name} from parcel and estate`);
-    } else if (label === "REPORT") {
-      actions.notify(`Abuse report dialog opened for ${name}`);
-    } else if (label === "RETURN") {
-      actions.notify(`Returned ${name} to owner inventory`);
-    } else if (label === "MUTE OWNER") {
-      actions.notify(`Muted owner of ${name}`);
-    } else if (label === "BLOCK") {
-      actions.notify(`Blocked object: ${name}`);
-    } else if (label === "MUTE") {
-      actions.notify(`Muted text, voice & gestures for ${name}`);
-    }
-  };
 
   return (
     <>
       <div style={{ flex: "none", display: "flex", alignItems: "center", justifyContent: "space-between", padding: bleed ? "6px 12px 8px" : "2px 16px 8px" }}>
         <span style={{ font: "700 10px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri }}>
-          {objMode ? "NEARBY OBJECTS" : "NEARBY AVATARS"}
+          {objMode ? "[TAC-02-8921] NEARBY OBJECT RADAR" : "[TAC-01-4472] SENSOR RANGE · CENSUS"}
         </span>
         <span style={{ font: "400 10px/1 " + t.font, color: V.ink2, letterSpacing: ".06em" }}>
           {rSrc.length + (objMode ? " objects" : " avatars") + " · " + rSrc.filter((x) => x.distance <= 20).length + " in chat range"}
@@ -204,28 +167,13 @@ export default function Radar() {
             menu = state.rMenu === name;
           const acts = (objMode ? ["INSPECT", "TOUCH", "DERENDER", "TRACK"] : ["PROFILE", "IM", "TRACK", "TELEPORT TO", "OFFER TELEPORT"]).map((label) => ({ label, style: actChip(null) }));
           const mods = (objMode ? ["RETURN", "MUTE OWNER", "BLOCK", "REPORT"] : ["MUTE", "DERENDER", "FREEZE", "EJECT", "BAN", "REPORT"]).map((label) => ({ label, style: actChip(V.err) }));
-          const wrap = bleed
-            ? {
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-                padding: open || menu ? "0 0 8px" : "0",
-                borderLeft: "4px solid " + (open || menu ? tone : "transparent"),
-                borderRadius: 0,
-                background: V.bg,
-              }
-            : {
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-                padding: open || menu ? "0 0 8px" : "0",
-                borderTop: "1px solid " + (open || menu ? tone : V.outv),
-                borderRight: "1px solid " + (open || menu ? tone : V.outv),
-                borderBottom: "1px solid " + (open || menu ? tone : V.outv),
-                borderLeft: "1px solid " + (open || menu ? tone : V.outv),
-                borderRadius: V.rs,
-                background: V.surf,
-              };
+          const wrap = {
+            ...panelLook(V, LK, 0, open || menu ? tone : undefined),
+            display: "flex",
+            flexDirection: "column",
+            gap: "6px",
+            padding: open || menu ? "0 0 8px" : "0",
+          };
           const handleAction = (label) => {
             if (objMode) {
               switch (label) {
