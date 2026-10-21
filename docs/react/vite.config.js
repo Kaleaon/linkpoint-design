@@ -18,6 +18,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
+    include: ["src/theme/color.test.js", "src/**/*.test.jsx", "src/**/__tests__/*.jsx"],
     exclude: [
       "**/node_modules/**",
       "**/dist/**",

@@ -53,6 +53,84 @@ export default function OfflineGrid() {
         </div>
       </div>
 
+      {(state.recoveryState !== "idle" || !isRunning) && (
+        <div style={{ border: "1px solid " + (state.recoveryState === "failed" ? "#FF6C6C" : V.pri), borderRadius: V.rs, background: V.surf2, padding: "14px", display: "flex", flexDirection: "column", gap: "10px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ font: "700 11px/1 " + t.font, letterSpacing: ".18em", color: V.pri }}>
+              AUTOMATED RECOVERY & AUTO-RECONNECTION
+            </div>
+            <div style={{
+              padding: "4px 8px", borderRadius: V.rs, font: "700 10px/1 " + t.font,
+              background: state.recoveryState === "recovered" ? V.priC : state.recoveryState === "failed" ? "rgba(255,108,108,0.2)" : "rgba(255,191,0,0.2)",
+              color: state.recoveryState === "recovered" ? V.pri : state.recoveryState === "failed" ? "#FF6C6C" : "#FFC107"
+            }}>
+              {state.recoveryState === "reconnecting" ? `RECONNECTING · ATTEMPT #${state.reconnectAttempts || 1}` :
+               state.recoveryState === "detecting" ? "DETECTING DISCONNECT..." :
+               state.recoveryState === "recovered" ? "RECONNECTED" :
+               state.recoveryState === "failed" ? "RECOVERY FAILED" : "IDLE"}
+            </div>
+          </div>
+
+          <div style={{ font: "400 11px/1.4 " + t.font, color: V.ink2 }}>
+            {state.recoveryState === "reconnecting"
+              ? `Background backoff retry active. Pinging 127.0.0.1:9000 (Next retry in ${Math.round((state.nextRetryDelay || 1000) / 1000)}s)...`
+              : state.recoveryState === "detecting"
+              ? "Local server dropped. Initiating background exponential backoff recovery pipeline..."
+              : state.recoveryState === "failed"
+              ? "Exponential backoff limit reached. Server unreachable. Manual reconnection required."
+              : "Grid listener active. Auto-recovery system standing by."}
+          </div>
+
+          <div style={{ height: "6px", borderRadius: "3px", background: V.bg, overflow: "hidden" }}>
+            <div style={{
+              width: state.recoveryState === "reconnecting" ? `${Math.min(100, (state.reconnectAttempts / 5) * 100)}%` : state.recoveryState === "recovered" ? "100%" : state.recoveryState === "failed" ? "100%" : "20%",
+              height: "100%",
+              background: state.recoveryState === "failed" ? "#FF6C6C" : V.pri,
+              transition: "width 0.3s ease"
+            }} />
+          </div>
+
+          <div style={{ display: "flex", gap: "8px", marginTop: "4px" }}>
+            <div
+              onClick={() => {
+                if (!isRunning) actions.toggleOfflineGrid();
+                actions.attemptReconnection(1);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  if (!isRunning) actions.toggleOfflineGrid();
+                  actions.attemptReconnection(1);
+                }
+              }}
+              style={{
+                flex: 1, height: "34px", borderRadius: V.rs, background: V.pri, color: V.onpri,
+                display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                font: "700 10.5px/1 " + t.font, letterSpacing: ".12em", cursor: "pointer"
+              }}
+              role="button" aria-label="Retry Reconnection" tabIndex={0}
+            >
+              <Icon name="refresh-cw" size={14} />
+              RETRY RECONNECTION NOW
+            </div>
+            {state.recoveryState !== "idle" && (
+              <div
+                onClick={actions.cancelRecovery}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.cancelRecovery(); } }}
+                style={{
+                  padding: "0 12px", height: "34px", borderRadius: V.rs, border: "1px solid " + V.outv,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  font: "600 10.5px/1 " + t.font, color: V.ink2, cursor: "pointer"
+                }}
+                role="button" aria-label="Cancel Recovery" tabIndex={0}
+              >
+                CANCEL
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {state.offlineAccountModal && (
         <div style={{ border: "1px solid " + V.pri, borderRadius: V.rs, background: V.surf2, padding: "14px" }}>
           <div style={{ font: "700 12px/1 " + t.font, letterSpacing: ".18em", color: V.pri, marginBottom: "10px" }}>FIRST-TIME ACCOUNT SETUP</div>
