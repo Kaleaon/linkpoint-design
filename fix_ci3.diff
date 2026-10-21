@@ -1,0 +1,13 @@
+<<<<<<< SEARCH
+      - name: Checkout Ktheme repository
+        uses: actions/checkout@v4
+        with:
+          repository: Kaleaon/Ktheme
+          path: 'Ktheme'
+=======
+      - name: Checkout Ktheme repository
+        uses: actions/checkout@v4
+        with:
+          repository: Kaleaon/Ktheme
+          path: '../Ktheme'
+>>>>>>> REPLACE

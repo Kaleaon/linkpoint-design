@@ -336,6 +336,21 @@ function ConsoleScene() {
                   onMouseDown={() => actions.cHold(p.k)}
                   onMouseUp={() => actions.cHold("")}
                   onMouseLeave={() => actions.cHold("")}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={p.k === "cam" ? (state.cCam === "ORBIT" ? "Orbit Camera" : "Mouse Camera") : p.k}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      actions.cHold(p.k);
+                    }
+                  }}
+                  onKeyUp={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      actions.cHold("");
+                    }
+                  }}
                   style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "2px", cursor: "pointer", background: bg, color: ink(bg, [V.bg, V.onpri, V.ink]), opacity: 0.92, borderRadius: CPADR[i] || "0", font: "700 8px/1 " + t.dfont, letterSpacing: ".08em" }}
                 >
                   {p.icon ? <Icon name={p.icon} size={19} /> : null}
@@ -349,10 +364,10 @@ function ConsoleScene() {
               const mk = (on, bg) => ({ width: (C.wide ? 60 : 52) + "px", height: (C.wide ? 44 : 46) + "px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", opacity: 0.92, background: on ? V.pri : bg, color: ink(on ? V.pri : bg, [V.bg, V.onpri, V.ink]), font: "700 12px/1 " + t.dfont, letterSpacing: ".14em" });
               return (
                 <>
-                  <div role="button" tabIndex={0} aria-label="Fly Up" onMouseDown={actions.flyUpDown} onMouseUp={actions.flyRelease} onMouseLeave={actions.flyRelease} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.flyUpDown(); } }} onKeyUp={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.flyRelease(); } }} style={{ ...mk(state.cHeld === "up", V.sec), borderRadius: "0 " + C.rad + "px 0 0" }}>
+                  <div onMouseDown={actions.flyUpDown} onMouseUp={actions.flyRelease} onMouseLeave={actions.flyRelease} role="button" tabIndex={0} aria-label="Fly Up" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.flyUpDown(); } }} onKeyUp={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.flyRelease(); } }} style={{ ...mk(state.cHeld === "up", V.sec), borderRadius: "0 " + C.rad + "px 0 0" }}>
                     UP
                   </div>
-                  <div role="button" tabIndex={0} aria-label="Fly Down" onMouseDown={actions.flyDnDown} onMouseUp={actions.flyRelease} onMouseLeave={actions.flyRelease} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.flyDnDown(); } }} onKeyUp={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.flyRelease(); } }} style={mk(state.cHeld === "dn", V.sec)}>
+                  <div onMouseDown={actions.flyDnDown} onMouseUp={actions.flyRelease} onMouseLeave={actions.flyRelease} role="button" tabIndex={0} aria-label="Fly Down" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.flyDnDown(); } }} onKeyUp={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.flyRelease(); } }} style={mk(state.cHeld === "dn", V.sec)}>
                     DN
                   </div>
                   <div onClick={actions.toggleRun} role="button" tabIndex={0} aria-label="Toggle run" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.toggleRun(); } }} style={mk(state.cRun, V.surf2)}>

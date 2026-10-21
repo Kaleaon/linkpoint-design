@@ -50,3 +50,6 @@
 ## 2024-11-20 - Add ARIA Labels and Keyboard Access to Search Back Buttons
 **Learning:** When porting or maintaining icon-only navigation elements (like header "Go back" chevron buttons) created with `<div>`, they often lack basic accessibility attributes. For these to function as interactive buttons for all users, they must receive semantic traits.
 **Action:** When inspecting or adding icon-only navigation controls built with `div` or `span` tags, ensure they have `role="button"`, `tabIndex={0}`, an explicit `aria-label` (e.g., "Go back"), and `onKeyDown` handlers for Space and Enter that call `e.preventDefault()` to mirror native `<button>` behavior.
+## 2026-10-21 - Keyboard Access for Hold-to-Activate Controls
+**Learning:** For 'hold-to-activate' custom buttons relying on `onMouseDown` and `onMouseUp` pairs (like continuous movement pads or camera panning controls), adding standard `role="button"` and `tabindex="0"` attributes is insufficient. Keyboard accessibility requires adding matching `onKeyDown` and `onKeyUp` handlers for the Enter and Space keys to initiate and release the action respectively.
+**Action:** When implementing or inspecting continuous action controls mapped to mouse down/up, always provide corresponding `onKeyDown` and `onKeyUp` listeners that trigger the same state changes.

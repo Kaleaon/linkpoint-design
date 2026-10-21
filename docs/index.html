@@ -228,23 +228,23 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
         <div style="{{ cfPadWrap }}">
           <div style="{{ cfPadGrid }}">
             <sc-for list="{{ cfPad }}" as="p" hint-placeholder-count="9">
-              <div onMouseDown="{{ p.down }}" onMouseUp="{{ p.up }}" onMouseLeave="{{ p.up }}" style="{{ p.style }}">
+              <div onMouseDown="{{ p.down }}" onMouseUp="{{ p.up }}" onMouseLeave="{{ p.up }}" role="button" tabindex="0" aria-label="{{ p.ariaLabel }}" onKeyDown="{{ p.pKeyDown }}" onKeyUp="{{ p.pKeyUp }}" style="{{ p.style }}">
                 <sc-if value="{{ p.icon }}" hint-placeholder-val="{{ true }}"><i data-lucide="{{ p.icon }}" style="width:19px;height:19px"></i></sc-if>
                 <sc-if value="{{ p.label }}" hint-placeholder-val="{{ false }}"><span style="font:inherit;letter-spacing:inherit">{{ p.label }}</span></sc-if>
               </div>
             </sc-for>
           </div>
           <div style="display:flex;flex-direction:column;gap:4px">
-            <div role="button" tabindex="0" aria-label="Fly Up" onMouseDown="{{ flyUpDown }}" onMouseUp="{{ flyRelease }}" onMouseLeave="{{ flyRelease }}" onKeyDown="{{ flyUpDownKeyDown }}" onKeyUp="{{ flyReleaseKeyUp }}" style="{{ cfFly.up }}">UP</div>
-            <div role="button" tabindex="0" aria-label="Fly Down" onMouseDown="{{ flyDnDown }}" onMouseUp="{{ flyRelease }}" onMouseLeave="{{ flyRelease }}" onKeyDown="{{ flyDnDownKeyDown }}" onKeyUp="{{ flyReleaseKeyUp }}" style="{{ cfFly.dn }}">DN</div>
-            <div onClick="{{ toggleRun }}" onKeyDown="{{ toggleRunKeyDown }}" role="button" tabindex="0" aria-label="Toggle run" style="{{ cfFly.run }}">RUN</div>
-            <div onClick="{{ togglePad }}" onKeyDown="{{ togglePadKeyDown }}" role="button" tabindex="0" aria-label="Hide move pad" style="{{ cfFly.hide }}">HIDE</div>
+            <div onMouseDown="{{ flyUpDown }}" onMouseUp="{{ flyRelease }}" onMouseLeave="{{ flyRelease }}" role="button" tabindex="0" aria-label="Fly Up" onKeyDown="{{ flyUpDownKeyDown }}" onKeyUp="{{ flyReleaseKeyUp }}" style="{{ cfFly.up }}">UP</div>
+            <div onMouseDown="{{ flyDnDown }}" onMouseUp="{{ flyRelease }}" onMouseLeave="{{ flyRelease }}" role="button" tabindex="0" aria-label="Fly Down" onKeyDown="{{ flyDnDownKeyDown }}" onKeyUp="{{ flyReleaseKeyUp }}" style="{{ cfFly.dn }}">DN</div>
+            <div onClick="{{ toggleRun }}" role="button" tabindex="0" aria-label="Toggle run" onKeyDown="{{ toggleRunKeyDown }}" style="{{ cfFly.run }}">RUN</div>
+            <div onClick="{{ togglePad }}" role="button" tabindex="0" aria-label="Hide move pad" onKeyDown="{{ togglePadKeyDown }}" style="{{ cfFly.hide }}">HIDE</div>
           </div>
         </div>
         </sc-if>
 
         <sc-if value="{{ cfPadShut }}" hint-placeholder-val="{{ false }}">
-          <div onClick="{{ togglePad }}" onKeyDown="{{ togglePadKeyDown }}" role="button" tabindex="0" aria-label="Show move pad" style="{{ cfPadShow }}">MOVE PAD</div>
+          <div onClick="{{ togglePad }}" role="button" tabindex="0" aria-label="Show move pad" onKeyDown="{{ togglePadKeyDown }}" style="{{ cfPadShow }}">MOVE PAD</div>
         </sc-if>
       </div>
       </sc-if>
@@ -3642,6 +3642,9 @@ sendChatKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDef
         const bg = active ? V.pri : base;
         return { icon: p.icon, label: p.k === "cam" ? (s.cCam === "ORBIT" ? "ORBIT" : "MOUSE") : "",
           down: () => this.cHold(p.k), up: () => this.setState({ cHeld: "" }),
+          pKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.cHold(p.k); } },
+          pKeyUp: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "" }); } },
+          ariaLabel: p.k === "cam" ? (s.cCam === "ORBIT" ? "Orbit Camera" : "Mouse Camera") : p.k,
           style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "2px",
             cursor: "pointer", background: bg, color: this.ink(bg, [V.bg, V.onpri, V.ink]),
             opacity: .92, borderRadius: CPADR[i] || "0", font: "700 8px/1 " + t.dfont, letterSpacing: ".08em" } };
@@ -3679,6 +3682,8 @@ sendChatKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDef
       flyDnDown: () => this.setState({ cHeld: "dn" }),
       flyDnDownKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "dn" }); } },
       flyRelease: () => this.setState({ cHeld: "" }),
+      flyUpKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "up" }); } },
+      flyDnKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "dn" }); } },
       flyReleaseKeyUp: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState({ cHeld: "" }); } },
       addSlot: () => this.setState(st => {
         const miss = Object.keys(CBTN).filter(k => st.cDock.indexOf(k) < 0);
