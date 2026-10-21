@@ -38,9 +38,9 @@ export function cardLooks(V, pad) {
       backdropFilter: "blur(12px)",
       WebkitBackdropFilter: "blur(12px)",
     },
-    rule: { ...sideBorder("Top", "1px", V.outv), borderRadius: "0px", background: "transparent", padding: pad + " 2px" },
-    quiet: { ...sideBorder("Bottom", "1px", V.outv), borderRadius: "0px", background: "transparent", padding: "4px 0 " + pad },
-    cap: { ...sideBorder("Left", "10px", V.sec2 || V.pri), borderRadius: "0 " + (V.rp || "22px") + " " + (V.rp || "22px") + " 0", background: V.surf, padding: pad },
+    rule: { ...sideBorder("Top", "1px", V.outv), borderRadius: "0px", background: V.surf, padding: pad + " 2px" },
+    quiet: { ...sideBorder("Bottom", "1px", V.outv), borderRadius: "0px", background: V.surf, padding: "4px 0 " + pad },
+    cap: { ...sideBorder("Left", "6px", V.sec2 || V.pri), borderRadius: "0px", background: V.surf, padding: pad },
     tonal: {
       border: "none",
       borderRadius: V.rp || "16px",
@@ -66,6 +66,14 @@ export function cardAccentStyle(cardKind, V, accent) {
   if (cardKind === "rule") return { borderTopColor: accent };
   if (cardKind === "tonal") return { outline: "2px solid " + accent, outlineOffset: "-2px" };
   return { boxShadow: "inset 4px 0 0 " + accent + ", 0 4px 16px rgba(0,0,0,.25)" };
+}
+
+export function panelLook(V, LK, pad, accent) {
+  const cardKind = LK?.card || "box";
+  const looks = cardLooks(V, pad);
+  const base = looks[cardKind] || looks.box;
+  const acc = cardAccentStyle(cardKind, V, accent);
+  return { ...base, ...acc };
 }
 
 export function actionButtonStyle(V, font, a) {
