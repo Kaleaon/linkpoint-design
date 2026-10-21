@@ -29,6 +29,11 @@ export const FLOATERS = [
   { id:"Diagnostics", title:"Statistics",    icon:"activity",       x:1056, y:462, w:346, h:196 },
   { id:"Offline Grid", title:"Offline Grid", icon:"server",         x:220,  y:60,  w:520, h:480 },
   { id:"Grid Console", title:"Grid Console", icon:"terminal",       x:180,  y:90,  w:560, h:450 },
+  { id:"Outfits",     title:"Outfits",       icon:"shirt",          x:380,  y:140, w:400, h:420 },
+  { id:"Objects",     title:"Objects",       icon:"box",            x:420,  y:120, w:440, h:380 },
+  { id:"Parcel",      title:"About Land",    icon:"map-pin",        x:360,  y:160, w:420, h:400 },
+  { id:"Transactions",title:"L$ Ledger",     icon:"banknote",       x:390,  y:130, w:450, h:390 },
+  { id:"Mute List",   title:"Block List",    icon:"volume-x",       x:440,  y:170, w:410, h:360 },
 ];
 export const FMENU = [
   { label:"File",  items:[["Upload Image…","⌘U"],["Take Snapshot","⌘`"],["Save Texture As…",""],["Quit","⌘Q"]] },
