@@ -2,12 +2,15 @@ import { useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { subView } from "../theme/constants.js";
+import { panelLook } from "../theme/look.js";
 import Icon from "../components/Icon.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import SegmentedMeter from "../components/SegmentedMeter.jsx";
 
 export default function Cache() {
   const { state, actions } = useApp();
-  const { V, t, bleed, pad, ink } = useTheme();
+  const { V, t, LK, bleed, pad, ink } = useTheme();
+  const cardStyle = (accent) => panelLook(V, LK, pad, accent);
 
   const [cacheUsage, setCacheUsage] = useState({
     textures: 112,
@@ -65,18 +68,7 @@ export default function Cache() {
       }}
     >
       {/* Cache Usage Hero Card */}
-      <div
-        style={{
-          padding: pad,
-          background: V.surf,
-          border: bleed ? "none" : "1px solid " + V.outv,
-          borderLeft: bleed ? "4px solid " + V.pri : undefined,
-          borderRadius: bleed ? 0 : V.rp,
-          display: "flex",
-          flexDirection: "column",
-          gap: "12px",
-        }}
-      >
+      <div style={{ ...cardStyle(V.pri), display: "flex", flexDirection: "column", gap: "12px" }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <div
@@ -96,7 +88,10 @@ export default function Cache() {
               <Icon name="hard-drive" size={22} />
             </div>
             <div>
-              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>Local Cache & Storage</div>
+              <div style={{ font: "700 9px/1 " + t.dfont, letterSpacing: ".18em", color: V.sec2 || V.pri }}>
+                [SYS-04-5100] NON-VOLATILE VFS CACHE STORE
+              </div>
+              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink, marginTop: "2px" }}>Local Cache & Storage</div>
               <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
                 Location: {state.prefs?.cacheLoc || "Internal flash storage"} · Max limit: {cacheLimit} MB
               </div>
@@ -114,56 +109,44 @@ export default function Cache() {
           </KInteractive>
         </div>
 
-        {/* Capacity Meter Bar */}
+        {/* Capacity Meter Bar — Discrete Segmented Chunky Ticks */}
         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", font: "600 11.5px/1 " + t.mfont }}>
+          <div style={{ display: "flex", justifyContent: "space-between", font: "600 11.5px/1 " + (t.mfont || t.font) }}>
             <span style={{ color: V.ink }}>{totalUsed} MB used</span>
             <span style={{ color: V.ink2 }}>{cacheLimit - totalUsed} MB free</span>
           </div>
-          <div
-            style={{
-              width: "100%",
-              height: "10px",
-              background: V.surf2,
-              borderRadius: "5px",
-              overflow: "hidden",
-              border: "1px solid " + V.outv,
-            }}
-          >
-            <div
-              style={{
-                width: `${ratio * 100}%`,
-                height: "100%",
-                background: ratio > 0.85 ? (V.warn || "#f59e0b") : V.pri,
-                transition: "width 0.3s ease",
-              }}
-            />
-          </div>
+          <SegmentedMeter
+            value={totalUsed}
+            max={cacheLimit}
+            segments={24}
+            height={12}
+            gap={2}
+            label="Cache capacity meter"
+            showReadout={false}
+          />
         </div>
       </div>
 
       {/* Itemized Cache Sections */}
       <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
         {[
-          { key: "textures", name: "Texture & Mesh Asset Cache", desc: "Cached diffuse, normal, and specular maps for in-world 3D rendering", icon: "image" },
-          { key: "inventory", name: "Inventory Hierarchy & Skeleton", desc: "Local cache of personal inventory folder hierarchy and item metadata", icon: "folder" },
-          { key: "audio", name: "Sound Effects & Audio Cache", desc: "Cached spatial sound loops, gesture audio clips, and UI chimes", icon: "volume-2" },
-          { key: "vfs", name: "Virtual File System (VFS) Temp Data", desc: "Temporary client buffers, region terrain tiles, and object geometry indices", icon: "layers" },
-        ].map(({ key, name, desc, icon }) => (
+          { key: "textures", code: "SYS-04-TXTR", name: "Texture & Mesh Asset Cache", desc: "Cached diffuse, normal, and specular maps for in-world 3D rendering", icon: "image" },
+          { key: "inventory", code: "SYS-04-INVT", name: "Inventory Hierarchy & Skeleton", desc: "Local cache of personal inventory folder hierarchy and item metadata", icon: "folder" },
+          { key: "audio", code: "SYS-04-AUD0", name: "Sound Effects & Audio Cache", desc: "Cached spatial sound loops, gesture audio clips, and UI chimes", icon: "volume-2" },
+          { key: "vfs", code: "SYS-04-VFST", name: "Virtual File System (VFS) Temp Data", desc: "Temporary client buffers, region terrain tiles, and object geometry indices", icon: "layers" },
+        ].map(({ key, code, name, desc, icon }) => (
           <div
             key={key}
             style={{
-              padding: pad,
-              background: V.surf,
-              border: bleed ? "none" : "1px solid " + V.outv,
-              borderRadius: bleed ? 0 : V.rp,
+              ...cardStyle(),
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
               gap: "10px",
+              flexWrap: "wrap",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0, flex: 1 }}>
               <div
                 style={{
                   width: "36px",
@@ -180,13 +163,26 @@ export default function Cache() {
               >
                 <Icon name={icon} size={18} />
               </div>
-              <div>
-                <div style={{ font: "700 13.5px/1.2 " + t.dfont, color: V.ink }}>{name}</div>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>[{code}]</div>
+                <div style={{ font: "700 13px/1.2 " + t.dfont, color: V.ink, marginTop: "2px" }}>{name}</div>
                 <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
                   {desc}
                 </div>
-                <div style={{ font: "600 11px/1 " + t.mfont, color: V.pri, marginTop: "3px" }}>
-                  {cacheUsage[key]} MB occupied
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "4px" }}>
+                  <span style={{ font: "600 11px/1 " + (t.mfont || t.font), color: V.pri }}>
+                    {cacheUsage[key]} MB occupied
+                  </span>
+                  <SegmentedMeter
+                    value={cacheUsage[key]}
+                    max={200}
+                    segments={10}
+                    height={6}
+                    gap={2}
+                    label={`${name} usage`}
+                    showReadout={false}
+                    style={{ width: "90px" }}
+                  />
                 </div>
               </div>
             </div>

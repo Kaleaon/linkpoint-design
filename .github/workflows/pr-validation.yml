@@ -3,84 +3,19 @@ name: PR Validation
 on:
   pull_request:
     branches: [ main ]
-  push:
-    branches: [ main ]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: pr-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    uses: ./.github/workflows/reusable-validation.yml
+    with:
+      node-version: '22'
+      target-flags: '--a11y'
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Checkout Ktheme repository
-        uses: actions/checkout@v4
-        with:
-          repository: Kaleaon/Ktheme
-          path: '../Ktheme'
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
-
-      - name: Install Dependencies
-        run: |
-          if [ -f "package.json" ]; then
-            npm ci || npm install
-          fi
-          if [ -d "docs/react" ]; then
-            cd docs/react && (npm ci || npm install) && cd ../..
-          fi
-
-      - name: Build React App
-        run: npm run build
-        working-directory: docs/react
-
-      - name: Run Accessibility Check
-        run: bash test_a11y.sh
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install Python & Playwright Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install playwright
-          playwright install chromium --with-deps
-
-      - name: Run Playwright E2E Tests
-        run: |
-          python3 -c "
-          import http.server, socketserver, socket, threading, subprocess, sys, time
-
-          class ReusableTCPServer(socketserver.TCPServer):
-              allow_reuse_address = True
-              def server_bind(self):
-                  self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-                  try:
-                      self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
-                  except AttributeError:
-                      pass
-                  super().server_bind()
-
-          class Handler(http.server.SimpleHTTPRequestHandler):
-              def __init__(self, *args, **kwargs):
-                  super().__init__(*args, directory='docs/react/dist', **kwargs)
-
-          httpd = ReusableTCPServer(('127.0.0.1', 8080), Handler)
-          thread = threading.Thread(target=httpd.serve_forever, daemon=True)
-          thread.start()
-          time.sleep(1)
-
-          res = subprocess.run([sys.executable, 'test_page_eval.py'])
-          httpd.shutdown()
-          sys.exit(res.returncode)
-          "
