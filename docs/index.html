@@ -255,7 +255,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
           <div onClick="{{ b.press }}" style="{{ b.style }}">
             <i data-lucide="{{ b.icon }}" style="width:19px;height:19px"></i>
             <sc-if value="{{ b.label }}" hint-placeholder-val="{{ false }}"><span style="{{ b.labelStyle }}">{{ b.label }}</span></sc-if>
-            <sc-if value="{{ b.badge }}" hint-placeholder-val="{{ false }}"><span onClick="{{ b.remove }}" style="{{ b.badgeStyle }}">&minus;</span></sc-if>
+            <sc-if value="{{ b.badge }}" hint-placeholder-val="{{ false }}"><span onClick="{{ b.remove }}" onKeyDown="{{ b.removeKeyDown }}" role="button" tabindex="0" aria-label="Remove {{ b.label }}" style="{{ b.badgeStyle }}">&minus;</span></sc-if>
           </div>
         </sc-for>
         <sc-if value="{{ cEdit }}" hint-placeholder-val="{{ false }}">
@@ -3567,7 +3567,8 @@ sendChatKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDef
         const bg = dis ? V.surf : (lit ? V.pri : V.surf2);
         return { label: C.wide ? b.label : "", icon: b.icon, badge: s.cEdit,
           press: () => this.cPress(k),
-          remove: () => this.setState(st => ({ cDock: st.cDock.filter(x => x !== k) })),
+          remove: (e) => { if (e) e.stopPropagation(); this.setState(st => ({ cDock: st.cDock.filter(x => x !== k) })); },
+          removeKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); e.stopPropagation(); this.setState(st => ({ cDock: st.cDock.filter(x => x !== k) })); } },
           labelStyle: { font: "600 9.5px/1 " + t.dfont, letterSpacing: ".12em" },
           badgeStyle: { position: "absolute", right: "3px", top: "3px", width: "18px", height: "18px", borderRadius: "9px",
             background: V.err, color: this.ink(V.err, [V.bg, V.ink]), font: "700 13px/18px " + t.dfont, textAlign: "center", cursor: "pointer" },
