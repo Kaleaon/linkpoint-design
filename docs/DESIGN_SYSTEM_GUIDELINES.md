@@ -47,17 +47,17 @@ The Ktheme design system defines 24 standardized color palette presets grouped i
 
 Ktheme layout variations control geometry, navigation patterns, card treatments, typography scale, and motion profiles independently of color palette:
 
-| Layout Variation | Nav Model | Corner Profile | Density Profile | Card Look | Head Look | Description |
-|------------------|-----------|----------------|-----------------|-----------|-----------|-------------|
-| **Metro** | TILES | SHARP (`0px`) | COMFORTABLE | Flat | Pivot | High-contrast Windows Phone Metro / Zune tile navigation with zero corner radii, live tile notification badges, and lowercase pivot headers. |
-| **LCARS** | SWEEP | PILLED (`999px`) | COMPACT | Cap | Sweep | Authentic Michael Okuda LCARS console layout with upper swoop bar, concentric tangent elbow arc, flush button segments, and rounded pill caps. |
-| **Frutiger Aero** | TABS | ROUNDED (`12-18px`) | COMFORTABLE | Soft | Stack | Glossy Aero layout with 12-18px curved corners, comfortable padding, soft translucent panels, and sky/grass horizons. |
-| **Art Deco** | RAIL | SHARP (`0px`) | COMPACT | Rule | Rule | Architectural Art Deco layout with hairline rules, sharp geometric angles, and wide letter-spacing (`.35em`). |
-| **Terminal** | TABS | SHARP (`4px`) | COMPACT | Box | Stack | Dense command terminal grid with monospaced typography, tight line heights, and prompt indicators (`>`). |
-| **Press** | TABS | SHARP (`2px`) | COMFORTABLE | Quiet | Editorial | High-legibility editorial layout with serif body typography, 2px micro-radii, and generous leading for bright sunlight. |
-| **Modern Glass** | TABS | ROUNDED (`14-22px`) | STANDARD | Soft | Stack | Modern frosted glass layout with deep curvature, subtle glowing borders, and fluid animations. |
-| **Material3** | TABS | ROUNDED (`12-24px`) | STANDARD | Tonal | Stack | Material Design 3 layout with rounded pill containers, expressive tonal elevation, and dynamic surface tinting. |
-| **Cyberpunk** | RAIL | SHARP (`0px`) | COMPACT | Chamfer | Sweep | High-tech dystopian cyberpunk layout with 45° chamfered cuts, wireframe borders, neon accents, and HUD telemetry rails. |
+| Layout Variation  | Nav Model | Corner Profile      | Density Profile | Card Look | Head Look | Description                                                                                                                                    |
+| ----------------- | --------- | ------------------- | --------------- | --------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Metro**         | TILES     | SHARP (`0px`)       | COMFORTABLE     | Flat      | Pivot     | High-contrast Windows Phone Metro / Zune tile navigation with zero corner radii, live tile notification badges, and lowercase pivot headers.   |
+| **LCARS**         | SWEEP     | PILLED (`999px`)    | COMPACT         | Cap       | Sweep     | Authentic Michael Okuda LCARS console layout with upper swoop bar, concentric tangent elbow arc, flush button segments, and rounded pill caps. |
+| **Frutiger Aero** | TABS      | ROUNDED (`12-18px`) | COMFORTABLE     | Soft      | Stack     | Glossy Aero layout with 12-18px curved corners, comfortable padding, soft translucent panels, and sky/grass horizons.                          |
+| **Art Deco**      | RAIL      | SHARP (`0px`)       | COMPACT         | Rule      | Rule      | Architectural Art Deco layout with hairline rules, sharp geometric angles, and wide letter-spacing (`.35em`).                                  |
+| **Terminal**      | TABS      | SHARP (`4px`)       | COMPACT         | Box       | Stack     | Dense command terminal grid with monospaced typography, tight line heights, and prompt indicators (`>`).                                       |
+| **Press**         | TABS      | SHARP (`2px`)       | COMFORTABLE     | Quiet     | Editorial | High-legibility editorial layout with serif body typography, 2px micro-radii, and generous leading for bright sunlight.                        |
+| **Modern Glass**  | TABS      | ROUNDED (`14-22px`) | STANDARD        | Soft      | Stack     | Modern frosted glass layout with deep curvature, subtle glowing borders, and fluid animations.                                                 |
+| **Material3**     | TABS      | ROUNDED (`12-24px`) | STANDARD        | Tonal     | Stack     | Material Design 3 layout with rounded pill containers, expressive tonal elevation, and dynamic surface tinting.                                |
+| **Cyberpunk**     | RAIL      | SHARP (`0px`)       | COMPACT         | Chamfer   | Sweep     | High-tech dystopian cyberpunk layout with 45° chamfered cuts, wireframe borders, neon accents, and HUD telemetry rails.                        |
 
 ---
 

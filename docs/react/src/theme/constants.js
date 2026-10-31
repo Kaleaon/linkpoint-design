@@ -51,25 +51,177 @@ export const DEVICES = {
 // floater set is the window model: position, size, z-order and minimise all live in state.
 export const FBAR = 26;
 export const FLOATERS = [
-  { id:"Chat",        title:"Local Chat",    icon:"message-square", x:20,   y:24,  w:424, h:296 },
-  { id:"Radar",       title:"Nearby",        icon:"radar",          x:462,  y:24,  w:372, h:296 },
-  { id:"Friends",     title:"People",        icon:"users",          x:20,   y:340, w:300, h:262 },
-  { id:"Inventory",   title:"Inventory",     icon:"folder",         x:1056, y:24,  w:346, h:420 },
-  { id:"Map",         title:"World Map",     icon:"map",            x:462,  y:340, w:372, h:262 },
-  { id:"Profile",     title:"Profile",       icon:"user",           x:340,  y:110, w:392, h:430 },
-  { id:"Groups",      title:"Groups",        icon:"users-round",    x:852,  y:24,  w:196, h:252 },
-  { id:"Notices",     title:"Notifications", icon:"bell",           x:852,  y:292, w:196, h:252 },
-  { id:"Teleport",    title:"Places",        icon:"zap",            x:330,  y:150, w:370, h:350 },
-  { id:"Settings",    title:"Preferences",   icon:"settings",       x:290,  y:80,  w:540, h:470 },
-  { id:"Cache",       title:"Cache",         icon:"hard-drive",     x:360,  y:120, w:460, h:420 },
-  { id:"Diagnostics", title:"Statistics",    icon:"activity",       x:1056, y:462, w:346, h:196 },
-  { id:"Offline Grid", title:"Offline Grid", icon:"server",         x:220,  y:60,  w:520, h:480 },
-  { id:"Grid Console", title:"Grid Console", icon:"terminal",       x:180,  y:90,  w:560, h:450 },
-  { id:"Outfits",     title:"Outfits",       icon:"shirt",          x:380,  y:140, w:400, h:420 },
-  { id:"Objects",     title:"Objects",       icon:"box",            x:420,  y:120, w:440, h:380 },
-  { id:"Parcel",      title:"About Land",    icon:"map-pin",        x:360,  y:160, w:420, h:400 },
-  { id:"Transactions",title:"L$ Ledger",     icon:"banknote",       x:390,  y:130, w:450, h:390 },
-  { id:"Mute List",   title:"Block List",    icon:"volume-x",       x:440,  y:170, w:410, h:360 },
+  {
+    id: "Chat",
+    title: "Local Chat",
+    icon: "message-square",
+    x: 20,
+    y: 24,
+    w: 424,
+    h: 296,
+  },
+  {
+    id: "Radar",
+    title: "Nearby",
+    icon: "radar",
+    x: 462,
+    y: 24,
+    w: 372,
+    h: 296,
+  },
+  {
+    id: "Friends",
+    title: "People",
+    icon: "users",
+    x: 20,
+    y: 340,
+    w: 300,
+    h: 262,
+  },
+  {
+    id: "Inventory",
+    title: "Inventory",
+    icon: "folder",
+    x: 1056,
+    y: 24,
+    w: 346,
+    h: 420,
+  },
+  {
+    id: "Map",
+    title: "World Map",
+    icon: "map",
+    x: 462,
+    y: 340,
+    w: 372,
+    h: 262,
+  },
+  {
+    id: "Profile",
+    title: "Profile",
+    icon: "user",
+    x: 340,
+    y: 110,
+    w: 392,
+    h: 430,
+  },
+  {
+    id: "Groups",
+    title: "Groups",
+    icon: "users-round",
+    x: 852,
+    y: 24,
+    w: 196,
+    h: 252,
+  },
+  {
+    id: "Notices",
+    title: "Notifications",
+    icon: "bell",
+    x: 852,
+    y: 292,
+    w: 196,
+    h: 252,
+  },
+  {
+    id: "Teleport",
+    title: "Places",
+    icon: "zap",
+    x: 330,
+    y: 150,
+    w: 370,
+    h: 350,
+  },
+  {
+    id: "Settings",
+    title: "Preferences",
+    icon: "settings",
+    x: 290,
+    y: 80,
+    w: 540,
+    h: 470,
+  },
+  {
+    id: "Cache",
+    title: "Cache",
+    icon: "hard-drive",
+    x: 360,
+    y: 120,
+    w: 460,
+    h: 420,
+  },
+  {
+    id: "Diagnostics",
+    title: "Statistics",
+    icon: "activity",
+    x: 1056,
+    y: 462,
+    w: 346,
+    h: 196,
+  },
+  {
+    id: "Offline Grid",
+    title: "Offline Grid",
+    icon: "server",
+    x: 220,
+    y: 60,
+    w: 520,
+    h: 480,
+  },
+  {
+    id: "Grid Console",
+    title: "Grid Console",
+    icon: "terminal",
+    x: 180,
+    y: 90,
+    w: 560,
+    h: 450,
+  },
+  {
+    id: "Outfits",
+    title: "Outfits",
+    icon: "shirt",
+    x: 380,
+    y: 140,
+    w: 400,
+    h: 420,
+  },
+  {
+    id: "Objects",
+    title: "Objects",
+    icon: "box",
+    x: 420,
+    y: 120,
+    w: 440,
+    h: 380,
+  },
+  {
+    id: "Parcel",
+    title: "About Land",
+    icon: "map-pin",
+    x: 360,
+    y: 160,
+    w: 420,
+    h: 400,
+  },
+  {
+    id: "Transactions",
+    title: "L$ Ledger",
+    icon: "banknote",
+    x: 390,
+    y: 130,
+    w: 450,
+    h: 390,
+  },
+  {
+    id: "Mute List",
+    title: "Block List",
+    icon: "volume-x",
+    x: 440,
+    y: 170,
+    w: 410,
+    h: 360,
+  },
 ];
 export const FMENU = [
   {
@@ -178,27 +330,96 @@ export const CBTN = {
 // `tabs[screen]` state that the screen bodies filter on. A screen missing from
 // this table simply has no sub-views. Mirrors the CSUB table in docs/index.html.
 export const CSUB = {
-  "3D View":     [["CAM", "· 01"], ["GFX", "· 02"]],
-  Chat:          [["LOCAL", "· 01"], ["IM", "· 02"], ["GROUP", "· 03"]],
-  Friends:       [["ALL", "· 01"], ["ONLINE", "· 02"]],
-  Radar:         [["AVATAR", "· 01"], ["OBJECT", "· 02"]],
-  Map:           [["WORLD", "· 01"], ["MINI", "· 02"]],
-  Inventory:     [["ALL", "· 01"], ["RECENT", "· 02"], ["WORN", "· 03"]],
-  Profile:       [["2ND LIFE", "· 01"], ["PICKS", "· 02"]],
-  Groups:        [["GROUPS", "· 01"], ["ROLES", "· 02"]],
-  Notices:       [["IM", "· 01"], ["SYSTEM", "· 02"]],
-  Teleport:      [["LANDMARK", "· 01"], ["HISTORY", "· 02"]],
-  Settings:      [["PREFS", "· 01"], ["CACHE", "· 02"]],
-  Cache:         [["PREFS", "· 01"], ["CACHE", "· 02"]],
-  Diagnostics:   [["AGNI", "· 01"], ["ADITI", "· 02"]],
-  Outfits:       [["WORN", "· 01"], ["SAVED", "· 02"]],
-  Objects:       [["NEARBY", "· 01"], ["INSPECT", "· 02"]],
-  Parcel:        [["GENERAL", "· 01"], ["MEDIA", "· 02"]],
-  Transactions:  [["ALL", "· 01"], ["PAYMENTS", "· 02"]],
-  "Mute List":   [["AVATARS", "· 01"], ["OBJECTS", "· 02"]],
-  "Offline Grid": [["STATUS", "· 01"], ["ACCOUNT", "· 02"], ["OAR", "· 03"], ["ASSETS", "· 04"], ["CACHE", "· 05"]],
-  "Grid Console": [["ALL", "· 01"], ["ERRORS", "· 02"]],
-  Search:        [["FRIENDS", "· 01"], ["NEARBY", "· 02"], ["SEARCH", "· 03"]],
+  "3D View": [
+    ["CAM", "· 01"],
+    ["GFX", "· 02"],
+  ],
+  Chat: [
+    ["LOCAL", "· 01"],
+    ["IM", "· 02"],
+    ["GROUP", "· 03"],
+  ],
+  Friends: [
+    ["ALL", "· 01"],
+    ["ONLINE", "· 02"],
+  ],
+  Radar: [
+    ["AVATAR", "· 01"],
+    ["OBJECT", "· 02"],
+  ],
+  Map: [
+    ["WORLD", "· 01"],
+    ["MINI", "· 02"],
+  ],
+  Inventory: [
+    ["ALL", "· 01"],
+    ["RECENT", "· 02"],
+    ["WORN", "· 03"],
+  ],
+  Profile: [
+    ["2ND LIFE", "· 01"],
+    ["PICKS", "· 02"],
+  ],
+  Groups: [
+    ["GROUPS", "· 01"],
+    ["ROLES", "· 02"],
+  ],
+  Notices: [
+    ["IM", "· 01"],
+    ["SYSTEM", "· 02"],
+  ],
+  Teleport: [
+    ["LANDMARK", "· 01"],
+    ["HISTORY", "· 02"],
+  ],
+  Settings: [
+    ["PREFS", "· 01"],
+    ["CACHE", "· 02"],
+  ],
+  Cache: [
+    ["PREFS", "· 01"],
+    ["CACHE", "· 02"],
+  ],
+  Diagnostics: [
+    ["AGNI", "· 01"],
+    ["ADITI", "· 02"],
+  ],
+  Outfits: [
+    ["WORN", "· 01"],
+    ["SAVED", "· 02"],
+  ],
+  Objects: [
+    ["NEARBY", "· 01"],
+    ["INSPECT", "· 02"],
+  ],
+  Parcel: [
+    ["GENERAL", "· 01"],
+    ["MEDIA", "· 02"],
+  ],
+  Transactions: [
+    ["ALL", "· 01"],
+    ["PAYMENTS", "· 02"],
+  ],
+  "Mute List": [
+    ["AVATARS", "· 01"],
+    ["OBJECTS", "· 02"],
+  ],
+  "Offline Grid": [
+    ["STATUS", "· 01"],
+    ["ACCOUNT", "· 02"],
+    ["OAR", "· 03"],
+    ["ASSETS", "· 04"],
+    ["CACHE", "· 05"],
+  ],
+  "Grid Console": [
+    ["ALL", "· 01"],
+    ["ERRORS", "· 02"],
+  ],
+  Search: [
+    ["FRIENDS", "· 01"],
+    ["NEARBY", "· 02"],
+    ["SEARCH", "· 03"],
+  ],
 };
 
 // The screen's current sub-view: `tabs[screen]` when it is one of that screen's
@@ -213,14 +434,17 @@ export const subView = (state, scr) => {
   if (!subs.length) return null;
   if (scr === "Radar") return state.rMode === "OBJ" ? "OBJECT" : "AVATAR";
   if (scr === "Search") return state.searchTab || "FRIENDS";
-  if (scr === "Settings" || scr === "Cache") return scr === "Cache" ? "CACHE" : "PREFS";
+  if (scr === "Settings" || scr === "Cache")
+    return scr === "Cache" ? "CACHE" : "PREFS";
   const cur = state.tabs[scr];
   return subs.includes(cur) ? cur : subs[0];
 };
 export const setSub = (actions, scr, label) => {
-  if (scr === "Radar") return actions.setRMode(label === "AVATAR" ? "AV" : "OBJ");
+  if (scr === "Radar")
+    return actions.setRMode(label === "AVATAR" ? "AV" : "OBJ");
   if (scr === "Search") return actions.setSearchTab(label);
-  if (scr === "Settings" || scr === "Cache") return actions.setScreen(label === "CACHE" ? "Cache" : "Settings");
+  if (scr === "Settings" || scr === "Cache")
+    return actions.setScreen(label === "CACHE" ? "Cache" : "Settings");
   return actions.setTab(scr, label);
 };
 // A card tagged `sub` belongs to those sub-views only; an untagged card shows

@@ -6,7 +6,10 @@ import Icon from "../components/Icon.jsx";
 
 // Ported from the `isProfile` <sc-if> block.
 export default function Profile() {
-  const { state, actions: { startIm, notify } } = useApp();
+  const {
+    state,
+    actions: { startIm, notify },
+  } = useApp();
   const { V, t } = useTheme();
   return (
     <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>

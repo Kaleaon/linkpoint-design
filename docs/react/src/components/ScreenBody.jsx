@@ -54,9 +54,20 @@ export default function ScreenBody() {
   const curSub = subView(state, scr);
 
   const customLoadingScreen = [
-    "Inventory", "Search", "Outfits", "Parcel", "Objects", "Transactions",
-    "Mute List", "Teleport", "Friends", "Groups", "Notices", "Settings",
-    "Cache", "Diagnostics"
+    "Inventory",
+    "Search",
+    "Outfits",
+    "Parcel",
+    "Objects",
+    "Transactions",
+    "Mute List",
+    "Teleport",
+    "Friends",
+    "Groups",
+    "Notices",
+    "Settings",
+    "Cache",
+    "Diagnostics",
   ].includes(scr);
 
   return (
@@ -82,7 +93,9 @@ export default function ScreenBody() {
         <Header />
         <SegmentedTabs />
         <ChipRow />
-        {isLoading && !customLoadingScreen && scr !== "Login" && <SkeletonCardList style={{ minHeight: "320px" }} />}
+        {isLoading && !customLoadingScreen && scr !== "Login" && (
+          <SkeletonCardList style={{ minHeight: "320px" }} />
+        )}
         {!isLoading && norm && scr === "Chat" && <Chat />}
         {!isLoading && norm && scr === "Radar" && <Radar />}
         {!isLoading && norm && scr === "Map" && <Map />}

@@ -179,7 +179,16 @@ describe("Split Theme Context Architecture", () => {
     ];
     const legacyAliases = ["sweep", "tiles", "glass", "rules"];
     const allKeys = [...canonicalLayouts, ...legacyAliases];
-    const mockCf = () => ({ gap: 4, cur: 40, rad: 36, rail: 84, bar: 70, dock: 52, foot: 30, wide: false });
+    const mockCf = () => ({
+      gap: 4,
+      cur: 40,
+      rad: 36,
+      rail: 84,
+      bar: 70,
+      dock: 52,
+      foot: 30,
+      wide: false,
+    });
 
     for (const key of allKeys) {
       const state = {
@@ -250,7 +259,16 @@ describe("Split Theme Context Architecture", () => {
   });
 
   it("verifies isSweepDesk desktop adaptation on both lcars and sweep keys", () => {
-    const mockCf = () => ({ gap: 4, cur: 40, rad: 36, rail: 84, bar: 70, dock: 52, foot: 30, wide: false });
+    const mockCf = () => ({
+      gap: 4,
+      cur: 40,
+      rad: 36,
+      rail: 84,
+      bar: 70,
+      dock: 52,
+      foot: 30,
+      wide: false,
+    });
 
     for (const key of ["lcars", "sweep"]) {
       const state = {

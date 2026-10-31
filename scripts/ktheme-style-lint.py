@@ -29,8 +29,9 @@ def check_file(filepath):
         if stripped.startswith('//') or stripped.startswith('*') or stripped.startswith('/*'):
             continue
 
-        # Strip CSS var fallbacks e.g. var(--token, #6CFF9A) to avoid flagging fallbacks
+        # Strip CSS var fallbacks e.g. var(--token, #6CFF9A) and V token fallbacks e.g. V.ok || "#22c55e"
         clean_line = re.sub(r'var\([^)]+\)', '', line)
+        clean_line = re.sub(r'V(?:\?\.|\.)[a-zA-Z0-9_]+\s*\|\|\s*[\'"]#[0-9a-fA-F]+[\'"]', '', clean_line)
 
         matches = HEX_COLOR_REGEX.findall(clean_line)
         if matches:

@@ -14,8 +14,8 @@ export default function SegmentedMeter({
   gap = 2,
   activeColor,
   inactiveColor,
-  warnThreshold = 0.70,
-  dangerThreshold = 0.90,
+  warnThreshold = 0.7,
+  dangerThreshold = 0.9,
   label = "Level meter",
   showReadout = false,
   readoutFormat,
@@ -42,10 +42,15 @@ export default function SegmentedMeter({
 
   const blockBg = inactiveColor || V.surf2 || "rgba(255,255,255,0.08)";
   const isPill = LK?.card === "soft" || V.rs === "999px";
-  const blockRadius = LK?.card === "cap" || LK?.card === "flat" || LK?.card === "chamfer" ? "0px" : "1px";
+  const blockRadius =
+    LK?.card === "cap" || LK?.card === "flat" || LK?.card === "chamfer"
+      ? "0px"
+      : "1px";
 
   const defaultReadout = `${safeVal.toLocaleString()} / ${safeMax.toLocaleString()} (${percent}%)`;
-  const readoutText = readoutFormat ? readoutFormat(safeVal, safeMax, percent) : defaultReadout;
+  const readoutText = readoutFormat
+    ? readoutFormat(safeVal, safeMax, percent)
+    : defaultReadout;
 
   return (
     <div
@@ -58,7 +63,14 @@ export default function SegmentedMeter({
       }}
     >
       {(showReadout || systemCode) && (
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "8px",
+          }}
+        >
           {systemCode && (
             <span
               style={{

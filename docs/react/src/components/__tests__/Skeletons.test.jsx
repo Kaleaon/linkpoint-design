@@ -2,7 +2,11 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
-import { SkeletonCardList, SkeletonTree, SkeletonDetail } from "../Skeletons.jsx";
+import {
+  SkeletonCardList,
+  SkeletonTree,
+  SkeletonDetail,
+} from "../Skeletons.jsx";
 import CardList from "../CardList.jsx";
 import Inventory from "../../screens/Inventory.jsx";
 import Search from "../../screens/Search.jsx";
@@ -86,13 +90,22 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     expect(detailEl).toBeInTheDocument();
     expect(detailEl.style.minHeight).toBe("320px");
 
-    expect(screen.getByTestId("skeleton-detail-header")).toHaveClass("skeleton-shimmer");
-    expect(screen.getByTestId("skeleton-detail-footer")).toHaveClass("skeleton-shimmer");
+    expect(screen.getByTestId("skeleton-detail-header")).toHaveClass(
+      "skeleton-shimmer"
+    );
+    expect(screen.getByTestId("skeleton-detail-footer")).toHaveClass(
+      "skeleton-shimmer"
+    );
   });
 
   it("renders SkeletonCardList in CardList component when state.cond === 'loading'", () => {
     const mockAppContext = {
-      state: { cond: "loading", screen: "Friends", layout: "default", palette: "default" },
+      state: {
+        cond: "loading",
+        screen: "Friends",
+        layout: "default",
+        palette: "default",
+      },
       actions: {},
     };
 
@@ -130,7 +143,13 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
 
   it("renders SkeletonCardList in Search screen results area when state.cond === 'loading'", () => {
     const mockAppContext = {
-      state: { cond: "loading", screen: "Search", searchTab: "FRIENDS", searchQuery: "", searchState: {} },
+      state: {
+        cond: "loading",
+        screen: "Search",
+        searchTab: "FRIENDS",
+        searchQuery: "",
+        searchState: {},
+      },
       actions: {},
     };
 

@@ -2,7 +2,15 @@ import { useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL } from "../data/content.js";
-import { HUDS, TARGETS, CSUB, subView, setSub, CPAD, CPADR } from "../theme/constants.js";
+import {
+  HUDS,
+  TARGETS,
+  CSUB,
+  subView,
+  setSub,
+  CPAD,
+  CPADR,
+} from "../theme/constants.js";
 import Icon from "../components/Icon.jsx";
 import KInteractive from "../components/KInteractive.jsx";
 import RadialPieMenu from "../components/RadialPieMenu.jsx";
@@ -1117,18 +1125,33 @@ export default function World3D() {
             }}
           >
             {CPAD.map((p, i) => {
-              if (!p.k) return <div key={i} style={{ background: "transparent" }} />;
+              if (!p.k)
+                return <div key={i} style={{ background: "transparent" }} />;
               const active = p.k === "cam" ? false : state.cHeld === p.k;
               const bg = active ? V.pri : p.k === "cam" ? V.surf : V.surf2;
               return (
                 <KInteractive
                   key={i}
                   as="button"
-                  onMouseDown={() => (p.k === "cam" ? actions.setCamPreset(state.cCam === "ORBIT" ? "MOUSE" : "ORBIT") : actions.cHold(p.k))}
+                  onMouseDown={() =>
+                    p.k === "cam"
+                      ? actions.setCamPreset(
+                          state.cCam === "ORBIT" ? "MOUSE" : "ORBIT"
+                        )
+                      : actions.cHold(p.k)
+                  }
                   onMouseUp={() => p.k !== "cam" && actions.holdEnd()}
-                  onTouchStart={() => (p.k === "cam" ? actions.setCamPreset(state.cCam === "ORBIT" ? "MOUSE" : "ORBIT") : actions.cHold(p.k))}
+                  onTouchStart={() =>
+                    p.k === "cam"
+                      ? actions.setCamPreset(
+                          state.cCam === "ORBIT" ? "MOUSE" : "ORBIT"
+                        )
+                      : actions.cHold(p.k)
+                  }
                   onTouchEnd={() => p.k !== "cam" && actions.holdEnd()}
-                  aria-label={p.k === "cam" ? "Toggle camera mode" : `Move ${p.k}`}
+                  aria-label={
+                    p.k === "cam" ? "Toggle camera mode" : `Move ${p.k}`
+                  }
                   style={{
                     display: "flex",
                     flexDirection: "column",
@@ -1147,7 +1170,9 @@ export default function World3D() {
                   }}
                 >
                   <Icon name={p.icon} size={16} />
-                  {p.k === "cam" && <span>{state.cCam === "ORBIT" ? "ORBIT" : "FREE"}</span>}
+                  {p.k === "cam" && (
+                    <span>{state.cCam === "ORBIT" ? "ORBIT" : "FREE"}</span>
+                  )}
                 </KInteractive>
               );
             })}
@@ -1166,7 +1191,10 @@ export default function World3D() {
                 width: "44px",
                 height: "36px",
                 background: state.cHeld === "up" ? V.pri : V.surf,
-                color: state.cHeld === "up" ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
+                color:
+                  state.cHeld === "up"
+                    ? ink(V.pri, [V.bg, V.onpri, V.ink])
+                    : V.ink,
                 border: "1px solid " + V.outv,
                 borderRadius: V.rs,
                 display: "flex",
@@ -1189,7 +1217,10 @@ export default function World3D() {
                 width: "44px",
                 height: "36px",
                 background: state.cHeld === "dn" ? V.pri : V.surf,
-                color: state.cHeld === "dn" ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
+                color:
+                  state.cHeld === "dn"
+                    ? ink(V.pri, [V.bg, V.onpri, V.ink])
+                    : V.ink,
                 border: "1px solid " + V.outv,
                 borderRadius: V.rs,
                 display: "flex",
@@ -1208,8 +1239,10 @@ export default function World3D() {
               style={{
                 width: "44px",
                 height: "36px",
-                background: state.cRun ? (V.ok || "#22c55e") : V.surf,
-                color: state.cRun ? "#fff" : V.ink,
+                background: state.cRun ? V.ok || "#22c55e" : V.surf,
+                color: state.cRun
+                  ? V.onok || V.onpri || "var(--onok, #fff)"
+                  : V.ink,
                 border: "1px solid " + V.outv,
                 borderRadius: V.rs,
                 display: "flex",

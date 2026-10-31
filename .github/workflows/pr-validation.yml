@@ -2,7 +2,7 @@ name: PR Validation
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -16,5 +16,5 @@ jobs:
   validate:
     uses: ./.github/workflows/reusable-validation.yml
     with:
-      node-version: '22'
-      target-flags: '--a11y'
+      node-version: "22"
+      target-flags: "--a11y"
