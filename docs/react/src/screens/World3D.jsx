@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL } from "../data/content.js";
@@ -291,21 +291,7 @@ export default function World3D() {
         ) : null}
       </KInteractive>
 
-      <div style={{ position: "absolute", left: "14px", bottom: "72px", width: "112px", height: "112px" }}>
-        <div style={{ position: "absolute", inset: 0, border: "1px solid " + V.outv, borderRadius: "50%", background: V.surf, opacity: 0.8 }} />
-        <div style={{ position: "absolute", left: "50%", top: "5px", transform: "translateX(-50%)", color: V.pri }}>
-          <Icon name="chevron-up" size={24} />
-        </div>
-        <div style={{ position: "absolute", left: "50%", bottom: "5px", transform: "translateX(-50%)", color: V.pri }}>
-          <Icon name="chevron-down" size={24} />
-        </div>
-        <div style={{ position: "absolute", top: "50%", left: "5px", transform: "translateY(-50%)", color: V.pri }}>
-          <Icon name="chevron-left" size={24} />
-        </div>
-        <div style={{ position: "absolute", top: "50%", right: "5px", transform: "translateY(-50%)", color: V.pri }}>
-          <Icon name="chevron-right" size={24} />
-        </div>
-      </div>
+      <VirtualJoystick />
       <div style={{ position: "absolute", right: "14px", bottom: "14px", display: "flex", flexDirection: "column", gap: "8px" }}>
         <div style={{ width: "46px", height: "46px", borderRadius: V.rs, background: V.surf, border: "1px solid " + V.outv, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri }}>
           <Icon name="arrow-up-from-line" size={20} />
@@ -433,7 +419,7 @@ export default function World3D() {
                     gap: "2px",
                     cursor: "pointer",
                     background: bg,
-                    color: active ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
+                    color: active ? (typeof ink === "function" ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.onpri) : V.ink,
                     borderRadius: CPADR[i] || V.rs,
                     border: "1px solid " + V.outv,
                     font: "700 8px/1 " + t.dfont,
@@ -462,7 +448,7 @@ export default function World3D() {
                 width: "44px",
                 height: "36px",
                 background: state.cHeld === "up" ? V.pri : V.surf,
-                color: state.cHeld === "up" ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
+                color: state.cHeld === "up" ? (typeof ink === "function" ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.onpri) : V.ink,
                 border: "1px solid " + V.outv,
                 borderRadius: V.rs,
                 display: "flex",
@@ -485,7 +471,7 @@ export default function World3D() {
                 width: "44px",
                 height: "36px",
                 background: state.cHeld === "dn" ? V.pri : V.surf,
-                color: state.cHeld === "dn" ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
+                color: state.cHeld === "dn" ? (typeof ink === "function" ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.onpri) : V.ink,
                 border: "1px solid " + V.outv,
                 borderRadius: V.rs,
                 display: "flex",
@@ -578,6 +564,149 @@ export default function World3D() {
           onClose={() => setPieMenu(null)}
         />
       )}
+    </div>
+  );
+}
+
+export function VirtualJoystick() {
+  const { actions } = useApp();
+  const { V } = useTheme();
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const containerRef = useRef(null);
+
+  const RADIUS = 40;
+
+  const updatePosition = (clientX, clientY) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    let dx = clientX - centerX;
+    let dy = clientY - centerY;
+
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    if (distance > RADIUS && distance > 0) {
+      dx = (dx / distance) * RADIUS;
+      dy = (dy / distance) * RADIUS;
+    }
+
+    setPosition({ x: dx, y: dy });
+
+    const normX = dx / RADIUS;
+    const normY = dy / RADIUS;
+
+    if (actions.handleJoystickMove) {
+      actions.handleJoystickMove(normX, normY);
+    } else {
+      if (Math.abs(normX) < 0.15 && Math.abs(normY) < 0.15) {
+        actions.cHold("");
+      } else if (Math.abs(normY) >= Math.abs(normX)) {
+        actions.cHold(normY < 0 ? "fwd" : "bck");
+      } else {
+        actions.cHold(normX < 0 ? "lft" : "rgt");
+      }
+    }
+  };
+
+  const handlePointerDown = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+    if (e.currentTarget.setPointerCapture) {
+      try {
+        e.currentTarget.setPointerCapture(e.pointerId);
+      } catch (_) {}
+    }
+    updatePosition(e.clientX, e.clientY);
+  };
+
+  const handlePointerMove = (e) => {
+    if (!isDragging) return;
+    updatePosition(e.clientX, e.clientY);
+  };
+
+  const resetJoystick = (e) => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    if (e && e.currentTarget && e.currentTarget.releasePointerCapture && e.currentTarget.hasPointerCapture?.(e.pointerId)) {
+      try {
+        e.currentTarget.releasePointerCapture(e.pointerId);
+      } catch (_) {}
+    }
+    setPosition({ x: 0, y: 0 });
+    if (actions.handleJoystickMove) {
+      actions.handleJoystickMove(0, 0);
+    } else {
+      actions.cHold("");
+    }
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      data-testid="virtual-joystick"
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={resetJoystick}
+      onPointerCancel={resetJoystick}
+      onLostPointerCapture={resetJoystick}
+      style={{
+        position: "absolute",
+        left: "14px",
+        bottom: "72px",
+        width: "112px",
+        height: "112px",
+        touchAction: "none",
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        cursor: "grab",
+        zIndex: 7,
+      }}
+    >
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          border: "1px solid " + V.outv,
+          borderRadius: "50%",
+          background: V.surf,
+          opacity: 0.8,
+        }}
+      />
+      <div style={{ position: "absolute", left: "50%", top: "5px", transform: "translateX(-50%)", color: V.pri, pointerEvents: "none" }}>
+        <Icon name="chevron-up" size={24} />
+      </div>
+      <div style={{ position: "absolute", left: "50%", bottom: "5px", transform: "translateX(-50%)", color: V.pri, pointerEvents: "none" }}>
+        <Icon name="chevron-down" size={24} />
+      </div>
+      <div style={{ position: "absolute", top: "50%", left: "5px", transform: "translateY(-50%)", color: V.pri, pointerEvents: "none" }}>
+        <Icon name="chevron-left" size={24} />
+      </div>
+      <div style={{ position: "absolute", top: "50%", right: "5px", transform: "translateY(-50%)", color: V.pri, pointerEvents: "none" }}>
+        <Icon name="chevron-right" size={24} />
+      </div>
+
+      <div
+        data-testid="joystick-knob"
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          width: "44px",
+          height: "44px",
+          marginTop: "-22px",
+          marginLeft: "-22px",
+          borderRadius: "50%",
+          background: V.pri,
+          opacity: isDragging ? 0.9 : 0.6,
+          border: "2px solid " + V.onpri,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.4)",
+          transform: `translate(${position.x}px, ${position.y}px)`,
+          transition: isDragging ? "none" : "transform 0.15s ease-out",
+          pointerEvents: "none",
+        }}
+      />
     </div>
   );
 }
