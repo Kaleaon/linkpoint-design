@@ -36,8 +36,9 @@ button:focus-visible,
 [role="tab"]:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 2px solid #6cff9a;
+  outline: 2px solid var(--k-focus-ring, currentColor);
   outline-offset: 2px;
+  box-shadow: 0 0 0 1px var(--k-focus-ring-shadow, rgba(0, 0, 0, 0.6));
 }
 
 .device-frame {
