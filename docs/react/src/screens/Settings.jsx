@@ -42,7 +42,13 @@ export default function Settings() {
     cursor: "pointer",
   };
 
-  const categories = ["GRAPHICS", "AUDIO & VOICE", "NETWORK", "GENERAL", "UI & DENSITY"];
+  const categories = [
+    "GRAPHICS",
+    "AUDIO & VOICE",
+    "NETWORK",
+    "GENERAL",
+    "UI & DENSITY",
+  ];
 
   return (
     <div
@@ -89,9 +95,18 @@ export default function Settings() {
             <Icon name="settings" size={22} />
           </div>
           <div>
-            <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>Viewer Preferences</div>
-            <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
-              Configure rendering quality, audio mixing, network limits, and privacy controls
+            <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>
+              Viewer Preferences
+            </div>
+            <div
+              style={{
+                font: "400 11px/1.3 " + t.font,
+                color: V.ink2,
+                marginTop: "2px",
+              }}
+            >
+              Configure rendering quality, audio mixing, network limits, and
+              privacy controls
             </div>
           </div>
         </div>
@@ -108,7 +123,14 @@ export default function Settings() {
       </div>
 
       {/* Category Pills */}
-      <div style={{ display: "flex", gap: "6px", overflowX: "auto", paddingBottom: "2px" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "6px",
+          overflowX: "auto",
+          paddingBottom: "2px",
+        }}
+      >
         {categories.map((cat) => {
           const active = activeCategory === cat;
           return (
@@ -136,7 +158,13 @@ export default function Settings() {
 
       {/* GRAPHICS PREFERENCES */}
       {activeCategory === "GRAPHICS" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: bleed ? "4px" : "8px",
+          }}
+        >
           <div
             style={{
               padding: pad,
@@ -148,11 +176,29 @@ export default function Settings() {
               gap: "12px",
             }}
           >
-            <div style={{ font: "700 12px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>RENDER QUALITY & DRAW DISTANCE</div>
+            <div
+              style={{
+                font: "700 12px/1 " + t.dfont,
+                color: V.ink2,
+                letterSpacing: ".08em",
+              }}
+            >
+              RENDER QUALITY & DRAW DISTANCE
+            </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "10px" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>Draw Distance</label>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                gap: "10px",
+              }}
+            >
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>
+                  Draw Distance
+                </label>
                 <select
                   value={prefs.draw}
                   onChange={(e) => actions.setPref("draw", e.target.value)}
@@ -166,8 +212,12 @@ export default function Settings() {
                 </select>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>Quality Preset</label>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>
+                  Quality Preset
+                </label>
                 <select
                   value={prefs.quality}
                   onChange={(e) => actions.setPref("quality", e.target.value)}
@@ -180,8 +230,12 @@ export default function Settings() {
                 </select>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>Target Framerate</label>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>
+                  Target Framerate
+                </label>
                 <select
                   value={prefs.fps}
                   onChange={(e) => actions.setPref("fps", e.target.value)}
@@ -194,11 +248,17 @@ export default function Settings() {
                 </select>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>Max Avatar Complexity (ARC)</label>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>
+                  Max Avatar Complexity (ARC)
+                </label>
                 <select
                   value={prefs.complexity}
-                  onChange={(e) => actions.setPref("complexity", e.target.value)}
+                  onChange={(e) =>
+                    actions.setPref("complexity", e.target.value)
+                  }
                   style={selectStyle}
                 >
                   <option value="35 000">35,000 ARC (Jellydoll Crowds)</option>
@@ -209,8 +269,25 @@ export default function Settings() {
               </div>
             </div>
 
-            <div style={{ display: "flex", gap: "12px", borderTop: "1px solid " + V.outv, paddingTop: "10px", flexWrap: "wrap" }}>
-              <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", font: "500 12px/1 " + t.font, color: V.ink }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "12px",
+                borderTop: "1px solid " + V.outv,
+                paddingTop: "10px",
+                flexWrap: "wrap",
+              }}
+            >
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  cursor: "pointer",
+                  font: "500 12px/1 " + t.font,
+                  color: V.ink,
+                }}
+              >
                 <input
                   type="checkbox"
                   checked={toggles.shadows}
@@ -220,7 +297,16 @@ export default function Settings() {
                 <span>Real-Time Atmospheric Shadows</span>
               </label>
 
-              <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", font: "500 12px/1 " + t.font, color: V.ink }}>
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  cursor: "pointer",
+                  font: "500 12px/1 " + t.font,
+                  color: V.ink,
+                }}
+              >
                 <input
                   type="checkbox"
                   checked={toggles.battery}
@@ -236,7 +322,13 @@ export default function Settings() {
 
       {/* AUDIO & VOICE PREFERENCES */}
       {activeCategory === "AUDIO & VOICE" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: bleed ? "4px" : "8px",
+          }}
+        >
           <div
             style={{
               padding: pad,
@@ -248,11 +340,29 @@ export default function Settings() {
               gap: "12px",
             }}
           >
-            <div style={{ font: "700 12px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>VOLUME & SPATIAL AUDIO</div>
+            <div
+              style={{
+                font: "700 12px/1 " + t.dfont,
+                color: V.ink2,
+                letterSpacing: ".08em",
+              }}
+            >
+              VOLUME & SPATIAL AUDIO
+            </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "10px" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>Master Volume</label>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                gap: "10px",
+              }}
+            >
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>
+                  Master Volume
+                </label>
                 <select
                   value={prefs.volume}
                   onChange={(e) => actions.setPref("volume", e.target.value)}
@@ -266,9 +376,20 @@ export default function Settings() {
                 </select>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>Voice Chat System</label>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", minHeight: "44px" }}>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>
+                  Voice Chat System
+                </label>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    minHeight: "44px",
+                  }}
+                >
                   <input
                     type="checkbox"
                     id="pref-voice"
@@ -276,15 +397,38 @@ export default function Settings() {
                     onChange={() => actions.toggleSetting("voice")}
                     style={{ accentColor: V.pri, cursor: "pointer" }}
                   />
-                  <label htmlFor="pref-voice" style={{ font: "500 12px/1 " + t.font, color: V.ink, cursor: "pointer" }}>
+                  <label
+                    htmlFor="pref-voice"
+                    style={{
+                      font: "500 12px/1 " + t.font,
+                      color: V.ink,
+                      cursor: "pointer",
+                    }}
+                  >
                     Enable Spatial 3D Voice Audio (Vivox)
                   </label>
                 </div>
               </div>
             </div>
 
-            <div style={{ display: "flex", gap: "12px", borderTop: "1px solid " + V.outv, paddingTop: "10px" }}>
-              <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", font: "500 12px/1 " + t.font, color: V.ink }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "12px",
+                borderTop: "1px solid " + V.outv,
+                paddingTop: "10px",
+              }}
+            >
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  cursor: "pointer",
+                  font: "500 12px/1 " + t.font,
+                  color: V.ink,
+                }}
+              >
                 <input
                   type="checkbox"
                   checked={toggles.mediaAuto}
@@ -300,7 +444,13 @@ export default function Settings() {
 
       {/* NETWORK PREFERENCES */}
       {activeCategory === "NETWORK" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: bleed ? "4px" : "8px",
+          }}
+        >
           <div
             style={{
               padding: pad,
@@ -312,28 +462,58 @@ export default function Settings() {
               gap: "12px",
             }}
           >
-            <div style={{ font: "700 12px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>BANDWIDTH & CONNECTION LIMITS</div>
+            <div
+              style={{
+                font: "700 12px/1 " + t.dfont,
+                color: V.ink2,
+                letterSpacing: ".08em",
+              }}
+            >
+              BANDWIDTH & CONNECTION LIMITS
+            </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "10px" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>Maximum Bandwidth</label>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                gap: "10px",
+              }}
+            >
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>
+                  Maximum Bandwidth
+                </label>
                 <select
                   value={prefs.bandwidth}
                   onChange={(e) => actions.setPref("bandwidth", e.target.value)}
                   style={selectStyle}
                 >
                   <option value="500 kbps">500 kbps (Mobile Hotspot)</option>
-                  <option value="1 500 kbps">1,500 kbps (Standard Cable)</option>
-                  <option value="3 000 kbps">3,000 kbps (Broadband Fiber)</option>
-                  <option value="10 000 kbps">10,000 kbps (Uncapped LAN)</option>
+                  <option value="1 500 kbps">
+                    1,500 kbps (Standard Cable)
+                  </option>
+                  <option value="3 000 kbps">
+                    3,000 kbps (Broadband Fiber)
+                  </option>
+                  <option value="10 000 kbps">
+                    10,000 kbps (Uncapped LAN)
+                  </option>
                 </select>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>Disk Cache Capacity</label>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>
+                  Disk Cache Capacity
+                </label>
                 <select
                   value={prefs.cacheLimit}
-                  onChange={(e) => actions.setPref("cacheLimit", Number(e.target.value))}
+                  onChange={(e) =>
+                    actions.setPref("cacheLimit", Number(e.target.value))
+                  }
                   style={selectStyle}
                 >
                   <option value={256}>256 MB</option>
@@ -344,7 +524,14 @@ export default function Settings() {
               </div>
             </div>
 
-            <div style={{ display: "flex", gap: "8px", borderTop: "1px solid " + V.outv, paddingTop: "10px" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "8px",
+                borderTop: "1px solid " + V.outv,
+                paddingTop: "10px",
+              }}
+            >
               <KInteractive
                 as="button"
                 onClick={() => actions.setScreen("Cache")}
@@ -360,7 +547,13 @@ export default function Settings() {
 
       {/* GENERAL PREFERENCES */}
       {activeCategory === "GENERAL" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: bleed ? "4px" : "8px",
+          }}
+        >
           <div
             style={{
               padding: pad,
@@ -372,11 +565,29 @@ export default function Settings() {
               gap: "12px",
             }}
           >
-            <div style={{ font: "700 12px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>CONTENT RATINGS & PRIVACY</div>
+            <div
+              style={{
+                font: "700 12px/1 " + t.dfont,
+                color: V.ink2,
+                letterSpacing: ".08em",
+              }}
+            >
+              CONTENT RATINGS & PRIVACY
+            </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "10px" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>Maturity Rating Access</label>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                gap: "10px",
+              }}
+            >
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>
+                  Maturity Rating Access
+                </label>
                 <select
                   value={prefs.maturity}
                   onChange={(e) => actions.setPref("maturity", e.target.value)}
@@ -384,13 +595,26 @@ export default function Settings() {
                 >
                   <option value="General">General (PG only)</option>
                   <option value="Moderate">General & Moderate (PG/M)</option>
-                  <option value="Adult">General, Moderate & Adult (PG/M/A)</option>
+                  <option value="Adult">
+                    General, Moderate & Adult (PG/M/A)
+                  </option>
                 </select>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>RestrainedLove (RLV) Protocol</label>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", minHeight: "44px" }}>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>
+                  RestrainedLove (RLV) Protocol
+                </label>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    minHeight: "44px",
+                  }}
+                >
                   <input
                     type="checkbox"
                     id="pref-rlv"
@@ -398,7 +622,14 @@ export default function Settings() {
                     onChange={() => actions.toggleSetting("rlv")}
                     style={{ accentColor: V.pri, cursor: "pointer" }}
                   />
-                  <label htmlFor="pref-rlv" style={{ font: "500 12px/1 " + t.font, color: V.ink, cursor: "pointer" }}>
+                  <label
+                    htmlFor="pref-rlv"
+                    style={{
+                      font: "500 12px/1 " + t.font,
+                      color: V.ink,
+                      cursor: "pointer",
+                    }}
+                  >
                     Enable RLV Script API Extensions
                   </label>
                 </div>
@@ -410,7 +641,13 @@ export default function Settings() {
 
       {/* UI & DENSITY PREFERENCES */}
       {activeCategory === "UI & DENSITY" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: bleed ? "4px" : "8px",
+          }}
+        >
           <div
             style={{
               padding: pad,
@@ -422,12 +659,37 @@ export default function Settings() {
               gap: "12px",
             }}
           >
-            <div style={{ font: "700 12px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>LAYOUT PACK & THEME DENSITY</div>
+            <div
+              style={{
+                font: "700 12px/1 " + t.dfont,
+                color: V.ink2,
+                letterSpacing: ".08em",
+              }}
+            >
+              LAYOUT PACK & THEME DENSITY
+            </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "10px" }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>Interface Density</label>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", minHeight: "44px" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                gap: "10px",
+              }}
+            >
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>
+                  Interface Density
+                </label>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    minHeight: "44px",
+                  }}
+                >
                   <input
                     type="checkbox"
                     id="pref-dense"
@@ -435,15 +697,33 @@ export default function Settings() {
                     onChange={(e) => actions.setDense(e.target.checked)}
                     style={{ accentColor: V.pri, cursor: "pointer" }}
                   />
-                  <label htmlFor="pref-dense" style={{ font: "500 12px/1 " + t.font, color: V.ink, cursor: "pointer" }}>
+                  <label
+                    htmlFor="pref-dense"
+                    style={{
+                      font: "500 12px/1 " + t.font,
+                      color: V.ink,
+                      cursor: "pointer",
+                    }}
+                  >
                     Compact Density Mode (Tighter Margins)
                   </label>
                 </div>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>Large Type Display</label>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", minHeight: "44px" }}>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                <label style={{ font: "600 12px/1.2 " + t.font, color: V.ink }}>
+                  Large Type Display
+                </label>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    minHeight: "44px",
+                  }}
+                >
                   <input
                     type="checkbox"
                     id="pref-largetype"
@@ -451,7 +731,14 @@ export default function Settings() {
                     onChange={() => actions.toggleSetting("largeType")}
                     style={{ accentColor: V.pri, cursor: "pointer" }}
                   />
-                  <label htmlFor="pref-largetype" style={{ font: "500 12px/1 " + t.font, color: V.ink, cursor: "pointer" }}>
+                  <label
+                    htmlFor="pref-largetype"
+                    style={{
+                      font: "500 12px/1 " + t.font,
+                      color: V.ink,
+                      cursor: "pointer",
+                    }}
+                  >
                     High-Legibility Enlarged Typography
                   </label>
                 </div>

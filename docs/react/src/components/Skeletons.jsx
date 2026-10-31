@@ -67,7 +67,15 @@ export function SkeletonCardList({ count = 5, style = {} }) {
               flexShrink: 0,
             }}
           />
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px", minWidth: 0 }}>
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: "6px",
+              minWidth: 0,
+            }}
+          >
             <div
               style={{
                 height: "14px",
