@@ -17,6 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Clone Ktheme repository
+        run: git clone --depth 1 https://github.com/Kaleaon/Ktheme.git ../Ktheme
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -36,7 +39,10 @@ jobs:
           cache-dependency-path: docs/react/package-lock.json
 
       - name: Install React Dependencies
-        run: cd docs/react && npm ci
+        run: |
+          if [ -d "docs/react" ]; then
+            cd docs/react && (npm ci || npm install) && cd ../..
+          fi
 
       - name: Run React Unit Tests
         run: cd docs/react && npm test
