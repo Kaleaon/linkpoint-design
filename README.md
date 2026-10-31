@@ -9,7 +9,7 @@ Second Life system dialogs (permissions, teleport lures, pay, etc.).
   [`docs/ROADMAP.md`](docs/ROADMAP.md) for what it covers and its history.
 - **[`docs/react/`](docs/react/)** — a hand-authored, buildable React 18 +
   Vite port of the same prototype as ordinary JSX (`npm install && npm run
-  dev`), for engineers who'd rather not touch the mockup's template DSL
+dev`), for engineers who'd rather not touch the mockup's template DSL
   directly.
 - **[`docs/mockup-to-react.yaml`](docs/mockup-to-react.yaml)** — the
   translation spec between the two: file-by-file mapping, the binding

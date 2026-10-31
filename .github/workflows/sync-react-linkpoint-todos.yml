@@ -15,11 +15,11 @@ on:
   schedule:
     # 06:00 UTC — after upstream's own 00:00 sync in the opposite direction,
     # so a day's round trip settles before this list is rebuilt.
-    - cron: '0 6 * * *'
+    - cron: "0 6 * * *"
   workflow_dispatch:
     inputs:
       since:
-        description: 'Re-scan from this upstream ref instead of the stored cursor'
+        description: "Re-scan from this upstream ref instead of the stored cursor"
         required: false
         type: string
   repository_dispatch:

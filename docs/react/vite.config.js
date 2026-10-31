@@ -10,9 +10,18 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@ktheme/react/studio": path.resolve(__dirname, "../../../Ktheme/packages/react/src/studio/index.ts"),
-      "@ktheme/react/support": path.resolve(__dirname, "../../../Ktheme/packages/react/src/support/index.ts"),
-      "@ktheme/react": path.resolve(__dirname, "../../../Ktheme/packages/react/src/index.ts"),
+      "@ktheme/react/studio": path.resolve(
+        __dirname,
+        "../../../Ktheme/packages/react/src/studio/index.ts"
+      ),
+      "@ktheme/react/support": path.resolve(
+        __dirname,
+        "../../../Ktheme/packages/react/src/support/index.ts"
+      ),
+      "@ktheme/react": path.resolve(
+        __dirname,
+        "../../../Ktheme/packages/react/src/index.ts"
+      ),
     },
   },
   test: {

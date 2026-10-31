@@ -9,11 +9,11 @@ function useSafeThemeTokens() {
   }
   return {
     V: {
-      surf: "#111",
-      surf2: "#222",
-      outv: "#333",
-      bg: "#000",
-      pri: "#00f0ff",
+      surf: "var(--surf, #111)",
+      surf2: "var(--surf2, #222)",
+      outv: "var(--outv, #333)",
+      bg: "var(--bg, #000)",
+      pri: "var(--pri, #00f0ff)",
       rs: "4px",
       rp: "50%",
     },
@@ -67,7 +67,15 @@ export function SkeletonCardList({ count = 5, style = {} }) {
               flexShrink: 0,
             }}
           />
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px", minWidth: 0 }}>
+          <div
+            style={{
+              flex: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: "6px",
+              minWidth: 0,
+            }}
+          >
             <div
               style={{
                 height: "14px",

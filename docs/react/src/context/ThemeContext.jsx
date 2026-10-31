@@ -1,6 +1,9 @@
 import { createContext, useContext, useMemo } from "react";
 import { useApp } from "./AppContext.jsx";
-import { computeThemeTokens, computeThemeRuntime } from "../theme/computeTheme.js";
+import {
+  computeThemeTokens,
+  computeThemeRuntime,
+} from "../theme/computeTheme.js";
 
 export const ThemeTokensContext = createContext(null);
 export const ThemeRuntimeContext = createContext(null);
@@ -16,7 +19,16 @@ export function ThemeProvider({ children }) {
 
   const runtime = useMemo(
     () => computeThemeRuntime(state, actions.cf, tokens),
-    [state.device, state.screen, state.cond, state.layout, state.palette, state.customTheme, actions.cf, tokens]
+    [
+      state.device,
+      state.screen,
+      state.cond,
+      state.layout,
+      state.palette,
+      state.customTheme,
+      actions.cf,
+      tokens,
+    ]
   );
 
   return (
@@ -30,13 +42,15 @@ export function ThemeProvider({ children }) {
 
 export function useThemeTokens() {
   const ctx = useContext(ThemeTokensContext) || useContext(ThemeContext);
-  if (!ctx) throw new Error("useThemeTokens must be used inside <ThemeProvider>");
+  if (!ctx)
+    throw new Error("useThemeTokens must be used inside <ThemeProvider>");
   return ctx;
 }
 
 export function useThemeRuntime() {
   const ctx = useContext(ThemeRuntimeContext) || useContext(ThemeContext);
-  if (!ctx) throw new Error("useThemeRuntime must be used inside <ThemeProvider>");
+  if (!ctx)
+    throw new Error("useThemeRuntime must be used inside <ThemeProvider>");
   return ctx;
 }
 
@@ -47,5 +61,8 @@ export function useTheme() {
   if (!tokens && !runtime && !legacy) {
     throw new Error("useTheme must be used inside <ThemeProvider>");
   }
-  return useMemo(() => ({ ...(legacy || {}), ...(tokens || {}), ...(runtime || {}) }), [legacy, tokens, runtime]);
+  return useMemo(
+    () => ({ ...(legacy || {}), ...(tokens || {}), ...(runtime || {}) }),
+    [legacy, tokens, runtime]
+  );
 }

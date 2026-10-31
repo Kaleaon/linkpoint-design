@@ -31,12 +31,7 @@ export default function Toast() {
     : undefined;
 
   return (
-    <div
-      role="status"
-      aria-live="polite"
-      aria-atomic="true"
-      style={toastStyle}
-    >
+    <div role="status" aria-live="polite" aria-atomic="true" style={toastStyle}>
       {state.toast || null}
     </div>
   );

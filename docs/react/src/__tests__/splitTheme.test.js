@@ -9,12 +9,27 @@ if (typeof globalThis.window === "undefined") {
     innerWidth: 1024,
     addEventListener: () => {},
     removeEventListener: () => {},
-    localStorage: { getItem: () => null, setItem: () => {}, removeItem: () => {} },
+    localStorage: {
+      getItem: () => null,
+      setItem: () => {},
+      removeItem: () => {},
+    },
   };
 }
 
-import { computeTheme, computeThemeTokens, computeThemeRuntime } from "../theme/computeTheme.js";
-import { ThemeTokensContext, ThemeRuntimeContext, ThemeProvider, useThemeTokens, useThemeRuntime, useTheme } from "../context/ThemeContext.jsx";
+import {
+  computeTheme,
+  computeThemeTokens,
+  computeThemeRuntime,
+} from "../theme/computeTheme.js";
+import {
+  ThemeTokensContext,
+  ThemeRuntimeContext,
+  ThemeProvider,
+  useThemeTokens,
+  useThemeRuntime,
+  useTheme,
+} from "../context/ThemeContext.jsx";
 import { AppProvider } from "../context/AppContext.jsx";
 
 describe("Split Theme Context Architecture", () => {
@@ -37,7 +52,16 @@ describe("Split Theme Context Architecture", () => {
       screen: "Chat",
       cond: "normal",
     };
-    const mockCf = () => ({ gap: 4, cur: 40, rad: 36, rail: 84, bar: 70, dock: 52, foot: 30, wide: false });
+    const mockCf = () => ({
+      gap: 4,
+      cur: 40,
+      rad: 36,
+      rail: 84,
+      bar: 70,
+      dock: 52,
+      foot: 30,
+      wide: false,
+    });
 
     const tokens = computeThemeTokens(mockState);
     expect(tokens.V).toBeDefined();
@@ -62,9 +86,26 @@ describe("Split Theme Context Architecture", () => {
   });
 
   it("verifies slice isolation across screen navigation", () => {
-    const state1 = { layout: "terminal", palette: "ink", customTheme: null, dense: false, device: "and", screen: "Chat", cond: "normal" };
+    const state1 = {
+      layout: "terminal",
+      palette: "ink",
+      customTheme: null,
+      dense: false,
+      device: "and",
+      screen: "Chat",
+      cond: "normal",
+    };
     const state2 = { ...state1, screen: "Profile" };
-    const mockCf = () => ({ gap: 4, cur: 40, rad: 36, rail: 84, bar: 70, dock: 52, foot: 30, wide: false });
+    const mockCf = () => ({
+      gap: 4,
+      cur: 40,
+      rad: 36,
+      rail: 84,
+      bar: 70,
+      dock: 52,
+      foot: 30,
+      wide: false,
+    });
 
     const tokens1 = computeThemeTokens(state1);
     const tokens2 = computeThemeTokens(state2);
@@ -138,7 +179,16 @@ describe("Split Theme Context Architecture", () => {
     ];
     const legacyAliases = ["sweep", "tiles", "glass", "rules"];
     const allKeys = [...canonicalLayouts, ...legacyAliases];
-    const mockCf = () => ({ gap: 4, cur: 40, rad: 36, rail: 84, bar: 70, dock: 52, foot: 30, wide: false });
+    const mockCf = () => ({
+      gap: 4,
+      cur: 40,
+      rad: 36,
+      rail: 84,
+      bar: 70,
+      dock: 52,
+      foot: 30,
+      wide: false,
+    });
 
     for (const key of allKeys) {
       const state = {
@@ -192,6 +242,7 @@ describe("Split Theme Context Architecture", () => {
       if (key === "cyberpunk") {
         expect(tokens.LK.card).toBe("chamfer");
         expect(tokens.V.rs).toBe("0px");
+        expect(tokens.t.nav).toBe("RAIL");
         expect(runtime.nav).toBe("tabs");
       }
       if (key === "press") {
@@ -208,7 +259,16 @@ describe("Split Theme Context Architecture", () => {
   });
 
   it("verifies isSweepDesk desktop adaptation on both lcars and sweep keys", () => {
-    const mockCf = () => ({ gap: 4, cur: 40, rad: 36, rail: 84, bar: 70, dock: 52, foot: 30, wide: false });
+    const mockCf = () => ({
+      gap: 4,
+      cur: 40,
+      rad: 36,
+      rail: 84,
+      bar: 70,
+      dock: 52,
+      foot: 30,
+      wide: false,
+    });
 
     for (const key of ["lcars", "sweep"]) {
       const state = {
