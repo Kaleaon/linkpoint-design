@@ -3,7 +3,7 @@ import time
 
 def test_dialogs():
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=True, args=['--disable-dev-shm-usage', '--no-sandbox'])
         page = browser.new_page()
         page.goto("http://localhost:8080/")
         time.sleep(2)
