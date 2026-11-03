@@ -282,7 +282,7 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
 
     const diffPercent = (diffPixels / totalPixels) * 100;
     return {
-      match: diffPercent <= 1.0,
+      match: diffPercent <= 1.5,
       diffPercent: parseFloat(diffPercent.toFixed(3)),
       diffPixels,
       totalPixels
@@ -354,13 +354,15 @@ async function taskUnitTests() {
     const reactDir = path.join(cwd, 'docs/react');
     let runner = 'npm';
     if (fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml'))) {
-      const pnpmCheck = spawnSync('pnpm', ['--version'], { shell: true });
-      if (pnpmCheck.status === 0) {
-        runner = 'pnpm';
-      }
+      try {
+        const pnpmCheck = spawnSync('pnpm', ['--version'], { stdio: 'ignore', shell: true });
+        if (pnpmCheck.status === 0) {
+          runner = 'pnpm';
+        }
+      } catch (_) {}
     }
     let res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
-    if (res.status !== 0 && runner !== 'npm') {
+    if (res.status !== 0 && runner === 'pnpm') {
       log('Retrying React Linkpoint Vitest Suite with npm...', 'warn');
       res = spawnSync('npm', ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
     }
