@@ -365,6 +365,27 @@ async function getPlaywrightBrowser() {
   }
 }
 
+async function navigateWithRetry(
+  page,
+  url,
+  options = {},
+  retries = 3,
+  delayMs = 500,
+) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      return await page.goto(url, options);
+    } catch (err) {
+      if (attempt === retries) throw err;
+      log(
+        `page.goto failed on attempt ${attempt}/${retries} (${err.message}). Retrying in ${delayMs}ms...`,
+        "warn",
+      );
+      await new Promise((r) => setTimeout(r, delayMs));
+    }
+  }
+}
+
 // TASK 1: Unit Tests
 async function taskUnitTests() {
   log("Running Unit Test Suite...", "header");
@@ -670,7 +691,7 @@ async function taskA11yAudit() {
   try {
     browser = await getPlaywrightBrowser();
     const page = await browser.newPage();
-    await page.goto(targetUrl, { waitUntil: "domcontentloaded" });
+    await navigateWithRetry(page, targetUrl, { waitUntil: "domcontentloaded" });
     await page.waitForTimeout(1000);
 
     const auditResults = await page.evaluate(() => {
@@ -916,7 +937,9 @@ async function taskVisualSuite() {
           document.addEventListener("DOMContentLoaded", apply);
         }
       });
-      await page.goto(targetUrl, { waitUntil: "domcontentloaded" });
+      await navigateWithRetry(page, targetUrl, {
+        waitUntil: "domcontentloaded",
+      });
       await page.waitForTimeout(1000);
 
       // Attempt interactive panel triggers if available
@@ -924,29 +947,16 @@ async function taskVisualSuite() {
         const sweepBtn = page
           .getByText("Sweep Console", { exact: true })
           .first();
-        await sweepBtn
-          .waitFor({ state: "attached", timeout: 5000 })
-          .catch(() => {});
-        await sweepBtn.scrollIntoViewIfNeeded().catch(() => {});
-        await sweepBtn.click({ timeout: 5000 }).catch(() => {});
-        await page.waitForTimeout(500);
-
+        if (await sweepBtn.isVisible()) {
+          await sweepBtn.click();
+          await page.waitForTimeout(300);
+        }
         const lcarsBtn = page.getByText("LCARS Amber", { exact: true }).first();
-        await lcarsBtn
-          .waitFor({ state: "attached", timeout: 5000 })
-          .catch(() => {});
-        await lcarsBtn.scrollIntoViewIfNeeded().catch(() => {});
-        await lcarsBtn.click({ timeout: 5000 }).catch(() => {});
-        await page.waitForTimeout(500);
-
-        await page.evaluate(() => window.scrollTo(0, 0));
-        await page.waitForTimeout(500);
-      } catch (err) {
-        log(
-          `Interactive triggers warning for ${vp.name}: ${err.message}`,
-          "warn",
-        );
-      }
+        if (await lcarsBtn.isVisible()) {
+          await lcarsBtn.click();
+          await page.waitForTimeout(300);
+        }
+      } catch (_) {}
 
       const currentBuf = await page.screenshot({ fullPage: false });
       const baselineFile = path.join(snapshotDir, `${vp.name}_sweep_lcars.png`);

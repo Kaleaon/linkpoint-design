@@ -19,7 +19,6 @@ export default function Inventory() {
   const { V, t, bleed, pad, C } = useTheme();
 
   const [searchQuery, setSearchQuery] = useState("");
-
   const timerRef = useRef(null);
   const isLongPressRef = useRef(false);
 
