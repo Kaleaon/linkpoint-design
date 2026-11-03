@@ -299,7 +299,7 @@ async function getPlaywrightBrowser() {
   const playwright = await import('playwright');
   const launchOpts = {
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--font-render-hinting=none', '--force-color-profile=srgb']
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--font-render-hinting=none', '--force-color-profile=srgb']
   };
 
   try {
@@ -748,9 +748,18 @@ async function taskVisualSuite() {
       log(`Capturing visual snapshots for viewport: ${vp.name} (${vp.width}x${vp.height})`, 'info');
       const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
       await page.addInitScript(() => {
-        const style = document.createElement('style');
-        style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
-        document.documentElement.appendChild(style);
+        const inject = () => {
+          const style = document.createElement('style');
+          style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
+          if (document.head || document.documentElement) {
+            (document.head || document.documentElement).appendChild(style);
+          }
+        };
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', inject);
+        } else {
+          inject();
+        }
       });
       await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(1000);
