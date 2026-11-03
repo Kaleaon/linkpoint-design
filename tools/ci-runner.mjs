@@ -305,8 +305,26 @@ async function getPlaywrightBrowser() {
   try {
     return await playwright.chromium.launch(launchOpts);
   } catch (err) {
+    // Search ms-playwright cache for installed headless shell binaries
+    const homeDir = process.env.HOME || '/home/jules';
+    const msPlaywrightDir = path.join(homeDir, '.cache/ms-playwright');
+    let cachedHeadlessShell = null;
+    if (fs.existsSync(msPlaywrightDir)) {
+      try {
+        const dirs = fs.readdirSync(msPlaywrightDir).filter(d => d.startsWith('chromium_headless_shell-'));
+        for (const dir of dirs) {
+          const candidate = path.join(msPlaywrightDir, dir, 'chrome-headless-shell-linux64/chrome-headless-shell');
+          if (fs.existsSync(candidate)) {
+            cachedHeadlessShell = candidate;
+            break;
+          }
+        }
+      } catch (_) {}
+    }
+
     const possiblePaths = [
       process.env.CHROMIUM_PATH,
+      cachedHeadlessShell,
       '/bin/google-chrome',
       '/usr/bin/google-chrome',
       '/usr/bin/chromium-browser',
@@ -352,8 +370,16 @@ async function taskUnitTests() {
   if (hasReactVitest) {
     log('Executing React Linkpoint Vitest Suite...', 'info');
     const reactDir = path.join(cwd, 'docs/react');
-    const runner = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml')) ? 'pnpm' : 'npm';
-    const res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
+    const hasPnpmLock = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml'));
+    const hasNpmLock = fs.existsSync(path.join(reactDir, 'package-lock.json'));
+    const hasPnpmCmd = spawnSync('pnpm', ['--version'], { stdio: 'ignore', shell: true }).status === 0;
+
+    let runner = (hasPnpmLock && !hasNpmLock && hasPnpmCmd) ? 'pnpm' : 'npm';
+    let res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
+    if (res.status !== 0 && runner === 'pnpm') {
+      log('pnpm test failed, falling back to npm test...', 'warn');
+      res = spawnSync('npm', ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
+    }
     if (res.status !== 0) success = false;
   }
 
