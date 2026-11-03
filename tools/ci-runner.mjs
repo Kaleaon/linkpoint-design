@@ -305,8 +305,23 @@ async function getPlaywrightBrowser() {
   try {
     return await playwright.chromium.launch(launchOpts);
   } catch (err) {
+    const msPlaywrightDir = path.join(process.env.HOME || '', '.cache/ms-playwright');
+    const cachedExecutables = [];
+    if (fs.existsSync(msPlaywrightDir)) {
+      try {
+        const entries = fs.readdirSync(msPlaywrightDir);
+        for (const entry of entries) {
+          const shellPath = path.join(msPlaywrightDir, entry, 'chrome-headless-shell-linux64/chrome-headless-shell');
+          if (fs.existsSync(shellPath)) cachedExecutables.unshift(shellPath);
+          const chromePath = path.join(msPlaywrightDir, entry, 'chrome-linux64/chrome');
+          if (fs.existsSync(chromePath)) cachedExecutables.push(chromePath);
+        }
+      } catch (_) {}
+    }
+
     const possiblePaths = [
       process.env.CHROMIUM_PATH,
+      ...cachedExecutables,
       '/bin/google-chrome',
       '/usr/bin/google-chrome',
       '/usr/bin/chromium-browser',
