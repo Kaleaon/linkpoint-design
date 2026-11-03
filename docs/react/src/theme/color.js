@@ -57,3 +57,18 @@ export function pickInk(bg, candidates) {
   }
   return best;
 }
+
+export function hexToRgba(hex, alpha = 1) {
+  if (hex === null || hex === undefined) return hex;
+  const str = String(hex).trim();
+  const m = str.match(/^#?([0-9a-f]{3}|[0-9a-f]{6})$/i);
+  if (!m) return hex;
+  let x = m[1];
+  if (x.length === 3) {
+    x = x[0] + x[0] + x[1] + x[1] + x[2] + x[2];
+  }
+  const r = parseInt(x.slice(0, 2), 16);
+  const g = parseInt(x.slice(2, 4), 16);
+  const b = parseInt(x.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
