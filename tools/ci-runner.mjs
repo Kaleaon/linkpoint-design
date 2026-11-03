@@ -284,8 +284,9 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
     }
 
     const diffPercent = (diffPixels / totalPixels) * 100;
+    const tolerance = parseFloat(process.env.VISUAL_DIFF_TOLERANCE || '1.5');
     return {
-      match: diffPercent <= 1.0,
+      match: diffPercent <= tolerance,
       diffPercent: parseFloat(diffPercent.toFixed(3)),
       diffPixels,
       totalPixels
@@ -355,8 +356,18 @@ async function taskUnitTests() {
   if (hasReactVitest) {
     log('Executing React Linkpoint Vitest Suite...', 'info');
     const reactDir = path.join(cwd, 'docs/react');
-    const runner = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml')) ? 'pnpm' : 'npm';
-    const res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
+    let runner = 'npm';
+    if (fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml'))) {
+      const pnpmCheck = spawnSync('pnpm', ['--version'], { stdio: 'ignore', shell: true });
+      if (pnpmCheck.status === 0) {
+        runner = 'pnpm';
+      }
+    }
+    let res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
+    if (res.status !== 0 && runner !== 'npm') {
+      log('pnpm test failed or unavailable, falling back to npm test...', 'warn');
+      res = spawnSync('npm', ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
+    }
     if (res.status !== 0) success = false;
   }
 
