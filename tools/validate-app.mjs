@@ -486,7 +486,9 @@ async function runTestSuite() {
           ".css": "text/css; charset=utf-8",
           ".svg": "image/svg+xml",
         };
-        res.writeHead(200, { "Content-Type": mimeMap[ext] || "application/octet-stream" });
+        res.writeHead(200, {
+          "Content-Type": mimeMap[ext] || "application/octet-stream",
+        });
         res.end(fs.readFileSync(fullPath));
       } else {
         res.writeHead(404, { "Content-Type": "text/plain" });
@@ -499,27 +501,59 @@ async function runTestSuite() {
 
     async function fetchUrl(relPath) {
       return new Promise((resolve, reject) => {
-        http.get(`http://127.0.0.1:${port}${relPath}`, (res) => {
-          let body = "";
-          res.on("data", (chunk) => { body += chunk; });
-          res.on("end", () => resolve({ status: res.statusCode, headers: res.headers, body }));
-        }).on("error", reject);
+        http
+          .get(`http://127.0.0.1:${port}${relPath}`, (res) => {
+            let body = "";
+            res.on("data", (chunk) => {
+              body += chunk;
+            });
+            res.on("end", () =>
+              resolve({ status: res.statusCode, headers: res.headers, body }),
+            );
+          })
+          .on("error", reject);
       });
     }
 
     const indexRes = await fetchUrl("/docs/index.html");
-    assert.strictEqual(indexRes.status, 200, "docs/index.html must return 200 OK");
-    assert(indexRes.headers["content-type"].includes("text/html"), "docs/index.html must have text/html Content-Type");
-    assert(indexRes.body.includes("Linkpoint"), "docs/index.html must contain Linkpoint title");
-    assert(indexRes.body.includes("SCREENS"), "docs/index.html must contain SCREENS array");
-    assert(indexRes.body.includes("CSUB"), "docs/index.html must contain CSUB array");
+    assert.strictEqual(
+      indexRes.status,
+      200,
+      "docs/index.html must return 200 OK",
+    );
+    assert(
+      indexRes.headers["content-type"].includes("text/html"),
+      "docs/index.html must have text/html Content-Type",
+    );
+    assert(
+      indexRes.body.includes("Linkpoint"),
+      "docs/index.html must contain Linkpoint title",
+    );
+    assert(
+      indexRes.body.includes("SCREENS"),
+      "docs/index.html must contain SCREENS array",
+    );
+    assert(
+      indexRes.body.includes("CSUB"),
+      "docs/index.html must contain CSUB array",
+    );
 
     const reactIndex = await fetchUrl("/docs/react/index.html");
-    assert.strictEqual(reactIndex.status, 200, "docs/react/index.html must return 200 OK");
-    assert(reactIndex.body.includes("<div id=\"root\">"), "docs/react/index.html must contain root mount div");
+    assert.strictEqual(
+      reactIndex.status,
+      200,
+      "docs/react/index.html must return 200 OK",
+    );
+    assert(
+      reactIndex.body.includes('<div id="root">'),
+      "docs/react/index.html must contain root mount div",
+    );
 
     server.close();
-    pass("Live HTTP Server & Asset Loading", `Served and verified docs/index.html and docs/react/index.html at http://127.0.0.1:${port}`);
+    pass(
+      "Live HTTP Server & Asset Loading",
+      `Served and verified docs/index.html and docs/react/index.html at http://127.0.0.1:${port}`,
+    );
   } catch (err) {
     fail("Live HTTP Server Test", err);
   }

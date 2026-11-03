@@ -1,4 +1,6 @@
 import { useApp } from "../context/AppContext.jsx";
+import { useThemeTokens } from "../context/ThemeContext.jsx";
+import { hexToRgba } from "../theme/color.js";
 import {
   LAYOUTS,
   PRIMARY_LAYOUT_KEYS,
@@ -14,6 +16,17 @@ import ThemeStudio from "./ThemeStudio.jsx";
 // palette/layout/device/screen/condition/dialog combination.
 export default function ControlPanels() {
   const { state, actions } = useApp();
+
+  let V = {};
+  try {
+    const themeCtx = useThemeTokens();
+    if (themeCtx) {
+      V = themeCtx.V || {};
+    }
+  } catch (e) {
+    // Fallback if rendered outside ThemeProvider
+  }
+  const priColor = V.pri || "#6CFF9A";
 
   return (
     <aside className="sidepanels" aria-label="Prototype controls">
@@ -42,8 +55,8 @@ export default function ControlPanels() {
                       x.s.rs === "999px" ? "11px 2px 11px 2px" : x.s.rs,
                     border:
                       "1px solid " +
-                      (active ? "#6CFF9A" : "rgba(255,255,255,.3)"),
-                    background: active ? "#6CFF9A" : "rgba(255,255,255,.08)",
+                      (active ? priColor : "rgba(255,255,255,.3)"),
+                    background: active ? priColor : "rgba(255,255,255,.08)",
                   }}
                 />
                 <span
@@ -197,9 +210,9 @@ export default function ControlPanels() {
                 style={
                   active
                     ? {
-                        borderColor: "#6CFF9A",
-                        color: "#6CFF9A",
-                        background: "rgba(108,255,154,.12)",
+                        borderColor: priColor,
+                        color: priColor,
+                        background: hexToRgba(priColor, 0.12),
                       }
                     : undefined
                 }
@@ -226,8 +239,8 @@ export default function ControlPanels() {
               onClick={() => actions.setCond(k)}
               style={{
                 borderColor:
-                  state.cond === k ? "#6CFF9A" : "rgba(255,255,255,.18)",
-                color: state.cond === k ? "#6CFF9A" : "rgba(255,255,255,.6)",
+                  state.cond === k ? priColor : "rgba(255,255,255,.18)",
+                color: state.cond === k ? priColor : "rgba(255,255,255,.6)",
                 borderRadius: "4px",
                 padding: "6px 9px",
                 font: "600 9.5px/1 'JetBrains Mono',monospace",

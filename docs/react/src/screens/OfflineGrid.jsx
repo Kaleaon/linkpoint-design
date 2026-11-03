@@ -4,6 +4,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import Icon from "../components/Icon.jsx";
 import FormField from "../components/FormField.jsx";
 import FormInput from "../components/FormInput.jsx";
+import Heading from "../components/Heading.jsx";
 
 export default function OfflineGrid() {
   const { state, actions } = useApp();
@@ -45,7 +46,8 @@ export default function OfflineGrid() {
           }}
         >
           <div>
-            <div
+            <Heading
+              level={2}
               style={{
                 font: "600 10px/1 " + t.font,
                 letterSpacing: ".22em",
@@ -53,8 +55,9 @@ export default function OfflineGrid() {
               }}
             >
               LOCAL GRID ENGINE
-            </div>
-            <div
+            </Heading>
+            <Heading
+              level={3}
               style={{
                 font: "700 15px/1.3 " + t.dfont,
                 marginTop: "4px",
@@ -62,7 +65,7 @@ export default function OfflineGrid() {
               }}
             >
               OpenSim Local Server
-            </div>
+            </Heading>
           </div>
           <div
             onClick={actions.toggleOfflineGrid}
@@ -144,7 +147,8 @@ export default function OfflineGrid() {
             padding: "14px",
           }}
         >
-          <div
+          <Heading
+            level={3}
             style={{
               font: "700 12px/1 " + t.font,
               letterSpacing: ".18em",
@@ -153,7 +157,7 @@ export default function OfflineGrid() {
             }}
           >
             FIRST-TIME ACCOUNT SETUP
-          </div>
+          </Heading>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             <FormField label="FIRST NAME">
               <FormInput
@@ -280,7 +284,8 @@ export default function OfflineGrid() {
           padding: "14px",
         }}
       >
-        <div
+        <Heading
+          level={2}
           style={{
             font: "600 10px/1 " + t.font,
             letterSpacing: ".22em",
@@ -289,7 +294,7 @@ export default function OfflineGrid() {
           }}
         >
           OAR REGION BACKUP IMPORTER
-        </div>
+        </Heading>
         <div
           style={{
             border: "1px dashed " + V.outv,
@@ -355,7 +360,8 @@ export default function OfflineGrid() {
           padding: "14px",
         }}
       >
-        <div
+        <Heading
+          level={2}
           style={{
             font: "600 10px/1 " + t.font,
             letterSpacing: ".22em",
@@ -364,7 +370,7 @@ export default function OfflineGrid() {
           }}
         >
           LOCAL ASSET & SL UPLOAD CENTER
-        </div>
+        </Heading>
         <div style={{ display: "flex", gap: "8px", marginBottom: "10px" }}>
           <FormInput
             aria-label="Asset title"
@@ -508,7 +514,8 @@ export default function OfflineGrid() {
           padding: "14px",
         }}
       >
-        <div
+        <Heading
+          level={2}
           style={{
             font: "600 10px/1 " + t.font,
             letterSpacing: ".22em",
@@ -517,7 +524,7 @@ export default function OfflineGrid() {
           }}
         >
           STORAGE & CACHE SIZING MANAGER
-        </div>
+        </Heading>
         <div
           style={{
             display: "flex",

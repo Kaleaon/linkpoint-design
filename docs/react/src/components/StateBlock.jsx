@@ -126,7 +126,6 @@ export default function StateBlock() {
             letterSpacing: ".18em",
             cursor: "pointer",
             border: "none",
-            outline: "none",
           }}
         >
           {condPack.btn}

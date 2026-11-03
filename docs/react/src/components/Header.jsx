@@ -5,6 +5,7 @@ import { PALETTES } from "../theme/palettes.js";
 import { HEAD } from "../data/content.js";
 import { SCREENS } from "../theme/constants.js";
 import Icon from "./Icon.jsx";
+import Heading from "./Heading.jsx";
 
 // Ported from the five header <sc-if> blocks (hasHeader/isSweepHead/
 // isPivotHead/isRuleHead/isPressHead) plus the shared title/subtitle lookup.
@@ -86,7 +87,8 @@ function StackHead({ title, subtitle, scr }) {
       }}
     >
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div
+        <Heading
+          level={1}
           style={{
             font: "700 21px/1.05 " + t.dfont,
             letterSpacing: V.tls,
@@ -94,7 +96,7 @@ function StackHead({ title, subtitle, scr }) {
           }}
         >
           {title}
-        </div>
+        </Heading>
         <div
           style={{
             font: "400 11px/1.4 " + t.font,
@@ -228,7 +230,8 @@ function SweepHead({ title, subtitle, scr }) {
           01-4471
         </span>
         <span style={{ flex: 1, height: "6px", background: V.surf2 }} />
-        <span
+        <Heading
+          level={1}
           style={{
             font: "700 22px/1 " + t.dfont,
             letterSpacing: ".14em",
@@ -238,7 +241,7 @@ function SweepHead({ title, subtitle, scr }) {
           }}
         >
           {title}
-        </span>
+        </Heading>
         {showLink ? (
           <span
             style={{
@@ -360,7 +363,8 @@ function PivotHead({ title, subtitle, scr }) {
             flex: 1,
           }}
         >
-          <span
+          <Heading
+            level={1}
             style={{
               flex: "none",
               font: "300 42px/1 " + t.dfont,
@@ -370,7 +374,7 @@ function PivotHead({ title, subtitle, scr }) {
             }}
           >
             {String(title || "").toLowerCase()}
-          </span>
+          </Heading>
           <span
             onClick={() => actions.setScreen(nextScr)}
             role="button"
@@ -523,7 +527,8 @@ function RuleHead({ title, subtitle, scr }) {
           padding: "12px 0 10px",
         }}
       >
-        <div
+        <Heading
+          level={1}
           style={{
             textAlign: "center",
             font: "600 15px/1.1 " + t.dfont,
@@ -533,7 +538,7 @@ function RuleHead({ title, subtitle, scr }) {
           }}
         >
           {title}
-        </div>
+        </Heading>
         {(showLink || (headerIcons && headerIcons.length)) && (
           <div
             style={{
@@ -665,7 +670,8 @@ function EditorialHead({ title, subtitle, scr }) {
           gap: "12px",
         }}
       >
-        <div
+        <Heading
+          level={1}
           style={{
             font: "600 27px/1.12 " + t.font,
             letterSpacing: "-.01em",
@@ -674,7 +680,7 @@ function EditorialHead({ title, subtitle, scr }) {
           }}
         >
           {title}
-        </div>
+        </Heading>
         {(showLink || (headerIcons && headerIcons.length)) && (
           <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
             {showLink && (
