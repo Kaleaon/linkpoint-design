@@ -781,6 +781,18 @@ export function useAppState() {
         if (payload.screen) screenPick(payload.screen);
       } else if (type === "QUICK_CHAT_SUBMIT") {
         if (payload.message) notify("Local Chat (" + payload.message + ")");
+      } else if (type === "GROUP_MODERATION_ACTION" || type === "GROUP_MEMBER_MUTE" || type === "GROUP_MEMBER_KICK" || type === "GROUP_MEMBER_EJECT") {
+        const action = payload.action || (type.includes("MUTE") ? "mute" : type.includes("KICK") || type.includes("EJECT") ? "kick" : "profile");
+        const target = payload.target || payload.member || "";
+        const group = payload.group || "";
+        if (action === "mute") {
+          notify(`Muted ${target} in ${group}`);
+        } else if (action === "kick" || action === "eject") {
+          notify(`Ejected ${target} from ${group}`);
+        } else if (action === "profile") {
+          screenPick("Profile");
+          notify(`Viewing profile: ${target}`);
+        }
       }
 
       return intentEvent;
