@@ -59,4 +59,23 @@ describe("Linkpoint React FormField & Controls", () => {
     const switchEl = screen.getByRole("switch");
     expect(switchEl.getAttribute("aria-checked")).toBe("true");
   });
+
+  it("uses default PALETTES.ink.c theme fallback tokens when rendered outside ThemeProvider", () => {
+    render(
+      <FormField label="TEST FIELD" description="Test desc" error="Test err">
+        <FormSwitch checked={true} />
+      </FormField>
+    );
+
+    const label = screen.getByText("TEST FIELD");
+    const desc = screen.getByText("Test desc");
+    const errorMsg = screen.getByText("> Test err");
+    const switchEl = screen.getByRole("switch");
+
+    // Standard PALETTES.ink.c tokens: pri=#6CFF9A, ink2=#A7C8BC, err=#CF6679
+    expect(label.style.color).toBe("rgb(108, 255, 154)");
+    expect(desc.style.color).toBe("rgb(167, 200, 188)");
+    expect(errorMsg.style.color).toBe("rgb(207, 102, 121)");
+    expect(switchEl.style.backgroundColor).toBe("rgb(31, 102, 64)");
+  });
 });
