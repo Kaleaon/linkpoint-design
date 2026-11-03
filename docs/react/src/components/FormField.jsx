@@ -82,14 +82,14 @@ export function FormField({
             style={{
               font: "400 10px/1 " + (t.font || "sans-serif"),
               letterSpacing: ".2em",
-              color: V.pri || "#818cf8",
+              color: V.pri || "#6CFF9A",
               margin: "4px 0 2px",
               cursor: "pointer",
               ...labelStyle,
             }}
           >
             {label}
-            {required && <span aria-hidden="true" style={{ color: V.err || "#ef4444", marginLeft: "2px" }}> *</span>}
+            {required && <span aria-hidden="true" style={{ color: V.err || "#CF6679", marginLeft: "2px" }}> *</span>}
           </label>
         )}
 
@@ -100,7 +100,7 @@ export function FormField({
             id={descId}
             style={{
               font: "400 10px/1.3 " + (t.font || "sans-serif"),
-              color: V.ink2 || "#9ca3af",
+              color: V.ink2 || "#A7C8BC",
               marginTop: "2px",
             }}
           >
@@ -113,7 +113,7 @@ export function FormField({
             id={errorId}
             style={{
               font: "400 10px/1.3 " + (t.font || "sans-serif"),
-              color: V.err || "#ef4444",
+              color: V.err || "#CF6679",
               marginTop: "2px",
             }}
           >
