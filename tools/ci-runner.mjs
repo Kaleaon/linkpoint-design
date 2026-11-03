@@ -40,6 +40,7 @@ function log(msg, type = 'info') {
 const args = process.argv.slice(2);
 let runUnit = args.includes('--unit');
 let runCatalog = args.includes('--catalog');
+let runSchema = args.includes('--schema');
 let runA11y = args.includes('--a11y');
 let runVisual = args.includes('--visual');
 const updateSnapshots = args.includes('--update-snapshots') || args.includes('--update');
@@ -58,22 +59,24 @@ ${colors.bold}USAGE:${colors.reset}
 ${colors.bold}FLAGS:${colors.reset}
   --unit              Run unit test suites
   --catalog           Run theme catalog parity checks
+  --schema            Run Ktheme theme schema validation
   --a11y              Run automated WCAG 2.1 AA accessibility auditing
   --visual            Run Playwright visual snapshot regression suite
   --update-snapshots  Update visual baseline snapshots
   --port <number>     Specify static server port override
   --help, -h          Show this help message
 
-  ${colors.gray}If no task flags (--unit, --catalog, --a11y, --visual) are specified,
+  ${colors.gray}If no task flags (--unit, --catalog, --schema, --a11y, --visual) are specified,
   all applicable validation tasks for the current repository will run.${colors.reset}
 `);
   process.exit(0);
 }
 
 // If no specific task flag was passed, run all tasks applicable to the current repo
-if (!runUnit && !runCatalog && !runA11y && !runVisual) {
+if (!runUnit && !runCatalog && !runSchema && !runA11y && !runVisual) {
   runUnit = true;
   runCatalog = true;
+  runSchema = true;
   runA11y = true;
   runVisual = true;
 }
@@ -300,6 +303,30 @@ async function taskCatalogCheck() {
     return true;
   } else {
     log('Theme catalog is out of sync with SHARED_PRESET_REGISTRY.', 'error');
+    return false;
+  }
+}
+
+// TASK: Theme Schema Validation
+async function taskSchemaValidation() {
+  log('Running Theme Schema Validation...', 'header');
+  const repoRoot = path.resolve(__dirname, '..');
+  const targetDir = (cwd === repoRoot || cwd.startsWith(repoRoot)) ? cwd : repoRoot;
+  const binPath = path.join(targetDir, 'node_modules', '.bin', 'ktheme-schema');
+  let cmd = 'ktheme-schema';
+  let cmdArgs = ['sync', '--check'];
+  if (fs.existsSync(binPath)) {
+    cmd = binPath;
+  }
+  let res = spawnSync(cmd, cmdArgs, { cwd: targetDir, stdio: 'inherit', shell: true });
+  if (res.status !== 0 && !fs.existsSync(binPath)) {
+    res = spawnSync('npx', ['ktheme-schema', 'sync', '--check'], { cwd: targetDir, stdio: 'inherit', shell: true });
+  }
+  if (res.status === 0) {
+    log('Theme schema validation passed.', 'success');
+    return true;
+  } else {
+    log('Theme schema validation failed.', 'error');
     return false;
   }
 }
@@ -593,7 +620,7 @@ ${colors.bold}${colors.cyan}====================================================
 ${colors.bold}  UNIFIED CROSS-REPO DESIGN SYSTEM VALIDATION CLI   ${colors.reset}
 ${colors.bold}${colors.cyan}=====================================================${colors.reset}
 Working Directory: ${cwd}
-Active Tasks: ${[runUnit && 'Unit', runCatalog && 'Catalog', runA11y && 'A11y', runVisual && 'Visual'].filter(Boolean).join(', ')}
+Active Tasks: ${[runUnit && 'Unit', runCatalog && 'Catalog', runSchema && 'Schema', runA11y && 'A11y', runVisual && 'Visual'].filter(Boolean).join(', ')}
 `);
 
   const results = {};
@@ -604,6 +631,10 @@ Active Tasks: ${[runUnit && 'Unit', runCatalog && 'Catalog', runA11y && 'A11y', 
 
   if (runCatalog) {
     results.catalog = await taskCatalogCheck();
+  }
+
+  if (runSchema) {
+    results.schema = await taskSchemaValidation();
   }
 
   if (runA11y) {
