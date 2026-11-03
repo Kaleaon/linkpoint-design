@@ -1,6 +1,6 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
-import { LAYOUTS } from "../theme/layouts.js";
+import { LAYOUTS, resolveLayout } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { HEAD } from "../data/content.js";
 import { SCREENS } from "../theme/constants.js";
@@ -12,9 +12,11 @@ export default function Header() {
   const { state } = useApp();
   const { V, t, headLook, condPack, scr, isConsole } = useTheme();
 
+  const L = resolveLayout(state.layout);
+  const P = PALETTES[state.palette] || PALETTES.ink;
   const headMap = HEAD(
-    LAYOUTS[state.layout].name,
-    PALETTES[state.palette].name,
+    L.name,
+    P.name,
     { cleared: state.cacheCleared, limit: state.prefs.cacheLimit, loc: state.prefs.cacheLoc },
     { lindenBalance: state.lindenBalance, exchangeRate: state.exchangeRate, lastSyncedAt: state.lastSyncedAt }
   );
@@ -25,12 +27,12 @@ export default function Header() {
   if (headLook === "none" || headLook === "sweep") {
     // "sweep" head only renders outside the console frame (isSweepHead requires
     // !isConsole); when isConsole is true the console chrome draws its own title.
-    if (headLook === "sweep" && !isConsole) return <SweepHead title={title} subtitle={subtitle} />;
+    if (headLook === "sweep" && !isConsole) return <SweepHead title={title} subtitle={subtitle} scr={scr} />;
     return null;
   }
   if (headLook === "pivot") return <PivotHead title={title} subtitle={subtitle} scr={scr} />;
-  if (headLook === "rule") return <RuleHead title={title} subtitle={subtitle} />;
-  if (headLook === "editorial") return <EditorialHead title={title} subtitle={subtitle} />;
+  if (headLook === "rule") return <RuleHead title={title} subtitle={subtitle} scr={scr} />;
+  if (headLook === "editorial") return <EditorialHead title={title} subtitle={subtitle} scr={scr} />;
   return <StackHead title={title} subtitle={subtitle} scr={scr} />;
 }
 
@@ -83,14 +85,46 @@ function StackHead({ title, subtitle, scr }) {
   );
 }
 
-function SweepHead({ title, subtitle }) {
+function SweepHead({ title, subtitle, scr }) {
   const { V, t } = useTheme();
+  const { actions } = useApp();
+  const showLink = scr === "Chat";
+  const headerIcons =
+    scr === "Friends"
+      ? [
+          { icon: "user-plus", label: "ADD FRIEND", pick: () => actions.openSearch("Friends", "SEARCH") },
+          { icon: "search", label: "SEARCH", pick: () => actions.openSearch("Friends", "SEARCH") },
+        ]
+      : scr === "Diagnostics"
+      ? [{ icon: "refresh-cw", label: "RE-RUN PROBE", pick: () => actions.notify("RE-RUN PROBE — 48ms") }]
+      : null;
+
   return (
     <>
       <div style={{ flex: "none", display: "flex", alignItems: "center", gap: "6px", padding: "10px 12px 6px 4px" }}>
         <span style={{ display: "flex", alignItems: "center", height: "16px", padding: "0 8px", background: V.sec2, borderRadius: "8px 0 0 8px", flex: "none", font: "700 8.5px/1 " + t.dfont, color: V.bg, letterSpacing: ".1em" }}>01-4471</span>
         <span style={{ flex: 1, height: "6px", background: V.surf2 }} />
         <span style={{ font: "700 22px/1 " + t.dfont, letterSpacing: ".14em", color: V.pri, flex: "none", textTransform: "uppercase" }}>{title}</span>
+        {showLink ? (
+          <span style={{ display: "flex", alignItems: "center", height: "18px", padding: "0 8px", background: V.ok, color: V.bg, borderRadius: "9px", font: "700 9px/1 " + t.dfont, letterSpacing: ".12em" }}>
+            LINK
+          </span>
+        ) : null}
+        {headerIcons
+          ? headerIcons.map((hi) => (
+              <span
+                key={hi.icon}
+                onClick={hi.pick}
+                role="button"
+                tabIndex={0}
+                aria-label={hi.label}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); hi.pick(); } }}
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", width: "26px", height: "18px", background: V.sec, color: V.bg, borderRadius: "9px", cursor: "pointer" }}
+              >
+                <Icon name={hi.icon} size={13} />
+              </span>
+            ))
+          : null}
         <span style={{ width: "36px", height: "16px", background: V.pri, borderRadius: "0 8px 8px 0", flex: "none" }} />
       </div>
       <div style={{ flex: "none", padding: "0 12px 8px", font: "400 11px/1.4 " + t.font, letterSpacing: ".06em", color: V.ink2 }}>{subtitle}</div>
@@ -102,44 +136,169 @@ function PivotHead({ title, subtitle, scr }) {
   const { t, V } = useTheme();
   const { actions } = useApp();
   const nextScr = SCREENS[(SCREENS.indexOf(scr) + 1) % SCREENS.length];
+  const showLink = scr === "Chat";
+  const headerIcons =
+    scr === "Friends"
+      ? [
+          { icon: "user-plus", label: "ADD FRIEND", pick: () => actions.openSearch("Friends", "SEARCH") },
+          { icon: "search", label: "SEARCH", pick: () => actions.openSearch("Friends", "SEARCH") },
+        ]
+      : scr === "Diagnostics"
+      ? [{ icon: "refresh-cw", label: "RE-RUN PROBE", pick: () => actions.notify("RE-RUN PROBE — 48ms") }]
+      : null;
+
   return (
-    <>
-      <div style={{ flex: "none", padding: "14px 0 2px 16px", display: "flex", alignItems: "baseline", gap: "22px", overflow: "hidden" }}>
-        <span style={{ flex: "none", font: "300 42px/1 " + t.dfont, color: V.ink, textTransform: "lowercase", letterSpacing: "-.02em" }}>{String(title || "").toLowerCase()}</span>
-        <span
-          onClick={() => actions.setScreen(nextScr)}
-          role="button"
-          tabIndex={0}
-          aria-label={"Pivot to " + nextScr}
-          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setScreen(nextScr); } }}
-          style={{ flex: "none", font: "300 42px/1 " + t.dfont, color: V.ink2, opacity: 0.35, cursor: "pointer", textTransform: "lowercase", letterSpacing: "-.02em" }}
-        >
-          {nextScr.toLowerCase()}
-        </span>
+    <div style={{ flex: "none", padding: "14px 16px 4px" }}>
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "16px" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: "22px", overflow: "hidden", minWidth: 0, flex: 1 }}>
+          <span style={{ flex: "none", font: "300 42px/1 " + t.dfont, color: V.ink, textTransform: "lowercase", letterSpacing: "-.02em" }}>{String(title || "").toLowerCase()}</span>
+          <span
+            onClick={() => actions.setScreen(nextScr)}
+            role="button"
+            tabIndex={0}
+            aria-label={"Pivot to " + nextScr}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setScreen(nextScr); } }}
+            style={{ flex: "none", font: "300 42px/1 " + t.dfont, color: V.ink2, opacity: 0.35, cursor: "pointer", textTransform: "lowercase", letterSpacing: "-.02em" }}
+          >
+            {nextScr.toLowerCase()}
+          </span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", flex: "none" }}>
+          {showLink ? (
+            <div style={{ display: "flex", alignItems: "center", gap: "6px", height: "28px", padding: "0 10px", background: V.surf, borderLeft: "3px solid " + V.ok, borderRadius: "0px" }}>
+              <span style={{ width: "6px", height: "6px", borderRadius: "0px", background: V.ok }} />
+              <span style={{ font: "600 10px/1 " + t.font, letterSpacing: ".1em", color: V.ok, textTransform: "uppercase" }}>LINK</span>
+            </div>
+          ) : null}
+          {headerIcons
+            ? headerIcons.map((hi) => (
+                <div
+                  key={hi.icon}
+                  onClick={hi.pick}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      hi.pick();
+                    }
+                  }}
+                  role="button"
+                  aria-label={hi.label}
+                  tabIndex={0}
+                  style={{ width: "36px", height: "36px", border: "1px solid " + V.outv, borderRadius: "0px", background: V.surf, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer" }}
+                >
+                  <Icon name={hi.icon} size={16} />
+                </div>
+              ))
+            : null}
+        </div>
       </div>
-      <div style={{ flex: "none", padding: "2px 16px 10px", font: "300 12px/1.4 " + t.font, color: V.ink2 }}>{subtitle}</div>
-    </>
+      <div style={{ font: "300 12px/1.4 " + t.font, color: V.ink2, marginTop: "2px" }}>{subtitle}</div>
+    </div>
   );
 }
 
-function RuleHead({ title, subtitle }) {
+function RuleHead({ title, subtitle, scr }) {
   const { V, t } = useTheme();
+  const { actions } = useApp();
+  const showLink = scr === "Chat";
+  const headerIcons =
+    scr === "Friends"
+      ? [
+          { icon: "user-plus", label: "ADD FRIEND", pick: () => actions.openSearch("Friends", "SEARCH") },
+          { icon: "search", label: "SEARCH", pick: () => actions.openSearch("Friends", "SEARCH") },
+        ]
+      : scr === "Diagnostics"
+      ? [{ icon: "refresh-cw", label: "RE-RUN PROBE", pick: () => actions.notify("RE-RUN PROBE — 48ms") }]
+      : null;
+
   return (
     <div style={{ flex: "none", padding: "16px 16px 4px" }}>
       <div style={{ height: "1px", background: V.pri }} />
       <div style={{ height: "3px", borderBottom: "1px solid " + V.pri }} />
-      <div style={{ textAlign: "center", padding: "12px 0 10px", font: "600 15px/1.1 " + t.dfont, letterSpacing: V.tls, color: V.pri, textIndent: V.tls }}>{title}</div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", position: "relative", padding: "12px 0 10px" }}>
+        <div style={{ textAlign: "center", font: "600 15px/1.1 " + t.dfont, letterSpacing: V.tls, color: V.pri, textIndent: V.tls }}>{title}</div>
+        {(showLink || (headerIcons && headerIcons.length)) && (
+          <div style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)", display: "flex", alignItems: "center", gap: "6px" }}>
+            {showLink && (
+              <div style={{ display: "flex", alignItems: "center", gap: "5px", height: "26px", padding: "0 8px", border: "1px solid " + V.ok, borderRadius: "0px", background: V.surf }}>
+                <span style={{ width: "5px", height: "5px", background: V.ok }} />
+                <span style={{ font: "600 9px/1 " + t.font, letterSpacing: ".15em", color: V.ok }}>LINK</span>
+              </div>
+            )}
+            {headerIcons && headerIcons.map((hi) => (
+              <div
+                key={hi.icon}
+                onClick={hi.pick}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    hi.pick();
+                  }
+                }}
+                role="button"
+                aria-label={hi.label}
+                tabIndex={0}
+                style={{ width: "32px", height: "32px", border: "1px solid " + V.outv, borderRadius: "0px", background: V.surf, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer" }}
+              >
+                <Icon name={hi.icon} size={15} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
       <div style={{ textAlign: "center", font: "400 10px/1.4 " + t.font, letterSpacing: ".16em", color: V.ink2 }}>{subtitle}</div>
       <div style={{ height: "1px", background: V.outv, marginTop: "12px" }} />
     </div>
   );
 }
 
-function EditorialHead({ title, subtitle }) {
+function EditorialHead({ title, subtitle, scr }) {
   const { V, t } = useTheme();
+  const { actions } = useApp();
+  const showLink = scr === "Chat";
+  const headerIcons =
+    scr === "Friends"
+      ? [
+          { icon: "user-plus", label: "ADD FRIEND", pick: () => actions.openSearch("Friends", "SEARCH") },
+          { icon: "search", label: "SEARCH", pick: () => actions.openSearch("Friends", "SEARCH") },
+        ]
+      : scr === "Diagnostics"
+      ? [{ icon: "refresh-cw", label: "RE-RUN PROBE", pick: () => actions.notify("RE-RUN PROBE — 48ms") }]
+      : null;
+
   return (
     <div style={{ flex: "none", padding: "18px 18px 10px", borderBottom: "2px solid " + V.ink }}>
-      <div style={{ font: "600 27px/1.12 " + t.font, letterSpacing: "-.01em", color: V.ink, textTransform: "capitalize" }}>{title}</div>
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: "12px" }}>
+        <div style={{ font: "600 27px/1.12 " + t.font, letterSpacing: "-.01em", color: V.ink, textTransform: "capitalize" }}>{title}</div>
+        {(showLink || (headerIcons && headerIcons.length)) && (
+          <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            {showLink && (
+              <div style={{ display: "flex", alignItems: "center", gap: "5px", height: "24px", padding: "0 8px", border: "1px solid " + V.ok, borderRadius: "2px" }}>
+                <span style={{ width: "5px", height: "5px", borderRadius: "2px", background: V.ok }} />
+                <span style={{ font: "600 9px/1 " + t.font, letterSpacing: ".1em", color: V.ok }}>LINK</span>
+              </div>
+            )}
+            {headerIcons && headerIcons.map((hi) => (
+              <div
+                key={hi.icon}
+                onClick={hi.pick}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    hi.pick();
+                  }
+                }}
+                role="button"
+                aria-label={hi.label}
+                tabIndex={0}
+                style={{ width: "32px", height: "32px", border: "1px solid " + V.outv, borderRadius: "2px", background: V.surf, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer" }}
+              >
+                <Icon name={hi.icon} size={15} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
       <div style={{ font: "400 12px/1.5 " + t.font, color: V.ink2, marginTop: "6px", maxWidth: "46ch" }}>{subtitle}</div>
     </div>
   );

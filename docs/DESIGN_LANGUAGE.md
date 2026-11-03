@@ -66,14 +66,24 @@ The 24 color packs are organized into four distinct aesthetic families. Any colo
 
 ## 4. Navigation & Layout Packs
 
-Linkpoint Design defines six distinct layout packs, providing full adaptability across mobile screens, tablets, foldables, and desktop displays:
+Linkpoint Design defines structural layout packs providing full adaptability across mobile screens, tablets, foldables, and desktop displays:
 
-1. **Tabs**: Classic mobile bottom navigation bar with top app header. Ideal for compact handheld viewports.
-2. **Rail**: Vertical navigation rail docked to the left edge. Optimal for tablet and landscape mobile viewports.
-3. **Sweep Console (LCARS)**: Full-bleed frame with swept elbow joint, sub-segments off the spine, and pill buttons.
-4. **Metro Tiles**: Flat, zero-radius tile navigation grid with wide lowercase pivot titles.
-5. **Aero Glass**: Translucent, blurred glass panels with soft rounded corners (`12px–18px`) and sky/grass horizon rendering in 3D.
-6. **Floaters Desktop**: Window-manager paradigm with N draggable/resizable floater windows, menu bar, taskbar/dock, and camera HUD.
+1. **Tabs (Ink Terminal, Press Editorial, Material3)**: Bottom navigation bar with top app header. High versatility across compact handheld viewports. Ink Terminal uses monospaced telemetry; Press uses editorial serif typography; Material3 uses rounded pill containers.
+2. **Rail (Art Deco, Cyberpunk)**: Vertical navigation rail docked to the left edge. Optimal for tablet and landscape mobile viewports. Art Deco uses gold hairlines and stepped architectural styling; Cyberpunk uses wireframe borders and telemetry rails.
+3. **Sweep Console (LCARS)**: Full-bleed console frame following authentic Michael Okuda LCARS design rules, elevating beyond base Ktheme's flat rail treatment:
+   - **Upper Swoop & Tangent Elbow**: Frame thickness never repeats at the next turn; the upper horizontal bar (`cfBar`) swoops with a top-left pill curvature, bridges across a uniform 4px gap (`cfBarGap`) into a dedicated end cap pill (`cfBarEnd`) with registry plate (`cfPlate`).
+   - **Concentric Arc Tangency**: The inner elbow curve (`cfCurveFill` + `cfCurveCut`) and the inner content frame share a mathematically exact center with uniform 4px spacing (`C.cur - C.rad = C.gap`).
+   - **Dedicated Elbow Arm (`cfArm`)**: Displays the primary console registry code (`LCARS 4701`).
+   - **Flush Rail Sub-Segments**: Buttons are fixed-height bars (`sweepH`) whose thickness varies at every turn (never below 44px touch targets) with rounded caps only at bar terminations.
+   - **Okuda Three-Tier Typography Scale**: Bold Main Title (`Antonio` condensed 24-36px), Normal supporting telemetry strip (`PING`, `SPEED`, `LAG` or `LOC`, `HEIGHT`, `RESPONSE`), and micro alphanumeric status codes (`01-4471`, `02-4488`).
+   - **Parallax 3D Viewport**: In-world interactive Firestorm dock buttons with long-press edit mode and movement pad.
+   - **Desktop Floater Integration (`isSweepDesk`)**: Window headers feature the asymmetric LCARS cap badge (`LCARS` / `SYS`) and `22px 22px 14px 14px` corner radii.
+4. **Metro Tiles (Windows Phone Metro / Zune)**: Flat, zero-radius tile navigation grid (`rs: 0px`) with live tile unread badges, lowercase pivot headers with horizontal next-screen peeking, and spacious typography.
+5. **Aero Glass (Frutiger Aero, Modern Glass)**: Translucent, blurred glass panels with soft rounded corners (`12px–18px`), specular inset highlights, and sunlit sky/grass horizon rendering in 3D.
+6. **Press (Editorial)**: Broadsheet layout with high-legibility serif body typography (`Source Serif 4`), 2px micro-radii, 1px column and headline rules, and generous leading for bright daylight.
+7. **Material 3 (M3 Expressive)**: Rounded pill containers (`12-24px`), tonal surface elevation, floating action buttons, and dynamic color integration.
+8. **Cyberpunk (HUD)**: Wireframe borders, 45-degree chamfered cuts, high-contrast neon accents, and HUD telemetry rails.
+9. **Floaters Desktop**: Window-manager paradigm with N draggable/resizable floater windows, menu bar, taskbar/dock, and camera HUD, dynamically inheriting the active layout's corner styles and title bar grammar.
 
 ---
 

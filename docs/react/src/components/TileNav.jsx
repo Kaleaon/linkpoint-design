@@ -38,7 +38,24 @@ export default function TileNav() {
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <Icon name={n.icon} size={18} />
-              {active ? <span style={{ width: "6px", height: "6px", borderRadius: "0px", background: fg }} /> : null}
+              {n.badge ? (
+                <span
+                  style={{
+                    minWidth: "16px",
+                    height: "16px",
+                    padding: "0 4px",
+                    background: active ? V.onpri : V.bdg || V.pri,
+                    color: active ? V.pri : V.onbdg || "#ffffff",
+                    font: "700 9px/16px " + t.dfont,
+                    textAlign: "center",
+                    borderRadius: "0px",
+                  }}
+                >
+                  {n.badge}
+                </span>
+              ) : active ? (
+                <span style={{ width: "6px", height: "6px", borderRadius: "0px", background: fg }} />
+              ) : null}
             </div>
             <span style={{ font: "300 11px/1 " + t.dfont, letterSpacing: ".02em", textTransform: "lowercase" }}>{n.tile}</span>
           </div>
