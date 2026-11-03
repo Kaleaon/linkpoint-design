@@ -8,7 +8,35 @@ import Icon from "./Icon.jsx";
 import ScreenBody from "./ScreenBody.jsx";
 import { navActive } from "../theme/look.js";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
-import { useMotionTokens } from "@ktheme/react";
+import * as KthemeReact from "@ktheme/react";
+
+const fallbackUseMotionTokens = () => {
+  const reducedMotion = usePrefersReducedMotion();
+  const duration = "300ms";
+  const easing = "cubic-bezier(0.25, 0.1, 0.25, 1.0)";
+  const durationReduced = "0ms";
+  const easingReduced = "cubic-bezier(0.0, 0.0, 1.0, 1.0)";
+  const activeDuration = reducedMotion ? durationReduced : duration;
+  const activeEasing = reducedMotion ? easingReduced : easing;
+  const transition = (property = "all", overrideDuration, overrideEasing) => {
+    if (reducedMotion) return "none";
+    const d = overrideDuration || activeDuration;
+    const e = overrideEasing || activeEasing;
+    return `${property} ${d} ${e}`;
+  };
+  return {
+    duration,
+    easing,
+    durationReduced,
+    easingReduced,
+    reducedMotion,
+    transition,
+  };
+};
+
+const useMotionTokens = typeof KthemeReact?.useMotionTokens === "function"
+  ? KthemeReact.useMotionTokens
+  : fallbackUseMotionTokens;
 
 // The 3D View's sim/location — shared by the in-scene region tag and the
 // console's own top bar so the two never disagree.
