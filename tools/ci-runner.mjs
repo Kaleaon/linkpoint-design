@@ -352,8 +352,18 @@ async function taskUnitTests() {
   if (hasReactVitest) {
     log('Executing React Linkpoint Vitest Suite...', 'info');
     const reactDir = path.join(cwd, 'docs/react');
-    const runner = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml')) ? 'pnpm' : 'npm';
-    const res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
+    let runner = 'npm';
+    if (fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml'))) {
+      const pnpmCheck = spawnSync('pnpm', ['--version'], { shell: true });
+      if (pnpmCheck.status === 0) {
+        runner = 'pnpm';
+      }
+    }
+    let res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
+    if (res.status !== 0 && runner !== 'npm') {
+      log('Retrying React Linkpoint Vitest Suite with npm...', 'warn');
+      res = spawnSync('npm', ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
+    }
     if (res.status !== 0) success = false;
   }
 
