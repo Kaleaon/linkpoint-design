@@ -102,7 +102,7 @@ export default function ConsoleFrame() {
 
   const shellStyle = consoleScene
     ? { display: "none" }
-    : { position: "absolute", left: C.rail + C.gap + "px", top: C.bar + C.gap + "px", right: C.gap + "px", bottom: C.foot + C.gap * 2 + "px", display: "flex", minWidth: 0, borderRadius: C.rad + "px 0 0 0", overflow: "hidden", background: V.surf, zIndex: 2 };
+    : { position: "absolute", left: C.rail + C.gap + "px", top: C.bar + C.gap + "px", right: C.gap + "px", bottom: C.foot + C.gap * 2 + "px", display: "flex", minWidth: 0, borderRadius: C.rad + "px 0 0 0", overflow: "hidden", background: V.surf, zIndex: V.z?.card ?? "var(--ktheme-z-card, 1)" };
 
   return (
     <div style={{ position: "absolute", inset: 0, overflow: "hidden", background: V.bg }}>
@@ -144,7 +144,7 @@ export default function ConsoleFrame() {
             onMouseDown={actions.holdStart}
             onMouseUp={actions.holdEnd}
             onMouseLeave={actions.holdEnd}
-            style={{ position: "absolute", left: C.rail + C.gap + "px", right: C.gap + "px", bottom: C.foot + C.gap * 2 + "px", height: C.dock + "px", display: "flex", gap: C.gap + "px", zIndex: state.cEdit ? 6 : 1 }}
+            style={{ position: "absolute", left: C.rail + C.gap + "px", right: C.gap + "px", bottom: C.foot + C.gap * 2 + "px", height: C.dock + "px", display: "flex", gap: C.gap + "px", zIndex: state.cEdit ? (V.z?.modal ?? "var(--ktheme-z-modal, 500)") : (V.z?.base ?? "var(--ktheme-z-base, 0)") }}
           >
             {state.cDock.map((k, i) => {
           const b = CBTN[k],
@@ -229,8 +229,8 @@ export default function ConsoleFrame() {
 
       {state.cEdit ? (
         <>
-          <div onClick={actions.endEdit} role="button" tabIndex={0} aria-label="Cancel edit" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.endEdit(); } }} style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,.66)", zIndex: 4 }} />
-          <div style={{ position: "absolute", left: C.rail + C.gap + "px", right: C.gap + "px", bottom: C.foot + C.dock + C.gap * 3 + "px", zIndex: 7, display: "flex", alignItems: "center", gap: "12px", height: "28px", padding: "0 14px", background: V.surf, color: V.ink2, font: "500 10.5px/1 " + t.font, letterSpacing: ".12em" }}>
+          <div onClick={actions.endEdit} role="button" tabIndex={0} aria-label="Cancel edit" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.endEdit(); } }} style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,.66)", zIndex: V.z?.overlay ?? "var(--ktheme-z-overlay, 100)" }} />
+          <div style={{ position: "absolute", left: C.rail + C.gap + "px", right: C.gap + "px", bottom: C.foot + C.dock + C.gap * 3 + "px", zIndex: V.z?.popover ?? "var(--ktheme-z-popover, 600)", display: "flex", alignItems: "center", gap: "12px", height: "28px", padding: "0 14px", background: V.surf, color: V.ink2, font: "500 10.5px/1 " + t.font, letterSpacing: ".12em" }}>
             <span>DOCK EDIT — MINUS REMOVES, PLUS ADDS</span>
             <span onClick={actions.endEdit} role="button" tabIndex={0} aria-label="Finish editing dock" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.endEdit(); } }} style={{ marginLeft: "auto", padding: "5px 16px", background: V.pri, color: ink(V.pri, [V.bg, V.onpri, V.ink]), font: "700 11px/1 " + t.dfont, letterSpacing: ".16em", cursor: "pointer" }}>
               DONE

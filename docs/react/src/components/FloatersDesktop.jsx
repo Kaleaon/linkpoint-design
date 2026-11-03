@@ -93,7 +93,7 @@ export default function FloatersDesktop() {
             onMouseDown={(e) => e.stopPropagation()}
             style={{
               position: "absolute", right: "16px", bottom: "52px", padding: "8px", background: V.surf, border: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv),
-              borderRadius: isSweepDesk ? "18px" : V.rp, boxShadow: "0 12px 32px rgba(0,0,0,0.5)", display: "flex", flexDirection: "column", gap: "6px", zIndex: 20
+              borderRadius: isSweepDesk ? "18px" : V.rp, boxShadow: "0 12px 32px rgba(0,0,0,0.5)", display: "flex", flexDirection: "column", gap: "6px", zIndex: V.z?.dock ?? "var(--ktheme-z-dock, 20)"
             }}
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", borderBottom: "1px solid " + V.outv, paddingBottom: "4px" }}>
@@ -144,7 +144,7 @@ export default function FloatersDesktop() {
             onMouseDown={() => actions.flFocus(f.id)}
             style={{
               position: "absolute", left: r.x + "px", top: r.y + "px", width: r.w + "px", height: (isShaded ? FBAR : r.h) + "px",
-              zIndex: 10 + Math.max(0, state.flZ.indexOf(f.id)), display: "flex", flexDirection: "column", background: V.surf,
+              zIndex: `calc(var(--ktheme-z-window, ${V.z?.window ?? 10}) + ${Math.max(0, state.flZ.indexOf(f.id))})`, display: "flex", flexDirection: "column", background: V.surf,
               border: (isSweepDesk ? "2px solid " : "1px solid ") + (act ? V.pri : V.outv), borderRadius: isSweepDesk ? (isShaded ? "22px" : "22px 22px 14px 14px") : (isShaded ? V.rs : V.rp), overflow: "hidden",
               boxShadow: act ? "0 18px 48px rgba(0,0,0,.65)" : "0 6px 18px rgba(0,0,0,.34)",
             }}
@@ -243,7 +243,7 @@ export default function FloatersDesktop() {
             position: "absolute", left: flFocused.x + "px", top: flFocused.y + FBAR + "px", width: flFocused.w + "px", height: flFocused.h - FBAR + "px",
             display: "flex", minWidth: 0, overflow: "hidden", background: V.surf, borderWidth: "0 1px 1px", borderStyle: "solid", borderColor: V.pri,
             borderBottomLeftRadius: isSweepDesk ? "14px" : V.rp, borderBottomRightRadius: isSweepDesk ? "14px" : V.rp,
-            boxSizing: "border-box", zIndex: 50,
+            boxSizing: "border-box", zIndex: `calc(var(--ktheme-z-taskbar, ${V.z?.taskbar ?? 50}) - 1)`,
           }}
         >
           <ScreenBody />
@@ -251,7 +251,7 @@ export default function FloatersDesktop() {
       ) : null}
 
       {/* Firestorm Desktop Taskbar & Nearby Quick-Chat Dock */}
-      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "40px", display: "flex", alignItems: "center", gap: "6px", padding: "0 8px", background: V.surf, borderTop: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv), zIndex: 60 }}>
+      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "40px", display: "flex", alignItems: "center", gap: "6px", padding: "0 8px", background: V.surf, borderTop: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv), zIndex: V.z?.taskbar ?? "var(--ktheme-z-taskbar, 50)" }}>
         {/* Persistent Firestorm Nearby Quick Chat Input Bar */}
         <form onSubmit={sendQuickChat} style={{ display: "flex", alignItems: "center", gap: "4px", minWidth: "260px", maxWidth: "340px" }}>
           <div style={{ position: "relative", flex: 1 }}>

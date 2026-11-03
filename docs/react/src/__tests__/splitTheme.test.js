@@ -46,6 +46,28 @@ describe("Split Theme Context Architecture", () => {
     expect(tokens.LK).toBeDefined();
     expect(typeof tokens.ink).toBe("function");
 
+    // Elevation & Z-Index Tokens
+    expect(tokens.V.z).toBeDefined();
+    expect(tokens.V.z.base).toBe(0);
+    expect(tokens.V.z.card).toBe(1);
+    expect(tokens.V.z.window).toBe(10);
+    expect(tokens.V.z.dock).toBe(20);
+    expect(tokens.V.z.taskbar).toBe(50);
+    expect(tokens.V.z.header).toBe(80);
+    expect(tokens.V.z.dropdown).toBe(90);
+    expect(tokens.V.z.overlay).toBe(100);
+    expect(tokens.V.z.toast).toBe(400);
+    expect(tokens.V.z.modal).toBe(500);
+    expect(tokens.V.z.popover).toBe(600);
+    expect(tokens.V.z.tooltip).toBe(700);
+    expect(tokens.V.z["z-modal"]).toBe(500);
+
+    expect(tokens.V.elevation).toBeDefined();
+    expect(tokens.V.elevation[0]).toBe("none");
+    expect(tokens.V.elevation["elevation-0"]).toBe("none");
+    expect(tokens.V.elevation[1]).toContain("rgba(0, 0, 0, 0.15)");
+    expect(tokens.V.elevation["elevation-1"]).toContain("rgba(0, 0, 0, 0.15)");
+
     const runtime = computeThemeRuntime(mockState, mockCf, tokens);
     expect(runtime.d).toBeDefined();
     expect(runtime.nav).toBeDefined();
