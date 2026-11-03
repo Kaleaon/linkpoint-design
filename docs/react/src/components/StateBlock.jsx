@@ -182,7 +182,6 @@ export default function StateBlock() {
             letterSpacing: ".18em",
             cursor: "pointer",
             border: "none",
-            outline: "none",
           }}
           role="button" aria-label={condPack.btn} tabIndex={0}
         >
