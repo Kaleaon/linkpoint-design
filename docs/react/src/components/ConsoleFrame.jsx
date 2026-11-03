@@ -8,6 +8,7 @@ import Icon from "./Icon.jsx";
 import ScreenBody from "./ScreenBody.jsx";
 import { navActive } from "../theme/look.js";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
+import { useMotionTokens } from "@ktheme/react";
 
 // The 3D View's sim/location — shared by the in-scene region tag and the
 // console's own top bar so the two never disagree.
@@ -22,7 +23,8 @@ const SIM_COORD = { x: 128, y: 64, z: 42 };
 export default function ConsoleFrame() {
   const { state, actions } = useApp();
   const { V, t, C, ink, consoleScene } = useTheme();
-  const reducedMotion = usePrefersReducedMotion();
+  const motion = useMotionTokens();
+  const reducedMotion = motion?.reducedMotion ?? usePrefersReducedMotion();
   const tick = state.tick || 0;
   const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
 
@@ -98,7 +100,7 @@ export default function ConsoleFrame() {
   const cfRailCol = { position: "absolute", left: 0, top: C.bar + "px", width: C.rail + "px", bottom: C.foot + C.gap + "px", display: "flex", flexDirection: "column", gap: C.gap + "px" };
   const cfArm = { flex: "none", boxSizing: "border-box", height: (C.wide ? 42 : 32) + "px", width: C.rail + "px", background: V.pri, color: ink(V.pri, [V.bg, V.onpri, V.ink]), display: "flex", alignItems: "center", padding: "0 0 0 10px", font: "700 " + (C.wide ? 12 : 10) + "px/1.05 " + t.dfont, letterSpacing: ".14em" };
 
-  const consoleNav = buildConsoleNav({ state, actions, V, t, C, ink });
+  const consoleNav = buildConsoleNav({ state, actions, V, t, C, ink, motion, reducedMotion });
 
   const shellStyle = consoleScene
     ? { display: "none" }
@@ -246,9 +248,15 @@ export default function ConsoleFrame() {
   );
 }
 
-function buildConsoleNav({ state, actions, V, t, C, ink }) {
+function buildConsoleNav({ state, actions, V, t, C, ink, motion, reducedMotion }) {
   const hs = C.wide ? [94, 56, 70, 46, 58, 46, 52, 46] : [58, 46, 52, 46, 48, 46, 50, 46];
   const tint = [V.sec2, V.surf2, V.sec, V.surf2, V.sec2, V.sec, V.surf2, V.sec];
+  const isReduced = reducedMotion ?? motion?.reducedMotion ?? false;
+  const navTransition = isReduced
+    ? "none"
+    : motion?.transition
+      ? motion.transition("background", "var(--ktheme-motion-duration-fast, " + (motion.duration || "150ms") + ")", "var(--ktheme-motion-easing, " + (motion.easing || "cubic-bezier(0.25, 0.1, 0.25, 1.0)") + ")")
+      : "background var(--ktheme-motion-duration-fast, 150ms) var(--ktheme-motion-easing, cubic-bezier(0.25, 0.1, 0.25, 1.0))";
   const items = NAV_ALL.map((n, i) => {
     const on = navActive(state.screen, n.id);
     const bg = state.cFlash === n.id ? V.priC : on ? V.pri : tint[i % tint.length];
@@ -258,7 +266,8 @@ function buildConsoleNav({ state, actions, V, t, C, ink }) {
       style: {
         position: "relative", flex: "none", boxSizing: "border-box", height: hs[i % hs.length] + "px", width: C.rail + "px",
         background: bg, color: ink(bg, [V.bg, V.onpri, V.ink]), display: "flex", alignItems: "flex-end", justifyContent: "flex-end",
-        padding: "0 8px 5px 0", cursor: "pointer", font: "700 " + (C.wide ? 11 : 10) + "px/1 " + t.dfont, letterSpacing: ".1em", transition: "background .16s ease",
+        padding: "0 8px 5px 0", cursor: "pointer", font: "700 " + (C.wide ? 11 : 10) + "px/1 " + t.dfont, letterSpacing: ".1em",
+        transition: navTransition,
       },
     };
   });
@@ -288,7 +297,8 @@ function buildConsoleNav({ state, actions, V, t, C, ink }) {
 function ConsoleScene() {
   const { state, actions } = useApp();
   const { V, t, C, ink } = useTheme();
-  const reducedMotion = usePrefersReducedMotion();
+  const motion = useMotionTokens();
+  const reducedMotion = motion?.reducedMotion ?? usePrefersReducedMotion();
   const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
 
   const cfScene = {
@@ -296,7 +306,12 @@ function ConsoleScene() {
     bottom: C.foot + C.dock + C.gap * 3 + "px", borderRadius: C.rad + "px 0 0 0", overflow: "hidden", cursor: "grab",
     background: "linear-gradient(180deg," + V.sky1 + " 0%," + V.sky2 + " 46%," + V.gnd + " 46%," + V.gnd2 + " 100%)",
   };
-  const cfParallax = { position: "absolute", inset: 0, transform: reducedMotion ? "none" : "translate(" + (-state.cHdg * 0.9).toFixed(1) + "px," + (state.cPitch * 0.8).toFixed(1) + "px)", transition: reducedMotion || state.cDrag ? "none" : "transform .35s ease-out" };
+  const parallaxTransition = reducedMotion || state.cDrag
+    ? "none"
+    : motion?.transition
+      ? motion.transition("transform", "var(--ktheme-motion-duration, " + (motion.duration || "300ms") + ")", "var(--ktheme-motion-easing-decelerated, " + (motion.easing || "cubic-bezier(0, 0, 0.58, 1)") + ")")
+      : "transform var(--ktheme-motion-duration, 300ms) var(--ktheme-motion-easing-decelerated, cubic-bezier(0, 0, 0.58, 1))";
+  const cfParallax = { position: "absolute", inset: 0, transform: reducedMotion ? "none" : "translate(" + (-state.cHdg * 0.9).toFixed(1) + "px," + (state.cPitch * 0.8).toFixed(1) + "px)", transition: parallaxTransition };
   // The console scene has one readout strip, so 3D View's CAM/GFX sub-views swap
   // what it reports rather than adding a second strip to the LCARS frame.
   const regionRead =

@@ -15,8 +15,16 @@ export function computeThemeTokens(state) {
   const pad = state.dense ? "8px" : V.pad;
   const LK = L.look;
   const ink = (bg, candidates) => pickInk(bg, candidates);
+  const motion = {
+    duration: "300ms",
+    durationFast: "150ms",
+    durationSlow: "500ms",
+    durationReduced: "0ms",
+    easing: "cubic-bezier(0.25, 0.1, 0.25, 1.0)",
+    easingReduced: "cubic-bezier(0.0, 0.0, 1.0, 1.0)",
+  };
 
-  return { V, t, pad, LK, ink };
+  return { V, t, pad, LK, ink, motion };
 }
 
 // Resolves dynamic runtime viewport, screen, and navigation state
