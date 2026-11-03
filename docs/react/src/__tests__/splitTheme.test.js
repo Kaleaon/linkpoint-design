@@ -241,4 +241,38 @@ describe("Split Theme Context Architecture", () => {
     expect(metroRuntime.isFloat).toBe(true);
     expect(metroRuntime.isSweepDesk).toBe(false);
   });
+
+  it("attaches structured contrastAudit results to computed tokens", () => {
+    const state = {
+      layout: "terminal",
+      palette: "ink",
+      customTheme: null,
+      dense: false,
+      device: "and",
+      screen: "Chat",
+      cond: "normal",
+    };
+    const tokens = computeThemeTokens(state);
+    expect(tokens.contrastAudit).toBeDefined();
+    expect(Array.isArray(tokens.contrastAudit.pairs)).toBe(true);
+    expect(Array.isArray(tokens.contrastAudit.violations)).toBe(true);
+    expect(typeof tokens.contrastAudit.pass).toBe("boolean");
+    expect(typeof tokens.contrastAudit.hasErrors).toBe("boolean");
+    expect(tokens.contrastAudit.summary).toBeDefined();
+
+    // Verify critical pairs are present
+    expect(tokens.contrastAudit["primary vs background"]).toBeDefined();
+    expect(tokens.contrastAudit["surface vs text"]).toBeDefined();
+    expect(tokens.contrastAudit["outline vs surface"]).toBeDefined();
+    expect(tokens.contrastAudit.primaryVsBackground).toBeDefined();
+    expect(tokens.contrastAudit.surfaceVsText).toBeDefined();
+    expect(tokens.contrastAudit.outlineVsSurface).toBeDefined();
+
+    const priBg = tokens.contrastAudit["primary vs background"];
+    expect(typeof priBg.ratio).toBe("number");
+    expect(typeof priBg.pass).toBe("boolean");
+    expect(priBg.tokenA).toBe("primary");
+    expect(priBg.tokenB).toBe("background");
+  });
 });
+
