@@ -1,8 +1,9 @@
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { INVENTORY_SOURCE, INVENTORY_FOLDERS, INVENTORY_RECENTS } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
+import FormInput from "../components/FormInput.jsx";
 import KInteractive from "../components/KInteractive.jsx";
 import { subView } from "../theme/constants.js";
 import { SkeletonTree } from "../components/Skeletons.jsx";
@@ -24,6 +25,7 @@ export default function Inventory() {
   const invListStyle = { flex: 1, minHeight: "320px", overflowY: "auto", display: "flex", flexDirection: "column", gap: bleed ? C.gap + "px" : 0, background: bleed ? V.bg : "transparent" };
 
   const curSub = subView(state, "Inventory");
+  const q = searchQuery.trim().toLowerCase();
   const rawItems = state.invItems || INVENTORY_SOURCE.map(([name, icon, depth, parent, ver, tags]) => ({ name, icon, depth, parent, ver, tags: tags || [] }));
 
   const all = rawItems.map((item) => {
@@ -34,14 +36,13 @@ export default function Inventory() {
     return { name, icon, ver, parent, depth, isFolder, open, isSelected, tags: tags || [], chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "dot" };
   });
 
-  const baseNodes = curSub === "ALL"
-    ? all.filter((n) => n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false))
+  let nodes = curSub === "ALL"
+    ? (q ? all : all.filter((n) => n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false)))
     : all.filter((n) => n.tags.includes(curSub.toLowerCase())).map((n) => ({ ...n, depth: 0, isFolder: false, chev: "dot" }));
 
-  const trimmedQuery = searchQuery.trim().toLowerCase();
-  const nodes = trimmedQuery
-    ? (curSub === "ALL" ? all : baseNodes).filter((n) => n.name.toLowerCase().includes(trimmedQuery))
-    : baseNodes;
+  if (q) {
+    nodes = nodes.filter((n) => n.name.toLowerCase().includes(q));
+  }
 
   const handlePointerDown = (n) => {
     if (n.isFolder) return;
@@ -78,15 +79,26 @@ export default function Inventory() {
     <>
       <div style={invToolStyle}>
         <div style={{ flex: 1, height: "44px", display: "flex", alignItems: "center", gap: "8px", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf }}>
-          <Icon name="search" size={15} style={{ opacity: 0.55 }} />
-          <input
-            type="text"
+          <Icon name="search" size={15} style={{ opacity: 0.55, flexShrink: 0 }} />
+          <FormInput
+            aria-label="Filter inventory"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="filter inventory…"
-            aria-label="Filter inventory"
-            style={{ flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent", font: "400 12px/1 " + t.font, color: V.ink }}
+            style={{ flex: 1, minWidth: 0, border: "none", background: "transparent", font: "400 12px/1 " + t.font, color: V.ink, outline: "none" }}
           />
+          {searchQuery && (
+            <div
+              onClick={() => setSearchQuery("")}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSearchQuery(""); } }}
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: V.ink2, padding: "4px", flexShrink: 0 }}
+              role="button"
+              aria-label="Clear search"
+              tabIndex={0}
+            >
+              <Icon name="x" size={15} />
+            </div>
+          )}
         </div>
         <div
           onClick={actions.toggleInvSelectMode}
@@ -118,6 +130,10 @@ export default function Inventory() {
       <div style={invListStyle}>
         {isLoading ? (
           <SkeletonTree style={{ minHeight: "320px" }} />
+        ) : nodes.length === 0 && q ? (
+          <div style={{ padding: "40px 16px", textAlign: "center", font: "400 12px/1.5 " + t.font, color: V.ink2 }}>
+            No inventory items match '{searchQuery.trim()}'
+          </div>
         ) : (
           nodes.map((n) => {
             const indent = bleed

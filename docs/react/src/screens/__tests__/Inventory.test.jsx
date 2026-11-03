@@ -1,46 +1,51 @@
 import { describe, it, expect } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
+import "@testing-library/jest-dom";
 import Inventory from "../Inventory.jsx";
 import { AppProvider } from "../../context/AppContext.jsx";
 import { ThemeProvider } from "../../context/ThemeContext.jsx";
-import { KthemeProvider } from "@ktheme/react";
 
 function renderInventory() {
   return render(
     <AppProvider>
-      <KthemeProvider themeId="navy-gold">
-        <ThemeProvider>
-          <Inventory />
-        </ThemeProvider>
-      </KthemeProvider>
+      <ThemeProvider>
+        <Inventory />
+      </ThemeProvider>
     </AppProvider>
   );
 }
 
-describe("Inventory Screen - Interactive Search Input", () => {
-  it("renders controlled search input with correct placeholder and accessibility label", () => {
+describe("Inventory - Search Input & Node Filtering", () => {
+  it("renders search input element with correct placeholder and aria-label", () => {
     renderInventory();
     const input = screen.getByPlaceholderText("filter inventory…");
-    expect(input).toBeTruthy();
-    expect(input.getAttribute("aria-label")).toBe("Filter inventory");
-    expect(input.value).toBe("");
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveAttribute("aria-label", "Filter inventory");
   });
 
-  it("filters inventory items dynamically as user types", () => {
+  it("updates local input state when typing in search query", () => {
+    renderInventory();
+    const input = screen.getByPlaceholderText("filter inventory…");
+    fireEvent.change(input, { target: { value: "Jacket" } });
+    expect(input.value).toBe("Jacket");
+  });
+
+  it("filters inventory items case-insensitively based on search query", () => {
     renderInventory();
     const input = screen.getByPlaceholderText("filter inventory…");
 
-    // Initially, top-level folders like "Objects", "Clothing" are present
-    expect(screen.getByText("Objects")).toBeTruthy();
-    expect(screen.getByText("Clothing")).toBeTruthy();
+    // Initially "Objects" and "Clothing" are visible
+    expect(screen.getByText("Objects")).toBeInTheDocument();
+    expect(screen.getByText("Clothing")).toBeInTheDocument();
 
-    // Type "lamp" into search box
-    fireEvent.change(input, { target: { value: "lamp" } });
+    // Type "jacket"
+    fireEvent.change(input, { target: { value: "jacket" } });
 
-    // "Sunset Lamp v3" matches "lamp"
-    expect(screen.getAllByText("Sunset Lamp v3").length).toBeGreaterThan(0);
-    // Non-matching items/folders should not be visible
-    expect(screen.queryByText("Clothing")).toBeNull();
+    // Matching item "Urban Jacket" should be shown
+    expect(screen.getByText("Urban Jacket")).toBeInTheDocument();
+
+    // Non-matching folder "Objects" should not be shown
+    expect(screen.queryByText("Objects")).not.toBeInTheDocument();
   });
 
   it("handles case-insensitivity and whitespace trimming", () => {
@@ -51,32 +56,72 @@ describe("Inventory Screen - Interactive Search Input", () => {
     fireEvent.change(input, { target: { value: "   SUNSET LAMP   " } });
 
     expect(screen.getAllByText("Sunset Lamp v3").length).toBeGreaterThan(0);
-    expect(screen.queryByText("Clothing")).toBeNull();
+    expect(screen.queryByText("Clothing")).not.toBeInTheDocument();
   });
 
-  it("restores all initial inventory items when search query is cleared", () => {
+  it("displays clear button when search query is non-empty and resets on click", () => {
+    renderInventory();
+    const input = screen.getByPlaceholderText("filter inventory…");
+
+    // Clear button should not exist initially
+    expect(screen.queryByLabelText("Clear search")).not.toBeInTheDocument();
+
+    // Type query
+    fireEvent.change(input, { target: { value: "Landmark" } });
+
+    // Clear button appears
+    const clearBtn = screen.getByLabelText("Clear search");
+    expect(clearBtn).toBeInTheDocument();
+
+    // Click clear button
+    fireEvent.click(clearBtn);
+
+    // Input resets and clear button disappears
+    expect(input.value).toBe("");
+    expect(screen.queryByLabelText("Clear search")).not.toBeInTheDocument();
+
+    // Default items return
+    expect(screen.getByText("Objects")).toBeInTheDocument();
+  });
+
+  it("restores all initial inventory items when search query is cleared via input change", () => {
     renderInventory();
     const input = screen.getByPlaceholderText("filter inventory…");
 
     fireEvent.change(input, { target: { value: "lamp" } });
-    expect(screen.queryByText("Clothing")).toBeNull();
+    expect(screen.queryByText("Clothing")).not.toBeInTheDocument();
 
     // Clear input
     fireEvent.change(input, { target: { value: "" } });
 
     // Initial items/folders restored
-    expect(screen.getByText("Objects")).toBeTruthy();
-    expect(screen.getByText("Clothing")).toBeTruthy();
+    expect(screen.getByText("Objects")).toBeInTheDocument();
+    expect(screen.getByText("Clothing")).toBeInTheDocument();
   });
 
-  it("filters items when searching with non-matching query", () => {
+  it("displays empty state message when no items match search query", () => {
     renderInventory();
     const input = screen.getByPlaceholderText("filter inventory…");
 
-    fireEvent.change(input, { target: { value: "nonexistent_item_query" } });
+    fireEvent.change(input, { target: { value: "nonexistentxyz123" } });
 
-    expect(screen.queryByText("Objects")).toBeNull();
-    expect(screen.queryByText("Clothing")).toBeNull();
-    expect(screen.queryByText("Landmarks")).toBeNull();
+    expect(screen.getByText("No inventory items match 'nonexistentxyz123'")).toBeInTheDocument();
+    expect(screen.queryByText("Objects")).not.toBeInTheDocument();
+    expect(screen.queryByText("Clothing")).not.toBeInTheDocument();
+  });
+
+  it("resets local search query on unmount and remount", () => {
+    const { unmount } = renderInventory();
+    const input = screen.getByPlaceholderText("filter inventory…");
+
+    fireEvent.change(input, { target: { value: "shirt" } });
+    expect(input.value).toBe("shirt");
+
+    unmount();
+
+    // Remounting resets component state
+    renderInventory();
+    const newInput = screen.getByPlaceholderText("filter inventory…");
+    expect(newInput.value).toBe("");
   });
 });
