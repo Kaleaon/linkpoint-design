@@ -42,12 +42,11 @@ const FormSwitch = forwardRef(function FormSwitch(
 
   const id = idProp || context?.id;
   const ariaDescribedBy = ariaDescribedByProp || context?.ariaDescribedBy;
-  const ariaInvalid =
-    ariaInvalidProp !== undefined ? ariaInvalidProp : context?.ariaInvalid;
+  const ariaInvalid = ariaInvalidProp !== undefined ? ariaInvalidProp : context?.ariaInvalid;
   const ariaErrorMessage = ariaErrorMessageProp || context?.ariaErrorMessage;
 
-  const defaultTrackBg = isOn === false ? V.surf2 : V.priC;
-  const defaultKnobBg = isOn === false ? V.ink2 : V.pri;
+  const defaultTrackBg = isOn === false ? (V.surf2 || "#1B2A2D") : (V.priC || "#1F6640");
+  const defaultKnobBg = isOn === false ? (V.ink2 || "#A7C8BC") : (V.pri || "#6CFF9A");
 
   return (
     <span

@@ -9,7 +9,17 @@ import { SkeletonCardList } from "./Skeletons.jsx";
 // Friends/Groups/Notices/Teleport/Settings/Diagnostics all share.
 // Enhanced with pull-to-refresh swipe gesture detection for balance sync.
 export default function CardList({ cards }) {
-  const { LK, V, t } = useThemeTokens();
+  let LK = {}, V = {}, t = {};
+  try {
+    const themeCtx = useThemeTokens();
+    if (themeCtx) {
+      LK = themeCtx.LK || {};
+      V = themeCtx.V || {};
+      t = themeCtx.t || {};
+    }
+  } catch (e) {
+    // Fallback if rendered outside ThemeProvider
+  }
   const { state, actions } = useApp();
 
   const [pullDistance, setPullDistance] = useState(0);
@@ -105,11 +115,11 @@ export default function CardList({ cards }) {
             height: `${indicatorHeight}px`,
             overflow: "hidden",
             transition: refreshing ? "height 0.2s ease" : "none",
-            color: V ? V.pri : "var(--pri)",
+            color: V.pri || "#6CFF9A",
             fontSize: "12px",
             fontWeight: "600",
-            fontFamily: t ? t.font : "sans-serif",
-            borderBottom: "1px dashed " + (V ? V.outv : "var(--outv)"),
+            fontFamily: t.font || "sans-serif",
+            borderBottom: "1px dashed " + (V.outv || "#365047"),
             marginBottom: "4px",
           }}
         >
@@ -118,18 +128,10 @@ export default function CardList({ cards }) {
             size={16}
             style={{
               transform: `rotate(${pullDistance * 5}deg)`,
-              transition: refreshing
-                ? "transform 0.8s linear infinite"
-                : "none",
+              transition: refreshing ? "transform 0.8s linear infinite" : "none",
             }}
           />
-          <span>
-            {refreshing
-              ? "Syncing balance..."
-              : pullDistance > 40
-                ? "Release to sync"
-                : "Pull to sync balance"}
-          </span>
+          <span>{refreshing ? "Syncing balance..." : pullDistance > 40 ? "Release to sync" : "Pull to sync balance"}</span>
         </div>
       )}
       {cards.map((c, i) => (
