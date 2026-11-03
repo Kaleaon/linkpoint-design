@@ -88,9 +88,9 @@ describe("Map and Radar Action Handlers", () => {
         </AppProvider>
       );
 
-      const plusBtn = getByLabelText("Map plus");
-      const minusBtn = getByLabelText("Map minus");
-      const locateBtn = getByLabelText("Map locate-fixed");
+      const plusBtn = getByLabelText("Zoom in map");
+      const minusBtn = getByLabelText("Zoom out map");
+      const locateBtn = getByLabelText("Recenter map viewport");
 
       fireEvent.click(plusBtn);
       expect(getByTestId("toast").textContent).toBe("Zoomed in map view");
