@@ -4,6 +4,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { INVENTORY_SOURCE, INVENTORY_FOLDERS, INVENTORY_RECENTS } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import SearchCombobox from "../components/SearchCombobox.jsx";
 import { subView } from "../theme/constants.js";
 import { SkeletonTree } from "../components/Skeletons.jsx";
 
@@ -33,9 +34,12 @@ export default function Inventory() {
     return { name, icon, ver, parent, depth, isFolder, open, isSelected, tags: tags || [], chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "dot" };
   });
 
-  const nodes = curSub === "ALL"
-    ? all.filter((n) => n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false))
+  const q = (state.invFilterQuery || "").trim().toLowerCase();
+  const baseNodes = curSub === "ALL"
+    ? (q ? all : all.filter((n) => n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false)))
     : all.filter((n) => n.tags.includes(curSub.toLowerCase())).map((n) => ({ ...n, depth: 0, isFolder: false, chev: "dot" }));
+
+  const nodes = q ? baseNodes.filter((n) => n.name.toLowerCase().includes(q)) : baseNodes;
 
   const handlePointerDown = (n) => {
     if (n.isFolder) return;
@@ -73,7 +77,16 @@ export default function Inventory() {
       <div style={invToolStyle}>
         <div style={{ flex: 1, height: "44px", display: "flex", alignItems: "center", gap: "8px", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf }}>
           <Icon name="search" size={15} style={{ opacity: 0.55 }} />
-          <span style={{ font: "400 12px/1 " + t.font, color: V.ink2 }}>filter inventory…</span>
+          <SearchCombobox
+            controlsId="inventory-results-tree"
+            resultCount={nodes.length}
+            itemLabel="inventory items"
+            ariaLabel="Filter inventory items"
+            placeholder="filter inventory…"
+            value={state.invFilterQuery || ""}
+            onChange={(e) => actions.setInvFilterQuery(e.target.value)}
+            style={{ flex: 1, minWidth: 0, border: "none", background: "transparent", font: "400 12px/1 " + t.font, color: V.ink, outline: "none" }}
+          />
         </div>
         <div
           onClick={actions.toggleInvSelectMode}
@@ -102,7 +115,7 @@ export default function Inventory() {
         ))}
       </div>
 
-      <div style={invListStyle}>
+      <div id="inventory-results-tree" style={invListStyle}>
         {isLoading ? (
           <SkeletonTree style={{ minHeight: "320px" }} />
         ) : (

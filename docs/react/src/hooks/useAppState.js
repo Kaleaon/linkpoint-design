@@ -138,6 +138,8 @@ export function useAppState() {
   const [searchState, setSearchState] = useState({});
   const [reconnecting, setReconnecting] = useState(false);
   const [toast, setToast] = useState("");
+  const [announcement, setAnnouncement] = useState("");
+  const [invFilterQuery, setInvFilterQuery] = useState("");
   const [lindenBalance, setLindenBalance] = useState(4250);
   const [exchangeRate, setExchangeRate] = useState(248.5);
   const [lastSyncedAt, setLastSyncedAt] = useState(() => new Date());
@@ -202,6 +204,10 @@ export function useAppState() {
     clearTimeout(toastTimerRef.current);
     setToast(msg);
     toastTimerRef.current = setTimeout(() => setToast(""), 2200);
+  }, []);
+
+  const announce = useCallback((msg) => {
+    setAnnouncement(msg);
   }, []);
 
   const setThemeColor = useCallback((key, value) => setCustomTheme((theme) => ({ ...theme, active: true, colors: { ...theme.colors, [key]: value } })), []);
@@ -795,7 +801,7 @@ export function useAppState() {
       cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
       rMode, rOpen, rMenu, cDock, flOpen, flMin, flShade, flRect, flZ, menu, tick,
       loginMode, loginGrid, loginBusy, loginError, customGrids, addGrid, addGridName, addGridHost,
-      searchFrom, searchTab, searchQuery, searchState, reconnecting, toast, offlineRunning, offlineUser, offlineAccountModal, offlineAccountFirstName, offlineAccountLastName, offlineAccountPassword, oarFile, oarRegionName, oarCoords, oarPrims, assetName, assetType, localAssets, offlineCacheSize, consoleLevel, consoleQuery, consoleAutoscroll, consoleLogs,
+      searchFrom, searchTab, searchQuery, searchState, reconnecting, toast, announcement, invFilterQuery, offlineRunning, offlineUser, offlineAccountModal, offlineAccountFirstName, offlineAccountLastName, offlineAccountPassword, oarFile, oarRegionName, oarCoords, oarPrims, assetName, assetType, localAssets, offlineCacheSize, consoleLevel, consoleQuery, consoleAutoscroll, consoleLogs,
       prefs, cacheCleared, camPreset, lindenBalance, exchangeRate, lastSyncedAt,
     },
     actions: {
@@ -809,7 +815,7 @@ export function useAppState() {
       holdStart, holdEnd, endEdit, togglePad, toggleRun, flyUpDown, flyDnDown, flyRelease, addSlot, removeDockSlot,
       radarTap, radarHold, radarRelease, radarBlipPick,
       setRMode,
-      setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchTab, setSearchQuery, searchAdd, startIm, reconnect, notify,
+      setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchTab, setSearchQuery, searchAdd, startIm, reconnect, notify, announce, setInvFilterQuery,
       setPref, setTelemetryVerbosity, clearCache, clearAllCache, setCamPreset, toggleOfflineGrid, setOfflineAccountModal, setOfflineAccountFirstName, setOfflineAccountLastName, setOfflineAccountPassword, saveOfflineAccount, importOarBackup, setAssetName, setAssetType, addLocalAsset, setOfflineCacheSize, clearOfflineCache, setConsoleLevel, setConsoleQuery, setConsoleAutoscroll, clearConsoleLogs, copyConsoleLogs, downloadConsoleLogs,
       refreshBalance, setLindenBalance, setExchangeRate,
       dispatchIntent, getEventBus,
