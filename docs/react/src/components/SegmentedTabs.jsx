@@ -2,14 +2,15 @@ import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { segLooks } from "../theme/look.js";
 import { CSUB, subView, setSub } from "../theme/constants.js";
-import { useTabNavigation } from "../hooks/useTabNavigation.js";
+import { TabGroup, TabList, Tab, useTabContext } from "./TabGroup.jsx";
 
 // Ported from `segTabs`/`segWrap`/`hasSeg`. The labels come from CSUB — the one
 // sub-view table the LCARS rail also renders — so a screen gains a tab strip by
 // appearing there, not by being named here.
-export default function SegmentedTabs() {
+export default function SegmentedTabs({ children, style: containerStyle }) {
   const { state, actions } = useApp();
   const { V, t, LK, nav, isFloat, norm, scr } = useTheme();
+  const parentTabContext = useTabContext();
 
   if (!norm) return null;
   const curSub = subView(state, scr);
@@ -29,13 +30,6 @@ export default function SegmentedTabs() {
     }
   };
 
-  const { containerProps, getTabProps } = useTabNavigation({
-    itemCount: tabs.length,
-    activeIndex,
-    onSelect: handleSelect,
-    ariaLabel: "View Filters",
-  });
-
   const segLook = LK.seg || "fill";
   const looks = segLooks(V, t.font);
   const base = looks[segLook];
@@ -43,21 +37,20 @@ export default function SegmentedTabs() {
   const onLook = segLook === "fill" ? { ...on, color: V.onpriC } : segLook === "pivot" ? { color: V.pri, fontWeight: 400 } : { color: V.pri, boxShadow: "inset 0 -2px 0 " + V.pri, letterSpacing: V.tls };
 
   const wrap = isFloat
-    ? { flex: "none", display: "flex", flexWrap: "wrap", margin: 0, borderBottom: "1px solid " + V.outv, background: V.surf }
+    ? { flex: "none", display: "flex", flexWrap: "wrap", margin: 0, borderBottom: "1px solid " + V.outv, background: V.surf, ...containerStyle }
     : segLook === "fill"
-    ? { flex: "none", display: "flex", margin: nav === "sweep" ? "12px 12px 10px 4px" : "2px 16px 10px", border: "1px solid " + V.outv, borderRadius: V.rs, overflow: "hidden" }
-    : { flex: "none", display: "flex", margin: "0 16px 8px", borderBottom: segLook === "text" ? "1px solid " + V.outv : "none", overflowX: "auto" };
+    ? { flex: "none", display: "flex", margin: nav === "sweep" ? "12px 12px 10px 4px" : "2px 16px 10px", border: "1px solid " + V.outv, borderRadius: V.rs, overflow: "hidden", ...containerStyle }
+    : { flex: "none", display: "flex", margin: "0 16px 8px", borderBottom: segLook === "text" ? "1px solid " + V.outv : "none", overflowX: "auto", ...containerStyle };
 
-  return (
-    <div {...containerProps} style={wrap}>
+  const tabListContent = (
+    <TabList aria-label="View Filters" style={wrap}>
       {tabs.map((x, index) => {
         const active = x.label === curSub;
         const style = { ...base, ...(active ? onLook : null), ...(isFloat ? { minHeight: "28px", height: "28px", padding: "0 12px", flex: "none", borderRadius: 0, font: "600 9.5px/1 " + t.font, letterSpacing: ".1em" } : null) };
-        const tabProps = getTabProps(index);
         return (
-          <div
+          <Tab
             key={x.label}
-            {...tabProps}
+            index={index}
             style={style}
           >
             <span style={{ font: "inherit", letterSpacing: "inherit" }}>{x.label}</span>
@@ -79,10 +72,30 @@ export default function SegmentedTabs() {
                 {x.badge}
               </span>
             ) : null}
-          </div>
+          </Tab>
         );
       })}
-    </div>
+    </TabList>
+  );
+
+  if (parentTabContext) {
+    return (
+      <>
+        {tabListContent}
+        {children}
+      </>
+    );
+  }
+
+  return (
+    <TabGroup
+      activeIndex={activeIndex >= 0 ? activeIndex : 0}
+      onSelect={handleSelect}
+      as={null}
+    >
+      {tabListContent}
+      {children}
+    </TabGroup>
   );
 }
 

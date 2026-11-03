@@ -3,11 +3,11 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL, TABS_NAV_IDS } from "../data/content.js";
 import Icon from "./Icon.jsx";
 import { navActive } from "../theme/look.js";
-import { useTabNavigation } from "../hooks/useTabNavigation.js";
+import { TabGroup, TabList, Tab, TabPanel } from "./TabGroup.jsx";
 
 // Ported from the `isTabs` <sc-if> block — bottom tab bar (Ink Terminal,
 // Aero Glass, Press packs).
-export default function BottomTabs() {
+export default function BottomTabs({ children, style }) {
   const { state, actions } = useApp();
   const { V, t, nav, immersive } = useTheme();
   if (nav !== "tabs" || immersive) return null;
@@ -21,42 +21,59 @@ export default function BottomTabs() {
     }
   };
 
-  const { containerProps, getTabProps } = useTabNavigation({
-    itemCount: items.length,
-    activeIndex,
-    onSelect: handleSelect,
-    ariaLabel: "Bottom Tabs Navigation",
-  });
-
   return (
     <nav
       aria-label="Bottom Tabs Navigation"
-      style={{ flex: "none", display: "flex", background: V.surf, borderTop: "1px solid " + V.outv, padding: "6px 0 10px" }}
+      style={{ flex: "none", display: "flex", background: V.surf, borderTop: "1px solid " + V.outv, padding: "6px 0 10px", ...style }}
     >
-      <div
-        {...containerProps}
-        style={{ flex: 1, display: "flex" }}
+      <TabGroup
+        activeIndex={activeIndex >= 0 ? activeIndex : 0}
+        onSelect={handleSelect}
+        id="bottom-tabs"
+        style={{ flex: 1, display: "flex", flexDirection: "column" }}
       >
-        {items.map((n, index) => {
-          const active = navActive(state.screen, n.id);
-          const tabProps = getTabProps(index);
-          return (
-            <div
-              key={n.id}
-              {...tabProps}
-              style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", padding: "6px 0", cursor: "pointer", color: active ? V.pri : V.ink2, position: "relative" }}
-            >
-              <Icon name={n.icon} size={22} />
-              <span style={{ font: "600 9px/1 " + t.font, letterSpacing: ".14em" }}>{n.label}</span>
-              {n.badge ? (
-                <span style={{ position: "absolute", top: "2px", right: "24%", minWidth: "16px", height: "16px", padding: "0 4px", borderRadius: "8px", background: V.bdg, color: V.onbdg, font: "700 9px/16px " + t.font, textAlign: "center" }}>
-                  {n.badge}
-                </span>
-              ) : null}
-            </div>
-          );
-        })}
-      </div>
+        <TabList
+          aria-label="Bottom Tabs Navigation"
+          style={{ flex: 1, display: "flex" }}
+        >
+          {items.map((n, index) => {
+            const active = navActive(state.screen, n.id);
+            return (
+              <Tab
+                key={n.id}
+                index={index}
+                style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", padding: "6px 0", cursor: "pointer", color: active ? V.pri : V.ink2, position: "relative" }}
+              >
+                <Icon name={n.icon} size={22} />
+                <span style={{ font: "600 9px/1 " + t.font, letterSpacing: ".14em" }}>{n.label}</span>
+                {n.badge ? (
+                  <span style={{ position: "absolute", top: "2px", right: "24%", minWidth: "16px", height: "16px", padding: "0 4px", borderRadius: "8px", background: V.bdg, color: V.onbdg, font: "700 9px/16px " + t.font, textAlign: "center" }}>
+                    {n.badge}
+                  </span>
+                ) : null}
+              </Tab>
+            );
+          })}
+        </TabList>
+        {children || (
+          <TabPanel
+            index={activeIndex >= 0 ? activeIndex : 0}
+            style={{
+              position: "absolute",
+              width: "1px",
+              height: "1px",
+              padding: 0,
+              margin: "-1px",
+              overflow: "hidden",
+              clip: "rect(0, 0, 0, 0)",
+              whiteSpace: "nowrap",
+              border: 0,
+            }}
+          >
+            {items[activeIndex]?.label || "Active"} Screen
+          </TabPanel>
+        )}
+      </TabGroup>
     </nav>
   );
 }

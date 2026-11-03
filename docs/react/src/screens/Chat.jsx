@@ -4,6 +4,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { LOCAL_MSGS, IM_THREADS, GROUP_THREADS, IM_CHIPS, GROUP_CHIPS, parseSlurl } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
 import VoiceChatBar from "../components/VoiceChatBar.jsx";
+import { TabPanel } from "../components/TabGroup.jsx";
 
 function LandmarkCard({ slurlData, state, actions, V, t }) {
   const [imgFailed, setImgFailed] = useState(false);
@@ -261,7 +262,11 @@ export default function Chat() {
       <div style={{ flex: "none", padding: bleed ? "4px 10px 4px" : "4px 12px 6px" }}>
         <VoiceChatBar channelName={voiceChannel} />
       </div>
-      <div style={chatBodyStyle}>
+      <TabPanel
+        baseId={chipList.length ? "chat-threads" : undefined}
+        index={chipList.length ? (chipList.indexOf(activeChip) >= 0 ? chipList.indexOf(activeChip) : 0) : undefined}
+        style={chatBodyStyle}
+      >
         {source.map((m, i) => {
           const acc = m.sys ? V.info : m.me ? V.pri : V.sec2;
           const align = bleed ? { display: "flex", width: "100%" } : { ...wrapBase, ...(m.me ? { justifyContent: "flex-end" } : null) };
@@ -293,7 +298,7 @@ export default function Chat() {
         <div style={{ font: "400 12px/1.4 " + t.font, color: V.ink2, padding: bleed ? "6px 10px" : "4px 2px" }}>
           &gt; Nyx is typing<span style={{ animation: "blink 1s steps(1) infinite" }}>_</span>
         </div>
-      </div>
+      </TabPanel>
       <div style={composerStyle}>
         <div style={composerFieldStyle}>
           <Icon name="smile" size={16} style={{ opacity: 0.55 }} />
