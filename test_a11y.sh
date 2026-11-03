@@ -1,1 +1,2 @@
-grep -rn "onClick=" docs/react/src/components/SystemDialog.jsx
+#!/usr/bin/env bash
+node tools/ci-runner.mjs --a11y

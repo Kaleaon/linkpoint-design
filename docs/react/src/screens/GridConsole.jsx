@@ -25,8 +25,8 @@ export default function GridConsole() {
       <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px", padding: "10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf }}>
         <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
           <span style={{ padding: "4px 8px", borderRadius: V.rs, background: V.surf2, font: "700 10px/1 " + t.font, color: V.ink }}>ENTRIES: {totalCount}</span>
-          <span style={{ padding: "4px 8px", borderRadius: V.rs, background: "rgba(255,176,32,0.15)", font: "700 10px/1 " + t.font, color: "#FFB020" }}>WARN: {warnCount}</span>
-          <span style={{ padding: "4px 8px", borderRadius: V.rs, font: "700 10px/1 " + t.font, background: errorCount > 0 ? "rgba(255,85,85,0.25)" : V.surf2, color: errorCount > 0 ? "#FF5555" : V.ink2 }}>
+          <span style={{ padding: "4px 8px", borderRadius: V.rs, background: "rgba(255,176,32,0.15)", font: "700 10px/1 " + t.font, color: V.warn || "var(--md-sys-color-warning, var(--ktheme-warn))" }}>WARN: {warnCount}</span>
+          <span style={{ padding: "4px 8px", borderRadius: V.rs, font: "700 10px/1 " + t.font, background: errorCount > 0 ? "rgba(255,85,85,0.25)" : V.surf2, color: errorCount > 0 ? (V.err || "var(--md-sys-color-error, var(--ktheme-err))") : V.ink2 }}>
             ERRORS: {errorCount}
           </span>
         </div>
@@ -54,7 +54,7 @@ export default function GridConsole() {
           </KInteractive>
           <KInteractive
             onClick={actions.clearConsoleLogs}
-            style={{ padding: "6px 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf2, font: "700 10px/1 " + t.font, color: "#FF6C6C", cursor: "pointer" }}
+            style={{ padding: "6px 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf2, font: "700 10px/1 " + t.font, color: V.err || "var(--md-sys-color-error, var(--ktheme-err))", cursor: "pointer" }}
             label="Clear logs"
           >
             CLEAR
@@ -62,12 +62,12 @@ export default function GridConsole() {
         </div>
       </div>
 
-      <div style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: "#050B0C", fontFamily: "'JetBrains Mono', monospace" }}>
+      <div style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.bg || "var(--md-sys-color-background, var(--ktheme-bg))", fontFamily: "'JetBrains Mono', monospace" }}>
         {logs.map((cl, i) => {
           let col = V.ink2;
           if (cl.level === "INFO") col = V.sec2 || V.pri;
-          if (cl.level === "WARN") col = "#FFB020";
-          if (cl.level === "ERROR" || cl.level === "FATAL") col = "#FF5555";
+          if (cl.level === "WARN") col = V.warn || "var(--md-sys-color-warning, var(--ktheme-warn))";
+          if (cl.level === "ERROR" || cl.level === "FATAL") col = V.err || "var(--md-sys-color-error, var(--ktheme-err))";
           return (
             <div key={i} style={{ font: "400 11px/1.5 " + t.font, color: col, display: "flex", gap: "8px", padding: "2px 0", borderBottom: "1px solid " + V.surf2 }}>
               <span style={{ opacity: 0.6, flex: "none" }}>[{cl.ts}]</span>

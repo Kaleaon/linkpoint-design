@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL } from "../data/content.js";
-import { HUDS, TARGETS, CSUB, subView, setSub } from "../theme/constants.js";
+import { HUDS, TARGETS, CSUB, subView, setSub, CPAD, CPADR } from "../theme/constants.js";
 import Icon from "../components/Icon.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import RadialPieMenu from "../components/RadialPieMenu.jsx";
 
 const HUD_CELLS = { row: 6, grid: 9, list: 4, bar: 3, pad: 4 };
 // GFX taps cycle the same preferences the Settings screen sets, so the two
@@ -34,16 +36,40 @@ const HUD_COLS = { row: 6, grid: 3, list: 1, bar: 3, pad: 2 };
 // target picker, both Lumiya-style overlays on the render.
 export default function World3D() {
   const { state, actions } = useApp();
-  const { V, t } = useTheme();
+  const { V, t, ink } = useTheme();
+  const [pieMenu, setPieMenu] = useState(null);
+  const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
   const curSub = subView(state, "3D View");
   const overlayBtn = { width: "46px", height: "46px", borderRadius: V.rs, background: V.surf, border: "1px solid " + V.outv, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer", position: "relative" };
   const sheetStyle = { position: "absolute", left: 0, right: 0, bottom: 0, background: V.surf, borderTop: "1px solid " + V.pri, borderRadius: V.rl + " " + V.rl + " 0 0", padding: "16px 16px 20px", maxHeight: "62%", overflowY: "auto" };
   const tgt = TARGETS.find((x) => x.id === state.target) || null;
   const hudPanels = HUDS.filter((h) => state.hudOn[h.id]);
 
+  const openPieMenu = (target, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const container = e.currentTarget.closest('[style*="relative"]');
+    const parentRect = container ? container.getBoundingClientRect() : e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - parentRect.left;
+    const y = e.clientY - parentRect.top;
+    setPieMenu({ target, x: Math.max(115, Math.min(parentRect.width - 115, x)), y: Math.max(115, Math.min(parentRect.height - 115, y)) });
+  };
+
+  const handlePieSelect = (actionId, target) => {
+    setPieMenu(null);
+    if (actionId === "touch") actions.notify(`Touched ${target.name}`);
+    else if (actionId === "pay") actions.setDialog({ icon: "banknote", kind: "PAY L$", title: `Pay ${target.name}`, body: `Enter L$ amount to transfer to ${target.name}.`, meta: "Current Balance: L$ 4,250", buttons: [{ label: "CANCEL" }, { label: "PAY L$ 50", primary: true }] });
+    else if (actionId === "profile") { actions.setScreen("Profile"); actions.notify(`Opened profile: ${target.name}`); }
+    else if (actionId === "mute") actions.notify(`Muted ${target.name}`);
+    else if (actionId === "inspect") { actions.setScreen("Objects"); actions.setTab("Objects", "INSPECT"); }
+    else if (actionId === "track") actions.notify(`Tracking beacon placed on ${target.name}`);
+    else if (actionId === "take") actions.notify(`Took ${target.name} into inventory`);
+    else if (actionId === "sit") { actions.cHold("sit"); actions.notify(`Sitting on ${target.name}`); }
+  };
+
   return (
     <div style={{ flex: 1, minHeight: 0, position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,#1c4a5c 0%,#12333a 46%,#10241d 46%,#0a1112 100%)" }} />
+      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, var(--md-sys-color-surface-variant, var(--ktheme-sky1)) 0%, var(--ktheme-sky2) 46%, var(--ktheme-gnd1) 46%, var(--md-sys-color-background, var(--ktheme-gnd2)) 100%)" }} />
       <div
         style={{
           position: "absolute",
@@ -57,15 +83,25 @@ export default function World3D() {
           transformOrigin: "top center",
         }}
       />
-      <div style={{ position: "absolute", left: "20%", top: "36%", width: "36px", height: "82px", background: V.surf2, border: "1px solid " + V.outv }} />
-      <div style={{ position: "absolute", left: "56%", top: "31%", width: "54px", height: "100px", background: V.surf, border: "1px solid " + V.outv }} />
-      <div style={{ position: "absolute", left: "37%", top: "52%", width: "19px", height: "42px", background: V.pri, opacity: 0.85 }} />
-      <div style={{ position: "absolute", left: "70%", top: "56%", width: "17px", height: "38px", background: V.sec2, opacity: 0.85 }} />
-      <div style={{ position: "absolute", left: "50%", top: "44%", width: "26px", height: "26px", margin: "-13px 0 0 -13px", border: "1px solid " + V.pri, borderRadius: "50%", opacity: 0.8 }} />
+      <div onClick={(e) => openPieMenu({ name: "Sunset Lamp v3", type: "object" }, e)} onContextMenu={(e) => openPieMenu({ name: "Sunset Lamp v3", type: "object" }, e)} title="Tap or Right-Click for Pie Menu: Sunset Lamp v3" style={{ position: "absolute", left: "20%", top: "36%", width: "36px", height: "82px", background: V.surf2, border: "1px solid " + V.outv, cursor: "pointer" }} />
+      <div onClick={(e) => openPieMenu({ name: "Roof Access Door", type: "object" }, e)} onContextMenu={(e) => openPieMenu({ name: "Roof Access Door", type: "object" }, e)} title="Tap or Right-Click for Pie Menu: Roof Access Door" style={{ position: "absolute", left: "56%", top: "31%", width: "54px", height: "100px", background: V.surf, border: "1px solid " + V.outv, cursor: "pointer" }} />
+      <div onClick={(e) => openPieMenu({ name: "Nyx Vaher", type: "avatar" }, e)} onContextMenu={(e) => openPieMenu({ name: "Nyx Vaher", type: "avatar" }, e)} title="Tap or Right-Click for Pie Menu: Nyx Vaher" style={{ position: "absolute", left: "37%", top: "52%", width: "19px", height: "42px", background: V.pri, opacity: 0.85, cursor: "pointer" }} />
+      <div onClick={(e) => openPieMenu({ name: "Kit Sandalwood", type: "avatar" }, e)} onContextMenu={(e) => openPieMenu({ name: "Kit Sandalwood", type: "avatar" }, e)} title="Tap or Right-Click for Pie Menu: Kit Sandalwood" style={{ position: "absolute", left: "70%", top: "56%", width: "17px", height: "38px", background: V.sec2, opacity: 0.85, cursor: "pointer" }} />
+      <div onClick={(e) => openPieMenu({ name: "Sim Center Beacon", type: "object" }, e)} onContextMenu={(e) => openPieMenu({ name: "Sim Center Beacon", type: "object" }, e)} title="Tap or Right-Click for Pie Menu: Sim Center Beacon" style={{ position: "absolute", left: "50%", top: "44%", width: "26px", height: "26px", margin: "-13px 0 0 -13px", border: "1px solid " + V.pri, borderRadius: "50%", opacity: 0.8, cursor: "pointer" }} />
       <div style={{ position: "absolute", left: "70px", top: "12px", padding: "6px 8px", background: V.surf, border: "1px solid " + V.outv, font: "400 10px/1.45 " + t.font, color: V.ink2 }}>
-        Da Boom &lt;128,128,26&gt;
-        <br />
-        draw 96m · 34 fps
+        {isAdvanced ? (
+          <>
+            Da Boom &lt;128,128,26&gt;
+            <br />
+            draw 96m · 34 fps
+          </>
+        ) : (
+          <>
+            Da Boom (Center)
+            <br />
+            View distance 96m · Smooth (34 fps)
+          </>
+        )}
       </div>
 
       <KInteractive
@@ -81,16 +117,14 @@ export default function World3D() {
           <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: "156px", zIndex: 10, background: V.surf, borderRight: "1px solid " + V.pri, padding: "14px 10px", display: "flex", flexDirection: "column", gap: "5px", overflowY: "auto" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", padding: "0 8px 12px" }}>
               <span style={{ flex: 1, font: "700 12px/1.1 " + t.dfont, letterSpacing: ".2em", color: V.pri }}>Linkpoint</span>
-              <span
+              <KInteractive
+                as="span"
                 onClick={() => actions.setNavPeek(false)}
-                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setNavPeek(false); } }}
-                role="button"
-                tabIndex={0}
                 aria-label="Close navigation menu"
                 style={{ cursor: "pointer", color: V.ink2, display: "flex" }}
               >
                 <Icon name="x" size={16} />
-              </span>
+              </KInteractive>
             </div>
             {NAV_ALL.map((n) => {
               const active = state.screen === n.id;
@@ -163,18 +197,23 @@ export default function World3D() {
         </div>
         {curSub === "GFX" ? (
           <div style={{ display: "flex", justifyContent: "center", gap: "6px", flexWrap: "wrap", maxWidth: "88%" }}>
-            {GFX_STRIP.map(([label, key, opts]) => (
-              <Readout
-                key={label} V={V} t={t} label={label} value={state.prefs[key]}
-                onClick={() => {
-                  const next = opts[(opts.indexOf(state.prefs[key]) + 1) % opts.length];
-                  actions.setPref(key, next);
-                  actions.notify(label + " \u2014 " + next);
-                }}
-              />
-            ))}
-            <Readout V={V} t={t} label="SHADOWS" value={state.toggles.shadows ? "ON" : "OFF"} onClick={() => actions.toggleSetting("shadows")} />
-            <Readout V={V} t={t} label="BATTERY" value={state.toggles.battery ? "SAVER" : "FULL"} onClick={() => actions.toggleSetting("battery")} />
+            {GFX_STRIP.map(([label, key, opts]) => {
+              const displayLabel = !isAdvanced
+                ? label === "DRAW" ? "VIEW DISTANCE" : label === "QUALITY" ? "GRAPHICS" : label === "FPS" ? "FRAME RATE" : label
+                : label;
+              return (
+                <Readout
+                  key={label} V={V} t={t} label={displayLabel} value={state.prefs[key]}
+                  onClick={() => {
+                    const next = opts[(opts.indexOf(state.prefs[key]) + 1) % opts.length];
+                    actions.setPref(key, next);
+                    actions.notify(displayLabel + " \u2014 " + next);
+                  }}
+                />
+              );
+            })}
+            <Readout V={V} t={t} label="SHADOWS" value={state.toggles.shadows ? (isAdvanced ? "ON" : "Enabled") : (isAdvanced ? "OFF" : "Disabled")} onClick={() => actions.toggleSetting("shadows")} />
+            <Readout V={V} t={t} label="BATTERY" value={state.toggles.battery ? (isAdvanced ? "SAVER" : "Saver Mode") : (isAdvanced ? "FULL" : "Full Power")} onClick={() => actions.toggleSetting("battery")} />
           </div>
         ) : (
           <div style={{ display: "flex", justifyContent: "center", gap: "6px" }}>
@@ -345,24 +384,263 @@ export default function World3D() {
           </div>
         </div>
       ) : null}
+
+      {/* On-Screen Touch Movement D-Pad Pod */}
+      {state.cPad ? (
+        <div
+          style={{
+            position: "absolute",
+            left: "14px",
+            bottom: "14px",
+            display: "flex",
+            alignItems: "flex-end",
+            gap: "8px",
+            zIndex: 6,
+          }}
+        >
+          {/* 3x3 Movement D-Pad */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 44px)",
+              gridTemplateRows: "repeat(3, 44px)",
+              gap: "4px",
+              background: "rgba(0,0,0,0.55)",
+              padding: "4px",
+              borderRadius: V.rp,
+              backdropFilter: "blur(6px)",
+              border: "1px solid " + V.outv,
+            }}
+          >
+            {CPAD.map((p, i) => {
+              if (!p.k) return <div key={i} style={{ background: "transparent" }} />;
+              const active = p.k === "cam" ? false : state.cHeld === p.k;
+              const bg = active ? V.pri : p.k === "cam" ? V.surf : V.surf2;
+              return (
+                <KInteractive
+                  key={i}
+                  as="button"
+                  onMouseDown={() => (p.k === "cam" ? actions.setCamPreset(state.cCam === "ORBIT" ? "MOUSE" : "ORBIT") : actions.cHold(p.k))}
+                  onMouseUp={() => p.k !== "cam" && actions.holdEnd()}
+                  onTouchStart={() => (p.k === "cam" ? actions.setCamPreset(state.cCam === "ORBIT" ? "MOUSE" : "ORBIT") : actions.cHold(p.k))}
+                  onTouchEnd={() => p.k !== "cam" && actions.holdEnd()}
+                  aria-label={p.k === "cam" ? "Toggle camera mode" : `Move ${p.k}`}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "2px",
+                    cursor: "pointer",
+                    background: bg,
+                    color: active ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
+                    borderRadius: CPADR[i] || V.rs,
+                    border: "1px solid " + V.outv,
+                    font: "700 8px/1 " + t.dfont,
+                    letterSpacing: ".08em",
+                    width: "44px",
+                    height: "44px",
+                  }}
+                >
+                  <Icon name={p.icon} size={16} />
+                  {p.k === "cam" && <span>{state.cCam === "ORBIT" ? "ORBIT" : "FREE"}</span>}
+                </KInteractive>
+              );
+            })}
+          </div>
+
+          {/* Altitude (Fly Up/Dn) and Run toggle strip */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+            <KInteractive
+              as="button"
+              onMouseDown={actions.flyUpDown}
+              onMouseUp={actions.flyRelease}
+              onTouchStart={actions.flyUpDown}
+              onTouchEnd={actions.flyRelease}
+              aria-label="Fly up"
+              style={{
+                width: "44px",
+                height: "36px",
+                background: state.cHeld === "up" ? V.pri : V.surf,
+                color: state.cHeld === "up" ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
+                border: "1px solid " + V.outv,
+                borderRadius: V.rs,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
+            >
+              <Icon name="chevron-up" size={16} />
+            </KInteractive>
+
+            <KInteractive
+              as="button"
+              onMouseDown={actions.flyDnDown}
+              onMouseUp={actions.flyRelease}
+              onTouchStart={actions.flyDnDown}
+              onTouchEnd={actions.flyRelease}
+              aria-label="Fly down"
+              style={{
+                width: "44px",
+                height: "36px",
+                background: state.cHeld === "dn" ? V.pri : V.surf,
+                color: state.cHeld === "dn" ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
+                border: "1px solid " + V.outv,
+                borderRadius: V.rs,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
+            >
+              <Icon name="chevron-down" size={16} />
+            </KInteractive>
+
+            <KInteractive
+              as="button"
+              onClick={actions.toggleRun}
+              aria-label="Toggle run"
+              style={{
+                width: "44px",
+                height: "36px",
+                background: state.cRun ? (V.ok || "#22c55e") : V.surf,
+                color: state.cRun ? "#fff" : V.ink,
+                border: "1px solid " + V.outv,
+                borderRadius: V.rs,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                font: "700 8.5px/1 " + t.dfont,
+              }}
+            >
+              RUN
+            </KInteractive>
+
+            <KInteractive
+              as="button"
+              onClick={actions.togglePad}
+              aria-label="Hide touch movement controls"
+              style={{
+                width: "44px",
+                height: "26px",
+                background: V.surf2,
+                color: V.ink2,
+                border: "1px solid " + V.outv,
+                borderRadius: V.rs,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
+            >
+              <Icon name="eye-off" size={12} />
+            </KInteractive>
+          </div>
+        </div>
+      ) : (
+        <KInteractive
+          as="button"
+          onClick={actions.togglePad}
+          aria-label="Show touch movement controls"
+          style={{
+            position: "absolute",
+            left: "14px",
+            bottom: "14px",
+            height: "34px",
+            padding: "0 12px",
+            background: "rgba(0,0,0,0.65)",
+            border: "1px solid " + V.outv,
+            borderLeft: "4px solid " + V.pri,
+            borderRadius: V.rs,
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            color: V.ink,
+            font: "700 10px/1 " + t.dfont,
+            letterSpacing: ".1em",
+            cursor: "pointer",
+            zIndex: 6,
+          }}
+        >
+          <Icon name="navigation" size={12} style={{ color: V.pri }} />
+          <span>CONTROLS</span>
+        </KInteractive>
+      )}
+
+      {pieMenu && (
+        <RadialPieMenu
+          target={pieMenu.target}
+          x={pieMenu.x}
+          y={pieMenu.y}
+          onSelect={handlePieSelect}
+          onClose={() => setPieMenu(null)}
+        />
+      )}
     </div>
   );
 }
 
 // Ported from the `actionBar` footer strip shown below the 3D view.
 export function World3DActionBar() {
+  const { actions } = useApp();
   const { V, t } = useTheme();
+  const [voiceOn, setVoiceOn] = useState(false);
+
+  const toggleVoice = () => {
+    const next = !voiceOn;
+    setVoiceOn(next);
+    actions.notify(next ? "Spatial Voice active (Open Mic)" : "Spatial Voice muted");
+  };
+
+  const handleAction = (label) => {
+    if (label === "SIT") actions.cHold("sit");
+    else if (label === "RUN") actions.toggleRun();
+    else if (label === "FLY") actions.cPress("fly");
+    else if (label === "TOUCH") actions.notify("Touched selected object");
+    else if (label === "VOICE") toggleVoice();
+  };
+
   const actionBar = [
     { icon: "armchair", label: "SIT" },
     { icon: "footprints", label: "RUN" },
     { icon: "plane", label: "FLY" },
     { icon: "hand", label: "TOUCH" },
+    { icon: voiceOn ? "mic" : "mic-off", label: "VOICE", active: voiceOn },
   ];
+
   return (
     <div style={{ flex: "none", display: "flex", gap: "6px", padding: "10px 12px", borderTop: "1px solid " + V.outv, background: V.surf }}>
       {actionBar.map((a) => (
-        <div key={a.label} style={{ flex: 1, height: "46px", border: "1px solid " + V.outv, borderRadius: V.rs, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "3px", color: V.ink }}>
-          <Icon name={a.icon} size={17} />
+        <div
+          key={a.label}
+          onClick={() => handleAction(a.label)}
+          role="button"
+          tabIndex={0}
+          aria-label={a.label}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleAction(a.label);
+            }
+          }}
+          style={{
+            flex: 1,
+            height: "46px",
+            border: "1px solid " + (a.active ? V.pri : V.outv),
+            borderRadius: V.rs,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "3px",
+            color: a.active ? V.onpriC : V.ink,
+            background: a.active ? V.priC : "transparent",
+            cursor: "pointer",
+          }}
+        >
+          <Icon name={a.icon} size={17} style={{ color: a.active ? V.pri : "currentColor" }} />
           <span style={{ font: "600 9px/1 " + t.font, letterSpacing: ".12em" }}>{a.label}</span>
         </div>
       ))}

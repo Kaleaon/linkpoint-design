@@ -3,6 +3,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { FRIEND_ROWS, RADAR_AVATARS, SEARCH_STRANGERS, IM_CHIPS } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
 import FormInput from "../components/FormInput.jsx";
+import { SkeletonCardList } from "../components/Skeletons.jsx";
 
 const TABS = [
   { id: "FRIENDS", label: "FRIENDS", icon: "users" },
@@ -122,11 +123,17 @@ export default function Search() {
     emptyText = q.length < 2 ? "> type a name to search the grid" : "> no residents match";
   }
 
+  const isLoading = state?.cond === "loading";
+
   return (
-    <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
+    <div style={{ flex: 1, minHeight: "400px", display: "flex", flexDirection: "column" }}>
       <div style={{ flex: "none", display: "flex", alignItems: "center", gap: "8px", padding: "14px 16px 10px" }}>
         <div
           onClick={() => actions.setScreen(state.searchFrom || "Friends")}
+          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setScreen(state.searchFrom || "Friends"); } }}
+          role="button"
+          tabIndex={0}
+          aria-label="Go back"
           style={{ width: "36px", height: "36px", display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer" }}
         >
           <Icon name="chevron-left" size={22} />
@@ -174,15 +181,21 @@ export default function Search() {
           value={state.searchQuery}
           onChange={(e) => actions.setSearchQuery(e.target.value)}
           placeholder={tab === "SEARCH" ? "resident name (min 2 chars)" : "filter by name"}
-          style={{ flex: 1, minWidth: 0, border: "none", background: "transparent", font: "400 13px/1 " + t.font, color: V.ink, outline: "none" }}
+          style={{ flex: 1, minWidth: 0, border: "none", background: "transparent", font: "400 13px/1 " + t.font, color: V.ink }}
         />
       </div>
 
-      <div style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "0 16px 16px", display: "flex", flexDirection: "column", gap: "8px" }}>
-        {rows}
-        {rows.length === 0 ? (
-          <div style={{ padding: "40px 0", textAlign: "center", font: "400 12px/1.5 " + t.font, color: V.ink2 }}>{emptyText}</div>
-        ) : null}
+      <div style={{ flex: 1, minHeight: "300px", overflowY: "auto", padding: "0 16px 16px", display: "flex", flexDirection: "column", gap: "8px" }}>
+        {isLoading ? (
+          <SkeletonCardList style={{ minHeight: "300px" }} />
+        ) : (
+          <>
+            {rows}
+            {rows.length === 0 ? (
+              <div style={{ padding: "40px 0", textAlign: "center", font: "400 12px/1.5 " + t.font, color: V.ink2 }}>{emptyText}</div>
+            ) : null}
+          </>
+        )}
       </div>
     </div>
   );

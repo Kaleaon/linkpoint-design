@@ -29,6 +29,11 @@ export const FLOATERS = [
   { id:"Diagnostics", title:"Statistics",    icon:"activity",       x:1056, y:462, w:346, h:196 },
   { id:"Offline Grid", title:"Offline Grid", icon:"server",         x:220,  y:60,  w:520, h:480 },
   { id:"Grid Console", title:"Grid Console", icon:"terminal",       x:180,  y:90,  w:560, h:450 },
+  { id:"Outfits",     title:"Outfits",       icon:"shirt",          x:380,  y:140, w:400, h:420 },
+  { id:"Objects",     title:"Objects",       icon:"box",            x:420,  y:120, w:440, h:380 },
+  { id:"Parcel",      title:"About Land",    icon:"map-pin",        x:360,  y:160, w:420, h:400 },
+  { id:"Transactions",title:"L$ Ledger",     icon:"banknote",       x:390,  y:130, w:450, h:390 },
+  { id:"Mute List",   title:"Block List",    icon:"volume-x",       x:440,  y:170, w:410, h:360 },
 ];
 export const FMENU = [
   { label:"File",  items:[["Upload Image…","⌘U"],["Take Snapshot","⌘`"],["Save Texture As…",""],["Quit","⌘Q"]] },
@@ -93,6 +98,7 @@ export const CSUB = {
   "Mute List":   [["AVATARS", "· 01"], ["OBJECTS", "· 02"]],
   "Offline Grid": [["STATUS", "· 01"], ["ACCOUNT", "· 02"], ["OAR", "· 03"], ["ASSETS", "· 04"], ["CACHE", "· 05"]],
   "Grid Console": [["ALL", "· 01"], ["ERRORS", "· 02"]],
+  Search:        [["FRIENDS", "· 01"], ["NEARBY", "· 02"], ["SEARCH", "· 03"]],
 };
 
 // The screen's current sub-view: `tabs[screen]` when it is one of that screen's
@@ -106,12 +112,14 @@ export const subView = (state, scr) => {
   const subs = (CSUB[scr] || []).map((x) => x[0]);
   if (!subs.length) return null;
   if (scr === "Radar") return state.rMode === "OBJ" ? "OBJECT" : "AVATAR";
+  if (scr === "Search") return state.searchTab || "FRIENDS";
   if (scr === "Settings" || scr === "Cache") return scr === "Cache" ? "CACHE" : "PREFS";
   const cur = state.tabs[scr];
   return subs.includes(cur) ? cur : subs[0];
 };
 export const setSub = (actions, scr, label) => {
   if (scr === "Radar") return actions.setRMode(label === "AVATAR" ? "AV" : "OBJ");
+  if (scr === "Search") return actions.setSearchTab(label);
   if (scr === "Settings" || scr === "Cache") return actions.setScreen(label === "CACHE" ? "Cache" : "Settings");
   return actions.setTab(scr, label);
 };

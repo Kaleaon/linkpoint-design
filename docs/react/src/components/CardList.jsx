@@ -1,15 +1,26 @@
 import { useState, useRef, useCallback } from "react";
-import { useTheme } from "../context/ThemeContext.jsx";
+import { useThemeTokens } from "../context/ThemeContext.jsx";
 import { useApp } from "../context/AppContext.jsx";
 import Card from "./Card.jsx";
 import Icon from "./Icon.jsx";
+import { SkeletonCardList } from "./Skeletons.jsx";
 
 // Ported from `cardListStyle` in renderVals() — the scrollable column that
 // Friends/Groups/Notices/Teleport/Settings/Diagnostics all share.
 // Enhanced with pull-to-refresh swipe gesture detection for balance sync.
 export default function CardList({ cards }) {
-  const { LK, V, t } = useTheme();
-  const { actions } = useApp();
+  let LK = {}, V = {}, t = {};
+  try {
+    const themeCtx = useThemeTokens();
+    if (themeCtx) {
+      LK = themeCtx.LK || {};
+      V = themeCtx.V || {};
+      t = themeCtx.t || {};
+    }
+  } catch (e) {
+    // Fallback if rendered outside ThemeProvider
+  }
+  const { state, actions } = useApp();
 
   const [pullDistance, setPullDistance] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
@@ -17,6 +28,8 @@ export default function CardList({ cards }) {
   const containerRef = useRef(null);
   const touchStartYRef = useRef(0);
   const isPullingRef = useRef(false);
+
+  const isLoading = state?.cond === "loading";
 
   const handleTouchStart = useCallback((e) => {
     if (e.touches.length !== 1) return;
@@ -61,15 +74,19 @@ export default function CardList({ cards }) {
     }
   }, [pullDistance, refreshing, actions]);
 
+  if (isLoading) {
+    return <SkeletonCardList style={{ minHeight: "320px" }} />;
+  }
+
   const style = {
     flex: 1,
-    minHeight: 0,
+    minHeight: "320px",
     overflowY: "auto",
-    padding: LK.card === "flat" ? "0 12px 18px 0" : "2px 16px 18px",
+    padding: LK?.card === "flat" ? "0 12px 18px 0" : "2px 16px 18px",
     display: "flex",
     flexDirection: "column",
-    gap: LK.gap,
-    maxWidth: LK.measure || "none",
+    gap: LK?.gap || "8px",
+    maxWidth: LK?.measure || "none",
     boxSizing: "border-box",
     position: "relative",
   };
@@ -98,11 +115,11 @@ export default function CardList({ cards }) {
             height: `${indicatorHeight}px`,
             overflow: "hidden",
             transition: refreshing ? "height 0.2s ease" : "none",
-            color: V ? V.pri : "#00f0ff",
+            color: V.pri || "#6CFF9A",
             fontSize: "12px",
             fontWeight: "600",
-            fontFamily: t ? t.font : "sans-serif",
-            borderBottom: "1px dashed " + (V ? V.outv : "#333"),
+            fontFamily: t.font || "sans-serif",
+            borderBottom: "1px dashed " + (V.outv || "#365047"),
             marginBottom: "4px",
           }}
         >

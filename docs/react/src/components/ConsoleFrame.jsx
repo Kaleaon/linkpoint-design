@@ -1,13 +1,14 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL, HEAD } from "../data/content.js";
-import { LAYOUTS } from "../theme/layouts.js";
+import { LAYOUTS, resolveLayout } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { CBTN, CSUB, CPAD, CPADR, subView, setSub } from "../theme/constants.js";
 import Icon from "./Icon.jsx";
 import A11yControl from "./A11yControl.jsx";
 import ScreenBody from "./ScreenBody.jsx";
 import { navActive } from "../theme/look.js";
+import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
 
 // The 3D View's sim/location — shared by the in-scene region tag and the
 // console's own top bar so the two never disagree.
@@ -22,12 +23,16 @@ const SIM_COORD = { x: 128, y: 64, z: 42 };
 export default function ConsoleFrame() {
   const { state, actions } = useApp();
   const { V, t, C, ink, consoleScene } = useTheme();
+  const reducedMotion = usePrefersReducedMotion();
   const tick = state.tick || 0;
+  const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
 
-  const cfBar = { position: "absolute", left: 0, top: 0, right: 0, height: C.bar + "px", background: V.pri, borderRadius: Math.round(C.bar * 0.66) + "px 0 0 0" };
-  const cfBarEnd = { position: "absolute", right: 0, top: 0, width: (C.wide ? 104 : 66) + "px", height: C.bar + "px", background: V.sec2 };
+  const cfBar = { position: "absolute", left: 0, top: 0, right: (C.wide ? 108 : 70) + "px", height: C.bar + "px", background: V.pri, borderRadius: Math.round(C.bar * 0.66) + "px 0 0 0" };
+  const cfBarEnd = { position: "absolute", right: 0, top: 0, width: (C.wide ? 104 : 66) + "px", height: C.bar + "px", background: V.sec2, borderRadius: "0 " + Math.round(C.bar * 0.66) + "px " + Math.round(C.bar * 0.66) + "px 0" };
   const cfBarGap = { position: "absolute", right: (C.wide ? 108 : 70) + "px", top: 0, width: C.gap + "px", height: C.bar + "px", background: V.bg };
-  const headMap = HEAD(LAYOUTS[state.layout].name, PALETTES[state.palette].name, { cleared: state.cacheCleared, limit: state.prefs.cacheLimit, loc: state.prefs.cacheLoc });
+  const L = resolveLayout(state.layout);
+  const P = PALETTES[state.palette] || PALETTES.lcars;
+  const headMap = HEAD(L.name, P.name, { cleared: state.cacheCleared, limit: state.prefs.cacheLimit, loc: state.prefs.cacheLoc });
   const cfTitleText = consoleScene ? SIM_NAME : (headMap[state.screen] || ["", ""])[0];
   const cfTitle = {
     position: "absolute", right: (C.wide ? 128 : 84) + "px", left: C.rail + C.gap + "px", top: 0, height: C.bar + "px",
@@ -51,16 +56,28 @@ export default function ConsoleFrame() {
     // carries the supporting world telemetry (location, height, ping)
     // instead of the generic grid-link stats every other screen shows here.
     const items = consoleScene
-      ? [
-          { label: "LOC", value: SIM_COORD.x + "," + SIM_COORD.y },
-          { label: "HEIGHT", value: SIM_COORD.z + "M" },
-          { label: "PING", value: (24 + (tick % 19)) + "MS" },
-        ]
-      : [
-          { label: "PING", value: (24 + (tick % 19)) + "MS" },
-          { label: "SPEED", value: (1.1 + (tick % 8) * 0.15).toFixed(1) + "MB/S" },
-          { label: "LAG", value: ((tick % 6) * 0.08).toFixed(2) + "S" },
-        ];
+      ? isAdvanced
+        ? [
+            { label: "LOC", value: SIM_COORD.x + "," + SIM_COORD.y },
+            { label: "HEIGHT", value: SIM_COORD.z + "M" },
+            { label: "PING", value: (24 + (tick % 19)) + "MS" },
+          ]
+        : [
+            { label: "POSITION", value: SIM_COORD.x + "," + SIM_COORD.y },
+            { label: "ALTITUDE", value: SIM_COORD.z + "m" },
+            { label: "RESPONSE", value: "Good (" + (24 + (tick % 19)) + "ms)" },
+          ]
+      : isAdvanced
+        ? [
+            { label: "PING", value: (24 + (tick % 19)) + "MS" },
+            { label: "SPEED", value: (1.1 + (tick % 8) * 0.15).toFixed(1) + "MB/S" },
+            { label: "LAG", value: ((tick % 6) * 0.08).toFixed(2) + "S" },
+          ]
+        : [
+            { label: "RESPONSE", value: "Good (" + (24 + (tick % 19)) + "ms)" },
+            { label: "SPEED", value: (1.1 + (tick % 8) * 0.15).toFixed(1) + " MB/s" },
+            { label: "DELAY", value: ((tick % 6) * 0.08).toFixed(2) + "s" },
+          ];
     const last = items.length - 1;
     return items.map((n, i) => {
       const bg = [V.sec2, V.surf2, V.sec][i % 3];
@@ -106,15 +123,20 @@ export default function ConsoleFrame() {
       <div style={cfCurveFill} />
       <div style={cfCurveCut} />
 
-      <div style={cfRailCol}>
+      <nav aria-label="Console Navigation" style={cfRailCol}>
         <div style={cfArm}>LCARS 4701</div>
-        {consoleNav.map((n, i) => (
-          <A11yControl key={i} onClick={n.pick} aria-label={n.label || "Nav item"} style={n.style}>
-            {n.code ? <span style={n.codeStyle}>{n.code}</span> : null}
-            <span style={{ font: "inherit", letterSpacing: "inherit" }}>{n.label}</span>
-          </A11yControl>
-        ))}
-      </div>
+        {consoleNav.map((n, i) => {
+          if (!n.label && !n.code) {
+            return <div key={i} aria-hidden="true" style={n.style} />;
+          }
+          return (
+            <A11yControl key={i} onClick={n.pick} aria-label={n.label || "Nav item"} style={n.style}>
+              {n.code ? <span style={n.codeStyle}>{n.code}</span> : null}
+              <span style={{ font: "inherit", letterSpacing: "inherit" }}>{n.label}</span>
+            </A11yControl>
+          );
+        })}
+      </nav>
 
       {consoleScene ? (
         <>
@@ -141,7 +163,7 @@ export default function ConsoleFrame() {
                 alignItems: "center", justifyContent: "center", gap: "4px", background: bg,
                 color: dis ? V.ink2 : ink(bg, [V.bg, V.onpri, V.ink]), opacity: dis ? 0.72 : 1, cursor: dis ? "not-allowed" : "pointer",
                 borderRadius: i === 0 ? C.rad + "px 0 0 " + C.rad + "px" : i === state.cDock.length - 1 && !state.cEdit ? "0 " + C.rad + "px " + C.rad + "px 0" : "0",
-                animation: state.cEdit ? "wig .42s ease-in-out infinite" : "none", animationDelay: (i % 4) * 0.07 + "s",
+                animation: state.cEdit ? (reducedMotion ? "none" : "wig .42s ease-in-out infinite") : "none", animationDelay: (i % 4) * 0.07 + "s",
               }}
             >
               <Icon name={b.icon} size={19} />
@@ -180,8 +202,13 @@ export default function ConsoleFrame() {
             font: "500 " + (C.wide ? 11.5 : 9.5) + "px/1 " + t.font, letterSpacing: ".05em", overflow: "hidden", whiteSpace: "nowrap",
           }}
         >
-          <span>{state.cReason || "SIM " + (21.4 + (tick % 13) * 0.1).toFixed(1) + "ms · PKT " + ((tick % 7) * 0.1).toFixed(1) + "% · FPS " + (58 - (tick % 5))}</span>
-          <span>{"AGENTS " + (11 + (tick % 4))}</span>
+          <span>
+            {state.cReason || (isAdvanced
+              ? "SIM " + (21.4 + (tick % 13) * 0.1).toFixed(1) + "ms · PKT " + ((tick % 7) * 0.1).toFixed(1) + "% · FPS " + (58 - (tick % 5))
+              : "Server: " + (21.4 + (tick % 13) * 0.1).toFixed(1) + "ms · Loss: " + ((tick % 7) * 0.1).toFixed(1) + "% · FPS: " + (58 - (tick % 5))
+            )}
+          </span>
+          <span>{isAdvanced ? "AGENTS " + (11 + (tick % 4)) : "Avatars: " + (11 + (tick % 4))}</span>
         </span>
       </div>
 
@@ -246,20 +273,27 @@ function buildConsoleNav({ state, actions, V, t, C, ink }) {
 function ConsoleScene() {
   const { state, actions } = useApp();
   const { V, t, C, ink } = useTheme();
+  const reducedMotion = usePrefersReducedMotion();
+  const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
 
   const cfScene = {
     position: "absolute", left: C.rail + C.gap + "px", top: C.bar + C.gap + "px", right: C.gap + "px",
     bottom: C.foot + C.dock + C.gap * 3 + "px", borderRadius: C.rad + "px 0 0 0", overflow: "hidden", cursor: "grab",
     background: "linear-gradient(180deg," + V.sky1 + " 0%," + V.sky2 + " 46%," + V.gnd + " 46%," + V.gnd2 + " 100%)",
   };
-  const cfParallax = { position: "absolute", inset: 0, transform: "translate(" + (-state.cHdg * 0.9).toFixed(1) + "px," + (state.cPitch * 0.8).toFixed(1) + "px)", transition: state.cDrag ? "none" : "transform .35s ease-out" };
+  const cfParallax = { position: "absolute", inset: 0, transform: reducedMotion ? "none" : "translate(" + (-state.cHdg * 0.9).toFixed(1) + "px," + (state.cPitch * 0.8).toFixed(1) + "px)", transition: reducedMotion || state.cDrag ? "none" : "transform .35s ease-out" };
   // The console scene has one readout strip, so 3D View's CAM/GFX sub-views swap
   // what it reports rather than adding a second strip to the LCARS frame.
   const regionRead =
     state.screen === "3D View" && subView(state, "3D View") === "GFX"
-      ? "GFX · DRAW " + state.prefs.draw.toUpperCase() + " · " + state.prefs.quality.toUpperCase() + " · " + state.prefs.fps.toUpperCase() +
-        " · SHADOWS " + (state.toggles.shadows ? "ON" : "OFF") + " · " + (state.toggles.battery ? "SAVER" : "FULL")
-      : SIM_NAME.toUpperCase() + " · " + SIM_COORD.x + "," + SIM_COORD.y + "," + SIM_COORD.z + " · HDG " + String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(3, "0") + "° " + (state.cPitch > 2 ? "DN" : state.cPitch < -2 ? "UP" : "LVL");
+      ? isAdvanced
+        ? "GFX · DRAW " + state.prefs.draw.toUpperCase() + " · " + state.prefs.quality.toUpperCase() + " · " + state.prefs.fps.toUpperCase() +
+          " · SHADOWS " + (state.toggles.shadows ? "ON" : "OFF") + " · " + (state.toggles.battery ? "SAVER" : "FULL")
+        : "Graphics · View: " + state.prefs.draw + " · " + state.prefs.quality + " · " + state.prefs.fps +
+          " · Shadows: " + (state.toggles.shadows ? "On" : "Off") + " · " + (state.toggles.battery ? "Saver" : "Full")
+      : isAdvanced
+        ? SIM_NAME.toUpperCase() + " · " + SIM_COORD.x + "," + SIM_COORD.y + "," + SIM_COORD.z + " · HDG " + String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(3, "0") + "° " + (state.cPitch > 2 ? "DN" : state.cPitch < -2 ? "UP" : "LVL")
+        : SIM_NAME + " · Location: <" + SIM_COORD.x + ", " + SIM_COORD.y + ", " + SIM_COORD.z + "> · Facing: " + String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(3, "0") + "° (" + (state.cPitch > 2 ? "Down" : state.cPitch < -2 ? "Up" : "Level") + ")";
 
   return (
     <div onMouseDown={actions.sceneDown} onMouseMove={actions.sceneMove} onMouseUp={actions.sceneUp} onMouseLeave={actions.sceneUp} style={cfScene}>
@@ -287,6 +321,21 @@ function ConsoleScene() {
                   onMouseDown={() => actions.cHold(p.k)}
                   onMouseUp={() => actions.cHold("")}
                   onMouseLeave={() => actions.cHold("")}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={p.k === "cam" ? (state.cCam === "ORBIT" ? "Orbit Camera" : "Mouse Camera") : p.k}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      actions.cHold(p.k);
+                    }
+                  }}
+                  onKeyUp={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      actions.cHold("");
+                    }
+                  }}
                   style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "2px", cursor: "pointer", background: bg, color: ink(bg, [V.bg, V.onpri, V.ink]), opacity: 0.92, borderRadius: CPADR[i] || "0", font: "700 8px/1 " + t.dfont, letterSpacing: ".08em" }}
                 >
                   {p.icon ? <Icon name={p.icon} size={19} /> : null}
@@ -300,10 +349,10 @@ function ConsoleScene() {
               const mk = (on, bg) => ({ width: (C.wide ? 60 : 52) + "px", height: (C.wide ? 44 : 46) + "px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", opacity: 0.92, background: on ? V.pri : bg, color: ink(on ? V.pri : bg, [V.bg, V.onpri, V.ink]), font: "700 12px/1 " + t.dfont, letterSpacing: ".14em" });
               return (
                 <>
-                  <div onMouseDown={actions.flyUpDown} onMouseUp={actions.flyRelease} onMouseLeave={actions.flyRelease} style={{ ...mk(state.cHeld === "up", V.sec), borderRadius: "0 " + C.rad + "px 0 0" }}>
+                  <div onMouseDown={actions.flyUpDown} onMouseUp={actions.flyRelease} onMouseLeave={actions.flyRelease} role="button" tabIndex={0} aria-label="Fly Up" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.flyUpDown(); } }} onKeyUp={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.flyRelease(); } }} style={{ ...mk(state.cHeld === "up", V.sec), borderRadius: "0 " + C.rad + "px 0 0" }}>
                     UP
                   </div>
-                  <div onMouseDown={actions.flyDnDown} onMouseUp={actions.flyRelease} onMouseLeave={actions.flyRelease} style={mk(state.cHeld === "dn", V.sec)}>
+                  <div onMouseDown={actions.flyDnDown} onMouseUp={actions.flyRelease} onMouseLeave={actions.flyRelease} role="button" tabIndex={0} aria-label="Fly Down" onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.flyDnDown(); } }} onKeyUp={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.flyRelease(); } }} style={mk(state.cHeld === "dn", V.sec)}>
                     DN
                   </div>
                   <A11yControl onClick={actions.toggleRun} aria-label="Toggle run" style={mk(state.cRun, V.surf2)}>

@@ -26,7 +26,7 @@ on:
     types: [react-linkpoint-updated]
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: sync-react-linkpoint-todos
@@ -36,6 +36,8 @@ jobs:
   sync:
     name: Task 1 - Synchronize React-Linkpoint TODO Checklist
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Check out linkpoint-design
         uses: actions/checkout@v4
@@ -49,19 +51,25 @@ jobs:
 
       - name: Commit the list if it moved
         if: steps.sync.outputs.changed == 'true'
+        env:
+          NEW_ITEMS: ${{ steps.sync.outputs.new_items }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add docs/react-linkpoint-todo.md
-          git commit -m "chore(todo): schedule ${{ steps.sync.outputs.new_items }} upstream change(s) from React-Linkpoint"
+          git commit -m "chore(todo): schedule $NEW_ITEMS upstream change(s) from React-Linkpoint"
           git push
 
       - name: Summary
+        env:
+          NEW_ITEMS: ${{ steps.sync.outputs.new_items }}
+          OPEN_ITEMS: ${{ steps.sync.outputs.open_items }}
+          CHANGED: ${{ steps.sync.outputs.changed }}
         run: |
           {
             echo "### React-Linkpoint todo sync"
             echo
-            echo "- new items scheduled: **${{ steps.sync.outputs.new_items }}**"
-            echo "- open items in total: **${{ steps.sync.outputs.open_items }}**"
-            echo "- list changed: **${{ steps.sync.outputs.changed }}**"
+            echo "- new items scheduled: **$NEW_ITEMS**"
+            echo "- open items in total: **$OPEN_ITEMS**"
+            echo "- list changed: **$CHANGED**"
           } >> "$GITHUB_STEP_SUMMARY"

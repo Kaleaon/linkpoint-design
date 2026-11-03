@@ -33,10 +33,12 @@ button {
 button:focus-visible,
 [role="button"]:focus-visible,
 .k-interactive:focus-visible,
+[role="tab"]:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 2px solid #6cff9a;
+  outline: 2px solid var(--k-focus-ring, currentColor);
   outline-offset: 2px;
+  box-shadow: 0 0 0 1px var(--k-focus-ring-shadow, rgba(0, 0, 0, 0.6));
 }
 
 .device-frame {
@@ -131,3 +133,29 @@ select:focus-visible {
     transform: rotate(1.1deg);
   }
 }
+
+/* GPU-accelerated opacity shimmer animation for contextual skeletons */
+@keyframes skeleton-shimmer {
+  0% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0.45;
+  }
+}
+
+.skeleton-shimmer {
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  will-change: opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer {
+    animation: none !important;
+    opacity: 0.65;
+  }
+}
+

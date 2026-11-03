@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { EventBus, intentReducer } from "../../../shared/eventBus.js";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { DEVICES, FLOATERS, HUD_DEFAULT, HUDS, CBTN, GRIDS } from "../theme/constants.js";
@@ -50,10 +51,20 @@ export function useAppState() {
   });
   // Everything the preferences screens expose as a <select>: one flat bag so a
   // new preference is one entry here plus one card, not a new state key each time.
-  const [prefs, setPrefs] = useState({
-    draw: "96 m", quality: "Balanced", fps: "60 fps", complexity: "80 000",
-    volume: "70%", translate: "Off", maturity: "Moderate", bandwidth: "1 500 kbps",
-    cacheLimit: 512, cacheLoc: "Internal storage",
+  const [prefs, setPrefs] = useState(() => {
+    let savedVerbosity = "simple";
+    try {
+      const val = localStorage.getItem("telemetryVerbosity");
+      if (val === "simple" || val === "advanced") {
+        savedVerbosity = val;
+      }
+    } catch {}
+    return {
+      draw: "96 m", quality: "Balanced", fps: "60 fps", complexity: "80 000",
+      volume: "70%", translate: "Off", maturity: "Moderate", bandwidth: "1 500 kbps",
+      cacheLimit: 512, cacheLoc: "Internal storage",
+      telemetryVerbosity: savedVerbosity,
+    };
   });
   const [cacheCleared, setCacheCleared] = useState({});
   const [camPreset, setCamPreset] = useState("ORBIT");
@@ -81,6 +92,7 @@ export function useAppState() {
   const [cDock, setCDock] = useState(["fly", "sit", "snap", "mini", "inv", "home", "ao", "sun"]);
   const [flOpen, setFlOpen] = useState({ Chat: true, Radar: true, Friends: true, Inventory: true, Map: true });
   const [flMin, setFlMin] = useState({});
+  const [flShade, setFlShade] = useState({});
   const [flRect, setFlRect] = useState({});
   const [flZ, setFlZ] = useState(["Map", "Inventory", "Friends", "Radar", "Chat"]);
   const [menu, setMenu] = useState(null);
@@ -146,6 +158,7 @@ export function useAppState() {
   }, [deviceForViewport]);
 
   // ---- timers / drag refs (were plain `this.x` fields on the class) -----
+  const eventBusRef = useRef(new EventBus());
   const cflRef = useRef(null); // console-nav tap flash timeout
   const clpRef = useRef(null); // console dock long-press-to-edit timeout
   const rlpRef = useRef(null); // radar row long-press timeout
@@ -240,7 +253,20 @@ export function useAppState() {
   const setTab = useCallback((scr, v) => setTabs((s) => ({ ...s, [scr]: v })), []);
   const dismiss = useCallback((key) => setDismissed((s) => ({ ...s, [key]: true })), []);
   const toggleSetting = useCallback((key) => setToggles((s) => ({ ...s, [key]: !s[key] })), []);
-  const setPref = useCallback((key, v) => setPrefs((s) => ({ ...s, [key]: v })), []);
+  const setTelemetryVerbosity = useCallback((mode) => {
+    const validMode = mode === "advanced" ? "advanced" : "simple";
+    setPrefs((s) => ({ ...s, telemetryVerbosity: validMode }));
+    try {
+      localStorage.setItem("telemetryVerbosity", validMode);
+    } catch {}
+  }, []);
+  const setPref = useCallback((key, v) => {
+    if (key === "telemetryVerbosity") {
+      setTelemetryVerbosity(v);
+    } else {
+      setPrefs((s) => ({ ...s, [key]: v }));
+    }
+  }, [setTelemetryVerbosity]);
   const pin = useCallback((key) => setPinned((s) => ({ ...s, [key]: !s[key] })), []);
   const respondLure = useCallback((lureId, response, regionName, coords) => {
     setLureState((s) => ({ ...s, [lureId]: response }));
@@ -444,8 +470,13 @@ export function useAppState() {
     [flMin]
   );
 
+  const flToggleShade = useCallback((id) => {
+    setFlShade((s) => ({ ...s, [id]: !s[id] }));
+  }, []);
+
   const flClose = useCallback((id) => {
     setFlOpen((o) => ({ ...o, [id]: false }));
+    setFlShade((s) => ({ ...s, [id]: false }));
     setMenu(null);
   }, []);
 
@@ -722,12 +753,47 @@ export function useAppState() {
     [navMode, flFocus]
   );
 
+  const getEventBus = useCallback(() => eventBusRef.current, []);
+
+  const dispatchIntent = useCallback(
+    (type, payload = {}) => {
+      const bus = eventBusRef.current;
+      const intentEvent = bus.dispatch({ type, payload });
+
+      if (type === "DIALOG_ACTION" || type === "DIALOG_BUTTON_CLICK") {
+        setDialog(null);
+        const buttonLabel = payload.label || payload.actionId || "";
+        const dlgTitle = payload.title || "";
+        if (dlgTitle && buttonLabel) {
+          notify(dlgTitle.split(" ").slice(0, 4).join(" ") + " — " + buttonLabel);
+        } else if (buttonLabel) {
+          notify(buttonLabel);
+        }
+      } else if (type === "DIALOG_CLOSE" || type === "DIALOG_DISMISS") {
+        setDialog(null);
+      } else if (type === "FLOATER_MINIMIZE" || type === "FLOATER_TOGGLE") {
+        if (payload.id) flToggle(payload.id);
+      } else if (type === "FLOATER_SHADE") {
+        if (payload.id) flToggleShade(payload.id);
+      } else if (type === "FLOATER_CLOSE") {
+        if (payload.id) flClose(payload.id);
+      } else if (type === "NAVIGATE_SCREEN") {
+        if (payload.screen) screenPick(payload.screen);
+      } else if (type === "QUICK_CHAT_SUBMIT") {
+        if (payload.message) notify("Local Chat (" + payload.message + ")");
+      }
+
+      return intentEvent;
+    },
+    [flToggle, flToggleShade, flClose, notify, screenPick]
+  );
+
   return {
     state: {
       layout, palette, customTheme, device, screen, dialog, dense, tabs, chip, tileOk, invOpen, invSelectMode, invSelected, invMoveModal, invItems, dismissed, pinned, lureState,
       toggles, cond, hudOn, hudPos, hudPicker, target, targetPicker, navPeek,
       cPad, cHeld, cRun, cCam, cHdg, cPitch, cDrag, cEdit, cFlash, cReason, cTog,
-      rMode, rOpen, rMenu, cDock, flOpen, flMin, flRect, flZ, menu, tick,
+      rMode, rOpen, rMenu, cDock, flOpen, flMin, flShade, flRect, flZ, menu, tick,
       loginMode, loginGrid, loginBusy, loginError, customGrids, addGrid, addGridName, addGridHost,
       searchFrom, searchTab, searchQuery, searchState, reconnecting, toast, offlineRunning, offlineUser, offlineAccountModal, offlineAccountFirstName, offlineAccountLastName, offlineAccountPassword, oarFile, oarRegionName, oarCoords, oarPrims, assetName, assetType, localAssets, offlineCacheSize, consoleLevel, consoleQuery, consoleAutoscroll, consoleLogs,
       prefs, cacheCleared, camPreset, lindenBalance, exchangeRate, lastSyncedAt,
@@ -737,15 +803,16 @@ export function useAppState() {
       allGrids, openAddGrid, cancelAddGrid, saveCustomGrid, setAddGridName, setAddGridHost,
       setTab, setChip, setTileOk, toggleInvFolder, toggleInvSelectMode, toggleInvSelectedItem, invLongPressItem, invWearSelected, invOpenMoveModal, invCloseMoveModal, invMoveSelected, invDeleteSelected, dismiss, toggleSetting, pin, respondLure, teleportToRegion, saveLandmark,
       cycleLayout, cyclePalette, setCond, setMenu,
-      flR, flDrag, flFocus, flToggle, flClose,
+      flR, flDrag, flFocus, flToggle, flToggleShade, flClose,
       hudDrag, toggleHud, setHudPicker, setTarget, setTargetPicker, setNavPeek,
       cf, cTap, cHold, cPress, sceneDown, sceneMove, sceneUp,
       holdStart, holdEnd, endEdit, togglePad, toggleRun, flyUpDown, flyDnDown, flyRelease, addSlot, removeDockSlot,
       radarTap, radarHold, radarRelease, radarBlipPick,
       setRMode,
       setLoginMode, setLoginGrid, connectLogin, openSearch, setSearchTab, setSearchQuery, searchAdd, startIm, reconnect, notify,
-      setPref, clearCache, clearAllCache, setCamPreset, toggleOfflineGrid, setOfflineAccountModal, setOfflineAccountFirstName, setOfflineAccountLastName, setOfflineAccountPassword, saveOfflineAccount, importOarBackup, setAssetName, setAssetType, addLocalAsset, setOfflineCacheSize, clearOfflineCache, setConsoleLevel, setConsoleQuery, setConsoleAutoscroll, clearConsoleLogs, copyConsoleLogs, downloadConsoleLogs,
+      setPref, setTelemetryVerbosity, clearCache, clearAllCache, setCamPreset, toggleOfflineGrid, setOfflineAccountModal, setOfflineAccountFirstName, setOfflineAccountLastName, setOfflineAccountPassword, saveOfflineAccount, importOarBackup, setAssetName, setAssetType, addLocalAsset, setOfflineCacheSize, clearOfflineCache, setConsoleLevel, setConsoleQuery, setConsoleAutoscroll, clearConsoleLogs, copyConsoleLogs, downloadConsoleLogs,
       refreshBalance, setLindenBalance, setExchangeRate,
+      dispatchIntent, getEventBus,
     },
     T, D, navMode,
   };

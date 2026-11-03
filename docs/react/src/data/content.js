@@ -4,7 +4,7 @@
 // buildCards() function (the Friends/Groups/Notices/Teleport/Settings/
 // Diagnostics card lists, including their accept/decline/toggle callbacks).
 
-import { LAYOUTS } from "../theme/layouts.js";
+import { LAYOUTS, PRIMARY_LAYOUT_KEYS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 
 // Ported from `nvAll`/`nvList` — the 7-item navigation model shared by every
@@ -568,8 +568,8 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
       },
 
       { sect: true, title: "APPEARANCE" },
-      { icon: "palette", title: "Layout pack", right: layoutName, body: "6 layout packs: geometry, nav model, type and density. Colour is a separate pack.", actions: [{ label: "PREVIEW ALL", pick: () => actions.cycleLayout() }] },
-      { icon: "layout", title: "Nav layout", body: "Tabs, rail, tiles, sweep console or desktop floaters — set by the pack.", select: true, options: Object.entries(LAYOUTS).map(([k, x]) => ({ label: x.name, value: k })), value: state.layout, onChange: (v) => actions.setLayout(v) },
+      { icon: "palette", title: "Layout pack", right: layoutName, body: "9 layout packs: geometry, nav model, type and density. Colour is a separate pack.", actions: [{ label: "PREVIEW ALL", pick: () => actions.cycleLayout() }] },
+      { icon: "layout", title: "Nav layout", body: "Tabs, rail, tiles, sweep console or desktop floaters — set by the pack.", select: true, options: PRIMARY_LAYOUT_KEYS.map((k) => ({ label: LAYOUTS[k].name, value: k })), value: state.layout, onChange: (v) => actions.setLayout(v) },
       { icon: "droplets", title: "Colour pack", right: paletteName, body: "24 Ktheme palettes grouped by family; any pack drops into any layout (144 combinations).", actions: [{ label: "BROWSE PACKS", pick: () => actions.cyclePalette() }, { label: "SYSTEM MATCH", pick: () => actions.setPalette("ink") }] },
       { icon: "droplet", title: "Colour palette", body: "Pick a palette directly instead of cycling through them.", select: true, options: Object.keys(PALETTES).map((k) => ({ label: PALETTES[k].name, value: k })), value: state.palette, onChange: (v) => actions.setPalette(v) },
       { icon: "type", title: "Large type & high contrast", body: "Scales body to 18px, forces AA contrast, disables shimmer", toggle: true, on: toggles.largeType, togglePick: () => actions.toggleSetting("largeType") },
@@ -584,6 +584,19 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
       },
 
       { sect: true, title: "GRAPHICS & PERFORMANCE" },
+      {
+        icon: "activity",
+        title: "Telemetry verbosity",
+        right: (prefs.telemetryVerbosity || "simple") === "advanced" ? "Advanced" : "Simple",
+        body: "Choose plain-language labels or raw protocol telemetry for HUD overlays.",
+        select: true,
+        options: [
+          { label: "Simple (Friendly)", value: "simple" },
+          { label: "Advanced (Technical)", value: "advanced" },
+        ],
+        value: prefs.telemetryVerbosity || "simple",
+        onChange: (v) => (actions.setTelemetryVerbosity ? actions.setTelemetryVerbosity(v) : actions.setPref("telemetryVerbosity", v)),
+      },
       { icon: "eye", title: "Draw distance", right: prefs.draw, body: "How far objects and avatars stream in. Past 128 m mobile data and battery both suffer.", select: true, options: opts(["64 m", "96 m", "128 m", "192 m", "256 m"]), value: prefs.draw, onChange: (v) => actions.setPref("draw", v) },
       { icon: "gauge", title: "Graphics quality", right: prefs.quality, body: "Preset for LOD factor, particle count, reflections and terrain detail.", select: true, options: opts(["Low", "Balanced", "High", "Ultra"]), value: prefs.quality, onChange: (v) => actions.setPref("quality", v) },
       { icon: "activity", title: "Frame rate cap", right: prefs.fps, body: "Capping below the panel refresh is the single biggest battery win on mobile.", select: true, options: opts(["30 fps", "45 fps", "60 fps", "Uncapped"]), value: prefs.fps, onChange: (v) => actions.setPref("fps", v) },

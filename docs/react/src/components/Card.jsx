@@ -1,14 +1,15 @@
-import { useTheme } from "../context/ThemeContext.jsx";
+import { useThemeTokens } from "../context/ThemeContext.jsx";
 import { cardLooks, cardAccentStyle, actionButtonStyle } from "../theme/look.js";
 import Icon from "./Icon.jsx";
 import Toggle from "./Toggle.jsx";
+import SegmentedMeter from "./SegmentedMeter.jsx";
 
 // Ported from the CARDS.map(...) block + the `isCards` template section
 // (sc-if value="{{ isCards }}"). One card renders: icon+title+right/badge/
 // toggle header row, optional body text, optional big stat, optional action
 // row.
 export default function Card({ c }) {
-  const { V, t, LK, pad } = useTheme();
+  const { V, t, LK, pad } = useThemeTokens();
   const looks = cardLooks(V, pad);
 
   // A `sect` entry is a group heading inside the list, not a card: it drops the
@@ -58,7 +59,7 @@ export default function Card({ c }) {
             {c.badge}
           </span>
         ) : null}
-        {c.toggle ? <Toggle on={c.on} onClick={c.togglePick} /> : null}
+        {c.toggle ? <Toggle on={c.on} onClick={c.togglePick} aria-label={c.title || "Toggle switch"} /> : null}
         {c.select ? (
           <select
             value={c.value}
@@ -86,9 +87,13 @@ export default function Card({ c }) {
       {c.body ? <div style={{ font: "400 12px/1.6 " + t.font, color: V.ink2, marginTop: "8px" }}>{c.body}</div> : null}
       {c.big ? <div style={{ font: "700 46px/1 " + t.font, color: c.tone ? V[c.tone] : V.ok, marginTop: "6px" }}>{c.big}</div> : null}
       {meterPct != null ? (
-        <div style={{ height: "4px", borderRadius: "2px", background: V.surf2, overflow: "hidden", marginTop: "10px" }}>
-          <div style={{ width: meterPct + "%", height: "100%", background: c.meter > 0.9 ? V.err : c.meter > 0.7 ? V.sec2 : V.pri, transition: "width .2s ease" }} />
-        </div>
+        LK.card === "cap" || LK.card === "chamfer" ? (
+          <SegmentedMeter value={meterPct} max={100} segments={16} height={6} gap={2} style={{ marginTop: "10px" }} />
+        ) : (
+          <div style={{ height: "4px", borderRadius: "2px", background: V.surf2, overflow: "hidden", marginTop: "10px" }}>
+            <div style={{ width: meterPct + "%", height: "100%", background: c.meter > 0.9 ? V.err : c.meter > 0.7 ? V.sec2 : V.pri, transition: "width .2s ease" }} />
+          </div>
+        )
       ) : null}
       {c.actions && c.actions.length ? (
         <div style={{ display: "flex", gap: "8px", marginTop: "11px" }}>

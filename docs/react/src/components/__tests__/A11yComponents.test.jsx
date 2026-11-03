@@ -57,6 +57,13 @@ function renderComponent(ui, stateOverrides = {}, themeOverrides = {}, actionOve
   const flClose = vi.fn();
   const cPress = vi.fn();
   const cTap = vi.fn();
+  const dispatchIntent = vi.fn((type, payload) => {
+    if (type === "FLOATER_MINIMIZE" || type === "FLOATER_TOGGLE") {
+      flToggle(payload?.id);
+    } else if (type === "FLOATER_CLOSE") {
+      flClose(payload?.id);
+    }
+  });
   const actions = {
     setScreen,
     setMenu,
@@ -64,6 +71,7 @@ function renderComponent(ui, stateOverrides = {}, themeOverrides = {}, actionOve
     flClose,
     cPress,
     cTap,
+    dispatchIntent,
     flFocus: vi.fn(),
     flR: () => ({ x: 0, y: 0, w: 200, h: 200 }),
     notify: vi.fn(),
@@ -95,9 +103,9 @@ describe("Keyboard Accessibility in Refactored Controls", () => {
     expect(actions.setScreen).toHaveBeenCalledWith("Chat");
   });
 
-  it("BottomTabs items have role=button, tabIndex=0, and trigger navigation on Enter/Space", () => {
+  it("BottomTabs items have role=tab, tabIndex=0, and trigger navigation on Enter/Space", () => {
     const { actions } = renderComponent(<BottomTabs />, {}, { nav: "tabs" });
-    const chatTab = screen.getByRole("button", { name: "CHAT" });
+    const chatTab = screen.getByRole("tab", { name: /CHAT/i });
     expect(chatTab.getAttribute("tabindex")).toBe("0");
 
     fireEvent.keyDown(chatTab, { key: "Enter" });

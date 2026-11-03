@@ -1,5 +1,4 @@
-import test from "node:test";
-import assert from "node:assert/strict";
+import { test, expect } from "vitest";
 import { useFocusTrap } from "./useFocusTrap.js";
 
 // Mock minimal DOM environment for testing focus trap logic
@@ -26,7 +25,7 @@ function createMockDOM() {
 }
 
 test("useFocusTrap module exports function", () => {
-  assert.equal(typeof useFocusTrap, "function");
+  expect(typeof useFocusTrap).toBe("function");
 });
 
 test("useFocusTrap attach and cleanup event listener", () => {
@@ -66,13 +65,13 @@ test("useFocusTrap attach and cleanup event listener", () => {
   };
 
   cleanup = effect();
-  assert.equal(listeners["keydown"].length, 1);
+  expect(listeners["keydown"].length).toBe(1);
 
   windowMock.dispatchKeyDown({ key: "Escape" });
-  assert.equal(escapeTriggered, true);
+  expect(escapeTriggered).toBe(true);
 
   cleanup();
-  assert.equal(listeners["keydown"].length, 0);
+  expect(listeners["keydown"].length).toBe(0);
 
   global.window = originalWindow;
   global.document = originalDoc;

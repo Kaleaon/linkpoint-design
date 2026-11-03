@@ -3,6 +3,7 @@ import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { LOCAL_MSGS, IM_THREADS, GROUP_THREADS, IM_CHIPS, GROUP_CHIPS, parseSlurl } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
+import VoiceChatBar from "../components/VoiceChatBar.jsx";
 
 function LandmarkCard({ slurlData, state, actions, V, t }) {
   const [imgFailed, setImgFailed] = useState(false);
@@ -84,7 +85,7 @@ function LandmarkCard({ slurlData, state, actions, V, t }) {
               borderRadius: V.rs,
               border: "none",
               background: isOffline ? V.surf2 : V.pri,
-              color: isOffline ? V.ink2 : (V.onpri || "#fff"),
+              color: isOffline ? V.ink2 : V.onpri,
               font: "600 10px/1 " + t.dfont,
               letterSpacing: ".06em",
               cursor: isOffline ? "not-allowed" : "pointer",
@@ -178,7 +179,7 @@ function LureCard({ msg, state, actions, V, t }) {
               padding: "2px 6px",
               borderRadius: V.rs,
               background: response === "accepted" ? V.pri : V.surf2,
-              color: response === "accepted" ? (V.onpri || "#fff") : V.ink2,
+              color: response === "accepted" ? V.onpri : V.ink2,
             }}
           >
             {response === "accepted" ? "✓ ACCEPTED" : "✗ DECLINED"}
@@ -203,7 +204,7 @@ function LureCard({ msg, state, actions, V, t }) {
               borderRadius: V.rs,
               border: "none",
               background: isOffline ? V.surf2 : V.pri,
-              color: isOffline ? V.ink2 : (V.onpri || "#fff"),
+              color: isOffline ? V.ink2 : V.onpri,
               font: "600 10px/1 " + t.dfont,
               letterSpacing: ".06em",
               cursor: isOffline ? "not-allowed" : "pointer",
@@ -253,8 +254,13 @@ export default function Chat() {
   const composerStyle = { flex: "none", display: "flex", gap: "8px", borderTop: "1px solid " + V.outv, background: V.surf, padding: nav === "sweep" ? "12px 12px 12px 0" : "12px", borderTopLeftRadius: nav === "sweep" ? V.rl : "0", borderTopRightRadius: nav === "sweep" ? V.rl : "0" };
   const composerFieldStyle = { flex: 1, minWidth: 0, minHeight: "44px", display: "flex", alignItems: "center", gap: "8px", padding: "0 12px", border: "1px solid " + V.outv, background: V.bg, borderRadius: nav === "sweep" ? "0 " + V.rs + " " + V.rs + " 0" : V.rs };
 
+  const voiceChannel = curTab === "IM" ? `Direct Voice · ${activeChip}` : curTab === "GROUP" ? `Group Voice · ${activeChip}` : "Spatial Voice · Heliotrope";
+
   return (
     <>
+      <div style={{ flex: "none", padding: bleed ? "4px 10px 4px" : "4px 12px 6px" }}>
+        <VoiceChatBar channelName={voiceChannel} />
+      </div>
       <div style={chatBodyStyle}>
         {source.map((m, i) => {
           const acc = m.sys ? V.info : m.me ? V.pri : V.sec2;

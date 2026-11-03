@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useApp } from "../context/AppContext.jsx";
-import { useTheme } from "../context/ThemeContext.jsx";
+import { useThemeTokens } from "../context/ThemeContext.jsx";
 import { DIALOGS } from "../theme/dialogs.js";
 import { useFocusTrap } from "../hooks/useFocusTrap.js";
 import Icon from "./Icon.jsx";
@@ -10,12 +10,11 @@ import Icon from "./Icon.jsx";
 // lure, Pay L$, Region restart).
 export default function SystemDialog() {
   const { state, actions } = useApp();
-  const { V, t } = useTheme();
+  const { V, t } = useThemeTokens();
   const dialogRef = useRef(null);
-  const dlg = state.dialog && DIALOGS[state.dialog];
+  const dlg = state.dialog && (typeof state.dialog === "object" ? state.dialog : DIALOGS[state.dialog]);
 
-  useFocusTrap(dialogRef, () => actions.setDialog(null), !!dlg);
-
+  useFocusTrap(dialogRef, () => actions.dispatchIntent("DIALOG_CLOSE", { dialogKey: state.dialog }), !!dlg);
   if (!dlg) return null;
 
   const btnBase = { flex: "1 1 40%", minHeight: "46px", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid " + V.outv, borderRadius: V.rs, font: "700 11px/1 " + t.font, letterSpacing: ".14em", color: V.ink, textAlign: "center", padding: "0 8px", cursor: "pointer" };
@@ -34,10 +33,10 @@ export default function SystemDialog() {
           <Icon name={dlg.icon} size={18} style={{ color: V.pri }} />
           <span style={{ flex: 1, font: "600 12px/1 " + t.font, letterSpacing: ".2em", color: V.pri }}>{dlg.kind}</span>
           <span
-            onClick={() => actions.setDialog(null)}
+            onClick={() => actions.dispatchIntent("DIALOG_CLOSE", { dialogKey: state.dialog })}
             role="button"
             tabIndex={0}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setDialog(null); } }}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.dispatchIntent("DIALOG_CLOSE", { dialogKey: state.dialog }); } }}
             style={{ font: "400 11px/1 " + t.font, color: V.ink2, cursor: "pointer" }}
           >
             CLOSE
@@ -49,25 +48,30 @@ export default function SystemDialog() {
           <div style={{ marginTop: "10px", border: "1px dashed " + V.outv, borderRadius: V.rs, padding: "9px", font: "400 11px/1.6 " + t.font, color: V.ink2 }}>{dlg.meta}</div>
         ) : null}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", marginTop: "14px" }}>
-          {/* Every button closes the sheet and posts a toast — matches the
-              source's current dialog.buttons mapping (index.html), not the
-              older "decorative, CLOSE-only" behavior this port originally
-              matched. */}
+          {/* Every button closes the sheet and posts a toast via central intent dispatch */}
           {dlg.buttons.map((b, i) => (
             <div
               key={i}
               data-primary={b.primary ? "true" : undefined}
               onClick={() => {
-                actions.setDialog(null);
-                actions.notify(dlg.title.split(" ").slice(0, 4).join(" ") + " — " + b.label);
+                actions.dispatchIntent("DIALOG_ACTION", {
+                  dialogKey: state.dialog,
+                  actionId: b.label,
+                  label: b.label,
+                  title: dlg.title
+                });
               }}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
-                  actions.setDialog(null);
-                  actions.notify(dlg.title.split(" ").slice(0, 4).join(" ") + " — " + b.label);
+                  actions.dispatchIntent("DIALOG_ACTION", {
+                    dialogKey: state.dialog,
+                    actionId: b.label,
+                    label: b.label,
+                    title: dlg.title
+                  });
                 }
               }}
               style={{ ...btnBase, ...(b.primary ? { background: V.pri, color: V.onpri, borderColor: V.pri } : b.dim ? { color: V.ink2 } : null) }}
