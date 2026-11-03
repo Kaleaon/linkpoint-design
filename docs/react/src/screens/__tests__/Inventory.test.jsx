@@ -48,6 +48,17 @@ describe("Inventory - Search Input & Node Filtering", () => {
     expect(screen.queryByText("Objects")).not.toBeInTheDocument();
   });
 
+  it("handles case-insensitivity and whitespace trimming", () => {
+    renderInventory();
+    const input = screen.getByPlaceholderText("filter inventory…");
+
+    // Type uppercase with surrounding spaces
+    fireEvent.change(input, { target: { value: "   SUNSET LAMP   " } });
+
+    expect(screen.getAllByText("Sunset Lamp v3").length).toBeGreaterThan(0);
+    expect(screen.queryByText("Clothing")).not.toBeInTheDocument();
+  });
+
   it("displays clear button when search query is non-empty and resets on click", () => {
     renderInventory();
     const input = screen.getByPlaceholderText("filter inventory…");
@@ -73,6 +84,21 @@ describe("Inventory - Search Input & Node Filtering", () => {
     expect(screen.getByText("Objects")).toBeInTheDocument();
   });
 
+  it("restores all initial inventory items when search query is cleared via input change", () => {
+    renderInventory();
+    const input = screen.getByPlaceholderText("filter inventory…");
+
+    fireEvent.change(input, { target: { value: "lamp" } });
+    expect(screen.queryByText("Clothing")).not.toBeInTheDocument();
+
+    // Clear input
+    fireEvent.change(input, { target: { value: "" } });
+
+    // Initial items/folders restored
+    expect(screen.getByText("Objects")).toBeInTheDocument();
+    expect(screen.getByText("Clothing")).toBeInTheDocument();
+  });
+
   it("displays empty state message when no items match search query", () => {
     renderInventory();
     const input = screen.getByPlaceholderText("filter inventory…");
@@ -80,6 +106,8 @@ describe("Inventory - Search Input & Node Filtering", () => {
     fireEvent.change(input, { target: { value: "nonexistentxyz123" } });
 
     expect(screen.getByText("No inventory items match 'nonexistentxyz123'")).toBeInTheDocument();
+    expect(screen.queryByText("Objects")).not.toBeInTheDocument();
+    expect(screen.queryByText("Clothing")).not.toBeInTheDocument();
   });
 
   it("resets local search query on unmount and remount", () => {
