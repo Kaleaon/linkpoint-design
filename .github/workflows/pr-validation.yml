@@ -17,4 +17,4 @@ jobs:
     uses: ./.github/workflows/reusable-validation.yml
     with:
       node-version: '22'
-      target-flags: '--a11y'
+      target-flags: '--a11y --visual'
