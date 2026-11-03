@@ -40,6 +40,7 @@ function log(msg, type = 'info') {
 const args = process.argv.slice(2);
 let runUnit = args.includes('--unit');
 let runCatalog = args.includes('--catalog');
+let runPalette = args.includes('--palette');
 let runA11y = args.includes('--a11y');
 let runVisual = args.includes('--visual');
 const updateSnapshots = args.includes('--update-snapshots') || args.includes('--update');
@@ -58,22 +59,24 @@ ${colors.bold}USAGE:${colors.reset}
 ${colors.bold}FLAGS:${colors.reset}
   --unit              Run unit test suites
   --catalog           Run theme catalog parity checks
+  --palette           Run static WCAG 2.2 AA color palette contrast audit
   --a11y              Run automated WCAG 2.1 AA accessibility auditing
   --visual            Run Playwright visual snapshot regression suite
   --update-snapshots  Update visual baseline snapshots
   --port <number>     Specify static server port override
   --help, -h          Show this help message
 
-  ${colors.gray}If no task flags (--unit, --catalog, --a11y, --visual) are specified,
+  ${colors.gray}If no task flags (--unit, --catalog, --palette, --a11y, --visual) are specified,
   all applicable validation tasks for the current repository will run.${colors.reset}
 `);
   process.exit(0);
 }
 
 // If no specific task flag was passed, run all tasks applicable to the current repo
-if (!runUnit && !runCatalog && !runA11y && !runVisual) {
+if (!runUnit && !runCatalog && !runPalette && !runA11y && !runVisual) {
   runUnit = true;
   runCatalog = true;
+  runPalette = true;
   runA11y = true;
   runVisual = true;
 }
@@ -161,9 +164,19 @@ async function startServerHarness(rootDirectory, requestedPort = 0) {
 }
 
 // Pure Node PNG Parser & Pixel Matcher Helper
+function paethPredictor(a, b, c) {
+  const p = a + b - c;
+  const pa = Math.abs(p - a);
+  const pb = Math.abs(p - b);
+  const pc = Math.abs(p - c);
+  if (pa <= pb && pa <= pc) return a;
+  if (pb <= pc) return b;
+  return c;
+}
+
 function parsePNG(buffer) {
   let offset = 8;
-  let width = 0, height = 0;
+  let width = 0, height = 0, colorType = 6, bitDepth = 8;
   const idatChunks = [];
   while (offset < buffer.length) {
     const length = buffer.readUInt32BE(offset);
@@ -171,6 +184,8 @@ function parsePNG(buffer) {
     if (type === 'IHDR') {
       width = buffer.readUInt32BE(offset + 8);
       height = buffer.readUInt32BE(offset + 12);
+      bitDepth = buffer[offset + 16];
+      colorType = buffer[offset + 17];
     } else if (type === 'IDAT') {
       idatChunks.push(buffer.subarray(offset + 8, offset + 8 + length));
     } else if (type === 'IEND') {
@@ -178,9 +193,67 @@ function parsePNG(buffer) {
     }
     offset += 12 + length;
   }
-  const idatCombined = Buffer.concat(idatChunks);
-  const raw = zlib.inflateSync(idatCombined);
-  return { width, height, raw };
+
+  const raw = zlib.inflateSync(Buffer.concat(idatChunks));
+  let bpp = 4;
+  if (colorType === 2) bpp = 3;      // RGB
+  else if (colorType === 6) bpp = 4; // RGBA
+  else if (colorType === 0) bpp = 1; // Grayscale
+  else if (colorType === 4) bpp = 2; // Grayscale + Alpha
+
+  const stride = width * bpp;
+  const rgba = new Uint8Array(width * height * 4);
+
+  let priorRow = new Uint8Array(stride);
+  let srcOffset = 0;
+
+  for (let y = 0; y < height; y++) {
+    const filterType = raw[srcOffset++];
+    const currentRow = new Uint8Array(stride);
+
+    for (let x = 0; x < stride; x++) {
+      const filtered = raw[srcOffset++];
+      const left = x >= bpp ? currentRow[x - bpp] : 0;
+      const above = priorRow[x];
+      const upperLeft = x >= bpp ? priorRow[x - bpp] : 0;
+
+      let recon = 0;
+      if (filterType === 0) recon = filtered;
+      else if (filterType === 1) recon = (filtered + left) & 0xff;
+      else if (filterType === 2) recon = (filtered + above) & 0xff;
+      else if (filterType === 3) recon = (filtered + Math.floor((left + above) / 2)) & 0xff;
+      else if (filterType === 4) recon = (filtered + paethPredictor(left, above, upperLeft)) & 0xff;
+      else recon = filtered;
+
+      currentRow[x] = recon;
+    }
+
+    const dstRowStart = y * width * 4;
+    for (let x = 0; x < width; x++) {
+      const dstPx = dstRowStart + x * 4;
+      const srcPx = x * bpp;
+      if (bpp === 4) {
+        rgba[dstPx] = currentRow[srcPx];
+        rgba[dstPx + 1] = currentRow[srcPx + 1];
+        rgba[dstPx + 2] = currentRow[srcPx + 2];
+        rgba[dstPx + 3] = currentRow[srcPx + 3];
+      } else if (bpp === 3) {
+        rgba[dstPx] = currentRow[srcPx];
+        rgba[dstPx + 1] = currentRow[srcPx + 1];
+        rgba[dstPx + 2] = currentRow[srcPx + 2];
+        rgba[dstPx + 3] = 255;
+      } else if (bpp === 1) {
+        rgba[dstPx] = currentRow[srcPx];
+        rgba[dstPx + 1] = currentRow[srcPx];
+        rgba[dstPx + 2] = currentRow[srcPx];
+        rgba[dstPx + 3] = 255;
+      }
+    }
+
+    priorRow = currentRow;
+  }
+
+  return { width, height, rgba };
 }
 
 function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
@@ -194,20 +267,16 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
 
     const totalPixels = pngA.width * pngA.height;
     let diffPixels = 0;
-    const bytesPerRow = 1 + pngA.width * 4;
 
-    for (let y = 0; y < pngA.height; y++) {
-      const rowStart = y * bytesPerRow + 1; // skip filter byte
-      for (let x = 0; x < pngA.width; x++) {
-        const px = rowStart + x * 4;
-        const dr = Math.abs(pngA.raw[px] - pngB.raw[px]);
-        const dg = Math.abs(pngA.raw[px + 1] - pngB.raw[px + 1]);
-        const db = Math.abs(pngA.raw[px + 2] - pngB.raw[px + 2]);
-        const da = Math.abs(pngA.raw[px + 3] - pngB.raw[px + 3]);
+    for (let i = 0; i < totalPixels; i++) {
+      const px = i * 4;
+      const dr = Math.abs(pngA.rgba[px] - pngB.rgba[px]);
+      const dg = Math.abs(pngA.rgba[px + 1] - pngB.rgba[px + 1]);
+      const db = Math.abs(pngA.rgba[px + 2] - pngB.rgba[px + 2]);
+      const da = Math.abs(pngA.rgba[px + 3] - pngB.rgba[px + 3]);
 
-        if (dr > colorThreshold || dg > colorThreshold || db > colorThreshold || da > colorThreshold) {
-          diffPixels++;
-        }
+      if (dr > colorThreshold || dg > colorThreshold || db > colorThreshold || da > colorThreshold) {
+        diffPixels++;
       }
     }
 
@@ -228,26 +297,29 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
 // Helper to resolve Playwright browser launch
 async function getPlaywrightBrowser() {
   const playwright = await import('playwright');
-  const possiblePaths = [
-    process.env.CHROMIUM_PATH,
-    '/bin/google-chrome',
-    '/usr/bin/google-chrome',
-    '/usr/bin/chromium-browser',
-    '/usr/bin/chromium'
-  ].filter(Boolean);
-
-  let executablePath = possiblePaths.find(p => fs.existsSync(p));
-
   const launchOpts = {
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--font-render-hinting=none', '--force-color-profile=srgb']
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--font-render-hinting=none', '--force-color-profile=srgb']
   };
 
-  if (executablePath) {
-    launchOpts.executablePath = executablePath;
-  }
+  try {
+    return await playwright.chromium.launch(launchOpts);
+  } catch (err) {
+    const possiblePaths = [
+      process.env.CHROMIUM_PATH,
+      '/bin/google-chrome',
+      '/usr/bin/google-chrome',
+      '/usr/bin/chromium-browser',
+      '/usr/bin/chromium'
+    ].filter(Boolean);
 
-  return await playwright.chromium.launch(launchOpts);
+    let executablePath = possiblePaths.find(p => fs.existsSync(p));
+    if (executablePath) {
+      launchOpts.executablePath = executablePath;
+      return await playwright.chromium.launch(launchOpts);
+    }
+    throw err;
+  }
 }
 
 // TASK 1: Unit Tests
@@ -268,7 +340,8 @@ async function taskUnitTests() {
   if (hasReactVitest) {
     log('Executing React Linkpoint Vitest Suite...', 'info');
     const reactDir = path.join(cwd, 'docs/react');
-    const res = spawnSync('npm', ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
+    const runner = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml')) ? 'pnpm' : 'npm';
+    const res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
     if (res.status !== 0) success = false;
   }
 
@@ -304,7 +377,147 @@ async function taskCatalogCheck() {
   }
 }
 
-// TASK 3: WCAG 2.1 AA Accessibility Audit
+// TASK 3: WCAG 2.2 AA Static Color Palette Audit
+async function taskPaletteCheck() {
+  log("Running WCAG 2.2 AA Static Color Palette Audit...", "header");
+
+  function hexToRgb(hex) {
+    hex = hex.replace(/^#/, "");
+    if (hex.length === 3) hex = hex.split("").map((c) => c + c).join("");
+    if (hex.length === 8) hex = hex.slice(0, 6);
+    const num = parseInt(hex, 16);
+    return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+  }
+
+  function getLuminance(r, g, b) {
+    const [rs, gs, bs] = [r, g, b].map((c) => {
+      c = c / 255;
+      return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+  }
+
+  function getContrastRatio(hex1, hex2) {
+    if (!hex1 || !hex2) return null;
+    try {
+      const rgb1 = hexToRgb(hex1);
+      const rgb2 = hexToRgb(hex2);
+      const l1 = getLuminance(rgb1.r, rgb1.g, rgb1.b);
+      const l2 = getLuminance(rgb2.r, rgb2.g, rgb2.b);
+      return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+    } catch {
+      return null;
+    }
+  }
+
+  let totalAudited = 0;
+  let totalErrors = 0;
+
+  // 1. Check linkpoint-design palettes.js if present
+  const palettesPath = path.join(cwd, "docs/react/src/theme/palettes.js");
+  if (fs.existsSync(palettesPath)) {
+    try {
+      let fileContent = fs.readFileSync(palettesPath, "utf8").replace(/export const /g, "const ");
+      const { Script, createContext } = await import("node:vm");
+      const script = new Script(fileContent + "; PALETTES;");
+      const ctx = createContext({});
+      const PALETTES = script.runInContext(ctx);
+
+      for (const [key, p] of Object.entries(PALETTES)) {
+        const c = p.c;
+        const bgSurfaces = [c.bg, c.surf, c.surf2].filter(Boolean);
+        const textTokens = { ink2: c.ink2, sec2: c.sec2, sec: c.sec };
+
+        for (const [tName, tVal] of Object.entries(textTokens)) {
+          if (!tVal) continue;
+          for (const bgVal of bgSurfaces) {
+            totalAudited++;
+            const ratio = getContrastRatio(tVal, bgVal);
+            if (ratio !== null && ratio < 4.5) {
+              totalErrors++;
+              log(`Palette "${key}" (${p.name}): secondary text token "${tName}" (${tVal}) vs surface (${bgVal}) contrast is ${ratio.toFixed(2)}:1 (required >= 4.5:1)`, "error");
+            }
+          }
+        }
+
+        if (c.outv) {
+          for (const bgVal of bgSurfaces) {
+            totalAudited++;
+            const ratio = getContrastRatio(c.outv, bgVal);
+            if (ratio !== null && ratio < 3.0) {
+              totalErrors++;
+              log(`Palette "${key}" (${p.name}): outline token "outv" (${c.outv}) vs surface (${bgVal}) contrast is ${ratio.toFixed(2)}:1 (required >= 3.0:1)`, "error");
+            }
+          }
+        }
+      }
+    } catch (err) {
+      log(`Error evaluating palettes.js: ${err.message}`, "error");
+      totalErrors++;
+    }
+  }
+
+  // 2. Check Ktheme JSON preset files if present
+  const kthemeJsonDir = path.join(cwd, "themes/examples");
+  if (fs.existsSync(kthemeJsonDir)) {
+    try {
+      const files = fs.readdirSync(kthemeJsonDir).filter((f) => f.endsWith(".json"));
+      for (const file of files) {
+        const json = JSON.parse(fs.readFileSync(path.join(kthemeJsonDir, file), "utf8"));
+        const c = json.colorScheme;
+        if (!c) continue;
+
+        const bgSurfaces = [c.background, c.surface, c.surfaceVariant].filter(Boolean);
+        if (c.onSurfaceVariant) {
+          for (const bg of bgSurfaces) {
+            totalAudited++;
+            const r = getContrastRatio(c.onSurfaceVariant, bg);
+            if (r !== null && r < 4.5) {
+              totalErrors++;
+              log(`Theme preset "${file}": token "onSurfaceVariant" (${c.onSurfaceVariant}) vs surface (${bg}) contrast is ${r.toFixed(2)}:1 (required >= 4.5:1)`, "error");
+            }
+          }
+        }
+
+        if (c.onSecondaryContainer && c.secondaryContainer) {
+          totalAudited++;
+          const r = getContrastRatio(c.onSecondaryContainer, c.secondaryContainer);
+          if (r !== null && r < 4.5) {
+            totalErrors++;
+            log(`Theme preset "${file}": token "onSecondaryContainer" (${c.onSecondaryContainer}) vs secondaryContainer (${c.secondaryContainer}) contrast is ${r.toFixed(2)}:1 (required >= 4.5:1)`, "error");
+          }
+        }
+
+        const outlineSurfaces = [...bgSurfaces, c.secondaryContainer].filter(Boolean);
+        if (c.outline) {
+          for (const bg of outlineSurfaces) {
+            totalAudited++;
+            const r = getContrastRatio(c.outline, bg);
+            if (r !== null && r < 3.0) {
+              totalErrors++;
+              log(`Theme preset "${file}": token "outline" (${c.outline}) vs surface/container (${bg}) contrast is ${r.toFixed(2)}:1 (required >= 3.0:1)`, "error");
+            }
+          }
+        }
+      }
+    } catch (err) {
+      log(`Error evaluating Ktheme preset JSON files: ${err.message}`, "error");
+      totalErrors++;
+    }
+  }
+
+  log(`Audited ${totalAudited} static palette color pairings`, "info");
+
+  if (totalErrors === 0) {
+    log("WCAG 2.2 AA static palette contrast verification passed!", "success");
+    return true;
+  } else {
+    log(`Static palette verification failed with ${totalErrors} contrast violation(s).`, "error");
+    return false;
+  }
+}
+
+// TASK 4: WCAG 2.1 AA Accessibility Audit
 async function taskA11yAudit() {
   log('Running WCAG 2.1 AA Accessibility Audit on Live DOM Nodes...', 'header');
 
@@ -593,7 +806,7 @@ ${colors.bold}${colors.cyan}====================================================
 ${colors.bold}  UNIFIED CROSS-REPO DESIGN SYSTEM VALIDATION CLI   ${colors.reset}
 ${colors.bold}${colors.cyan}=====================================================${colors.reset}
 Working Directory: ${cwd}
-Active Tasks: ${[runUnit && 'Unit', runCatalog && 'Catalog', runA11y && 'A11y', runVisual && 'Visual'].filter(Boolean).join(', ')}
+Active Tasks: ${[runUnit && 'Unit', runCatalog && 'Catalog', runPalette && 'Palette', runA11y && 'A11y', runVisual && 'Visual'].filter(Boolean).join(', ')}
 `);
 
   const results = {};
@@ -604,6 +817,10 @@ Active Tasks: ${[runUnit && 'Unit', runCatalog && 'Catalog', runA11y && 'A11y', 
 
   if (runCatalog) {
     results.catalog = await taskCatalogCheck();
+  }
+
+  if (runPalette) {
+    results.palette = await taskPaletteCheck();
   }
 
   if (runA11y) {
