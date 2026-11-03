@@ -2,6 +2,7 @@ import { useApp } from "../context/AppContext.jsx";
 import { PROFILE_BLOCKS } from "../data/content.js";
 import { subView } from "../theme/constants.js";
 import Icon from "../components/Icon.jsx";
+import Heading from "../components/Heading.jsx";
 
 // Ported from the `isProfile` <sc-if> block.
 export default function Profile() {
@@ -14,7 +15,7 @@ export default function Profile() {
       <div style={{ padding: "0 16px", marginTop: "-36px", display: "flex", alignItems: "flex-end", gap: "12px" }}>
         <div style={{ width: "76px", height: "76px", border: "1px solid var(--ktheme-outv)", background: "repeating-linear-gradient(45deg, var(--ktheme-surf2) 0 6px, var(--ktheme-surf) 6px 12px)" }} />
         <div style={{ paddingBottom: "6px" }}>
-          <div style={{ font: "600 17px/1.2 var(--ktheme-font, system-ui, sans-serif)" }}>Nyx Vaher</div>
+          <Heading level={1} style={{ font: "600 17px/1.2 var(--ktheme-font, system-ui, sans-serif)" }}>Nyx Vaher</Heading>
           <div style={{ font: "400 11px/1.3 var(--ktheme-font, system-ui, sans-serif)", color: "var(--ktheme-ink2)", marginTop: "4px" }}>nyx.vaher · online · Da Boom</div>
         </div>
       </div>
@@ -33,7 +34,7 @@ export default function Profile() {
       </div>
       {(PROFILE_BLOCKS[subView(state, "Profile")] || PROFILE_BLOCKS["2ND LIFE"]).map((pb) => (
         <div key={pb.label} style={{ margin: "0 16px 12px", border: "1px solid var(--ktheme-outv)", borderRadius: "var(--ktheme-rs)", background: "var(--ktheme-surf)", padding: "12px" }}>
-          <div style={{ font: "600 11px/1 var(--ktheme-font, system-ui, sans-serif)", letterSpacing: ".26em", color: "var(--ktheme-pri)", marginBottom: "8px" }}>{pb.label}</div>
+          <Heading level={2} style={{ font: "600 11px/1 var(--ktheme-font, system-ui, sans-serif)", letterSpacing: ".26em", color: "var(--ktheme-pri)", marginBottom: "8px" }}>{pb.label}</Heading>
           <div style={{ font: "400 12px/1.65 var(--ktheme-font, system-ui, sans-serif)", color: "var(--ktheme-ink2)" }}>{pb.body}</div>
         </div>
       ))}
