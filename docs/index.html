@@ -55,16 +55,16 @@ a{color:#6CFF9A}a:hover{color:#a9ffc7}
 .dv-opts{display:flex;flex-wrap:wrap;gap:34px;align-items:flex-start}
 .dv-opt{flex:none;display:flex;flex-direction:column;gap:10px}
 .dv-oid{font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(255,255,255,.1);color:#e8e5df;border-radius:5px;text-decoration:none}
-.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 "JetBrains Mono",monospace;color:rgba(255,255,255,.55)}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 "JetBrains Mono",monospace;color:rgba(255,255,255,.85)}
 .dv-opt:target .dv-oid{background:#6CFF9A;color:#03240F}
-.dv-next{margin:26px 0 0;font:12px/1.6 "JetBrains Mono",monospace;color:rgba(255,255,255,.45)}
+.dv-next{margin:26px 0 0;font:12px/1.6 "JetBrains Mono",monospace;color:rgba(255,255,255,.75)}
 .pnl{border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:14px;background:#171614}
-.pnlh{font:600 10px/1 "JetBrains Mono",monospace;letter-spacing:.26em;color:rgba(255,255,255,.5);margin-bottom:10px}
+.pnlh{font:600 10px/1 "JetBrains Mono",monospace;letter-spacing:.26em;color:rgba(255,255,255,.75);margin-bottom:10px}
 .pick{padding:7px 9px;border-radius:6px;cursor:pointer;display:flex;align-items:center;gap:9px}
 .pick:hover{background:rgba(255,255,255,.07)}
 .tag{padding:6px 9px;border:1px solid rgba(255,255,255,.16);border-radius:5px;cursor:pointer;font:500 10.5px/1 "JetBrains Mono",monospace;color:rgba(255,255,255,.78)}
 .tag:hover{border-color:#6CFF9A;color:#6CFF9A}
-button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #6CFF9A;outline-offset:2px}
+button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--k-focus-ring, currentColor);outline-offset:2px;box-shadow:0 0 0 1px var(--k-focus-ring-shadow, rgba(0,0,0,0.6))}
 @media(max-width:760px){.dv-turn{padding-top:22px}.dv-opts>*,.dv-opt,.dv-opt>div{max-width:calc(100vw - 32px)}.dv-opt>div{overflow-x:auto}.dv-thd{flex-wrap:wrap}}
 @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
 @keyframes ping{0%{transform:scale(.5);opacity:.85}100%{transform:scale(2.4);opacity:0}}
@@ -99,7 +99,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
         <div class="pick" onClick="{{ t.pick }}">
           <span style="{{ t.swatch }}"></span>
           <span style="font:500 11.5px/1.3 'JetBrains Mono',monospace;color:rgba(255,255,255,.85);flex:1">{{ t.name }}</span>
-          <span style="font:600 9px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:rgba(255,255,255,.35)">{{ t.nav }}</span>
+          <span style="font:600 9px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:rgba(255,255,255,.75)">{{ t.nav }}</span>
         </div>
       </sc-for>
     </div>
@@ -628,15 +628,23 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
 
           <sc-if value="{{ isMap }}" hint-placeholder-val="{{ false }}">
             <div style="{{ mapBoxStyle }}">
-              <div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr">
-                <sc-for list="{{ regions }}" as="g" hint-placeholder-count="4">
-                  <div style="{{ g.style }}">
-                    <span style="font:600 11px/1.25 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)">{{ g.name }}</span>
-                    <span style="font:400 9.5px/1.25 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ g.meta }}</span>
-                  </div>
-                </sc-for>
+              <div style="position:absolute;left:10px;top:10px;right:64px;z-index:12">
+                <div style="position:relative;display:flex;align-items:center">
+                  <input type="text" value="{{ mapSearch }}" onChange="{{ mapSearchChange }}" placeholder="Search region or <x, y, z>..." aria-label="Search map region or coordinates" style="{{ mapSearchInputStyle }}" />
+                </div>
               </div>
-              <div style="position:absolute;inset:0">{{ tileLayer }}</div>
+              <div style="{{ mapViewportStyle }}">
+                <div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr">
+                  <sc-for list="{{ regions }}" as="g" hint-placeholder-count="4">
+                    <div style="{{ g.style }}">
+                      <span style="font:600 11px/1.25 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)">{{ g.name }}</span>
+                      <span style="font:400 9.5px/1.25 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC)">{{ g.meta }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="position:absolute;inset:0">{{ tileLayer }}</div>
+                <div style="position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:7px;background:var(--pri,#6CFF9A);border:2px solid var(--bg,#0A1112);box-shadow:0 0 8px var(--pri,#6CFF9A)"></div>
+              </div>
               <sc-if value="{{ mapMini }}" hint-placeholder-val="{{ false }}">
                 <div style="{{ mapMiniWrap }}">
                   <sc-for list="{{ mapMiniRows }}" as="mr" hint-placeholder-count="4">
@@ -644,11 +652,10 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
                   </sc-for>
                 </div>
               </sc-if>
-              <div style="position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:7px;background:var(--pri,#6CFF9A);border:2px solid var(--bg,#0A1112)"></div>
-              <div style="position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px">
+              <div style="position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px;z-index:10">
                 <sc-for list="{{ mapBtns }}" as="mb" hint-placeholder-count="3"><div onClick="{{ mb.pick }}" onKeyDown="{{ mb.pickKeyDown }}" style="width:44px;height:44px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C);display:flex;align-items:center;justify-content:center;color:var(--ink,#D7F5E6);cursor:pointer" role="button" aria-label="{{ mb.label }}" tabindex="0"><i data-lucide="{{ mb.icon }}" style="width:16px;height:16px"></i></div></sc-for>
               </div>
-              <div style="position:absolute;left:10px;bottom:10px;font:400 9.5px/1.35 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);background:var(--surf,#101A1C);border:1px solid var(--outv,#365047);padding:4px 6px;max-width:74%">{{ tileNote }}</div>
+              <div style="position:absolute;left:10px;bottom:10px;font:400 9.5px/1.35 var(--font,'JetBrains Mono');color:var(--ink2,#A7C8BC);background:var(--surf,#101A1C);border:1px solid var(--outv,#365047);padding:4px 6px;max-width:74%;z-index:10">{{ tileNote }}</div>
             </div>
             <div style="{{ mapFootStyle }}">
               <div onClick="{{ mapTeleport }}" style="flex:1;height:46px;border-radius:var(--rs,4px);background:var(--pri,#6CFF9A);color:var(--onpri,#03240F);display:flex;align-items:center;justify-content:center;gap:8px;font:700 12px/1 var(--font,'JetBrains Mono');letter-spacing:.2em;cursor:pointer"><i data-lucide="zap" style="width:16px;height:16px"></i>TELEPORT</div>
@@ -1454,7 +1461,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
               </div>
               <div style="flex:none;margin:0 16px 10px;height:44px;display:flex;align-items:center;gap:8px;padding:0 12px;border:1px solid var(--outv,#365047);border-radius:var(--rs,4px);background:var(--surf,#101A1C)">
                 <i data-lucide="search" style="width:16px;height:16px;color:var(--ink2,#A7C8BC)"></i>
-                <input value="{{ searchQuery }}" sc-camel-on-input="{{ searchQueryPick }}" placeholder="resident name (min 2 chars)" style="flex:1;min-width:0;border:none;outline:none;background:transparent;font:400 13px/1 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)" />
+                <input value="{{ searchQuery }}" sc-camel-on-input="{{ searchQueryPick }}" placeholder="resident name (min 2 chars)" style="flex:1;min-width:0;border:none;background:transparent;font:400 13px/1 var(--font,'JetBrains Mono');color:var(--ink,#D7F5E6)" />
               </div>
               <div style="flex:1;min-height:0;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:8px">
                 <sc-for list="{{ searchResults }}" as="sr" hint-placeholder-count="4">
@@ -3336,7 +3343,7 @@ class Component extends DCLogic {
         if (msg) { this.dispatchIntent("QUICK_CHAT_SUBMIT", { message: msg }); this.set("flQuickMsg", ""); }
       },
       flQuickInputStyle: { width: "100%", height: "26px", padding: "0 8px", background: V.bg, color: V.ink,
-        border: "1px solid " + V.outv, borderRadius: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "999px" : V.rs, font: "400 11px/1 " + t.font, outline: "none" },
+        border: "1px solid " + V.outv, borderRadius: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "999px" : V.rs, font: "400 11px/1 " + t.font },
       flQuickBtnStyle: { height: "26px", padding: "0 10px", background: V.pri, color: this.ink(V.pri, [V.bg, V.onpri, V.ink]),
         border: "none", borderRadius: (isFloat && (s.layout === "sweep" || t.nav === "SWEEP")) ? "999px" : V.rs,
         font: "700 9.5px/1 " + t.dfont, letterSpacing: ".12em", cursor: "pointer", flex: "none" },
@@ -3466,7 +3473,7 @@ toggleCamHudKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preven
 sendChatKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.sendChat(chatChannelKey, chatReplier); } },
       composeChange: (e) => this.set("composeText", e.target.value),
       composeKeyDown: (e) => { if (e.key === "Enter") { e.preventDefault(); this.sendChat(chatChannelKey, chatReplier); } },
-      composeInputStyle: { flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent",
+      composeInputStyle: { flex: 1, minWidth: 0, border: "none", background: "transparent",
         font: "400 13px/1 " + t.font, color: V.ink },
       cfWrap: { flex: 1, minHeight: 0, minWidth: 0, position: "relative", display: "flex", overflow: "hidden", background: V.bg },
       isConsole, consoleScene,
@@ -3820,7 +3827,7 @@ toggleLogoAnimKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.prev
       invRecents: ["Sunset Lamp v3", "Roof Kit", "Hollywood LM", "Brass texture"]
         .map(name => ({ name, pick: () => this.notify(name + " — OPEN"), pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify(name + " — OPEN"); } } })),
       invFilter: s.invFilter, invFilterChange: (e) => this.set("invFilter", e.target.value),
-      invFilterInputStyle: { flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent",
+      invFilterInputStyle: { flex: 1, minWidth: 0, border: "none", background: "transparent",
         font: "400 12px/1 " + t.font, color: V.ink },
       invSelectMode: !!s.invSelectMode,
       invSelectedCount: (s.invSelected || []).length,
@@ -3847,8 +3854,35 @@ toggleLogoAnimKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.prev
       invGridToggle: () => { this.setState(st => ({ invGrid: !st.invGrid })); this.notify(s.invGrid ? "List view" : "Grid view"); },
 invGridToggleKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.setState(st => ({ invGrid: !st.invGrid })); this.notify(this.state.invGrid ? "List view" : "Grid view"); } },
       invGridIcon: s.invGrid ? "list" : "layout-grid",
-      mapBtns: [["plus", "ZOOM IN"], ["minus", "ZOOM OUT"], ["locate-fixed", "RECENTER"]]
-        .map(([icon, label]) => ({ icon, label, pick: () => this.notify("Map — " + label), pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.notify("Map — " + label); } } })),
+      mapSearch: s.mapSearch || "",
+      mapSearchChange: (e) => {
+        const val = e.target.value;
+        this.setState({ mapSearch: val });
+        if (val.toLowerCase().includes("hollywood")) {
+          this.setState({ mapPanX: -60, mapPanY: 60 });
+        } else if (val.toLowerCase().includes("ahern")) {
+          this.setState({ mapPanX: 60, mapPanY: -60 });
+        } else if (val.toLowerCase().includes("sansara")) {
+          this.setState({ mapPanX: -60, mapPanY: -60 });
+        } else if (val.toLowerCase().includes("boom")) {
+          this.setState({ mapPanX: 60, mapPanY: 60 });
+        }
+      },
+      mapSearchInputStyle: {
+        width: "100%", height: "36px", paddingLeft: "12px", paddingRight: "10px",
+        borderRadius: V.rs, border: "1px solid " + V.outv, background: V.surf,
+        color: V.ink, font: "400 11.5px/1 " + t.font, outline: "none", boxShadow: "0 2px 8px rgba(0,0,0,0.25)"
+      },
+      mapViewportStyle: {
+        position: "absolute", inset: 0,
+        transform: "translate(" + (s.mapPanX || 0) + "px, " + (s.mapPanY || 0) + "px) scale(" + (s.mapZoom || 1.0) + ")",
+        transformOrigin: "center center", transition: "transform 0.15s ease-out"
+      },
+      mapBtns: [
+        { icon: "plus", label: "Zoom in", pick: () => this.setState(st => ({ mapZoom: Math.min(3.0, +((st.mapZoom || 1.0) + 0.25).toFixed(2)) })) },
+        { icon: "minus", label: "Zoom out", pick: () => this.setState(st => ({ mapZoom: Math.max(0.5, +((st.mapZoom || 1.0) - 0.25).toFixed(2)) })) },
+        { icon: "locate-fixed", label: "Recenter viewport", pick: () => this.setState({ mapZoom: 1.0, mapPanX: 0, mapPanY: 0, mapSearch: "" }) }
+      ].map(b => ({ ...b, pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); b.pick(); } } })),
       mapTeleport: () => { this.setState({ screen: "Map" }); this.notify("Teleporting to Da Boom — <1000, 1000>"); },
       mapStar: () => { this.pin("daBoom"); this.notify(s.pinned.daBoom ? "Da Boom — LANDMARK REMOVED" : "Da Boom — LANDMARK SAVED"); },
 mapStarKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.pin("daBoom"); this.notify(this.state.pinned.daBoom ? "Da Boom — LANDMARK REMOVED" : "Da Boom — LANDMARK SAVED"); } },
@@ -3858,7 +3892,7 @@ mapStarKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefa
       tileLayer: s.tileOk ? React.createElement("img", { src: "https://secondlife-maps-cdn.akamaized.net/map-1-1000-1000-objects.jpg", alt: "", onError: () => this.set("tileOk", false), style: { position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: .9 } }) : null,
       tileNote: mapMini
         ? "minimap · north up · draw distance " + s.prefs.draw
-        : s.tileOk ? "live SL map tile · secondlife-maps-cdn" : "tile CDN unreachable — themed vector grid fallback",
+        : s.tileOk ? "live SL map tile · zoom " + (s.mapZoom || 1.0).toFixed(2) + "x" : "tile CDN unreachable — themed vector grid fallback",
       mapMini,
       mapMiniRows: [["REGION", "Da Boom"], ["POSITION", "<128, 128, 26>"], ["HEADING", "214° · SW"], ["DRAW", s.prefs.draw]]
         .map(([k, v]) => ({ k, v })),
