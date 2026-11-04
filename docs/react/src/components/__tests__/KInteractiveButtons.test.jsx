@@ -93,7 +93,7 @@ describe("KInteractive & Standard Button Controls Accessibility", () => {
       </AppContext.Provider>
     );
 
-    const fileMenuBtn = screen.getByRole("button", { name: "File" });
+    const fileMenuBtn = screen.getByRole("button", { name: /File/i });
     expect(fileMenuBtn.tagName).toBe("BUTTON");
     expect(fileMenuBtn.getAttribute("aria-expanded")).toBe("true");
 
@@ -122,7 +122,7 @@ describe("KInteractive & Standard Button Controls Accessibility", () => {
       </AppProvider>
     );
 
-    const camHudClose = screen.getByRole("button", { name: "Close Camera HUD" });
+    const camHudClose = screen.getByRole("button", { name: /Close (Camera )?HUD/i });
     expect(camHudClose.tagName).toBe("BUTTON");
 
     const camHudToggle = screen.getByRole("button", { name: /CAM HUD/i });

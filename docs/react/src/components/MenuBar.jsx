@@ -38,7 +38,7 @@ export default function MenuBar() {
           <div key={mm.label} style={{ position: "relative" }}>
             <KInteractive
               as="button"
-              label={mm.label}
+              label={mm.label + " menu"}
               aria-expanded={open}
               aria-haspopup="true"
               onClick={(e) => {

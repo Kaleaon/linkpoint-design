@@ -102,7 +102,7 @@ export default function FloatersDesktop() {
               <KInteractive
                 as="button"
                 onClick={() => setShowCamHud(false)}
-                label="Close Camera HUD"
+                label="Close HUD"
                 style={{ width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: V.ink2, fontSize: "12px", lineHeight: 1 }}
               >
                 &times;
@@ -271,9 +271,6 @@ export default function FloatersDesktop() {
               label={f.title}
               aria-pressed={act}
               onClick={() => actions.dispatchIntent("FLOATER_TOGGLE", { id: f.id })}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.dispatchIntent("FLOATER_TOGGLE", { id: f.id }); } }}
-              role="button"
-              tabIndex={0}
               aria-label={f.title}
               style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", padding: "0 10px", cursor: "pointer", background: act ? V.pri : min ? "transparent" : V.surf2, color: act ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2, border: "1px solid " + (min ? V.outv : "transparent"), borderRadius: isSweepDesk ? "999px" : V.rs, font: isSweepDesk ? "700 10px/1 " + t.dfont : "500 10px/1 " + t.font, letterSpacing: isSweepDesk ? ".12em" : ".08em", whiteSpace: "nowrap" }}
             >
@@ -313,9 +310,6 @@ export default function FloatersDesktop() {
               disabled={dis}
               aria-pressed={lit}
               onClick={() => actions.cPress(k)}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.cPress(k); } }}
-              role="button"
-              tabIndex={0}
               aria-label={b.label}
               style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", gap: "6px", padding: "0 9px", background: dis ? "transparent" : bg, color: dis ? V.ink2 : ink(bg, [V.bg, V.onpri, V.ink]), border: "1px solid " + (dis ? V.outv : "transparent"), borderRadius: V.rs, cursor: dis ? "not-allowed" : "pointer", font: "600 9.5px/1 " + t.dfont, letterSpacing: ".1em", whiteSpace: "nowrap" }}
             >

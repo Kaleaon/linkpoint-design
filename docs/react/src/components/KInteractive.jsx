@@ -20,7 +20,7 @@ export function KInteractive({
   const handleKeyDown = (e) => {
     if (disabled) return;
     if (onKeyDown) onKeyDown(e);
-    if (!e.defaultPrevented && !isButton && (e.key === "Enter" || e.key === " ")) {
+    if (!e.defaultPrevented && (e.key === "Enter" || e.key === " " || e.key === "Spacebar")) {
       e.preventDefault();
       if (onClick) onClick(e);
     }
@@ -41,7 +41,7 @@ export function KInteractive({
     <Component
       type={buttonType}
       role={isButton ? role : (role || "button")}
-      tabIndex={isButton ? tabIndex : (disabled ? -1 : (tabIndex ?? 0))}
+      tabIndex={disabled ? -1 : (tabIndex ?? 0)}
       disabled={isButton ? disabled : undefined}
       aria-label={ariaLabel}
       aria-disabled={disabled ? true : undefined}
