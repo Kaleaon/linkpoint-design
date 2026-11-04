@@ -303,7 +303,16 @@ async function getPlaywrightBrowser() {
   const playwright = await import('playwright');
   const launchOpts = {
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--font-render-hinting=none', '--force-color-profile=srgb']
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--font-render-hinting=none',
+      '--force-color-profile=srgb',
+      '--disable-features=ResponsivenessMeasurement',
+      '--disable-renderer-backgrounding'
+    ]
   };
 
   try {
@@ -779,70 +788,71 @@ async function taskVisualSuite() {
     { name: 'mobile', width: 375, height: 667 }
   ];
 
-  let browser;
   let allMatched = true;
 
   try {
-    browser = await getPlaywrightBrowser();
-
     for (const vp of viewports) {
       log(`Capturing visual snapshots for viewport: ${vp.name} (${vp.width}x${vp.height})`, 'info');
-      const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
-      await page.addInitScript(() => {
-        const inject = () => {
-          const style = document.createElement('style');
-          style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
-          if (document.head || document.documentElement) {
-            (document.head || document.documentElement).appendChild(style);
-          }
-        };
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', inject);
-        } else {
-          inject();
-        }
-      });
-      await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
-      await page.waitForTimeout(1000);
-
-      // Attempt interactive panel triggers if available
+      let browser;
       try {
-        const sweepBtn = page.getByText('Sweep Console', { exact: true }).first();
-        if (await sweepBtn.isVisible()) {
+        browser = await getPlaywrightBrowser();
+        const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
+        await page.addInitScript(() => {
+          const inject = () => {
+            const style = document.createElement('style');
+            style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
+            if (document.head || document.documentElement) {
+              (document.head || document.documentElement).appendChild(style);
+            }
+          };
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', inject);
+          } else {
+            inject();
+          }
+        });
+        await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
+        await page.waitForTimeout(1000);
+
+        // Attempt interactive panel triggers if available
+        try {
+          const sweepBtn = page.getByText('Sweep Console', { exact: true }).first();
+          await sweepBtn.waitFor({ state: 'visible', timeout: 3000 });
           await sweepBtn.click();
-          await page.waitForTimeout(300);
-        }
-        const lcarsBtn = page.getByText('LCARS Amber', { exact: true }).first();
-        if (await lcarsBtn.isVisible()) {
+          await page.waitForTimeout(500);
+          const lcarsBtn = page.getByText('LCARS Amber', { exact: true }).first();
+          await lcarsBtn.waitFor({ state: 'visible', timeout: 3000 });
           await lcarsBtn.click();
-          await page.waitForTimeout(300);
-        }
-      } catch (_) {}
+          await page.waitForTimeout(800);
+        } catch (_) {}
 
-      const currentBuf = await page.screenshot({ fullPage: false });
-      const baselineFile = path.join(snapshotDir, `${vp.name}_sweep_lcars.png`);
+        const currentBuf = await page.screenshot({ fullPage: false });
+        const baselineFile = path.join(snapshotDir, `${vp.name}_sweep_lcars.png`);
 
-      if (updateSnapshots || !fs.existsSync(baselineFile)) {
-        fs.writeFileSync(baselineFile, currentBuf);
-        log(`Saved baseline snapshot: ${baselineFile}`, 'success');
-      } else {
-        const baselineBuf = fs.readFileSync(baselineFile);
-        const result = comparePNGBuffers(currentBuf, baselineBuf);
-
-        if (result.match) {
-          log(`Visual match for ${vp.name} (${result.diffPercent}% diff)`, 'success');
+        if (updateSnapshots || !fs.existsSync(baselineFile)) {
+          fs.writeFileSync(baselineFile, currentBuf);
+          log(`Saved baseline snapshot: ${baselineFile}`, 'success');
         } else {
-          allMatched = false;
-          log(`Visual regression detected for ${vp.name}! Diff: ${result.diffPercent}% (${result.diffPixels} diff pixels)`, 'error');
-          const diffDir = path.join(cwd, 'docs/screenshots/diffs');
-          fs.mkdirSync(diffDir, { recursive: true });
-          const diffFile = path.join(diffDir, `${vp.name}_diff.png`);
-          fs.writeFileSync(diffFile, currentBuf);
-          log(`Saved diff snapshot: ${diffFile}`, 'warn');
-        }
-      }
+          const baselineBuf = fs.readFileSync(baselineFile);
+          const result = comparePNGBuffers(currentBuf, baselineBuf);
 
-      await page.close();
+          if (result.match) {
+            log(`Visual match for ${vp.name} (${result.diffPercent}% diff)`, 'success');
+          } else {
+            allMatched = false;
+            log(`Visual regression detected for ${vp.name}! Diff: ${result.diffPercent}% (${result.diffPixels} diff pixels)`, 'error');
+            const diffDir = path.join(cwd, 'docs/screenshots/diffs');
+            fs.mkdirSync(diffDir, { recursive: true });
+            const diffFile = path.join(diffDir, `${vp.name}_diff.png`);
+            fs.writeFileSync(diffFile, currentBuf);
+            log(`Saved diff snapshot: ${diffFile}`, 'warn');
+          }
+        }
+
+        await page.close();
+      } finally {
+        if (browser) await browser.close();
+      }
     }
 
     if (allMatched) {
@@ -856,7 +866,6 @@ async function taskVisualSuite() {
     log(`Visual suite error: ${err.message}`, 'error');
     return false;
   } finally {
-    if (browser) await browser.close();
     if (server) await server.close();
   }
 }
