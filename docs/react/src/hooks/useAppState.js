@@ -52,8 +52,8 @@ const DEFAULT_STORED_ACCOUNTS = [
 
 // Ported from the mockup's `state = {...}` initializer and its instance
 // methods (flR/flDrag/flFocus/flToggle/flClose, hudDrag/toggleHud, T/D/navMode,
-// set/setTab/dismiss/toggleSetting/pin/cycle, cf/cTap/cHold/cPress, and the
-// tick interval in componentDidMount). This hook is the state + actions layer;
+// set/setTab/dismiss/toggleSetting/pin/cycle, cf/cTap/cHold/cPress).
+// This hook is the state + actions layer;
 // theme/viewModel.js is the "renderVals()" computation layer that consumes it.
 export function useAppState() {
   const [layout, setLayout] = useState("terminal");
@@ -192,7 +192,6 @@ export function useAppState() {
     "Chat",
   ]);
   const [menu, setMenu] = useState(null);
-  const [tick, setTick] = useState(0);
   const [storedAccounts, setStoredAccounts] = useState(() => {
     try {
       const val = localStorage.getItem(LINKPOINT_ACCOUNTS_KEY);
@@ -305,12 +304,6 @@ export function useAppState() {
   const [lindenBalance, setLindenBalance] = useState(4250);
   const [exchangeRate, setExchangeRate] = useState(248.5);
   const [lastSyncedAt, setLastSyncedAt] = useState(() => new Date());
-
-  // ---- tick clock (componentDidMount's setInterval) ---------------------
-  useEffect(() => {
-    const iv = setInterval(() => setTick((t) => t + 1), 1000);
-    return () => clearInterval(iv);
-  }, []);
 
   // Form factor is an implementation concern in the real app. The design
   // canvas exposes a manual device picker, but the React port follows its host
@@ -1330,7 +1323,6 @@ export function useAppState() {
       flRect,
       flZ,
       menu,
-      tick,
       storedAccounts,
       selectedAccountId,
       loginAvatarName,
