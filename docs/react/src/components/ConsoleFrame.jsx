@@ -1,5 +1,6 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
+import { useTelemetryTick } from "../hooks/useTelemetryTick.js";
 import { NAV_ALL, HEAD } from "../data/content.js";
 import { LAYOUTS, resolveLayout } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
@@ -31,7 +32,7 @@ export default function ConsoleFrame() {
   const { state, actions } = useApp();
   const { V, t, C, ink, consoleScene } = useTheme();
   const reducedMotion = usePrefersReducedMotion();
-  const tick = state.tick || 0;
+  const tick = useTelemetryTick();
   const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
 
   const cfBar = {
