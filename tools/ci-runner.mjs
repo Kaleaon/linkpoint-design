@@ -297,30 +297,44 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
 // Helper to resolve Playwright browser launch
 async function getPlaywrightBrowser() {
   const playwright = await import('playwright');
-  const possiblePaths = [
-    process.env.CHROMIUM_PATH,
-    '/bin/google-chrome',
-    '/usr/bin/google-chrome',
-    '/usr/bin/chromium-browser',
-    '/usr/bin/chromium'
-  ].filter(Boolean);
-
-  let executablePath = possiblePaths.find(p => fs.existsSync(p));
   const launchOpts = {
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--font-render-hinting=none', '--force-color-profile=srgb']
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--font-render-hinting=none', '--force-color-profile=srgb', '--disable-features=ResponsivenessMeasurement', '--disable-renderer-backgrounding']
   };
 
-  if (executablePath) {
+  const cacheBase = path.join(process.env.HOME || '/home/jules', '.cache/ms-playwright');
+  if (fs.existsSync(cacheBase)) {
     try {
-      launchOpts.executablePath = executablePath;
-      return await playwright.chromium.launch(launchOpts);
-    } catch (_) {
-      delete launchOpts.executablePath;
-    }
+      const entries = fs.readdirSync(cacheBase);
+      const shellDir = entries.find(e => e.startsWith('chromium_headless_shell-'));
+      if (shellDir) {
+        const shellBin = path.join(cacheBase, shellDir, 'chrome-headless-shell-linux64/chrome-headless-shell');
+        if (fs.existsSync(shellBin)) {
+          launchOpts.executablePath = shellBin;
+          return await playwright.chromium.launch(launchOpts);
+        }
+      }
+    } catch (_) {}
   }
 
-  return await playwright.chromium.launch(launchOpts);
+  try {
+    return await playwright.chromium.launch(launchOpts);
+  } catch (err) {
+    const possiblePaths = [
+      process.env.CHROMIUM_PATH,
+      '/bin/google-chrome',
+      '/usr/bin/google-chrome',
+      '/usr/bin/chromium-browser',
+      '/usr/bin/chromium'
+    ].filter(Boolean);
+
+    let executablePath = possiblePaths.find(p => fs.existsSync(p));
+    if (executablePath) {
+      launchOpts.executablePath = executablePath;
+      return await playwright.chromium.launch(launchOpts);
+    }
+    throw err;
+  }
 }
 
 async function navigateWithRetry(page, url, options = {}, retries = 3, delayMs = 500) {
