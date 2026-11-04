@@ -302,42 +302,41 @@ async function getPlaywrightBrowser() {
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--font-render-hinting=none', '--force-color-profile=srgb']
   };
 
-  try {
-    return await playwright.chromium.launch(launchOpts);
-  } catch (err) {
-    // Search ms-playwright cache for installed headless shell binaries
-    const homeDir = process.env.HOME || '/home/jules';
-    const msPlaywrightDir = path.join(homeDir, '.cache/ms-playwright');
-    let cachedHeadlessShell = null;
-    if (fs.existsSync(msPlaywrightDir)) {
-      try {
-        const dirs = fs.readdirSync(msPlaywrightDir).filter(d => d.startsWith('chromium_headless_shell-'));
-        for (const dir of dirs) {
-          const candidate = path.join(msPlaywrightDir, dir, 'chrome-headless-shell-linux64/chrome-headless-shell');
-          if (fs.existsSync(candidate)) {
-            cachedHeadlessShell = candidate;
-            break;
-          }
+  // Search ms-playwright cache for installed headless shell binaries
+  const homeDir = process.env.HOME || '/home/jules';
+  const msPlaywrightDir = path.join(homeDir, '.cache/ms-playwright');
+  let cachedHeadlessShell = null;
+  if (fs.existsSync(msPlaywrightDir)) {
+    try {
+      const dirs = fs.readdirSync(msPlaywrightDir).filter(d => d.startsWith('chromium_headless_shell-'));
+      for (const dir of dirs) {
+        const candidate = path.join(msPlaywrightDir, dir, 'chrome-headless-shell-linux64/chrome-headless-shell');
+        if (fs.existsSync(candidate)) {
+          cachedHeadlessShell = candidate;
+          break;
         }
+      }
+    } catch (_) {}
+  }
+
+  const possiblePaths = [
+    process.env.CHROMIUM_PATH,
+    '/bin/google-chrome',
+    '/usr/bin/google-chrome',
+    '/usr/bin/chromium-browser',
+    '/usr/bin/chromium',
+    cachedHeadlessShell
+  ].filter(Boolean);
+
+  for (const execPath of possiblePaths) {
+    if (fs.existsSync(execPath)) {
+      try {
+        return await playwright.chromium.launch({ ...launchOpts, executablePath: execPath });
       } catch (_) {}
     }
-
-    const possiblePaths = [
-      process.env.CHROMIUM_PATH,
-      cachedHeadlessShell,
-      '/bin/google-chrome',
-      '/usr/bin/google-chrome',
-      '/usr/bin/chromium-browser',
-      '/usr/bin/chromium'
-    ].filter(Boolean);
-
-    let executablePath = possiblePaths.find(p => fs.existsSync(p));
-    if (executablePath) {
-      launchOpts.executablePath = executablePath;
-      return await playwright.chromium.launch(launchOpts);
-    }
-    throw err;
   }
+
+  return await playwright.chromium.launch(launchOpts);
 }
 
 async function navigateWithRetry(page, url, options = {}, retries = 3, delayMs = 500) {
