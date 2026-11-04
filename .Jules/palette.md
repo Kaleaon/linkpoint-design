@@ -56,3 +56,6 @@
 ## 2026-10-08 - Keyboard Handlers Dropped During React Porting
 **Learning:** When porting interactive features (like custom div/span multi-select toolbars in the Inventory screen) from vanilla HTML templates to React, developers sometimes carry over the `role="button"` and `tabIndex={0}` properties but mistakenly drop the explicit `onKeyDown` handlers required for Enter/Space keyboard activation, breaking accessibility.
 **Action:** When auditing React ports of HTML templates, explicitly cross-reference the source HTML to ensure that all `onClick` behaviors are accurately mapped with accompanying `onKeyDown` handlers.
+## 2026-11-01 - Add aria-label to KInteractive components in Objects screen
+**Learning:** Interactive UI components that are used as action buttons in custom templates, such as `KInteractive`, may lack explicit `aria-label` attributes for context, rendering them inaccessible for users using screen readers, especially when they only rely on icon representation without readable text.
+**Action:** When inspecting or adding icon-only controls or text-based action buttons in custom interfaces, ensure they explicitly include descriptive `aria-label` attributes to provide context and maintain accessibility.
