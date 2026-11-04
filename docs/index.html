@@ -96,7 +96,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
     <div class="pnlh">LAYOUT PACK</div>
     <div style="display:flex;flex-direction:column;gap:4px">
       <sc-for list="{{ layoutList }}" as="t" hint-placeholder-count="6">
-        <div class="pick" onClick="{{ t.pick }}">
+        <div class="pick" onClick="{{ t.pick }}" onKeyDown="{{ t.pickKeyDown }}" role="button" tabindex="0">
           <span style="{{ t.swatch }}"></span>
           <span style="font:500 11.5px/1.3 'JetBrains Mono',monospace;color:rgba(255,255,255,.85);flex:1">{{ t.name }}</span>
           <span style="font:600 9px/1 'JetBrains Mono',monospace;letter-spacing:.14em;color:rgba(255,255,255,.75)">{{ t.nav }}</span>
@@ -108,7 +108,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
       <sc-for list="{{ paletteFams }}" as="fm" hint-placeholder-count="4">
         <div style="font:600 9px/1 'JetBrains Mono',monospace;letter-spacing:.18em;color:rgba(255,255,255,.4);margin:9px 0 3px">{{ fm.name }}</div>
         <sc-for list="{{ fm.items }}" as="p" hint-placeholder-count="5">
-          <div class="pick" onClick="{{ p.pick }}">
+          <div class="pick" onClick="{{ p.pick }}" onKeyDown="{{ p.pickKeyDown }}" role="button" tabindex="0">
             <span style="{{ p.swatch }}"><span style="{{ p.a }}"></span><span style="{{ p.b }}"></span><span style="{{ p.c }}"></span></span>
             <span style="font:500 11.5px/1.3 'JetBrains Mono',monospace;color:rgba(255,255,255,.85);flex:1">{{ p.name }}</span>
           </div>
@@ -120,29 +120,29 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,select:fo
     <div class="pnlh">DEVICE</div>
     <div style="display:flex;flex-direction:column;gap:4px">
       <sc-for list="{{ deviceList }}" as="d" hint-placeholder-count="4">
-        <div class="pick" onClick="{{ d.pick }}">
+        <div class="pick" onClick="{{ d.pick }}" onKeyDown="{{ d.pickKeyDown }}" role="button" tabindex="0">
           <span style="font:500 11.5px/1.3 'JetBrains Mono',monospace;color:rgba(255,255,255,.85);flex:1">{{ d.name }}</span>
           <span style="font:400 9.5px/1 'JetBrains Mono',monospace;color:rgba(255,255,255,.35)">{{ d.dims }}</span>
         </div>
       </sc-for>
     </div>
     <div style="display:flex;gap:6px;margin-top:12px">
-      <div class="tag" style="flex:1;text-align:center" onClick="{{ setComfortable }}">COMFORTABLE</div>
-      <div class="tag" style="flex:1;text-align:center" onClick="{{ setCompact }}">COMPACT</div>
+      <div class="tag" style="flex:1;text-align:center" onClick="{{ setComfortable }}" onKeyDown="{{ setComfortableKeyDown }}" role="button" tabindex="0">COMFORTABLE</div>
+      <div class="tag" style="flex:1;text-align:center" onClick="{{ setCompact }}" onKeyDown="{{ setCompactKeyDown }}" role="button" tabindex="0">COMPACT</div>
     </div>
   </div>
   <div class="pnl">
     <div class="pnlh">SCREEN</div>
     <div style="display:flex;flex-wrap:wrap;gap:5px">
-      <sc-for list="{{ screenList }}" as="s" hint-placeholder-count="13"><div class="tag" style="{{ s.style }}" onClick="{{ s.pick }}">{{ s.name }}</div></sc-for>
+      <sc-for list="{{ screenList }}" as="s" hint-placeholder-count="13"><div class="tag" style="{{ s.style }}" onClick="{{ s.pick }}" onKeyDown="{{ s.pickKeyDown }}" role="button" tabindex="0">{{ s.name }}</div></sc-for>
     </div>
     <div class="pnlh" style="margin:16px 0 10px">SCREEN STATE</div>
     <div style="display:flex;flex-wrap:wrap;gap:5px">
-      <sc-for list="{{ condList }}" as="cd" hint-placeholder-count="4"><div style="{{ cd.style }}" onClick="{{ cd.pick }}">{{ cd.name }}</div></sc-for>
+      <sc-for list="{{ condList }}" as="cd" hint-placeholder-count="4"><div style="{{ cd.style }}" onClick="{{ cd.pick }}" onKeyDown="{{ cd.pickKeyDown }}" role="button" tabindex="0">{{ cd.name }}</div></sc-for>
     </div>
     <div class="pnlh" style="margin:16px 0 10px">SL SYSTEM MOMENTS</div>
     <div style="display:flex;flex-wrap:wrap;gap:5px">
-      <sc-for list="{{ dialogList }}" as="g" hint-placeholder-count="6"><div class="tag" style="border-style:dashed" onClick="{{ g.pick }}">{{ g.name }}</div></sc-for>
+      <sc-for list="{{ dialogList }}" as="g" hint-placeholder-count="6"><div class="tag" style="border-style:dashed" onClick="{{ g.pick }}" onKeyDown="{{ g.pickKeyDown }}" role="button" tabindex="0">{{ g.name }}</div></sc-for>
     </div>
   </div>
 </div>
@@ -3708,7 +3708,7 @@ sendChatKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDef
       hasSeg: !!segTabs && norm,      isPivotHead: headLook === "pivot", isRuleHead: headLook === "rule", isPressHead: headLook === "editorial",
       pivotTitle: (title || "").toLowerCase(), pivotNext: nextScr.toLowerCase(),
       condList: [["normal", "NORMAL"], ["loading", "LOADING"], ["empty", "EMPTY"], ["error", "ERROR"]].map(([k, n]) => ({
-        name: n, pick: () => this.set("cond", k),
+        name: n, pick: () => this.set("cond", k), pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("cond", k); } },
         style: { border: "1px solid " + (s.cond === k ? "#6CFF9A" : "rgba(255,255,255,.18)"), color: s.cond === k ? "#6CFF9A" : "rgba(255,255,255,.6)",
           borderRadius: "4px", padding: "6px 9px", font: "600 9.5px/1 'JetBrains Mono',monospace", letterSpacing: ".12em", cursor: "pointer" } })),
       hudPanels, hudList, targetList,
@@ -3747,23 +3747,31 @@ openTargetPickerKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.pr
         const x = LAYOUTS[k];
         const active = s.layout === k || (LAYOUT_ALIASES[s.layout] === k);
         return {
-          name: x.name, nav: x.nav, pick: () => this.set("layout", k),
+          name: x.name, nav: x.nav, pick: () => this.set("layout", k), pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("layout", k); } },
           swatch: { width: "22px", height: "22px", flex: "none", borderRadius: x.s.rs === "999px" ? "11px 2px 11px 2px" : x.s.rs, border: "1px solid " + (active ? V.pri : "rgba(255,255,255,.3)"), background: active ? V.pri : "rgba(255,255,255,.08)" }
         };
       }),
       paletteFams: FAMILIES.map(fm => ({ name: fm.name, items: fm.keys.filter(k => PALETTES[k]).map(k => {
         const x = PALETTES[k];
-        return { name: x.name, pick: () => this.set("palette", k),
+        return { name: x.name, pick: () => this.set("palette", k), pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("palette", k); } },
           swatch: { width: "34px", height: "18px", flex: "none", display: "flex", overflow: "hidden", borderRadius: "3px", outline: s.palette === k ? "2px solid " + x.c.pri : "1px solid rgba(255,255,255,.2)", outlineOffset: "1px" },
           a: { flex: 1, background: x.c.bg }, b: { flex: 1, background: x.c.pri }, c: { flex: 1, background: x.c.sec2 } };
       }) })),
-      deviceList: Object.entries(DEVICES).map(([k, x]) => ({ name: x.name, dims: x.dims, pick: () => this.set("device", k) })),
+      deviceList: Object.entries(DEVICES).map(([k, x]) => ({ name: x.name, dims: x.dims, pick: () => this.set("device", k), pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("device", k); } } })),
       screenList: SCREENS.map(n => ({ name: n, style: n === scr ? "border-color:#6CFF9A;color:#6CFF9A;background:rgba(108,255,154,.12)" : "", pick: () => {
         if (this.navMode() === "floaters" && FLOATERS.some(f => f.id === n)) { this.flFocus(n); this.set("dialog", null); return; }
         this.setState({ screen: n, dialog: null });
+      }, pickKeyDown: (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          if (this.navMode() === "floaters" && FLOATERS.some(f => f.id === n)) { this.flFocus(n); this.set("dialog", null); return; }
+          this.setState({ screen: n, dialog: null });
+        }
       } })),
-      dialogList: Object.keys(DIALOGS).map(n => ({ name: n, pick: () => this.set("dialog", n) })),
+      dialogList: Object.keys(DIALOGS).map(n => ({ name: n, pick: () => this.set("dialog", n), pickKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("dialog", n); } } })),
       setCompact: () => this.set("dense", true), setComfortable: () => this.set("dense", false),
+      setCompactKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("dense", true); } },
+      setComfortableKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("dense", false); } },
       closeDialog: () => this.set("dialog", null),
       closeDialogKeyDown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.set("dialog", null); } },
       // The world view gets the whole frame: nav collapses to a floating button so
