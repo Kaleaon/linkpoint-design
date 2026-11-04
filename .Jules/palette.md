@@ -56,3 +56,7 @@
 ## 2026-10-08 - Keyboard Handlers Dropped During React Porting
 **Learning:** When porting interactive features (like custom div/span multi-select toolbars in the Inventory screen) from vanilla HTML templates to React, developers sometimes carry over the `role="button"` and `tabIndex={0}` properties but mistakenly drop the explicit `onKeyDown` handlers required for Enter/Space keyboard activation, breaking accessibility.
 **Action:** When auditing React ports of HTML templates, explicitly cross-reference the source HTML to ensure that all `onClick` behaviors are accurately mapped with accompanying `onKeyDown` handlers.
+
+## 2026-10-27 - Keyboard Access for Custom Remove/Delete Icons
+**Learning:** Icon-only actionable elements (like minus/delete badges on edit interfaces) built with `<span>` often lack keyboard access. Adding `role="button"`, `tabindex="0"`, an `aria-label`, and an `onKeyDown` handler ensures they can be focused and activated by keyboard users. Also, when placing these inside other actionable areas, `e.stopPropagation()` must be used for both click and keydown to prevent triggering parent actions.
+**Action:** Always verify that small utility icons (like remove/delete badges) have full keyboard semantics and event handlers, including propagation stops when nested inside other buttons.
