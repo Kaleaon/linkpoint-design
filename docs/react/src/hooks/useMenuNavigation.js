@@ -31,16 +31,6 @@ export function useMenuNavigation({
   const [uncontrolledOpenMenu, setUncontrolledOpenMenu] = useState(null);
   const currentOpenMenu = isControlled ? controlledOpenMenu : uncontrolledOpenMenu;
 
-  const [focusedMenuIndex, setFocusedMenuIndex] = useState(0);
-  const [focusedItemIndex, setFocusedItemIndex] = useState(-1);
-
-  const headerRefs = useRef([]);
-  const dropdownRefs = useRef([]);
-  const itemRefs = useRef([]);
-  const pendingFocusRef = useRef(null);
-
-  const menuCount = menus.length;
-
   const getMenuLabel = useCallback((menu) => {
     if (typeof menu === "string") return menu;
     return menu?.label || "";
@@ -52,10 +42,36 @@ export function useMenuNavigation({
     return [];
   }, []);
 
+  const [focusedMenuIndex, setFocusedMenuIndex] = useState(() => {
+    if (controlledOpenMenu) {
+      const idx = menus.findIndex((m) => getMenuLabel(m) === controlledOpenMenu);
+      if (idx !== -1) return idx;
+    }
+    return 0;
+  });
+  const [focusedItemIndex, setFocusedItemIndex] = useState(-1);
+
+  const headerRefs = useRef([]);
+  const dropdownRefs = useRef([]);
+  const itemRefs = useRef([]);
+  const pendingFocusRef = useRef(null);
+
+  const menuCount = menus.length;
+
   const safeFocusedMenuIndex =
     menuCount > 0
       ? Math.max(0, Math.min(focusedMenuIndex, menuCount - 1))
       : 0;
+
+  // Sync focusedMenuIndex if openMenu changes
+  useEffect(() => {
+    if (currentOpenMenu) {
+      const idx = menus.findIndex((m) => getMenuLabel(m) === currentOpenMenu);
+      if (idx !== -1) {
+        setFocusedMenuIndex(idx);
+      }
+    }
+  }, [currentOpenMenu, menus, getMenuLabel]);
 
   const setOpenMenu = useCallback(
     (label) => {
