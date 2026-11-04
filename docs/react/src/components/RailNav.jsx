@@ -2,6 +2,7 @@ import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL } from "../data/content.js";
 import Icon from "./Icon.jsx";
+import A11yControl from "./A11yControl.jsx";
 import { navActive } from "../theme/look.js";
 
 // Ported from the `isRail` <sc-if> block — the left rail (Navy Gold, Rule &
@@ -40,9 +41,10 @@ export default function RailNav() {
       {NAV_ALL.map((n) => {
         const active = navActive(state.screen, n.id);
         return (
-          <div
+          <A11yControl
             key={n.id}
             onClick={() => actions.setScreen(n.id)}
+            aria-label={n.label}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -61,7 +63,7 @@ export default function RailNav() {
             >
               {n.label}
             </span>
-          </div>
+          </A11yControl>
         );
       })}
     </nav>

@@ -6,13 +6,21 @@ import { pickInk } from "./color.js";
 function getLuminance(hex) {
   if (!hex || typeof hex !== "string") return 0;
   const cleanHex = hex.replace("#", "");
-  const fullHex = cleanHex.length === 3 ? cleanHex.split("").map((c) => c + c).join("") : cleanHex;
+  const fullHex =
+    cleanHex.length === 3
+      ? cleanHex
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : cleanHex;
   const num = parseInt(fullHex, 16);
   if (isNaN(num)) return 0;
   const r = ((num >> 16) & 255) / 255;
   const g = ((num >> 8) & 255) / 255;
   const b = (num & 255) / 255;
-  const a = [r, g, b].map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
+  const a = [r, g, b].map((v) =>
+    v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
+  );
   return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
 }
 
@@ -53,7 +61,9 @@ export function computeThemeTokens(state) {
     }
   }
   const isLightBg = getLuminance(V.bg) >= 0.5;
-  const focusRingShadow = isLightBg ? "rgba(0, 0, 0, 0.4)" : "rgba(0, 0, 0, 0.6)";
+  const focusRingShadow = isLightBg
+    ? "rgba(0, 0, 0, 0.4)"
+    : "rgba(0, 0, 0, 0.6)";
 
   V.focusRing = focusRing;
   V.focusRingShadow = focusRingShadow;

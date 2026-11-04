@@ -1,12 +1,10 @@
 import React from "react";
 import { useApp } from "../context/AppContext.jsx";
-import { useTheme } from "../context/ThemeContext.jsx";
 import KInteractive from "../components/KInteractive.jsx";
 import FormInput from "../components/FormInput.jsx";
 
 export default function GridConsole() {
   const { state, actions } = useApp();
-  const { V, t } = useTheme();
 
   const logs = (state.consoleLogs || []).filter((entry) => {
     if (state.consoleQuery) {
@@ -45,19 +43,19 @@ export default function GridConsole() {
           alignItems: "center",
           gap: "8px",
           padding: "10px",
-          border: "1px solid " + V.outv,
-          borderRadius: V.rs,
-          background: V.surf,
+          border: "1px solid var(--ktheme-outv)",
+          borderRadius: "var(--ktheme-rs)",
+          background: "var(--ktheme-surf)",
         }}
       >
         <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
           <span
             style={{
               padding: "4px 8px",
-              borderRadius: V.rs,
-              background: V.surf2,
-              font: "700 10px/1 " + t.font,
-              color: V.ink,
+              borderRadius: "var(--ktheme-rs)",
+              background: "var(--ktheme-surf2)",
+              font: "700 10px/1 var(--ktheme-font, system-ui, sans-serif)",
+              color: "var(--ktheme-ink)",
             }}
           >
             ENTRIES: {totalCount}
@@ -65,11 +63,10 @@ export default function GridConsole() {
           <span
             style={{
               padding: "4px 8px",
-              borderRadius: V.rs,
+              borderRadius: "var(--ktheme-rs)",
               background: "rgba(255,176,32,0.15)",
-              font: "700 10px/1 " + t.font,
-              color:
-                V.warn || "var(--md-sys-color-warning, var(--ktheme-warn))",
+              font: "700 10px/1 var(--ktheme-font, system-ui, sans-serif)",
+              color: "var(--ktheme-warn)",
             }}
           >
             WARN: {warnCount}
@@ -77,13 +74,12 @@ export default function GridConsole() {
           <span
             style={{
               padding: "4px 8px",
-              borderRadius: V.rs,
-              font: "700 10px/1 " + t.font,
-              background: errorCount > 0 ? "rgba(255,85,85,0.25)" : V.surf2,
+              borderRadius: "var(--ktheme-rs)",
+              font: "700 10px/1 var(--ktheme-font, system-ui, sans-serif)",
+              background:
+                errorCount > 0 ? "rgba(255,85,85,0.25)" : "var(--ktheme-surf2)",
               color:
-                errorCount > 0
-                  ? V.err || "var(--md-sys-color-error, var(--ktheme-err))"
-                  : V.ink2,
+                errorCount > 0 ? "var(--ktheme-err)" : "var(--ktheme-ink2)",
             }}
           >
             ERRORS: {errorCount}
@@ -105,22 +101,22 @@ export default function GridConsole() {
             style={{
               height: "28px",
               padding: "0 8px",
-              border: "1px solid " + V.outv,
-              borderRadius: V.rs,
-              background: V.bg,
-              color: V.ink,
-              font: "400 11px/1 " + t.font,
+              border: "1px solid var(--ktheme-outv)",
+              borderRadius: "var(--ktheme-rs)",
+              background: "var(--ktheme-bg)",
+              color: "var(--ktheme-ink)",
+              font: "400 11px/1 var(--ktheme-font, system-ui, sans-serif)",
             }}
           />
           <KInteractive
             onClick={actions.copyConsoleLogs}
             style={{
               padding: "6px 10px",
-              border: "1px solid " + V.outv,
-              borderRadius: V.rs,
-              background: V.surf2,
-              font: "700 10px/1 " + t.font,
-              color: V.pri,
+              border: "1px solid var(--ktheme-outv)",
+              borderRadius: "var(--ktheme-rs)",
+              background: "var(--ktheme-surf2)",
+              font: "700 10px/1 var(--ktheme-font, system-ui, sans-serif)",
+              color: "var(--ktheme-pri)",
               cursor: "pointer",
             }}
             label="Copy logs"
@@ -131,11 +127,11 @@ export default function GridConsole() {
             onClick={actions.downloadConsoleLogs}
             style={{
               padding: "6px 10px",
-              border: "1px solid " + V.outv,
-              borderRadius: V.rs,
-              background: V.surf2,
-              font: "700 10px/1 " + t.font,
-              color: V.pri,
+              border: "1px solid var(--ktheme-outv)",
+              borderRadius: "var(--ktheme-rs)",
+              background: "var(--ktheme-surf2)",
+              font: "700 10px/1 var(--ktheme-font, system-ui, sans-serif)",
+              color: "var(--ktheme-pri)",
               cursor: "pointer",
             }}
             label="Download logs"
@@ -146,11 +142,11 @@ export default function GridConsole() {
             onClick={actions.clearConsoleLogs}
             style={{
               padding: "6px 10px",
-              border: "1px solid " + V.outv,
-              borderRadius: V.rs,
-              background: V.surf2,
-              font: "700 10px/1 " + t.font,
-              color: V.err || "var(--md-sys-color-error, var(--ktheme-err))",
+              border: "1px solid var(--ktheme-outv)",
+              borderRadius: "var(--ktheme-rs)",
+              background: "var(--ktheme-surf2)",
+              font: "700 10px/1 var(--ktheme-font, system-ui, sans-serif)",
+              color: "var(--ktheme-err)",
               cursor: "pointer",
             }}
             label="Clear logs"
@@ -166,37 +162,37 @@ export default function GridConsole() {
           minHeight: 0,
           overflowY: "auto",
           padding: "10px",
-          border: "1px solid " + V.outv,
-          borderRadius: V.rs,
-          background:
-            V.bg || "var(--md-sys-color-background, var(--ktheme-bg))",
-          fontFamily: "'JetBrains Mono', monospace",
+          border: "1px solid var(--ktheme-outv)",
+          borderRadius: "var(--ktheme-rs)",
+          background: "var(--ktheme-bg)",
+          fontFamily: "var(--ktheme-font, 'JetBrains Mono', monospace)",
         }}
       >
         {logs.map((cl, i) => {
-          let col = V.ink2;
-          if (cl.level === "INFO") col = V.sec2 || V.pri;
-          if (cl.level === "WARN")
-            col = V.warn || "var(--md-sys-color-warning, var(--ktheme-warn))";
+          let col = "var(--ktheme-ink2)";
+          if (cl.level === "INFO") col = "var(--ktheme-pri)";
+          if (cl.level === "WARN") col = "var(--ktheme-warn)";
           if (cl.level === "ERROR" || cl.level === "FATAL")
-            col = V.err || "var(--md-sys-color-error, var(--ktheme-err))";
+            col = "var(--ktheme-err)";
           return (
             <div
               key={i}
               style={{
-                font: "400 11px/1.5 " + t.font,
+                font: "400 11px/1.5 var(--ktheme-font, system-ui, sans-serif)",
                 color: col,
                 display: "flex",
                 gap: "8px",
                 padding: "2px 0",
-                borderBottom: "1px solid " + V.surf2,
+                borderBottom: "1px solid var(--ktheme-surf2)",
               }}
             >
               <span style={{ opacity: 0.6, flex: "none" }}>[{cl.ts}]</span>
               <span style={{ fontWeight: 700, flex: "none", width: "52px" }}>
                 {cl.level}
               </span>
-              <span style={{ color: V.pri, flex: "none" }}>{cl.tag}</span>
+              <span style={{ color: "var(--ktheme-pri)", flex: "none" }}>
+                {cl.tag}
+              </span>
               <span style={{ flex: 1 }}>{cl.msg}</span>
             </div>
           );

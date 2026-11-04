@@ -32,12 +32,22 @@ export function ThemeProvider({ children }) {
   );
 
   useEffect(() => {
-    if (typeof document !== "undefined" && document.documentElement && tokens?.V) {
+    if (
+      typeof document !== "undefined" &&
+      document.documentElement &&
+      tokens?.V
+    ) {
       if (tokens.V.focusRing) {
-        document.documentElement.style.setProperty("--k-focus-ring", tokens.V.focusRing);
+        document.documentElement.style.setProperty(
+          "--k-focus-ring",
+          tokens.V.focusRing
+        );
       }
       if (tokens.V.focusRingShadow) {
-        document.documentElement.style.setProperty("--k-focus-ring-shadow", tokens.V.focusRingShadow);
+        document.documentElement.style.setProperty(
+          "--k-focus-ring-shadow",
+          tokens.V.focusRingShadow
+        );
       }
     }
   }, [tokens]);

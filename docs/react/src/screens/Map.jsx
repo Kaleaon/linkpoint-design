@@ -1,13 +1,11 @@
 import { useState, useRef, useMemo } from "react";
 import { useApp } from "../context/AppContext.jsx";
-import { useTheme } from "../context/ThemeContext.jsx";
 import { subView } from "../theme/constants.js";
 import { REGIONS, REGION_META } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
 
 export default function Map() {
   const { state } = useApp();
-  const { V, t, bleed, C } = useTheme();
   const [tileOk, setTileOk] = useState(true);
 
   // Viewport scale (zoom) and offset (pan)
@@ -28,7 +26,9 @@ export default function Map() {
   // Coordinate regex parser for forms like <112, 44, 51>, 112,44,51 or 112/44/51
   const parsedCoords = useMemo(() => {
     if (!query) return null;
-    const match = query.match(/(?:<)?\s*(\d+)\s*[\s,\/]\s*(\d+)(?:\s*[\s,\/]\s*(\d+))?\s*(?:>)?/);
+    const match = query.match(
+      /(?:<)?\s*(\d+)\s*[\s,\/]\s*(\d+)(?:\s*[\s,\/]\s*(\d+))?\s*(?:>)?/
+    );
     if (match) {
       return `<${match[1]}, ${match[2]}, ${match[3] || 20}>`;
     }
@@ -47,7 +47,7 @@ export default function Map() {
       const matchName = meta.name.toLowerCase().includes(q);
       const matchCoords = meta.coords.toLowerCase().includes(q);
       if (matchKey || matchName || matchCoords) {
-        if (!results.some(r => r.name === meta.name)) {
+        if (!results.some((r) => r.name === meta.name)) {
           results.push({
             name: meta.name,
             sub: meta.coords + " · " + meta.avatars,
@@ -60,7 +60,7 @@ export default function Map() {
     // Check REGIONS
     REGIONS.forEach(([name, info]) => {
       if (name.toLowerCase().includes(q) || info.toLowerCase().includes(q)) {
-        if (!results.some(r => r.name === name)) {
+        if (!results.some((r) => r.name === name)) {
           results.push({
             name,
             sub: info,
@@ -86,7 +86,7 @@ export default function Map() {
   const regionOffsets = {
     "Da Boom": { x: 60, y: 60 },
     "Bay City — Hollywood": { x: -60, y: 60 },
-    "Ahern": { x: 60, y: -60 },
+    Ahern: { x: 60, y: -60 },
     "Sansara Ridge": { x: -60, y: -60 },
   };
 
@@ -99,7 +99,8 @@ export default function Map() {
     } else {
       setQuery(sug.name);
       setSelectedRegion(sug.name);
-      const offset = regionOffsets[sug.name] || regionOffsets[sug.name.split("—")[0].trim()] || { x: -50, y: 30 };
+      const offset = regionOffsets[sug.name] ||
+        regionOffsets[sug.name.split("—")[0].trim()] || { x: -50, y: 30 };
       setPan(offset);
       if (sug.meta) {
         setTargetCoords(sug.meta.coords);
@@ -126,11 +127,11 @@ export default function Map() {
 
   // Zoom handlers (0.5x min to 3.0x max in 0.25x steps)
   const handleZoomIn = () => {
-    setZoom(z => Math.min(3.0, +(z + 0.25).toFixed(2)));
+    setZoom((z) => Math.min(3.0, +(z + 0.25).toFixed(2)));
   };
 
   const handleZoomOut = () => {
-    setZoom(z => Math.max(0.5, +(z - 0.25).toFixed(2)));
+    setZoom((z) => Math.max(0.5, +(z - 0.25).toFixed(2)));
   };
 
   const handleReset = () => {
@@ -168,7 +169,10 @@ export default function Map() {
     if (e.target.closest(".map-control-overlay")) return;
     if (e.touches.length === 1) {
       setIsDragging(true);
-      dragStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      dragStartRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
       panStartRef.current = { ...pan };
     }
   };
@@ -187,10 +191,22 @@ export default function Map() {
     setIsDragging(false);
   };
 
-  const mapBoxStyle = bleed
-    ? { flex: 1, minHeight: 0, position: "relative", overflow: "hidden", background: V.surf, borderRadius: C.rad + "px 0 0 0" }
-    : { flex: 1, minHeight: 0, margin: "2px 16px", position: "relative", overflow: "hidden", border: "1px solid " + V.outv, borderRadius: V.rp, background: V.surf };
-  const mapFootStyle = { flex: "none", display: "flex", gap: "8px", padding: bleed ? "10px 0 10px 10px" : "12px 16px" };
+  const mapBoxStyle = {
+    flex: 1,
+    minHeight: 0,
+    margin: "2px 16px",
+    position: "relative",
+    overflow: "hidden",
+    border: "1px solid var(--ktheme-outv)",
+    borderRadius: "var(--ktheme-rs)",
+    background: "var(--ktheme-surf)",
+  };
+  const mapFootStyle = {
+    flex: "none",
+    display: "flex",
+    gap: "8px",
+    padding: "12px 16px",
+  };
 
   return (
     <>
@@ -205,15 +221,42 @@ export default function Map() {
         onTouchEnd={handleTouchEnd}
       >
         {/* Floating Search Input Overlay */}
-        <div className="map-control-overlay" style={{ position: "absolute", left: "10px", top: "10px", right: "64px", zIndex: 12 }}>
-          <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
-            <div style={{ position: "absolute", left: "10px", color: V.ink2, pointerEvents: "none", display: "flex", alignItems: "center" }}>
+        <div
+          className="map-control-overlay"
+          style={{
+            position: "absolute",
+            left: "10px",
+            top: "10px",
+            right: "64px",
+            zIndex: 12,
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                left: "10px",
+                color: "var(--ktheme-ink2)",
+                pointerEvents: "none",
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
               <Icon name="search" size={14} />
             </div>
             <input
               type="text"
               value={query}
-              onChange={(e) => { setQuery(e.target.value); setShowSuggestions(true); }}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setShowSuggestions(true);
+              }}
               onFocus={() => setShowSuggestions(true)}
               onKeyDown={handleSearchSubmit}
               placeholder="Search region or <x, y, z>..."
@@ -223,19 +266,30 @@ export default function Map() {
                 height: "36px",
                 paddingLeft: "30px",
                 paddingRight: query ? "28px" : "10px",
-                borderRadius: V.rs,
-                border: "1px solid " + V.outv,
-                background: V.surf,
-                color: V.ink,
-                font: "400 11.5px/1 " + t.font,
+                borderRadius: "var(--ktheme-rs)",
+                border: "1px solid var(--ktheme-outv)",
+                background: "var(--ktheme-surf)",
+                color: "var(--ktheme-ink)",
+                font: "400 11.5px/1 var(--ktheme-font, system-ui, sans-serif)",
                 outline: "none",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
               }}
             />
             {query ? (
               <div
-                onClick={() => { setQuery(""); setShowSuggestions(false); }}
-                style={{ position: "absolute", right: "8px", cursor: "pointer", color: V.ink2, display: "flex", alignItems: "center", padding: "2px" }}
+                onClick={() => {
+                  setQuery("");
+                  setShowSuggestions(false);
+                }}
+                style={{
+                  position: "absolute",
+                  right: "8px",
+                  cursor: "pointer",
+                  color: "var(--ktheme-ink2)",
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "2px",
+                }}
                 role="button"
                 aria-label="Clear search"
                 tabIndex={0}
@@ -247,34 +301,53 @@ export default function Map() {
 
           {/* Auto-complete suggestions dropdown */}
           {showSuggestions && suggestions.length > 0 ? (
-            <div style={{
-              position: "absolute",
-              top: "40px",
-              left: 0,
-              right: 0,
-              maxHeight: "180px",
-              overflowY: "auto",
-              background: V.surf2 || V.surf,
-              border: "1px solid " + V.outv,
-              borderRadius: V.rs,
-              boxShadow: "0 4px 12px rgba(0,0,0,0.35)",
-              zIndex: 20,
-            }}>
+            <div
+              style={{
+                position: "absolute",
+                top: "40px",
+                left: 0,
+                right: 0,
+                maxHeight: "180px",
+                overflowY: "auto",
+                background: "var(--ktheme-surf2)",
+                border: "1px solid var(--ktheme-outv)",
+                borderRadius: "var(--ktheme-rs)",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.35)",
+                zIndex: 20,
+              }}
+            >
               {suggestions.map((sug, idx) => (
                 <div
                   key={idx}
                   onClick={() => handleSelectSuggestion(sug)}
                   style={{
                     padding: "8px 10px",
-                    borderBottom: idx < suggestions.length - 1 ? "1px solid " + V.outv : "none",
+                    borderBottom:
+                      idx < suggestions.length - 1
+                        ? "1px solid var(--ktheme-outv)"
+                        : "none",
                     cursor: "pointer",
                     display: "flex",
                     flexDirection: "column",
                     gap: "2px",
                   }}
                 >
-                  <span style={{ font: "600 11px/1.2 " + t.font, color: V.pri }}>{sug.name}</span>
-                  <span style={{ font: "400 9.5px/1.2 " + t.font, color: V.ink2 }}>{sug.sub}</span>
+                  <span
+                    style={{
+                      font: "600 11px/1.2 var(--ktheme-font, system-ui, sans-serif)",
+                      color: "var(--ktheme-pri)",
+                    }}
+                  >
+                    {sug.name}
+                  </span>
+                  <span
+                    style={{
+                      font: "400 9.5px/1.2 var(--ktheme-font, system-ui, sans-serif)",
+                      color: "var(--ktheme-ink2)",
+                    }}
+                  >
+                    {sug.sub}
+                  </span>
                 </div>
               ))}
             </div>
@@ -282,18 +355,30 @@ export default function Map() {
         </div>
 
         {/* Dynamic Transformed Map Viewport Layer (Zoom + Pan) */}
-        <div style={{
-          position: "absolute",
-          inset: 0,
-          transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-          transformOrigin: "center center",
-          transition: isDragging ? "none" : "transform 0.15s ease-out",
-          cursor: isDragging ? "grabbing" : "grab",
-        }}>
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+            transformOrigin: "center center",
+            transition: isDragging ? "none" : "transform 0.15s ease-out",
+            cursor: isDragging ? "grabbing" : "grab",
+          }}
+        >
           {/* Region Grid Ground */}
-          <div style={{ position: "absolute", inset: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr" }}>
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gridTemplateRows: "1fr 1fr",
+            }}
+          >
             {(mini ? [] : REGIONS).map(([name, meta], i) => {
-              const isSelected = selectedRegion && (selectedRegion === name || selectedRegion.includes(name));
+              const isSelected =
+                selectedRegion &&
+                (selectedRegion === name || selectedRegion.includes(name));
               return (
                 <div
                   key={name}
@@ -303,18 +388,40 @@ export default function Map() {
                     setPan(offset);
                   }}
                   style={{
-                    border: "1px solid " + V.outv,
+                    border: "1px solid var(--ktheme-outv)",
                     display: "flex",
                     flexDirection: "column",
-                    justify: "flex-end",
+                    justifyContent: "flex-end",
                     padding: "8px",
-                    background: isSelected ? V.priC : V.surf2,
-                    borderColor: isSelected ? V.pri : V.outv,
-                    boxShadow: isSelected ? "inset 0 0 0 2px " + V.pri : "none",
+                    background: isSelected
+                      ? "rgba(212,175,55,0.15)"
+                      : "var(--ktheme-surf2)",
+                    borderColor: isSelected
+                      ? "var(--ktheme-pri)"
+                      : "var(--ktheme-outv)",
+                    boxShadow: isSelected
+                      ? "inset 0 0 0 2px var(--ktheme-pri)"
+                      : "none",
                   }}
                 >
-                  <span style={{ font: "600 11px/1.25 " + t.font, color: V.ink, display: "block" }}>{name}</span>
-                  <span style={{ font: "400 9.5px/1.25 " + t.font, color: V.ink2, display: "block" }}>{meta}</span>
+                  <span
+                    style={{
+                      font: "600 11px/1.25 var(--ktheme-font, system-ui, sans-serif)",
+                      color: "var(--ktheme-ink)",
+                      display: "block",
+                    }}
+                  >
+                    {name}
+                  </span>
+                  <span
+                    style={{
+                      font: "400 9.5px/1.25 var(--ktheme-font, system-ui, sans-serif)",
+                      color: "var(--ktheme-ink2)",
+                      display: "block",
+                    }}
+                  >
+                    {meta}
+                  </span>
                 </div>
               );
             })}
@@ -327,33 +434,79 @@ export default function Map() {
                 src="https://secondlife-maps-cdn.akamaized.net/map-1-1000-1000-objects.jpg"
                 alt="Map Tile"
                 onError={() => setTileOk(false)}
-                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.9 }}
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  opacity: 0.9,
+                }}
               />
             ) : null}
           </div>
 
           {/* User / Target Marker Pin */}
-          <div style={{
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            width: "14px",
-            height: "14px",
-            margin: "-7px 0 0 -7px",
-            borderRadius: "7px",
-            background: V.pri,
-            border: "2px solid " + V.bg,
-            boxShadow: "0 0 8px " + V.pri,
-            zIndex: 5,
-          }} />
+          <div
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: "50%",
+              width: "14px",
+              height: "14px",
+              margin: "-7px 0 0 -7px",
+              borderRadius: "7px",
+              background: "var(--ktheme-pri)",
+              border: "2px solid var(--ktheme-bg)",
+              boxShadow: "0 0 8px var(--ktheme-pri)",
+              zIndex: 5,
+            }}
+          />
         </div>
 
         {/* Minimap Position Readout Overlay (if subView is MINI) */}
         {mini ? (
-          <div className="map-control-overlay" style={{ position: "absolute", left: "10px", top: "54px", zIndex: 10, display: "flex", flexDirection: "column", gap: "3px", background: V.surf, border: "1px solid " + V.outv, borderRadius: V.rs, padding: "8px 10px" }}>
-            {[["REGION", selectedRegion || "Da Boom"], ["POSITION", targetCoords || "<128, 128, 26>"], ["HEADING", "214\u00b0 \u00b7 SW"], ["DRAW", state.prefs.draw]].map(([k, v]) => (
-              <div key={k} style={{ display: "flex", gap: "12px", font: "400 10px/1.4 " + t.font, color: V.ink2 }}>
-                <span style={{ width: "62px", flex: "none", letterSpacing: ".16em", color: V.pri }}>{k}</span>
+          <div
+            className="map-control-overlay"
+            style={{
+              position: "absolute",
+              left: "10px",
+              top: "54px",
+              zIndex: 10,
+              display: "flex",
+              flexDirection: "column",
+              gap: "3px",
+              background: "var(--ktheme-surf)",
+              border: "1px solid var(--ktheme-outv)",
+              borderRadius: "var(--ktheme-rs)",
+              padding: "8px 10px",
+            }}
+          >
+            {[
+              ["REGION", selectedRegion || "Da Boom"],
+              ["POSITION", targetCoords || "<128, 128, 26>"],
+              ["HEADING", "214\u00b0 \u00b7 SW"],
+              ["DRAW", state.prefs?.draw || "128m"],
+            ].map(([k, v]) => (
+              <div
+                key={k}
+                style={{
+                  display: "flex",
+                  gap: "12px",
+                  font: "400 10px/1.4 var(--ktheme-font, system-ui, sans-serif)",
+                  color: "var(--ktheme-ink2)",
+                }}
+              >
+                <span
+                  style={{
+                    width: "62px",
+                    flex: "none",
+                    letterSpacing: ".16em",
+                    color: "var(--ktheme-pri)",
+                  }}
+                >
+                  {k}
+                </span>
                 <span>{v}</span>
               </div>
             ))}
@@ -361,10 +514,32 @@ export default function Map() {
         ) : null}
 
         {/* Floating Zoom and Pan Controls (Plus, Minus, Reset) */}
-        <div className="map-control-overlay" style={{ position: "absolute", right: "10px", top: "10px", zIndex: 10, display: "flex", flexDirection: "column", gap: "6px" }}>
+        <div
+          className="map-control-overlay"
+          style={{
+            position: "absolute",
+            right: "10px",
+            top: "10px",
+            zIndex: 10,
+            display: "flex",
+            flexDirection: "column",
+            gap: "6px",
+          }}
+        >
           <div
             onClick={handleZoomIn}
-            style={{ width: "44px", height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, display: "flex", alignItems: "center", justifyContent: "center", color: V.ink, cursor: "pointer" }}
+            style={{
+              width: "44px",
+              height: "44px",
+              border: "1px solid var(--ktheme-outv)",
+              borderRadius: "var(--ktheme-rs)",
+              background: "var(--ktheme-surf)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "var(--ktheme-ink)",
+              cursor: "pointer",
+            }}
             role="button"
             aria-label="Zoom in map"
             tabIndex={0}
@@ -373,7 +548,18 @@ export default function Map() {
           </div>
           <div
             onClick={handleZoomOut}
-            style={{ width: "44px", height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, display: "flex", alignItems: "center", justifyContent: "center", color: V.ink, cursor: "pointer" }}
+            style={{
+              width: "44px",
+              height: "44px",
+              border: "1px solid var(--ktheme-outv)",
+              borderRadius: "var(--ktheme-rs)",
+              background: "var(--ktheme-surf)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "var(--ktheme-ink)",
+              cursor: "pointer",
+            }}
             role="button"
             aria-label="Zoom out map"
             tabIndex={0}
@@ -382,7 +568,18 @@ export default function Map() {
           </div>
           <div
             onClick={handleReset}
-            style={{ width: "44px", height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer" }}
+            style={{
+              width: "44px",
+              height: "44px",
+              border: "1px solid var(--ktheme-outv)",
+              borderRadius: "var(--ktheme-rs)",
+              background: "var(--ktheme-surf)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "var(--ktheme-pri)",
+              cursor: "pointer",
+            }}
             role="button"
             aria-label="Recenter map viewport"
             tabIndex={0}
@@ -392,22 +589,63 @@ export default function Map() {
         </div>
 
         {/* Map Attribution and Zoom Status Note */}
-        <div className="map-control-overlay" style={{ position: "absolute", left: "10px", bottom: "10px", zIndex: 10, font: "400 9.5px/1.35 " + t.font, color: V.ink2, background: V.surf, border: "1px solid " + V.outv, padding: "4px 6px", maxWidth: "74%" }}>
+        <div
+          className="map-control-overlay"
+          style={{
+            position: "absolute",
+            left: "10px",
+            bottom: "10px",
+            zIndex: 10,
+            font: "400 9.5px/1.35 var(--ktheme-font, system-ui, sans-serif)",
+            color: "var(--ktheme-ink2)",
+            background: "var(--ktheme-surf)",
+            border: "1px solid var(--ktheme-outv)",
+            padding: "4px 6px",
+            maxWidth: "74%",
+          }}
+        >
           {mini
-            ? "minimap · north up · draw " + state.prefs.draw
+            ? "minimap · north up · draw " + (state.prefs?.draw || "128m")
             : tileOk
-            ? `live SL map tile · zoom ${zoom.toFixed(2)}x`
-            : "tile CDN unreachable — themed vector grid fallback"}
+              ? `live SL map tile · zoom ${zoom.toFixed(2)}x`
+              : "tile CDN unreachable — themed vector grid fallback"}
         </div>
       </div>
 
       {/* Map Action Footer */}
       <div style={mapFootStyle}>
-        <div style={{ flex: 1, height: "46px", borderRadius: V.rs, background: V.pri, color: V.onpri, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", font: "700 12px/1 " + t.font, letterSpacing: ".2em", cursor: "pointer" }}>
+        <div
+          style={{
+            flex: 1,
+            height: "46px",
+            borderRadius: "var(--ktheme-rs)",
+            background: "var(--ktheme-pri)",
+            color: "var(--ktheme-onpri)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "8px",
+            font: "700 12px/1 var(--ktheme-font, system-ui, sans-serif)",
+            letterSpacing: ".2em",
+            cursor: "pointer",
+          }}
+        >
           <Icon name="zap" size={16} />
           TELEPORT
         </div>
-        <div style={{ width: "46px", height: "46px", border: "1px solid " + V.outv, borderRadius: V.rs, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri, cursor: "pointer" }}>
+        <div
+          style={{
+            width: "46px",
+            height: "46px",
+            border: "1px solid var(--ktheme-outv)",
+            borderRadius: "var(--ktheme-rs)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "var(--ktheme-pri)",
+            cursor: "pointer",
+          }}
+        >
           <Icon name="star" size={18} />
         </div>
       </div>
