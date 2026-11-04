@@ -1,6 +1,7 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { FMENU, FLOATERS } from "../theme/constants.js";
+import A11yControl from "./A11yControl.jsx";
 
 // Ported from `fmBar`/`fmMenus` — the desktop-only File/Edit/View/World/
 // Build/Help bar with Firestorm-style interactive menu commands.
@@ -56,11 +57,13 @@ export default function MenuBar() {
           : mm.items;
         return (
           <div key={mm.label} style={{ position: "relative" }}>
-            <div
+            <A11yControl
               onClick={(e) => {
                 e.stopPropagation();
                 actions.setMenu(state.menu === mm.label ? null : mm.label);
               }}
+              aria-label={mm.label + " menu"}
+              aria-expanded={open}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -78,7 +81,7 @@ export default function MenuBar() {
               }}
             >
               {mm.label}
-            </div>
+            </A11yControl>
             {open ? (
               <div
                 style={{
@@ -96,7 +99,7 @@ export default function MenuBar() {
                 }}
               >
                 {items.map((it, i) => (
-                  <div
+                  <A11yControl
                     key={i}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -107,6 +110,7 @@ export default function MenuBar() {
                         handleMenuClick(mm.label, it[0]);
                       }
                     }}
+                    aria-label={it[0]}
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -129,7 +133,7 @@ export default function MenuBar() {
                     >
                       {it[1]}
                     </span>
-                  </div>
+                  </A11yControl>
                 ))}
               </div>
             ) : null}

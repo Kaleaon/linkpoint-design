@@ -26,23 +26,25 @@ export function fullBorder(width, color) {
 }
 
 export function cardLooks(V, pad) {
+  const surfC = V.surfaceContainer || V.surf;
+  const surfLow = V.surfaceContainerLow || V.surf;
   return {
     box: {
       ...fullBorder("1px", V.outv),
       borderRadius: V.rs || V.rp,
-      background: V.surf,
+      background: surfC,
       padding: pad,
     },
     flat: {
       ...sideBorder("Left", "4px", V.pri || "transparent"),
       borderRadius: "0px",
-      background: V.surf,
+      background: surfLow,
       padding: pad,
     },
     soft: {
       ...fullBorder("1px", V.outv || "rgba(255,255,255,0.18)"),
       borderRadius: V.rp,
-      background: V.surf,
+      background: surfLow,
       padding: pad,
       boxShadow:
         "0 6px 20px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.30)",
@@ -52,19 +54,19 @@ export function cardLooks(V, pad) {
     rule: {
       ...sideBorder("Top", "1px", V.outv),
       borderRadius: "0px",
-      background: V.surf,
+      background: "transparent",
       padding: pad + " 2px",
     },
     quiet: {
       ...sideBorder("Bottom", "1px", V.outv),
       borderRadius: "0px",
-      background: V.surf,
+      background: "transparent",
       padding: "4px 0 " + pad,
     },
     cap: {
-      ...sideBorder("Left", "6px", V.sec2 || V.pri),
-      borderRadius: "0px",
-      background: V.surf,
+      ...sideBorder("Left", "10px", V.sec2 || V.pri),
+      borderRadius: "0 " + (V.rp || "22px") + " " + (V.rp || "22px") + " 0",
+      background: surfC,
       padding: pad,
     },
     tonal: {
@@ -77,7 +79,7 @@ export function cardLooks(V, pad) {
     chamfer: {
       ...fullBorder("1px", V.pri || V.outv),
       borderRadius: "0px",
-      background: V.surf,
+      background: surfC,
       padding: pad,
       clipPath:
         "polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px))",
@@ -135,7 +137,7 @@ export function actionButtonStyle(V, font, a) {
   if (a.primary)
     return { ...base, background: V.pri, color: V.onpri, borderColor: V.pri };
   if (a.dim) return { ...base, color: V.err, borderColor: V.err };
-  return { ...base, background: V.surf2 };
+  return { ...base, background: V.surfaceContainerHigh || V.surf2 };
 }
 
 export function segLooks(V, font) {
@@ -148,7 +150,7 @@ export function segLooks(V, font) {
       gap: "6px",
       padding: "12px 0",
       cursor: "pointer",
-      background: V.surf,
+      background: V.surfaceContainer || V.surf,
       color: V.ink2,
       font: "600 12px/1 " + font,
       letterSpacing: ".22em",

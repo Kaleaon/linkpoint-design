@@ -1,5 +1,4 @@
 import { useApp } from "../context/AppContext.jsx";
-import { useTheme } from "../context/ThemeContext.jsx";
 import { PROFILE_BLOCKS } from "../data/content.js";
 import { subView } from "../theme/constants.js";
 import Icon from "../components/Icon.jsx";
@@ -11,7 +10,6 @@ export default function Profile() {
     state,
     actions: { startIm, notify },
   } = useApp();
-  const { V, t } = useTheme();
   return (
     <div style={{ flex: 1, minHeight: 0, overflowY: "auto" }}>
       <div
@@ -19,13 +17,18 @@ export default function Profile() {
           position: "relative",
           height: "158px",
           background:
-            "repeating-linear-gradient(135deg, var(--md-sys-color-surface-variant, var(--ktheme-surf2)) 0 10px, var(--md-sys-color-surface, var(--ktheme-surf)) 10px 20px)",
+            "repeating-linear-gradient(135deg, var(--ktheme-surf2) 0 10px, var(--ktheme-surf) 10px 20px)",
           display: "flex",
           alignItems: "flex-end",
           padding: "12px",
         }}
       >
-        <span style={{ font: "400 10px/1 " + t.font, color: V.ink2 }}>
+        <span
+          style={{
+            font: "400 10px/1 var(--ktheme-font, system-ui, sans-serif)",
+            color: "var(--ktheme-ink2)",
+          }}
+        >
           profile banner — drop 2nd Life picture
         </span>
       </div>
@@ -42,19 +45,24 @@ export default function Profile() {
           style={{
             width: "76px",
             height: "76px",
-            border: "1px solid " + V.outv,
+            border: "1px solid var(--ktheme-outv)",
             background:
-              "repeating-linear-gradient(45deg, var(--md-sys-color-surface-variant, var(--ktheme-surf2)) 0 6px, var(--md-sys-color-surface, var(--ktheme-surf)) 6px 12px)",
+              "repeating-linear-gradient(45deg, var(--ktheme-surf2) 0 6px, var(--ktheme-surf) 6px 12px)",
           }}
         />
         <div style={{ paddingBottom: "6px" }}>
-          <Heading level={1} style={{ font: "600 17px/1.2 " + t.dfont }}>
+          <Heading
+            level={1}
+            style={{
+              font: "600 17px/1.2 var(--ktheme-font, system-ui, sans-serif)",
+            }}
+          >
             Nyx Vaher
           </Heading>
           <div
             style={{
-              font: "400 11px/1.3 " + t.font,
-              color: V.ink2,
+              font: "400 11px/1.3 var(--ktheme-font, system-ui, sans-serif)",
+              color: "var(--ktheme-ink2)",
               marginTop: "4px",
             }}
           >
@@ -77,14 +85,14 @@ export default function Profile() {
           style={{
             flex: 1,
             height: "44px",
-            borderRadius: V.rs,
-            background: V.pri,
-            color: V.onpri,
+            borderRadius: "var(--ktheme-rs)",
+            background: "var(--ktheme-pri)",
+            color: "var(--ktheme-onpri)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             gap: "6px",
-            font: "700 11px/1 " + t.font,
+            font: "700 11px/1 var(--ktheme-font, system-ui, sans-serif)",
             letterSpacing: ".16em",
             cursor: "pointer",
           }}
@@ -106,13 +114,13 @@ export default function Profile() {
           style={{
             flex: 1,
             height: "44px",
-            border: "1px solid " + V.outv,
-            borderRadius: V.rs,
+            border: "1px solid var(--ktheme-outv)",
+            borderRadius: "var(--ktheme-rs)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             gap: "6px",
-            font: "700 11px/1 " + t.font,
+            font: "700 11px/1 var(--ktheme-font, system-ui, sans-serif)",
             letterSpacing: ".16em",
             cursor: "pointer",
           }}
@@ -134,8 +142,8 @@ export default function Profile() {
           style={{
             width: "44px",
             height: "44px",
-            border: "1px solid " + V.outv,
-            borderRadius: V.rs,
+            border: "1px solid var(--ktheme-outv)",
+            borderRadius: "var(--ktheme-rs)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -152,24 +160,29 @@ export default function Profile() {
           key={pb.label}
           style={{
             margin: "0 16px 12px",
-            border: "1px solid " + V.outv,
-            borderRadius: V.rs,
-            background: V.surf,
+            border: "1px solid var(--ktheme-outv)",
+            borderRadius: "var(--ktheme-rs)",
+            background: "var(--ktheme-surf)",
             padding: "12px",
           }}
         >
           <Heading
             level={2}
             style={{
-              font: "600 11px/1 " + t.font,
+              font: "600 11px/1 var(--ktheme-font, system-ui, sans-serif)",
               letterSpacing: ".26em",
-              color: V.pri,
+              color: "var(--ktheme-pri)",
               marginBottom: "8px",
             }}
           >
             {pb.label}
           </Heading>
-          <div style={{ font: "400 12px/1.65 " + t.font, color: V.ink2 }}>
+          <div
+            style={{
+              font: "400 12px/1.65 var(--ktheme-font, system-ui, sans-serif)",
+              color: "var(--ktheme-ink2)",
+            }}
+          >
             {pb.body}
           </div>
         </div>

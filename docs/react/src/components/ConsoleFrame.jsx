@@ -12,6 +12,7 @@ import {
   setSub,
 } from "../theme/constants.js";
 import Icon from "./Icon.jsx";
+import A11yControl from "./A11yControl.jsx";
 import ScreenBody from "./ScreenBody.jsx";
 import { navActive } from "../theme/look.js";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
@@ -284,25 +285,17 @@ export default function ConsoleFrame() {
             return <div key={i} aria-hidden="true" style={n.style} />;
           }
           return (
-            <div
+            <A11yControl
               key={i}
               onClick={n.pick}
-              role="button"
-              tabIndex={0}
-              aria-label={n.label}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  n.pick();
-                }
-              }}
+              aria-label={n.label || "Nav item"}
               style={n.style}
             >
               {n.code ? <span style={n.codeStyle}>{n.code}</span> : null}
               <span style={{ font: "inherit", letterSpacing: "inherit" }}>
                 {n.label}
               </span>
-            </div>
+            </A11yControl>
           );
         })}
       </nav>
@@ -331,19 +324,11 @@ export default function ConsoleFrame() {
                 dis = !!b.off;
               const bg = dis ? V.surf : lit ? V.pri : V.surf2;
               return (
-                <div
+                <A11yControl
                   key={k}
                   onClick={() => actions.cPress(k)}
-                  role="button"
-                  tabIndex={dis ? -1 : 0}
+                  disabled={dis}
                   aria-label={k}
-                  onKeyDown={(e) => {
-                    if (dis) return;
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      actions.cPress(k);
-                    }
-                  }}
                   style={{
                     position: "relative",
                     flex: "1 1 0",
@@ -383,21 +368,13 @@ export default function ConsoleFrame() {
                     </span>
                   ) : null}
                   {state.cEdit ? (
-                    <span
+                    <A11yControl
+                      as="span"
                       onClick={(e) => {
                         e.stopPropagation();
                         actions.removeDockSlot(k);
                       }}
-                      role="button"
-                      tabIndex={0}
                       aria-label={"Remove " + k}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          actions.removeDockSlot(k);
-                        }
-                      }}
                       style={{
                         position: "absolute",
                         right: "3px",
@@ -415,23 +392,15 @@ export default function ConsoleFrame() {
                       }}
                     >
                       &minus;
-                    </span>
+                    </A11yControl>
                   ) : null}
-                </div>
+                </A11yControl>
               );
             })}
             {state.cEdit ? (
-              <div
+              <A11yControl
                 onClick={actions.addSlot}
-                role="button"
-                tabIndex={0}
                 aria-label="Add slot"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    actions.addSlot();
-                  }
-                }}
                 style={{
                   flex: "0 0 " + (C.wide ? 84 : 56) + "px",
                   display: "flex",
@@ -446,7 +415,7 @@ export default function ConsoleFrame() {
                 }}
               >
                 +
-              </div>
+              </A11yControl>
             ) : null}
           </div>
         </>
@@ -519,17 +488,9 @@ export default function ConsoleFrame() {
 
       {state.cEdit ? (
         <>
-          <div
+          <A11yControl
             onClick={actions.endEdit}
-            role="button"
-            tabIndex={0}
             aria-label="Cancel edit"
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                actions.endEdit();
-              }
-            }}
             style={{
               position: "absolute",
               inset: 0,
@@ -556,17 +517,10 @@ export default function ConsoleFrame() {
             }}
           >
             <span>DOCK EDIT — MINUS REMOVES, PLUS ADDS</span>
-            <span
+            <A11yControl
+              as="span"
               onClick={actions.endEdit}
-              role="button"
-              tabIndex={0}
               aria-label="Finish editing dock"
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  actions.endEdit();
-                }
-              }}
               style={{
                 marginLeft: "auto",
                 padding: "5px 16px",
@@ -578,7 +532,7 @@ export default function ConsoleFrame() {
               }}
             >
               DONE
-            </span>
+            </A11yControl>
           </div>
         </>
       ) : null}
@@ -1010,32 +964,16 @@ function ConsoleScene() {
                   >
                     DN
                   </div>
-                  <div
+                  <A11yControl
                     onClick={actions.toggleRun}
-                    role="button"
-                    tabIndex={0}
                     aria-label="Toggle run"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        actions.toggleRun();
-                      }
-                    }}
                     style={mk(state.cRun, V.surf2)}
                   >
                     RUN
-                  </div>
-                  <div
+                  </A11yControl>
+                  <A11yControl
                     onClick={actions.togglePad}
-                    role="button"
-                    tabIndex={0}
                     aria-label="Hide move pad"
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        actions.togglePad();
-                      }
-                    }}
                     style={{
                       ...mk(false, V.sec2),
                       borderRadius: "0 0 " + C.rad + "px 0",
@@ -1043,24 +981,16 @@ function ConsoleScene() {
                     }}
                   >
                     HIDE
-                  </div>
+                  </A11yControl>
                 </>
               );
             })()}
           </div>
         </div>
       ) : (
-        <div
+        <A11yControl
           onClick={actions.togglePad}
-          role="button"
-          tabIndex={0}
           aria-label="Show move pad"
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              actions.togglePad();
-            }
-          }}
           style={{
             position: "absolute",
             left: (C.wide ? 24 : 14) + "px",
@@ -1078,7 +1008,7 @@ function ConsoleScene() {
           }}
         >
           MOVE PAD
-        </div>
+        </A11yControl>
       )}
     </div>
   );

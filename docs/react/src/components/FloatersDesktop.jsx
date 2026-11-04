@@ -14,6 +14,7 @@ import {
   buildCards,
 } from "../data/content.js";
 import Icon from "./Icon.jsx";
+import A11yControl from "./A11yControl.jsx";
 import ScreenBody from "./ScreenBody.jsx";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
 import RadialPieMenu from "./RadialPieMenu.jsx";
@@ -217,17 +218,9 @@ export default function FloatersDesktop() {
               >
                 CAMERA CONTROLS
               </span>
-              <span
+              <A11yControl
+                as="span"
                 onClick={() => setShowCamHud(false)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setShowCamHud(false);
-                  }
-                }}
-                role="button"
-                tabIndex={0}
-                aria-label="Close Camera HUD"
                 style={{
                   width: "24px",
                   height: "24px",
@@ -239,9 +232,10 @@ export default function FloatersDesktop() {
                   fontSize: "14px",
                   lineHeight: 1,
                 }}
+                aria-label="Close HUD"
               >
                 &times;
-              </span>
+              </A11yControl>
             </div>
             <div
               style={{
@@ -455,18 +449,13 @@ export default function FloatersDesktop() {
               >
                 {f.title}
               </span>
-              <span
+              <A11yControl
+                as="span"
                 onClick={(e) => {
                   e.stopPropagation();
                   actions.dispatchIntent("FLOATER_SHADE", { id: f.id });
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    actions.dispatchIntent("FLOATER_SHADE", { id: f.id });
-                  }
-                }}
+                aria-label={isShaded ? "Unshade (Expand)" : "Shade (Rollup)"}
                 style={{
                   width: "24px",
                   height: "24px",
@@ -480,27 +469,19 @@ export default function FloatersDesktop() {
                   cursor: "pointer",
                   opacity: 0.85,
                 }}
-                role="button"
-                tabIndex={0}
-                aria-label={isShaded ? "Unshade (Expand)" : "Shade (Rollup)"}
               >
                 <Icon
                   name={isShaded ? "chevron-down" : "chevron-up"}
                   size={11}
                 />
-              </span>
-              <span
+              </A11yControl>
+              <A11yControl
+                as="span"
                 onClick={(e) => {
                   e.stopPropagation();
                   actions.dispatchIntent("FLOATER_MINIMIZE", { id: f.id });
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    actions.dispatchIntent("FLOATER_MINIMIZE", { id: f.id });
-                  }
-                }}
+                aria-label="Minimize"
                 style={{
                   width: "24px",
                   height: "24px",
@@ -514,24 +495,16 @@ export default function FloatersDesktop() {
                   cursor: "pointer",
                   opacity: 0.85,
                 }}
-                role="button"
-                tabIndex={0}
-                aria-label="Minimize"
               >
                 &minus;
-              </span>
-              <span
+              </A11yControl>
+              <A11yControl
+                as="span"
                 onClick={(e) => {
                   e.stopPropagation();
                   actions.dispatchIntent("FLOATER_CLOSE", { id: f.id });
                 }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    actions.dispatchIntent("FLOATER_CLOSE", { id: f.id });
-                  }
-                }}
+                aria-label="Close"
                 style={{
                   width: "24px",
                   height: "24px",
@@ -545,12 +518,9 @@ export default function FloatersDesktop() {
                   cursor: "pointer",
                   opacity: 0.85,
                 }}
-                role="button"
-                tabIndex={0}
-                aria-label="Close"
               >
                 &times;
-              </span>
+              </A11yControl>
             </div>
             {!isShaded && (
               <>
@@ -733,19 +703,11 @@ export default function FloatersDesktop() {
           const min = !!state.flMin[f.id];
           const act = f.id === state.screen && !min;
           return (
-            <div
+            <A11yControl
               key={f.id}
               onClick={() =>
                 actions.dispatchIntent("FLOATER_TOGGLE", { id: f.id })
               }
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  actions.dispatchIntent("FLOATER_TOGGLE", { id: f.id });
-                }
-              }}
-              role="button"
-              tabIndex={0}
               aria-label={f.title}
               style={{
                 flex: "none",
@@ -766,7 +728,7 @@ export default function FloatersDesktop() {
               }}
             >
               {f.title}
-            </div>
+            </A11yControl>
           );
         })}
 
@@ -803,17 +765,10 @@ export default function FloatersDesktop() {
             dis = !!b.off;
           const bg = lit ? V.pri : V.surf2;
           return (
-            <div
+            <A11yControl
               key={k}
               onClick={() => actions.cPress(k)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  actions.cPress(k);
-                }
-              }}
-              role="button"
-              tabIndex={0}
+              disabled={dis}
               aria-label={b.label}
               style={{
                 flex: "none",
@@ -834,7 +789,7 @@ export default function FloatersDesktop() {
             >
               <Icon name={b.icon} size={13} />
               {b.label}
-            </div>
+            </A11yControl>
           );
         })}
       </div>

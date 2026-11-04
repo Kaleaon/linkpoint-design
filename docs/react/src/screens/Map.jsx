@@ -1,13 +1,11 @@
 import { useState, useRef, useMemo } from "react";
 import { useApp } from "../context/AppContext.jsx";
-import { useTheme } from "../context/ThemeContext.jsx";
 import { subView } from "../theme/constants.js";
 import { REGIONS, REGION_META } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
 
 export default function Map() {
   const { state } = useApp();
-  const { V, t, bleed, C } = useTheme();
   const [tileOk, setTileOk] = useState(true);
 
   // Viewport scale (zoom) and offset (pan)
@@ -193,30 +191,21 @@ export default function Map() {
     setIsDragging(false);
   };
 
-  const mapBoxStyle = bleed
-    ? {
-        flex: 1,
-        minHeight: 0,
-        position: "relative",
-        overflow: "hidden",
-        background: V.surf,
-        borderRadius: C.rad + "px 0 0 0",
-      }
-    : {
-        flex: 1,
-        minHeight: 0,
-        margin: "2px 16px",
-        position: "relative",
-        overflow: "hidden",
-        border: "1px solid " + V.outv,
-        borderRadius: V.rp,
-        background: V.surf,
-      };
+  const mapBoxStyle = {
+    flex: 1,
+    minHeight: 0,
+    margin: "2px 16px",
+    position: "relative",
+    overflow: "hidden",
+    border: "1px solid var(--ktheme-outv)",
+    borderRadius: "var(--ktheme-rs)",
+    background: "var(--ktheme-surf)",
+  };
   const mapFootStyle = {
     flex: "none",
     display: "flex",
     gap: "8px",
-    padding: bleed ? "10px 0 10px 10px" : "12px 16px",
+    padding: "12px 16px",
   };
 
   return (
@@ -253,7 +242,7 @@ export default function Map() {
               style={{
                 position: "absolute",
                 left: "10px",
-                color: V.ink2,
+                color: "var(--ktheme-ink2)",
                 pointerEvents: "none",
                 display: "flex",
                 alignItems: "center",
@@ -277,11 +266,11 @@ export default function Map() {
                 height: "36px",
                 paddingLeft: "30px",
                 paddingRight: query ? "28px" : "10px",
-                borderRadius: V.rs,
-                border: "1px solid " + V.outv,
-                background: V.surf,
-                color: V.ink,
-                font: "400 11.5px/1 " + t.font,
+                borderRadius: "var(--ktheme-rs)",
+                border: "1px solid var(--ktheme-outv)",
+                background: "var(--ktheme-surf)",
+                color: "var(--ktheme-ink)",
+                font: "400 11.5px/1 var(--ktheme-font, system-ui, sans-serif)",
                 outline: "none",
                 boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
               }}
@@ -296,7 +285,7 @@ export default function Map() {
                   position: "absolute",
                   right: "8px",
                   cursor: "pointer",
-                  color: V.ink2,
+                  color: "var(--ktheme-ink2)",
                   display: "flex",
                   alignItems: "center",
                   padding: "2px",
@@ -320,9 +309,9 @@ export default function Map() {
                 right: 0,
                 maxHeight: "180px",
                 overflowY: "auto",
-                background: V.surf2 || V.surf,
-                border: "1px solid " + V.outv,
-                borderRadius: V.rs,
+                background: "var(--ktheme-surf2)",
+                border: "1px solid var(--ktheme-outv)",
+                borderRadius: "var(--ktheme-rs)",
                 boxShadow: "0 4px 12px rgba(0,0,0,0.35)",
                 zIndex: 20,
               }}
@@ -335,7 +324,7 @@ export default function Map() {
                     padding: "8px 10px",
                     borderBottom:
                       idx < suggestions.length - 1
-                        ? "1px solid " + V.outv
+                        ? "1px solid var(--ktheme-outv)"
                         : "none",
                     cursor: "pointer",
                     display: "flex",
@@ -344,12 +333,18 @@ export default function Map() {
                   }}
                 >
                   <span
-                    style={{ font: "600 11px/1.2 " + t.font, color: V.pri }}
+                    style={{
+                      font: "600 11px/1.2 var(--ktheme-font, system-ui, sans-serif)",
+                      color: "var(--ktheme-pri)",
+                    }}
                   >
                     {sug.name}
                   </span>
                   <span
-                    style={{ font: "400 9.5px/1.2 " + t.font, color: V.ink2 }}
+                    style={{
+                      font: "400 9.5px/1.2 var(--ktheme-font, system-ui, sans-serif)",
+                      color: "var(--ktheme-ink2)",
+                    }}
                   >
                     {sug.sub}
                   </span>
@@ -393,20 +388,26 @@ export default function Map() {
                     setPan(offset);
                   }}
                   style={{
-                    border: "1px solid " + V.outv,
+                    border: "1px solid var(--ktheme-outv)",
                     display: "flex",
                     flexDirection: "column",
-                    justify: "flex-end",
+                    justifyContent: "flex-end",
                     padding: "8px",
-                    background: isSelected ? V.priC : V.surf2,
-                    borderColor: isSelected ? V.pri : V.outv,
-                    boxShadow: isSelected ? "inset 0 0 0 2px " + V.pri : "none",
+                    background: isSelected
+                      ? "rgba(212,175,55,0.15)"
+                      : "var(--ktheme-surf2)",
+                    borderColor: isSelected
+                      ? "var(--ktheme-pri)"
+                      : "var(--ktheme-outv)",
+                    boxShadow: isSelected
+                      ? "inset 0 0 0 2px var(--ktheme-pri)"
+                      : "none",
                   }}
                 >
                   <span
                     style={{
-                      font: "600 11px/1.25 " + t.font,
-                      color: V.ink,
+                      font: "600 11px/1.25 var(--ktheme-font, system-ui, sans-serif)",
+                      color: "var(--ktheme-ink)",
                       display: "block",
                     }}
                   >
@@ -414,8 +415,8 @@ export default function Map() {
                   </span>
                   <span
                     style={{
-                      font: "400 9.5px/1.25 " + t.font,
-                      color: V.ink2,
+                      font: "400 9.5px/1.25 var(--ktheme-font, system-ui, sans-serif)",
+                      color: "var(--ktheme-ink2)",
                       display: "block",
                     }}
                   >
@@ -455,9 +456,9 @@ export default function Map() {
               height: "14px",
               margin: "-7px 0 0 -7px",
               borderRadius: "7px",
-              background: V.pri,
-              border: "2px solid " + V.bg,
-              boxShadow: "0 0 8px " + V.pri,
+              background: "var(--ktheme-pri)",
+              border: "2px solid var(--ktheme-bg)",
+              boxShadow: "0 0 8px var(--ktheme-pri)",
               zIndex: 5,
             }}
           />
@@ -475,9 +476,9 @@ export default function Map() {
               display: "flex",
               flexDirection: "column",
               gap: "3px",
-              background: V.surf,
-              border: "1px solid " + V.outv,
-              borderRadius: V.rs,
+              background: "var(--ktheme-surf)",
+              border: "1px solid var(--ktheme-outv)",
+              borderRadius: "var(--ktheme-rs)",
               padding: "8px 10px",
             }}
           >
@@ -485,15 +486,15 @@ export default function Map() {
               ["REGION", selectedRegion || "Da Boom"],
               ["POSITION", targetCoords || "<128, 128, 26>"],
               ["HEADING", "214\u00b0 \u00b7 SW"],
-              ["DRAW", state.prefs.draw],
+              ["DRAW", state.prefs?.draw || "128m"],
             ].map(([k, v]) => (
               <div
                 key={k}
                 style={{
                   display: "flex",
                   gap: "12px",
-                  font: "400 10px/1.4 " + t.font,
-                  color: V.ink2,
+                  font: "400 10px/1.4 var(--ktheme-font, system-ui, sans-serif)",
+                  color: "var(--ktheme-ink2)",
                 }}
               >
                 <span
@@ -501,7 +502,7 @@ export default function Map() {
                     width: "62px",
                     flex: "none",
                     letterSpacing: ".16em",
-                    color: V.pri,
+                    color: "var(--ktheme-pri)",
                   }}
                 >
                   {k}
@@ -530,13 +531,13 @@ export default function Map() {
             style={{
               width: "44px",
               height: "44px",
-              border: "1px solid " + V.outv,
-              borderRadius: V.rs,
-              background: V.surf,
+              border: "1px solid var(--ktheme-outv)",
+              borderRadius: "var(--ktheme-rs)",
+              background: "var(--ktheme-surf)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: V.ink,
+              color: "var(--ktheme-ink)",
               cursor: "pointer",
             }}
             role="button"
@@ -550,13 +551,13 @@ export default function Map() {
             style={{
               width: "44px",
               height: "44px",
-              border: "1px solid " + V.outv,
-              borderRadius: V.rs,
-              background: V.surf,
+              border: "1px solid var(--ktheme-outv)",
+              borderRadius: "var(--ktheme-rs)",
+              background: "var(--ktheme-surf)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: V.ink,
+              color: "var(--ktheme-ink)",
               cursor: "pointer",
             }}
             role="button"
@@ -570,13 +571,13 @@ export default function Map() {
             style={{
               width: "44px",
               height: "44px",
-              border: "1px solid " + V.outv,
-              borderRadius: V.rs,
-              background: V.surf,
+              border: "1px solid var(--ktheme-outv)",
+              borderRadius: "var(--ktheme-rs)",
+              background: "var(--ktheme-surf)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: V.pri,
+              color: "var(--ktheme-pri)",
               cursor: "pointer",
             }}
             role="button"
@@ -595,16 +596,16 @@ export default function Map() {
             left: "10px",
             bottom: "10px",
             zIndex: 10,
-            font: "400 9.5px/1.35 " + t.font,
-            color: V.ink2,
-            background: V.surf,
-            border: "1px solid " + V.outv,
+            font: "400 9.5px/1.35 var(--ktheme-font, system-ui, sans-serif)",
+            color: "var(--ktheme-ink2)",
+            background: "var(--ktheme-surf)",
+            border: "1px solid var(--ktheme-outv)",
             padding: "4px 6px",
             maxWidth: "74%",
           }}
         >
           {mini
-            ? "minimap · north up · draw " + state.prefs.draw
+            ? "minimap · north up · draw " + (state.prefs?.draw || "128m")
             : tileOk
               ? `live SL map tile · zoom ${zoom.toFixed(2)}x`
               : "tile CDN unreachable — themed vector grid fallback"}
@@ -617,14 +618,14 @@ export default function Map() {
           style={{
             flex: 1,
             height: "46px",
-            borderRadius: V.rs,
-            background: V.pri,
-            color: V.onpri,
+            borderRadius: "var(--ktheme-rs)",
+            background: "var(--ktheme-pri)",
+            color: "var(--ktheme-onpri)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             gap: "8px",
-            font: "700 12px/1 " + t.font,
+            font: "700 12px/1 var(--ktheme-font, system-ui, sans-serif)",
             letterSpacing: ".2em",
             cursor: "pointer",
           }}
@@ -636,12 +637,12 @@ export default function Map() {
           style={{
             width: "46px",
             height: "46px",
-            border: "1px solid " + V.outv,
-            borderRadius: V.rs,
+            border: "1px solid var(--ktheme-outv)",
+            borderRadius: "var(--ktheme-rs)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: V.pri,
+            color: "var(--ktheme-pri)",
             cursor: "pointer",
           }}
         >
