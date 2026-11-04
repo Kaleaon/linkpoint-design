@@ -40,9 +40,9 @@ export function cardLooks(V, pad) {
       backdropFilter: "blur(12px)",
       WebkitBackdropFilter: "blur(12px)",
     },
-    rule: { ...sideBorder("Top", "1px", V.outv), borderRadius: "0px", background: V.surf, padding: pad + " 2px" },
-    quiet: { ...sideBorder("Bottom", "1px", V.outv), borderRadius: "0px", background: V.surf, padding: "4px 0 " + pad },
-    cap: { ...sideBorder("Left", "6px", V.sec2 || V.pri), borderRadius: "0px", background: surfC, padding: pad },
+    rule: { ...sideBorder("Top", "1px", V.outv), borderRadius: "0px", background: "transparent", padding: pad + " 2px" },
+    quiet: { ...sideBorder("Bottom", "1px", V.outv), borderRadius: "0px", background: "transparent", padding: "4px 0 " + pad },
+    cap: { ...sideBorder("Left", "10px", V.sec2 || V.pri), borderRadius: "0 " + (V.rp || "22px") + " " + (V.rp || "22px") + " 0", background: surfC, padding: pad },
     tonal: {
       border: "none",
       borderRadius: V.rp || "16px",

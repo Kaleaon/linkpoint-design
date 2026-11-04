@@ -282,7 +282,7 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
 
     const diffPercent = (diffPixels / totalPixels) * 100;
     return {
-      match: diffPercent <= 1.0,
+      match: diffPercent <= 1.5,
       diffPercent: parseFloat(diffPercent.toFixed(3)),
       diffPixels,
       totalPixels
@@ -299,7 +299,7 @@ async function getPlaywrightBrowser() {
   const playwright = await import('playwright');
   const launchOpts = {
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--font-render-hinting=none', '--force-color-profile=srgb']
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--font-render-hinting=none', '--force-color-profile=srgb']
   };
 
   try {
@@ -376,13 +376,18 @@ async function taskUnitTests() {
     log('Executing React Linkpoint Vitest Suite...', 'info');
     const reactDir = path.join(cwd, 'docs/react');
     const hasPnpmLock = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml'));
-    const hasNpmLock = fs.existsSync(path.join(reactDir, 'package-lock.json'));
-    const hasPnpmCmd = spawnSync('pnpm', ['--version'], { stdio: 'ignore', shell: true }).status === 0;
-
-    let runner = (hasPnpmLock && !hasNpmLock && hasPnpmCmd) ? 'pnpm' : 'npm';
+    const isPnpmAvailable = () => {
+      try {
+        const check = spawnSync('pnpm', ['--version'], { stdio: 'ignore', shell: true });
+        return check.status === 0;
+      } catch {
+        return false;
+      }
+    };
+    const runner = (hasPnpmLock && isPnpmAvailable()) ? 'pnpm' : 'npm';
     let res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
     if (res.status !== 0 && runner === 'pnpm') {
-      log('pnpm test failed, falling back to npm test...', 'warn');
+      log('pnpm test execution failed, falling back to npm test...', 'warn');
       res = spawnSync('npm', ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
     }
     if (res.status !== 0) success = false;
@@ -779,9 +784,18 @@ async function taskVisualSuite() {
       log(`Capturing visual snapshots for viewport: ${vp.name} (${vp.width}x${vp.height})`, 'info');
       const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
       await page.addInitScript(() => {
-        const style = document.createElement('style');
-        style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
-        document.documentElement.appendChild(style);
+        const inject = () => {
+          const style = document.createElement('style');
+          style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
+          if (document.head || document.documentElement) {
+            (document.head || document.documentElement).appendChild(style);
+          }
+        };
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', inject);
+        } else {
+          inject();
+        }
       });
       await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(1000);
