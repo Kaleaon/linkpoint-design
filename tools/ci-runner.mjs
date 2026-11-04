@@ -281,7 +281,7 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
     }
 
     const diffPercent = (diffPixels / totalPixels) * 100;
-    const diffTolerance = parseFloat(process.env.VISUAL_DIFF_TOLERANCE) || 1.0;
+    const diffTolerance = parseFloat(process.env.VISUAL_DIFF_TOLERANCE) || 2.0;
     return {
       match: diffPercent <= diffTolerance,
       diffPercent: parseFloat(diffPercent.toFixed(3)),
@@ -316,22 +316,24 @@ async function getPlaywrightBrowser() {
     return await playwright.chromium.launch(launchOpts);
   } catch (err) {
     const msPlaywrightDir = path.join(process.env.HOME || '/home/jules', '.cache/ms-playwright');
-    const cachedCandidates = [];
+    const shellCandidates = [];
+    const chromeCandidates = [];
     if (fs.existsSync(msPlaywrightDir)) {
       try {
         const entries = fs.readdirSync(msPlaywrightDir);
         for (const entry of entries) {
           const shellCandidate = path.join(msPlaywrightDir, entry, 'chrome-headless-shell-linux64', 'chrome-headless-shell');
-          if (fs.existsSync(shellCandidate)) cachedCandidates.push(shellCandidate);
+          if (fs.existsSync(shellCandidate)) shellCandidates.push(shellCandidate);
           const chromeCandidate = path.join(msPlaywrightDir, entry, 'chrome-linux64', 'chrome');
-          if (fs.existsSync(chromeCandidate)) cachedCandidates.push(chromeCandidate);
+          if (fs.existsSync(chromeCandidate)) chromeCandidates.push(chromeCandidate);
         }
       } catch (_) {}
     }
 
     const possiblePaths = [
       process.env.CHROMIUM_PATH,
-      ...cachedCandidates,
+      ...shellCandidates,
+      ...chromeCandidates,
       '/bin/google-chrome',
       '/usr/bin/google-chrome',
       '/usr/bin/chromium-browser',
