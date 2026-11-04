@@ -299,7 +299,7 @@ async function getPlaywrightBrowser() {
   const playwright = await import('playwright');
   const launchOpts = {
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--font-render-hinting=none', '--force-color-profile=srgb']
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--font-render-hinting=none', '--force-color-profile=srgb']
   };
 
   try {
@@ -352,8 +352,21 @@ async function taskUnitTests() {
   if (hasReactVitest) {
     log('Executing React Linkpoint Vitest Suite...', 'info');
     const reactDir = path.join(cwd, 'docs/react');
-    const runner = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml')) ? 'pnpm' : 'npm';
-    const res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
+    const hasPnpmLock = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml'));
+    const isPnpmAvailable = () => {
+      try {
+        const check = spawnSync('pnpm', ['--version'], { stdio: 'ignore', shell: true });
+        return check.status === 0;
+      } catch {
+        return false;
+      }
+    };
+    const runner = (hasPnpmLock && isPnpmAvailable()) ? 'pnpm' : 'npm';
+    let res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
+    if (res.status !== 0 && runner === 'pnpm') {
+      log('pnpm test execution failed, falling back to npm test...', 'warn');
+      res = spawnSync('npm', ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
+    }
     if (res.status !== 0) success = false;
   }
 
@@ -749,9 +762,18 @@ async function taskVisualSuite() {
       const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
       const page = await context.newPage();
       await page.addInitScript(() => {
-        const style = document.createElement('style');
-        style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
-        document.documentElement.appendChild(style);
+        const inject = () => {
+          const style = document.createElement('style');
+          style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
+          if (document.head || document.documentElement) {
+            (document.head || document.documentElement).appendChild(style);
+          }
+        };
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', inject);
+        } else {
+          inject();
+        }
       });
       await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(1000);
