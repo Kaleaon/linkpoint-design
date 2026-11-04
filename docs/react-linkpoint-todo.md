@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-10-31T06:11:55Z — upstream read through [`de1b01a`](https://github.com/Kaleaon/react-linkpoint/commit/de1b01a7cd93afffd8aaebb9eddc34b340ff1aa7)
-- **Open:** 453 · **Completed:** 2
+- **Last change:** 2026-11-04T06:13:31Z — upstream read through [`de95646`](https://github.com/Kaleaon/react-linkpoint/commit/de95646b38700f9528e0c4786bf768a1579da136)
+- **Open:** 497 · **Completed:** 2
 
 ## Open
 
@@ -23,6 +23,34 @@ is tracked by hand in [`github.md`](github.md).
 
 Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/react/src/screens/`
 
+- [ ] **`ddbfa1f`** Wrap parcel confirmation dialogs with FocusTrap component
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ddbfa1f62b5efd32e0c829ef043c8f225a00b230)
+  - 2 files: `src/screens/LumiyaTools.jsx`, `src/screens/__tests__/LumiyaToolsParcelModals.test.tsx`
+- [ ] **`38e90ab`** feat(a11y): add aria-pressed and adjust target size and focus on chat filter chips
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/38e90abb3b728aff1ab4be084abfa614f4da43fb)
+  - 2 files: `src/screens/Chat.jsx`, `src/screens/__tests__/ChatFilterChipsA11y.test.tsx`
+- [ ] **`35cab32`** Add ARIA live regions to search banners and label notice dismiss button
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/35cab32ab8e06b349660d328f1edce72bec65362)
+  - 4 files: `src/linkpoint/__tests__/grid-directory-search.test.tsx`, `src/screens/LiveScreens.jsx`, `src/screens/Search.jsx`, `src/screens/__tests__/SearchAccessibilityBanners.test.tsx`
+  - also touches: Viewer & protocol features
+- [ ] **`d09b827`** refactor(outfit-viewer): wrap camera preset buttons in TouchTarget with aria-pressed
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d09b82748d30dcbd211c8ff44acb9efc593bd37a)
+  - 2 files: `src/linkpoint/__tests__/outfit-viewer.test.tsx`, `src/screens/OutfitViewer.jsx`
+  - also touches: Viewer & protocol features
+- [ ] **`8a3fce1`** refactor(outfit-viewer): consume ThemeContext tokens inline for viewport controls
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8a3fce111fb5cebecefcf0abb5aa64cefa754466)
+  - 2 files: `src/linkpoint/__tests__/outfit-viewer.test.tsx`, `src/screens/OutfitViewer.jsx`
+  - also touches: Viewer & protocol features
+- [ ] **`8280c19`** feat(ledger): bind TransactionsScreen to ThemeContext design tokens
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8280c1992be6d46d58c101827e72e9175e532af8)
+  - 2 files: `src/screens/LumiyaTools.jsx`, `src/screens/__tests__/TransactionsThemeTokens.test.tsx`
+- [ ] **`5b999e9`** feat(sync): add reusable SyncActionButton component with crystal loader and touch targets
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/5b999e99c262f093c452adf01f0668327f766af3)
+  - 5 files: `src/components/SyncActionButton.tsx`, `src/components/__tests__/SyncActionButton.test.tsx`, `src/screens/CacheScreen.jsx`, `src/screens/Inventory.jsx`, `src/screens/LiveScreens.jsx`
+  - also touches: Components
+- [ ] **`44a0054`** refactor(a11y): use TouchTarget for search clear controls on Search and Radar
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/44a00542a8b09e651573f2de4241b027ce163bdc)
+  - 3 files: `src/screens/Radar.jsx`, `src/screens/Search.jsx`, `src/screens/__tests__/SearchRadarTouchTarget.test.tsx`
 - [ ] **`f01fee0`** feat(a11y): standardize screen headings and guarantee top-level h1 landmark
   - 2026-10-30 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f01fee017876b856dcbdb3e4316018871d4a65e0)
   - 9 files: `src/components/Header.jsx`, `src/components/LinkpointLogo.jsx`, `src/components/ScreenBody.jsx`, `src/linkpoint/__tests__/accessible-nav-components.test.tsx`, `src/screens/CacheScreen.jsx`, `src/screens/Chat.jsx` _(+3 more)_
@@ -156,6 +184,57 @@ Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/
 
 Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `docs/react/src/components/`
 
+- [ ] **`e591105`** feat(design-system): author AccessibleInput and AccessibleSelect primitives and migrate form controls
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e5911058937b7d2fde259aedacf6564323dcad63)
+  - 14 files: `packages/design-system/src/__tests__/accessible-controls.test.tsx`, `packages/design-system/src/__tests__/design-system.test.ts`, `packages/design-system/src/react/AccessibleInput.tsx`, `packages/design-system/src/react/AccessibleSelect.tsx`, `packages/design-system/src/react/index.ts`, `src/components/AccessibleInput.jsx` _(+8 more)_
+  - also touches: Screens, Viewer & protocol features, Tests, Unclassified
+- [ ] **`dc7f8ff`** refactor(components): use AccessibleInput and AccessibleSelect .tsx primitives and remove duplicate .jsx wrappers
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/dc7f8ff421579a20054e0bd4a5c162ade75a858b)
+  - 4 files: `src/components/AccessibleInput.jsx`, `src/components/AccessibleSelect.jsx`, `src/components/FormField.jsx`, `src/components/__tests__/FormField.test.tsx`
+- [ ] **`b3c0e21`** feat(desktop): add hybrid floater keyboard navigation handles and quick snap actions
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b3c0e2108b8d4f2531de5f65b87d90ce9efe930b)
+  - 4 files: `src/components/FloatersDesktop.jsx`, `src/components/__tests__/FloatersDesktopAccessibility.test.tsx`, `src/hooks/useAppState.js`, `src/index.css`
+  - also touches: Theme & tokens, State & data
+- [ ] **`a3c9aaf`** feat(design-system): promote CrystalProgressBar to design system package
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/a3c9aaf7786fe330ac735a0e5ed5baf1d4dfa1e5)
+  - 10 files: `packages/design-system/src/__tests__/design-system.test.ts`, `packages/design-system/src/react/BrandedLoader.tsx`, `packages/design-system/src/react/CrystalMark.tsx`, `packages/design-system/src/react/CrystalProgressBar.tsx`, `packages/design-system/src/react/index.ts`, `src/components/CrystalProgressBar.jsx` _(+4 more)_
+  - also touches: Viewer & protocol features, Tests, Unclassified
+- [ ] **`4f2e8d1`** fix(FormField): recognize AccessibleInput and AccessibleSelect controls in container elements
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/4f2e8d1d8821ce2048bf527b199cc128ba59ad8d)
+  - 2 files: `src/components/FormField.jsx`, `src/components/__tests__/FormField.test.tsx`
+- [ ] **`c891535`** feat(ui): extend CrystalProgressBar with compact state-block variant
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/c891535b8bf75e54fa202e52fca7aba637668661)
+  - 4 files: `src/components/CrystalProgressBar.jsx`, `src/components/StateBlock.jsx`, `src/components/__tests__/CrystalProgressBar.test.tsx`, `src/components/__tests__/StateBlockProgress.test.tsx`
+- [ ] **`8ba7e76`** perf(crystal): mutate DOM progress synchronously in TeleportCrystalHero
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8ba7e762bbd03ce2af99160da6a0614c36ed29b0)
+  - 2 files: `src/components/TeleportCrystalHero.jsx`, `src/components/__tests__/TeleportCrystalHero.test.tsx`
+- [ ] **`78d786a`** perf(inventory): decouple selection state from tree traversal memoization
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/78d786aacffa8e48add352e67ede2962ff8c26fa)
+  - 2 files: `src/components/InventoryTree.tsx`, `src/linkpoint/__tests__/inventory-tree-memoization.test.tsx`
+  - also touches: Viewer & protocol features
+- [ ] **`533d7bf`** feat(ui): extend CrystalProgressBar with imperative handle and integrate in SystemDialog
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/533d7bfd42612e71643495fd0795b9bb4e7b069b)
+  - 4 files: `src/components/CrystalProgressBar.jsx`, `src/components/SystemDialog.jsx`, `src/components/__tests__/CrystalProgressBar.test.tsx`, `src/linkpoint/__tests__/system-dialog-teleport.test.tsx`
+  - also touches: Viewer & protocol features
+- [ ] **`4388fac`** feat(a11y): implement accessible FocusRing component and interactive hook abstraction
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/4388fac7e5ad2df75a66eece9b02a1dffa45b5a0)
+  - 14 files: `packages/design-system/package.json`, `packages/design-system/src/__tests__/FocusRing.test.tsx`, `packages/design-system/src/__tests__/design-system.test.ts`, `packages/design-system/src/components/FocusRing.tsx`, `packages/design-system/src/components/index.ts`, `packages/design-system/src/index.ts` _(+8 more)_
+  - also touches: Screens, Tests, Unclassified
+- [ ] **`3d15389`** feat(a11y): add useRovingTabindex hook and wire into SegmentedTabs and BottomTabs
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/3d153896323994f85e24bb389d14604495738245)
+  - 4 files: `src/components/BottomTabs.jsx`, `src/components/SegmentedTabs.jsx`, `src/hooks/useRovingTabindex.ts`, `src/linkpoint/__tests__/accessible-nav-components.test.tsx`
+  - also touches: State & data, Viewer & protocol features
+- [ ] **`3962e3f`** feat(a11y): add toggle states and 24px target size to ViewModeSwitcher
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/3962e3fcdc2235158fa49dd1668819e977ad0be6)
+  - 2 files: `src/components/ViewModeSwitcher.jsx`, `src/linkpoint/__tests__/accessible-nav-components.test.tsx`
+  - also touches: Viewer & protocol features
+- [ ] **`1b686f7`** feat(a11y): propagate accessible labels from Card to Toggle across themes
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1b686f728a611ce30a4d65c22742e7f91f6b026d)
+  - 3 files: `src/components/Card.jsx`, `src/components/Toggle.jsx`, `src/components/__tests__/ToggleAccessibility.test.tsx`
+- [ ] **`0a0df04`** feat(layout): add accessible window and HUD layout dialogs (WCAG 2.2 SC 2.5.7, SC 2.1.1)
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0a0df0468bb42641295eabd1a29e39b0257d0f93)
+  - 8 files: `src/components/FloatersDesktop.jsx`, `src/components/HudLayoutDialog.jsx`, `src/components/WindowLayoutDialog.jsx`, `src/components/__tests__/WindowLayoutDialog.test.tsx`, `src/hooks/useAppState.js`, `src/linkpoint/world.ts` _(+2 more)_
+  - also touches: Screens, State & data, Viewer & protocol features
 - [ ] **`fe105ce`** feat: Add standardized SecondaryViewLoader component and adopt across secondary views
   - 2026-10-30 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/fe105ce871412417aa282e062f3fdd5fac4d210c)
   - 7 files: `src/components/LinkpointLogo.jsx`, `src/components/OutfitCarouselDrawer.tsx`, `src/components/SecondaryViewLoader.tsx`, `src/components/__tests__/SecondaryViewLoader.test.tsx`, `src/components/__tests__/SecondaryViewLoaderAdoption.test.tsx`, `src/screens/LiveScreens.jsx` _(+1 more)_
@@ -522,6 +601,45 @@ Mirror into: `docs/index.html` — the `render()` view-model · `docs/react/src/
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`d75148e`** feat(phase2): implement object edit pipeline with batched UDP transactions and UI controls
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d75148ee425db5a812ab33f32a5c3ff2117901f4)
+  - 15 files: `core/sl-actions.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/components/ObjectInspector.tsx`, `src/components/__tests__/ObjectInspector-edit.test.tsx`, `src/linkpoint/__tests__/sl-bridge-transaction.test.ts` _(+9 more)_
+  - also touches: Components, Unclassified
+- [ ] **`b6f415d`** feat(friends): synchronize friend rights via GrantUserRights packet and bridge RPC
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b6f415d2bb0566e692ccbb98883d10d856274c67)
+  - 9 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/friend-rights.test.tsx`, `src/linkpoint/phase2/friends-extended.ts`, `src/linkpoint/sl-bridge.ts`, `src/linkpoint/sl-connection-full.ts` _(+3 more)_
+  - also touches: Screens, Unclassified
+- [ ] **`998743d`** feat(viewport): interactive 3D transform gizmo with real-time streaming and inspector sync
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/998743d32f74201e22a6d7b87cf860629316e28e)
+  - 15 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/components/ObjectInspector.tsx`, `src/components/__tests__/ObjectInspectorGizmo.test.tsx`, `src/linkpoint/__tests__/objects-extended-streaming.test.ts`, `src/linkpoint/__tests__/scene-3d-gizmo.test.ts` _(+9 more)_
+  - also touches: Components, Unclassified
+- [ ] **`7972b97`** feat(groups): integrate group moderation RPC pipeline and in-client UI controls
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7972b9746c032b508a2351655779e72b4f1c6fc5)
+  - 7 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/group-moderation-rpc-pipeline.test.tsx`, `src/linkpoint/app.ts`, `src/linkpoint/phase2/groups.ts`, `src/linkpoint/sl-bridge.ts` _(+1 more)_
+  - also touches: Screens, Unclassified
+- [ ] **`66b7ee2`** test(inventory): isolate preview artifact to project-local path with cleanup
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/66b7ee23f8267acb08b3ea85fca46296ac897077)
+  - 1 file: `src/linkpoint/__tests__/inventory-tree.test.tsx`
+- [ ] **`4bc94d3`** feat(groups): add GroupAdminFloater and GroupAdminCapabilityService
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/4bc94d354631f79796f4e25b423700c2ae1698f1)
+  - 8 files: `docs/viewer-parity.md`, `src/components/GroupAdminFloater.jsx`, `src/components/__tests__/GroupAdminFloater.test.tsx`, `src/linkpoint/__tests__/group-admin-capability-service.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/phase2/groups.ts` _(+2 more)_
+  - also touches: Screens, Components, Docs & specs
+- [ ] **`46f24e9`** feat: dynamic price quoting with multi-transport negotiation and bounded caching for scripted vendors
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/46f24e91ec468e1cea7f2b7683a27b8247619c89)
+  - 10 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/components/PayDialog.jsx`, `src/components/__tests__/PayDialog.test.tsx`, `src/linkpoint/__tests__/object-pay-manager.test.ts`, `src/linkpoint/app.ts` _(+4 more)_
+  - also touches: Components, Unclassified
+- [ ] **`4062d4f`** feat(inventory): implement roving tabindex with virtualized flat node focus traversal
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/4062d4fe125de0e9b0e0dd01d3a27c4941619c85)
+  - 3 files: `src/components/InventoryTree.tsx`, `src/linkpoint/__tests__/inventory-tree-virtualization.test.tsx`, `src/linkpoint/__tests__/inventory-tree.test.tsx`
+  - also touches: Components
+- [ ] **`0bf775e`** test(desktop): isolate electron validation tests in temporary directories
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0bf775ec9b2a581d0dc5f8aaf5fc44973178bbf6)
+  - 2 files: `scripts/validate-electron-config.mjs`, `src/linkpoint/__tests__/desktop-packaging.test.ts`
+  - also touches: Build & platform
+- [ ] **`4086f6e`** feat(building): implement building controls toolbar and SL protocol messaging
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/4086f6e4bab51a8b5c05c8a9e66102a9a8a45bd1)
+  - 10 files: `core/sl-actions.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/components/BuildingToolbar.tsx`, `src/components/ObjectInspector.tsx`, `src/components/__tests__/BuildingToolbar.test.tsx` _(+4 more)_
+  - also touches: Components, Unclassified
 - [ ] **`e8449ba`** refactor: Consolidate scalar lerp in central sl-math module
   - 2026-10-30 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e8449baf999fb8573a32b446255f731956c0ae9f)
   - 7 files: `src/linkpoint/__tests__/sl-math.test.ts`, `src/linkpoint/eep.ts`, `src/linkpoint/sl-math.ts`, `src/linkpoint/sl-volume.ts`, `src/linkpoint/terrain.ts`, `src/linkpoint/utils.ts` _(+1 more)_
@@ -1276,6 +1394,42 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
 
 Mirror into: usually no design change — confirm `docs/react/` still builds the same way
 
+- [ ] **`cbe7454`** ci: add npm build script and CI verification for backend server bundle
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/cbe74547ec281d50866e547dacf5f8e810968897)
+  - 6 files: `.github/workflows/ci.yml`, `.github/workflows/fly-deploy.yml`, `.gitignore`, `AGENTS.md`, `Dockerfile`, `package.json`
+  - also touches: Docs & specs, Unclassified
+- [ ] **`bc9eb12`** ci: add dedicated desktop directory packaging check job
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/bc9eb127f3bcc776731f5136c9d2b6ea7a2ed10f)
+  - 2 files: `.github/workflows/ci.yml`, `AGENTS.md`
+  - also touches: Docs & specs
+- [ ] **`7f92cbb`** feat(pwa): standardize PWA icons with canonical crystal brand mark SVG assets
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/7f92cbb87b512bcae1730a770b8250870578fad4)
+  - 3 files: `public/icons/icon-maskable.svg`, `public/icons/icon.svg`, `src/linkpoint/__tests__/pwa-crystal-icons.test.ts`
+  - also touches: Viewer & protocol features
+- [ ] **`413f30c`** ci(jules): add concurrency cancellation group to review workflow
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/413f30cd3b6d17c1181e34c5af43382e7195cead)
+  - 1 file: `.github/workflows/run.yml`
+- [ ] **`31ea174`** ci: add electron configuration validation step to web CI job
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/31ea174758623d0f2729db2f2fc021e70a75753d)
+  - 5 files: `.github/workflows/ci.yml`, `AGENTS.md`, `package.json`, `scripts/validate-electron-config.mjs`, `src/linkpoint/__tests__/desktop-packaging.test.ts`
+  - also touches: Viewer & protocol features, Docs & specs
+- [ ] **`bef8890`** fix(ci): use official actions/cache@v4 and prevent redundant check:materials in check
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/bef8890365be7c6f2a08ef499de5e52af9acdeae)
+  - 2 files: `.github/workflows/ci.yml`, `package.json`
+- [ ] **`aea635f`** ci: consolidate design sync verification steps using aggregate npm check script
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/aea635f533cb7320a668dfad9b9abb5b3602b809)
+  - 1 file: `.github/workflows/sync-design.yml`
+- [ ] **`73a523e`** ci: scope Gradle cache dependency paths in CI and release workflows
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/73a523e5bde84b13bc39bed4a1402ca78756c5b8)
+  - 2 files: `.github/workflows/ci.yml`, `.github/workflows/release.yml`
+- [ ] **`2315599`** ci(shaders): integrate material shader verification into build scripts and web CI
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/2315599ddae8b29fbbffb897ef6a9a64133a7752)
+  - 4 files: `.github/workflows/ci.yml`, `AGENTS.md`, `package.json`, `scripts/codex-setup.sh`
+  - also touches: Docs & specs
+- [ ] **`1e3c653`** ci: add bun caching and live grid smoke test gate to release workflow
+  - 2026-11-01 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1e3c653b951e6657232d96744dd6fd91cc970f9f)
+  - 2 files: `.github/workflows/release.yml`, `AGENTS.md`
+  - also touches: Docs & specs
 - [ ] **`a155677`** ci: add pre-deployment typecheck, lint, and test jobs to Fly deployment workflow
   - 2026-10-30 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/a155677746af9d0672c0d92895c20c822b20f395)
   - 1 file: `.github/workflows/fly-deploy.yml`
@@ -1455,6 +1609,12 @@ Mirror into: `docs/ROADMAP.md` · `docs/github.md` · `docs/mockup-to-react.yaml
 
 Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json`
 
+- [ ] **`d3ed08c`** Wire source import check into Husky pre-commit hook
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d3ed08c2e522b457d053ffc9a5f5073beb88c409)
+  - 1 file: `.husky/pre-commit`
+- [ ] **`390c5c6`** feat(android): implement native Canvas crystal components and vector launcher asset
+  - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/390c5c6a6b40305dc11fad76484b2307dd6ef40d)
+  - 7 files: `android-kotlin/app/build.gradle.kts`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/LoginScreen.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/crystal/CrystalGeometry.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/crystal/CrystalLoader.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/crystal/LinkpointCrystal.kt`, `android-kotlin/app/src/main/res/drawable/ic_launcher_foreground.xml` _(+1 more)_
 - [ ] **`283eedf`** refactor(settings): address review comments and resolve upstream changes
   - 2026-10-30 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/283eedf02554fa6a412c2f273c9105020b563832)
   - 7 files: `core/sl-interactions.cjs`, `src/config/featureCapabilities.js`, `src/featureCapabilities.js`, `src/hooks/featureCapabilities.js`, `src/linkpoint/__tests__/interaction-dialog.test.tsx`, `src/linkpoint/interactions.ts` _(+1 more)_
@@ -1686,7 +1846,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-10-31T06:11:55Z",
+ "generated": "2026-11-04T06:13:31Z",
  "items": [
   {
    "also": [
@@ -12086,9 +12246,873 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "8b69b68",
    "subject": "feat(keybindings): centralize KeybindingsContext and add WCAG 2.2 SC 2.1.4 remapping interface",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/8b69b68ab0765b98d932234c09fcd2fb7cf4e615"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/release.yml"
+   ],
+   "sha": "73a523e5bde84b13bc39bed4a1402ca78756c5b8",
+   "short": "73a523e",
+   "subject": "ci: scope Gradle cache dependency paths in CI and release workflows",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/73a523e5bde84b13bc39bed4a1402ca78756c5b8"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "src/components/CrystalProgressBar.jsx",
+    "src/components/StateBlock.jsx",
+    "src/components/__tests__/CrystalProgressBar.test.tsx",
+    "src/components/__tests__/StateBlockProgress.test.tsx"
+   ],
+   "sha": "c891535b8bf75e54fa202e52fca7aba637668661",
+   "short": "c891535",
+   "subject": "feat(ui): extend CrystalProgressBar with compact state-block variant",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/c891535b8bf75e54fa202e52fca7aba637668661"
+  },
+  {
+   "also": [],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "src/screens/Radar.jsx",
+    "src/screens/Search.jsx",
+    "src/screens/__tests__/SearchRadarTouchTarget.test.tsx"
+   ],
+   "sha": "44a00542a8b09e651573f2de4241b027ce163bdc",
+   "short": "44a0054",
+   "subject": "refactor(a11y): use TouchTarget for search clear controls on Search and Radar",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/44a00542a8b09e651573f2de4241b027ce163bdc"
+  },
+  {
+   "also": [
+    "components"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "src/components/SyncActionButton.tsx",
+    "src/components/__tests__/SyncActionButton.test.tsx",
+    "src/screens/CacheScreen.jsx",
+    "src/screens/Inventory.jsx",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "5b999e99c262f093c452adf01f0668327f766af3",
+   "short": "5b999e9",
+   "subject": "feat(sync): add reusable SyncActionButton component with crystal loader and touch targets",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/5b999e99c262f093c452adf01f0668327f766af3"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "src/components/Card.jsx",
+    "src/components/Toggle.jsx",
+    "src/components/__tests__/ToggleAccessibility.test.tsx"
+   ],
+   "sha": "1b686f728a611ce30a4d65c22742e7f91f6b026d",
+   "short": "1b686f7",
+   "subject": "feat(a11y): propagate accessible labels from Card to Toggle across themes",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1b686f728a611ce30a4d65c22742e7f91f6b026d"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/outfit-viewer.test.tsx",
+    "src/screens/OutfitViewer.jsx"
+   ],
+   "sha": "d09b82748d30dcbd211c8ff44acb9efc593bd37a",
+   "short": "d09b827",
+   "subject": "refactor(outfit-viewer): wrap camera preset buttons in TouchTarget with aria-pressed",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d09b82748d30dcbd211c8ff44acb9efc593bd37a"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    ".github/workflows/sync-design.yml"
+   ],
+   "sha": "aea635f533cb7320a668dfad9b9abb5b3602b809",
+   "short": "aea635f",
+   "subject": "ci: consolidate design sync verification steps using aggregate npm check script",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/aea635f533cb7320a668dfad9b9abb5b3602b809"
+  },
+  {
+   "also": [
+    "state",
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "src/components/BottomTabs.jsx",
+    "src/components/SegmentedTabs.jsx",
+    "src/hooks/useRovingTabindex.ts",
+    "src/linkpoint/__tests__/accessible-nav-components.test.tsx"
+   ],
+   "sha": "3d153896323994f85e24bb389d14604495738245",
+   "short": "3d15389",
+   "subject": "feat(a11y): add useRovingTabindex hook and wire into SegmentedTabs and BottomTabs",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/3d153896323994f85e24bb389d14604495738245"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "src/components/CrystalProgressBar.jsx",
+    "src/components/SystemDialog.jsx",
+    "src/components/__tests__/CrystalProgressBar.test.tsx",
+    "src/linkpoint/__tests__/system-dialog-teleport.test.tsx"
+   ],
+   "sha": "533d7bfd42612e71643495fd0795b9bb4e7b069b",
+   "short": "533d7bf",
+   "subject": "feat(ui): extend CrystalProgressBar with imperative handle and integrate in SystemDialog",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/533d7bfd42612e71643495fd0795b9bb4e7b069b"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "src/components/TeleportCrystalHero.jsx",
+    "src/components/__tests__/TeleportCrystalHero.test.tsx"
+   ],
+   "sha": "8ba7e762bbd03ce2af99160da6a0614c36ed29b0",
+   "short": "8ba7e76",
+   "subject": "perf(crystal): mutate DOM progress synchronously in TeleportCrystalHero",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8ba7e762bbd03ce2af99160da6a0614c36ed29b0"
+  },
+  {
+   "also": [
+    "docs"
+   ],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml",
+    "AGENTS.md",
+    "package.json",
+    "scripts/codex-setup.sh"
+   ],
+   "sha": "2315599ddae8b29fbbffb897ef6a9a64133a7752",
+   "short": "2315599",
+   "subject": "ci(shaders): integrate material shader verification into build scripts and web CI",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/2315599ddae8b29fbbffb897ef6a9a64133a7752"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "src/components/InventoryTree.tsx",
+    "src/linkpoint/__tests__/inventory-tree-memoization.test.tsx"
+   ],
+   "sha": "78d786aacffa8e48add352e67ede2962ff8c26fa",
+   "short": "78d786a",
+   "subject": "perf(inventory): decouple selection state from tree traversal memoization",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/78d786aacffa8e48add352e67ede2962ff8c26fa"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/outfit-viewer.test.tsx",
+    "src/screens/OutfitViewer.jsx"
+   ],
+   "sha": "8a3fce111fb5cebecefcf0abb5aa64cefa754466",
+   "short": "8a3fce1",
+   "subject": "refactor(outfit-viewer): consume ThemeContext tokens inline for viewport controls",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8a3fce111fb5cebecefcf0abb5aa64cefa754466"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "src/components/ViewModeSwitcher.jsx",
+    "src/linkpoint/__tests__/accessible-nav-components.test.tsx"
+   ],
+   "sha": "3962e3fcdc2235158fa49dd1668819e977ad0be6",
+   "short": "3962e3f",
+   "subject": "feat(a11y): add toggle states and 24px target size to ViewModeSwitcher",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/3962e3fcdc2235158fa49dd1668819e977ad0be6"
+  },
+  {
+   "also": [],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "src/screens/LumiyaTools.jsx",
+    "src/screens/__tests__/TransactionsThemeTokens.test.tsx"
+   ],
+   "sha": "8280c1992be6d46d58c101827e72e9175e532af8",
+   "short": "8280c19",
+   "subject": "feat(ledger): bind TransactionsScreen to ThemeContext design tokens",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8280c1992be6d46d58c101827e72e9175e532af8"
+  },
+  {
+   "also": [
+    "docs"
+   ],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    ".github/workflows/release.yml",
+    "AGENTS.md"
+   ],
+   "sha": "1e3c653b951e6657232d96744dd6fd91cc970f9f",
+   "short": "1e3c653",
+   "subject": "ci: add bun caching and live grid smoke test gate to release workflow",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1e3c653b951e6657232d96744dd6fd91cc970f9f"
+  },
+  {
+   "also": [
+    "components",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "core/sl-actions.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/components/BuildingToolbar.tsx",
+    "src/components/ObjectInspector.tsx",
+    "src/components/__tests__/BuildingToolbar.test.tsx",
+    "src/linkpoint/__tests__/objects-extended-building.test.ts",
+    "src/linkpoint/__tests__/sl-actions-building.test.ts",
+    "src/linkpoint/phase2/objects-extended.ts",
+    "src/linkpoint/sl-bridge.ts"
+   ],
+   "sha": "4086f6e4bab51a8b5c05c8a9e66102a9a8a45bd1",
+   "short": "4086f6e",
+   "subject": "feat(building): implement building controls toolbar and SL protocol messaging",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/4086f6e4bab51a8b5c05c8a9e66102a9a8a45bd1"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml",
+    "package.json"
+   ],
+   "sha": "bef8890365be7c6f2a08ef499de5e52af9acdeae",
+   "short": "bef8890",
+   "subject": "fix(ci): use official actions/cache@v4 and prevent redundant check:materials in check",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/bef8890365be7c6f2a08ef499de5e52af9acdeae"
+  },
+  {
+   "also": [
+    "screens",
+    "tests",
+    "other"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "packages/design-system/package.json",
+    "packages/design-system/src/__tests__/FocusRing.test.tsx",
+    "packages/design-system/src/__tests__/design-system.test.ts",
+    "packages/design-system/src/components/FocusRing.tsx",
+    "packages/design-system/src/components/index.ts",
+    "packages/design-system/src/index.ts",
+    "packages/design-system/src/react/index.ts",
+    "src/components/FocusRing.jsx",
+    "src/components/FocusRing.tsx",
+    "src/components/PayDialog.jsx",
+    "src/components/SegmentedTabs.jsx",
+    "src/components/SplitPaneCompositor.tsx",
+    "src/components/__tests__/FocusRingIntegration.test.tsx",
+    "src/screens/LumiyaTools.jsx"
+   ],
+   "sha": "4388fac7e5ad2df75a66eece9b02a1dffa45b5a0",
+   "short": "4388fac",
+   "subject": "feat(a11y): implement accessible FocusRing component and interactive hook abstraction",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/4388fac7e5ad2df75a66eece9b02a1dffa45b5a0"
+  },
+  {
+   "also": [
+    "screens",
+    "state",
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-01",
+   "done": false,
+   "files": [
+    "src/components/FloatersDesktop.jsx",
+    "src/components/HudLayoutDialog.jsx",
+    "src/components/WindowLayoutDialog.jsx",
+    "src/components/__tests__/WindowLayoutDialog.test.tsx",
+    "src/hooks/useAppState.js",
+    "src/linkpoint/world.ts",
+    "src/screens/HudControls.jsx",
+    "src/screens/__tests__/HudLayoutDialog.test.tsx"
+   ],
+   "sha": "0a0df0468bb42641295eabd1a29e39b0257d0f93",
+   "short": "0a0df04",
+   "subject": "feat(layout): add accessible window and HUD layout dialogs (WCAG 2.2 SC 2.5.7, SC 2.1.1)",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/0a0df0468bb42641295eabd1a29e39b0257d0f93"
+  },
+  {
+   "also": [
+    "viewer",
+    "docs"
+   ],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml",
+    "AGENTS.md",
+    "package.json",
+    "scripts/validate-electron-config.mjs",
+    "src/linkpoint/__tests__/desktop-packaging.test.ts"
+   ],
+   "sha": "31ea174758623d0f2729db2f2fc021e70a75753d",
+   "short": "31ea174",
+   "subject": "ci: add electron configuration validation step to web CI job",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/31ea174758623d0f2729db2f2fc021e70a75753d"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "android-kotlin/app/build.gradle.kts",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/LoginScreen.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/crystal/CrystalGeometry.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/crystal/CrystalLoader.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/crystal/LinkpointCrystal.kt",
+    "android-kotlin/app/src/main/res/drawable/ic_launcher_foreground.xml",
+    "android-kotlin/app/src/test/kotlin/app/linkpoint/viewer/ui/crystal/CrystalGeometryTest.kt"
+   ],
+   "sha": "390c5c6a6b40305dc11fad76484b2307dd6ef40d",
+   "short": "390c5c6",
+   "subject": "feat(android): implement native Canvas crystal components and vector launcher asset",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/390c5c6a6b40305dc11fad76484b2307dd6ef40d"
+  },
+  {
+   "also": [
+    "components",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/components/PayDialog.jsx",
+    "src/components/__tests__/PayDialog.test.tsx",
+    "src/linkpoint/__tests__/object-pay-manager.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/index.ts",
+    "src/linkpoint/object-pay-manager.ts",
+    "src/linkpoint/phase2/capabilities.ts",
+    "src/linkpoint/sl-bridge.ts"
+   ],
+   "sha": "46f24e91ec468e1cea7f2b7683a27b8247619c89",
+   "short": "46f24e9",
+   "subject": "feat: dynamic price quoting with multi-transport negotiation and bounded caching for scripted vendors",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/46f24e91ec468e1cea7f2b7683a27b8247619c89"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "docs"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "docs/viewer-parity.md",
+    "src/components/GroupAdminFloater.jsx",
+    "src/components/__tests__/GroupAdminFloater.test.tsx",
+    "src/linkpoint/__tests__/group-admin-capability-service.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/phase2/groups.ts",
+    "src/linkpoint/services/group-admin-capability-service.ts",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "4bc94d354631f79796f4e25b423700c2ae1698f1",
+   "short": "4bc94d3",
+   "subject": "feat(groups): add GroupAdminFloater and GroupAdminCapabilityService",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/4bc94d354631f79796f4e25b423700c2ae1698f1"
+  },
+  {
+   "also": [
+    "screens",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/friend-rights.test.tsx",
+    "src/linkpoint/phase2/friends-extended.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/sl-message-types.ts",
+    "src/screens/ContactsScreen.jsx",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "b6f415d2bb0566e692ccbb98883d10d856274c67",
+   "short": "b6f415d",
+   "subject": "feat(friends): synchronize friend rights via GrantUserRights packet and bridge RPC",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/b6f415d2bb0566e692ccbb98883d10d856274c67"
+  },
+  {
+   "also": [
+    "docs",
+    "other"
+   ],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/fly-deploy.yml",
+    ".gitignore",
+    "AGENTS.md",
+    "Dockerfile",
+    "package.json"
+   ],
+   "sha": "cbe74547ec281d50866e547dacf5f8e810968897",
+   "short": "cbe7454",
+   "subject": "ci: add npm build script and CI verification for backend server bundle",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/cbe74547ec281d50866e547dacf5f8e810968897"
+  },
+  {
+   "also": [
+    "theme",
+    "state"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "src/components/FloatersDesktop.jsx",
+    "src/components/__tests__/FloatersDesktopAccessibility.test.tsx",
+    "src/hooks/useAppState.js",
+    "src/index.css"
+   ],
+   "sha": "b3c0e2108b8d4f2531de5f65b87d90ce9efe930b",
+   "short": "b3c0e21",
+   "subject": "feat(desktop): add hybrid floater keyboard navigation handles and quick snap actions",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/b3c0e2108b8d4f2531de5f65b87d90ce9efe930b"
+  },
+  {
+   "also": [
+    "docs"
+   ],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml",
+    "AGENTS.md"
+   ],
+   "sha": "bc9eb127f3bcc776731f5136c9d2b6ea7a2ed10f",
+   "short": "bc9eb12",
+   "subject": "ci: add dedicated desktop directory packaging check job",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/bc9eb127f3bcc776731f5136c9d2b6ea7a2ed10f"
+  },
+  {
+   "also": [
+    "components",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/components/ObjectInspector.tsx",
+    "src/components/__tests__/ObjectInspectorGizmo.test.tsx",
+    "src/linkpoint/__tests__/objects-extended-streaming.test.ts",
+    "src/linkpoint/__tests__/scene-3d-gizmo.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/camera-3d.ts",
+    "src/linkpoint/camera-controls.ts",
+    "src/linkpoint/graphics-3d.ts",
+    "src/linkpoint/phase2/objects-extended.ts",
+    "src/linkpoint/primitives-3d.ts",
+    "src/linkpoint/scene-3d.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "998743d32f74201e22a6d7b87cf860629316e28e",
+   "short": "998743d",
+   "subject": "feat(viewport): interactive 3D transform gizmo with real-time streaming and inspector sync",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/998743d32f74201e22a6d7b87cf860629316e28e"
+  },
+  {
+   "also": [
+    "screens",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/group-moderation-rpc-pipeline.test.tsx",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/phase2/groups.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "7972b9746c032b508a2351655779e72b4f1c6fc5",
+   "short": "7972b97",
+   "subject": "feat(groups): integrate group moderation RPC pipeline and in-client UI controls",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/7972b9746c032b508a2351655779e72b4f1c6fc5"
+  },
+  {
+   "also": [
+    "components",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "core/sl-actions.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/components/ObjectInspector.tsx",
+    "src/components/__tests__/ObjectInspector-edit.test.tsx",
+    "src/linkpoint/__tests__/sl-bridge-transaction.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/phase2/__tests__/object-edit-pipeline.test.ts",
+    "src/linkpoint/phase2/__tests__/objects-extended-batch.test.ts",
+    "src/linkpoint/phase2/object-edit-pipeline.ts",
+    "src/linkpoint/phase2/objects-extended.ts",
+    "src/linkpoint/scene-3d.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/world.ts"
+   ],
+   "sha": "d75148ee425db5a812ab33f32a5c3ff2117901f4",
+   "short": "d75148e",
+   "subject": "feat(phase2): implement object edit pipeline with batched UDP transactions and UI controls",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d75148ee425db5a812ab33f32a5c3ff2117901f4"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    ".github/workflows/run.yml"
+   ],
+   "sha": "413f30cd3b6d17c1181e34c5af43382e7195cead",
+   "short": "413f30c",
+   "subject": "ci(jules): add concurrency cancellation group to review workflow",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/413f30cd3b6d17c1181e34c5af43382e7195cead"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    ".husky/pre-commit"
+   ],
+   "sha": "d3ed08c2e522b457d053ffc9a5f5073beb88c409",
+   "short": "d3ed08c",
+   "subject": "Wire source import check into Husky pre-commit hook",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d3ed08c2e522b457d053ffc9a5f5073beb88c409"
+  },
+  {
+   "also": [],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "src/screens/LumiyaTools.jsx",
+    "src/screens/__tests__/LumiyaToolsParcelModals.test.tsx"
+   ],
+   "sha": "ddbfa1f62b5efd32e0c829ef043c8f225a00b230",
+   "short": "ddbfa1f",
+   "subject": "Wrap parcel confirmation dialogs with FocusTrap component",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ddbfa1f62b5efd32e0c829ef043c8f225a00b230"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/grid-directory-search.test.tsx",
+    "src/screens/LiveScreens.jsx",
+    "src/screens/Search.jsx",
+    "src/screens/__tests__/SearchAccessibilityBanners.test.tsx"
+   ],
+   "sha": "35cab32ab8e06b349660d328f1edce72bec65362",
+   "short": "35cab32",
+   "subject": "Add ARIA live regions to search banners and label notice dismiss button",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/35cab32ab8e06b349660d328f1edce72bec65362"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "public/icons/icon-maskable.svg",
+    "public/icons/icon.svg",
+    "src/linkpoint/__tests__/pwa-crystal-icons.test.ts"
+   ],
+   "sha": "7f92cbb87b512bcae1730a770b8250870578fad4",
+   "short": "7f92cbb",
+   "subject": "feat(pwa): standardize PWA icons with canonical crystal brand mark SVG assets",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/7f92cbb87b512bcae1730a770b8250870578fad4"
+  },
+  {
+   "also": [
+    "platform"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "scripts/validate-electron-config.mjs",
+    "src/linkpoint/__tests__/desktop-packaging.test.ts"
+   ],
+   "sha": "0bf775ec9b2a581d0dc5f8aaf5fc44973178bbf6",
+   "short": "0bf775e",
+   "subject": "test(desktop): isolate electron validation tests in temporary directories",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/0bf775ec9b2a581d0dc5f8aaf5fc44973178bbf6"
+  },
+  {
+   "also": [],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "src/screens/Chat.jsx",
+    "src/screens/__tests__/ChatFilterChipsA11y.test.tsx"
+   ],
+   "sha": "38e90abb3b728aff1ab4be084abfa614f4da43fb",
+   "short": "38e90ab",
+   "subject": "feat(a11y): add aria-pressed and adjust target size and focus on chat filter chips",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/38e90abb3b728aff1ab4be084abfa614f4da43fb"
+  },
+  {
+   "also": [
+    "components"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "src/components/InventoryTree.tsx",
+    "src/linkpoint/__tests__/inventory-tree-virtualization.test.tsx",
+    "src/linkpoint/__tests__/inventory-tree.test.tsx"
+   ],
+   "sha": "4062d4fe125de0e9b0e0dd01d3a27c4941619c85",
+   "short": "4062d4f",
+   "subject": "feat(inventory): implement roving tabindex with virtualized flat node focus traversal",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/4062d4fe125de0e9b0e0dd01d3a27c4941619c85"
+  },
+  {
+   "also": [],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/inventory-tree.test.tsx"
+   ],
+   "sha": "66b7ee23f8267acb08b3ea85fca46296ac897077",
+   "short": "66b7ee2",
+   "subject": "test(inventory): isolate preview artifact to project-local path with cleanup",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/66b7ee23f8267acb08b3ea85fca46296ac897077"
+  },
+  {
+   "also": [
+    "screens",
+    "viewer",
+    "tests",
+    "other"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "packages/design-system/src/__tests__/accessible-controls.test.tsx",
+    "packages/design-system/src/__tests__/design-system.test.ts",
+    "packages/design-system/src/react/AccessibleInput.tsx",
+    "packages/design-system/src/react/AccessibleSelect.tsx",
+    "packages/design-system/src/react/index.ts",
+    "src/components/AccessibleInput.jsx",
+    "src/components/AccessibleInput.tsx",
+    "src/components/AccessibleSelect.jsx",
+    "src/components/AccessibleSelect.tsx",
+    "src/components/PayDialog.jsx",
+    "src/components/SplitPaneCompositor.tsx",
+    "src/linkpoint/__tests__/accessible-control-primitives.test.tsx",
+    "src/linkpoint/__tests__/design-system-package.test.tsx",
+    "src/screens/LumiyaTools.jsx"
+   ],
+   "sha": "e5911058937b7d2fde259aedacf6564323dcad63",
+   "short": "e591105",
+   "subject": "feat(design-system): author AccessibleInput and AccessibleSelect primitives and migrate form controls",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e5911058937b7d2fde259aedacf6564323dcad63"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "src/components/FormField.jsx",
+    "src/components/__tests__/FormField.test.tsx"
+   ],
+   "sha": "4f2e8d1d8821ce2048bf527b199cc128ba59ad8d",
+   "short": "4f2e8d1",
+   "subject": "fix(FormField): recognize AccessibleInput and AccessibleSelect controls in container elements",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/4f2e8d1d8821ce2048bf527b199cc128ba59ad8d"
+  },
+  {
+   "also": [
+    "viewer",
+    "tests",
+    "other"
+   ],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "packages/design-system/src/__tests__/design-system.test.ts",
+    "packages/design-system/src/react/BrandedLoader.tsx",
+    "packages/design-system/src/react/CrystalMark.tsx",
+    "packages/design-system/src/react/CrystalProgressBar.tsx",
+    "packages/design-system/src/react/index.ts",
+    "src/components/CrystalProgressBar.jsx",
+    "src/components/SkeletonLoader.jsx",
+    "src/components/__tests__/CrystalLoader.test.tsx",
+    "src/components/__tests__/CrystalProgressBar.test.tsx",
+    "src/linkpoint/__tests__/design-system-package.test.tsx"
+   ],
+   "sha": "a3c9aaf7786fe330ac735a0e5ed5baf1d4dfa1e5",
+   "short": "a3c9aaf",
+   "subject": "feat(design-system): promote CrystalProgressBar to design system package",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/a3c9aaf7786fe330ac735a0e5ed5baf1d4dfa1e5"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-03",
+   "done": false,
+   "files": [
+    "src/components/AccessibleInput.jsx",
+    "src/components/AccessibleSelect.jsx",
+    "src/components/FormField.jsx",
+    "src/components/__tests__/FormField.test.tsx"
+   ],
+   "sha": "dc7f8ff421579a20054e0bd4a5c162ade75a858b",
+   "short": "dc7f8ff",
+   "subject": "refactor(components): use AccessibleInput and AccessibleSelect .tsx primitives and remove duplicate .jsx wrappers",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/dc7f8ff421579a20054e0bd4a5c162ade75a858b"
   }
  ],
- "last_sha": "de1b01a7cd93afffd8aaebb9eddc34b340ff1aa7",
+ "last_sha": "de95646b38700f9528e0c4786bf768a1579da136",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
