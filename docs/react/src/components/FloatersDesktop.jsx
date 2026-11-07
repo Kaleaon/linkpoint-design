@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import FormInput from "./FormInput.jsx";
@@ -48,8 +48,11 @@ export default function FloatersDesktop() {
     else if (actionId === "sit") { actions.cHold("sit"); actions.notify(`Sitting on ${target.name}`); }
   };
 
-  const cardsByScreen = buildCards({ state, actions, layoutName: LAYOUTS[state.layout].name, paletteName: PALETTES[state.palette].name });
-  const fBody = buildFBody(state, cardsByScreen);
+  const cardsByScreen = useMemo(
+    () => buildCards({ state, actions, layoutName: LAYOUTS[state.layout].name, paletteName: PALETTES[state.palette].name }),
+    [state.layout, state.palette, state.dismissed, state.toggles, state.pinned, state.dense, state.prefs, state.cacheCleared, actions]
+  );
+  const fBody = useMemo(() => buildFBody(state, cardsByScreen), [state, cardsByScreen]);
 
   const flScene = {
     position: "absolute", inset: 0, overflow: "hidden", cursor: state.cDrag ? "grabbing" : "grab",
