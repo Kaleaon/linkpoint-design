@@ -1,7 +1,7 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { FMENU, FLOATERS } from "../theme/constants.js";
-import A11yControl from "./A11yControl.jsx";
+import { useMenuNavigation } from "../hooks/useMenuNavigation.js";
 
 // Ported from `fmBar`/`fmMenus` — the desktop-only File/Edit/View/World/
 // Build/Help bar with Firestorm-style interactive menu commands.
@@ -28,52 +28,159 @@ export default function MenuBar() {
     }
   };
 
+  const resolvedMenus = FMENU.map((mm) => {
+    const win = mm.items === "WINDOWS";
+    const items = win
+      ? FLOATERS.map((f) => [f.title, state.flOpen?.[f.id] && !state.flMin?.[f.id] ? "✓" : ""])
+      : mm.items;
+    return {
+      label: mm.label,
+      items,
+      win,
+    };
+  });
+
+  const handleSelectItem = (menuLabel, item) => {
+    const itemLabel = Array.isArray(item) ? item[0] : (item?.label || item);
+    const targetMenu = resolvedMenus.find((m) => m.label === menuLabel);
+    if (targetMenu?.win) {
+      const f = FLOATERS.find((x) => x.title === itemLabel);
+      if (f) actions.flToggle(f.id);
+      actions.setMenu(null);
+    } else {
+      handleMenuClick(menuLabel, itemLabel);
+    }
+  };
+
+  const {
+    menubarProps,
+    getHeaderProps,
+    getDropdownProps,
+    getItemProps,
+    focusedMenuIndex,
+    focusedItemIndex,
+  } = useMenuNavigation({
+    menus: resolvedMenus,
+    openMenu: state.menu,
+    onOpenMenu: actions.setMenu,
+    onSelect: handleSelectItem,
+    ariaLabel: "Desktop Menu Bar",
+  });
+
   return (
-    <header aria-label="Desktop Menu Bar" style={{ flex: "none", display: "flex", alignItems: "stretch", height: "32px", padding: "0 8px", background: V.surf, borderBottom: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv), position: "relative", zIndex: 80 }} onClick={() => state.menu && actions.setMenu(null)}>
-      {FMENU.map((mm) => {
-        const open = state.menu === mm.label;
-        const win = mm.items === "WINDOWS";
-        const items = win ? FLOATERS.map((f) => [f.title, state.flOpen[f.id] && !state.flMin[f.id] ? "✓" : ""]) : mm.items;
-        return (
-          <div key={mm.label} style={{ position: "relative" }}>
-            <A11yControl
-              onClick={(e) => {
-                e.stopPropagation();
-                actions.setMenu(state.menu === mm.label ? null : mm.label);
-              }}
-              aria-label={mm.label + " menu"}
-              aria-expanded={open}
-              style={{ display: "flex", alignItems: "center", height: "100%", padding: "0 10px", cursor: "pointer", background: open ? V.pri : "transparent", color: open ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink, font: (isSweepDesk ? "700 11px/1 " + t.dfont : "500 11px/1 " + t.font), letterSpacing: (isSweepDesk ? ".12em" : ".04em"), borderRadius: isSweepDesk ? "999px" : V.rs, textTransform: isSweepDesk ? "uppercase" : "none" }}
-            >
-              {mm.label}
-            </A11yControl>
-            {open ? (
-              <div style={{ position: "absolute", left: 0, top: "32px", minWidth: "216px", background: V.surf, border: "1px solid " + V.pri, boxShadow: "0 14px 34px rgba(0,0,0,.55)", padding: "3px 0", zIndex: 90, borderRadius: V.rp, overflow: "hidden" }}>
-                {items.map((it, i) => (
-                  <A11yControl
-                    key={i}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (win) {
-                        const f = FLOATERS.find((x) => x.title === it[0]);
-                        if (f) actions.flToggle(f.id);
-                      } else {
-                        handleMenuClick(mm.label, it[0]);
-                      }
-                    }}
-                    aria-label={it[0]}
-                    style={{ display: "flex", alignItems: "center", gap: "10px", minHeight: "32px", padding: "0 12px", cursor: "pointer", font: "400 11.5px/1 " + t.font, color: V.ink }}
-                  >
-                    <span style={{ flex: 1, font: "inherit" }}>{it[0]}</span>
-                    <span style={{ flex: "none", font: "400 10px/1 " + t.font, color: V.ink2, letterSpacing: ".06em" }}>{it[1]}</span>
-                  </A11yControl>
-                ))}
+    <header
+      aria-label="Desktop Menu Bar"
+      style={{
+        flex: "none",
+        display: "flex",
+        alignItems: "stretch",
+        height: "32px",
+        padding: "0 8px",
+        background: V.surf,
+        borderBottom: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv),
+        position: "relative",
+        zIndex: 80,
+      }}
+      onClick={() => state.menu && actions.setMenu(null)}
+    >
+      <div
+        {...menubarProps}
+        style={{
+          display: "flex",
+          alignItems: "stretch",
+          height: "100%",
+        }}
+      >
+        {resolvedMenus.map((mm, menuIdx) => {
+          const open = state.menu === mm.label;
+          const isHeaderFocused = focusedMenuIndex === menuIdx;
+          const headerProps = getHeaderProps(menuIdx, mm.label);
+
+          return (
+            <div key={mm.label} style={{ position: "relative" }}>
+              <div
+                {...headerProps}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  height: "100%",
+                  padding: "0 10px",
+                  cursor: "pointer",
+                  background: open ? V.pri : "transparent",
+                  color: open ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
+                  font: (isSweepDesk ? "700 11px/1 " + t.dfont : "500 11px/1 " + t.font),
+                  letterSpacing: (isSweepDesk ? ".12em" : ".04em"),
+                  borderRadius: isSweepDesk ? "999px" : V.rs,
+                  textTransform: isSweepDesk ? "uppercase" : "none",
+                  outline: isHeaderFocused && !open ? "1px solid " + V.pri : "none",
+                  outlineOffset: "-2px",
+                }}
+              >
+                {mm.label}
               </div>
-            ) : null}
-          </div>
-        );
-      })}
-      <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "16px", font: "500 10.5px/1 " + t.font, color: V.ink2, letterSpacing: ".06em" }}>
+              {open ? (
+                <div
+                  {...getDropdownProps(menuIdx, mm.label)}
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    top: "32px",
+                    minWidth: "216px",
+                    background: V.surf,
+                    border: "1px solid " + V.pri,
+                    boxShadow: "0 14px 34px rgba(0,0,0,.55)",
+                    padding: "3px 0",
+                    zIndex: 90,
+                    borderRadius: V.rp,
+                    overflow: "hidden",
+                  }}
+                >
+                  {mm.items.map((it, i) => {
+                    const isItemFocused = focusedItemIndex === i;
+                    const itemProps = getItemProps(menuIdx, i, it);
+
+                    return (
+                      <div
+                        key={i}
+                        {...itemProps}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "10px",
+                          minHeight: "32px",
+                          padding: "0 12px",
+                          cursor: "pointer",
+                          font: "400 11.5px/1 " + t.font,
+                          color: isItemFocused ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
+                          background: isItemFocused ? (V.priC || "rgba(255,255,255,0.12)") : "transparent",
+                          outline: isItemFocused ? "1px solid " + V.pri : "none",
+                          outlineOffset: "-1px",
+                        }}
+                      >
+                        <span style={{ flex: 1, font: "inherit" }}>{it[0]}</span>
+                        <span style={{ flex: "none", font: "400 10px/1 " + t.font, color: V.ink2, letterSpacing: ".06em" }}>
+                          {it[1]}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : null}
+            </div>
+          );
+        })}
+      </div>
+      <div
+        style={{
+          marginLeft: "auto",
+          display: "flex",
+          alignItems: "center",
+          gap: "16px",
+          font: "500 10.5px/1 " + t.font,
+          color: V.ink2,
+          letterSpacing: ".06em",
+        }}
+      >
         {"L$ 2 480   ·   Heliotrope (Adult)   ·   64 FPS   ·   14:32"}
       </div>
     </header>

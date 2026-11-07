@@ -281,8 +281,9 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
     }
 
     const diffPercent = (diffPixels / totalPixels) * 100;
+    const tolerance = parseFloat(process.env.VISUAL_DIFF_TOLERANCE || '1.0');
     return {
-      match: diffPercent <= 1.0,
+      match: diffPercent <= tolerance,
       diffPercent: parseFloat(diffPercent.toFixed(3)),
       diffPixels,
       totalPixels
@@ -299,8 +300,23 @@ async function getPlaywrightBrowser() {
   const playwright = await import('playwright');
   const launchOpts = {
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--font-render-hinting=none', '--force-color-profile=srgb']
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--font-render-hinting=none', '--force-color-profile=srgb', '--disable-features=ResponsivenessMeasurement', '--disable-renderer-backgrounding']
   };
+
+  const cacheBase = path.join(process.env.HOME || '/home/jules', '.cache/ms-playwright');
+  if (fs.existsSync(cacheBase)) {
+    try {
+      const entries = fs.readdirSync(cacheBase);
+      const shellDir = entries.find(e => e.startsWith('chromium_headless_shell-'));
+      if (shellDir) {
+        const shellBin = path.join(cacheBase, shellDir, 'chrome-headless-shell-linux64/chrome-headless-shell');
+        if (fs.existsSync(shellBin)) {
+          launchOpts.executablePath = shellBin;
+          return await playwright.chromium.launch(launchOpts);
+        }
+      }
+    } catch (_) {}
+  }
 
   try {
     return await playwright.chromium.launch(launchOpts);
@@ -353,6 +369,7 @@ async function taskUnitTests() {
     log('Executing React Linkpoint Vitest Suite...', 'info');
     const reactDir = path.join(cwd, 'docs/react');
     const hasPnpmLock = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml'));
+    const hasPackageLock = fs.existsSync(path.join(reactDir, 'package-lock.json'));
     const isPnpmAvailable = () => {
       try {
         const check = spawnSync('pnpm', ['--version'], { stdio: 'ignore', shell: true });
@@ -361,7 +378,7 @@ async function taskUnitTests() {
         return false;
       }
     };
-    const runner = (hasPnpmLock && isPnpmAvailable()) ? 'pnpm' : 'npm';
+    const runner = (!hasPackageLock && hasPnpmLock && isPnpmAvailable()) ? 'pnpm' : 'npm';
     let res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
     if (res.status !== 0 && runner === 'pnpm') {
       log('pnpm test execution failed, falling back to npm test...', 'warn');
@@ -567,14 +584,19 @@ async function taskA11yAudit() {
     return true;
   }
 
-  let browser;
-  try {
-    browser = await getPlaywrightBrowser();
-    const page = await browser.newPage();
-    await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
-    await page.waitForTimeout(1000);
+  let auditResults;
+  const maxAttempts = 3;
 
-    const auditResults = await page.evaluate(() => {
+  try {
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      let browser;
+      try {
+        browser = await getPlaywrightBrowser();
+        const page = await browser.newPage();
+        await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+        await page.waitForTimeout(1000);
+
+        auditResults = await page.evaluate(() => {
       // Helper function for relative luminance
       function getLuminance(r, g, b) {
         const [rs, gs, bs] = [r, g, b].map(c => {
@@ -687,6 +709,16 @@ async function taskA11yAudit() {
       return { auditedNodes, issues };
     });
 
+        await browser.close();
+        break;
+      } catch (err) {
+        if (browser) await browser.close().catch(() => {});
+        if (attempt === maxAttempts) throw err;
+        log(`A11y audit attempt ${attempt}/${maxAttempts} failed (${err.message}). Retrying...`, 'warn');
+        await new Promise(r => setTimeout(r, 500));
+      }
+    }
+
     log(`Audited ${auditResults.auditedNodes} live DOM nodes across ${targetUrl}`, 'info');
 
     const contrastIssues = auditResults.issues.filter(i => i.type === 'wcag-contrast');
@@ -713,7 +745,6 @@ async function taskA11yAudit() {
     log(`Accessibility audit error: ${err.message}`, 'error');
     return false;
   } finally {
-    if (browser) await browser.close();
     if (server) await server.close();
   }
 }
@@ -751,47 +782,64 @@ async function taskVisualSuite() {
     { name: 'mobile', width: 375, height: 667 }
   ];
 
-  let browser;
+  async function captureViewportWithRetry(vp, retries = 3) {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      let browser;
+      try {
+        browser = await getPlaywrightBrowser();
+        const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
+        await page.addInitScript(() => {
+          const inject = () => {
+            const style = document.createElement('style');
+            style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
+            if (document.head || document.documentElement) {
+              (document.head || document.documentElement).appendChild(style);
+            }
+          };
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', inject);
+          } else {
+            inject();
+          }
+        });
+        await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+        await page.waitForTimeout(1000);
+        try {
+          await page.evaluate(() => document.fonts.ready);
+        } catch (_) {}
+
+        // Attempt interactive panel triggers if available
+        try {
+          const sweepBtn = page.getByText('Sweep Console', { exact: true }).first();
+          if (await sweepBtn.isVisible()) {
+            await sweepBtn.click();
+            await page.waitForTimeout(300);
+          }
+          const lcarsBtn = page.getByText('LCARS Amber', { exact: true }).first();
+          if (await lcarsBtn.isVisible()) {
+            await lcarsBtn.click();
+            await page.waitForTimeout(300);
+          }
+        } catch (_) {}
+
+        const currentBuf = await page.screenshot({ fullPage: false });
+        await browser.close();
+        return currentBuf;
+      } catch (err) {
+        if (browser) await browser.close().catch(() => {});
+        if (attempt === retries) throw err;
+        log(`Visual capture attempt ${attempt}/${retries} for ${vp.name} failed (${err.message}). Retrying...`, 'warn');
+        await new Promise(r => setTimeout(r, 500));
+      }
+    }
+  }
+
   let allMatched = true;
 
   try {
-    browser = await getPlaywrightBrowser();
-
     for (const vp of viewports) {
       log(`Capturing visual snapshots for viewport: ${vp.name} (${vp.width}x${vp.height})`, 'info');
-      const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
-      await page.addInitScript(() => {
-        const inject = () => {
-          const style = document.createElement('style');
-          style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
-          if (document.head || document.documentElement) {
-            (document.head || document.documentElement).appendChild(style);
-          }
-        };
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', inject);
-        } else {
-          inject();
-        }
-      });
-      await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
-      await page.waitForTimeout(1000);
-
-      // Attempt interactive panel triggers if available
-      try {
-        const sweepBtn = page.getByText('Sweep Console', { exact: true }).first();
-        if (await sweepBtn.isVisible()) {
-          await sweepBtn.click();
-          await page.waitForTimeout(300);
-        }
-        const lcarsBtn = page.getByText('LCARS Amber', { exact: true }).first();
-        if (await lcarsBtn.isVisible()) {
-          await lcarsBtn.click();
-          await page.waitForTimeout(300);
-        }
-      } catch (_) {}
-
-      const currentBuf = await page.screenshot({ fullPage: false });
+      const currentBuf = await captureViewportWithRetry(vp);
       const baselineFile = path.join(snapshotDir, `${vp.name}_sweep_lcars.png`);
 
       if (updateSnapshots || !fs.existsSync(baselineFile)) {
@@ -813,8 +861,6 @@ async function taskVisualSuite() {
           log(`Saved diff snapshot: ${diffFile}`, 'warn');
         }
       }
-
-      await page.close();
     }
 
     if (allMatched) {
@@ -828,7 +874,6 @@ async function taskVisualSuite() {
     log(`Visual suite error: ${err.message}`, 'error');
     return false;
   } finally {
-    if (browser) await browser.close();
     if (server) await server.close();
   }
 }
