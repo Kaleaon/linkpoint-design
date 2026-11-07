@@ -98,13 +98,17 @@ export default function MenuBar() {
 
           return (
             <div key={mm.label} style={{ position: "relative" }}>
-              <div
+              <button
+                type="button"
                 {...headerProps}
+                aria-label={mm.label}
                 style={{
                   display: "flex",
                   alignItems: "center",
                   height: "100%",
                   padding: "0 10px",
+                  margin: 0,
+                  border: "none",
                   cursor: "pointer",
                   background: open ? V.pri : "transparent",
                   color: open ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
@@ -117,7 +121,7 @@ export default function MenuBar() {
                 }}
               >
                 {mm.label}
-              </div>
+              </button>
               {open ? (
                 <div
                   {...getDropdownProps(menuIdx, mm.label)}
@@ -140,19 +144,25 @@ export default function MenuBar() {
                     const itemProps = getItemProps(menuIdx, i, it);
 
                     return (
-                      <div
+                      <button
+                        type="button"
                         key={i}
                         {...itemProps}
+                        aria-label={it[0] + (it[1] ? " " + it[1] : "")}
                         style={{
                           display: "flex",
                           alignItems: "center",
                           gap: "10px",
+                          width: "100%",
                           minHeight: "32px",
                           padding: "0 12px",
+                          margin: 0,
+                          border: "none",
                           cursor: "pointer",
                           font: "400 11.5px/1 " + t.font,
                           color: isItemFocused ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
                           background: isItemFocused ? (V.priC || "rgba(255,255,255,0.12)") : "transparent",
+                          textAlign: "left",
                           outline: isItemFocused ? "1px solid " + V.pri : "none",
                           outlineOffset: "-1px",
                         }}
@@ -161,7 +171,7 @@ export default function MenuBar() {
                         <span style={{ flex: "none", font: "400 10px/1 " + t.font, color: V.ink2, letterSpacing: ".06em" }}>
                           {it[1]}
                         </span>
-                      </div>
+                      </button>
                     );
                   })}
                 </div>
