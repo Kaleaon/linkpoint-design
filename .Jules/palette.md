@@ -56,3 +56,7 @@
 ## 2026-10-08 - Keyboard Handlers Dropped During React Porting
 **Learning:** When porting interactive features (like custom div/span multi-select toolbars in the Inventory screen) from vanilla HTML templates to React, developers sometimes carry over the `role="button"` and `tabIndex={0}` properties but mistakenly drop the explicit `onKeyDown` handlers required for Enter/Space keyboard activation, breaking accessibility.
 **Action:** When auditing React ports of HTML templates, explicitly cross-reference the source HTML to ensure that all `onClick` behaviors are accurately mapped with accompanying `onKeyDown` handlers.
+
+## 2026-11-07 - Accessibility for SVG-Based Custom Controls
+**Learning:** When building custom graphical controls using SVG elements like `<g>`, `<circle>`, or `<path>` (such as in a `RadialPieMenu`), developers often add standard `onClick` and `onMouseEnter` handlers but completely omit accessibility traits. This leaves the elements invisible to screen readers and inaccessible to keyboard users, even if a global "document-level" key listener exists.
+**Action:** When inspecting or adding interactivity to SVG nodes like `<g>` or `<circle>`, proactively verify they have `role="button"`, `tabIndex={0}`, an explicit `aria-label`, and `onKeyDown` handlers bound to Enter/Space to ensure they function like native buttons and are fully focusable and usable by all assistive technologies.
