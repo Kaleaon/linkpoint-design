@@ -24,6 +24,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Clone Ktheme repository
+        run: git clone --depth 1 https://github.com/Kaleaon/Ktheme.git ../Ktheme || true
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
