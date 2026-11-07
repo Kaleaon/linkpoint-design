@@ -25,7 +25,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Clone Ktheme repository
-        run: git clone --depth 1 https://github.com/Kaleaon/Ktheme.git ../Ktheme
+        run: |
+          BRANCH="${{ github.head_ref || github.ref_name }}"
+          git clone --depth 1 --branch "$BRANCH" https://github.com/Kaleaon/Ktheme.git ../Ktheme || git clone --depth 1 https://github.com/Kaleaon/Ktheme.git ../Ktheme
+          if [ -d "../Ktheme" ]; then
+            (cd ../Ktheme && (npm ci || npm install) && (npm run build || true))
+          fi
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
