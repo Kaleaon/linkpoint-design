@@ -259,7 +259,8 @@ export const GROUPS_DATA = [
   {
     id: "grp-1",
     name: "Bay City Builders",
-    charter: "Collaborative urban architectural collective building the historic Bay City municipal grid and public tramway system.",
+    charter:
+      "Collaborative urban architectural collective building the historic Bay City municipal grid and public tramway system.",
     members: 412,
     role: "Officer",
     title: "Chief Surveyor",
@@ -268,15 +269,34 @@ export const GROUPS_DATA = [
     unreadNotices: 4,
     fee: 0,
     roles: [
-      { name: "Founder / Owner", count: 2, powers: ["All Abilities", "Manage Roles", "Close Group"] },
-      { name: "Officer", count: 18, powers: ["Send Notices", "Moderate Chat", "Eject Members", "Deed Land", "Object Return"] },
-      { name: "Member", count: 392, powers: ["Group Chat", "Receive Notices", "Rez Objects on Group Land"] },
+      {
+        name: "Founder / Owner",
+        count: 2,
+        powers: ["All Abilities", "Manage Roles", "Close Group"],
+      },
+      {
+        name: "Officer",
+        count: 18,
+        powers: [
+          "Send Notices",
+          "Moderate Chat",
+          "Eject Members",
+          "Deed Land",
+          "Object Return",
+        ],
+      },
+      {
+        name: "Member",
+        count: 392,
+        powers: ["Group Chat", "Receive Notices", "Rez Objects on Group Land"],
+      },
     ],
   },
   {
     id: "grp-2",
     name: "Sansara Cartographers",
-    charter: "Mapping the highways, waterways, and historic public roads across the Sansara continent.",
+    charter:
+      "Mapping the highways, waterways, and historic public roads across the Sansara continent.",
     members: 88,
     role: "Member",
     title: "Route Surveyor",
@@ -285,14 +305,19 @@ export const GROUPS_DATA = [
     unreadNotices: 0,
     fee: 0,
     roles: [
-      { name: "Cartographer Lead", count: 3, powers: ["All Abilities", "Manage Routes"] },
+      {
+        name: "Cartographer Lead",
+        count: 3,
+        powers: ["All Abilities", "Manage Routes"],
+      },
       { name: "Member", count: 85, powers: ["Group Chat", "Receive Notices"] },
     ],
   },
   {
     id: "grp-3",
     name: "Terraform Co-op",
-    charter: "Landscaping, raw terrain sculpts, and atmospheric windlight presets for mainland parcels.",
+    charter:
+      "Landscaping, raw terrain sculpts, and atmospheric windlight presets for mainland parcels.",
     members: 1204,
     role: "Member",
     title: "Landscaper",
@@ -308,7 +333,8 @@ export const GROUPS_DATA = [
   {
     id: "grp-4",
     name: "Mono Script Guild",
-    charter: "LSL & Mono optimization, memory efficiency, and event loop performance testing.",
+    charter:
+      "LSL & Mono optimization, memory efficiency, and event loop performance testing.",
     members: 56,
     role: "Member",
     title: "Script Apprentice",
@@ -324,7 +350,8 @@ export const GROUPS_DATA = [
   {
     id: "grp-5",
     name: "Ruthless Roofers",
-    charter: "Master roofers crafting intricate timber frames, shingles, and slate domes across the grid.",
+    charter:
+      "Master roofers crafting intricate timber frames, shingles, and slate domes across the grid.",
     members: 34,
     role: "Member",
     title: "Apprentice Roofer",
@@ -333,8 +360,16 @@ export const GROUPS_DATA = [
     unreadNotices: 0,
     fee: 0,
     roles: [
-      { name: "Founder / Owner", count: 2, powers: ["All Abilities", "Moderate Chat", "Eject Members"] },
-      { name: "Officer", count: 4, powers: ["Send Notices", "Moderate Chat", "Eject Members"] },
+      {
+        name: "Founder / Owner",
+        count: 2,
+        powers: ["All Abilities", "Moderate Chat", "Eject Members"],
+      },
+      {
+        name: "Officer",
+        count: 4,
+        powers: ["Send Notices", "Moderate Chat", "Eject Members"],
+      },
       { name: "Member", count: 28, powers: ["Group Chat", "Receive Notices"] },
     ],
   },
@@ -342,17 +377,82 @@ export const GROUPS_DATA = [
 
 export const GROUP_PARTICIPANTS = {
   "Bay City Builders": [
-    { id: "p-ruth", name: "Ruth Resident", role: "Officer", title: "Chief Surveyor", online: true, voice: true, isSelf: true },
-    { id: "p-marlowe", name: "Marlowe Quill", role: "Officer", title: "Site Planner", online: true, voice: true },
-    { id: "p-kit", name: "Kit Sandalwood", role: "Founder / Owner", title: "Founder", online: true, voice: false },
-    { id: "p-nyx", name: "Nyx Vaher", role: "Officer", title: "Lighting Architect", online: true, voice: true },
-    { id: "p-sable", name: "Sable Ashgrove", role: "Member", title: "Apprentice", online: false, voice: false },
-    { id: "p-oren", name: "Oren Fairweather", role: "Member", title: "Structural Tech", online: false, voice: false },
+    {
+      id: "p-ruth",
+      name: "Ruth Resident",
+      role: "Officer",
+      title: "Chief Surveyor",
+      online: true,
+      voice: true,
+      isSelf: true,
+    },
+    {
+      id: "p-marlowe",
+      name: "Marlowe Quill",
+      role: "Officer",
+      title: "Site Planner",
+      online: true,
+      voice: true,
+    },
+    {
+      id: "p-kit",
+      name: "Kit Sandalwood",
+      role: "Founder / Owner",
+      title: "Founder",
+      online: true,
+      voice: false,
+    },
+    {
+      id: "p-nyx",
+      name: "Nyx Vaher",
+      role: "Officer",
+      title: "Lighting Architect",
+      online: true,
+      voice: true,
+    },
+    {
+      id: "p-sable",
+      name: "Sable Ashgrove",
+      role: "Member",
+      title: "Apprentice",
+      online: false,
+      voice: false,
+    },
+    {
+      id: "p-oren",
+      name: "Oren Fairweather",
+      role: "Member",
+      title: "Structural Tech",
+      online: false,
+      voice: false,
+    },
   ],
   "Ruthless Roofers": [
-    { id: "p-oren-r", name: "Oren Fairweather", role: "Founder / Owner", title: "Master Roofer", online: true, voice: true },
-    { id: "p-ruth-r", name: "Ruth Resident", role: "Member", title: "Apprentice Roofer", online: true, voice: false, isSelf: true },
-    { id: "p-tamsin-r", name: "Tamsin Reed", role: "Member", title: "Timber Framer", online: false, voice: false },
+    {
+      id: "p-oren-r",
+      name: "Oren Fairweather",
+      role: "Founder / Owner",
+      title: "Master Roofer",
+      online: true,
+      voice: true,
+    },
+    {
+      id: "p-ruth-r",
+      name: "Ruth Resident",
+      role: "Member",
+      title: "Apprentice Roofer",
+      online: true,
+      voice: false,
+      isSelf: true,
+    },
+    {
+      id: "p-tamsin-r",
+      name: "Tamsin Reed",
+      role: "Member",
+      title: "Timber Framer",
+      online: false,
+      voice: false,
+    },
   ],
 };
 

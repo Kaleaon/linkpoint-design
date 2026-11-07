@@ -6,7 +6,6 @@ import { GROUPS_DATA } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
 import KInteractive from "../components/KInteractive.jsx";
 
-
 export default function Groups() {
   const { state, actions } = useApp();
   const { V, t, bleed, pad, ink } = useTheme();

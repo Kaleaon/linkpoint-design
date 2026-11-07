@@ -59,15 +59,33 @@ export class GlobalErrorBoundary extends Component {
           >
             <Icon name="alert-triangle" size={28} />
           </div>
-          <div style={{ font: "700 16px/1.3 sans-serif", letterSpacing: ".1em", color: "var(--err, #FF6C6C)" }}>
+          <div
+            style={{
+              font: "700 16px/1.3 sans-serif",
+              letterSpacing: ".1em",
+              color: "var(--err, #FF6C6C)",
+            }}
+          >
             SCREEN EXECUTION EXCEPTION
           </div>
-          <div style={{ maxWidth: "320px", font: "400 12px/1.6 sans-serif", color: "rgba(255,255,255,0.7)" }}>
-            {this.state.error?.message || "An unexpected error occurred in viewer component tree."}
+          <div
+            style={{
+              maxWidth: "320px",
+              font: "400 12px/1.6 sans-serif",
+              color: "rgba(255,255,255,0.7)",
+            }}
+          >
+            {this.state.error?.message ||
+              "An unexpected error occurred in viewer component tree."}
           </div>
           <div
             onClick={this.handleReset}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.handleReset(); } }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                this.handleReset();
+              }
+            }}
             style={{
               minHeight: "44px",
               padding: "0 22px",
@@ -82,7 +100,9 @@ export class GlobalErrorBoundary extends Component {
               cursor: "pointer",
               gap: "8px",
             }}
-            role="button" aria-label="Retry component" tabIndex={0}
+            role="button"
+            aria-label="Retry component"
+            tabIndex={0}
           >
             <Icon name="refresh-cw" size={14} />
             RETRY SCREEN EXECUTION
@@ -223,7 +243,9 @@ export default function StateBlock() {
             cursor: "pointer",
             border: "none",
           }}
-          role="button" aria-label={condPack.btn} tabIndex={0}
+          role="button"
+          aria-label={condPack.btn}
+          tabIndex={0}
         >
           {condPack.btn}
         </button>

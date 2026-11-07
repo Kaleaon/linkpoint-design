@@ -168,7 +168,13 @@ export function intentReducer(state, intent) {
       const { action, target, member, group } = payload;
       const targetName = target || member || "member";
       const grpName = group || "group";
-      const act = action || (type.includes("MUTE") ? "mute" : type.includes("KICK") || type.includes("EJECT") ? "kick" : "profile");
+      const act =
+        action ||
+        (type.includes("MUTE")
+          ? "mute"
+          : type.includes("KICK") || type.includes("EJECT")
+            ? "kick"
+            : "profile");
       let msg = "";
       if (act === "mute") {
         msg = `Muted ${targetName} in ${grpName}`;
@@ -180,7 +186,7 @@ export function intentReducer(state, intent) {
       return {
         ...state,
         ...(act === "profile" ? { screen: "Profile" } : {}),
-        toast: msg
+        toast: msg,
       };
     }
 
