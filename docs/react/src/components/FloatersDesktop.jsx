@@ -99,25 +99,32 @@ export default function FloatersDesktop() {
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", borderBottom: "1px solid " + V.outv, paddingBottom: "4px" }}>
               <span style={{ font: "600 9px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>CAMERA CONTROLS</span>
-              <A11yControl as="span" onClick={() => setShowCamHud(false)} style={{ width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: V.ink2, fontSize: "14px", lineHeight: 1 }} aria-label="Close HUD">&times;</A11yControl>
+              <A11yControl
+                as="span"
+                onClick={() => setShowCamHud(false)}
+                style={{ width: V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)", height: V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: V.ink2, fontSize: "14px", lineHeight: 1 }}
+                aria-label="Close HUD"
+              >
+                &times;
+              </A11yControl>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 24px)", gap: "3px", justifyContent: "center" }}>
-              <button type="button" onClick={() => actions.sceneMove({ clientX: 0, clientY: -10 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Up">
+            <div style={{ display: "grid", gridTemplateColumns: `repeat(3, ${V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)"})`, gap: "3px", justifyContent: "center" }}>
+              <button type="button" onClick={() => actions.sceneMove({ clientX: 0, clientY: -10 })} style={{ height: V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Up">
                 <Icon name="chevron-up" size={12} />
               </button>
-              <button type="button" onClick={() => { actions.cHold("cam"); }} style={{ height: "24px", background: V.pri, border: "1px solid " + V.pri, color: ink(V.pri, [V.bg, V.onpri, V.ink]), borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", font: "600 8px/1 " + t.dfont }} aria-label="Toggle Mode">
+              <button type="button" onClick={() => { actions.cHold("cam"); }} style={{ height: V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)", background: V.pri, border: "1px solid " + V.pri, color: ink(V.pri, [V.bg, V.onpri, V.ink]), borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", font: "600 8px/1 " + t.dfont }} aria-label="Toggle Mode">
                 {state.cCam === "ORBIT" ? "ORB" : "LOOK"}
               </button>
-              <button type="button" onClick={() => actions.sceneMove({ clientX: 0, clientY: 10 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Down">
+              <button type="button" onClick={() => actions.sceneMove({ clientX: 0, clientY: 10 })} style={{ height: V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Down">
                 <Icon name="chevron-down" size={12} />
               </button>
-              <button type="button" onClick={() => actions.sceneMove({ clientX: -15, clientY: 0 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Left">
+              <button type="button" onClick={() => actions.sceneMove({ clientX: -15, clientY: 0 })} style={{ height: V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Left">
                 <Icon name="chevron-left" size={12} />
               </button>
-              <button type="button" onClick={() => actions.notify("Camera Reset")} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Reset View">
+              <button type="button" onClick={() => actions.notify("Camera Reset")} style={{ height: V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Reset View">
                 <Icon name="rotate-ccw" size={11} />
               </button>
-              <button type="button" onClick={() => actions.sceneMove({ clientX: 15, clientY: 0 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Right">
+              <button type="button" onClick={() => actions.sceneMove({ clientX: 15, clientY: 0 })} style={{ height: V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Right">
                 <Icon name="chevron-right" size={12} />
               </button>
             </div>
@@ -160,7 +167,7 @@ export default function FloatersDesktop() {
                   actions.dispatchIntent("FLOATER_SHADE", { id: f.id });
                 }}
                 aria-label={isShaded ? "Unshade (Expand)" : "Shade (Rollup)"}
-                style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
+                style={{ width: V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)", height: V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
               >
                 <Icon name={isShaded ? "chevron-down" : "chevron-up"} size={11} />
               </A11yControl>
@@ -171,7 +178,7 @@ export default function FloatersDesktop() {
                   actions.dispatchIntent("FLOATER_MINIMIZE", { id: f.id });
                 }}
                 aria-label="Minimize"
-                style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
+                style={{ width: V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)", height: V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
               >
                 &minus;
               </A11yControl>
@@ -182,7 +189,7 @@ export default function FloatersDesktop() {
                   actions.dispatchIntent("FLOATER_CLOSE", { id: f.id });
                 }}
                 aria-label="Close"
-                style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
+                style={{ width: V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)", height: V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
               >
                 &times;
               </A11yControl>
