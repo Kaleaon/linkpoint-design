@@ -71,44 +71,6 @@ export default function Radar() {
     background: bleed ? V.bg : "transparent",
   };
 
-  const handleAction = (label, name) => {
-    if (label === "PROFILE") {
-      actions.setScreen("Profile");
-      actions.notify(`Opened profile: ${name}`);
-    } else if (label === "IM") {
-      actions.startIm(name);
-    } else if (label === "TRACK") {
-      actions.notify(`Tracking beacon placed on ${name}`);
-    } else if (label === "TELEPORT TO") {
-      actions.teleportToRegion("Da Boom", "<128, 128, 26>");
-    } else if (label === "OFFER TELEPORT") {
-      actions.notify(`Teleport offer sent to ${name}`);
-    } else if (label === "INSPECT") {
-      actions.setScreen("Objects");
-      actions.setTab("Objects", "INSPECT");
-    } else if (label === "TOUCH") {
-      actions.notify(`Touched object: ${name}`);
-    } else if (label === "DERENDER") {
-      actions.notify(`Derendered ${name} (client-side)`);
-    } else if (label === "FREEZE") {
-      actions.notify(`Froze avatar: ${name}`);
-    } else if (label === "EJECT") {
-      actions.notify(`Ejected ${name} from parcel`);
-    } else if (label === "BAN") {
-      actions.notify(`Banned ${name} from parcel and estate`);
-    } else if (label === "REPORT") {
-      actions.notify(`Abuse report dialog opened for ${name}`);
-    } else if (label === "RETURN") {
-      actions.notify(`Returned ${name} to owner inventory`);
-    } else if (label === "MUTE OWNER") {
-      actions.notify(`Muted owner of ${name}`);
-    } else if (label === "BLOCK") {
-      actions.notify(`Blocked object: ${name}`);
-    } else if (label === "MUTE") {
-      actions.notify(`Muted text, voice & gestures for ${name}`);
-    }
-  };
-
   return (
     <>
       <div
@@ -344,6 +306,92 @@ export default function Radar() {
             gap: "6px",
             padding: open || menu ? "0 0 8px" : "0",
           };
+          const handleAction = (label) => {
+            if (objMode) {
+              switch (label) {
+                case "INSPECT":
+                  actions.notify("Inspecting object: " + name);
+                  break;
+                case "TOUCH":
+                  actions.notify("Touched " + name);
+                  break;
+                case "DERENDER":
+                  actions.notify("Derendered object: " + name);
+                  break;
+                case "TRACK":
+                  actions.notify("Tracking object: " + name);
+                  break;
+                default:
+                  actions.notify(label + " — " + name);
+                  break;
+              }
+            } else {
+              switch (label) {
+                case "PROFILE":
+                  actions.openSearch("Radar", "SEARCH");
+                  break;
+                case "IM":
+                  actions.startIm(name);
+                  break;
+                case "TRACK":
+                  actions.notify("Tracking avatar: " + name);
+                  break;
+                case "TELEPORT TO":
+                  actions.teleportToRegion(name);
+                  break;
+                default:
+                  actions.notify(label + " — " + name);
+                  break;
+              }
+            }
+          };
+
+          const handleModeration = (label) => {
+            if (objMode) {
+              switch (label) {
+                case "RETURN":
+                  actions.notify("Returned object: " + name);
+                  break;
+                case "MUTE OWNER":
+                  actions.notify("Muted owner of " + name);
+                  break;
+                case "BLOCK":
+                  actions.notify("Blocked object: " + name);
+                  break;
+                case "REPORT":
+                  actions.notify("Reported object: " + name);
+                  break;
+                default:
+                  actions.notify(label + " — " + name);
+                  break;
+              }
+            } else {
+              switch (label) {
+                case "MUTE":
+                  actions.notify("Muted avatar: " + name);
+                  break;
+                case "DERENDER":
+                  actions.notify("Derendered avatar: " + name);
+                  break;
+                case "FREEZE":
+                  actions.notify("Froze avatar: " + name);
+                  break;
+                case "EJECT":
+                  actions.notify("Ejected avatar: " + name);
+                  break;
+                case "BAN":
+                  actions.notify("Banned avatar: " + name);
+                  break;
+                case "REPORT":
+                  actions.notify("Reported avatar: " + name);
+                  break;
+                default:
+                  actions.notify(label + " — " + name);
+                  break;
+              }
+            }
+          };
+
           return (
             <div key={r.id || name} style={wrap}>
               <KInteractive
@@ -412,8 +460,8 @@ export default function Radar() {
                   {acts.map((a, i) => (
                     <KInteractive
                       key={i}
-                      onClick={() => handleAction(a.label, name)}
-                      label={`${a.label} ${name}`}
+                      onClick={() => handleAction(a.label)}
+                      label={a.label}
                       style={a.style}
                     >
                       {a.label}
@@ -450,8 +498,8 @@ export default function Radar() {
                     {mods.map((a, i) => (
                       <KInteractive
                         key={i}
-                        onClick={() => handleAction(a.label, name)}
-                        label={`${a.label} ${name}`}
+                        onClick={() => handleModeration(a.label)}
+                        label={a.label}
                         style={a.style}
                       >
                         {a.label}

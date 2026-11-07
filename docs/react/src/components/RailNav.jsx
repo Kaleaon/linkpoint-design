@@ -2,8 +2,8 @@ import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL } from "../data/content.js";
 import Icon from "./Icon.jsx";
-import A11yControl from "./A11yControl.jsx";
 import { navActive } from "../theme/look.js";
+import KInteractive from "./KInteractive.jsx";
 
 // Ported from the `isRail` <sc-if> block — the left rail (Navy Gold, Rule &
 // Rail packs, or any pack on a split/tablet-width device).
@@ -41,10 +41,12 @@ export default function RailNav() {
       {NAV_ALL.map((n) => {
         const active = navActive(state.screen, n.id);
         return (
-          <A11yControl
+          <KInteractive
+            as="button"
             key={n.id}
+            label={n.label}
+            aria-pressed={active}
             onClick={() => actions.setScreen(n.id)}
-            aria-label={n.label}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -55,6 +57,7 @@ export default function RailNav() {
               borderRadius: V.navr,
               color: active ? V.onpriC : V.ink2,
               background: active ? V.priC : undefined,
+              width: "100%",
             }}
           >
             <Icon name={n.icon} size={20} />
@@ -63,7 +66,7 @@ export default function RailNav() {
             >
               {n.label}
             </span>
-          </A11yControl>
+          </KInteractive>
         );
       })}
     </nav>

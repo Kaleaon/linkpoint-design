@@ -1,7 +1,7 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { FMENU, FLOATERS } from "../theme/constants.js";
-import A11yControl from "./A11yControl.jsx";
+import KInteractive from "./KInteractive.jsx";
 
 // Ported from `fmBar`/`fmMenus` — the desktop-only File/Edit/View/World/
 // Build/Help bar with Firestorm-style interactive menu commands.
@@ -57,13 +57,15 @@ export default function MenuBar() {
           : mm.items;
         return (
           <div key={mm.label} style={{ position: "relative" }}>
-            <A11yControl
+            <KInteractive
+              as="button"
+              label={mm.label + " menu"}
+              aria-expanded={open}
+              aria-haspopup="true"
               onClick={(e) => {
                 e.stopPropagation();
                 actions.setMenu(state.menu === mm.label ? null : mm.label);
               }}
-              aria-label={mm.label + " menu"}
-              aria-expanded={open}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -81,9 +83,11 @@ export default function MenuBar() {
               }}
             >
               {mm.label}
-            </A11yControl>
+            </KInteractive>
             {open ? (
               <div
+                role="menu"
+                aria-label={mm.label + " menu"}
                 style={{
                   position: "absolute",
                   left: 0,
@@ -99,8 +103,11 @@ export default function MenuBar() {
                 }}
               >
                 {items.map((it, i) => (
-                  <A11yControl
+                  <KInteractive
+                    as="button"
                     key={i}
+                    role="menuitem"
+                    label={it[0] + (it[1] ? " " + it[1] : "")}
                     onClick={(e) => {
                       e.stopPropagation();
                       if (win) {
@@ -110,16 +117,17 @@ export default function MenuBar() {
                         handleMenuClick(mm.label, it[0]);
                       }
                     }}
-                    aria-label={it[0]}
                     style={{
                       display: "flex",
                       alignItems: "center",
                       gap: "10px",
+                      width: "100%",
                       minHeight: "32px",
                       padding: "0 12px",
                       cursor: "pointer",
                       font: "400 11.5px/1 " + t.font,
                       color: V.ink,
+                      textAlign: "left",
                     }}
                   >
                     <span style={{ flex: 1, font: "inherit" }}>{it[0]}</span>
@@ -133,7 +141,7 @@ export default function MenuBar() {
                     >
                       {it[1]}
                     </span>
-                  </A11yControl>
+                  </KInteractive>
                 ))}
               </div>
             ) : null}

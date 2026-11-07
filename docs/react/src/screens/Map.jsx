@@ -3,9 +3,10 @@ import { useApp } from "../context/AppContext.jsx";
 import { subView } from "../theme/constants.js";
 import { REGIONS, REGION_META } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
+import KInteractive from "../components/KInteractive.jsx";
 
 export default function Map() {
-  const { state } = useApp();
+  const { state, actions } = useApp();
   const [tileOk, setTileOk] = useState(true);
 
   // Viewport scale (zoom) and offset (pan)
@@ -128,10 +129,12 @@ export default function Map() {
   // Zoom handlers (0.5x min to 3.0x max in 0.25x steps)
   const handleZoomIn = () => {
     setZoom((z) => Math.min(3.0, +(z + 0.25).toFixed(2)));
+    actions.notify("Zoomed in map view");
   };
 
   const handleZoomOut = () => {
     setZoom((z) => Math.max(0.5, +(z - 0.25).toFixed(2)));
+    actions.notify("Zoomed out map view");
   };
 
   const handleReset = () => {
@@ -141,6 +144,7 @@ export default function Map() {
     setSelectedRegion("Da Boom");
     setTargetCoords(null);
     setShowSuggestions(false);
+    actions.notify("Centered on current location");
   };
 
   // Viewport drag pan handlers
@@ -376,17 +380,19 @@ export default function Map() {
             }}
           >
             {(mini ? [] : REGIONS).map(([name, meta], i) => {
-              const isSelected =
-                selectedRegion &&
-                (selectedRegion === name || selectedRegion.includes(name));
+              const isSelected = selectedRegion
+                ? selectedRegion === name || selectedRegion.includes(name)
+                : i === 0;
               return (
-                <div
+                <KInteractive
                   key={name}
                   onClick={() => {
                     setSelectedRegion(name);
+                    actions.notify(`Selected region: ${name}`);
                     const offset = regionOffsets[name] || { x: 0, y: 0 };
                     setPan(offset);
                   }}
+                  label={`Select region ${name}`}
                   style={{
                     border: "1px solid var(--ktheme-outv)",
                     display: "flex",
@@ -402,6 +408,8 @@ export default function Map() {
                     boxShadow: isSelected
                       ? "inset 0 0 0 2px var(--ktheme-pri)"
                       : "none",
+                    cursor: "pointer",
+                    textAlign: "left",
                   }}
                 >
                   <span
@@ -422,13 +430,15 @@ export default function Map() {
                   >
                     {meta}
                   </span>
-                </div>
+                </KInteractive>
               );
             })}
           </div>
 
           {/* SL Map Tile Image Layer */}
-          <div style={{ position: "absolute", inset: 0 }}>
+          <div
+            style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
+          >
             {tileOk ? (
               <img
                 src="https://secondlife-maps-cdn.akamaized.net/map-1-1000-1000-objects.jpg"
@@ -460,6 +470,7 @@ export default function Map() {
               border: "2px solid var(--ktheme-bg)",
               boxShadow: "0 0 8px var(--ktheme-pri)",
               zIndex: 5,
+              pointerEvents: "none",
             }}
           />
         </div>
@@ -526,8 +537,9 @@ export default function Map() {
             gap: "6px",
           }}
         >
-          <div
+          <KInteractive
             onClick={handleZoomIn}
+            label="Zoom in map"
             style={{
               width: "44px",
               height: "44px",
@@ -540,14 +552,12 @@ export default function Map() {
               color: "var(--ktheme-ink)",
               cursor: "pointer",
             }}
-            role="button"
-            aria-label="Zoom in map"
-            tabIndex={0}
           >
             <Icon name="plus" size={16} />
-          </div>
-          <div
+          </KInteractive>
+          <KInteractive
             onClick={handleZoomOut}
+            label="Zoom out map"
             style={{
               width: "44px",
               height: "44px",
@@ -560,14 +570,12 @@ export default function Map() {
               color: "var(--ktheme-ink)",
               cursor: "pointer",
             }}
-            role="button"
-            aria-label="Zoom out map"
-            tabIndex={0}
           >
             <Icon name="minus" size={16} />
-          </div>
-          <div
+          </KInteractive>
+          <KInteractive
             onClick={handleReset}
+            label="Recenter map viewport"
             style={{
               width: "44px",
               height: "44px",
@@ -580,12 +588,9 @@ export default function Map() {
               color: "var(--ktheme-pri)",
               cursor: "pointer",
             }}
-            role="button"
-            aria-label="Recenter map viewport"
-            tabIndex={0}
           >
             <Icon name="locate-fixed" size={16} />
-          </div>
+          </KInteractive>
         </div>
 
         {/* Map Attribution and Zoom Status Note */}
@@ -614,7 +619,9 @@ export default function Map() {
 
       {/* Map Action Footer */}
       <div style={mapFootStyle}>
-        <div
+        <KInteractive
+          onClick={() => actions.teleportToRegion(selectedRegion)}
+          label="Teleport to region"
           style={{
             flex: 1,
             height: "46px",
@@ -632,8 +639,10 @@ export default function Map() {
         >
           <Icon name="zap" size={16} />
           TELEPORT
-        </div>
-        <div
+        </KInteractive>
+        <KInteractive
+          onClick={() => actions.saveLandmark(selectedRegion)}
+          label="Bookmark location"
           style={{
             width: "46px",
             height: "46px",
@@ -647,7 +656,7 @@ export default function Map() {
           }}
         >
           <Icon name="star" size={18} />
-        </div>
+        </KInteractive>
       </div>
     </>
   );

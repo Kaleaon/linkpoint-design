@@ -53,6 +53,14 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     const cardListEl = screen.getByTestId("skeleton-card-list");
     expect(cardListEl).toBeInTheDocument();
     expect(cardListEl.style.minHeight).toBe("320px");
+    expect(cardListEl).toHaveAttribute("role", "status");
+    expect(cardListEl).toHaveAttribute("aria-busy", "true");
+    expect(cardListEl).toHaveAttribute("aria-label", "Loading card items...");
+
+    const srText = cardListEl.querySelector("span.sr-only");
+    expect(srText).toBeInTheDocument();
+    expect(srText).toHaveAttribute("aria-live", "polite");
+    expect(srText).toHaveTextContent("Loading card items...");
 
     const items = screen.getAllByTestId("skeleton-card-item");
     expect(items.length).toBe(4);
@@ -71,6 +79,14 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     const treeEl = screen.getByTestId("skeleton-tree");
     expect(treeEl).toBeInTheDocument();
     expect(treeEl.style.minHeight).toBe("320px");
+    expect(treeEl).toHaveAttribute("role", "status");
+    expect(treeEl).toHaveAttribute("aria-busy", "true");
+    expect(treeEl).toHaveAttribute("aria-label", "Loading tree hierarchy...");
+
+    const srText = treeEl.querySelector("span.sr-only");
+    expect(srText).toBeInTheDocument();
+    expect(srText).toHaveAttribute("aria-live", "polite");
+    expect(srText).toHaveTextContent("Loading tree hierarchy...");
 
     const rows = screen.getAllByTestId("skeleton-tree-row");
     expect(rows.length).toBe(6);
@@ -89,6 +105,14 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     const detailEl = screen.getByTestId("skeleton-detail");
     expect(detailEl).toBeInTheDocument();
     expect(detailEl.style.minHeight).toBe("320px");
+    expect(detailEl).toHaveAttribute("role", "status");
+    expect(detailEl).toHaveAttribute("aria-busy", "true");
+    expect(detailEl).toHaveAttribute("aria-label", "Loading detail pane...");
+
+    const srText = detailEl.querySelector("span.sr-only");
+    expect(srText).toBeInTheDocument();
+    expect(srText).toHaveAttribute("aria-live", "polite");
+    expect(srText).toHaveTextContent("Loading detail pane...");
 
     expect(screen.getByTestId("skeleton-detail-header")).toHaveClass(
       "skeleton-shimmer",
@@ -219,5 +243,116 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     const stateBlock = screen.getByTestId("state-block");
     expect(stateBlock).toBeInTheDocument();
     expect(stateBlock.style.minHeight).toBe("320px");
+  });
+});
+
+describe("WCAG 2.2 SC 4.1.3 Status Messages & ARIA22 Semantic Enhancement", () => {
+  it("supports configurable label and aria-live props on SkeletonCardList", () => {
+    render(
+      <ThemeContext.Provider value={mockThemeTokens}>
+        <SkeletonCardList
+          label="Loading friends list..."
+          ariaLive="assertive"
+        />
+      </ThemeContext.Provider>,
+    );
+
+    const cardListEl = screen.getByRole("status", {
+      name: "Loading friends list...",
+    });
+    expect(cardListEl).toBeInTheDocument();
+    expect(cardListEl).toHaveAttribute("aria-busy", "true");
+    expect(cardListEl).toHaveAttribute("aria-label", "Loading friends list...");
+
+    const srText = cardListEl.querySelector("span.sr-only");
+    expect(srText).toHaveAttribute("aria-live", "assertive");
+    expect(srText).toHaveTextContent("Loading friends list...");
+  });
+
+  it("supports configurable label and aria-live props on SkeletonTree", () => {
+    render(
+      <ThemeContext.Provider value={mockThemeTokens}>
+        <SkeletonTree
+          label="Loading inventory hierarchy..."
+          aria-live="polite"
+        />
+      </ThemeContext.Provider>,
+    );
+
+    const treeEl = screen.getByRole("status", {
+      name: "Loading inventory hierarchy...",
+    });
+    expect(treeEl).toBeInTheDocument();
+    expect(treeEl).toHaveAttribute("aria-busy", "true");
+    expect(treeEl).toHaveAttribute(
+      "aria-label",
+      "Loading inventory hierarchy...",
+    );
+
+    const srText = treeEl.querySelector("span.sr-only");
+    expect(srText).toHaveAttribute("aria-live", "polite");
+    expect(srText).toHaveTextContent("Loading inventory hierarchy...");
+  });
+
+  it("supports configurable label and aria-live props on SkeletonDetail", () => {
+    render(
+      <ThemeContext.Provider value={mockThemeTokens}>
+        <SkeletonDetail
+          label="Loading inspector pane..."
+          ariaLive="assertive"
+        />
+      </ThemeContext.Provider>,
+    );
+
+    const detailEl = screen.getByRole("status", {
+      name: "Loading inspector pane...",
+    });
+    expect(detailEl).toBeInTheDocument();
+    expect(detailEl).toHaveAttribute("aria-busy", "true");
+    expect(detailEl).toHaveAttribute("aria-label", "Loading inspector pane...");
+
+    const srText = detailEl.querySelector("span.sr-only");
+    expect(srText).toHaveAttribute("aria-live", "assertive");
+    expect(srText).toHaveTextContent("Loading inspector pane...");
+  });
+
+  it("applies standard CSS clipping styles to visually-hidden status announcements", () => {
+    render(
+      <ThemeContext.Provider value={mockThemeTokens}>
+        <SkeletonCardList />
+      </ThemeContext.Provider>,
+    );
+
+    const srText = screen
+      .getByTestId("skeleton-card-list")
+      .querySelector("span.sr-only");
+    expect(srText).toBeInTheDocument();
+    expect(srText.style.position).toBe("absolute");
+    expect(srText.style.width).toBe("1px");
+    expect(srText.style.height).toBe("1px");
+    expect(srText.style.overflow).toBe("hidden");
+    expect(srText.style.clip).toBe("rect(0px, 0px, 0px, 0px)");
+    expect(srText.style.whiteSpace).toBe("nowrap");
+  });
+
+  it("exposes role='status' and aria-busy='true' when consumer screens enter loading state", () => {
+    const mockAppContext = {
+      state: { cond: "loading", screen: "Inventory", invOpen: {}, tabs: {} },
+      actions: {},
+    };
+
+    render(
+      <AppContext.Provider value={mockAppContext}>
+        <ThemeContext.Provider value={{ ...mockThemeTokens, scr: "Inventory" }}>
+          <Inventory />
+        </ThemeContext.Provider>
+      </AppContext.Provider>,
+    );
+
+    const inventoryStatus = screen.getByRole("status", {
+      name: "Loading tree hierarchy...",
+    });
+    expect(inventoryStatus).toBeInTheDocument();
+    expect(inventoryStatus).toHaveAttribute("aria-busy", "true");
   });
 });

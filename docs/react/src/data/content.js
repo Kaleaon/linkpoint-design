@@ -255,6 +255,207 @@ export const GROUP_THREADS = {
   ],
 };
 
+export const GROUPS_DATA = [
+  {
+    id: "grp-1",
+    name: "Bay City Builders",
+    charter:
+      "Collaborative urban architectural collective building the historic Bay City municipal grid and public tramway system.",
+    members: 412,
+    role: "Officer",
+    title: "Chief Surveyor",
+    activeTag: true,
+    noticesEnabled: true,
+    unreadNotices: 4,
+    fee: 0,
+    roles: [
+      {
+        name: "Founder / Owner",
+        count: 2,
+        powers: ["All Abilities", "Manage Roles", "Close Group"],
+      },
+      {
+        name: "Officer",
+        count: 18,
+        powers: [
+          "Send Notices",
+          "Moderate Chat",
+          "Eject Members",
+          "Deed Land",
+          "Object Return",
+        ],
+      },
+      {
+        name: "Member",
+        count: 392,
+        powers: ["Group Chat", "Receive Notices", "Rez Objects on Group Land"],
+      },
+    ],
+  },
+  {
+    id: "grp-2",
+    name: "Sansara Cartographers",
+    charter:
+      "Mapping the highways, waterways, and historic public roads across the Sansara continent.",
+    members: 88,
+    role: "Member",
+    title: "Route Surveyor",
+    activeTag: false,
+    noticesEnabled: true,
+    unreadNotices: 0,
+    fee: 0,
+    roles: [
+      {
+        name: "Cartographer Lead",
+        count: 3,
+        powers: ["All Abilities", "Manage Routes"],
+      },
+      { name: "Member", count: 85, powers: ["Group Chat", "Receive Notices"] },
+    ],
+  },
+  {
+    id: "grp-3",
+    name: "Terraform Co-op",
+    charter:
+      "Landscaping, raw terrain sculpts, and atmospheric windlight presets for mainland parcels.",
+    members: 1204,
+    role: "Member",
+    title: "Landscaper",
+    activeTag: false,
+    noticesEnabled: false,
+    unreadNotices: 12,
+    fee: 50,
+    roles: [
+      { name: "Directors", count: 4, powers: ["All Abilities"] },
+      { name: "Member", count: 1200, powers: ["Group Chat", "Muted Notices"] },
+    ],
+  },
+  {
+    id: "grp-4",
+    name: "Mono Script Guild",
+    charter:
+      "LSL & Mono optimization, memory efficiency, and event loop performance testing.",
+    members: 56,
+    role: "Member",
+    title: "Script Apprentice",
+    activeTag: false,
+    noticesEnabled: false,
+    unreadNotices: 0,
+    fee: 100,
+    roles: [
+      { name: "Arch-Wizards", count: 2, powers: ["All Abilities"] },
+      { name: "Scripters", count: 54, powers: ["Group Chat", "Code Reviews"] },
+    ],
+  },
+  {
+    id: "grp-5",
+    name: "Ruthless Roofers",
+    charter:
+      "Master roofers crafting intricate timber frames, shingles, and slate domes across the grid.",
+    members: 34,
+    role: "Member",
+    title: "Apprentice Roofer",
+    activeTag: false,
+    noticesEnabled: true,
+    unreadNotices: 0,
+    fee: 0,
+    roles: [
+      {
+        name: "Founder / Owner",
+        count: 2,
+        powers: ["All Abilities", "Moderate Chat", "Eject Members"],
+      },
+      {
+        name: "Officer",
+        count: 4,
+        powers: ["Send Notices", "Moderate Chat", "Eject Members"],
+      },
+      { name: "Member", count: 28, powers: ["Group Chat", "Receive Notices"] },
+    ],
+  },
+];
+
+export const GROUP_PARTICIPANTS = {
+  "Bay City Builders": [
+    {
+      id: "p-ruth",
+      name: "Ruth Resident",
+      role: "Officer",
+      title: "Chief Surveyor",
+      online: true,
+      voice: true,
+      isSelf: true,
+    },
+    {
+      id: "p-marlowe",
+      name: "Marlowe Quill",
+      role: "Officer",
+      title: "Site Planner",
+      online: true,
+      voice: true,
+    },
+    {
+      id: "p-kit",
+      name: "Kit Sandalwood",
+      role: "Founder / Owner",
+      title: "Founder",
+      online: true,
+      voice: false,
+    },
+    {
+      id: "p-nyx",
+      name: "Nyx Vaher",
+      role: "Officer",
+      title: "Lighting Architect",
+      online: true,
+      voice: true,
+    },
+    {
+      id: "p-sable",
+      name: "Sable Ashgrove",
+      role: "Member",
+      title: "Apprentice",
+      online: false,
+      voice: false,
+    },
+    {
+      id: "p-oren",
+      name: "Oren Fairweather",
+      role: "Member",
+      title: "Structural Tech",
+      online: false,
+      voice: false,
+    },
+  ],
+  "Ruthless Roofers": [
+    {
+      id: "p-oren-r",
+      name: "Oren Fairweather",
+      role: "Founder / Owner",
+      title: "Master Roofer",
+      online: true,
+      voice: true,
+    },
+    {
+      id: "p-ruth-r",
+      name: "Ruth Resident",
+      role: "Member",
+      title: "Apprentice Roofer",
+      online: true,
+      voice: false,
+      isSelf: true,
+    },
+    {
+      id: "p-tamsin-r",
+      name: "Tamsin Reed",
+      role: "Member",
+      title: "Timber Framer",
+      online: false,
+      voice: false,
+    },
+  ],
+};
+
 // [name, meta, online, rights] — rights are the classic SL friend permissions:
 // eye = can see me online, map-pin = can see me on the map, pencil = can modify my objects.
 export const FRIEND_ROWS = [

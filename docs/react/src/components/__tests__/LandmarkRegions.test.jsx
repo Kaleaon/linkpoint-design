@@ -116,6 +116,8 @@ describe("Semantic HTML5 Landmark Region Wrappers", () => {
     const main = screen.getByRole("main", { name: "Main Content" });
     expect(main).toBeTruthy();
     expect(main.tagName).toBe("MAIN");
+    expect(main.getAttribute("id")).toBe("main-content");
+    expect(main.getAttribute("tabindex")).toBe("-1");
   });
 
   it("RailNav renders <nav aria-label='Rail Navigation'> landmark region", () => {

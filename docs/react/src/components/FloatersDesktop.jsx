@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import FormInput from "./FormInput.jsx";
@@ -14,10 +14,10 @@ import {
   buildCards,
 } from "../data/content.js";
 import Icon from "./Icon.jsx";
-import A11yControl from "./A11yControl.jsx";
 import ScreenBody from "./ScreenBody.jsx";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
 import RadialPieMenu from "./RadialPieMenu.jsx";
+import KInteractive from "./KInteractive.jsx";
 
 // Ported from the `isFloat` block: desktop SL isn't a screen stack, it's N
 // resizable windows over one scene (the `FLOATERS` window model — position,
@@ -72,13 +72,30 @@ export default function FloatersDesktop() {
     }
   };
 
-  const cardsByScreen = buildCards({
-    state,
-    actions,
-    layoutName: LAYOUTS[state.layout].name,
-    paletteName: PALETTES[state.palette].name,
-  });
-  const fBody = buildFBody(state, cardsByScreen);
+  const cardsByScreen = useMemo(
+    () =>
+      buildCards({
+        state,
+        actions,
+        layoutName: LAYOUTS[state.layout].name,
+        paletteName: PALETTES[state.palette].name,
+      }),
+    [
+      state.layout,
+      state.palette,
+      state.dismissed,
+      state.toggles,
+      state.pinned,
+      state.dense,
+      state.prefs,
+      state.cacheCleared,
+      actions,
+    ],
+  );
+  const fBody = useMemo(
+    () => buildFBody(state, cardsByScreen),
+    [state, cardsByScreen],
+  );
 
   const flScene = {
     position: "absolute",
@@ -218,9 +235,10 @@ export default function FloatersDesktop() {
               >
                 CAMERA CONTROLS
               </span>
-              <A11yControl
-                as="span"
+              <KInteractive
+                as="button"
                 onClick={() => setShowCamHud(false)}
+                label="Close HUD"
                 style={{
                   width: "24px",
                   height: "24px",
@@ -229,13 +247,12 @@ export default function FloatersDesktop() {
                   justifyContent: "center",
                   cursor: "pointer",
                   color: V.ink2,
-                  fontSize: "14px",
+                  fontSize: "12px",
                   lineHeight: 1,
                 }}
-                aria-label="Close HUD"
               >
                 &times;
-              </A11yControl>
+              </KInteractive>
             </div>
             <div
               style={{
@@ -449,13 +466,12 @@ export default function FloatersDesktop() {
               >
                 {f.title}
               </span>
-              <A11yControl
-                as="span"
+              <KInteractive
+                as="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   actions.dispatchIntent("FLOATER_SHADE", { id: f.id });
                 }}
-                aria-label={isShaded ? "Unshade (Expand)" : "Shade (Rollup)"}
                 style={{
                   width: "24px",
                   height: "24px",
@@ -469,19 +485,19 @@ export default function FloatersDesktop() {
                   cursor: "pointer",
                   opacity: 0.85,
                 }}
+                label={isShaded ? "Unshade (Expand)" : "Shade (Rollup)"}
               >
                 <Icon
                   name={isShaded ? "chevron-down" : "chevron-up"}
                   size={11}
                 />
-              </A11yControl>
-              <A11yControl
-                as="span"
+              </KInteractive>
+              <KInteractive
+                as="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   actions.dispatchIntent("FLOATER_MINIMIZE", { id: f.id });
                 }}
-                aria-label="Minimize"
                 style={{
                   width: "24px",
                   height: "24px",
@@ -495,16 +511,16 @@ export default function FloatersDesktop() {
                   cursor: "pointer",
                   opacity: 0.85,
                 }}
+                label="Minimize"
               >
                 &minus;
-              </A11yControl>
-              <A11yControl
-                as="span"
+              </KInteractive>
+              <KInteractive
+                as="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   actions.dispatchIntent("FLOATER_CLOSE", { id: f.id });
                 }}
-                aria-label="Close"
                 style={{
                   width: "24px",
                   height: "24px",
@@ -518,9 +534,10 @@ export default function FloatersDesktop() {
                   cursor: "pointer",
                   opacity: 0.85,
                 }}
+                label="Close"
               >
                 &times;
-              </A11yControl>
+              </KInteractive>
             </div>
             {!isShaded && (
               <>
@@ -703,8 +720,11 @@ export default function FloatersDesktop() {
           const min = !!state.flMin[f.id];
           const act = f.id === state.screen && !min;
           return (
-            <A11yControl
+            <KInteractive
+              as="button"
               key={f.id}
+              label={f.title}
+              aria-pressed={act}
               onClick={() =>
                 actions.dispatchIntent("FLOATER_TOGGLE", { id: f.id })
               }
@@ -728,7 +748,7 @@ export default function FloatersDesktop() {
               }}
             >
               {f.title}
-            </A11yControl>
+            </KInteractive>
           );
         })}
 
@@ -765,10 +785,13 @@ export default function FloatersDesktop() {
             dis = !!b.off;
           const bg = lit ? V.pri : V.surf2;
           return (
-            <A11yControl
+            <KInteractive
+              as="button"
               key={k}
-              onClick={() => actions.cPress(k)}
+              label={b.label}
               disabled={dis}
+              aria-pressed={lit}
+              onClick={() => actions.cPress(k)}
               aria-label={b.label}
               style={{
                 flex: "none",
@@ -789,7 +812,7 @@ export default function FloatersDesktop() {
             >
               <Icon name={b.icon} size={13} />
               {b.label}
-            </A11yControl>
+            </KInteractive>
           );
         })}
       </div>

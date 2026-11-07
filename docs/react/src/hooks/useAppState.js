@@ -125,7 +125,7 @@ export function useAppState() {
         savedVerbosity = val;
       }
     } catch {
-      /* ignore error */
+      // ignore
     }
     return {
       draw: "96 m",
@@ -202,7 +202,7 @@ export function useAppState() {
         }
       }
     } catch {
-      /* ignore error */
+      // ignore
     }
     return DEFAULT_STORED_ACCOUNTS;
   });
@@ -304,7 +304,51 @@ export function useAppState() {
   const [lindenBalance, setLindenBalance] = useState(4250);
   const [exchangeRate, setExchangeRate] = useState(248.5);
   const [lastSyncedAt, setLastSyncedAt] = useState(() => new Date());
+  const [joystickVector, setJoystickVector] = useState({ x: 0, y: 0 });
 
+  // ---- Centralized Recovery State Machine & Async Queries ----------------
+  const [recoveryState, setRecoveryState] = useState("idle"); // "idle" | "detecting" | "reconnecting" | "recovered" | "failed"
+  const [reconnectAttempts, setReconnectAttempts] = useState(0);
+  const [nextRetryDelay, setNextRetryDelay] = useState(1000);
+  const [asyncQueryState, setAsyncQueryState] = useState({
+    search: { status: "idle", loading: false, error: null },
+    inventory: { status: "idle", loading: false, error: null },
+  });
+
+  const recoverySubscribersRef = useRef(new Set());
+  const recoveryTimerRef = useRef(null);
+  const healthCheckTimerRef = useRef(null);
+  const offlineRunningRef = useRef(offlineRunning);
+
+  useEffect(() => {
+    offlineRunningRef.current = offlineRunning;
+  }, [offlineRunning]);
+
+  const emitRecoveryEvent = useCallback((event) => {
+    const payload = { ...event, timestamp: new Date() };
+    recoverySubscribersRef.current.forEach((cb) => {
+      try {
+        cb(payload);
+      } catch (err) {
+        console.error("Error in recovery event subscriber:", err);
+      }
+    });
+  }, []);
+
+  const subscribeRecoveryEvent = useCallback((cb) => {
+    recoverySubscribersRef.current.add(cb);
+    return () => {
+      recoverySubscribersRef.current.delete(cb);
+    };
+  }, []);
+
+  const addDiagnosticLog = useCallback((level, tag, msg) => {
+    const ts =
+      new Date().toLocaleTimeString() +
+      "," +
+      String(Math.floor(Math.random() * 899 + 100));
+    setConsoleLogs((prev) => [...prev, { ts, level, tag, msg }]);
+  }, []);
   // Form factor is an implementation concern in the real app. The design
   // canvas exposes a manual device picker, but the React port follows its host
   // viewport and changes navigation/layout at the same breakpoints instead.
@@ -337,7 +381,9 @@ export function useAppState() {
       clearTimeout(searchTimerRef.current);
       clearTimeout(reconnectTimerRef.current);
       clearTimeout(toastTimerRef.current);
+      clearTimeout(recoveryTimerRef.current);
       clearInterval(pollTimerRef.current);
+      clearInterval(healthCheckTimerRef.current);
     },
     [],
   );
@@ -360,6 +406,253 @@ export function useAppState() {
     setToast(msg);
     toastTimerRef.current = setTimeout(() => setToast(""), 2200);
   }, []);
+
+  const getBackoffDelay = useCallback((attempt) => {
+    return Math.min(1000 * Math.pow(2, Math.max(0, attempt - 1)), 16000);
+  }, []);
+
+  const cancelRecovery = useCallback(() => {
+    clearTimeout(recoveryTimerRef.current);
+    setRecoveryState("idle");
+    setReconnectAttempts(0);
+    addDiagnosticLog(
+      "INFO",
+      "[RECOVERY SERVICE]",
+      "Recovery sequence cancelled by resident.",
+    );
+    notify("[Recovery] Auto-reconnection cancelled.");
+    emitRecoveryEvent({ type: "RECOVERY_CANCELLED" });
+  }, [addDiagnosticLog, notify, emitRecoveryEvent]);
+
+  const resetRecovery = useCallback(() => {
+    clearTimeout(recoveryTimerRef.current);
+    setRecoveryState("idle");
+    setReconnectAttempts(0);
+    setNextRetryDelay(1000);
+    emitRecoveryEvent({ type: "RECOVERY_RESET" });
+  }, [emitRecoveryEvent]);
+
+  const attemptReconnection = useCallback(
+    (attemptNum) => {
+      setReconnectAttempts(attemptNum);
+      setRecoveryState("reconnecting");
+      const delay = getBackoffDelay(attemptNum);
+      setNextRetryDelay(delay);
+
+      addDiagnosticLog(
+        "INFO",
+        "[RECOVERY SERVICE]",
+        "Auto-reconnect attempt #" + attemptNum + " pinging 127.0.0.1:9000...",
+      );
+      emitRecoveryEvent({
+        type: "RECONNECT_ATTEMPT",
+        attempt: attemptNum,
+        delay,
+      });
+
+      const isOnline = offlineRunningRef.current;
+
+      if (isOnline) {
+        setRecoveryState("recovered");
+        setReconnectAttempts(0);
+        addDiagnosticLog(
+          "INFO",
+          "[RECOVERY SERVICE]",
+          "Reconnection successful on attempt #" +
+            attemptNum +
+            ". Server 127.0.0.1:9000 reachable.",
+        );
+        notify("[Recovery] Reconnected to OpenSim local grid.");
+        emitRecoveryEvent({ type: "RECOVERY_SUCCESS", attempt: attemptNum });
+
+        setTimeout(() => {
+          setRecoveryState("idle");
+        }, 2000);
+      } else {
+        if (attemptNum < 5) {
+          addDiagnosticLog(
+            "WARN",
+            "[RECOVERY SERVICE]",
+            "Attempt #" +
+              attemptNum +
+              " failed (connection refused). Next retry in " +
+              delay / 1000 +
+              "s.",
+          );
+          notify(
+            "[Recovery] Attempt #" +
+              attemptNum +
+              " failed. Retrying in " +
+              delay / 1000 +
+              "s...",
+          );
+
+          recoveryTimerRef.current = setTimeout(() => {
+            attemptReconnection(attemptNum + 1);
+          }, delay);
+        } else {
+          setRecoveryState("failed");
+          addDiagnosticLog(
+            "ERROR",
+            "[RECOVERY SERVICE]",
+            "Max reconnection attempts (" +
+              attemptNum +
+              ") reached. Local server offline.",
+          );
+          notify(
+            "[Recovery Error] Server reconnect failed after " +
+              attemptNum +
+              " attempts.",
+          );
+          emitRecoveryEvent({ type: "RECOVERY_FAILED", attempt: attemptNum });
+        }
+      }
+    },
+    [getBackoffDelay, addDiagnosticLog, notify, emitRecoveryEvent],
+  );
+
+  const triggerRecovery = useCallback(
+    (reason = "Server disconnect detected") => {
+      clearTimeout(recoveryTimerRef.current);
+      setRecoveryState("detecting");
+      addDiagnosticLog(
+        "WARN",
+        "[RECOVERY SERVICE]",
+        reason + " - Initiating exponential backoff recovery.",
+      );
+      notify("[Recovery] " + reason + ". Reconnecting...");
+      emitRecoveryEvent({ type: "RECOVERY_STARTED", reason });
+
+      recoveryTimerRef.current = setTimeout(() => {
+        attemptReconnection(1);
+      }, 500);
+    },
+    [addDiagnosticLog, notify, emitRecoveryEvent, attemptReconnection],
+  );
+
+  // ---- background health check poller (Requirement 2) -------------------
+  useEffect(() => {
+    const healthPoller = setInterval(() => {
+      const isOnline = offlineRunningRef.current;
+      if (!isOnline && recoveryState === "idle") {
+        triggerRecovery("OpenSim endpoint unreachable");
+      }
+    }, 3000);
+    healthCheckTimerRef.current = healthPoller;
+    return () => clearInterval(healthPoller);
+  }, [recoveryState, triggerRecovery]);
+
+  // ---- Centralized Async Query Manager (Requirement 4) ------------------
+  const runAsyncQuery = useCallback(
+    (queryKey, queryFn, timeoutMs = 2500) => {
+      setAsyncQueryState((prev) => ({
+        ...prev,
+        [queryKey]: { status: "loading", loading: true, error: null },
+      }));
+      emitRecoveryEvent({ type: "ASYNC_QUERY_STARTED", queryKey });
+
+      return new Promise((resolve, reject) => {
+        let isSettled = false;
+
+        const timer = setTimeout(() => {
+          if (isSettled) return;
+          isSettled = true;
+          setAsyncQueryState((prev) => ({
+            ...prev,
+            [queryKey]: {
+              status: "timeout",
+              loading: false,
+              error: "Query timed out after " + timeoutMs + "ms",
+            },
+          }));
+          addDiagnosticLog(
+            "WARN",
+            "[ASYNC QUERY]",
+            queryKey +
+              " query timed out (" +
+              timeoutMs +
+              "ms). Recovery state injected.",
+          );
+          notify(
+            "[Query Timeout] " +
+              queryKey +
+              " query timed out. Injected recovery fallback.",
+          );
+          emitRecoveryEvent({ type: "ASYNC_QUERY_TIMEOUT", queryKey });
+          reject(new Error("Query timed out"));
+        }, timeoutMs);
+
+        try {
+          const resultPromise =
+            typeof queryFn === "function"
+              ? queryFn()
+              : Promise.resolve(queryFn);
+          Promise.resolve(resultPromise)
+            .then((res) => {
+              if (isSettled) return;
+              isSettled = true;
+              clearTimeout(timer);
+              setAsyncQueryState((prev) => ({
+                ...prev,
+                [queryKey]: {
+                  status: "success",
+                  loading: false,
+                  error: null,
+                  data: res,
+                },
+              }));
+              emitRecoveryEvent({ type: "ASYNC_QUERY_SUCCESS", queryKey });
+              resolve(res);
+            })
+            .catch((err) => {
+              if (isSettled) return;
+              isSettled = true;
+              clearTimeout(timer);
+              const errStr = err?.message || "Async query error";
+              setAsyncQueryState((prev) => ({
+                ...prev,
+                [queryKey]: { status: "error", loading: false, error: errStr },
+              }));
+              addDiagnosticLog(
+                "ERROR",
+                "[ASYNC QUERY]",
+                queryKey + " query failed: " + errStr,
+              );
+              notify("[Query Error] " + queryKey + ": " + errStr);
+              emitRecoveryEvent({
+                type: "ASYNC_QUERY_ERROR",
+                queryKey,
+                error: errStr,
+              });
+              reject(err);
+            });
+        } catch (err) {
+          if (isSettled) return;
+          isSettled = true;
+          clearTimeout(timer);
+          const errStr = err?.message || "Execution exception";
+          setAsyncQueryState((prev) => ({
+            ...prev,
+            [queryKey]: { status: "error", loading: false, error: errStr },
+          }));
+          emitRecoveryEvent({
+            type: "ASYNC_QUERY_ERROR",
+            queryKey,
+            error: errStr,
+          });
+          reject(err);
+        }
+      });
+    },
+    [addDiagnosticLog, notify, emitRecoveryEvent],
+  );
+
+  const retryAsyncQuery = useCallback(
+    (queryKey, queryFn, timeoutMs) => {
+      return runAsyncQuery(queryKey, queryFn, timeoutMs);
+    },
+    [runAsyncQuery],
+  );
 
   const setThemeColor = useCallback(
     (key, value) =>
@@ -477,7 +770,7 @@ export function useAppState() {
     try {
       localStorage.setItem("telemetryVerbosity", validMode);
     } catch {
-      /* ignore error */
+      // ignore
     }
   }, []);
   const setPref = useCallback(
@@ -961,6 +1254,22 @@ export function useAppState() {
     else setCHeld(k);
   }, []);
 
+  const handleJoystickMove = useCallback((normX, normY) => {
+    setJoystickVector({ x: normX, y: normY });
+    if (Math.abs(normX) < 0.15 && Math.abs(normY) < 0.15) {
+      setCHeld("");
+    } else {
+      if (Math.abs(normY) >= Math.abs(normX)) {
+        setCHeld(normY < 0 ? "fwd" : "bck");
+      } else {
+        setCHeld(normX < 0 ? "lft" : "rgt");
+      }
+      if (Math.abs(normX) >= 0.15) {
+        setCHdg((h) => h + normX * 1.5);
+      }
+    }
+  }, []);
+
   const cPress = useCallback((k) => {
     const b = CBTN[k];
     if (b.off) {
@@ -1267,6 +1576,29 @@ export function useAppState() {
         if (payload.screen) screenPick(payload.screen);
       } else if (type === "QUICK_CHAT_SUBMIT") {
         if (payload.message) notify("Local Chat (" + payload.message + ")");
+      } else if (
+        type === "GROUP_MODERATION_ACTION" ||
+        type === "GROUP_MEMBER_MUTE" ||
+        type === "GROUP_MEMBER_KICK" ||
+        type === "GROUP_MEMBER_EJECT"
+      ) {
+        const action =
+          payload.action ||
+          (type.includes("MUTE")
+            ? "mute"
+            : type.includes("KICK") || type.includes("EJECT")
+              ? "kick"
+              : "profile");
+        const target = payload.target || payload.member || "";
+        const group = payload.group || "";
+        if (action === "mute") {
+          notify(`Muted ${target} in ${group}`);
+        } else if (action === "kick" || action === "eject") {
+          notify(`Ejected ${target} from ${group}`);
+        } else if (action === "profile") {
+          screenPick("Profile");
+          notify(`Viewing profile: ${target}`);
+        }
       }
 
       return intentEvent;
@@ -1313,6 +1645,7 @@ export function useAppState() {
       cFlash,
       cReason,
       cTog,
+      joystickVector,
       rMode,
       rOpen,
       rMenu,
@@ -1365,6 +1698,10 @@ export function useAppState() {
       lindenBalance,
       exchangeRate,
       lastSyncedAt,
+      recoveryState,
+      reconnectAttempts,
+      nextRetryDelay,
+      asyncQueryState,
     },
     actions: {
       setLayout,
@@ -1427,6 +1764,7 @@ export function useAppState() {
       sceneDown,
       sceneMove,
       sceneUp,
+      handleJoystickMove,
       holdStart,
       holdEnd,
       endEdit,
@@ -1485,6 +1823,15 @@ export function useAppState() {
       setExchangeRate,
       dispatchIntent,
       getEventBus,
+      triggerRecovery,
+      attemptReconnection,
+      cancelRecovery,
+      resetRecovery,
+      runAsyncQuery,
+      retryAsyncQuery,
+      addDiagnosticLog,
+      emitRecoveryEvent,
+      subscribeRecoveryEvent,
     },
     T,
     D,
