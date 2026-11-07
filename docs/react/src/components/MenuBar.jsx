@@ -29,7 +29,7 @@ export default function MenuBar() {
   };
 
   return (
-    <header aria-label="Desktop Menu Bar" style={{ flex: "none", display: "flex", alignItems: "stretch", height: "32px", padding: "0 8px", background: V.surf, borderBottom: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv), position: "relative", zIndex: 80 }} onClick={() => state.menu && actions.setMenu(null)}>
+    <header aria-label="Desktop Menu Bar" style={{ flex: "none", display: "flex", alignItems: "stretch", height: "32px", padding: "0 8px", background: V.surf, borderBottom: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv), position: "relative", zIndex: V.z?.header ?? "var(--ktheme-z-header, 80)" }} onClick={() => state.menu && actions.setMenu(null)}>
       {FMENU.map((mm) => {
         const open = state.menu === mm.label;
         const win = mm.items === "WINDOWS";
@@ -50,7 +50,7 @@ export default function MenuBar() {
               {mm.label}
             </KInteractive>
             {open ? (
-              <div role="menu" aria-label={mm.label + " menu"} style={{ position: "absolute", left: 0, top: "32px", minWidth: "216px", background: V.surf, border: "1px solid " + V.pri, boxShadow: "0 14px 34px rgba(0,0,0,.55)", padding: "3px 0", zIndex: 90, borderRadius: V.rp, overflow: "hidden" }}>
+              <div role="menu" aria-label={mm.label + " menu"} style={{ position: "absolute", left: 0, top: "32px", minWidth: "216px", background: V.surf, border: "1px solid " + V.pri, boxShadow: "0 14px 34px rgba(0,0,0,.55)", padding: "3px 0", zIndex: V.z?.dropdown ?? "var(--ktheme-z-dropdown, 90)", borderRadius: V.rp, overflow: "hidden" }}>
                 {items.map((it, i) => (
                   <KInteractive
                     as="button"
