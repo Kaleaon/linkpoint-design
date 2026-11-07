@@ -49,25 +49,43 @@ export class GlobalErrorBoundary extends Component {
               height: "62px",
               flex: "none",
               borderRadius: "12px",
-              border: "1px solid #FF6C6C",
+              border: "1px solid var(--err, #FF6C6C)",
               background: "rgba(255,108,108,0.1)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "#FF6C6C",
+              color: "var(--err, #FF6C6C)",
             }}
           >
             <Icon name="alert-triangle" size={28} />
           </div>
-          <div style={{ font: "700 16px/1.3 sans-serif", letterSpacing: ".1em", color: "#FF6C6C" }}>
+          <div
+            style={{
+              font: "700 16px/1.3 sans-serif",
+              letterSpacing: ".1em",
+              color: "var(--err, #FF6C6C)",
+            }}
+          >
             SCREEN EXECUTION EXCEPTION
           </div>
-          <div style={{ maxWidth: "320px", font: "400 12px/1.6 sans-serif", color: "rgba(255,255,255,0.7)" }}>
-            {this.state.error?.message || "An unexpected error occurred in viewer component tree."}
+          <div
+            style={{
+              maxWidth: "320px",
+              font: "400 12px/1.6 sans-serif",
+              color: "rgba(255,255,255,0.7)",
+            }}
+          >
+            {this.state.error?.message ||
+              "An unexpected error occurred in viewer component tree."}
           </div>
           <div
             onClick={this.handleReset}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); this.handleReset(); } }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                this.handleReset();
+              }
+            }}
             style={{
               minHeight: "44px",
               padding: "0 22px",
@@ -75,14 +93,16 @@ export class GlobalErrorBoundary extends Component {
               alignItems: "center",
               justifyContent: "center",
               borderRadius: "8px",
-              background: "#FF6C6C",
-              color: "#FFFFFF",
+              background: "var(--err, #FF6C6C)",
+              color: "var(--onerr, #FFFFFF)",
               font: "700 11px/1 sans-serif",
               letterSpacing: ".18em",
               cursor: "pointer",
               gap: "8px",
             }}
-            role="button" aria-label="Retry component" tabIndex={0}
+            role="button"
+            aria-label="Retry component"
+            tabIndex={0}
           >
             <Icon name="refresh-cw" size={14} />
             RETRY SCREEN EXECUTION
@@ -151,15 +171,55 @@ export default function StateBlock() {
           <Icon name={condPack.icon} size={26} />
         </div>
       )}
-      <div style={{ font: "700 15px/1.3 " + t.dfont, letterSpacing: V.tls, color: isError ? V.err : V.ink }}>{condPack.title}</div>
-      <div style={{ maxWidth: "300px", font: "400 12px/1.7 " + t.font, color: V.ink2 }}>{condPack.body}</div>
+      <div
+        style={{
+          font: "700 15px/1.3 " + t.dfont,
+          letterSpacing: V.tls,
+          color: isError ? V.err : V.ink,
+        }}
+      >
+        {condPack.title}
+      </div>
+      <div
+        style={{
+          maxWidth: "300px",
+          font: "400 12px/1.7 " + t.font,
+          color: V.ink2,
+        }}
+      >
+        {condPack.body}
+      </div>
       {condPack.bar ? (
-        <div style={{ width: "216px", height: "4px", borderRadius: "2px", background: V.surf2, overflow: "hidden" }}>
-          <div style={{ width: Math.round(condPack.bar * 100) + "%", height: "100%", background: V.pri }} />
+        <div
+          style={{
+            width: "216px",
+            height: "4px",
+            borderRadius: "2px",
+            background: V.surf2,
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              width: Math.round(condPack.bar * 100) + "%",
+              height: "100%",
+              background: V.pri,
+            }}
+          />
         </div>
       ) : null}
       {condPack.log ? (
-        <div style={{ font: "400 10.5px/1.75 " + t.font, color: V.ink2, textAlign: "left", border: "1px dashed " + V.outv, borderRadius: V.rs, padding: "8px 10px", maxWidth: "300px" }}>
+        <div
+          style={{
+            font: "400 10.5px/1.75 " + t.font,
+            color: V.ink2,
+            textAlign: "left",
+            border: "1px dashed " + V.outv,
+            borderRadius: V.rs,
+            padding: "8px 10px",
+            maxWidth: "300px",
+          }}
+        >
           {condPack.log.map((ln, i) => (
             <div key={i}>{ln}</div>
           ))}
@@ -177,13 +237,15 @@ export default function StateBlock() {
             justifyContent: "center",
             borderRadius: V.rs,
             background: isError ? V.err : V.pri,
-            color: isError ? "#FFFFFF" : V.onpri,
+            color: isError ? V.onerr || "var(--ink, #FFFFFF)" : V.onpri,
             font: "700 11px/1 " + t.font,
             letterSpacing: ".18em",
             cursor: "pointer",
             border: "none",
           }}
-          role="button" aria-label={condPack.btn} tabIndex={0}
+          role="button"
+          aria-label={condPack.btn}
+          tabIndex={0}
         >
           {condPack.btn}
         </button>
