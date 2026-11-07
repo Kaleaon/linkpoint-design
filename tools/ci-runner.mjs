@@ -408,6 +408,24 @@ async function taskUnitTests() {
   if (hasReactVitest) {
     log('Executing React Linkpoint Vitest Suite...', 'info');
     const reactDir = path.join(cwd, 'docs/react');
+
+    // Preflight check: ensure Ktheme sibling or nested package is available for vitest @ktheme/react import
+    const candidateKthemeDirs = [
+      path.resolve(cwd, '../Ktheme'),
+      path.resolve(cwd, '../../Ktheme'),
+      '/app/Ktheme'
+    ];
+    const kthemeAvailable = candidateKthemeDirs.some(dir => fs.existsSync(dir));
+    if (!kthemeAvailable) {
+      log('Ktheme dependency not found locally. Cloning Ktheme repository for test dependencies...', 'info');
+      try {
+        const targetKtheme = path.resolve(cwd, '../Ktheme');
+        spawnSync('git', ['clone', '--depth', '1', 'https://github.com/Kaleaon/Ktheme.git', targetKtheme], { stdio: 'inherit' });
+      } catch (err) {
+        log(`Warning: Failed to clone Ktheme repository: ${err.message}`, 'warn');
+      }
+    }
+
     const hasPnpmLock = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml'));
     const hasNpmLock = fs.existsSync(path.join(reactDir, 'package-lock.json'));
     const isPnpmAvailable = () => {

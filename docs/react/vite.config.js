@@ -7,6 +7,8 @@ import fs from "fs";
 const kthemeReactDir = [
   path.resolve(__dirname, "../../../Ktheme/packages/react"),
   path.resolve(__dirname, "../../Ktheme/packages/react"),
+  path.resolve(process.cwd(), "../Ktheme/packages/react"),
+  path.resolve(process.cwd(), "../../Ktheme/packages/react"),
   "/app/Ktheme/packages/react"
 ].find(dir => fs.existsSync(dir)) || path.resolve(__dirname, "../../../Ktheme/packages/react");
 
