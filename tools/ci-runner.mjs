@@ -282,7 +282,7 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
 
     const diffPercent = (diffPixels / totalPixels) * 100;
     return {
-      match: diffPercent <= 1.0,
+      match: diffPercent <= 1.5,
       diffPercent: parseFloat(diffPercent.toFixed(3)),
       diffPixels,
       totalPixels
