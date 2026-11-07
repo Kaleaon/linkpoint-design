@@ -120,6 +120,15 @@ export default function RadialPieMenu({
                 onMouseEnter={() => setHoveredIdx(i)}
                 onMouseLeave={() => setHoveredIdx((cur) => (cur === i ? null : cur))}
                 onClick={() => onSelect(slice.id, target)}
+                role="button"
+                tabIndex={0}
+                aria-label={slice.label}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onSelect(slice.id, target);
+                  }
+                }}
                 style={{ cursor: "pointer" }}
               >
                 <path
@@ -157,6 +166,15 @@ export default function RadialPieMenu({
             stroke={V.outv}
             strokeWidth="2"
             onClick={onClose}
+            role="button"
+            tabIndex={0}
+            aria-label="Close Radial Menu"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onClose();
+              }
+            }}
             style={{ cursor: "pointer" }}
           />
         </svg>
@@ -164,6 +182,15 @@ export default function RadialPieMenu({
         {/* Center Target Info */}
         <div
           onClick={onClose}
+          role="button"
+          tabIndex={0}
+          aria-label="Cancel"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onClose();
+            }
+          }}
           style={{
             position: "absolute",
             left: "50%",
