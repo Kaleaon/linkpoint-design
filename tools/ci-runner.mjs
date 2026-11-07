@@ -64,7 +64,7 @@ ${colors.bold}FLAGS:${colors.reset}
   --palette           Run static WCAG 2.2 AA color palette contrast audit
   --a11y              Run automated WCAG 2.1 AA accessibility auditing
   --visual            Run Playwright visual snapshot regression suite
-  --update-snapshots  Update visual baseline snapshots
+  --update-snapshots, --update  Update visual baseline snapshots
   --port <number>     Specify static server port override
   --help, -h          Show this help message
 
@@ -297,9 +297,19 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
   }
 }
 
-// Helper to resolve Playwright browser launch
+// Helper to resolve Playwright browser launch with preflight dependency checks
 async function getPlaywrightBrowser() {
-  const playwright = await import('playwright');
+  let playwright;
+  try {
+    playwright = await import('playwright');
+  } catch (err) {
+    log('Playwright dependency preflight check failed: "playwright" module is not installed.', 'error');
+    log('Actionable resolution: Please install dependencies using:', 'warn');
+    log('  npm install', 'info');
+    log('  npx playwright install --with-deps chromium', 'info');
+    throw new Error('Missing Playwright module. Run "npm install" and "npx playwright install --with-deps chromium".');
+  }
+
   const launchOpts = {
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--no-zygote', '--font-render-hinting=none', '--force-color-profile=srgb']
@@ -308,8 +318,26 @@ async function getPlaywrightBrowser() {
   try {
     return await playwright.chromium.launch(launchOpts);
   } catch (err) {
+    // Search ms-playwright cache for installed headless shell binaries
+    const homeDir = process.env.HOME || '/home/jules';
+    const msPlaywrightDir = path.join(homeDir, '.cache/ms-playwright');
+    let cachedHeadlessShell = null;
+    if (fs.existsSync(msPlaywrightDir)) {
+      try {
+        const dirs = fs.readdirSync(msPlaywrightDir).filter(d => d.startsWith('chromium_headless_shell-'));
+        for (const dir of dirs) {
+          const candidate = path.join(msPlaywrightDir, dir, 'chrome-headless-shell-linux64/chrome-headless-shell');
+          if (fs.existsSync(candidate)) {
+            cachedHeadlessShell = candidate;
+            break;
+          }
+        }
+      } catch (_) {}
+    }
+
     const possiblePaths = [
-      process.env.CHROMIUM_PATH
+      process.env.CHROMIUM_PATH,
+      cachedHeadlessShell
     ].filter(Boolean);
 
     // Prioritize cached Playwright chromium headless shell binaries before falling back to full browsers
@@ -340,7 +368,24 @@ async function getPlaywrightBrowser() {
     let executablePath = possiblePaths.find(p => fs.existsSync(p));
     if (executablePath) {
       launchOpts.executablePath = executablePath;
-      return await playwright.chromium.launch(launchOpts);
+      try {
+        return await playwright.chromium.launch(launchOpts);
+      } catch (fallbackErr) {
+        // Fall through to error reporting below
+      }
+    }
+
+    if (
+      err &&
+      err.message &&
+      (err.message.includes("Executable doesn't exist") ||
+        err.message.includes('playwright install') ||
+        err.code === 'ENOENT')
+    ) {
+      log('Playwright browser preflight check failed: Chromium browser binary is not installed.', 'error');
+      log('Actionable resolution: Please install browser binaries using:', 'warn');
+      log('  npx playwright install chromium', 'info');
+      throw new Error('Playwright Chromium browser binary missing. Run "npx playwright install chromium".');
     }
     throw err;
   }
@@ -400,6 +445,7 @@ async function taskUnitTests() {
     log('Executing React Linkpoint Vitest Suite...', 'info');
     const reactDir = path.join(cwd, 'docs/react');
     const hasPnpmLock = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml'));
+    const hasNpmLock = fs.existsSync(path.join(reactDir, 'package-lock.json'));
     const isPnpmAvailable = () => {
       try {
         const check = spawnSync('pnpm', ['--version'], { stdio: 'ignore', shell: true });
@@ -408,7 +454,7 @@ async function taskUnitTests() {
         return false;
       }
     };
-    const runner = (hasPnpmLock && isPnpmAvailable()) ? 'pnpm' : 'npm';
+    const runner = (hasPnpmLock && !hasNpmLock && isPnpmAvailable()) ? 'pnpm' : 'npm';
     let res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
     if (res.status !== 0 && runner === 'pnpm') {
       log('pnpm test execution failed, falling back to npm test...', 'warn');
@@ -624,8 +670,9 @@ async function taskA11yAudit() {
         if (!browser || !browser.isConnected()) {
           browser = await getPlaywrightBrowser();
         }
+        if (!browser) return false;
         page = await browser.newPage();
-        await page.goto(targetUrl, { waitUntil: 'domcontentloaded' });
+        await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
         await page.waitForTimeout(1000);
 
         auditResults = await page.evaluate(() => {
@@ -825,6 +872,7 @@ async function taskVisualSuite() {
 
   try {
     browser = await getPlaywrightBrowser();
+    if (!browser) return false;
 
     for (const vp of viewports) {
       log(`Capturing visual snapshots for viewport: ${vp.name} (${vp.width}x${vp.height})`, 'info');
@@ -833,12 +881,15 @@ async function taskVisualSuite() {
       const maxAttempts = 3;
 
       for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        let context = null;
         let page = null;
         try {
           if (!browser || !browser.isConnected()) {
             browser = await getPlaywrightBrowser();
           }
-          page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
+          if (!browser) return false;
+          context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+          page = await context.newPage();
           await page.addInitScript(() => {
             const inject = () => {
               const target = document.head || document.documentElement;
@@ -852,7 +903,7 @@ async function taskVisualSuite() {
             };
             inject();
           });
-          await page.goto(targetUrl, { waitUntil: 'domcontentloaded' });
+          await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
           await page.waitForTimeout(1000);
 
           // Attempt interactive panel triggers if available
@@ -906,6 +957,9 @@ async function taskVisualSuite() {
         } finally {
           if (page) {
             try { await page.close(); } catch (_) {}
+          }
+          if (context) {
+            try { await context.close(); } catch (_) {}
           }
         }
       }
