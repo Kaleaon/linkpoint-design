@@ -1,12 +1,14 @@
 import React, { useContext, useRef, useState } from "react";
 import { ThemeStudio as UnifiedThemeStudio, KthemeContext } from "@ktheme/react";
 import { lum, ratio } from "../theme/color.js";
-import { useApp } from "../context/AppContext.jsx";
+import { AppContext } from "../context/AppContext.jsx";
 import { EDITABLE_THEME_TOKENS } from "../theme/customTheme.js";
 import { validateThemeJson } from "../theme/themeValidator.js";
 
 function StandaloneThemeStudio() {
-  const { state, actions } = useApp();
+  const app = useContext(AppContext);
+  const state = app?.state || { customTheme: null };
+  const actions = app?.actions || {};
   const [open, setOpen] = useState(false);
   const [importError, setImportError] = useState(null);
   const fileRef = useRef(null);
@@ -37,7 +39,7 @@ function StandaloneThemeStudio() {
 
   const handleReset = () => {
     setImportError(null);
-    actions.resetTheme();
+    actions.resetTheme?.();
   };
 
   return (
@@ -56,14 +58,14 @@ function StandaloneThemeStudio() {
             </div>
           )}
           <label className="theme-name">THEME NAME
-            <input value={theme.name} maxLength={48} onChange={(e) => actions.renameTheme(e.target.value)} />
+            <input value={theme.name} maxLength={48} onChange={(e) => actions.renameTheme?.(e.target.value)} />
           </label>
           <div className="theme-colors">
             {EDITABLE_THEME_TOKENS.map(([key, label]) => (
               <label className="color-field" key={key}>
                 <span>{label}</span>
                 <span className="color-control">
-                  <input type="color" value={theme.colors[key]} onChange={(e) => actions.setThemeColor(key, e.target.value)} aria-label={`${label} color`} />
+                  <input type="color" value={theme.colors[key]} onChange={(e) => actions.setThemeColor?.(key, e.target.value)} aria-label={`${label} color`} />
                   <code>{theme.colors[key].toUpperCase()}</code>
                 </span>
               </label>
