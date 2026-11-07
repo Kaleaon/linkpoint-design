@@ -24,7 +24,7 @@ describe("ConsoleFrame component telemetry", () => {
         <ThemeProvider>
           <ConsoleFrame />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     // Initial tick = 0

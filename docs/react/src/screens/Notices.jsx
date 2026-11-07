@@ -13,7 +13,11 @@ const NOTICES_IM = [
     title: "Weekly Build Jam Saturday 14:00 SLT",
     body: "Join us at the coastal tram terminal. Landmark attached — please keep prim limits in mind when testing physics sculpts.",
     time: "2 hours ago",
-    attachment: { type: "landmark", name: "Landmark: Bay City Jam Site", coords: "<112, 44, 51>" },
+    attachment: {
+      type: "landmark",
+      name: "Landmark: Bay City Jam Site",
+      coords: "<112, 44, 51>",
+    },
     unread: true,
   },
   {
@@ -33,7 +37,11 @@ const NOTICES_IM = [
     title: "Inventory Offer",
     body: "Sable Ashgrove sent you “Modular Brick Texture Pack (Bake 4K)”.",
     time: "Yesterday 16:30",
-    attachment: { type: "texture", name: "Modular Brick Texture Pack (Bake 4K)", size: "4 items" },
+    attachment: {
+      type: "texture",
+      name: "Modular Brick Texture Pack (Bake 4K)",
+      size: "4 items",
+    },
     unread: false,
   },
 ];
@@ -130,7 +138,15 @@ export default function Notices() {
           gap: "10px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "10px",
+            flexWrap: "wrap",
+          }}
+        >
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <div
               style={{
@@ -149,9 +165,18 @@ export default function Notices() {
               <Icon name="bell" size={22} />
             </div>
             <div>
-              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>Notifications Hub</div>
-              <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
-                {unreadCount} unread incoming notices · {imNotices.length + sysNotices.length} total alerts
+              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>
+                Notifications Hub
+              </div>
+              <div
+                style={{
+                  font: "400 11px/1.3 " + t.font,
+                  color: V.ink2,
+                  marginTop: "2px",
+                }}
+              >
+                {unreadCount} unread incoming notices ·{" "}
+                {imNotices.length + sysNotices.length} total alerts
               </div>
             </div>
           </div>
@@ -170,9 +195,22 @@ export default function Notices() {
 
       {/* IM / OFFERS SUB-VIEW */}
       {curSub === "IM" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: bleed ? "4px" : "8px",
+          }}
+        >
           {imNotices.length === 0 ? (
-            <div style={{ padding: "32px", textAlign: "center", color: V.ink2, font: "400 13px/1.4 " + t.font }}>
+            <div
+              style={{
+                padding: "32px",
+                textAlign: "center",
+                color: V.ink2,
+                font: "400 13px/1.4 " + t.font,
+              }}
+            >
               No incoming messages or group notices.
             </div>
           ) : (
@@ -190,8 +228,21 @@ export default function Notices() {
                   gap: "10px",
                 }}
               >
-                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "10px" }}>
-                  <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    justifyContent: "space-between",
+                    gap: "10px",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: "10px",
+                    }}
+                  >
                     <div
                       style={{
                         width: "36px",
@@ -207,23 +258,63 @@ export default function Notices() {
                       }}
                     >
                       <Icon
-                        name={n.type === "teleport" ? "zap" : n.type === "inventory" ? "package" : "megaphone"}
+                        name={
+                          n.type === "teleport"
+                            ? "zap"
+                            : n.type === "inventory"
+                              ? "package"
+                              : "megaphone"
+                        }
                         size={18}
                       />
                     </div>
                     <div>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        <span style={{ font: "700 14px/1.2 " + t.dfont, color: V.ink }}>{n.title}</span>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                        }}
+                      >
+                        <span
+                          style={{
+                            font: "700 14px/1.2 " + t.dfont,
+                            color: V.ink,
+                          }}
+                        >
+                          {n.title}
+                        </span>
                         {n.unread && (
-                          <span style={{ font: "700 9px/1 " + t.mfont, padding: "2px 5px", borderRadius: "3px", background: V.pri, color: ink(V.pri, [V.bg, V.onpri, V.ink]) }}>
+                          <span
+                            style={{
+                              font: "700 9px/1 " + t.mfont,
+                              padding: "2px 5px",
+                              borderRadius: "3px",
+                              background: V.pri,
+                              color: ink(V.pri, [V.bg, V.onpri, V.ink]),
+                            }}
+                          >
                             NEW
                           </span>
                         )}
                       </div>
-                      <div style={{ font: "600 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
-                        From: <span style={{ color: V.ink }}>{n.source}</span> · {n.time}
+                      <div
+                        style={{
+                          font: "600 11px/1.3 " + t.font,
+                          color: V.ink2,
+                          marginTop: "2px",
+                        }}
+                      >
+                        From: <span style={{ color: V.ink }}>{n.source}</span> ·{" "}
+                        {n.time}
                       </div>
-                      <div style={{ font: "400 12px/1.4 " + t.font, color: V.ink, marginTop: "4px" }}>
+                      <div
+                        style={{
+                          font: "400 12px/1.4 " + t.font,
+                          color: V.ink,
+                          marginTop: "4px",
+                        }}
+                      >
                         {n.body}
                       </div>
 
@@ -241,8 +332,23 @@ export default function Notices() {
                             gap: "8px",
                           }}
                         >
-                          <Icon name={n.attachment.type === "landmark" ? "map-pin" : "image"} size={14} style={{ color: V.pri }} />
-                          <span style={{ font: "600 11.5px/1 " + t.font, color: V.ink }}>{n.attachment.name}</span>
+                          <Icon
+                            name={
+                              n.attachment.type === "landmark"
+                                ? "map-pin"
+                                : "image"
+                            }
+                            size={14}
+                            style={{ color: V.pri }}
+                          />
+                          <span
+                            style={{
+                              font: "600 11.5px/1 " + t.font,
+                              color: V.ink,
+                            }}
+                          >
+                            {n.attachment.name}
+                          </span>
                         </div>
                       )}
                     </div>
@@ -250,12 +356,23 @@ export default function Notices() {
                 </div>
 
                 {/* Actions */}
-                <div style={{ display: "flex", gap: "6px", borderTop: "1px solid " + V.outv, paddingTop: "8px", flexWrap: "wrap", justifyContent: "flex-end" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "6px",
+                    borderTop: "1px solid " + V.outv,
+                    paddingTop: "8px",
+                    flexWrap: "wrap",
+                    justifyContent: "flex-end",
+                  }}
+                >
                   {n.attachment?.type === "landmark" && (
                     <KInteractive
                       as="button"
                       onClick={() => {
-                        actions.notify(`Teleporting via notice to ${n.attachment.coords}...`);
+                        actions.notify(
+                          `Teleporting via notice to ${n.attachment.coords}...`,
+                        );
                         actions.setScreen("Map");
                       }}
                       style={actBtn(true)}
@@ -301,7 +418,9 @@ export default function Notices() {
                     <KInteractive
                       as="button"
                       onClick={() => {
-                        actions.notify(`Accepted “${n.attachment.name}” into Inventory`);
+                        actions.notify(
+                          `Accepted “${n.attachment.name}” into Inventory`,
+                        );
                         dismissNotice(n.id);
                       }}
                       style={actBtn(true)}
@@ -329,7 +448,13 @@ export default function Notices() {
 
       {/* SYSTEM SUB-VIEW */}
       {curSub === "SYSTEM" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: bleed ? "4px" : "8px",
+          }}
+        >
           {sysNotices.map((sn) => {
             const isWarn = sn.severity === "warning";
             const isSuccess = sn.severity === "success";
@@ -343,15 +468,21 @@ export default function Notices() {
                   borderLeft: isWarn
                     ? "4px solid " + (V.warn || "#f59e0b")
                     : isSuccess
-                    ? "4px solid " + (V.ok || "#22c55e")
-                    : "4px solid " + V.pri,
+                      ? "4px solid " + (V.ok || "#22c55e")
+                      : "4px solid " + V.pri,
                   borderRadius: bleed ? 0 : V.rp,
                   display: "flex",
                   flexDirection: "column",
                   gap: "8px",
                 }}
               >
-                <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "10px",
+                  }}
+                >
                   <div
                     style={{
                       width: "36px",
@@ -362,18 +493,47 @@ export default function Notices() {
                       alignItems: "center",
                       justifyContent: "center",
                       flexShrink: 0,
-                      color: isWarn ? (V.warn || "#f59e0b") : isSuccess ? (V.ok || "#22c55e") : V.pri,
+                      color: isWarn
+                        ? V.warn || "#f59e0b"
+                        : isSuccess
+                          ? V.ok || "#22c55e"
+                          : V.pri,
                       border: "1px solid " + V.outv,
                     }}
                   >
-                    <Icon name={isWarn ? "alert-triangle" : isSuccess ? "check-circle" : "info"} size={18} />
+                    <Icon
+                      name={
+                        isWarn
+                          ? "alert-triangle"
+                          : isSuccess
+                            ? "check-circle"
+                            : "info"
+                      }
+                      size={18}
+                    />
                   </div>
                   <div>
-                    <div style={{ font: "700 14px/1.2 " + t.dfont, color: V.ink }}>{sn.title}</div>
-                    <div style={{ font: "600 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
+                    <div
+                      style={{ font: "700 14px/1.2 " + t.dfont, color: V.ink }}
+                    >
+                      {sn.title}
+                    </div>
+                    <div
+                      style={{
+                        font: "600 11px/1.3 " + t.font,
+                        color: V.ink2,
+                        marginTop: "2px",
+                      }}
+                    >
                       Source: {sn.source} · {sn.time}
                     </div>
-                    <div style={{ font: "400 12px/1.4 " + t.font, color: V.ink, marginTop: "4px" }}>
+                    <div
+                      style={{
+                        font: "400 12px/1.4 " + t.font,
+                        color: V.ink,
+                        marginTop: "4px",
+                      }}
+                    >
                       {sn.body}
                     </div>
                   </div>

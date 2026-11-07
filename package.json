@@ -4,6 +4,8 @@
   "type": "module",
   "scripts": {
     "validate": "node tools/ci-runner.mjs",
+    "test": "npm --prefix docs/react test",
+    "build": "npm --prefix docs/react run build",
     "test:a11y": "node tools/ci-runner.mjs --a11y",
     "test:visual": "node tools/ci-runner.mjs --visual",
     "test:unit": "node tools/ci-runner.mjs --unit",

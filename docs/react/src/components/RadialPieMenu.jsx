@@ -33,10 +33,16 @@ export default function RadialPieMenu({
         onClose();
       } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
         e.preventDefault();
-        setHoveredIdx((cur) => (cur === null ? 0 : (cur + 1) % PIE_SLICES.length));
+        setHoveredIdx((cur) =>
+          cur === null ? 0 : (cur + 1) % PIE_SLICES.length,
+        );
       } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
         e.preventDefault();
-        setHoveredIdx((cur) => (cur === null ? PIE_SLICES.length - 1 : (cur - 1 + PIE_SLICES.length) % PIE_SLICES.length));
+        setHoveredIdx((cur) =>
+          cur === null
+            ? PIE_SLICES.length - 1
+            : (cur - 1 + PIE_SLICES.length) % PIE_SLICES.length,
+        );
       } else if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();
         if (hoveredIdx !== null) {
@@ -104,7 +110,10 @@ export default function RadialPieMenu({
           width={size}
           height={size}
           viewBox={`0 0 ${size} ${size}`}
-          style={{ overflow: "visible", filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.6))" }}
+          style={{
+            overflow: "visible",
+            filter: "drop-shadow(0 12px 32px rgba(0,0,0,0.6))",
+          }}
         >
           {PIE_SLICES.map((slice, i) => {
             const isHovered = hoveredIdx === i;
@@ -118,7 +127,9 @@ export default function RadialPieMenu({
               <g
                 key={slice.id}
                 onMouseEnter={() => setHoveredIdx(i)}
-                onMouseLeave={() => setHoveredIdx((cur) => (cur === i ? null : cur))}
+                onMouseLeave={() =>
+                  setHoveredIdx((cur) => (cur === i ? null : cur))
+                }
                 onClick={() => onSelect(slice.id, target)}
                 style={{ cursor: "pointer" }}
               >
@@ -128,7 +139,9 @@ export default function RadialPieMenu({
                   stroke={isHovered ? V.pri : V.outv}
                   strokeWidth="1.5"
                   style={{
-                    transition: reducedMotion ? "none" : "fill .12s ease, stroke .12s ease",
+                    transition: reducedMotion
+                      ? "none"
+                      : "fill .12s ease, stroke .12s ease",
                   }}
                 />
                 <text
@@ -195,7 +208,9 @@ export default function RadialPieMenu({
           >
             {target.name}
           </span>
-          <span style={{ font: "500 7px/1 " + t.font, color: V.ink2 }}>CANCEL</span>
+          <span style={{ font: "500 7px/1 " + t.font, color: V.ink2 }}>
+            CANCEL
+          </span>
         </div>
       </div>
     </div>

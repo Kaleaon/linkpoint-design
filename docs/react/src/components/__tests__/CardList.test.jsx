@@ -26,10 +26,12 @@ describe("CardList - Pull-to-refresh & Receipt Dialogs", () => {
         <ThemeContext.Provider value={mockThemeContext}>
           <CardList cards={dummyCards} />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
-    const container = screen.getByText("Test Card").closest("div").parentElement;
+    const container = screen
+      .getByText("Test Card")
+      .closest("div").parentElement;
 
     fireEvent.touchStart(container, { touches: [{ clientY: 100 }] });
     fireEvent.touchMove(container, { touches: [{ clientY: 250 }] });
@@ -50,9 +52,18 @@ describe("CardList - Pull-to-refresh & Receipt Dialogs", () => {
       dismissed: {},
       tabs: { Friends: "ALL" },
     };
-    const mockActions = { setDialog: setDialogMock, notify: vi.fn(), allGrids: () => [] };
+    const mockActions = {
+      setDialog: setDialogMock,
+      notify: vi.fn(),
+      allGrids: () => [],
+    };
 
-    const cards = buildCards({ state: mockState, actions: mockActions, layoutName: "Terminal", paletteName: "Ink" });
+    const cards = buildCards({
+      state: mockState,
+      actions: mockActions,
+      layoutName: "Terminal",
+      paletteName: "Ink",
+    });
     const transactionCards = cards.Transactions;
 
     render(
@@ -60,7 +71,7 @@ describe("CardList - Pull-to-refresh & Receipt Dialogs", () => {
         <ThemeContext.Provider value={mockThemeContext}>
           <CardList cards={transactionCards} />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const receiptButtons = screen.getAllByText("VIEW RECEIPT");
@@ -72,7 +83,7 @@ describe("CardList - Pull-to-refresh & Receipt Dialogs", () => {
       expect.objectContaining({
         kind: "ITEMIZED RECEIPT",
         title: "Received L$ 1,200",
-      })
+      }),
     );
   });
 });

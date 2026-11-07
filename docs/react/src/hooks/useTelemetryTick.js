@@ -40,14 +40,23 @@ export function useTelemetryTick() {
       startTimer();
     }
 
-    if (typeof document !== "undefined" && typeof document.addEventListener === "function") {
+    if (
+      typeof document !== "undefined" &&
+      typeof document.addEventListener === "function"
+    ) {
       document.addEventListener("visibilitychange", handleVisibilityChange);
     }
 
     return () => {
       stopTimer();
-      if (typeof document !== "undefined" && typeof document.removeEventListener === "function") {
-        document.removeEventListener("visibilitychange", handleVisibilityChange);
+      if (
+        typeof document !== "undefined" &&
+        typeof document.removeEventListener === "function"
+      ) {
+        document.removeEventListener(
+          "visibilitychange",
+          handleVisibilityChange,
+        );
       }
     };
   }, []);

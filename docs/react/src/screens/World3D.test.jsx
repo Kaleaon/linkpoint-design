@@ -59,7 +59,7 @@ describe("World3D - Interactive Touch Joystick Overlay", () => {
     render(
       <TestWrapper>
         <World3D />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     const joystick = screen.getByTestId("virtual-joystick");
@@ -79,7 +79,15 @@ describe("World3D - Interactive Touch Joystick Overlay", () => {
       appStateRef = state;
       appActions = actions;
       const mockThemeContext = {
-        V: { pri: "#00f0ff", onpri: "#000", surf: "#111", outv: "#333", ink: "#fff", ink2: "#aaa", rs: "4px" },
+        V: {
+          pri: "#00f0ff",
+          onpri: "#000",
+          surf: "#111",
+          outv: "#333",
+          ink: "#fff",
+          ink2: "#aaa",
+          rs: "4px",
+        },
         t: { font: "sans-serif", dfont: "monospace" },
         ink: (bg, candidates) => (candidates && candidates[0]) || "#000000",
       };
@@ -116,7 +124,11 @@ describe("World3D - Interactive Touch Joystick Overlay", () => {
 
     // Pointer down drag forward (dy = -30)
     act(() => {
-      fireEvent.pointerDown(joystick, { clientX: 150, clientY: 120, pointerId: 1 });
+      fireEvent.pointerDown(joystick, {
+        clientX: 150,
+        clientY: 120,
+        pointerId: 1,
+      });
     });
 
     expect(knob.style.transform).toBe("translate(0px, -30px)");
@@ -125,7 +137,11 @@ describe("World3D - Interactive Touch Joystick Overlay", () => {
 
     // Pointer move drag right (dx = 30, dy = 0)
     act(() => {
-      fireEvent.pointerMove(joystick, { clientX: 180, clientY: 150, pointerId: 1 });
+      fireEvent.pointerMove(joystick, {
+        clientX: 180,
+        clientY: 150,
+        pointerId: 1,
+      });
     });
 
     expect(knob.style.transform).toBe("translate(30px, 0px)");
@@ -140,7 +156,15 @@ describe("World3D - Interactive Touch Joystick Overlay", () => {
       const { state, actions } = useAppState();
       appStateRef = state;
       const mockThemeContext = {
-        V: { pri: "#00f0ff", onpri: "#000", surf: "#111", outv: "#333", ink: "#fff", ink2: "#aaa", rs: "4px" },
+        V: {
+          pri: "#00f0ff",
+          onpri: "#000",
+          surf: "#111",
+          outv: "#333",
+          ink: "#fff",
+          ink2: "#aaa",
+          rs: "4px",
+        },
         t: { font: "sans-serif", dfont: "monospace" },
         ink: (bg, candidates) => (candidates && candidates[0]) || "#000000",
       };
@@ -172,7 +196,11 @@ describe("World3D - Interactive Touch Joystick Overlay", () => {
 
     // Press and drag
     act(() => {
-      fireEvent.pointerDown(joystick, { clientX: 150, clientY: 120, pointerId: 1 });
+      fireEvent.pointerDown(joystick, {
+        clientX: 150,
+        clientY: 120,
+        pointerId: 1,
+      });
     });
     expect(appStateRef.cHeld).toBe("fwd");
 

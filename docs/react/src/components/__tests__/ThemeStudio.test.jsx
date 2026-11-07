@@ -45,7 +45,7 @@ function renderThemeStudio(customActions = {}) {
   const renderResult = render(
     <AppContext.Provider value={contextValue}>
       <ThemeStudio />
-    </AppContext.Provider>
+    </AppContext.Provider>,
   );
 
   return { ...renderResult, actions };
@@ -75,9 +75,13 @@ describe("ThemeStudio Component with Schema Validation Alert Banner", () => {
     const fileInput = container.querySelector('input[type="file"]');
     expect(fileInput).toBeTruthy();
 
-    const invalidFile = new File(['{"version": 1, "colors": { "pri": "not-a-color" }}'], "invalid-theme.json", {
-      type: "application/json",
-    });
+    const invalidFile = new File(
+      ['{"version": 1, "colors": { "pri": "not-a-color" }}'],
+      "invalid-theme.json",
+      {
+        type: "application/json",
+      },
+    );
 
     await user.upload(fileInput, invalidFile);
 
@@ -97,7 +101,9 @@ describe("ThemeStudio Component with Schema Validation Alert Banner", () => {
     fireEvent.click(trigger);
 
     const fileInput = container.querySelector('input[type="file"]');
-    const invalidFile = new File(["not valid json"], "bad.json", { type: "application/json" });
+    const invalidFile = new File(["not valid json"], "bad.json", {
+      type: "application/json",
+    });
 
     await user.upload(fileInput, invalidFile);
 
@@ -119,7 +125,9 @@ describe("ThemeStudio Component with Schema Validation Alert Banner", () => {
 
     const fileInput = container.querySelector('input[type="file"]');
     const validJsonString = JSON.stringify(mockTheme);
-    const validFile = new File([validJsonString], "valid-theme.json", { type: "application/json" });
+    const validFile = new File([validJsonString], "valid-theme.json", {
+      type: "application/json",
+    });
 
     await user.upload(fileInput, validFile);
 

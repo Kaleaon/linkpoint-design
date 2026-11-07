@@ -45,20 +45,26 @@ describe("Map and Radar Action Handlers", () => {
           <ThemeProvider>
             <MapTestHarness />
           </ThemeProvider>
-        </AppProvider>
+        </AppProvider>,
       );
 
       const teleportBtn = getByLabelText("Teleport to region");
       fireEvent.click(teleportBtn);
-      expect(getByTestId("toast").textContent).toContain("Teleporting to Da Boom");
+      expect(getByTestId("toast").textContent).toContain(
+        "Teleporting to Da Boom",
+      );
 
       // Test keypress (Enter)
       fireEvent.keyDown(teleportBtn, { key: "Enter" });
-      expect(getByTestId("toast").textContent).toContain("Teleporting to Da Boom");
+      expect(getByTestId("toast").textContent).toContain(
+        "Teleporting to Da Boom",
+      );
 
       // Test keypress (Space)
       fireEvent.keyDown(teleportBtn, { key: " " });
-      expect(getByTestId("toast").textContent).toContain("Teleporting to Da Boom");
+      expect(getByTestId("toast").textContent).toContain(
+        "Teleporting to Da Boom",
+      );
     });
 
     it("triggers saveLandmark on Bookmark star button click and keypress", () => {
@@ -67,16 +73,20 @@ describe("Map and Radar Action Handlers", () => {
           <ThemeProvider>
             <MapTestHarness />
           </ThemeProvider>
-        </AppProvider>
+        </AppProvider>,
       );
 
       const bookmarkBtn = getByLabelText("Bookmark location");
       fireEvent.click(bookmarkBtn);
-      expect(getByTestId("toast").textContent).toContain("Landmark saved to Inventory: Da Boom");
+      expect(getByTestId("toast").textContent).toContain(
+        "Landmark saved to Inventory: Da Boom",
+      );
 
       // Toggle off via Space keypress
       fireEvent.keyDown(bookmarkBtn, { key: " " });
-      expect(getByTestId("toast").textContent).toContain("Landmark removed: Da Boom");
+      expect(getByTestId("toast").textContent).toContain(
+        "Landmark removed: Da Boom",
+      );
     });
 
     it("triggers feedback notifications on Zoom and Locate controls", () => {
@@ -85,7 +95,7 @@ describe("Map and Radar Action Handlers", () => {
           <ThemeProvider>
             <MapTestHarness />
           </ThemeProvider>
-        </AppProvider>
+        </AppProvider>,
       );
 
       const plusBtn = getByLabelText("Zoom in map");
@@ -99,7 +109,9 @@ describe("Map and Radar Action Handlers", () => {
       expect(getByTestId("toast").textContent).toBe("Zoomed out map view");
 
       fireEvent.click(locateBtn);
-      expect(getByTestId("toast").textContent).toBe("Centered on current location");
+      expect(getByTestId("toast").textContent).toBe(
+        "Centered on current location",
+      );
     });
   });
 
@@ -118,7 +130,7 @@ describe("Map and Radar Action Handlers", () => {
           <ThemeProvider>
             <RadarTestHarness mode="AV" openItem="Nyx Vaher" />
           </ThemeProvider>
-        </AppProvider>
+        </AppProvider>,
       );
 
       // PROFILE chip triggers openSearch
@@ -136,12 +148,16 @@ describe("Map and Radar Action Handlers", () => {
       // TRACK chip triggers notification
       const trackChip = getByLabelText("TRACK");
       fireEvent.click(trackChip);
-      expect(getByTestId("toast").textContent).toContain("Tracking avatar: Nyx Vaher");
+      expect(getByTestId("toast").textContent).toContain(
+        "Tracking avatar: Nyx Vaher",
+      );
 
       // TELEPORT TO chip triggers teleportToRegion
       const tpChip = getByLabelText("TELEPORT TO");
       fireEvent.click(tpChip);
-      expect(getByTestId("toast").textContent).toContain("Teleporting to Nyx Vaher");
+      expect(getByTestId("toast").textContent).toContain(
+        "Teleporting to Nyx Vaher",
+      );
     });
 
     it("dispatches object action chips (INSPECT, TOUCH, DERENDER, TRACK)", () => {
@@ -150,24 +166,32 @@ describe("Map and Radar Action Handlers", () => {
           <ThemeProvider>
             <RadarTestHarness mode="OBJ" openItem="Vendor — Sunset Lamp v3" />
           </ThemeProvider>
-        </AppProvider>
+        </AppProvider>,
       );
 
       const inspectChip = getByLabelText("INSPECT");
       fireEvent.click(inspectChip);
-      expect(getByTestId("toast").textContent).toContain("Inspecting object: Vendor — Sunset Lamp v3");
+      expect(getByTestId("toast").textContent).toContain(
+        "Inspecting object: Vendor — Sunset Lamp v3",
+      );
 
       const touchChip = getByLabelText("TOUCH");
       fireEvent.click(touchChip);
-      expect(getByTestId("toast").textContent).toContain("Touched Vendor — Sunset Lamp v3");
+      expect(getByTestId("toast").textContent).toContain(
+        "Touched Vendor — Sunset Lamp v3",
+      );
 
       const derenderChip = getByLabelText("DERENDER");
       fireEvent.click(derenderChip);
-      expect(getByTestId("toast").textContent).toContain("Derendered object: Vendor — Sunset Lamp v3");
+      expect(getByTestId("toast").textContent).toContain(
+        "Derendered object: Vendor — Sunset Lamp v3",
+      );
 
       const trackChip = getByLabelText("TRACK");
       fireEvent.click(trackChip);
-      expect(getByTestId("toast").textContent).toContain("Tracking object: Vendor — Sunset Lamp v3");
+      expect(getByTestId("toast").textContent).toContain(
+        "Tracking object: Vendor — Sunset Lamp v3",
+      );
     });
 
     it("dispatches moderation chips for avatars and objects", () => {
@@ -176,7 +200,7 @@ describe("Map and Radar Action Handlers", () => {
           <ThemeProvider>
             <RadarTestHarness mode="AV" menuItem="Nyx Vaher" />
           </ThemeProvider>
-        </AppProvider>
+        </AppProvider>,
       );
 
       act(() => {
@@ -186,11 +210,15 @@ describe("Map and Radar Action Handlers", () => {
       // Avatar moderation chips
       const muteChip = getByLabelText("MUTE");
       fireEvent.click(muteChip);
-      expect(getByTestId("toast").textContent).toContain("Muted avatar: Nyx Vaher");
+      expect(getByTestId("toast").textContent).toContain(
+        "Muted avatar: Nyx Vaher",
+      );
 
       const ejectChip = getByLabelText("EJECT");
       fireEvent.click(ejectChip);
-      expect(getByTestId("toast").textContent).toContain("Ejected avatar: Nyx Vaher");
+      expect(getByTestId("toast").textContent).toContain(
+        "Ejected avatar: Nyx Vaher",
+      );
 
       // Object moderation chips
       rerender(
@@ -198,7 +226,7 @@ describe("Map and Radar Action Handlers", () => {
           <ThemeProvider>
             <RadarTestHarness mode="OBJ" menuItem="Vendor — Sunset Lamp v3" />
           </ThemeProvider>
-        </AppProvider>
+        </AppProvider>,
       );
 
       act(() => {
@@ -207,7 +235,9 @@ describe("Map and Radar Action Handlers", () => {
 
       const returnChip = getByLabelText("RETURN");
       fireEvent.click(returnChip);
-      expect(getByTestId("toast").textContent).toContain("Returned object: Vendor — Sunset Lamp v3");
+      expect(getByTestId("toast").textContent).toContain(
+        "Returned object: Vendor — Sunset Lamp v3",
+      );
     });
   });
 });

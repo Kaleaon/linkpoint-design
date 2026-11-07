@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { validateThemeJson, normalizeHexColor, MAX_THEME_FILE_SIZE } from "./themeValidator.js";
+import {
+  validateThemeJson,
+  normalizeHexColor,
+  MAX_THEME_FILE_SIZE,
+} from "./themeValidator.js";
 
 const VALID_THEME_OBJ = {
   version: 1,
@@ -103,7 +107,11 @@ describe("validateThemeJson", () => {
     const result = validateThemeJson(JSON.stringify(incomplete));
     expect(result.valid).toBe(false);
     expect(result.errors.length).toBeGreaterThan(0);
-    expect(result.errors.some((e) => e.includes('Missing required color token "sec"'))).toBe(true);
+    expect(
+      result.errors.some((e) =>
+        e.includes('Missing required color token "sec"'),
+      ),
+    ).toBe(true);
   });
 
   it("rejects malformed hex color codes", () => {

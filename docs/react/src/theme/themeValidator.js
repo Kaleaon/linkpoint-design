@@ -41,7 +41,11 @@ export function validateThemeJson(jsonInput, options = {}) {
     if (jsonInput.length > maxBytes) {
       return {
         valid: false,
-        errors: [`File size (${Math.round(jsonInput.length / 1024)}KB) exceeds the maximum limit of ${Math.round(maxBytes / 1024)}KB.`],
+        errors: [
+          `File size (${Math.round(
+            jsonInput.length / 1024,
+          )}KB) exceeds the maximum limit of ${Math.round(maxBytes / 1024)}KB.`,
+        ],
         theme: null,
       };
     }
@@ -67,18 +71,32 @@ export function validateThemeJson(jsonInput, options = {}) {
   if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
     return {
       valid: false,
-      errors: [`Theme JSON payload must be a JSON object, got ${parsed === null ? "null" : Array.isArray(parsed) ? "Array" : typeof parsed}.`],
+      errors: [
+        `Theme JSON payload must be a JSON object, got ${
+          parsed === null
+            ? "null"
+            : Array.isArray(parsed)
+              ? "Array"
+              : typeof parsed
+        }.`,
+      ],
       theme: null,
     };
   }
 
   // Version compatibility check
   if (parsed.version !== undefined && parsed.version !== 1) {
-    errors.push(`Unsupported theme version: ${parsed.version}. Only version 1 is supported.`);
+    errors.push(
+      `Unsupported theme version: ${parsed.version}. Only version 1 is supported.`,
+    );
   }
 
   // Colors property object check
-  if (!parsed.colors || typeof parsed.colors !== "object" || Array.isArray(parsed.colors)) {
+  if (
+    !parsed.colors ||
+    typeof parsed.colors !== "object" ||
+    Array.isArray(parsed.colors)
+  ) {
     errors.push("Theme payload is missing a valid 'colors' object.");
   } else {
     // Check required tokens and format
@@ -87,9 +105,13 @@ export function validateThemeJson(jsonInput, options = {}) {
       if (val === undefined || val === null) {
         errors.push(`Missing required color token "${key}" (${label}).`);
       } else if (typeof val !== "string") {
-        errors.push(`Color token "${key}" must be a string, got ${typeof val}.`);
+        errors.push(
+          `Color token "${key}" must be a string, got ${typeof val}.`,
+        );
       } else if (!HEX_REGEX.test(val.trim())) {
-        errors.push(`Invalid hex color format for token "${key}": "${val}". Expected #RGB or #RRGGBB.`);
+        errors.push(
+          `Invalid hex color format for token "${key}": "${val}". Expected #RGB or #RRGGBB.`,
+        );
       }
     }
   }
@@ -108,7 +130,10 @@ export function validateThemeJson(jsonInput, options = {}) {
     normalizedColors[key] = normalizeHexColor(parsed.colors[key]);
   }
 
-  const themeName = String(parsed.name || "My Linkpoint theme").trim().slice(0, 48) || "My Linkpoint theme";
+  const themeName =
+    String(parsed.name || "My Linkpoint theme")
+      .trim()
+      .slice(0, 48) || "My Linkpoint theme";
 
   return {
     valid: true,

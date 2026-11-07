@@ -22,7 +22,7 @@ describe("SkipLink Component and Focus Order", () => {
         <main id="main-content" tabIndex={-1} aria-label="Main Content">
           Content
         </main>
-      </div>
+      </div>,
     );
 
     const link = screen.getByRole("link", { name: "Skip to main content" });
@@ -43,7 +43,7 @@ describe("SkipLink Component and Focus Order", () => {
         <main id="main-content" tabIndex={-1} aria-label="Main Content">
           Content
         </main>
-      </div>
+      </div>,
     );
 
     const link = screen.getByRole("link", { name: "Skip to main content" });
@@ -64,7 +64,7 @@ describe("SkipLink Component and Focus Order", () => {
         <main id="main-content" tabIndex={-1} aria-label="Main Content">
           Content
         </main>
-      </div>
+      </div>,
     );
 
     const link = screen.getByRole("link", { name: "Skip to main content" });
@@ -94,7 +94,7 @@ describe("SkipLink Component and Focus Order", () => {
             <DeviceFrame />
           </ThemeProvider>
         </KthemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const link = screen.getByRole("link", { name: "Skip to main content" });

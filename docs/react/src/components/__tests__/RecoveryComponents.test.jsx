@@ -21,11 +21,13 @@ describe("Recovery Components & Global Error Boundary", () => {
     const { rerender } = render(
       <GlobalErrorBoundary onReset={onResetMock}>
         <ProblemChild shouldThrow={true} />
-      </GlobalErrorBoundary>
+      </GlobalErrorBoundary>,
     );
 
     expect(screen.getByText("SCREEN EXECUTION EXCEPTION")).toBeDefined();
-    expect(screen.getByText("Simulated component render failure")).toBeDefined();
+    expect(
+      screen.getByText("Simulated component render failure"),
+    ).toBeDefined();
 
     const retryBtn = screen.getByRole("button", { name: "Retry component" });
     fireEvent.click(retryBtn);
@@ -39,15 +41,21 @@ describe("Recovery Components & Global Error Boundary", () => {
         <ThemeProvider>
           <OfflineGrid />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     // Stop grid to trigger offline status
-    const stopGridBtn = screen.getByRole("button", { name: "Toggle grid status" });
+    const stopGridBtn = screen.getByRole("button", {
+      name: "Toggle grid status",
+    });
     fireEvent.click(stopGridBtn);
 
-    expect(screen.getByText("AUTOMATED RECOVERY & AUTO-RECONNECTION")).toBeDefined();
-    expect(screen.getByRole("button", { name: "Retry Reconnection" })).toBeDefined();
+    expect(
+      screen.getByText("AUTOMATED RECOVERY & AUTO-RECONNECTION"),
+    ).toBeDefined();
+    expect(
+      screen.getByRole("button", { name: "Retry Reconnection" }),
+    ).toBeDefined();
   });
 
   it("Search renders skeleton loading and recovery timeout UI when query state is loading or timed out", () => {
@@ -56,7 +64,7 @@ describe("Recovery Components & Global Error Boundary", () => {
         <ThemeProvider>
           <Search />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     expect(screen.getByText("PEOPLE")).toBeDefined();
@@ -68,7 +76,7 @@ describe("Recovery Components & Global Error Boundary", () => {
         <ThemeProvider>
           <Inventory />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     expect(screen.getByText("Objects")).toBeDefined();

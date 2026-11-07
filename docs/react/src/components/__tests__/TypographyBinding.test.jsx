@@ -34,7 +34,7 @@ describe("Typography Token Binding in React UI Components", () => {
     const { container } = render(
       <ThemeContext.Provider value={mockThemeContext}>
         <BlockKeypad title="SECURITY CODE" systemCode="SEC-01-CODE" />
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>,
     );
 
     const dialog = screen.getByRole("dialog", { name: "SECURITY CODE" });
@@ -57,7 +57,7 @@ describe("Typography Token Binding in React UI Components", () => {
           systemCode="SYS-01-PWR"
           showReadout={true}
         />
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>,
     );
 
     const codeEl = screen.getByText("SYS-01-PWR");

@@ -2,7 +2,11 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
-import { SkeletonCardList, SkeletonTree, SkeletonDetail } from "../Skeletons.jsx";
+import {
+  SkeletonCardList,
+  SkeletonTree,
+  SkeletonDetail,
+} from "../Skeletons.jsx";
 import CardList from "../CardList.jsx";
 import Inventory from "../../screens/Inventory.jsx";
 import Search from "../../screens/Search.jsx";
@@ -43,7 +47,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     const { container } = render(
       <ThemeContext.Provider value={mockThemeTokens}>
         <SkeletonCardList count={4} />
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>,
     );
 
     const cardListEl = screen.getByTestId("skeleton-card-list");
@@ -69,7 +73,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     render(
       <ThemeContext.Provider value={mockThemeTokens}>
         <SkeletonTree count={6} />
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>,
     );
 
     const treeEl = screen.getByTestId("skeleton-tree");
@@ -95,7 +99,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     render(
       <ThemeContext.Provider value={mockThemeTokens}>
         <SkeletonDetail />
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>,
     );
 
     const detailEl = screen.getByTestId("skeleton-detail");
@@ -110,13 +114,22 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     expect(srText).toHaveAttribute("aria-live", "polite");
     expect(srText).toHaveTextContent("Loading detail pane...");
 
-    expect(screen.getByTestId("skeleton-detail-header")).toHaveClass("skeleton-shimmer");
-    expect(screen.getByTestId("skeleton-detail-footer")).toHaveClass("skeleton-shimmer");
+    expect(screen.getByTestId("skeleton-detail-header")).toHaveClass(
+      "skeleton-shimmer",
+    );
+    expect(screen.getByTestId("skeleton-detail-footer")).toHaveClass(
+      "skeleton-shimmer",
+    );
   });
 
   it("renders SkeletonCardList in CardList component when state.cond === 'loading'", () => {
     const mockAppContext = {
-      state: { cond: "loading", screen: "Friends", layout: "default", palette: "default" },
+      state: {
+        cond: "loading",
+        screen: "Friends",
+        layout: "default",
+        palette: "default",
+      },
       actions: {},
     };
 
@@ -125,7 +138,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={mockThemeTokens}>
           <CardList cards={[]} />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const skeletonEl = screen.getByTestId("skeleton-card-list");
@@ -144,7 +157,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={{ ...mockThemeTokens, scr: "Inventory" }}>
           <Inventory />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const treeSkeleton = screen.getByTestId("skeleton-tree");
@@ -154,7 +167,13 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
 
   it("renders SkeletonCardList in Search screen results area when state.cond === 'loading'", () => {
     const mockAppContext = {
-      state: { cond: "loading", screen: "Search", searchTab: "FRIENDS", searchQuery: "", searchState: {} },
+      state: {
+        cond: "loading",
+        screen: "Search",
+        searchTab: "FRIENDS",
+        searchQuery: "",
+        searchState: {},
+      },
       actions: {},
     };
 
@@ -163,7 +182,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={{ ...mockThemeTokens, scr: "Search" }}>
           <Search />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const skeletonEl = screen.getByTestId("skeleton-card-list");
@@ -188,7 +207,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={splitThemeTokens}>
           <SplitDetail />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const skeletonDetail = screen.getByTestId("skeleton-detail");
@@ -218,7 +237,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={emptyThemeTokens}>
           <StateBlock />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const stateBlock = screen.getByTestId("state-block");
@@ -231,11 +250,16 @@ describe("WCAG 2.2 SC 4.1.3 Status Messages & ARIA22 Semantic Enhancement", () =
   it("supports configurable label and aria-live props on SkeletonCardList", () => {
     render(
       <ThemeContext.Provider value={mockThemeTokens}>
-        <SkeletonCardList label="Loading friends list..." ariaLive="assertive" />
-      </ThemeContext.Provider>
+        <SkeletonCardList
+          label="Loading friends list..."
+          ariaLive="assertive"
+        />
+      </ThemeContext.Provider>,
     );
 
-    const cardListEl = screen.getByRole("status", { name: "Loading friends list..." });
+    const cardListEl = screen.getByRole("status", {
+      name: "Loading friends list...",
+    });
     expect(cardListEl).toBeInTheDocument();
     expect(cardListEl).toHaveAttribute("aria-busy", "true");
     expect(cardListEl).toHaveAttribute("aria-label", "Loading friends list...");
@@ -248,14 +272,22 @@ describe("WCAG 2.2 SC 4.1.3 Status Messages & ARIA22 Semantic Enhancement", () =
   it("supports configurable label and aria-live props on SkeletonTree", () => {
     render(
       <ThemeContext.Provider value={mockThemeTokens}>
-        <SkeletonTree label="Loading inventory hierarchy..." aria-live="polite" />
-      </ThemeContext.Provider>
+        <SkeletonTree
+          label="Loading inventory hierarchy..."
+          aria-live="polite"
+        />
+      </ThemeContext.Provider>,
     );
 
-    const treeEl = screen.getByRole("status", { name: "Loading inventory hierarchy..." });
+    const treeEl = screen.getByRole("status", {
+      name: "Loading inventory hierarchy...",
+    });
     expect(treeEl).toBeInTheDocument();
     expect(treeEl).toHaveAttribute("aria-busy", "true");
-    expect(treeEl).toHaveAttribute("aria-label", "Loading inventory hierarchy...");
+    expect(treeEl).toHaveAttribute(
+      "aria-label",
+      "Loading inventory hierarchy...",
+    );
 
     const srText = treeEl.querySelector("span.sr-only");
     expect(srText).toHaveAttribute("aria-live", "polite");
@@ -265,11 +297,16 @@ describe("WCAG 2.2 SC 4.1.3 Status Messages & ARIA22 Semantic Enhancement", () =
   it("supports configurable label and aria-live props on SkeletonDetail", () => {
     render(
       <ThemeContext.Provider value={mockThemeTokens}>
-        <SkeletonDetail label="Loading inspector pane..." ariaLive="assertive" />
-      </ThemeContext.Provider>
+        <SkeletonDetail
+          label="Loading inspector pane..."
+          ariaLive="assertive"
+        />
+      </ThemeContext.Provider>,
     );
 
-    const detailEl = screen.getByRole("status", { name: "Loading inspector pane..." });
+    const detailEl = screen.getByRole("status", {
+      name: "Loading inspector pane...",
+    });
     expect(detailEl).toBeInTheDocument();
     expect(detailEl).toHaveAttribute("aria-busy", "true");
     expect(detailEl).toHaveAttribute("aria-label", "Loading inspector pane...");
@@ -283,10 +320,12 @@ describe("WCAG 2.2 SC 4.1.3 Status Messages & ARIA22 Semantic Enhancement", () =
     render(
       <ThemeContext.Provider value={mockThemeTokens}>
         <SkeletonCardList />
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>,
     );
 
-    const srText = screen.getByTestId("skeleton-card-list").querySelector("span.sr-only");
+    const srText = screen
+      .getByTestId("skeleton-card-list")
+      .querySelector("span.sr-only");
     expect(srText).toBeInTheDocument();
     expect(srText.style.position).toBe("absolute");
     expect(srText.style.width).toBe("1px");
@@ -307,10 +346,12 @@ describe("WCAG 2.2 SC 4.1.3 Status Messages & ARIA22 Semantic Enhancement", () =
         <ThemeContext.Provider value={{ ...mockThemeTokens, scr: "Inventory" }}>
           <Inventory />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
-    const inventoryStatus = screen.getByRole("status", { name: "Loading tree hierarchy..." });
+    const inventoryStatus = screen.getByRole("status", {
+      name: "Loading tree hierarchy...",
+    });
     expect(inventoryStatus).toBeInTheDocument();
     expect(inventoryStatus).toHaveAttribute("aria-busy", "true");
   });

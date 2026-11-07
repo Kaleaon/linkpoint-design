@@ -22,7 +22,7 @@ describe("KInteractive & Standard Button Controls Accessibility", () => {
     render(
       <KInteractive as="div" label="Div Button" onClick={handleClick}>
         Custom Div Button
-      </KInteractive>
+      </KInteractive>,
     );
 
     const control = screen.getByRole("button", { name: "Div Button" });
@@ -48,7 +48,14 @@ describe("KInteractive & Standard Button Controls Accessibility", () => {
     const mockState = { screen: "Chat" };
     const setScreen = vi.fn();
     const mockTheme = {
-      V: { surf: "#111", outv: "#222", navr: "4px", onpriC: "#fff", ink2: "#888", priC: "#333" },
+      V: {
+        surf: "#111",
+        outv: "#222",
+        navr: "4px",
+        onpriC: "#fff",
+        ink2: "#888",
+        priC: "#333",
+      },
       t: { font: "sans-serif", dfont: "monospace" },
       nav: "rail",
       immersive: false,
@@ -59,7 +66,7 @@ describe("KInteractive & Standard Button Controls Accessibility", () => {
         <ThemeContext.Provider value={mockTheme}>
           <RailNav />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const buttons = screen.getAllByRole("button");
@@ -78,7 +85,17 @@ describe("KInteractive & Standard Button Controls Accessibility", () => {
     const mockState = { menu: "File", flOpen: { Chat: true }, flMin: {} };
     const setMenu = vi.fn();
     const mockTheme = {
-      V: { surf: "#111", outv: "#222", pri: "#00f", bg: "#000", onpri: "#fff", ink: "#fff", ink2: "#888", rs: "4px", rp: "8px" },
+      V: {
+        surf: "#111",
+        outv: "#222",
+        pri: "#00f",
+        bg: "#000",
+        onpri: "#fff",
+        ink: "#fff",
+        ink2: "#888",
+        rs: "4px",
+        rp: "8px",
+      },
       t: { font: "sans-serif", dfont: "monospace" },
       ink: (bg, arr) => arr[0],
       isFloat: true,
@@ -90,7 +107,7 @@ describe("KInteractive & Standard Button Controls Accessibility", () => {
         <ThemeContext.Provider value={mockTheme}>
           <MenuBar />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const fileMenuBtn = screen.getByRole("button", { name: /File/i });
@@ -107,7 +124,22 @@ describe("KInteractive & Standard Button Controls Accessibility", () => {
 
   it("renders FloatersDesktop taskbar and dock controls as native buttons", () => {
     const mockTheme = {
-      V: { bg: "#000", sky1: "#111", sky2: "#222", gnd: "#333", gnd2: "#444", outv: "#555", surf: "#666", surf2: "#777", sec2: "#888", pri: "#999", rp: "8px", rs: "4px", ink: "#fff", ink2: "#aaa" },
+      V: {
+        bg: "#000",
+        sky1: "#111",
+        sky2: "#222",
+        gnd: "#333",
+        gnd2: "#444",
+        outv: "#555",
+        surf: "#666",
+        surf2: "#777",
+        sec2: "#888",
+        pri: "#999",
+        rp: "8px",
+        rs: "4px",
+        ink: "#fff",
+        ink2: "#aaa",
+      },
       t: { font: "sans-serif", dfont: "monospace" },
       d: { split: false },
       ink: (bg, arr) => arr[0],
@@ -119,10 +151,12 @@ describe("KInteractive & Standard Button Controls Accessibility", () => {
         <ThemeContext.Provider value={mockTheme}>
           <FloatersDesktop />
         </ThemeContext.Provider>
-      </AppProvider>
+      </AppProvider>,
     );
 
-    const camHudClose = screen.getByRole("button", { name: /Close (Camera )?HUD/i });
+    const camHudClose = screen.getByRole("button", {
+      name: /Close (Camera )?HUD/i,
+    });
     expect(camHudClose.tagName).toBe("BUTTON");
 
     const camHudToggle = screen.getByRole("button", { name: /CAM HUD/i });
