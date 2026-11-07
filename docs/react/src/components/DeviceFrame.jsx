@@ -1,5 +1,6 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
+import SkipLink from "./SkipLink.jsx";
 import MenuBar from "./MenuBar.jsx";
 import Shell from "./Shell.jsx";
 import ConsoleFrame from "./ConsoleFrame.jsx";
@@ -22,6 +23,7 @@ export default function DeviceFrame() {
 
   return (
     <div className="device-frame" id="app-root">
+      <SkipLink />
       <div style={frameStyle}>
         <MenuBar />
         <div style={cfWrap}>
