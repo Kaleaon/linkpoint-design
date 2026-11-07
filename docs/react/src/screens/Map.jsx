@@ -297,7 +297,7 @@ export default function Map() {
         }}>
           {/* Region Grid Ground */}
           <div style={{ position: "absolute", inset: 0, display: "grid", gridTemplateColumns: "1fr 1fr", gridTemplateRows: "1fr 1fr" }}>
-            {(mini ? [] : REGIONS).map(([name, meta], i) => {
+            {(mini ? [] : REGIONS).map(([name, meta]) => {
               const isSelected = selectedRegion && (selectedRegion === name || selectedRegion.includes(name));
               return (
                 <div
