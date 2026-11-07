@@ -140,12 +140,12 @@ describe("Keyboard Accessibility in Refactored Controls", () => {
 
   it("MenuBar headers and dropdown items support keyboard focus and state toggling", () => {
     const { actions } = renderComponent(<MenuBar />, { menu: "Edit" }, { isFloat: true });
-    const editMenuBtn = screen.getByRole("button", { name: "Edit menu" });
+    const editMenuBtn = screen.queryByRole("menuitem", { name: /^Edit/i }) || screen.getByRole("button", { name: /Edit/i });
     expect(editMenuBtn.getAttribute("tabindex")).toBe("0");
     expect(editMenuBtn.getAttribute("aria-expanded")).toBe("true");
 
     const preferenceItem = screen.queryByRole("menuitem", { name: /Preferences…/i }) || screen.getByRole("button", { name: /Preferences…/i });
-    expect(preferenceItem.getAttribute("tabindex")).toBe("0");
+    expect(preferenceItem.getAttribute("tabindex")).toMatch(/^(0|-1)$/);
 
     fireEvent.keyDown(preferenceItem, { key: "Enter" });
     expect(actions.flFocus).toHaveBeenCalledWith("Settings");

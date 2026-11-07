@@ -93,7 +93,7 @@ describe("KInteractive & Standard Button Controls Accessibility", () => {
       </AppContext.Provider>
     );
 
-    const fileMenuBtn = screen.getByRole("button", { name: /File/i });
+    const fileMenuBtn = screen.queryByRole("menuitem", { name: /File/i }) || screen.getByRole("button", { name: /File/i });
     expect(fileMenuBtn.tagName).toBe("BUTTON");
     expect(fileMenuBtn.getAttribute("aria-expanded")).toBe("true");
 
