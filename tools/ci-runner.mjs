@@ -411,6 +411,18 @@ async function taskUnitTests() {
   }
 
   if (hasReactVitest) {
+    const kthemeDirs = [
+      path.resolve(cwd, '../Ktheme/packages/react'),
+      path.resolve(cwd, '../../Ktheme/packages/react'),
+      '/app/Ktheme/packages/react'
+    ];
+    if (!kthemeDirs.some(dir => fs.existsSync(dir))) {
+      log('Cloning Ktheme repository for local React test dependencies...', 'info');
+      try {
+        spawnSync('git', ['clone', '--depth', '1', 'https://github.com/Kaleaon/Ktheme.git', path.resolve(cwd, '../Ktheme')], { stdio: 'inherit' });
+      } catch (_) {}
+    }
+
     log('Executing React Linkpoint Vitest Suite...', 'info');
     const reactDir = path.join(cwd, 'docs/react');
     const hasPnpmLock = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml'));
