@@ -8,7 +8,7 @@ describe("A11yControl component", () => {
     const { getByTestId } = render(
       <A11yControl data-testid="a11y-control" aria-label="A11y Control">
         Control Content
-      </A11yControl>
+      </A11yControl>,
     );
     const el = getByTestId("a11y-control");
     expect(el.tagName).toBe("DIV");
@@ -21,7 +21,7 @@ describe("A11yControl component", () => {
     const { getByTestId } = render(
       <A11yControl as="span" data-testid="a11y-span" aria-label="Span Control">
         Span Content
-      </A11yControl>
+      </A11yControl>,
     );
     const el = getByTestId("a11y-span");
     expect(el.tagName).toBe("SPAN");
@@ -30,9 +30,13 @@ describe("A11yControl component", () => {
   it("handles mouse click and keydown (Enter and Space)", () => {
     const handleClick = vi.fn();
     const { getByTestId } = render(
-      <A11yControl data-testid="a11y-control" onClick={handleClick} aria-label="Action">
+      <A11yControl
+        data-testid="a11y-control"
+        onClick={handleClick}
+        aria-label="Action"
+      >
         Action
-      </A11yControl>
+      </A11yControl>,
     );
     const el = getByTestId("a11y-control");
 

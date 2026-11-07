@@ -6,13 +6,21 @@ import { pickInk } from "./color.js";
 function getLuminance(hex) {
   if (!hex || typeof hex !== "string") return 0;
   const cleanHex = hex.replace("#", "");
-  const fullHex = cleanHex.length === 3 ? cleanHex.split("").map((c) => c + c).join("") : cleanHex;
+  const fullHex =
+    cleanHex.length === 3
+      ? cleanHex
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : cleanHex;
   const num = parseInt(fullHex, 16);
   if (isNaN(num)) return 0;
   const r = ((num >> 16) & 255) / 255;
   const g = ((num >> 8) & 255) / 255;
   const b = (num & 255) / 255;
-  const a = [r, g, b].map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
+  const a = [r, g, b].map((v) =>
+    v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4),
+  );
   return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
 }
 
@@ -27,9 +35,21 @@ export function computeThemeTokens(state) {
   const L = resolveLayout(state.layout);
   const base = PALETTES[state.palette] || PALETTES.ink;
   const P = state.customTheme?.active
-    ? { ...base, name: state.customTheme.name, note: "A custom, shareable colour theme.", c: { ...base.c, ...state.customTheme.colors } }
+    ? {
+        ...base,
+        name: state.customTheme.name,
+        note: "A custom, shareable colour theme.",
+        c: { ...base.c, ...state.customTheme.colors },
+      }
     : base;
-  const t = { name: L.name + " / " + P.name, nav: L.nav, font: L.font, dfont: L.dfont, note: L.note + "   Colour pack: " + P.note + ".", v: { ...P.c, ...L.s } };
+  const t = {
+    name: L.name + " / " + P.name,
+    nav: L.nav,
+    font: L.font,
+    dfont: L.dfont,
+    note: L.note + "   Colour pack: " + P.note + ".",
+    v: { ...P.c, ...L.s },
+  };
   const V = t.v;
 
   let focusRing = V.pri;
@@ -41,7 +61,9 @@ export function computeThemeTokens(state) {
     }
   }
   const isLightBg = getLuminance(V.bg) >= 0.5;
-  const focusRingShadow = isLightBg ? "rgba(0, 0, 0, 0.4)" : "rgba(0, 0, 0, 0.6)";
+  const focusRingShadow = isLightBg
+    ? "rgba(0, 0, 0, 0.4)"
+    : "rgba(0, 0, 0, 0.6)";
 
   V.focusRing = focusRing;
   V.focusRingShadow = focusRingShadow;
@@ -63,26 +85,65 @@ export function computeThemeRuntime(state, cf, tokens) {
   if (d.desk) nav = "floaters";
   else if (tNav === "SWEEP") nav = "sweep";
   else if (d.split) nav = "rail";
-  else nav = tNav === "TILES" ? "tiles" : tNav === "RAIL" && d.w > 700 ? "rail" : "tabs";
+  else
+    nav =
+      tNav === "TILES"
+        ? "tiles"
+        : tNav === "RAIL" && d.w > 700
+          ? "rail"
+          : "tabs";
 
   const C = cf();
   const isConsole = nav === "sweep";
-  const consoleScene = isConsole && state.screen === "3D View" && state.cond === "normal";
+  const consoleScene =
+    isConsole && state.screen === "3D View" && state.cond === "normal";
   const isFloat = nav === "floaters";
-  const isSweepDesk = isFloat && (state.layout === "sweep" || state.layout === "lcars" || tNav === "SWEEP");
+  const isSweepDesk =
+    isFloat &&
+    (state.layout === "sweep" || state.layout === "lcars" || tNav === "SWEEP");
   const bleed = isConsole || isFloat;
 
   const scr = state.screen;
   const sel = (n) => scr === n;
 
-  const condPack = state.cond === "normal" ? null : STATES[state.cond][scr] || STATES[state.cond]._;
-  const stateBlockActive = !!condPack && state.cond !== "loading" && !["Login", "Settings", "Cache", "Search"].includes(scr);
+  const condPack =
+    state.cond === "normal"
+      ? null
+      : STATES[state.cond][scr] || STATES[state.cond]._;
+  const stateBlockActive =
+    !!condPack &&
+    state.cond !== "loading" &&
+    !["Login", "Settings", "Cache", "Search"].includes(scr);
   const norm = !stateBlockActive;
   const bare = ["3D View", "Login", "Search"].includes(scr);
   const immersive = scr === "3D View" && norm;
-  const headLook = bare || isFloat ? "none" : nav === "sweep" ? "sweep" : (tokens ? tokens.LK.head : L.look.head);
+  const headLook =
+    bare || isFloat
+      ? "none"
+      : nav === "sweep"
+        ? "sweep"
+        : tokens
+          ? tokens.LK.head
+          : L.look.head;
 
-  return { d, nav, scr, sel, condPack, bare, immersive, headLook, isSweepDesk, C, isConsole, consoleScene, isFloat, bleed, stateBlockActive, norm };
+  return {
+    d,
+    nav,
+    scr,
+    sel,
+    condPack,
+    bare,
+    immersive,
+    headLook,
+    isSweepDesk,
+    C,
+    isConsole,
+    consoleScene,
+    isFloat,
+    bleed,
+    stateBlockActive,
+    norm,
+  };
 }
 
 // Ported from the top of renderVals(): resolves the active layout+palette into

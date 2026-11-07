@@ -104,7 +104,7 @@ export default function MuteList() {
           return { ...a, flags: updatedFlags };
         }
         return a;
-      })
+      }),
     );
   };
 
@@ -112,7 +112,13 @@ export default function MuteList() {
     actions.setDialog({
       icon: "shield-alert",
       kind: "BLOCK ENTITY",
-      title: `Block New ${type === "AVATARS" ? "Resident" : type === "OBJECTS" ? "Object" : "Sound"}`,
+      title: `Block New ${
+        type === "AVATARS"
+          ? "Resident"
+          : type === "OBJECTS"
+            ? "Object"
+            : "Sound"
+      }`,
       body: `Enter resident name or target UUID to immediately suppress all communications:`,
       meta: `Type: ${type} · Privacy Policy: Client-Side Block List`,
       buttons: [
@@ -134,13 +140,14 @@ export default function MuteList() {
     justifyContent: "center",
     gap: "6px",
     cursor: "pointer",
-    background: primary ? V.pri : danger ? (V.err || "#dc2626") : V.surf2,
+    background: primary ? V.pri : danger ? V.err || "#dc2626" : V.surf2,
     color: primary
       ? ink(V.pri, [V.bg, V.onpri, V.ink])
       : danger
-      ? "#fff"
-      : V.ink,
-    border: "1px solid " + (primary ? V.pri : danger ? (V.err || "#dc2626") : V.outv),
+        ? "#fff"
+        : V.ink,
+    border:
+      "1px solid " + (primary ? V.pri : danger ? V.err || "#dc2626" : V.outv),
     borderRadius: V.rs,
     font: "700 10.5px/1 " + t.dfont,
     letterSpacing: ".1em",
@@ -174,7 +181,15 @@ export default function MuteList() {
           gap: "10px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", flexWrap: "wrap" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "10px",
+            flexWrap: "wrap",
+          }}
+        >
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <div
               style={{
@@ -193,9 +208,18 @@ export default function MuteList() {
               <Icon name="volume-x" size={22} />
             </div>
             <div>
-              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>Block & Mute Manager</div>
-              <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
-                {totalBlocked} total entries · {avatars.length} residents · {objects.length} objects · {sounds.length} sounds
+              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink }}>
+                Block & Mute Manager
+              </div>
+              <div
+                style={{
+                  font: "400 11px/1.3 " + t.font,
+                  color: V.ink2,
+                  marginTop: "2px",
+                }}
+              >
+                {totalBlocked} total entries · {avatars.length} residents ·{" "}
+                {objects.length} objects · {sounds.length} sounds
               </div>
             </div>
           </div>
@@ -207,7 +231,14 @@ export default function MuteList() {
             aria-label="Add new block rule"
           >
             <Icon name="plus" size={14} />
-            <span>BLOCK {curSub === "AVATARS" ? "RESIDENT..." : curSub === "OBJECTS" ? "OBJECT..." : "SOUND..."}</span>
+            <span>
+              BLOCK{" "}
+              {curSub === "AVATARS"
+                ? "RESIDENT..."
+                : curSub === "OBJECTS"
+                  ? "OBJECT..."
+                  : "SOUND..."}
+            </span>
           </KInteractive>
         </div>
       </div>
@@ -244,7 +275,13 @@ export default function MuteList() {
         {query && (
           <button
             onClick={() => setQuery("")}
-            style={{ background: "transparent", border: "none", color: V.ink2, cursor: "pointer", padding: "4px" }}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: V.ink2,
+              cursor: "pointer",
+              padding: "4px",
+            }}
             aria-label="Clear search"
           >
             <Icon name="x" size={14} />
@@ -254,14 +291,32 @@ export default function MuteList() {
 
       {/* AVATARS SUB-VIEW */}
       {curSub === "AVATARS" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: bleed ? "4px" : "8px",
+          }}
+        >
           {avatars.length === 0 ? (
-            <div style={{ padding: "32px", textAlign: "center", color: V.ink2, font: "400 13px/1.4 " + t.font }}>
+            <div
+              style={{
+                padding: "32px",
+                textAlign: "center",
+                color: V.ink2,
+                font: "400 13px/1.4 " + t.font,
+              }}
+            >
               No residents are currently blocked.
             </div>
           ) : (
             avatars
-              .filter((a) => !query.trim() || a.name.toLowerCase().includes(query.toLowerCase()) || a.uuid.includes(query))
+              .filter(
+                (a) =>
+                  !query.trim() ||
+                  a.name.toLowerCase().includes(query.toLowerCase()) ||
+                  a.uuid.includes(query),
+              )
               .map((av) => (
                 <div
                   key={av.id}
@@ -275,8 +330,21 @@ export default function MuteList() {
                     gap: "10px",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "10px" }}>
-                    <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      justifyContent: "space-between",
+                      gap: "10px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "10px",
+                      }}
+                    >
                       <div
                         style={{
                           width: "36px",
@@ -294,11 +362,30 @@ export default function MuteList() {
                         <Icon name="user-x" size={18} />
                       </div>
                       <div>
-                        <div style={{ font: "700 13.5px/1.2 " + t.dfont, color: V.ink }}>{av.name}</div>
-                        <div style={{ font: "400 10.5px/1.3 " + t.mfont, color: V.ink2, marginTop: "2px" }}>
+                        <div
+                          style={{
+                            font: "700 13.5px/1.2 " + t.dfont,
+                            color: V.ink,
+                          }}
+                        >
+                          {av.name}
+                        </div>
+                        <div
+                          style={{
+                            font: "400 10.5px/1.3 " + t.mfont,
+                            color: V.ink2,
+                            marginTop: "2px",
+                          }}
+                        >
                           {av.uuid}
                         </div>
-                        <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
+                        <div
+                          style={{
+                            font: "400 11px/1.3 " + t.font,
+                            color: V.ink2,
+                            marginTop: "2px",
+                          }}
+                        >
                           Blocked on: {av.date}
                         </div>
                       </div>
@@ -361,14 +448,32 @@ export default function MuteList() {
 
       {/* OBJECTS SUB-VIEW */}
       {curSub === "OBJECTS" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: bleed ? "4px" : "8px",
+          }}
+        >
           {objects.length === 0 ? (
-            <div style={{ padding: "32px", textAlign: "center", color: V.ink2, font: "400 13px/1.4 " + t.font }}>
+            <div
+              style={{
+                padding: "32px",
+                textAlign: "center",
+                color: V.ink2,
+                font: "400 13px/1.4 " + t.font,
+              }}
+            >
               No objects are currently blocked.
             </div>
           ) : (
             objects
-              .filter((o) => !query.trim() || o.name.toLowerCase().includes(query.toLowerCase()) || o.uuid.includes(query))
+              .filter(
+                (o) =>
+                  !query.trim() ||
+                  o.name.toLowerCase().includes(query.toLowerCase()) ||
+                  o.uuid.includes(query),
+              )
               .map((obj) => (
                 <div
                   key={obj.id}
@@ -382,8 +487,21 @@ export default function MuteList() {
                     gap: "8px",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "10px" }}>
-                    <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      justifyContent: "space-between",
+                      gap: "10px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: "10px",
+                      }}
+                    >
                       <div
                         style={{
                           width: "36px",
@@ -401,11 +519,30 @@ export default function MuteList() {
                         <Icon name="box" size={18} />
                       </div>
                       <div>
-                        <div style={{ font: "700 13.5px/1.2 " + t.dfont, color: V.ink }}>{obj.name}</div>
-                        <div style={{ font: "400 10.5px/1.3 " + t.mfont, color: V.ink2, marginTop: "2px" }}>
+                        <div
+                          style={{
+                            font: "700 13.5px/1.2 " + t.dfont,
+                            color: V.ink,
+                          }}
+                        >
+                          {obj.name}
+                        </div>
+                        <div
+                          style={{
+                            font: "400 10.5px/1.3 " + t.mfont,
+                            color: V.ink2,
+                            marginTop: "2px",
+                          }}
+                        >
                           UUID: {obj.uuid}
                         </div>
-                        <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
+                        <div
+                          style={{
+                            font: "400 11px/1.3 " + t.font,
+                            color: V.ink2,
+                            marginTop: "2px",
+                          }}
+                        >
                           Owner: {obj.owner} · {obj.reason}
                         </div>
                       </div>
@@ -429,14 +566,32 @@ export default function MuteList() {
 
       {/* SOUNDS SUB-VIEW */}
       {curSub === "SOUNDS" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: bleed ? "4px" : "8px",
+          }}
+        >
           {sounds.length === 0 ? (
-            <div style={{ padding: "32px", textAlign: "center", color: V.ink2, font: "400 13px/1.4 " + t.font }}>
+            <div
+              style={{
+                padding: "32px",
+                textAlign: "center",
+                color: V.ink2,
+                font: "400 13px/1.4 " + t.font,
+              }}
+            >
               No audio sounds are currently muted.
             </div>
           ) : (
             sounds
-              .filter((s) => !query.trim() || s.name.toLowerCase().includes(query.toLowerCase()) || s.uuid.includes(query))
+              .filter(
+                (s) =>
+                  !query.trim() ||
+                  s.name.toLowerCase().includes(query.toLowerCase()) ||
+                  s.uuid.includes(query),
+              )
               .map((snd) => (
                 <div
                   key={snd.id}
@@ -451,7 +606,13 @@ export default function MuteList() {
                     gap: "10px",
                   }}
                 >
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
+                  >
                     <div
                       style={{
                         width: "36px",
@@ -469,8 +630,21 @@ export default function MuteList() {
                       <Icon name="volume-x" size={18} />
                     </div>
                     <div>
-                      <div style={{ font: "700 13.5px/1.2 " + t.dfont, color: V.ink }}>{snd.name}</div>
-                      <div style={{ font: "400 10.5px/1.3 " + t.mfont, color: V.ink2, marginTop: "2px" }}>
+                      <div
+                        style={{
+                          font: "700 13.5px/1.2 " + t.dfont,
+                          color: V.ink,
+                        }}
+                      >
+                        {snd.name}
+                      </div>
+                      <div
+                        style={{
+                          font: "400 10.5px/1.3 " + t.mfont,
+                          color: V.ink2,
+                          marginTop: "2px",
+                        }}
+                      >
                         UUID: {snd.uuid}
                       </div>
                     </div>

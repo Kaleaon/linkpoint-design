@@ -1,6 +1,10 @@
 import React from "react";
 
-export default function ElevationBadge({ zDelta, compact = false, style = {} }) {
+export default function ElevationBadge({
+  zDelta,
+  compact = false,
+  style = {},
+}) {
   const delta = typeof zDelta === "number" && !isNaN(zDelta) ? zDelta : 0;
   const isUp = delta > 0;
   const isDown = delta < 0;
@@ -8,8 +12,16 @@ export default function ElevationBadge({ zDelta, compact = false, style = {} }) 
   const label = isUp ? `+${delta}m` : `${delta}m`;
 
   const color = isUp ? "#38bdf8" : isDown ? "#fb923c" : "#94a3b8";
-  const bg = isUp ? "rgba(56, 189, 248, 0.15)" : isDown ? "rgba(251, 146, 60, 0.15)" : "rgba(148, 163, 184, 0.15)";
-  const border = isUp ? "rgba(56, 189, 248, 0.35)" : isDown ? "rgba(251, 146, 60, 0.35)" : "rgba(148, 163, 184, 0.25)";
+  const bg = isUp
+    ? "rgba(56, 189, 248, 0.15)"
+    : isDown
+      ? "rgba(251, 146, 60, 0.15)"
+      : "rgba(148, 163, 184, 0.15)";
+  const border = isUp
+    ? "rgba(56, 189, 248, 0.35)"
+    : isDown
+      ? "rgba(251, 146, 60, 0.35)"
+      : "rgba(148, 163, 184, 0.25)";
 
   const badgeStyle = compact
     ? {

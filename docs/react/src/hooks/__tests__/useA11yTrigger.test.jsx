@@ -5,13 +5,17 @@ import useA11yTrigger from "../useA11yTrigger.js";
 
 function TestComponent({ onClick, onKeyDown, options = {} }) {
   const triggerProps = useA11yTrigger(onClick, { onKeyDown, ...options });
-  return <div data-testid="trigger-el" {...triggerProps}>Click or Press</div>;
+  return (
+    <div data-testid="trigger-el" {...triggerProps}>
+      Click or Press
+    </div>
+  );
 }
 
 describe("useA11yTrigger hook", () => {
   it("provides default role, tabIndex, and aria-label when supplied", () => {
     const { getByTestId } = render(
-      <TestComponent options={{ ariaLabel: "Test Control", role: "button" }} />
+      <TestComponent options={{ ariaLabel: "Test Control", role: "button" }} />,
     );
     const el = getByTestId("trigger-el");
     expect(el.getAttribute("role")).toBe("button");
@@ -42,7 +46,7 @@ describe("useA11yTrigger hook", () => {
   it("does not trigger onClick when disabled", () => {
     const handleClick = vi.fn();
     const { getByTestId } = render(
-      <TestComponent onClick={handleClick} options={{ disabled: true }} />
+      <TestComponent onClick={handleClick} options={{ disabled: true }} />,
     );
     const el = getByTestId("trigger-el");
     expect(el.getAttribute("tabindex")).toBe("-1");

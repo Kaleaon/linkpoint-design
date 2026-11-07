@@ -5,8 +5,9 @@ import * as LucideIcons from "lucide-react";
 // exports the same icon set as named PascalCase components, so this just
 // does the same kebab -> Pascal conversion and looks the component up.
 function pascal(name) {
-  return String(name || "")
-    .replace(/(^|-)([a-z0-9])/g, (_, __, c) => c.toUpperCase());
+  return String(name || "").replace(/(^|-)([a-z0-9])/g, (_, __, c) =>
+    c.toUpperCase(),
+  );
 }
 
 const cache = new Map();
@@ -19,9 +20,22 @@ function resolve(name) {
   return Cmp;
 }
 
-export default function Icon({ name, size = 18, style, className, strokeWidth, ...rest }) {
+export default function Icon({
+  name,
+  size = 18,
+  style,
+  className,
+  strokeWidth,
+  ...rest
+}) {
   const Cmp = resolve(name);
-  if (!Cmp) return <span className={className} style={{ width: size, height: size, display: "inline-block", ...style }} />;
+  if (!Cmp)
+    return (
+      <span
+        className={className}
+        style={{ width: size, height: size, display: "inline-block", ...style }}
+      />
+    );
   return (
     <Cmp
       className={className}

@@ -1,4 +1,5 @@
-import json, glob
+import glob
+import json
 
 theme_desktop_configs = {
     "lcars": {
@@ -9,7 +10,7 @@ theme_desktop_configs = {
             "panelRadius": 22,
             "controlRadius": 999,
             "borderWidth": 1,
-            "shadow": "0 16px 44px rgba(0, 0, 0, 0.65)"
+            "shadow": "0 16px 44px rgba(0, 0, 0, 0.65)",
         },
         "menuBar": {
             "height": 28,
@@ -17,25 +18,25 @@ theme_desktop_configs = {
             "letterSpacing": "0.12em",
             "textTransform": "uppercase",
             "dropdownRadius": 12,
-            "dropdownShadow": "0 14px 34px rgba(0,0,0,.65)"
+            "dropdownShadow": "0 14px 34px rgba(0,0,0,.65)",
         },
         "taskbar": {
             "height": 40,
             "buttonRadius": 999,
             "dockAlignment": "left",
-            "quickChatBorderRadius": 999
+            "quickChatBorderRadius": 999,
         },
         "cameraHud": {
             "panelRadius": 16,
             "buttonRadius": 999,
-            "shadow": "0 8px 24px rgba(0,0,0,0.5)"
+            "shadow": "0 8px 24px rgba(0,0,0,0.5)",
         },
         "sweep": {
             "elbowWidth": 36,
             "titleCapRadius": "999px",
             "accentBand": "primary",
-            "showElbowBar": True
-        }
+            "showElbowBar": True,
+        },
     },
     "frutiger-aero": {
         "windowChrome": {
@@ -46,7 +47,7 @@ theme_desktop_configs = {
             "controlRadius": 12,
             "borderWidth": 1,
             "backdropBlur": 12,
-            "shadow": "0 12px 32px rgba(0, 80, 140, 0.22)"
+            "shadow": "0 12px 32px rgba(0, 80, 140, 0.22)",
         },
         "menuBar": {
             "height": 28,
@@ -54,25 +55,25 @@ theme_desktop_configs = {
             "letterSpacing": "0.06em",
             "textTransform": "none",
             "dropdownRadius": 12,
-            "dropdownShadow": "0 10px 28px rgba(0, 60, 120, 0.25)"
+            "dropdownShadow": "0 10px 28px rgba(0, 60, 120, 0.25)",
         },
         "taskbar": {
             "height": 40,
             "buttonRadius": 12,
             "dockAlignment": "left",
-            "quickChatBorderRadius": 12
+            "quickChatBorderRadius": 12,
         },
         "cameraHud": {
             "panelRadius": 16,
             "buttonRadius": 10,
-            "shadow": "0 8px 20px rgba(0, 60, 120, 0.2)"
+            "shadow": "0 8px 20px rgba(0, 60, 120, 0.2)",
         },
         "sweep": {
             "elbowWidth": 28,
             "titleCapRadius": "18px",
             "accentBand": "secondary",
-            "showElbowBar": True
-        }
+            "showElbowBar": True,
+        },
     },
     "art-deco": {
         "windowChrome": {
@@ -82,7 +83,7 @@ theme_desktop_configs = {
             "panelRadius": 0,
             "controlRadius": 0,
             "borderWidth": 1,
-            "shadow": "0 16px 40px rgba(0, 0, 0, 0.75)"
+            "shadow": "0 16px 40px rgba(0, 0, 0, 0.75)",
         },
         "menuBar": {
             "height": 28,
@@ -90,25 +91,25 @@ theme_desktop_configs = {
             "letterSpacing": "0.18em",
             "textTransform": "uppercase",
             "dropdownRadius": 0,
-            "dropdownShadow": "0 14px 30px rgba(0,0,0,.7)"
+            "dropdownShadow": "0 14px 30px rgba(0,0,0,.7)",
         },
         "taskbar": {
             "height": 40,
             "buttonRadius": 0,
             "dockAlignment": "left",
-            "quickChatBorderRadius": 0
+            "quickChatBorderRadius": 0,
         },
         "cameraHud": {
             "panelRadius": 0,
             "buttonRadius": 0,
-            "shadow": "0 8px 24px rgba(0,0,0,0.6)"
+            "shadow": "0 8px 24px rgba(0,0,0,0.6)",
         },
         "sweep": {
             "elbowWidth": 30,
             "titleCapRadius": "0px",
             "accentBand": "primary",
-            "showElbowBar": True
-        }
+            "showElbowBar": True,
+        },
     },
     "windows-phone-metro": {
         "windowChrome": {
@@ -118,7 +119,7 @@ theme_desktop_configs = {
             "panelRadius": 0,
             "controlRadius": 0,
             "borderWidth": 1,
-            "shadow": "0 10px 24px rgba(0, 0, 0, 0.45)"
+            "shadow": "0 10px 24px rgba(0, 0, 0, 0.45)",
         },
         "menuBar": {
             "height": 28,
@@ -126,25 +127,25 @@ theme_desktop_configs = {
             "letterSpacing": "0.02em",
             "textTransform": "lowercase",
             "dropdownRadius": 0,
-            "dropdownShadow": "0 10px 24px rgba(0, 0, 0, 0.45)"
+            "dropdownShadow": "0 10px 24px rgba(0, 0, 0, 0.45)",
         },
         "taskbar": {
             "height": 40,
             "buttonRadius": 0,
             "dockAlignment": "left",
-            "quickChatBorderRadius": 0
+            "quickChatBorderRadius": 0,
         },
         "cameraHud": {
             "panelRadius": 0,
             "buttonRadius": 0,
-            "shadow": "0 6px 18px rgba(0, 0, 0, 0.4)"
+            "shadow": "0 6px 18px rgba(0, 0, 0, 0.4)",
         },
         "sweep": {
             "elbowWidth": 26,
             "titleCapRadius": "0px",
             "accentBand": "primary",
-            "showElbowBar": False
-        }
+            "showElbowBar": False,
+        },
     },
     "ink-terminal-modern": {
         "windowChrome": {
@@ -154,7 +155,7 @@ theme_desktop_configs = {
             "panelRadius": 4,
             "controlRadius": 4,
             "borderWidth": 1,
-            "shadow": "0 12px 32px rgba(0, 0, 0, 0.6)"
+            "shadow": "0 12px 32px rgba(0, 0, 0, 0.6)",
         },
         "menuBar": {
             "height": 28,
@@ -162,25 +163,25 @@ theme_desktop_configs = {
             "letterSpacing": "0.1em",
             "textTransform": "uppercase",
             "dropdownRadius": 4,
-            "dropdownShadow": "0 12px 30px rgba(0, 0, 0, 0.6)"
+            "dropdownShadow": "0 12px 30px rgba(0, 0, 0, 0.6)",
         },
         "taskbar": {
             "height": 40,
             "buttonRadius": 4,
             "dockAlignment": "left",
-            "quickChatBorderRadius": 4
+            "quickChatBorderRadius": 4,
         },
         "cameraHud": {
             "panelRadius": 4,
             "buttonRadius": 4,
-            "shadow": "0 8px 20px rgba(0, 0, 0, 0.5)"
+            "shadow": "0 8px 20px rgba(0, 0, 0, 0.5)",
         },
         "sweep": {
             "elbowWidth": 28,
             "titleCapRadius": "4px",
             "accentBand": "primary",
-            "showElbowBar": True
-        }
+            "showElbowBar": True,
+        },
     },
     "paper-ink": {
         "windowChrome": {
@@ -190,7 +191,7 @@ theme_desktop_configs = {
             "panelRadius": 3,
             "controlRadius": 2,
             "borderWidth": 1,
-            "shadow": "0 6px 16px rgba(0, 0, 0, 0.15)"
+            "shadow": "0 6px 16px rgba(0, 0, 0, 0.15)",
         },
         "menuBar": {
             "height": 28,
@@ -198,27 +199,28 @@ theme_desktop_configs = {
             "letterSpacing": "0.08em",
             "textTransform": "none",
             "dropdownRadius": 3,
-            "dropdownShadow": "0 8px 20px rgba(0, 0, 0, 0.15)"
+            "dropdownShadow": "0 8px 20px rgba(0, 0, 0, 0.15)",
         },
         "taskbar": {
             "height": 40,
             "buttonRadius": 2,
             "dockAlignment": "left",
-            "quickChatBorderRadius": 2
+            "quickChatBorderRadius": 2,
         },
         "cameraHud": {
             "panelRadius": 3,
             "buttonRadius": 2,
-            "shadow": "0 4px 12px rgba(0, 0, 0, 0.12)"
+            "shadow": "0 4px 12px rgba(0, 0, 0, 0.12)",
         },
         "sweep": {
             "elbowWidth": 26,
             "titleCapRadius": "3px",
             "accentBand": "primary",
-            "showElbowBar": True
-        }
-    }
+            "showElbowBar": True,
+        },
+    },
 }
+
 
 # Generic fallback builder for any theme ID not explicitly in theme_desktop_configs
 def build_default_desktop_config(data):
@@ -244,7 +246,9 @@ def build_default_desktop_config(data):
             "panelRadius": pr,
             "controlRadius": cr,
             "borderWidth": 1,
-            "shadow": "0 14px 36px rgba(0,0,0,0.5)" if dark else "0 10px 26px rgba(0,0,0,0.2)"
+            "shadow": (
+                "0 14px 36px rgba(0,0,0,0.5)" if dark else "0 10px 26px rgba(0,0,0,0.2)"
+            ),
         },
         "menuBar": {
             "height": 28,
@@ -252,30 +256,35 @@ def build_default_desktop_config(data):
             "letterSpacing": "0.06em",
             "textTransform": "uppercase" if dark else "none",
             "dropdownRadius": pr,
-            "dropdownShadow": "0 12px 28px rgba(0,0,0,0.4)" if dark else "0 8px 20px rgba(0,0,0,0.18)"
+            "dropdownShadow": (
+                "0 12px 28px rgba(0,0,0,0.4)" if dark else "0 8px 20px rgba(0,0,0,0.18)"
+            ),
         },
         "taskbar": {
             "height": 40,
             "buttonRadius": cr,
             "dockAlignment": "left",
-            "quickChatBorderRadius": cr
+            "quickChatBorderRadius": cr,
         },
         "cameraHud": {
             "panelRadius": pr,
             "buttonRadius": cr,
-            "shadow": "0 8px 20px rgba(0,0,0,0.3)"
+            "shadow": "0 8px 20px rgba(0,0,0,0.3)",
         },
         "sweep": {
             "elbowWidth": 30,
             "titleCapRadius": cap,
             "accentBand": "primary",
-            "showElbowBar": True
-        }
+            "showElbowBar": True,
+        },
     }
 
-theme_paths = sorted(glob.glob('docs/*.json') + glob.glob('ktheme-pr/themes/community/*.json'))
+
+theme_paths = sorted(
+    glob.glob("docs/*.json") + glob.glob("ktheme-pr/themes/community/*.json")
+)
 for path in theme_paths:
-    with open(path, 'r', encoding='utf-8') as f:
+    with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
     tid = data.get("metadata", {}).get("id", "")
@@ -286,8 +295,8 @@ for path in theme_paths:
 
     data["adaptation"]["desktopAdaptation"] = cfg
 
-    with open(path, 'w', encoding='utf-8') as f:
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
-        f.write('\n')
+        f.write("\n")
 
     print(f"Updated {path} ({tid}) with desktopAdaptation.")

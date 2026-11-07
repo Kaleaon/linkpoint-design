@@ -12,30 +12,40 @@ describe("ControlPanels Component", () => {
         <ThemeProvider>
           <ControlPanels />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     // Default active screen is "Chat" (first item in SCREENS)
-    const activeScreenBtn = screen.getByRole("button", { pressed: true, name: "Chat" });
+    const activeScreenBtn = screen.getByRole("button", {
+      pressed: true,
+      name: "Chat",
+    });
     expect(activeScreenBtn).toBeTruthy();
 
     // Default primary token is #6CFF9A -> rgb(108, 255, 154)
     // hexToRgba(#6CFF9A, 0.12) -> rgba(108, 255, 154, 0.12)
     expect(activeScreenBtn.style.borderColor).toBe("rgb(108, 255, 154)");
     expect(activeScreenBtn.style.color).toBe("rgb(108, 255, 154)");
-    expect(activeScreenBtn.style.backgroundColor).toBe("rgba(108, 255, 154, 0.12)");
+    expect(activeScreenBtn.style.backgroundColor).toBe(
+      "rgba(108, 255, 154, 0.12)",
+    );
   });
 
   it("renders safely outside ThemeProvider with fallback tokens", () => {
     render(
       <AppProvider>
         <ControlPanels />
-      </AppProvider>
+      </AppProvider>,
     );
 
-    const activeScreenBtn = screen.getByRole("button", { pressed: true, name: "Chat" });
+    const activeScreenBtn = screen.getByRole("button", {
+      pressed: true,
+      name: "Chat",
+    });
     expect(activeScreenBtn.style.borderColor).toBe("rgb(108, 255, 154)");
     expect(activeScreenBtn.style.color).toBe("rgb(108, 255, 154)");
-    expect(activeScreenBtn.style.backgroundColor).toBe("rgba(108, 255, 154, 0.12)");
+    expect(activeScreenBtn.style.backgroundColor).toBe(
+      "rgba(108, 255, 154, 0.12)",
+    );
   });
 });

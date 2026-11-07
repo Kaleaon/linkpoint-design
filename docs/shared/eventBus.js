@@ -40,7 +40,7 @@ export class EventBus {
     const intentEvent = {
       type: intent.type,
       payload: serializablePayload,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     };
 
     this.logs.push(intentEvent);
@@ -83,7 +83,8 @@ export function intentReducer(state, intent) {
       let toastMsg = "";
 
       if (dlgTitle && buttonLabel) {
-        toastMsg = dlgTitle.split(" ").slice(0, 4).join(" ") + " — " + buttonLabel;
+        toastMsg =
+          dlgTitle.split(" ").slice(0, 4).join(" ") + " — " + buttonLabel;
       } else if (buttonLabel) {
         toastMsg = buttonLabel;
       }
@@ -91,7 +92,7 @@ export function intentReducer(state, intent) {
       return {
         ...state,
         dialog: null,
-        ...(toastMsg ? { toast: toastMsg } : {})
+        ...(toastMsg ? { toast: toastMsg } : {}),
       };
     }
 
@@ -99,7 +100,7 @@ export function intentReducer(state, intent) {
     case "DIALOG_DISMISS": {
       return {
         ...state,
-        dialog: null
+        dialog: null,
       };
     }
 
@@ -116,7 +117,7 @@ export function intentReducer(state, intent) {
         return {
           ...state,
           flMin: { ...flMin, [id]: true },
-          menu: null
+          menu: null,
         };
       } else {
         return {
@@ -125,7 +126,7 @@ export function intentReducer(state, intent) {
           flMin: { ...flMin, [id]: false },
           flZ: flZ.filter((x) => x !== id).concat(id),
           screen: id,
-          menu: null
+          menu: null,
         };
       }
     }
@@ -137,7 +138,7 @@ export function intentReducer(state, intent) {
       return {
         ...state,
         flOpen: { ...flOpen, [id]: false },
-        menu: null
+        menu: null,
       };
     }
 
@@ -147,7 +148,7 @@ export function intentReducer(state, intent) {
       return {
         ...state,
         screen,
-        dialog: null
+        dialog: null,
       };
     }
 
@@ -156,7 +157,7 @@ export function intentReducer(state, intent) {
       if (!message) return state;
       return {
         ...state,
-        toast: `Local Chat (${message})`
+        toast: `Local Chat (${message})`,
       };
     }
 

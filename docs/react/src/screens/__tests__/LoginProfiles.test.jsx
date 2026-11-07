@@ -4,7 +4,11 @@ import React from "react";
 import { AppProvider, useApp } from "../../context/AppContext.jsx";
 import { ThemeProvider } from "../../context/ThemeContext.jsx";
 import Login from "../Login.jsx";
-import { LINKPOINT_ACCOUNTS_KEY, obscureToken, unobscureToken } from "../../hooks/useAppState.js";
+import {
+  LINKPOINT_ACCOUNTS_KEY,
+  obscureToken,
+  unobscureToken,
+} from "../../hooks/useAppState.js";
 
 function LoginHarness() {
   return (
@@ -125,7 +129,9 @@ describe("LocalStorage Account Manager & Login Profile Selector", () => {
 
     const storedRaw = localStorage.getItem(LINKPOINT_ACCOUNTS_KEY);
     const storedAccounts = JSON.parse(storedRaw || "[]");
-    expect(storedAccounts.find((a) => a.id === "acc-to-delete")).toBeUndefined();
+    expect(
+      storedAccounts.find((a) => a.id === "acc-to-delete"),
+    ).toBeUndefined();
 
     const avatarInput = screen.getByLabelText("Avatar Name");
     expect(avatarInput.value).toBe("");
