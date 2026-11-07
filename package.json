@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "test": "npm test --prefix docs/react",
+    "build": "npm run build --prefix docs/react",
     "validate": "node tools/ci-runner.mjs",
     "test:a11y": "node tools/ci-runner.mjs --a11y",
     "test:visual": "node tools/ci-runner.mjs --visual",
