@@ -1,9 +1,11 @@
-import { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
+import { ThemeStudio as UnifiedThemeStudio, KthemeContext } from "@ktheme/react";
+import { lum, ratio } from "../theme/color.js";
 import { AppContext } from "../context/AppContext.jsx";
 import { EDITABLE_THEME_TOKENS } from "../theme/customTheme.js";
 import { validateThemeJson } from "../theme/themeValidator.js";
 
-export default function ThemeStudio() {
+function StandaloneThemeStudio() {
   const app = useContext(AppContext);
   const state = app?.state || { customTheme: null };
   const actions = app?.actions || {};
@@ -82,4 +84,19 @@ export default function ThemeStudio() {
       )}
     </div>
   );
+}
+
+export default function ThemeStudio(props) {
+  const kctx = useContext(KthemeContext);
+  if (kctx) {
+    return (
+      <UnifiedThemeStudio
+        embedded={false}
+        contrastAuditFn={ratio}
+        luminanceFn={lum}
+        {...props}
+      />
+    );
+  }
+  return <StandaloneThemeStudio {...props} />;
 }
