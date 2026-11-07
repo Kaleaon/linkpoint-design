@@ -3,6 +3,7 @@ import { useApp } from "../context/AppContext.jsx";
 import { DETAIL } from "../data/content.js";
 import Icon from "./Icon.jsx";
 import { SkeletonDetail } from "./Skeletons.jsx";
+import Heading from "./Heading.jsx";
 
 // Ported from the `isSplit` <sc-if> block — the 44% detail pane shown next to
 // Chat/Inventory/Radar on split (tablet/foldable) devices.
@@ -28,13 +29,13 @@ export default function SplitDetail() {
   return (
     <div style={{ flex: "none", width: "44%", minHeight: "320px", borderLeft: "1px solid " + V.outv, background: V.surf, display: "flex", flexDirection: "column" }}>
       <div style={{ flex: "none", padding: "14px 16px 10px", borderBottom: "1px solid " + V.outv }}>
-        <div style={{ font: "600 13px/1.2 " + t.font, color: V.ink }}>{dd.title}</div>
+        <Heading level={2} style={{ font: "600 13px/1.2 " + t.font, color: V.ink }}>{dd.title}</Heading>
         <div style={{ font: "400 10.5px/1.4 " + t.font, color: V.ink2, marginTop: "4px" }}>{dd.sub}</div>
       </div>
       <div style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "12px 14px", display: "flex", flexDirection: "column", gap: "8px" }}>
         {dd.rows.map(([head, body], i) => (
           <div key={i} style={{ border: "1px solid " + V.outv, borderRadius: V.rs, padding: "10px", background: V.bg }}>
-            <div style={{ font: "400 10px/1.3 " + t.font, color: V.pri }}>{head}</div>
+            <Heading level={3} style={{ font: "400 10px/1.3 " + t.font, color: V.pri }}>{head}</Heading>
             <div style={{ font: "400 12.5px/1.5 " + t.font, color: V.ink, marginTop: "4px" }}>{body}</div>
           </div>
         ))}

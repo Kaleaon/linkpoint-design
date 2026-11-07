@@ -11,6 +11,9 @@ importers:
       '@ktheme/react':
         specifier: file:../../../Ktheme/packages/react
         version: file:../../../Ktheme/packages/react(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@ktheme/tokens':
+        specifier: file:../../../Ktheme/packages/tokens
+        version: file:../../../Ktheme/packages/tokens
       lucide-react:
         specifier: ^0.451.0
         version: 0.451.0(react@18.3.1)
@@ -358,6 +361,9 @@ packages:
     peerDependencies:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
+
+  '@ktheme/tokens@file:../../../Ktheme/packages/tokens':
+    resolution: {directory: ../../../Ktheme/packages/tokens, type: directory}
 
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     resolution: {integrity: sha512-oTXEIha4SsuXdTA4Iyskj0kpdx2yVXdhd75c2v3xGrHFfVMsbhTPZU/nMPL4sWKo4pBHm3aucLaqGlF696dTyQ==}
@@ -1370,6 +1376,8 @@ snapshots:
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+
+  '@ktheme/tokens@file:../../../Ktheme/packages/tokens': {}
 
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     optional: true
