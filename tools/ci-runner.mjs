@@ -62,7 +62,7 @@ ${colors.bold}FLAGS:${colors.reset}
   --palette           Run static WCAG 2.2 AA color palette contrast audit
   --a11y              Run automated WCAG 2.1 AA accessibility auditing
   --visual            Run Playwright visual snapshot regression suite
-  --update-snapshots  Update visual baseline snapshots
+  --update-snapshots, --update  Update visual baseline snapshots
   --port <number>     Specify static server port override
   --help, -h          Show this help message
 
@@ -294,9 +294,19 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
   }
 }
 
-// Helper to resolve Playwright browser launch
+// Helper to resolve Playwright browser launch with preflight dependency checks
 async function getPlaywrightBrowser() {
-  const playwright = await import('playwright');
+  let playwright;
+  try {
+    playwright = await import('playwright');
+  } catch (err) {
+    log('Playwright dependency preflight check failed: "playwright" module is not installed.', 'error');
+    log('Actionable resolution: Please install dependencies using:', 'warn');
+    log('  npm install', 'info');
+    log('  npx playwright install --with-deps chromium', 'info');
+    throw new Error('Missing Playwright module. Run "npm install" and "npx playwright install --with-deps chromium".');
+  }
+
   const launchOpts = {
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--font-render-hinting=none', '--force-color-profile=srgb']
@@ -316,7 +326,24 @@ async function getPlaywrightBrowser() {
     let executablePath = possiblePaths.find(p => fs.existsSync(p));
     if (executablePath) {
       launchOpts.executablePath = executablePath;
-      return await playwright.chromium.launch(launchOpts);
+      try {
+        return await playwright.chromium.launch(launchOpts);
+      } catch (fallbackErr) {
+        // Fall through to error reporting below
+      }
+    }
+
+    if (
+      err &&
+      err.message &&
+      (err.message.includes("Executable doesn't exist") ||
+        err.message.includes('playwright install') ||
+        err.code === 'ENOENT')
+    ) {
+      log('Playwright browser preflight check failed: Chromium browser binary is not installed.', 'error');
+      log('Actionable resolution: Please install browser binaries using:', 'warn');
+      log('  npx playwright install chromium', 'info');
+      throw new Error('Playwright Chromium browser binary missing. Run "npx playwright install chromium".');
     }
     throw err;
   }
@@ -570,6 +597,7 @@ async function taskA11yAudit() {
   let browser;
   try {
     browser = await getPlaywrightBrowser();
+    if (!browser) return false;
     const page = await browser.newPage();
     await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
     await page.waitForTimeout(1000);
@@ -756,6 +784,7 @@ async function taskVisualSuite() {
 
   try {
     browser = await getPlaywrightBrowser();
+    if (!browser) return false;
 
     for (const vp of viewports) {
       log(`Capturing visual snapshots for viewport: ${vp.name} (${vp.width}x${vp.height})`, 'info');
