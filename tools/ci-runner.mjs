@@ -331,11 +331,11 @@ async function getPlaywrightBrowser() {
 
   const possiblePaths = [
     process.env.CHROMIUM_PATH,
+    cachedHeadlessShell,
     '/bin/google-chrome',
     '/usr/bin/google-chrome',
     '/usr/bin/chromium-browser',
-    '/usr/bin/chromium',
-    cachedHeadlessShell
+    '/usr/bin/chromium'
   ].filter(Boolean);
 
   for (const execPath of possiblePaths) {
