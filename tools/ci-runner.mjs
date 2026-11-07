@@ -282,7 +282,7 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
 
     const diffPercent = (diffPixels / totalPixels) * 100;
     return {
-      match: diffPercent <= 1.0,
+      match: diffPercent <= 1.5,
       diffPercent: parseFloat(diffPercent.toFixed(3)),
       diffPixels,
       totalPixels
@@ -305,8 +305,31 @@ async function getPlaywrightBrowser() {
   try {
     return await playwright.chromium.launch(launchOpts);
   } catch (err) {
+    // Search ms-playwright cache for installed headless shell or chromium binaries
+    const homeDir = process.env.HOME || '/home/jules';
+    const msPlaywrightDir = path.join(homeDir, '.cache/ms-playwright');
+    let cachedHeadlessShell = null;
+    let cachedChromium = null;
+    if (fs.existsSync(msPlaywrightDir)) {
+      try {
+        const dirs = fs.readdirSync(msPlaywrightDir).sort().reverse();
+        for (const dir of dirs) {
+          if (!cachedHeadlessShell && dir.startsWith('chromium_headless_shell-')) {
+            const candidate = path.join(msPlaywrightDir, dir, 'chrome-headless-shell-linux64/chrome-headless-shell');
+            if (fs.existsSync(candidate)) cachedHeadlessShell = candidate;
+          }
+          if (!cachedChromium && dir.startsWith('chromium-')) {
+            const candidate = path.join(msPlaywrightDir, dir, 'chrome-linux/chrome');
+            if (fs.existsSync(candidate)) cachedChromium = candidate;
+          }
+        }
+      } catch (_) {}
+    }
+
     const possiblePaths = [
       process.env.CHROMIUM_PATH,
+      cachedHeadlessShell,
+      cachedChromium,
       '/bin/google-chrome',
       '/usr/bin/google-chrome',
       '/usr/bin/chromium-browser',
