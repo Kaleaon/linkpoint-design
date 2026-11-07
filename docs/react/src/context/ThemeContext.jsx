@@ -1,9 +1,8 @@
 import { createContext, useContext, useMemo, useEffect } from "react";
 import { useApp } from "./AppContext.jsx";
-import {
-  computeThemeTokens,
-  computeThemeRuntime,
-} from "../theme/computeTheme.js";
+import { computeThemeTokens, computeThemeRuntime, createTypographyStyle } from "../theme/computeTheme.js";
+
+export { createTypographyStyle };
 
 export const ThemeTokensContext = createContext(null);
 export const ThemeRuntimeContext = createContext(null);
