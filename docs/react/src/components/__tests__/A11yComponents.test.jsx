@@ -190,7 +190,7 @@ describe("Keyboard Accessibility in Refactored Controls", () => {
     expect(editMenuBtn.getAttribute("tabindex")).toBe("0");
     expect(editMenuBtn.getAttribute("aria-expanded")).toBe("true");
 
-    const preferenceItem = screen.getByRole("button", { name: "Preferences…" });
+    const preferenceItem = screen.queryByRole("menuitem", { name: /Preferences…/i }) || screen.getByRole("button", { name: /Preferences…/i });
     expect(preferenceItem.getAttribute("tabindex")).toBe("0");
 
     fireEvent.keyDown(preferenceItem, { key: "Enter" });

@@ -2,8 +2,8 @@ import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL } from "../data/content.js";
 import Icon from "./Icon.jsx";
-import A11yControl from "./A11yControl.jsx";
 import { navActive } from "../theme/look.js";
+import KInteractive from "./KInteractive.jsx";
 
 // Ported from the `isRail` <sc-if> block — the left rail (Navy Gold, Rule &
 // Rail packs, or any pack on a split/tablet-width device).
@@ -13,27 +13,8 @@ export default function RailNav() {
   if (nav !== "rail" || immersive) return null;
 
   return (
-    <nav
-      aria-label="Rail Navigation"
-      style={{
-        flex: "none",
-        width: "104px",
-        background: V.surf,
-        borderRight: "1px solid " + V.outv,
-        display: "flex",
-        flexDirection: "column",
-        gap: "5px",
-        padding: "12px 8px",
-      }}
-    >
-      <div
-        style={{
-          font: "700 13px/1.15 " + t.dfont,
-          letterSpacing: ".2em",
-          color: V.pri,
-          padding: "2px 6px 14px",
-        }}
-      >
+    <nav aria-label="Rail Navigation" style={{ flex: "none", width: "104px", background: V.surf, borderRight: "1px solid " + V.outv, display: "flex", flexDirection: "column", gap: "5px", padding: "12px 8px" }}>
+      <div style={{ font: "700 13px/1.15 " + t.dfont, letterSpacing: ".2em", color: V.pri, padding: "2px 6px 14px" }}>
         LINK
         <br />
         POINT
@@ -41,29 +22,17 @@ export default function RailNav() {
       {NAV_ALL.map((n) => {
         const active = navActive(state.screen, n.id);
         return (
-          <A11yControl
+          <KInteractive
+            as="button"
             key={n.id}
+            label={n.label}
+            aria-pressed={active}
             onClick={() => actions.setScreen(n.id)}
-            aria-label={n.label}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "5px",
-              padding: "10px 4px",
-              cursor: "pointer",
-              borderRadius: V.navr,
-              color: active ? V.onpriC : V.ink2,
-              background: active ? V.priC : undefined,
-            }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "5px", padding: "10px 4px", cursor: "pointer", borderRadius: V.navr, color: active ? V.onpriC : V.ink2, background: active ? V.priC : undefined, width: "100%" }}
           >
             <Icon name={n.icon} size={20} />
-            <span
-              style={{ font: "600 8.5px/1 " + t.font, letterSpacing: ".1em" }}
-            >
-              {n.label}
-            </span>
-          </A11yControl>
+            <span style={{ font: "600 8.5px/1 " + t.font, letterSpacing: ".1em" }}>{n.label}</span>
+          </KInteractive>
         );
       })}
     </nav>

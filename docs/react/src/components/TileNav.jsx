@@ -3,6 +3,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { NAV_ALL } from "../data/content.js";
 import Icon from "./Icon.jsx";
 import { navActive } from "../theme/look.js";
+import KInteractive from "./KInteractive.jsx";
 
 // Ported from the `isTiles` <sc-if> block — Metro's bottom tile strip.
 export default function TileNav() {
@@ -11,56 +12,25 @@ export default function TileNav() {
   if (nav !== "tiles") return null;
 
   return (
-    <nav
-      aria-label="Tile Navigation"
-      style={{
-        flex: "none",
-        display: "flex",
-        gap: "3px",
-        background: V.bg,
-        padding: "3px",
-      }}
-    >
+    <nav aria-label="Tile Navigation" style={{ flex: "none", display: "flex", gap: "3px", background: V.bg, padding: "3px" }}>
       {NAV_ALL.map((n) => {
         const active = navActive(state.screen, n.id);
         const bg = active ? V.pri : V.surf;
         const fg = active ? V.onpri : V.ink;
         return (
-          <div
+          <KInteractive
+            as="button"
             key={n.id}
             onClick={() => actions.setScreen(n.id)}
-            role="button"
-            tabIndex={0}
-            aria-label={"Go to " + n.id}
+            label={"Go to " + n.id}
             aria-pressed={active}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                actions.setScreen(n.id);
-              }
-            }}
             style={{
-              flex: 1,
-              height: "64px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              padding: "8px",
-              cursor: "pointer",
-              background: bg,
-              color: fg,
-              borderRadius: "0px",
-              boxShadow: active ? "inset 0 0 0 2px " + V.onpri : "none",
-              transition: "background .15s ease",
+              flex: 1, height: "64px", display: "flex", flexDirection: "column", justifyContent: "space-between",
+              padding: "8px", cursor: "pointer", background: bg, color: fg, borderRadius: "0px",
+              boxShadow: active ? "inset 0 0 0 2px " + V.onpri : "none", transition: "background .15s ease",
             }}
           >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <Icon name={n.icon} size={18} />
               {n.badge ? (
                 <span
@@ -69,7 +39,7 @@ export default function TileNav() {
                     height: "16px",
                     padding: "0 4px",
                     background: active ? V.onpri : V.bdg || V.pri,
-                    color: active ? V.pri : V.onbdg || "var(--onbdg, #ffffff)",
+                    color: active ? V.pri : V.onbdg || "#ffffff",
                     font: "700 9px/16px " + t.dfont,
                     textAlign: "center",
                     borderRadius: "0px",
@@ -78,26 +48,11 @@ export default function TileNav() {
                   {n.badge}
                 </span>
               ) : active ? (
-                <span
-                  style={{
-                    width: "6px",
-                    height: "6px",
-                    borderRadius: "0px",
-                    background: fg,
-                  }}
-                />
+                <span style={{ width: "6px", height: "6px", borderRadius: "0px", background: fg }} />
               ) : null}
             </div>
-            <span
-              style={{
-                font: "300 11px/1 " + t.dfont,
-                letterSpacing: ".02em",
-                textTransform: "lowercase",
-              }}
-            >
-              {n.tile}
-            </span>
-          </div>
+            <span style={{ font: "300 11px/1 " + t.dfont, letterSpacing: ".02em", textTransform: "lowercase" }}>{n.tile}</span>
+          </KInteractive>
         );
       })}
     </nav>

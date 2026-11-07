@@ -161,6 +161,29 @@ export function intentReducer(state, intent) {
       };
     }
 
+    case "GROUP_MODERATION_ACTION":
+    case "GROUP_MEMBER_MUTE":
+    case "GROUP_MEMBER_KICK":
+    case "GROUP_MEMBER_EJECT": {
+      const { action, target, member, group } = payload;
+      const targetName = target || member || "member";
+      const grpName = group || "group";
+      const act = action || (type.includes("MUTE") ? "mute" : type.includes("KICK") || type.includes("EJECT") ? "kick" : "profile");
+      let msg = "";
+      if (act === "mute") {
+        msg = `Muted ${targetName} in ${grpName}`;
+      } else if (act === "kick" || act === "eject") {
+        msg = `Ejected ${targetName} from ${grpName}`;
+      } else if (act === "profile") {
+        msg = `View Profile — ${targetName}`;
+      }
+      return {
+        ...state,
+        ...(act === "profile" ? { screen: "Profile" } : {}),
+        toast: msg
+      };
+    }
+
     default:
       return state;
   }
