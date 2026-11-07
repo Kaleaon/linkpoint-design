@@ -1,4 +1,4 @@
-import { LAYOUTS, resolveLayout } from "./layouts.js";
+import { LAYOUTS, resolveLayout, Z_INDEX, ELEVATION } from "./layouts.js";
 import { PALETTES } from "./palettes.js";
 import { DEVICES, STATES } from "./constants.js";
 import { pickInk } from "./color.js";
@@ -29,8 +29,12 @@ export function computeThemeTokens(state) {
   const P = state.customTheme?.active
     ? { ...base, name: state.customTheme.name, note: "A custom, shareable colour theme.", c: { ...base.c, ...state.customTheme.colors } }
     : base;
-  const t = { name: L.name + " / " + P.name, nav: L.nav, font: L.font, dfont: L.dfont, note: L.note + "   Colour pack: " + P.note + ".", v: { ...P.c, ...L.s } };
+  const z = { ...Z_INDEX, ...(L.z || {}), ...(P.z || {}) };
+  const elevation = { ...ELEVATION, ...(L.elevation || {}), ...(P.elevation || {}) };
+  const t = { name: L.name + " / " + P.name, nav: L.nav, font: L.font, dfont: L.dfont, note: L.note + "   Colour pack: " + P.note + ".", v: { ...P.c, ...L.s, z, elevation } };
   const V = t.v;
+  V.z = z;
+  V.elevation = elevation;
 
   let focusRing = V.pri;
   if (getContrastRatio(focusRing, V.bg) < 3.0) {
@@ -45,7 +49,6 @@ export function computeThemeTokens(state) {
 
   V.focusRing = focusRing;
   V.focusRingShadow = focusRingShadow;
-
   const pad = state.dense ? "8px" : V.pad;
   const LK = L.look;
   const ink = (bg, candidates) => pickInk(bg, candidates);

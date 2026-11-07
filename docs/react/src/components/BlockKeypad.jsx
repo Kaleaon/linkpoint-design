@@ -124,7 +124,7 @@ export default function BlockKeypad({
       style={{
         position: "fixed",
         inset: 0,
-        zIndex: 9999,
+        zIndex: V.z?.modal ?? "var(--ktheme-z-modal, 500)",
         background: "rgba(0,0,0,0.72)",
         display: "flex",
         alignItems: "center",
