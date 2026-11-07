@@ -56,7 +56,12 @@ export default function ScreenBody() {
 
   return (
     <div style={{ flex: 1, minWidth: 0, minHeight: "400px", display: "flex", position: "relative" }}>
-      <main aria-label="Main Content" style={{ flex: 1, minWidth: 0, minHeight: "400px", display: "flex", flexDirection: "column" }}>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        aria-label="Main Content"
+        style={{ flex: 1, minWidth: 0, minHeight: "400px", display: "flex", flexDirection: "column" }}
+      >
         <Header />
         <SegmentedTabs />
         <ChipRow />
