@@ -1,10 +1,28 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { EventBus, intentReducer } from "../../../shared/eventBus.js";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { DEVICES, FLOATERS, HUD_DEFAULT, HUDS, CBTN, GRIDS } from "../theme/constants.js";
 import { CACHE_ROWS, INVENTORY_SOURCE } from "../data/content.js";
 import { decodeSharedTheme, encodeSharedTheme, readSavedTheme, sanitizeTheme, themeFromPalette, THEME_STORAGE_KEY } from "../theme/customTheme.js";
+
+/**
+ * Compute descriptive screen title reflecting active screen, sub-tab, and entity focus.
+ */
+export function computeScreenTitle(screen, tabs = {}, chip = "") {
+  if (screen === "Chat") {
+    const curTab = tabs?.Chat;
+    if ((curTab === "IM" || curTab === "GROUP") && chip) {
+      return `Chat with ${chip}`;
+    }
+    return "Chat";
+  }
+  return screen;
+}
+
+export function formatDocumentTitle(screenName) {
+  return `${screenName} | Linkpoint Mobile`;
+}
 
 export const LINKPOINT_ACCOUNTS_KEY = "linkpoint_stored_accounts";
 
@@ -1189,6 +1207,22 @@ export function useAppState() {
     [flToggle, flToggleShade, flClose, notify, screenPick]
   );
 
+  const screenTitle = useMemo(
+    () => computeScreenTitle(screen, tabs, chip),
+    [screen, tabs, chip]
+  );
+
+  const title = useMemo(
+    () => formatDocumentTitle(screenTitle),
+    [screenTitle]
+  );
+
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.title = title;
+    }
+  }, [title]);
+
   return {
     state: {
       layout, palette, customTheme, device, screen, dialog, dense, tabs, chip, tileOk, invOpen, invSelectMode, invSelected, invMoveModal, invItems, dismissed, pinned, lureState,
@@ -1200,6 +1234,7 @@ export function useAppState() {
       searchFrom, searchTab, searchQuery, searchState, reconnecting, toast, offlineRunning, offlineUser, offlineAccountModal, offlineAccountFirstName, offlineAccountLastName, offlineAccountPassword, oarFile, oarRegionName, oarCoords, oarPrims, assetName, assetType, localAssets, offlineCacheSize, consoleLevel, consoleQuery, consoleAutoscroll, consoleLogs,
       prefs, cacheCleared, camPreset, lindenBalance, exchangeRate, lastSyncedAt,
       recoveryState, reconnectAttempts, nextRetryDelay, asyncQueryState,
+      title, screenTitle,
     },
     actions: {
       setLayout, setPalette: selectPalette, setThemeColor, renameTheme, saveTheme, resetTheme, importTheme, downloadTheme, shareTheme, setDevice, setScreen: screenPick, setDialog, setDense,
