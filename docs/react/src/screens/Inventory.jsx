@@ -3,8 +3,8 @@ import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { INVENTORY_SOURCE, INVENTORY_FOLDERS, INVENTORY_RECENTS } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
-import FormInput from "../components/FormInput.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import SearchCombobox from "../components/SearchCombobox.jsx";
 import { subView } from "../theme/constants.js";
 import { SkeletonTree } from "../components/Skeletons.jsx";
 
@@ -80,11 +80,14 @@ export default function Inventory() {
       <div style={invToolStyle}>
         <div style={{ flex: 1, height: "44px", display: "flex", alignItems: "center", gap: "8px", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf }}>
           <Icon name="search" size={15} style={{ opacity: 0.55, flexShrink: 0 }} />
-          <FormInput
+          <SearchCombobox
+            controlsId="inventory-results-tree"
+            resultCount={nodes.length}
+            itemLabel="inventory items"
             aria-label="Filter inventory"
+            placeholder="filter inventory…"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="filter inventory…"
             style={{ flex: 1, minWidth: 0, border: "none", background: "transparent", font: "400 12px/1 " + t.font, color: V.ink, outline: "none" }}
           />
           {searchQuery && (
@@ -127,7 +130,7 @@ export default function Inventory() {
         ))}
       </div>
 
-      <div style={invListStyle}>
+      <div id="inventory-results-tree" style={invListStyle}>
         {isLoading ? (
           <SkeletonTree style={{ minHeight: "320px" }} />
         ) : nodes.length === 0 && q ? (
