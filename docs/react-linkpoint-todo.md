@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-11-04T06:13:31Z — upstream read through [`de95646`](https://github.com/Kaleaon/react-linkpoint/commit/de95646b38700f9528e0c4786bf768a1579da136)
-- **Open:** 497 · **Completed:** 2
+- **Last change:** 2026-11-07T06:11:46Z — upstream read through [`014ce55`](https://github.com/Kaleaon/react-linkpoint/commit/014ce55a1473655cd24f0b13615b283031107a8f)
+- **Open:** 511 · **Completed:** 2
 
 ## Open
 
@@ -23,6 +23,22 @@ is tracked by hand in [`github.md`](github.md).
 
 Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/react/src/screens/`
 
+- [ ] **`97607fe`** feat(settings): migrate Settings and VoiceDevices form controls to AccessibleSelect and AccessibleInput
+  - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/97607feb5db130c8966f038e58a24db4cd45a6fc)
+  - 3 files: `src/components/VoiceDevices.jsx`, `src/linkpoint/__tests__/accessible-control-primitives.test.tsx`, `src/screens/Settings.jsx`
+  - also touches: Components, Viewer & protocol features
+- [ ] **`2be794d`** feat(diagnostics): add tabbed diagnostics suite with telemetry and capability explorer
+  - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/2be794d30cd438b1e0370829056c65a2c8bce2b1)
+  - 6 files: `src/components/ScreenBody.jsx`, `src/hooks/useAppState.js`, `src/linkpoint/__tests__/diagnostics-container.test.tsx`, `src/screens/CapabilityExplorer.jsx`, `src/screens/DiagnosticsContainer.jsx`, `src/theme/constants.js`
+  - also touches: Components, Theme & tokens, State & data, Viewer & protocol features
+- [ ] **`1a181cb`** feat(inventory): add dual-mode tree and flat table toggle with virtualization
+  - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1a181cb14fa4a799332c5ac713833383f9c45369)
+  - 3 files: `src/components/InventoryTree.tsx`, `src/linkpoint/__tests__/inventory-dual-mode.test.tsx`, `src/screens/Inventory.jsx`
+  - also touches: Components, Viewer & protocol features
+- [ ] **`16625e5`** feat(profile): implement dedicated resident inspector with tabbed navigation
+  - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/16625e509a41ab0d6b9cbaa1eaa75dc167e98334)
+  - 4 files: `src/components/SegmentedTabs.jsx`, `src/screens/Profile.jsx`, `src/screens/__tests__/ResidentInspector.test.tsx`, `src/theme/constants.js`
+  - also touches: Components, Theme & tokens
 - [ ] **`ddbfa1f`** Wrap parcel confirmation dialogs with FocusTrap component
   - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ddbfa1f62b5efd32e0c829ef043c8f225a00b230)
   - 2 files: `src/screens/LumiyaTools.jsx`, `src/screens/__tests__/LumiyaToolsParcelModals.test.tsx`
@@ -601,6 +617,34 @@ Mirror into: `docs/index.html` — the `render()` view-model · `docs/react/src/
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`efaab54`** feat(inventory): implement two-stage soft-delete lifecycle and trash purge
+  - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/efaab5443d9b924d8fef2977f7a36ebd5e216936)
+  - 8 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/components/InventoryTree.tsx`, `src/linkpoint/__tests__/inventory-soft-delete.test.tsx`, `src/linkpoint/__tests__/inventory-tree.test.tsx`, `src/linkpoint/__tests__/viewer-session.test.ts` _(+2 more)_
+  - also touches: Components, Unclassified
+- [ ] **`db1703a`** feat(parcel): implement verified two-phase parcel transaction coordinator with balance pre-flight
+  - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/db1703a9343ac5747eb3cbcf95ea2f06f2976153)
+  - 9 files: `core/viewer-session.cjs`, `src/linkpoint/__tests__/parcel-transactions.test.ts`, `src/linkpoint/__tests__/viewer-session.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/world.ts`, `src/screens/LumiyaTools.jsx` _(+3 more)_
+  - also touches: Screens, Tests, Unclassified
+- [ ] **`b27c136`** Wire EconomySyncEngine for remote statements with local caching
+  - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b27c136cccd933bd9aa1ee6863b1271a6dd24e08)
+  - 8 files: `src/linkpoint/__tests__/economy-app-wiring.test.ts`, `src/linkpoint/app.ts`, `src/linkpoint/economy-manager.ts`, `src/linkpoint/phase2/economy-sync-engine.ts`, `src/screens/LumiyaTools.jsx`, `src/screens/__tests__/TransactionsSyncLedger.test.tsx` _(+2 more)_
+  - also touches: Screens, Tests, Unclassified
+- [ ] **`8fdf3d3`** feat(outfit): add Save Outfit As modal dialog with inventory linking
+  - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8fdf3d32234f400abbd0f03d6e1cdedb15308862)
+  - 8 files: `core/sl-outfit.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `docs/viewer-screen-inventory.csv`, `src/linkpoint/__tests__/save-outfit-as.test.tsx`, `src/linkpoint/app.ts` _(+2 more)_
+  - also touches: Screens, Docs & specs, Unclassified
+- [ ] **`88e67ae`** feat(parcel): implement dual-transport capability-first parcel update with UDP fallback
+  - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/88e67ae25ee6df615db6588d49796324576a20f9)
+  - 5 files: `core/viewer-session.cjs`, `src/linkpoint/__tests__/parcel-dual-transport.test.ts`, `src/linkpoint/sl-bridge.ts`, `src/linkpoint/world.ts`, `src/screens/LumiyaTools.jsx`
+  - also touches: Screens, Unclassified
+- [ ] **`731f0b7`** feat(notecard): add dedicated notecard floater with linden text codec and capability sync
+  - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/731f0b7f426cc6414206532516cdac2930e6a1ab)
+  - 18 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `docs/followup-audit.md`, `docs/viewer-parity.md`, `docs/viewer-screen-inventory.csv`, `src/components/FloatersDesktop.jsx` _(+12 more)_
+  - also touches: Screens, Components, Theme & tokens, State & data, Docs & specs, Unclassified
+- [ ] **`450e004`** feat(groups): add group notice composer with Dialog 32 dispatch and permission gating
+  - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/450e004f2cd9e626d4fa081351471b44091c5ca6)
+  - 11 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `packages/design-system/src/react/AccessibleButton.tsx`, `packages/design-system/src/react/AccessibleInput.tsx`, `src/components/CreateGroupNoticeModal.jsx`, `src/linkpoint/__tests__/group-notice-composer.test.tsx` _(+5 more)_
+  - also touches: Screens, Components, Unclassified
 - [ ] **`d75148e`** feat(phase2): implement object edit pipeline with batched UDP transactions and UI controls
   - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d75148ee425db5a812ab33f32a5c3ff2117901f4)
   - 15 files: `core/sl-actions.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/components/ObjectInspector.tsx`, `src/components/__tests__/ObjectInspector-edit.test.tsx`, `src/linkpoint/__tests__/sl-bridge-transaction.test.ts` _(+9 more)_
@@ -1394,6 +1438,13 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
 
 Mirror into: usually no design change — confirm `docs/react/` still builds the same way
 
+- [ ] **`e4133cf`** Extract composite action for standardized Android Kotlin Gradle caching
+  - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e4133cfca89dfc8b80d3f1e46dc4feb6dcf4290e)
+  - 3 files: `.github/actions/setup-android-kotlin/action.yml`, `.github/workflows/ci.yml`, `.github/workflows/live.yml`
+- [ ] **`d939f0c`** feat(desktop): dynamic sharp icon extraction and packaging integration
+  - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d939f0c7ada87dd06648f676f199e8d4ab9233d6)
+  - 8 files: `electron-builder.config.js`, `electron/main.cjs`, `package.json`, `scripts/build-desktop.mjs`, `scripts/generate-desktop-icons.mjs`, `scripts/patch-metaverse.cjs` _(+2 more)_
+  - also touches: Viewer & protocol features
 - [ ] **`cbe7454`** ci: add npm build script and CI verification for backend server bundle
   - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/cbe74547ec281d50866e547dacf5f8e810968897)
   - 6 files: `.github/workflows/ci.yml`, `.github/workflows/fly-deploy.yml`, `.gitignore`, `AGENTS.md`, `Dockerfile`, `package.json`
@@ -1609,6 +1660,9 @@ Mirror into: `docs/ROADMAP.md` · `docs/github.md` · `docs/mockup-to-react.yaml
 
 Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json`
 
+- [ ] **`3f47b13`** feat(android): add teleport crystal hero modal and milestones overlay
+  - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/3f47b13125a955f39cb835e6d0bdd8153fc9fd19)
+  - 8 files: `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/MapScreen.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/Root.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/crystal/TeleportCrystalHero.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/crystal/TeleportModalSheet.kt`, `android-kotlin/app/src/test/kotlin/app/linkpoint/viewer/ui/crystal/TeleportCrystalHeroTest.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt` _(+2 more)_
 - [ ] **`d3ed08c`** Wire source import check into Husky pre-commit hook
   - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d3ed08c2e522b457d053ffc9a5f5073beb88c409)
   - 1 file: `.husky/pre-commit`
@@ -1846,7 +1900,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-11-04T06:13:31Z",
+ "generated": "2026-11-07T06:11:46Z",
  "items": [
   {
    "also": [
@@ -13110,9 +13164,338 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "dc7f8ff",
    "subject": "refactor(components): use AccessibleInput and AccessibleSelect .tsx primitives and remove duplicate .jsx wrappers",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/dc7f8ff421579a20054e0bd4a5c162ade75a858b"
+  },
+  {
+   "also": [
+    "screens",
+    "tests",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-06",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/economy-app-wiring.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/economy-manager.ts",
+    "src/linkpoint/phase2/economy-sync-engine.ts",
+    "src/screens/LumiyaTools.jsx",
+    "src/screens/__tests__/TransactionsSyncLedger.test.tsx",
+    "src/services/EconomyService.ts",
+    "src/services/__tests__/economy-service.test.ts"
+   ],
+   "sha": "b27c136cccd933bd9aa1ee6863b1271a6dd24e08",
+   "short": "b27c136",
+   "subject": "Wire EconomySyncEngine for remote statements with local caching",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/b27c136cccd933bd9aa1ee6863b1271a6dd24e08"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-06",
+   "done": false,
+   "files": [
+    ".github/actions/setup-android-kotlin/action.yml",
+    ".github/workflows/ci.yml",
+    ".github/workflows/live.yml"
+   ],
+   "sha": "e4133cfca89dfc8b80d3f1e46dc4feb6dcf4290e",
+   "short": "e4133cf",
+   "subject": "Extract composite action for standardized Android Kotlin Gradle caching",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e4133cfca89dfc8b80d3f1e46dc4feb6dcf4290e"
+  },
+  {
+   "also": [
+    "components",
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-06",
+   "done": false,
+   "files": [
+    "src/components/InventoryTree.tsx",
+    "src/linkpoint/__tests__/inventory-dual-mode.test.tsx",
+    "src/screens/Inventory.jsx"
+   ],
+   "sha": "1a181cb14fa4a799332c5ac713833383f9c45369",
+   "short": "1a181cb",
+   "subject": "feat(inventory): add dual-mode tree and flat table toggle with virtualization",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1a181cb14fa4a799332c5ac713833383f9c45369"
+  },
+  {
+   "also": [
+    "screens",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-06",
+   "done": false,
+   "files": [
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/parcel-dual-transport.test.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/LumiyaTools.jsx"
+   ],
+   "sha": "88e67ae25ee6df615db6588d49796324576a20f9",
+   "short": "88e67ae",
+   "subject": "feat(parcel): implement dual-transport capability-first parcel update with UDP fallback",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/88e67ae25ee6df615db6588d49796324576a20f9"
+  },
+  {
+   "also": [
+    "components",
+    "theme",
+    "state",
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-06",
+   "done": false,
+   "files": [
+    "src/components/ScreenBody.jsx",
+    "src/hooks/useAppState.js",
+    "src/linkpoint/__tests__/diagnostics-container.test.tsx",
+    "src/screens/CapabilityExplorer.jsx",
+    "src/screens/DiagnosticsContainer.jsx",
+    "src/theme/constants.js"
+   ],
+   "sha": "2be794d30cd438b1e0370829056c65a2c8bce2b1",
+   "short": "2be794d",
+   "subject": "feat(diagnostics): add tabbed diagnostics suite with telemetry and capability explorer",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/2be794d30cd438b1e0370829056c65a2c8bce2b1"
+  },
+  {
+   "also": [
+    "components",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-06",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/components/InventoryTree.tsx",
+    "src/linkpoint/__tests__/inventory-soft-delete.test.tsx",
+    "src/linkpoint/__tests__/inventory-tree.test.tsx",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/inventory.ts",
+    "src/linkpoint/sl-bridge.ts"
+   ],
+   "sha": "efaab5443d9b924d8fef2977f7a36ebd5e216936",
+   "short": "efaab54",
+   "subject": "feat(inventory): implement two-stage soft-delete lifecycle and trash purge",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/efaab5443d9b924d8fef2977f7a36ebd5e216936"
+  },
+  {
+   "also": [
+    "screens",
+    "tests",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-06",
+   "done": false,
+   "files": [
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/parcel-transactions.test.ts",
+    "src/linkpoint/__tests__/viewer-session.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/LumiyaTools.jsx",
+    "src/screens/__tests__/LumiyaToolsParcelModals.test.tsx",
+    "src/services/EconomyService.ts",
+    "src/services/__tests__/economy-service.test.ts"
+   ],
+   "sha": "db1703a9343ac5747eb3cbcf95ea2f06f2976153",
+   "short": "db1703a",
+   "subject": "feat(parcel): implement verified two-phase parcel transaction coordinator with balance pre-flight",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/db1703a9343ac5747eb3cbcf95ea2f06f2976153"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-06",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "packages/design-system/src/react/AccessibleButton.tsx",
+    "packages/design-system/src/react/AccessibleInput.tsx",
+    "src/components/CreateGroupNoticeModal.jsx",
+    "src/linkpoint/__tests__/group-notice-composer.test.tsx",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/phase2/groups.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "450e004f2cd9e626d4fa081351471b44091c5ca6",
+   "short": "450e004",
+   "subject": "feat(groups): add group notice composer with Dialog 32 dispatch and permission gating",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/450e004f2cd9e626d4fa081351471b44091c5ca6"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "theme",
+    "state",
+    "docs",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-06",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "docs/followup-audit.md",
+    "docs/viewer-parity.md",
+    "docs/viewer-screen-inventory.csv",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/InventoryTree.tsx",
+    "src/components/NotecardFloater.jsx",
+    "src/components/__tests__/NotecardFloater.test.tsx",
+    "src/hooks/useAppState.js",
+    "src/linkpoint/__tests__/notecard-codec.test.ts",
+    "src/linkpoint/__tests__/viewer-session-notecard.test.ts",
+    "src/linkpoint/notecard.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/screens/Inventory.jsx",
+    "src/screens/LumiyaTools.jsx",
+    "src/theme/constants.js"
+   ],
+   "sha": "731f0b7f426cc6414206532516cdac2930e6a1ab",
+   "short": "731f0b7",
+   "subject": "feat(notecard): add dedicated notecard floater with linden text codec and capability sync",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/731f0b7f426cc6414206532516cdac2930e6a1ab"
+  },
+  {
+   "also": [
+    "screens",
+    "docs",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-06",
+   "done": false,
+   "files": [
+    "core/sl-outfit.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "docs/viewer-screen-inventory.csv",
+    "src/linkpoint/__tests__/save-outfit-as.test.tsx",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/screens/OutfitViewer.jsx"
+   ],
+   "sha": "8fdf3d32234f400abbd0f03d6e1cdedb15308862",
+   "short": "8fdf3d3",
+   "subject": "feat(outfit): add Save Outfit As modal dialog with inventory linking",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8fdf3d32234f400abbd0f03d6e1cdedb15308862"
+  },
+  {
+   "also": [
+    "components",
+    "theme"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-06",
+   "done": false,
+   "files": [
+    "src/components/SegmentedTabs.jsx",
+    "src/screens/Profile.jsx",
+    "src/screens/__tests__/ResidentInspector.test.tsx",
+    "src/theme/constants.js"
+   ],
+   "sha": "16625e509a41ab0d6b9cbaa1eaa75dc167e98334",
+   "short": "16625e5",
+   "subject": "feat(profile): implement dedicated resident inspector with tabbed navigation",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/16625e509a41ab0d6b9cbaa1eaa75dc167e98334"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-06",
+   "done": false,
+   "files": [
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/MapScreen.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/Root.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/crystal/TeleportCrystalHero.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/crystal/TeleportModalSheet.kt",
+    "android-kotlin/app/src/test/kotlin/app/linkpoint/viewer/ui/crystal/TeleportCrystalHeroTest.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt",
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/model/Models.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/TeleportSessionLifecycleTest.kt"
+   ],
+   "sha": "3f47b13125a955f39cb835e6d0bdd8153fc9fd19",
+   "short": "3f47b13",
+   "subject": "feat(android): add teleport crystal hero modal and milestones overlay",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/3f47b13125a955f39cb835e6d0bdd8153fc9fd19"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "platform",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-06",
+   "done": false,
+   "files": [
+    "electron-builder.config.js",
+    "electron/main.cjs",
+    "package.json",
+    "scripts/build-desktop.mjs",
+    "scripts/generate-desktop-icons.mjs",
+    "scripts/patch-metaverse.cjs",
+    "scripts/validate-electron-config.mjs",
+    "src/linkpoint/__tests__/desktop-icons.test.ts"
+   ],
+   "sha": "d939f0c7ada87dd06648f676f199e8d4ab9233d6",
+   "short": "d939f0c",
+   "subject": "feat(desktop): dynamic sharp icon extraction and packaging integration",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d939f0c7ada87dd06648f676f199e8d4ab9233d6"
+  },
+  {
+   "also": [
+    "components",
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-jules[bot]",
+   "date": "2026-11-06",
+   "done": false,
+   "files": [
+    "src/components/VoiceDevices.jsx",
+    "src/linkpoint/__tests__/accessible-control-primitives.test.tsx",
+    "src/screens/Settings.jsx"
+   ],
+   "sha": "97607feb5db130c8966f038e58a24db4cd45a6fc",
+   "short": "97607fe",
+   "subject": "feat(settings): migrate Settings and VoiceDevices form controls to AccessibleSelect and AccessibleInput",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/97607feb5db130c8966f038e58a24db4cd45a6fc"
   }
  ],
- "last_sha": "de95646b38700f9528e0c4786bf768a1579da136",
+ "last_sha": "014ce55a1473655cd24f0b13615b283031107a8f",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
