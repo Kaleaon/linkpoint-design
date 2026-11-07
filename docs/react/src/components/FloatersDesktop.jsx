@@ -11,6 +11,7 @@ import A11yControl from "./A11yControl.jsx";
 import ScreenBody from "./ScreenBody.jsx";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
 import RadialPieMenu from "./RadialPieMenu.jsx";
+import AccessibleDialogPortal from "./AccessibleDialogPortal.jsx";
 
 // Ported from the `isFloat` block: desktop SL isn't a screen stack, it's N
 // resizable windows over one scene (the `FLOATERS` window model — position,
@@ -212,16 +213,24 @@ export default function FloatersDesktop() {
       })}
 
       {flFocused ? (
-        <div
-          style={{
-            position: "absolute", left: flFocused.x + "px", top: flFocused.y + FBAR + "px", width: flFocused.w + "px", height: flFocused.h - FBAR + "px",
-            display: "flex", minWidth: 0, overflow: "hidden", background: V.surf, borderWidth: "0 1px 1px", borderStyle: "solid", borderColor: V.pri,
-            borderBottomLeftRadius: isSweepDesk ? "14px" : V.rp, borderBottomRightRadius: isSweepDesk ? "14px" : V.rp,
-            boxSizing: "border-box", zIndex: 50,
-          }}
+        <AccessibleDialogPortal
+          isOpen={true}
+          isModal={false}
+          onClose={() => actions.dispatchIntent("FLOATER_CLOSE", { id: state.screen })}
+          ariaLabel={`${state.screen} Floater Overlay`}
+          role="region"
         >
-          <ScreenBody />
-        </div>
+          <div
+            style={{
+              position: "fixed", left: flFocused.x + "px", top: flFocused.y + FBAR + "px", width: flFocused.w + "px", height: flFocused.h - FBAR + "px",
+              display: "flex", minWidth: 0, overflow: "hidden", background: V.surf, borderWidth: "0 1px 1px", borderStyle: "solid", borderColor: V.pri,
+              borderBottomLeftRadius: isSweepDesk ? "14px" : V.rp, borderBottomRightRadius: isSweepDesk ? "14px" : V.rp,
+              boxSizing: "border-box", zIndex: 1050,
+            }}
+          >
+            <ScreenBody />
+          </div>
+        </AccessibleDialogPortal>
       ) : null}
 
       {/* Firestorm Desktop Taskbar & Nearby Quick-Chat Dock */}
@@ -260,8 +269,15 @@ export default function FloatersDesktop() {
           return (
             <A11yControl
               key={f.id}
+              id={`taskbar-btn-${f.id}`}
               onClick={() => actions.dispatchIntent("FLOATER_TOGGLE", { id: f.id })}
               aria-label={f.title}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.dispatchIntent("FLOATER_TOGGLE", { id: f.id });
+                }
+              }}
               style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", padding: "0 10px", cursor: "pointer", background: act ? V.pri : min ? "transparent" : V.surf2, color: act ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2, border: "1px solid " + (min ? V.outv : "transparent"), borderRadius: isSweepDesk ? "999px" : V.rs, font: isSweepDesk ? "700 10px/1 " + t.dfont : "500 10px/1 " + t.font, letterSpacing: isSweepDesk ? ".12em" : ".08em", whiteSpace: "nowrap" }}
             >
               {f.title}
