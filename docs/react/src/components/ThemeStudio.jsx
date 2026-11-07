@@ -1,14 +1,16 @@
-import { useRef, useState } from "react";
-import { useApp } from "../context/AppContext.jsx";
+import { useContext, useRef, useState } from "react";
+import { AppContext } from "../context/AppContext.jsx";
 import { EDITABLE_THEME_TOKENS } from "../theme/customTheme.js";
 import { validateThemeJson } from "../theme/themeValidator.js";
 
 export default function ThemeStudio() {
-  const { state, actions } = useApp();
+  const appContext = useContext(AppContext);
+  const state = appContext?.state || {};
+  const actions = appContext?.actions || {};
   const [open, setOpen] = useState(false);
   const [importError, setImportError] = useState(null);
   const fileRef = useRef(null);
-  const theme = state.customTheme;
+  const theme = state?.customTheme;
 
   const importFile = async (event) => {
     const file = event.target.files?.[0];
@@ -20,7 +22,7 @@ export default function ThemeStudio() {
       if (!validation.valid) {
         setImportError(validation.errors.join("; "));
       } else {
-        const ok = await actions.importTheme(text);
+        const ok = await actions.importTheme?.(text);
         if (!ok) {
           setImportError("Theme import failed. Check that the theme is valid.");
         }
@@ -35,7 +37,7 @@ export default function ThemeStudio() {
 
   const handleReset = () => {
     setImportError(null);
-    actions.resetTheme();
+    actions.resetTheme?.();
   };
 
   return (
@@ -54,15 +56,15 @@ export default function ThemeStudio() {
             </div>
           )}
           <label className="theme-name">THEME NAME
-            <input value={theme.name} maxLength={48} onChange={(e) => actions.renameTheme(e.target.value)} />
+            <input value={theme?.name || ""} maxLength={48} onChange={(e) => actions.renameTheme?.(e.target.value)} />
           </label>
           <div className="theme-colors">
             {EDITABLE_THEME_TOKENS.map(([key, label]) => (
               <label className="color-field" key={key}>
                 <span>{label}</span>
                 <span className="color-control">
-                  <input type="color" value={theme.colors[key]} onChange={(e) => actions.setThemeColor(key, e.target.value)} aria-label={`${label} color`} />
-                  <code>{theme.colors[key].toUpperCase()}</code>
+                  <input type="color" value={theme?.colors?.[key] || "#000000"} onChange={(e) => actions.setThemeColor?.(key, e.target.value)} aria-label={`${label} color`} />
+                  <code>{(theme?.colors?.[key] || "#000000").toUpperCase()}</code>
                 </span>
               </label>
             ))}
