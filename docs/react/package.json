@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ktheme/react": "file:../../../Ktheme/packages/react",
+    "@ktheme/tokens": "file:../../../Ktheme/packages/tokens",
     "lucide-react": "^0.451.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
