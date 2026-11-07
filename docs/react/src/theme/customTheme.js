@@ -1,3 +1,5 @@
+import { validateThemeJson } from "./themeValidator.js";
+
 export const THEME_STORAGE_KEY = "linkpoint.custom-theme.v1";
 
 export const EDITABLE_THEME_TOKENS = [
@@ -7,21 +9,9 @@ export const EDITABLE_THEME_TOKENS = [
   ["warn", "Warning"], ["err", "Danger"],
 ];
 
-const HEX = /^#[0-9a-f]{6}$/i;
-
 export function sanitizeTheme(input) {
-  if (!input || typeof input !== "object") return null;
-  const colors = {};
-  for (const [key] of EDITABLE_THEME_TOKENS) {
-    if (typeof input.colors?.[key] === "string" && HEX.test(input.colors[key])) colors[key] = input.colors[key];
-  }
-  if (Object.keys(colors).length !== EDITABLE_THEME_TOKENS.length) return null;
-  return {
-    version: 1,
-    active: true,
-    name: String(input.name || "My Linkpoint theme").trim().slice(0, 48) || "My Linkpoint theme",
-    colors,
-  };
+  const result = validateThemeJson(input);
+  return result.valid ? result.theme : null;
 }
 
 export function themeFromPalette(palette, name = "My Linkpoint theme") {
