@@ -22,7 +22,7 @@ function getContrastRatio(hex1, hex2) {
   return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
 }
 
-// Resolves static visual design tokens (V, t, pad, LK, ink)
+// Resolves static visual design tokens (V, t, pad, LK, ink, typography)
 export function computeThemeTokens(state) {
   const L = resolveLayout(state.layout);
   const base = PALETTES[state.palette] || PALETTES.ink;
@@ -36,6 +36,20 @@ export function computeThemeTokens(state) {
     touchPaddingCoarse: "var(--ktheme-touch-padding-coarse, 10px)",
   };
   const t = { name: L.name + " / " + P.name, nav: L.nav, font: L.font, dfont: L.dfont, note: L.note + "   Colour pack: " + P.note + ".", v: { ...spatialTokens, ...P.c, ...L.s } };
+  const typography = {
+    fontFamily: `var(--ktheme-font-family, ${t.dfont || '"JetBrains Mono", monospace'})`,
+    fontSizeSmall: "var(--ktheme-font-size-small, 12px)",
+    fontSizeMedium: "var(--ktheme-font-size-medium, 14px)",
+    fontSizeLarge: "var(--ktheme-font-size-large, 18px)",
+    fontSizeXLarge: "var(--ktheme-font-size-xlarge, 24px)",
+    fontWeightLight: "var(--ktheme-font-weight-light, 300)",
+    fontWeightRegular: "var(--ktheme-font-weight-regular, 400)",
+    fontWeightMedium: "var(--ktheme-font-weight-medium, 500)",
+    fontWeightBold: "var(--ktheme-font-weight-bold, 700)",
+    lineHeight: "var(--ktheme-line-height, 1.5)",
+    letterSpacing: "var(--ktheme-letter-spacing, 0em)",
+  };
+  t.typography = typography;
   const V = t.v;
 
   let focusRing = V.pri;
@@ -56,7 +70,32 @@ export function computeThemeTokens(state) {
   const LK = L.look;
   const ink = (bg, candidates) => pickInk(bg, candidates);
 
-  return { V, t, pad, LK, ink };
+  return { V, t, pad, LK, ink, typography };
+}
+
+/**
+ * Creates an inline style object utilizing CSS custom properties for typography
+ * with fallback values for non-browser environments.
+ */
+export function createTypographyStyle({
+  family = 'var(--ktheme-font-family, "JetBrains Mono", monospace)',
+  size,
+  weight,
+  lineHeight = "1",
+  letterSpacing,
+  fallbackFamily = '"JetBrains Mono", monospace',
+} = {}) {
+  const resolvedFamily = family || `var(--ktheme-font-family, ${fallbackFamily})`;
+  const style = {};
+  if (size !== undefined && weight !== undefined) {
+    style.font = `${weight} ${size}/${lineHeight} ${resolvedFamily}`;
+  }
+  style.fontFamily = resolvedFamily;
+  if (size !== undefined) style.fontSize = String(size);
+  if (weight !== undefined) style.fontWeight = String(weight);
+  if (lineHeight !== undefined) style.lineHeight = String(lineHeight);
+  if (letterSpacing !== undefined) style.letterSpacing = String(letterSpacing);
+  return style;
 }
 
 // Resolves dynamic runtime viewport, screen, and navigation state

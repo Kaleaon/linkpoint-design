@@ -1,18 +1,19 @@
-import { useRef, useState, useContext } from "react";
-import { AppContext, useApp } from "../context/AppContext.jsx";
+import { useContext, useRef, useState } from "react";
+import { AppContext } from "../context/AppContext.jsx";
 import { EDITABLE_THEME_TOKENS } from "../theme/customTheme.js";
 import { validateThemeJson } from "../theme/themeValidator.js";
 import { ThemeStudio as UnifiedThemeStudio, KthemeContext } from "@ktheme/react";
 
 export default function ThemeStudio() {
-  const appContext = useContext(AppContext);
-  if (!appContext) {
+  const app = useContext(AppContext);
+  if (!app) {
     const kthemeCtx = useContext(KthemeContext);
     if (!kthemeCtx) return null;
     return <UnifiedThemeStudio embedded={false} />;
   }
 
-  const { state, actions } = appContext;
+  const state = app?.state || { customTheme: null };
+  const actions = app?.actions || {};
   const [open, setOpen] = useState(false);
   const [importError, setImportError] = useState(null);
   const fileRef = useRef(null);
