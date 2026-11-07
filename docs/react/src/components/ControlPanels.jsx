@@ -25,7 +25,7 @@ export default function ControlPanels() {
   const priColor = V.pri || "#6CFF9A";
 
   return (
-    <aside className="sidepanels" aria-label="Prototype controls">
+    <aside className="sidepanels" aria-label="Prototype controls" style={{ position: "relative", zIndex: 70 }}>
       <div className="pnl">
         <div className="pnlh">LAYOUT PACK</div>
         <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
