@@ -305,8 +305,23 @@ async function getPlaywrightBrowser() {
   try {
     return await playwright.chromium.launch(launchOpts);
   } catch (err) {
+    const msPlaywrightDir = path.join(process.env.HOME || '', '.cache/ms-playwright');
+    const cachedExecutables = [];
+    if (fs.existsSync(msPlaywrightDir)) {
+      try {
+        const entries = fs.readdirSync(msPlaywrightDir);
+        for (const entry of entries) {
+          const shellPath = path.join(msPlaywrightDir, entry, 'chrome-headless-shell-linux64/chrome-headless-shell');
+          if (fs.existsSync(shellPath)) cachedExecutables.unshift(shellPath);
+          const chromePath = path.join(msPlaywrightDir, entry, 'chrome-linux64/chrome');
+          if (fs.existsSync(chromePath)) cachedExecutables.push(chromePath);
+        }
+      } catch (_) {}
+    }
+
     const possiblePaths = [
       process.env.CHROMIUM_PATH,
+      ...cachedExecutables,
       '/bin/google-chrome',
       '/usr/bin/google-chrome',
       '/usr/bin/chromium-browser',
@@ -353,6 +368,7 @@ async function taskUnitTests() {
     log('Executing React Linkpoint Vitest Suite...', 'info');
     const reactDir = path.join(cwd, 'docs/react');
     const hasPnpmLock = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml'));
+    const hasPackageLock = fs.existsSync(path.join(reactDir, 'package-lock.json'));
     const isPnpmAvailable = () => {
       try {
         const check = spawnSync('pnpm', ['--version'], { stdio: 'ignore', shell: true });
@@ -361,7 +377,7 @@ async function taskUnitTests() {
         return false;
       }
     };
-    const runner = (hasPnpmLock && isPnpmAvailable()) ? 'pnpm' : 'npm';
+    const runner = (hasPnpmLock && !hasPackageLock && isPnpmAvailable()) ? 'pnpm' : 'npm';
     let res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
     if (res.status !== 0 && runner === 'pnpm') {
       log('pnpm test execution failed, falling back to npm test...', 'warn');
