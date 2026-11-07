@@ -299,8 +299,23 @@ async function getPlaywrightBrowser() {
   const playwright = await import('playwright');
   const launchOpts = {
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--font-render-hinting=none', '--force-color-profile=srgb']
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--font-render-hinting=none', '--force-color-profile=srgb', '--disable-features=ResponsivenessMeasurement', '--disable-renderer-backgrounding']
   };
+
+  const cacheBase = path.join(process.env.HOME || '/home/jules', '.cache/ms-playwright');
+  if (fs.existsSync(cacheBase)) {
+    try {
+      const entries = fs.readdirSync(cacheBase);
+      const shellDir = entries.find(e => e.startsWith('chromium_headless_shell-'));
+      if (shellDir) {
+        const shellBin = path.join(cacheBase, shellDir, 'chrome-headless-shell-linux64/chrome-headless-shell');
+        if (fs.existsSync(shellBin)) {
+          launchOpts.executablePath = shellBin;
+          return await playwright.chromium.launch(launchOpts);
+        }
+      }
+    } catch (_) {}
+  }
 
   try {
     return await playwright.chromium.launch(launchOpts);
@@ -353,6 +368,7 @@ async function taskUnitTests() {
     log('Executing React Linkpoint Vitest Suite...', 'info');
     const reactDir = path.join(cwd, 'docs/react');
     const hasPnpmLock = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml'));
+    const hasPackageLock = fs.existsSync(path.join(reactDir, 'package-lock.json'));
     const isPnpmAvailable = () => {
       try {
         const check = spawnSync('pnpm', ['--version'], { stdio: 'ignore', shell: true });
@@ -361,7 +377,7 @@ async function taskUnitTests() {
         return false;
       }
     };
-    const runner = (hasPnpmLock && isPnpmAvailable()) ? 'pnpm' : 'npm';
+    const runner = (!hasPackageLock && hasPnpmLock && isPnpmAvailable()) ? 'pnpm' : 'npm';
     let res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
     if (res.status !== 0 && runner === 'pnpm') {
       log('pnpm test execution failed, falling back to npm test...', 'warn');
@@ -776,6 +792,9 @@ async function taskVisualSuite() {
       });
       await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
       await page.waitForTimeout(1000);
+      try {
+        await page.evaluate(() => document.fonts.ready);
+      } catch (_) {}
 
       // Attempt interactive panel triggers if available
       try {
