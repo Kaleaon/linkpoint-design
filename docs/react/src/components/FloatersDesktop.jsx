@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import FormInput from "./FormInput.jsx";
@@ -7,10 +7,10 @@ import { PALETTES } from "../theme/palettes.js";
 import { FLOATERS, FBAR, CBTN } from "../theme/constants.js";
 import { LOCAL_MSGS, RADAR_AVATARS, FRIEND_ROWS, INVENTORY_SOURCE, REGIONS, buildCards } from "../data/content.js";
 import Icon from "./Icon.jsx";
-import A11yControl from "./A11yControl.jsx";
 import ScreenBody from "./ScreenBody.jsx";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
 import RadialPieMenu from "./RadialPieMenu.jsx";
+import KInteractive from "./KInteractive.jsx";
 
 // Ported from the `isFloat` block: desktop SL isn't a screen stack, it's N
 // resizable windows over one scene (the `FLOATERS` window model — position,
@@ -48,8 +48,11 @@ export default function FloatersDesktop() {
     else if (actionId === "sit") { actions.cHold("sit"); actions.notify(`Sitting on ${target.name}`); }
   };
 
-  const cardsByScreen = buildCards({ state, actions, layoutName: LAYOUTS[state.layout].name, paletteName: PALETTES[state.palette].name });
-  const fBody = buildFBody(state, cardsByScreen);
+  const cardsByScreen = useMemo(
+    () => buildCards({ state, actions, layoutName: LAYOUTS[state.layout].name, paletteName: PALETTES[state.palette].name }),
+    [state.layout, state.palette, state.dismissed, state.toggles, state.pinned, state.dense, state.prefs, state.cacheCleared, actions]
+  );
+  const fBody = useMemo(() => buildFBody(state, cardsByScreen), [state, cardsByScreen]);
 
   const flScene = {
     position: "absolute", inset: 0, overflow: "hidden", cursor: state.cDrag ? "grabbing" : "grab",
@@ -99,7 +102,14 @@ export default function FloatersDesktop() {
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", borderBottom: "1px solid " + V.outv, paddingBottom: "4px" }}>
               <span style={{ font: "600 9px/1 " + t.dfont, color: V.ink2, letterSpacing: ".08em" }}>CAMERA CONTROLS</span>
-              <A11yControl as="span" onClick={() => setShowCamHud(false)} style={{ width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: V.ink2, fontSize: "14px", lineHeight: 1 }} aria-label="Close HUD">&times;</A11yControl>
+              <KInteractive
+                as="button"
+                onClick={() => setShowCamHud(false)}
+                label="Close HUD"
+                style={{ width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: V.ink2, fontSize: "12px", lineHeight: 1 }}
+              >
+                &times;
+              </KInteractive>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 24px)", gap: "3px", justifyContent: "center" }}>
               <button type="button" onClick={() => actions.sceneMove({ clientX: 0, clientY: -10 })} style={{ height: "24px", background: V.surf2, border: "1px solid " + V.outv, color: V.ink, borderRadius: isSweepDesk ? "999px" : V.rs, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }} aria-label="Orbit Up">
@@ -153,39 +163,39 @@ export default function FloatersDesktop() {
               )}
               <Icon name={f.icon} size={13} />
               <span style={{ flex: 1, minWidth: 0, font: "inherit", letterSpacing: "inherit", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{f.title}</span>
-              <A11yControl
-                as="span"
+              <KInteractive
+                as="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   actions.dispatchIntent("FLOATER_SHADE", { id: f.id });
                 }}
-                aria-label={isShaded ? "Unshade (Expand)" : "Shade (Rollup)"}
                 style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
+                label={isShaded ? "Unshade (Expand)" : "Shade (Rollup)"}
               >
                 <Icon name={isShaded ? "chevron-down" : "chevron-up"} size={11} />
-              </A11yControl>
-              <A11yControl
-                as="span"
+              </KInteractive>
+              <KInteractive
+                as="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   actions.dispatchIntent("FLOATER_MINIMIZE", { id: f.id });
                 }}
-                aria-label="Minimize"
                 style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
+                label="Minimize"
               >
                 &minus;
-              </A11yControl>
-              <A11yControl
-                as="span"
+              </KInteractive>
+              <KInteractive
+                as="button"
                 onClick={(e) => {
                   e.stopPropagation();
                   actions.dispatchIntent("FLOATER_CLOSE", { id: f.id });
                 }}
-                aria-label="Close"
                 style={{ width: "24px", height: "24px", flex: "none", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid currentColor", borderRadius: isSweepDesk ? "999px" : V.rs, font: "700 11px/1 " + t.dfont, cursor: "pointer", opacity: 0.85 }}
+                label="Close"
               >
                 &times;
-              </A11yControl>
+              </KInteractive>
             </div>
             {!isShaded && (
               <>
@@ -258,14 +268,17 @@ export default function FloatersDesktop() {
           const min = !!state.flMin[f.id];
           const act = f.id === state.screen && !min;
           return (
-            <A11yControl
+            <KInteractive
+              as="button"
               key={f.id}
+              label={f.title}
+              aria-pressed={act}
               onClick={() => actions.dispatchIntent("FLOATER_TOGGLE", { id: f.id })}
               aria-label={f.title}
               style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", padding: "0 10px", cursor: "pointer", background: act ? V.pri : min ? "transparent" : V.surf2, color: act ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink2, border: "1px solid " + (min ? V.outv : "transparent"), borderRadius: isSweepDesk ? "999px" : V.rs, font: isSweepDesk ? "700 10px/1 " + t.dfont : "500 10px/1 " + t.font, letterSpacing: isSweepDesk ? ".12em" : ".08em", whiteSpace: "nowrap" }}
             >
               {f.title}
-            </A11yControl>
+            </KInteractive>
           );
         })}
 
@@ -293,16 +306,19 @@ export default function FloatersDesktop() {
             dis = !!b.off;
           const bg = lit ? V.pri : V.surf2;
           return (
-            <A11yControl
+            <KInteractive
+              as="button"
               key={k}
-              onClick={() => actions.cPress(k)}
+              label={b.label}
               disabled={dis}
+              aria-pressed={lit}
+              onClick={() => actions.cPress(k)}
               aria-label={b.label}
               style={{ flex: "none", height: "26px", display: "flex", alignItems: "center", gap: "6px", padding: "0 9px", background: dis ? "transparent" : bg, color: dis ? V.ink2 : ink(bg, [V.bg, V.onpri, V.ink]), border: "1px solid " + (dis ? V.outv : "transparent"), borderRadius: V.rs, cursor: dis ? "not-allowed" : "pointer", font: "600 9.5px/1 " + t.dfont, letterSpacing: ".1em", whiteSpace: "nowrap" }}
             >
               <Icon name={b.icon} size={13} />
               {b.label}
-            </A11yControl>
+            </KInteractive>
           );
         })}
       </div>
