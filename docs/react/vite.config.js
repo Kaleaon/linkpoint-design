@@ -1,6 +1,14 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import fs from "fs";
+
+// Resolve Ktheme repository whether cloned as a sibling (standard workspace/CI)
+// or nested within the linkpoint-design checkout.
+const kthemeDir = [
+  path.resolve(__dirname, "../../../Ktheme"),
+  path.resolve(__dirname, "../../Ktheme"),
+].find((p) => fs.existsSync(p)) || path.resolve(__dirname, "../../../Ktheme");
 
 // This app is a standalone dev/build sandbox that lives under docs/react in the
 // linkpoint-design repo. It is not currently wired into any parent site's base
@@ -10,14 +18,15 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      "@ktheme/react/studio": path.resolve(__dirname, "../../../Ktheme/packages/react/src/studio/index.ts"),
-      "@ktheme/react/support": path.resolve(__dirname, "../../../Ktheme/packages/react/src/support/index.ts"),
-      "@ktheme/react": path.resolve(__dirname, "../../../Ktheme/packages/react/src/index.ts"),
+      "@ktheme/react/studio": path.resolve(kthemeDir, "packages/react/src/studio/index.ts"),
+      "@ktheme/react/support": path.resolve(kthemeDir, "packages/react/src/support/index.ts"),
+      "@ktheme/react": path.resolve(kthemeDir, "packages/react/src/index.ts"),
     },
   },
   test: {
     environment: "jsdom",
     globals: true,
+    include: ["src/theme/color.test.js", "src/**/*.test.jsx", "src/**/__tests__/*.jsx"],
     exclude: [
       "**/node_modules/**",
       "**/dist/**",
