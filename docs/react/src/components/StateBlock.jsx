@@ -55,15 +55,55 @@ export default function StateBlock() {
           <Icon name={condPack.icon} size={26} />
         </div>
       )}
-      <div style={{ font: "700 15px/1.3 " + t.dfont, letterSpacing: V.tls, color: isError ? V.err : V.ink }}>{condPack.title}</div>
-      <div style={{ maxWidth: "300px", font: "400 12px/1.7 " + t.font, color: V.ink2 }}>{condPack.body}</div>
+      <div
+        style={{
+          font: "700 15px/1.3 " + t.dfont,
+          letterSpacing: V.tls,
+          color: isError ? V.err : V.ink,
+        }}
+      >
+        {condPack.title}
+      </div>
+      <div
+        style={{
+          maxWidth: "300px",
+          font: "400 12px/1.7 " + t.font,
+          color: V.ink2,
+        }}
+      >
+        {condPack.body}
+      </div>
       {condPack.bar ? (
-        <div style={{ width: "216px", height: "4px", borderRadius: "2px", background: V.surf2, overflow: "hidden" }}>
-          <div style={{ width: Math.round(condPack.bar * 100) + "%", height: "100%", background: V.pri }} />
+        <div
+          style={{
+            width: "216px",
+            height: "4px",
+            borderRadius: "2px",
+            background: V.surf2,
+            overflow: "hidden",
+          }}
+        >
+          <div
+            style={{
+              width: Math.round(condPack.bar * 100) + "%",
+              height: "100%",
+              background: V.pri,
+            }}
+          />
         </div>
       ) : null}
       {condPack.log ? (
-        <div style={{ font: "400 10.5px/1.75 " + t.font, color: V.ink2, textAlign: "left", border: "1px dashed " + V.outv, borderRadius: V.rs, padding: "8px 10px", maxWidth: "300px" }}>
+        <div
+          style={{
+            font: "400 10.5px/1.75 " + t.font,
+            color: V.ink2,
+            textAlign: "left",
+            border: "1px dashed " + V.outv,
+            borderRadius: V.rs,
+            padding: "8px 10px",
+            maxWidth: "300px",
+          }}
+        >
           {condPack.log.map((ln, i) => (
             <div key={i}>{ln}</div>
           ))}
@@ -81,7 +121,7 @@ export default function StateBlock() {
             justifyContent: "center",
             borderRadius: V.rs,
             background: isError ? V.err : V.pri,
-            color: isError ? "#FFFFFF" : V.onpri,
+            color: isError ? V.onerr || V.ink : V.onpri,
             font: "700 11px/1 " + t.font,
             letterSpacing: ".18em",
             cursor: "pointer",
