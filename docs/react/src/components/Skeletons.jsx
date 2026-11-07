@@ -1,5 +1,17 @@
 import { useThemeTokens } from "../context/ThemeContext.jsx";
 
+const SR_ONLY_STYLE = {
+  position: "absolute",
+  width: "1px",
+  height: "1px",
+  padding: 0,
+  margin: "-1px",
+  overflow: "hidden",
+  clip: "rect(0, 0, 0, 0)",
+  whiteSpace: "nowrap",
+  border: 0,
+};
+
 function useSafeThemeTokens() {
   try {
     const tokens = useThemeTokens();
@@ -22,8 +34,22 @@ function useSafeThemeTokens() {
   };
 }
 
-export function SkeletonCardList({ count = 5, style = {} }) {
+export function SkeletonCardList({
+  count = 5,
+  style = {},
+  label,
+  "aria-label": ariaLabelProp,
+  "aria-live": ariaLiveProp,
+  ariaLive,
+  role = "status",
+  "aria-busy": ariaBusyProp,
+  ...rest
+}) {
   const { V, LK } = useSafeThemeTokens();
+
+  const statusLabel = label || ariaLabelProp || "Loading card items...";
+  const liveRegion = ariaLiveProp || ariaLive || "polite";
+  const isBusy = ariaBusyProp !== undefined ? ariaBusyProp : "true";
 
   const containerStyle = {
     flex: 1,
@@ -40,7 +66,17 @@ export function SkeletonCardList({ count = 5, style = {} }) {
   const cardItems = Array.from({ length: count });
 
   return (
-    <div data-testid="skeleton-card-list" style={containerStyle}>
+    <div
+      role={role}
+      aria-busy={isBusy}
+      aria-label={statusLabel}
+      data-testid="skeleton-card-list"
+      style={containerStyle}
+      {...rest}
+    >
+      <span className="sr-only" aria-live={liveRegion} style={SR_ONLY_STYLE}>
+        {statusLabel}
+      </span>
       {cardItems.map((_, i) => (
         <div
           key={i}
@@ -100,8 +136,22 @@ export function SkeletonCardList({ count = 5, style = {} }) {
   );
 }
 
-export function SkeletonTree({ count = 7, style = {} }) {
+export function SkeletonTree({
+  count = 7,
+  style = {},
+  label,
+  "aria-label": ariaLabelProp,
+  "aria-live": ariaLiveProp,
+  ariaLive,
+  role = "status",
+  "aria-busy": ariaBusyProp,
+  ...rest
+}) {
   const { V } = useSafeThemeTokens();
+
+  const statusLabel = label || ariaLabelProp || "Loading tree hierarchy...";
+  const liveRegion = ariaLiveProp || ariaLive || "polite";
+  const isBusy = ariaBusyProp !== undefined ? ariaBusyProp : "true";
 
   const containerStyle = {
     flex: 1,
@@ -118,7 +168,17 @@ export function SkeletonTree({ count = 7, style = {} }) {
   const depths = [0, 0, 1, 1, 2, 0, 1];
 
   return (
-    <div data-testid="skeleton-tree" style={containerStyle}>
+    <div
+      role={role}
+      aria-busy={isBusy}
+      aria-label={statusLabel}
+      data-testid="skeleton-tree"
+      style={containerStyle}
+      {...rest}
+    >
+      <span className="sr-only" aria-live={liveRegion} style={SR_ONLY_STYLE}>
+        {statusLabel}
+      </span>
       {Array.from({ length: count }).map((_, i) => {
         const depth = depths[i % depths.length];
         return (
@@ -171,8 +231,21 @@ export function SkeletonTree({ count = 7, style = {} }) {
   );
 }
 
-export function SkeletonDetail({ style = {} }) {
+export function SkeletonDetail({
+  style = {},
+  label,
+  "aria-label": ariaLabelProp,
+  "aria-live": ariaLiveProp,
+  ariaLive,
+  role = "status",
+  "aria-busy": ariaBusyProp,
+  ...rest
+}) {
   const { V } = useSafeThemeTokens();
+
+  const statusLabel = label || ariaLabelProp || "Loading detail pane...";
+  const liveRegion = ariaLiveProp || ariaLive || "polite";
+  const isBusy = ariaBusyProp !== undefined ? ariaBusyProp : "true";
 
   const containerStyle = {
     flex: "none",
@@ -188,7 +261,17 @@ export function SkeletonDetail({ style = {} }) {
   };
 
   return (
-    <div data-testid="skeleton-detail" style={containerStyle}>
+    <div
+      role={role}
+      aria-busy={isBusy}
+      aria-label={statusLabel}
+      data-testid="skeleton-detail"
+      style={containerStyle}
+      {...rest}
+    >
+      <span className="sr-only" aria-live={liveRegion} style={SR_ONLY_STYLE}>
+        {statusLabel}
+      </span>
       <div
         data-testid="skeleton-detail-header"
         className="skeleton-shimmer"
