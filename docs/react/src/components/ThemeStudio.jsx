@@ -4,9 +4,9 @@ import { EDITABLE_THEME_TOKENS } from "../theme/customTheme.js";
 import { validateThemeJson } from "../theme/themeValidator.js";
 
 export default function ThemeStudio() {
-  const appContext = useContext(AppContext);
-  if (!appContext) return null;
-  const { state, actions } = appContext;
+  const app = useContext(AppContext);
+  const state = app?.state || { customTheme: null };
+  const actions = app?.actions || {};
   const [open, setOpen] = useState(false);
   const [importError, setImportError] = useState(null);
   const fileRef = useRef(null);
