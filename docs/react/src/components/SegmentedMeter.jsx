@@ -74,8 +74,12 @@ export default function SegmentedMeter({
           {systemCode && (
             <span
               style={{
-                font: `var(--ktheme-font-weight-bold, 700) var(--ktheme-font-size-small, 9px)/1 var(--ktheme-font-family, ${t?.dfont || '"JetBrains Mono", monospace'})`,
-                fontFamily: `var(--ktheme-font-family, ${t?.dfont || '"JetBrains Mono", monospace'})`,
+                font: `var(--ktheme-font-weight-bold, 700) var(--ktheme-font-size-small, 9px)/1 var(--ktheme-font-family, ${
+                  t?.dfont || '"JetBrains Mono", monospace'
+                })`,
+                fontFamily: `var(--ktheme-font-family, ${
+                  t?.dfont || '"JetBrains Mono", monospace'
+                })`,
                 fontSize: "var(--ktheme-font-size-small, 9px)",
                 fontWeight: "var(--ktheme-font-weight-bold, 700)",
                 lineHeight: "1",
@@ -90,8 +94,12 @@ export default function SegmentedMeter({
           {showReadout && (
             <span
               style={{
-                font: `var(--ktheme-font-weight-medium, 600) var(--ktheme-font-size-small, 11px)/1 var(--ktheme-font-family, ${t?.mfont || t?.font || '"JetBrains Mono", monospace'})`,
-                fontFamily: `var(--ktheme-font-family, ${t?.mfont || t?.font || '"JetBrains Mono", monospace'})`,
+                font: `var(--ktheme-font-weight-medium, 600) var(--ktheme-font-size-small, 11px)/1 var(--ktheme-font-family, ${
+                  t?.mfont || t?.font || '"JetBrains Mono", monospace'
+                })`,
+                fontFamily: `var(--ktheme-font-family, ${
+                  t?.mfont || t?.font || '"JetBrains Mono", monospace'
+                })`,
                 fontSize: "var(--ktheme-font-size-small, 11px)",
                 fontWeight: "var(--ktheme-font-weight-medium, 600)",
                 lineHeight: "1",

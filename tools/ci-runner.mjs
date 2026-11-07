@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-import fs from 'node:fs';
-import path from 'node:path';
-import net from 'node:net';
-import http from 'node:http';
-import zlib from 'node:zlib';
-import { spawnSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
+import fs from "node:fs";
+import path from "node:path";
+import net from "node:net";
+import http from "node:http";
+import zlib from "node:zlib";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,41 +14,46 @@ const cwd = process.cwd();
 
 // Terminal colors
 const colors = {
-  reset: '\x1b[0m',
-  bold: '\x1b[1m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  blue: '\x1b[34m',
-  red: '\x1b[31m',
-  cyan: '\x1b[36m',
-  gray: '\x1b[90m'
+  reset: "\x1b[0m",
+  bold: "\x1b[1m",
+  green: "\x1b[32m",
+  yellow: "\x1b[33m",
+  blue: "\x1b[34m",
+  red: "\x1b[31m",
+  cyan: "\x1b[36m",
+  gray: "\x1b[90m",
 };
 
-function log(msg, type = 'info') {
-  const prefix = {
-    info: `${colors.blue}[INFO]${colors.reset}`,
-    success: `${colors.green}[PASS]${colors.reset}`,
-    warn: `${colors.yellow}[WARN]${colors.reset}`,
-    error: `${colors.red}[FAIL]${colors.reset}`,
-    header: `${colors.bold}${colors.cyan}==>${colors.reset}`
-  }[type] || colors.blue;
+function log(msg, type = "info") {
+  const prefix =
+    {
+      info: `${colors.blue}[INFO]${colors.reset}`,
+      success: `${colors.green}[PASS]${colors.reset}`,
+      warn: `${colors.yellow}[WARN]${colors.reset}`,
+      error: `${colors.red}[FAIL]${colors.reset}`,
+      header: `${colors.bold}${colors.cyan}==>${colors.reset}`,
+    }[type] || colors.blue;
 
   console.log(`${prefix} ${msg}`);
 }
 
 // Parse Command Line Arguments
 const args = process.argv.slice(2);
-let runUnit = args.includes('--unit');
-let runCatalog = args.includes('--catalog');
-let runSchema = args.includes('--schema');
-let runPalette = args.includes('--palette');
-let runA11y = args.includes('--a11y');
-let runVisual = args.includes('--visual');
-const updateSnapshots = args.includes('--update-snapshots') || args.includes('--update');
-const helpFlag = args.includes('--help') || args.includes('-h');
+let runUnit = args.includes("--unit");
+let runCatalog = args.includes("--catalog");
+let runSchema = args.includes("--schema");
+let runPalette = args.includes("--palette");
+let runA11y = args.includes("--a11y");
+let runVisual = args.includes("--visual");
+const updateSnapshots =
+  args.includes("--update-snapshots") || args.includes("--update");
+const helpFlag = args.includes("--help") || args.includes("-h");
 
-const portArgIdx = args.indexOf('--port');
-let customPort = portArgIdx !== -1 && args[portArgIdx + 1] ? parseInt(args[portArgIdx + 1], 10) : 0;
+const portArgIdx = args.indexOf("--port");
+let customPort =
+  portArgIdx !== -1 && args[portArgIdx + 1]
+    ? parseInt(args[portArgIdx + 1], 10)
+    : 0;
 
 if (helpFlag) {
   console.log(`
@@ -75,7 +80,14 @@ ${colors.bold}FLAGS:${colors.reset}
 }
 
 // If no specific task flag was passed, run all tasks applicable to the current repo
-if (!runUnit && !runCatalog && !runSchema && !runPalette && !runA11y && !runVisual) {
+if (
+  !runUnit &&
+  !runCatalog &&
+  !runSchema &&
+  !runPalette &&
+  !runA11y &&
+  !runVisual
+) {
   runUnit = true;
   runCatalog = true;
   runSchema = true;
@@ -94,75 +106,86 @@ function cleanup() {
   }
   activeServers.clear();
 }
-process.on('exit', cleanup);
-process.on('SIGINT', () => { cleanup(); process.exit(130); });
-process.on('SIGTERM', () => { cleanup(); process.exit(143); });
+process.on("exit", cleanup);
+process.on("SIGINT", () => {
+  cleanup();
+  process.exit(130);
+});
+process.on("SIGTERM", () => {
+  cleanup();
+  process.exit(143);
+});
 
 // Server Harness Helper
 function getMimeType(filePath) {
   const ext = path.extname(filePath).toLowerCase();
   const map = {
-    '.html': 'text/html; charset=utf-8',
-    '.css': 'text/css; charset=utf-8',
-    '.js': 'application/javascript; charset=utf-8',
-    '.mjs': 'application/javascript; charset=utf-8',
-    '.json': 'application/json; charset=utf-8',
-    '.png': 'image/png',
-    '.jpg': 'image/jpeg',
-    '.svg': 'image/svg+xml',
-    '.webp': 'image/webp',
-    '.yaml': 'text/yaml; charset=utf-8',
-    '.yml': 'text/yaml; charset=utf-8'
+    ".html": "text/html; charset=utf-8",
+    ".css": "text/css; charset=utf-8",
+    ".js": "application/javascript; charset=utf-8",
+    ".mjs": "application/javascript; charset=utf-8",
+    ".json": "application/json; charset=utf-8",
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".svg": "image/svg+xml",
+    ".webp": "image/webp",
+    ".yaml": "text/yaml; charset=utf-8",
+    ".yml": "text/yaml; charset=utf-8",
   };
-  return map[ext] || 'application/octet-stream';
+  return map[ext] || "application/octet-stream";
 }
 
 async function startServerHarness(rootDirectory, requestedPort = 0) {
   const server = http.createServer((req, res) => {
-    let reqUrl = req.url.split('?')[0];
-    if (reqUrl === '/') reqUrl = '/index.html';
+    let reqUrl = req.url.split("?")[0];
+    if (reqUrl === "/") reqUrl = "/index.html";
 
-    let safePath = path.normalize(decodeURIComponent(reqUrl)).replace(/^(\.\.[\/\\])+/, '');
+    let safePath = path
+      .normalize(decodeURIComponent(reqUrl))
+      .replace(/^(\.\.[\/\\])+/, "");
     let fullPath = path.join(rootDirectory, safePath);
 
     if (fs.existsSync(fullPath) && fs.statSync(fullPath).isDirectory()) {
-      fullPath = path.join(fullPath, 'index.html');
+      fullPath = path.join(fullPath, "index.html");
     }
 
     if (!fs.existsSync(fullPath)) {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.end('404 Not Found');
+      res.writeHead(404, { "Content-Type": "text/plain" });
+      res.end("404 Not Found");
       return;
     }
 
     try {
       const data = fs.readFileSync(fullPath);
       res.writeHead(200, {
-        'Content-Type': getMimeType(fullPath),
-        'Cache-Control': 'no-store'
+        "Content-Type": getMimeType(fullPath),
+        "Cache-Control": "no-store",
       });
       res.end(data);
     } catch (err) {
-      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.writeHead(500, { "Content-Type": "text/plain" });
       res.end(`500 Internal Server Error: ${err.message}`);
     }
   });
 
   return new Promise((resolve, reject) => {
-    server.listen(requestedPort || 0, '127.0.0.1', () => {
+    server.listen(requestedPort || 0, "127.0.0.1", () => {
       const port = server.address().port;
       activeServers.add(server);
-      log(`Static server harness listening at http://127.0.0.1:${port}/ serving ${rootDirectory}`, 'info');
+      log(
+        `Static server harness listening at http://127.0.0.1:${port}/ serving ${rootDirectory}`,
+        "info"
+      );
       resolve({
         port,
         url: `http://127.0.0.1:${port}`,
         close: async () => {
           activeServers.delete(server);
           return new Promise((res) => server.close(res));
-        }
+        },
       });
     });
-    server.on('error', reject);
+    server.on("error", reject);
   });
 }
 
@@ -179,19 +202,22 @@ function paethPredictor(a, b, c) {
 
 function parsePNG(buffer) {
   let offset = 8;
-  let width = 0, height = 0, colorType = 6, bitDepth = 8;
+  let width = 0,
+    height = 0,
+    colorType = 6,
+    bitDepth = 8;
   const idatChunks = [];
   while (offset < buffer.length) {
     const length = buffer.readUInt32BE(offset);
-    const type = buffer.toString('ascii', offset + 4, offset + 8);
-    if (type === 'IHDR') {
+    const type = buffer.toString("ascii", offset + 4, offset + 8);
+    if (type === "IHDR") {
       width = buffer.readUInt32BE(offset + 8);
       height = buffer.readUInt32BE(offset + 12);
       bitDepth = buffer[offset + 16];
       colorType = buffer[offset + 17];
-    } else if (type === 'IDAT') {
+    } else if (type === "IDAT") {
       idatChunks.push(buffer.subarray(offset + 8, offset + 8 + length));
-    } else if (type === 'IEND') {
+    } else if (type === "IEND") {
       break;
     }
     offset += 12 + length;
@@ -199,7 +225,7 @@ function parsePNG(buffer) {
 
   const raw = zlib.inflateSync(Buffer.concat(idatChunks));
   let bpp = 4;
-  if (colorType === 2) bpp = 3;      // RGB
+  if (colorType === 2) bpp = 3; // RGB
   else if (colorType === 6) bpp = 4; // RGBA
   else if (colorType === 0) bpp = 1; // Grayscale
   else if (colorType === 4) bpp = 2; // Grayscale + Alpha
@@ -224,8 +250,10 @@ function parsePNG(buffer) {
       if (filterType === 0) recon = filtered;
       else if (filterType === 1) recon = (filtered + left) & 0xff;
       else if (filterType === 2) recon = (filtered + above) & 0xff;
-      else if (filterType === 3) recon = (filtered + Math.floor((left + above) / 2)) & 0xff;
-      else if (filterType === 4) recon = (filtered + paethPredictor(left, above, upperLeft)) & 0xff;
+      else if (filterType === 3)
+        recon = (filtered + Math.floor((left + above) / 2)) & 0xff;
+      else if (filterType === 4)
+        recon = (filtered + paethPredictor(left, above, upperLeft)) & 0xff;
       else recon = filtered;
 
       currentRow[x] = recon;
@@ -265,7 +293,11 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
     const pngB = parsePNG(bufB);
 
     if (pngA.width !== pngB.width || pngA.height !== pngB.height) {
-      return { match: false, diffPercent: 100, reason: `Dimension mismatch (${pngA.width}x${pngA.height} vs ${pngB.width}x${pngB.height})` };
+      return {
+        match: false,
+        diffPercent: 100,
+        reason: `Dimension mismatch (${pngA.width}x${pngA.height} vs ${pngB.width}x${pngB.height})`,
+      };
     }
 
     const totalPixels = pngA.width * pngA.height;
@@ -278,23 +310,32 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
       const db = Math.abs(pngA.rgba[px + 2] - pngB.rgba[px + 2]);
       const da = Math.abs(pngA.rgba[px + 3] - pngB.rgba[px + 3]);
 
-      if (dr > colorThreshold || dg > colorThreshold || db > colorThreshold || da > colorThreshold) {
+      if (
+        dr > colorThreshold ||
+        dg > colorThreshold ||
+        db > colorThreshold ||
+        da > colorThreshold
+      ) {
         diffPixels++;
       }
     }
 
     const diffPercent = (diffPixels / totalPixels) * 100;
-    const tolerance = parseFloat(process.env.VISUAL_DIFF_TOLERANCE || '1.5');
+    const tolerance = parseFloat(process.env.VISUAL_DIFF_TOLERANCE || "1.5");
     return {
       match: diffPercent <= tolerance,
       diffPercent: parseFloat(diffPercent.toFixed(3)),
       diffPixels,
-      totalPixels
+      totalPixels,
     };
   } catch (e) {
     // Fallback byte-wise buffer compare if PNG parsing fails
     const isExact = bufA.equals(bufB);
-    return { match: isExact, diffPercent: isExact ? 0 : 100, reason: `Buffer comparison (PNG parse error: ${e.message})` };
+    return {
+      match: isExact,
+      diffPercent: isExact ? 0 : 100,
+      reason: `Buffer comparison (PNG parse error: ${e.message})`,
+    };
   }
 }
 
@@ -302,38 +343,49 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
 async function getPlaywrightBrowser() {
   let playwright;
   try {
-    playwright = await import('playwright');
+    playwright = await import("playwright");
   } catch (err) {
-    log('Playwright dependency preflight check failed: "playwright" module is not installed.', 'error');
-    log('Actionable resolution: Please install dependencies using:', 'warn');
-    log('  npm install', 'info');
-    log('  npx playwright install --with-deps chromium', 'info');
-    throw new Error('Missing Playwright module. Run "npm install" and "npx playwright install --with-deps chromium".');
+    log(
+      'Playwright dependency preflight check failed: "playwright" module is not installed.',
+      "error"
+    );
+    log("Actionable resolution: Please install dependencies using:", "warn");
+    log("  npm install", "info");
+    log("  npx playwright install --with-deps chromium", "info");
+    throw new Error(
+      'Missing Playwright module. Run "npm install" and "npx playwright install --with-deps chromium".'
+    );
   }
 
   const launchOpts = {
     headless: true,
     args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
-      '--disable-gpu',
-      '--font-render-hinting=none',
-      '--force-color-profile=srgb',
-      '--disable-features=ResponsivenessMeasurement',
-      '--disable-renderer-backgrounding'
-    ]
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-gpu",
+      "--font-render-hinting=none",
+      "--force-color-profile=srgb",
+      "--disable-features=ResponsivenessMeasurement",
+      "--disable-renderer-backgrounding",
+    ],
   };
 
   // Search ms-playwright cache for installed headless shell binaries
-  const homeDir = process.env.HOME || '/home/jules';
-  const msPlaywrightDir = path.join(homeDir, '.cache/ms-playwright');
+  const homeDir = process.env.HOME || "/home/jules";
+  const msPlaywrightDir = path.join(homeDir, ".cache/ms-playwright");
   let cachedHeadlessShell = null;
   if (fs.existsSync(msPlaywrightDir)) {
     try {
-      const dirs = fs.readdirSync(msPlaywrightDir).filter(d => d.startsWith('chromium_headless_shell-'));
+      const dirs = fs
+        .readdirSync(msPlaywrightDir)
+        .filter((d) => d.startsWith("chromium_headless_shell-"));
       for (const dir of dirs) {
-        const candidate = path.join(msPlaywrightDir, dir, 'chrome-headless-shell-linux64/chrome-headless-shell');
+        const candidate = path.join(
+          msPlaywrightDir,
+          dir,
+          "chrome-headless-shell-linux64/chrome-headless-shell"
+        );
         if (fs.existsSync(candidate)) {
           cachedHeadlessShell = candidate;
           break;
@@ -345,16 +397,19 @@ async function getPlaywrightBrowser() {
   const possiblePaths = [
     process.env.CHROMIUM_PATH,
     cachedHeadlessShell,
-    '/bin/google-chrome',
-    '/usr/bin/google-chrome',
-    '/usr/bin/chromium-browser',
-    '/usr/bin/chromium'
+    "/bin/google-chrome",
+    "/usr/bin/google-chrome",
+    "/usr/bin/chromium-browser",
+    "/usr/bin/chromium",
   ].filter(Boolean);
 
   for (const execPath of possiblePaths) {
     if (fs.existsSync(execPath)) {
       try {
-        return await playwright.chromium.launch({ ...launchOpts, executablePath: execPath });
+        return await playwright.chromium.launch({
+          ...launchOpts,
+          executablePath: execPath,
+        });
       } catch (_) {}
     }
   }
@@ -366,119 +421,174 @@ async function getPlaywrightBrowser() {
       err &&
       err.message &&
       (err.message.includes("Executable doesn't exist") ||
-        err.message.includes('playwright install') ||
-        err.code === 'ENOENT')
+        err.message.includes("playwright install") ||
+        err.code === "ENOENT")
     ) {
-      log('Playwright browser preflight check failed: Chromium browser binary is not installed.', 'error');
-      log('Actionable resolution: Please install browser binaries using:', 'warn');
-      log('  npx playwright install chromium', 'info');
-      throw new Error('Playwright Chromium browser binary missing. Run "npx playwright install chromium".');
+      log(
+        "Playwright browser preflight check failed: Chromium browser binary is not installed.",
+        "error"
+      );
+      log(
+        "Actionable resolution: Please install browser binaries using:",
+        "warn"
+      );
+      log("  npx playwright install chromium", "info");
+      throw new Error(
+        'Playwright Chromium browser binary missing. Run "npx playwright install chromium".'
+      );
     }
     throw err;
   }
 }
 
-async function navigateWithRetry(page, url, options = {}, retries = 3, delayMs = 500) {
+async function navigateWithRetry(
+  page,
+  url,
+  options = {},
+  retries = 3,
+  delayMs = 500
+) {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       return await page.goto(url, options);
     } catch (err) {
       if (attempt === retries) throw err;
-      log(`page.goto failed on attempt ${attempt}/${retries} (${err.message}). Retrying in ${delayMs}ms...`, 'warn');
-      await new Promise(r => setTimeout(r, delayMs));
+      log(
+        `page.goto failed on attempt ${attempt}/${retries} (${err.message}). Retrying in ${delayMs}ms...`,
+        "warn"
+      );
+      await new Promise((r) => setTimeout(r, delayMs));
     }
   }
 }
 
 // TASK 1: Unit Tests
 async function taskUnitTests() {
-  log('Running Unit Test Suite...', 'header');
+  log("Running Unit Test Suite...", "header");
 
-  const hasKthemeJest = fs.existsSync(path.join(cwd, 'jest.config.js')) || fs.existsSync(path.join(cwd, 'src/core/ThemeEngine.ts'));
-  const hasReactVitest = fs.existsSync(path.join(cwd, 'docs/react/package.json'));
+  const hasKthemeJest =
+    fs.existsSync(path.join(cwd, "jest.config.js")) ||
+    fs.existsSync(path.join(cwd, "src/core/ThemeEngine.ts"));
+  const hasReactVitest = fs.existsSync(
+    path.join(cwd, "docs/react/package.json")
+  );
 
   let success = true;
 
   if (hasKthemeJest) {
-    log('Executing Ktheme Jest Unit Tests...', 'info');
-    const res = spawnSync('npm', ['test'], { cwd, stdio: 'inherit', shell: true });
+    log("Executing Ktheme Jest Unit Tests...", "info");
+    const res = spawnSync("npm", ["test"], {
+      cwd,
+      stdio: "inherit",
+      shell: true,
+    });
     if (res.status !== 0) success = false;
   }
 
   if (hasReactVitest) {
-    log('Executing React Linkpoint Vitest Suite...', 'info');
-    const reactDir = path.join(cwd, 'docs/react');
-    const hasPnpmLock = fs.existsSync(path.join(reactDir, 'pnpm-lock.yaml'));
-    const hasNpmLock = fs.existsSync(path.join(reactDir, 'package-lock.json'));
+    log("Executing React Linkpoint Vitest Suite...", "info");
+    const reactDir = path.join(cwd, "docs/react");
+    const hasPnpmLock = fs.existsSync(path.join(reactDir, "pnpm-lock.yaml"));
+    const hasNpmLock = fs.existsSync(path.join(reactDir, "package-lock.json"));
     const isPnpmAvailable = () => {
       try {
-        const check = spawnSync('pnpm', ['--version'], { stdio: 'ignore', shell: true });
+        const check = spawnSync("pnpm", ["--version"], {
+          stdio: "ignore",
+          shell: true,
+        });
         return check.status === 0;
       } catch {
         return false;
       }
     };
-    const runner = (hasPnpmLock && !hasNpmLock && isPnpmAvailable()) ? 'pnpm' : 'npm';
-    let res = spawnSync(runner, ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
-    if (res.status !== 0 && runner === 'pnpm') {
-      log('pnpm test execution failed, falling back to npm test...', 'warn');
-      res = spawnSync('npm', ['test'], { cwd: reactDir, stdio: 'inherit', shell: true });
+    const runner =
+      hasPnpmLock && !hasNpmLock && isPnpmAvailable() ? "pnpm" : "npm";
+    let res = spawnSync(runner, ["test"], {
+      cwd: reactDir,
+      stdio: "inherit",
+      shell: true,
+    });
+    if (res.status !== 0 && runner === "pnpm") {
+      log("pnpm test execution failed, falling back to npm test...", "warn");
+      res = spawnSync("npm", ["test"], {
+        cwd: reactDir,
+        stdio: "inherit",
+        shell: true,
+      });
     }
     if (res.status !== 0) success = false;
   }
 
   if (!hasKthemeJest && !hasReactVitest) {
-    log('No specific unit test runner found for this directory. Skipped.', 'warn');
+    log(
+      "No specific unit test runner found for this directory. Skipped.",
+      "warn"
+    );
     return true;
   }
 
   if (success) {
-    log('Unit tests passed successfully.', 'success');
+    log("Unit tests passed successfully.", "success");
   } else {
-    log('Unit tests failed.', 'error');
+    log("Unit tests failed.", "error");
   }
   return success;
 }
 
 // TASK 2: Catalog Parity Check
 async function taskCatalogCheck() {
-  const scriptPath = path.join(cwd, 'scripts/generate-theme-catalog.mjs');
+  const scriptPath = path.join(cwd, "scripts/generate-theme-catalog.mjs");
   if (!fs.existsSync(scriptPath)) {
-    log('No theme catalog generator script found in this repository. Skipped.', 'info');
+    log(
+      "No theme catalog generator script found in this repository. Skipped.",
+      "info"
+    );
     return true;
   }
 
-  log('Checking Theme Catalog Parity...', 'header');
-  const res = spawnSync('node', [scriptPath, '--check'], { cwd, stdio: 'inherit' });
+  log("Checking Theme Catalog Parity...", "header");
+  const res = spawnSync("node", [scriptPath, "--check"], {
+    cwd,
+    stdio: "inherit",
+  });
   if (res.status === 0) {
-    log('Theme catalog parity verified.', 'success');
+    log("Theme catalog parity verified.", "success");
     return true;
   } else {
-    log('Theme catalog is out of sync with SHARED_PRESET_REGISTRY.', 'error');
+    log("Theme catalog is out of sync with SHARED_PRESET_REGISTRY.", "error");
     return false;
   }
 }
 
 // TASK 3: Theme Schema Validation
 async function taskSchemaValidation() {
-  log('Running Theme Schema Validation...', 'header');
-  const repoRoot = path.resolve(__dirname, '..');
-  const targetDir = (cwd === repoRoot || cwd.startsWith(repoRoot)) ? cwd : repoRoot;
-  const binPath = path.join(targetDir, 'node_modules', '.bin', 'ktheme-schema');
-  let cmd = 'ktheme-schema';
-  let cmdArgs = ['sync', '--check'];
+  log("Running Theme Schema Validation...", "header");
+  const repoRoot = path.resolve(__dirname, "..");
+  const targetDir =
+    cwd === repoRoot || cwd.startsWith(repoRoot) ? cwd : repoRoot;
+  const binPath = path.join(targetDir, "node_modules", ".bin", "ktheme-schema");
+  let cmd = "ktheme-schema";
+  let cmdArgs = ["sync", "--check"];
   if (fs.existsSync(binPath)) {
     cmd = binPath;
   }
-  let res = spawnSync(cmd, cmdArgs, { cwd: targetDir, stdio: 'inherit', shell: true });
+  let res = spawnSync(cmd, cmdArgs, {
+    cwd: targetDir,
+    stdio: "inherit",
+    shell: true,
+  });
   if (res.status !== 0 && !fs.existsSync(binPath)) {
-    res = spawnSync('npx', ['ktheme-schema', 'sync', '--check'], { cwd: targetDir, stdio: 'inherit', shell: true });
+    res = spawnSync("npx", ["ktheme-schema", "sync", "--check"], {
+      cwd: targetDir,
+      stdio: "inherit",
+      shell: true,
+    });
   }
   if (res.status === 0) {
-    log('Theme schema validation passed.', 'success');
+    log("Theme schema validation passed.", "success");
     return true;
   } else {
-    log('Theme schema validation failed.', 'error');
+    log("Theme schema validation failed.", "error");
     return false;
   }
 }
@@ -489,7 +599,11 @@ async function taskPaletteCheck() {
 
   function hexToRgb(hex) {
     hex = hex.replace(/^#/, "");
-    if (hex.length === 3) hex = hex.split("").map((c) => c + c).join("");
+    if (hex.length === 3)
+      hex = hex
+        .split("")
+        .map((c) => c + c)
+        .join("");
     if (hex.length === 8) hex = hex.slice(0, 6);
     const num = parseInt(hex, 16);
     return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
@@ -523,7 +637,9 @@ async function taskPaletteCheck() {
   const palettesPath = path.join(cwd, "docs/react/src/theme/palettes.js");
   if (fs.existsSync(palettesPath)) {
     try {
-      let fileContent = fs.readFileSync(palettesPath, "utf8").replace(/export const /g, "const ");
+      let fileContent = fs
+        .readFileSync(palettesPath, "utf8")
+        .replace(/export const /g, "const ");
       const { Script, createContext } = await import("node:vm");
       const script = new Script(fileContent + "; PALETTES;");
       const ctx = createContext({});
@@ -541,7 +657,14 @@ async function taskPaletteCheck() {
             const ratio = getContrastRatio(tVal, bgVal);
             if (ratio !== null && ratio < 4.5) {
               totalErrors++;
-              log(`Palette "${key}" (${p.name}): secondary text token "${tName}" (${tVal}) vs surface (${bgVal}) contrast is ${ratio.toFixed(2)}:1 (required >= 4.5:1)`, "error");
+              log(
+                `Palette "${key}" (${
+                  p.name
+                }): secondary text token "${tName}" (${tVal}) vs surface (${bgVal}) contrast is ${ratio.toFixed(
+                  2
+                )}:1 (required >= 4.5:1)`,
+                "error"
+              );
             }
           }
         }
@@ -552,7 +675,14 @@ async function taskPaletteCheck() {
             const ratio = getContrastRatio(c.outv, bgVal);
             if (ratio !== null && ratio < 3.0) {
               totalErrors++;
-              log(`Palette "${key}" (${p.name}): outline token "outv" (${c.outv}) vs surface (${bgVal}) contrast is ${ratio.toFixed(2)}:1 (required >= 3.0:1)`, "error");
+              log(
+                `Palette "${key}" (${p.name}): outline token "outv" (${
+                  c.outv
+                }) vs surface (${bgVal}) contrast is ${ratio.toFixed(
+                  2
+                )}:1 (required >= 3.0:1)`,
+                "error"
+              );
             }
           }
         }
@@ -567,41 +697,73 @@ async function taskPaletteCheck() {
   const kthemeJsonDir = path.join(cwd, "themes/examples");
   if (fs.existsSync(kthemeJsonDir)) {
     try {
-      const files = fs.readdirSync(kthemeJsonDir).filter((f) => f.endsWith(".json"));
+      const files = fs
+        .readdirSync(kthemeJsonDir)
+        .filter((f) => f.endsWith(".json"));
       for (const file of files) {
-        const json = JSON.parse(fs.readFileSync(path.join(kthemeJsonDir, file), "utf8"));
+        const json = JSON.parse(
+          fs.readFileSync(path.join(kthemeJsonDir, file), "utf8")
+        );
         const c = json.colorScheme;
         if (!c) continue;
 
-        const bgSurfaces = [c.background, c.surface, c.surfaceVariant].filter(Boolean);
+        const bgSurfaces = [c.background, c.surface, c.surfaceVariant].filter(
+          Boolean
+        );
         if (c.onSurfaceVariant) {
           for (const bg of bgSurfaces) {
             totalAudited++;
             const r = getContrastRatio(c.onSurfaceVariant, bg);
             if (r !== null && r < 4.5) {
               totalErrors++;
-              log(`Theme preset "${file}": token "onSurfaceVariant" (${c.onSurfaceVariant}) vs surface (${bg}) contrast is ${r.toFixed(2)}:1 (required >= 4.5:1)`, "error");
+              log(
+                `Theme preset "${file}": token "onSurfaceVariant" (${
+                  c.onSurfaceVariant
+                }) vs surface (${bg}) contrast is ${r.toFixed(
+                  2
+                )}:1 (required >= 4.5:1)`,
+                "error"
+              );
             }
           }
         }
 
         if (c.onSecondaryContainer && c.secondaryContainer) {
           totalAudited++;
-          const r = getContrastRatio(c.onSecondaryContainer, c.secondaryContainer);
+          const r = getContrastRatio(
+            c.onSecondaryContainer,
+            c.secondaryContainer
+          );
           if (r !== null && r < 4.5) {
             totalErrors++;
-            log(`Theme preset "${file}": token "onSecondaryContainer" (${c.onSecondaryContainer}) vs secondaryContainer (${c.secondaryContainer}) contrast is ${r.toFixed(2)}:1 (required >= 4.5:1)`, "error");
+            log(
+              `Theme preset "${file}": token "onSecondaryContainer" (${
+                c.onSecondaryContainer
+              }) vs secondaryContainer (${
+                c.secondaryContainer
+              }) contrast is ${r.toFixed(2)}:1 (required >= 4.5:1)`,
+              "error"
+            );
           }
         }
 
-        const outlineSurfaces = [...bgSurfaces, c.secondaryContainer].filter(Boolean);
+        const outlineSurfaces = [...bgSurfaces, c.secondaryContainer].filter(
+          Boolean
+        );
         if (c.outline) {
           for (const bg of outlineSurfaces) {
             totalAudited++;
             const r = getContrastRatio(c.outline, bg);
             if (r !== null && r < 3.0) {
               totalErrors++;
-              log(`Theme preset "${file}": token "outline" (${c.outline}) vs surface/container (${bg}) contrast is ${r.toFixed(2)}:1 (required >= 3.0:1)`, "error");
+              log(
+                `Theme preset "${file}": token "outline" (${
+                  c.outline
+                }) vs surface/container (${bg}) contrast is ${r.toFixed(
+                  2
+                )}:1 (required >= 3.0:1)`,
+                "error"
+              );
             }
           }
         }
@@ -618,21 +780,24 @@ async function taskPaletteCheck() {
     log("WCAG 2.2 AA static palette contrast verification passed!", "success");
     return true;
   } else {
-    log(`Static palette verification failed with ${totalErrors} contrast violation(s).`, "error");
+    log(
+      `Static palette verification failed with ${totalErrors} contrast violation(s).`,
+      "error"
+    );
     return false;
   }
 }
 
 // TASK 5: WCAG 2.1 AA Accessibility Audit
 async function taskA11yAudit() {
-  log('Running WCAG 2.1 AA Accessibility Audit on Live DOM Nodes...', 'header');
+  log("Running WCAG 2.1 AA Accessibility Audit on Live DOM Nodes...", "header");
 
   let server;
   let targetUrl;
 
-  const docsIndex = path.join(cwd, 'docs/index.html');
-  const kthemeHtml = path.join(cwd, 'Ktheme.html');
-  const rootIndex = path.join(cwd, 'index.html');
+  const docsIndex = path.join(cwd, "docs/index.html");
+  const kthemeHtml = path.join(cwd, "Ktheme.html");
+  const rootIndex = path.join(cwd, "index.html");
 
   if (fs.existsSync(docsIndex)) {
     server = await startServerHarness(cwd, customPort);
@@ -644,7 +809,10 @@ async function taskA11yAudit() {
     server = await startServerHarness(cwd, customPort);
     targetUrl = `${server.url}/index.html`;
   } else {
-    log('No target HTML entry file found to run live DOM accessibility audit.', 'warn');
+    log(
+      "No target HTML entry file found to run live DOM accessibility audit.",
+      "warn"
+    );
     return true;
   }
 
@@ -653,13 +821,13 @@ async function taskA11yAudit() {
     browser = await getPlaywrightBrowser();
     if (!browser) return false;
     const page = await browser.newPage();
-    await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
+    await navigateWithRetry(page, targetUrl, { waitUntil: "domcontentloaded" });
     await page.waitForTimeout(1000);
 
     const auditResults = await page.evaluate(() => {
       // Helper function for relative luminance
       function getLuminance(r, g, b) {
-        const [rs, gs, bs] = [r, g, b].map(c => {
+        const [rs, gs, bs] = [r, g, b].map((c) => {
           c = c / 255;
           return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
         });
@@ -667,13 +835,15 @@ async function taskA11yAudit() {
       }
 
       function parseRgb(colorStr) {
-        const match = colorStr.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);
+        const match = colorStr.match(
+          /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/
+        );
         if (!match) return null;
         return {
           r: parseInt(match[1], 10),
           g: parseInt(match[2], 10),
           b: parseInt(match[3], 10),
-          a: match[4] !== undefined ? parseFloat(match[4]) : 1
+          a: match[4] !== undefined ? parseFloat(match[4]) : 1,
         };
       }
 
@@ -691,8 +861,11 @@ async function taskA11yAudit() {
       }
 
       const issues = [];
-      const interactiveSelector = 'button, [role="button"], a[href], input, select, textarea, [tabindex]';
-      const interactiveElements = Array.from(document.querySelectorAll(interactiveSelector));
+      const interactiveSelector =
+        'button, [role="button"], a[href], input, select, textarea, [tabindex]';
+      const interactiveElements = Array.from(
+        document.querySelectorAll(interactiveSelector)
+      );
 
       let auditedNodes = 0;
 
@@ -701,43 +874,54 @@ async function taskA11yAudit() {
         if (el.offsetParent === null) continue; // Skip hidden elements
         auditedNodes++;
 
-        const role = el.getAttribute('role') || el.tagName.toLowerCase();
-        const ariaLabel = el.getAttribute('aria-label');
-        const ariaLabelledby = el.getAttribute('aria-labelledby');
-        const textContent = (el.innerText || el.textContent || '').trim();
-        const title = el.getAttribute('title');
-        const alt = el.getAttribute('alt');
+        const role = el.getAttribute("role") || el.tagName.toLowerCase();
+        const ariaLabel = el.getAttribute("aria-label");
+        const ariaLabelledby = el.getAttribute("aria-labelledby");
+        const textContent = (el.innerText || el.textContent || "").trim();
+        const title = el.getAttribute("title");
+        const alt = el.getAttribute("alt");
 
-        const placeholder = el.getAttribute('placeholder');
-        const accessibleName = ariaLabel || ariaLabelledby || textContent || title || alt || placeholder;
+        const placeholder = el.getAttribute("placeholder");
+        const accessibleName =
+          ariaLabel ||
+          ariaLabelledby ||
+          textContent ||
+          title ||
+          alt ||
+          placeholder;
 
         if (!accessibleName) {
           issues.push({
-            type: 'aria-missing-name',
+            type: "aria-missing-name",
             element: el.tagName.toLowerCase(),
             snippet: el.outerHTML.slice(0, 80),
-            message: `Interactive element <${el.tagName.toLowerCase()}> lacks accessible name (aria-label, text content, title, or alt)`
+            message: `Interactive element <${el.tagName.toLowerCase()}> lacks accessible name (aria-label, text content, title, or alt)`,
           });
         }
 
         // Tabindex check
-        const tabIndex = el.getAttribute('tabindex');
+        const tabIndex = el.getAttribute("tabindex");
         if (tabIndex !== null && parseInt(tabIndex, 10) < -1) {
           issues.push({
-            type: 'aria-invalid-tabindex',
+            type: "aria-invalid-tabindex",
             element: el.tagName.toLowerCase(),
-            message: `Element has invalid negative tabindex "${tabIndex}"`
+            message: `Element has invalid negative tabindex "${tabIndex}"`,
           });
         }
       }
 
       // 2. WCAG Contrast Audit
-      const textNodesSelector = 'p, span, h1, h2, h3, h4, h5, h6, button, a, label, div';
-      const textElements = Array.from(document.querySelectorAll(textNodesSelector));
+      const textNodesSelector =
+        "p, span, h1, h2, h3, h4, h5, h6, button, a, label, div";
+      const textElements = Array.from(
+        document.querySelectorAll(textNodesSelector)
+      );
 
       for (const el of textElements) {
         if (el.offsetParent === null) continue;
-        const directText = Array.from(el.childNodes).some(n => n.nodeType === 3 && n.textContent.trim().length > 0);
+        const directText = Array.from(el.childNodes).some(
+          (n) => n.nodeType === 3 && n.textContent.trim().length > 0
+        );
         if (!directText) continue;
 
         auditedNodes++;
@@ -748,19 +932,28 @@ async function taskA11yAudit() {
         const ratio = getContrastRatio(fgColor, bgColor);
         if (ratio !== null) {
           const fontSize = parseFloat(style.fontSize);
-          const isBold = style.fontWeight === 'bold' || parseInt(style.fontWeight, 10) >= 700;
-          const requiredRatio = (fontSize >= 18 || (fontSize >= 14 && isBold)) ? 3.0 : 4.5;
+          const isBold =
+            style.fontWeight === "bold" ||
+            parseInt(style.fontWeight, 10) >= 700;
+          const requiredRatio =
+            fontSize >= 18 || (fontSize >= 14 && isBold) ? 3.0 : 4.5;
 
-          if (ratio < requiredRatio && ratio > 1.05) { // Exclude identical transparent / overlapping layers
+          if (ratio < requiredRatio && ratio > 1.05) {
+            // Exclude identical transparent / overlapping layers
             issues.push({
-              type: 'wcag-contrast',
+              type: "wcag-contrast",
               element: el.tagName.toLowerCase(),
               snippet: el.innerText.slice(0, 30),
               ratio: parseFloat(ratio.toFixed(2)),
               requiredRatio,
               fgColor,
               bgColor,
-              message: `Insufficient text contrast ratio (${ratio.toFixed(2)}:1 < required ${requiredRatio}:1) for "${el.innerText.slice(0, 20)}..."`
+              message: `Insufficient text contrast ratio (${ratio.toFixed(
+                2
+              )}:1 < required ${requiredRatio}:1) for "${el.innerText.slice(
+                0,
+                20
+              )}..."`,
             });
           }
         }
@@ -769,30 +962,41 @@ async function taskA11yAudit() {
       return { auditedNodes, issues };
     });
 
-    log(`Audited ${auditResults.auditedNodes} live DOM nodes across ${targetUrl}`, 'info');
+    log(
+      `Audited ${auditResults.auditedNodes} live DOM nodes across ${targetUrl}`,
+      "info"
+    );
 
-    const contrastIssues = auditResults.issues.filter(i => i.type === 'wcag-contrast');
-    const ariaIssues = auditResults.issues.filter(i => i.type !== 'wcag-contrast');
+    const contrastIssues = auditResults.issues.filter(
+      (i) => i.type === "wcag-contrast"
+    );
+    const ariaIssues = auditResults.issues.filter(
+      (i) => i.type !== "wcag-contrast"
+    );
 
     if (ariaIssues.length > 0) {
-      log(`Found ${ariaIssues.length} ARIA compliance issues:`, 'warn');
-      ariaIssues.forEach(i => console.log(`  - ${i.message} (snippet: ${i.snippet || 'n/a'})`));
+      log(`Found ${ariaIssues.length} ARIA compliance issues:`, "warn");
+      ariaIssues.forEach((i) =>
+        console.log(`  - ${i.message} (snippet: ${i.snippet || "n/a"})`)
+      );
     }
 
     if (contrastIssues.length > 0) {
-      log(`Found ${contrastIssues.length} color contrast warnings:`, 'warn');
-      contrastIssues.slice(0, 5).forEach(i => console.log(`  - ${i.message}`));
+      log(`Found ${contrastIssues.length} color contrast warnings:`, "warn");
+      contrastIssues
+        .slice(0, 5)
+        .forEach((i) => console.log(`  - ${i.message}`));
     }
 
     if (ariaIssues.length === 0) {
-      log('WCAG 2.1 AA ARIA and Keyboard compliance check passed!', 'success');
+      log("WCAG 2.1 AA ARIA and Keyboard compliance check passed!", "success");
       return true;
     } else {
-      log('WCAG 2.1 AA audit reported ARIA/accessibility errors.', 'error');
+      log("WCAG 2.1 AA audit reported ARIA/accessibility errors.", "error");
       return false;
     }
   } catch (err) {
-    log(`Accessibility audit error: ${err.message}`, 'error');
+    log(`Accessibility audit error: ${err.message}`, "error");
     return false;
   } finally {
     if (browser) await browser.close();
@@ -802,14 +1006,14 @@ async function taskA11yAudit() {
 
 // TASK 4: Playwright Visual Snapshot Regression Suite
 async function taskVisualSuite() {
-  log('Running Playwright Visual Snapshot Regression Testing...', 'header');
+  log("Running Playwright Visual Snapshot Regression Testing...", "header");
 
   let server;
   let targetUrl;
 
-  const docsIndex = path.join(cwd, 'docs/index.html');
-  const kthemeHtml = path.join(cwd, 'Ktheme.html');
-  const rootIndex = path.join(cwd, 'index.html');
+  const docsIndex = path.join(cwd, "docs/index.html");
+  const kthemeHtml = path.join(cwd, "Ktheme.html");
+  const rootIndex = path.join(cwd, "index.html");
 
   if (fs.existsSync(docsIndex)) {
     server = await startServerHarness(cwd, customPort);
@@ -821,77 +1025,98 @@ async function taskVisualSuite() {
     server = await startServerHarness(cwd, customPort);
     targetUrl = `${server.url}/index.html`;
   } else {
-    log('No target HTML file found for visual testing. Skipped.', 'warn');
+    log("No target HTML file found for visual testing. Skipped.", "warn");
     return true;
   }
 
-  const snapshotDir = path.join(cwd, 'docs/screenshots/baseline');
+  const snapshotDir = path.join(cwd, "docs/screenshots/baseline");
   fs.mkdirSync(snapshotDir, { recursive: true });
 
   const viewports = [
-    { name: 'desktop', width: 1440, height: 900 },
-    { name: 'mobile', width: 375, height: 667 }
+    { name: "desktop", width: 1440, height: 900 },
+    { name: "mobile", width: 375, height: 667 },
   ];
 
   let allMatched = true;
 
   try {
     for (const vp of viewports) {
-      log(`Capturing visual snapshots for viewport: ${vp.name} (${vp.width}x${vp.height})`, 'info');
+      log(
+        `Capturing visual snapshots for viewport: ${vp.name} (${vp.width}x${vp.height})`,
+        "info"
+      );
       let browser;
       try {
         browser = await getPlaywrightBrowser();
         if (!browser) return false;
-        const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
+        const page = await browser.newPage({
+          viewport: { width: vp.width, height: vp.height },
+        });
         await page.addInitScript(() => {
           const inject = () => {
-            const style = document.createElement('style');
-            style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
+            const style = document.createElement("style");
+            style.textContent =
+              "* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }";
             if (document.head || document.documentElement) {
               (document.head || document.documentElement).appendChild(style);
             }
           };
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', inject);
+          if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", inject);
           } else {
             inject();
           }
         });
-        await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
+        await navigateWithRetry(page, targetUrl, {
+          waitUntil: "domcontentloaded",
+        });
         await page.waitForTimeout(1000);
 
         // Attempt interactive panel triggers if available
         try {
-          const sweepBtn = page.getByText('Sweep Console', { exact: true }).first();
-          await sweepBtn.waitFor({ state: 'visible', timeout: 3000 });
+          const sweepBtn = page
+            .getByText("Sweep Console", { exact: true })
+            .first();
+          await sweepBtn.waitFor({ state: "visible", timeout: 3000 });
           await sweepBtn.click();
           await page.waitForTimeout(500);
-          const lcarsBtn = page.getByText('LCARS Amber', { exact: true }).first();
-          await lcarsBtn.waitFor({ state: 'visible', timeout: 3000 });
+          const lcarsBtn = page
+            .getByText("LCARS Amber", { exact: true })
+            .first();
+          await lcarsBtn.waitFor({ state: "visible", timeout: 3000 });
           await lcarsBtn.click();
           await page.waitForTimeout(800);
         } catch (_) {}
 
         const currentBuf = await page.screenshot({ fullPage: false });
-        const baselineFile = path.join(snapshotDir, `${vp.name}_sweep_lcars.png`);
+        const baselineFile = path.join(
+          snapshotDir,
+          `${vp.name}_sweep_lcars.png`
+        );
 
         if (updateSnapshots || !fs.existsSync(baselineFile)) {
           fs.writeFileSync(baselineFile, currentBuf);
-          log(`Saved baseline snapshot: ${baselineFile}`, 'success');
+          log(`Saved baseline snapshot: ${baselineFile}`, "success");
         } else {
           const baselineBuf = fs.readFileSync(baselineFile);
           const result = comparePNGBuffers(currentBuf, baselineBuf);
 
           if (result.match) {
-            log(`Visual match for ${vp.name} (${result.diffPercent}% diff)`, 'success');
+            log(
+              `Visual match for ${vp.name} (${result.diffPercent}% diff)`,
+              "success"
+            );
           } else {
             allMatched = false;
-            log(`Visual regression detected for ${vp.name}! Diff: ${result.diffPercent}% (${result.diffPixels} diff pixels)`, 'error');
-            const diffDir = path.join(cwd, 'docs/screenshots/diffs');
+            log(
+              `Visual regression detected for ${vp.name}! Diff: ${result.diffPercent}% (${result.diffPixels} diff pixels)`,
+              "error"
+            );
+            const diffDir = path.join(cwd, "docs/screenshots/diffs");
             fs.mkdirSync(diffDir, { recursive: true });
             const diffFile = path.join(diffDir, `${vp.name}_diff.png`);
             fs.writeFileSync(diffFile, currentBuf);
-            log(`Saved diff snapshot: ${diffFile}`, 'warn');
+            log(`Saved diff snapshot: ${diffFile}`, "warn");
           }
         }
 
@@ -902,14 +1127,17 @@ async function taskVisualSuite() {
     }
 
     if (allMatched) {
-      log('All visual snapshot comparisons matched baseline successfully!', 'success');
+      log(
+        "All visual snapshot comparisons matched baseline successfully!",
+        "success"
+      );
       return true;
     } else {
-      log('Visual regression test failures detected.', 'error');
+      log("Visual regression test failures detected.", "error");
       return false;
     }
   } catch (err) {
-    log(`Visual suite error: ${err.message}`, 'error');
+    log(`Visual suite error: ${err.message}`, "error");
     return false;
   } finally {
     if (server) await server.close();
@@ -919,11 +1147,26 @@ async function taskVisualSuite() {
 // MAIN RUNNER ORCHESTRATION
 async function main() {
   console.log(`
-${colors.bold}${colors.cyan}=====================================================${colors.reset}
-${colors.bold}  UNIFIED CROSS-REPO DESIGN SYSTEM VALIDATION CLI   ${colors.reset}
-${colors.bold}${colors.cyan}=====================================================${colors.reset}
+${colors.bold}${
+    colors.cyan
+  }=====================================================${colors.reset}
+${colors.bold}  UNIFIED CROSS-REPO DESIGN SYSTEM VALIDATION CLI   ${
+    colors.reset
+  }
+${colors.bold}${
+    colors.cyan
+  }=====================================================${colors.reset}
 Working Directory: ${cwd}
-Active Tasks: ${[runUnit && 'Unit', runCatalog && 'Catalog', runSchema && 'Schema', runPalette && 'Palette', runA11y && 'A11y', runVisual && 'Visual'].filter(Boolean).join(', ')}
+Active Tasks: ${[
+    runUnit && "Unit",
+    runCatalog && "Catalog",
+    runSchema && "Schema",
+    runPalette && "Palette",
+    runA11y && "A11y",
+    runVisual && "Visual",
+  ]
+    .filter(Boolean)
+    .join(", ")}
 `);
 
   const results = {};
@@ -959,17 +1202,23 @@ ${colors.bold}${colors.cyan}====================================================
 
   let overallPass = true;
   for (const [task, pass] of Object.entries(results)) {
-    const statusText = pass ? `${colors.green}PASS${colors.reset}` : `${colors.red}FAIL${colors.reset}`;
+    const statusText = pass
+      ? `${colors.green}PASS${colors.reset}`
+      : `${colors.red}FAIL${colors.reset}`;
     console.log(`  - Task [${task.toUpperCase()}]: ${statusText}`);
     if (!pass) overallPass = false;
   }
 
   console.log(`-----------------------------------------------------`);
   if (overallPass) {
-    console.log(`${colors.bold}${colors.green}ALL VALIDATION CHECKS PASSED SUCCESSFULLY!${colors.reset}\n`);
+    console.log(
+      `${colors.bold}${colors.green}ALL VALIDATION CHECKS PASSED SUCCESSFULLY!${colors.reset}\n`
+    );
     process.exit(0);
   } else {
-    console.log(`${colors.bold}${colors.red}VALIDATION CHECKS FAILED. PLEASE REVIEW ERRORS ABOVE.${colors.reset}\n`);
+    console.log(
+      `${colors.bold}${colors.red}VALIDATION CHECKS FAILED. PLEASE REVIEW ERRORS ABOVE.${colors.reset}\n`
+    );
     process.exit(1);
   }
 }

@@ -51,7 +51,9 @@ export function computeThemeTokens(state) {
     v: { ...P.c, ...L.s },
   };
   const typography = {
-    fontFamily: `var(--ktheme-font-family, ${t.dfont || '"JetBrains Mono", monospace'})`,
+    fontFamily: `var(--ktheme-font-family, ${
+      t.dfont || '"JetBrains Mono", monospace'
+    })`,
     fontSizeSmall: "var(--ktheme-font-size-small, 12px)",
     fontSizeMedium: "var(--ktheme-font-size-medium, 14px)",
     fontSizeLarge: "var(--ktheme-font-size-large, 18px)",
@@ -101,7 +103,8 @@ export function createTypographyStyle({
   letterSpacing,
   fallbackFamily = '"JetBrains Mono", monospace',
 } = {}) {
-  const resolvedFamily = family || `var(--ktheme-font-family, ${fallbackFamily})`;
+  const resolvedFamily =
+    family || `var(--ktheme-font-family, ${fallbackFamily})`;
   const style = {};
   if (size !== undefined && weight !== undefined) {
     style.font = `${weight} ${size}/${lineHeight} ${resolvedFamily}`;

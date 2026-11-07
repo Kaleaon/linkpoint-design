@@ -17,8 +17,21 @@ if (typeof globalThis.window === "undefined") {
   };
 }
 
-import { computeTheme, computeThemeTokens, computeThemeRuntime, createTypographyStyle } from "../theme/computeTheme.js";
-import { ThemeTokensContext, ThemeRuntimeContext, ThemeProvider, useThemeTokens, useThemeRuntime, useTheme, createTypographyStyle as contextCreateTypographyStyle } from "../context/ThemeContext.jsx";
+import {
+  computeTheme,
+  computeThemeTokens,
+  computeThemeRuntime,
+  createTypographyStyle,
+} from "../theme/computeTheme.js";
+import {
+  ThemeTokensContext,
+  ThemeRuntimeContext,
+  ThemeProvider,
+  useThemeTokens,
+  useThemeRuntime,
+  useTheme,
+  createTypographyStyle as contextCreateTypographyStyle,
+} from "../context/ThemeContext.jsx";
 import { AppProvider } from "../context/AppContext.jsx";
 
 describe("Split Theme Context Architecture", () => {
@@ -304,8 +317,12 @@ describe("Split Theme Context Architecture", () => {
     const tokens = computeThemeTokens(mockState);
     expect(tokens.typography).toBeDefined();
     expect(tokens.typography.fontFamily).toContain("--ktheme-font-family");
-    expect(tokens.typography.fontSizeSmall).toContain("--ktheme-font-size-small");
-    expect(tokens.typography.fontWeightBold).toContain("--ktheme-font-weight-bold");
+    expect(tokens.typography.fontSizeSmall).toContain(
+      "--ktheme-font-size-small"
+    );
+    expect(tokens.typography.fontWeightBold).toContain(
+      "--ktheme-font-weight-bold"
+    );
 
     expect(typeof createTypographyStyle).toBe("function");
     expect(contextCreateTypographyStyle).toBe(createTypographyStyle);

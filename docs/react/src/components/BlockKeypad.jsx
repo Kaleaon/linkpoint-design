@@ -77,9 +77,15 @@ export default function BlockKeypad({
   const numVal = Number(value) || 0;
   const isLcars = LK?.card === "cap" || LK?.head === "sweep";
   const btnRadius = isLcars ? "0px" : V.rs === "999px" ? "8px" : V.rs;
-  const dfontVar = `var(--ktheme-font-family, ${t?.dfont || '"JetBrains Mono", monospace'})`;
-  const fontVar = `var(--ktheme-font-family, ${t?.font || '"JetBrains Mono", monospace'})`;
-  const mfontVar = `var(--ktheme-font-family, ${t?.mfont || t?.dfont || '"JetBrains Mono", monospace'})`;
+  const dfontVar = `var(--ktheme-font-family, ${
+    t?.dfont || '"JetBrains Mono", monospace'
+  })`;
+  const fontVar = `var(--ktheme-font-family, ${
+    t?.font || '"JetBrains Mono", monospace'
+  })`;
+  const mfontVar = `var(--ktheme-font-family, ${
+    t?.mfont || t?.dfont || '"JetBrains Mono", monospace'
+  })`;
 
   const keyStyle = {
     flex: 1,
