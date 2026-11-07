@@ -4,6 +4,7 @@ import { useTheme } from "../context/ThemeContext.jsx";
 import { subView } from "../theme/constants.js";
 import Icon from "../components/Icon.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import SearchCombobox from "../components/SearchCombobox.jsx";
 import { panelLook } from "../theme/look.js";
 
 const INITIAL_FRIENDS = [
@@ -244,8 +245,10 @@ export default function Friends() {
         }}
       >
         <Icon name="search" size={16} style={{ color: V.ink2 }} />
-        <input
-          type="text"
+        <SearchCombobox
+          controlsId="friends-results-list"
+          resultCount={displayFriends.length}
+          itemLabel="friends"
           placeholder="Filter friends by name..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -257,7 +260,7 @@ export default function Friends() {
             color: V.ink,
             font: "400 12.5px/1.4 " + t.font,
           }}
-          aria-label="Search friends"
+          ariaLabel="Search friends"
         />
         {query && (
           <button
@@ -271,7 +274,7 @@ export default function Friends() {
       </div>
 
       {/* Friends List */}
-      <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
+      <div id="friends-results-list" style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
         {displayFriends.length === 0 ? (
           <div style={{ padding: "32px", textAlign: "center", color: V.ink2, font: "400 13px/1.4 " + t.font }}>
             No friends found matching your criteria.

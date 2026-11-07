@@ -3,8 +3,9 @@ import { useApp } from "../context/AppContext.jsx";
 
 /**
  * LiveRegionAnnouncer: Accessible ARIA live region for screen readers.
- * Automatically announces toasts, teleport updates, and system events.
- * WCAG 4.1.3 (Status Messages) compliance.
+ * Automatically announces toasts, teleport updates, dynamic search result counts, and system events.
+ * WCAG 2.2 SC 4.1.3 (Status Messages): https://www.w3.org/TR/WCAG22/#status-messages
+ * WCAG 2.2 SC 4.1.2 (Name, Role, Value): https://www.w3.org/TR/WCAG22/#name-role-value
  */
 export default function LiveRegionAnnouncer() {
   const { state } = useApp();
@@ -13,8 +14,10 @@ export default function LiveRegionAnnouncer() {
   useEffect(() => {
     if (state.toast) {
       setAnnouncement(state.toast);
+    } else if (state.announcement) {
+      setAnnouncement(state.announcement);
     }
-  }, [state.toast]);
+  }, [state.toast, state.announcement]);
 
   if (!announcement) return null;
 

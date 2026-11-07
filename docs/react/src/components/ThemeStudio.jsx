@@ -3,14 +3,16 @@ import { AppContext } from "../context/AppContext.jsx";
 import { EDITABLE_THEME_TOKENS } from "../theme/customTheme.js";
 import { validateThemeJson } from "../theme/themeValidator.js";
 
+const DEFAULT_FALLBACK_THEME = { name: "Default Theme", colors: {} };
+
 export default function ThemeStudio() {
   const app = useContext(AppContext);
-  const state = app?.state || { customTheme: null };
+  const state = app?.state || {};
   const actions = app?.actions || {};
   const [open, setOpen] = useState(false);
   const [importError, setImportError] = useState(null);
   const fileRef = useRef(null);
-  const theme = state.customTheme;
+  const theme = state.customTheme || DEFAULT_FALLBACK_THEME;
 
   const importFile = async (event) => {
     const file = event.target.files?.[0];

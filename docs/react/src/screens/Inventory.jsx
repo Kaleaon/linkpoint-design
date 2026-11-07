@@ -5,6 +5,7 @@ import { INVENTORY_SOURCE, INVENTORY_FOLDERS, INVENTORY_RECENTS } from "../data/
 import Icon from "../components/Icon.jsx";
 import FormInput from "../components/FormInput.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import SearchCombobox from "../components/SearchCombobox.jsx";
 import { subView } from "../theme/constants.js";
 import { SkeletonTree } from "../components/Skeletons.jsx";
 
@@ -14,7 +15,6 @@ export default function Inventory() {
   const { state, actions } = useApp();
   const { V, t, bleed, pad, C } = useTheme();
 
-  const [searchQuery, setSearchQuery] = useState("");
   const timerRef = useRef(null);
   const isLongPressRef = useRef(false);
 
@@ -25,7 +25,6 @@ export default function Inventory() {
   const invListStyle = { flex: 1, minHeight: "320px", overflowY: "auto", display: "flex", flexDirection: "column", gap: bleed ? C.gap + "px" : 0, background: bleed ? V.bg : "transparent" };
 
   const curSub = subView(state, "Inventory");
-  const q = searchQuery.trim().toLowerCase();
   const rawItems = state.invItems || INVENTORY_SOURCE.map(([name, icon, depth, parent, ver, tags]) => ({ name, icon, depth, parent, ver, tags: tags || [] }));
 
   const all = rawItems.map((item) => {
@@ -36,13 +35,12 @@ export default function Inventory() {
     return { name, icon, ver, parent, depth, isFolder, open, isSelected, tags: tags || [], chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "dot" };
   });
 
-  let nodes = curSub === "ALL"
+  const q = (state.invFilterQuery || "").trim().toLowerCase();
+  const baseNodes = curSub === "ALL"
     ? (q ? all : all.filter((n) => n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false)))
     : all.filter((n) => n.tags.includes(curSub.toLowerCase())).map((n) => ({ ...n, depth: 0, isFolder: false, chev: "dot" }));
 
-  if (q) {
-    nodes = nodes.filter((n) => n.name.toLowerCase().includes(q));
-  }
+  const nodes = q ? baseNodes.filter((n) => n.name.toLowerCase().includes(q)) : baseNodes;
 
   const handlePointerDown = (n) => {
     if (n.isFolder) return;
@@ -80,17 +78,20 @@ export default function Inventory() {
       <div style={invToolStyle}>
         <div style={{ flex: 1, height: "44px", display: "flex", alignItems: "center", gap: "8px", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf }}>
           <Icon name="search" size={15} style={{ opacity: 0.55, flexShrink: 0 }} />
-          <FormInput
-            aria-label="Filter inventory"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+          <SearchCombobox
+            controlsId="inventory-results-tree"
+            resultCount={nodes.length}
+            itemLabel="inventory items"
+            ariaLabel="Filter inventory"
             placeholder="filter inventory…"
+            value={state.invFilterQuery || ""}
+            onChange={(e) => actions.setInvFilterQuery(e.target.value)}
             style={{ flex: 1, minWidth: 0, border: "none", background: "transparent", font: "400 12px/1 " + t.font, color: V.ink, outline: "none" }}
           />
-          {searchQuery && (
+          {state.invFilterQuery && (
             <div
-              onClick={() => setSearchQuery("")}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSearchQuery(""); } }}
+              onClick={() => actions.setInvFilterQuery("")}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setInvFilterQuery(""); } }}
               style={{ display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: V.ink2, padding: "4px", flexShrink: 0 }}
               role="button"
               aria-label="Clear search"
@@ -127,7 +128,7 @@ export default function Inventory() {
         ))}
       </div>
 
-      <div style={invListStyle}>
+      <div id="inventory-results-tree" style={invListStyle}>
         {isLoading || state.asyncQueryState?.inventory?.status === "loading" ? (
           <SkeletonTree style={{ minHeight: "320px" }} />
         ) : state.asyncQueryState?.inventory?.status === "timeout" || state.asyncQueryState?.inventory?.status === "error" ? (
@@ -160,7 +161,7 @@ export default function Inventory() {
           </div>
         ) : nodes.length === 0 && q ? (
           <div style={{ padding: "40px 16px", textAlign: "center", font: "400 12px/1.5 " + t.font, color: V.ink2 }}>
-            No inventory items match '{searchQuery.trim()}'
+            No inventory items match '{(state.invFilterQuery || "").trim()}'
           </div>
         ) : (
           nodes.map((n) => {
