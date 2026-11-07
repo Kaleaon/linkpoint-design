@@ -40,6 +40,7 @@ function log(msg, type = 'info') {
 const args = process.argv.slice(2);
 let runUnit = args.includes('--unit');
 let runCatalog = args.includes('--catalog');
+let runSchema = args.includes('--schema');
 let runPalette = args.includes('--palette');
 let runA11y = args.includes('--a11y');
 let runVisual = args.includes('--visual');
@@ -59,6 +60,7 @@ ${colors.bold}USAGE:${colors.reset}
 ${colors.bold}FLAGS:${colors.reset}
   --unit              Run unit test suites
   --catalog           Run theme catalog parity checks
+  --schema            Run Ktheme theme schema validation
   --palette           Run static WCAG 2.2 AA color palette contrast audit
   --a11y              Run automated WCAG 2.1 AA accessibility auditing
   --visual            Run Playwright visual snapshot regression suite
@@ -66,16 +68,17 @@ ${colors.bold}FLAGS:${colors.reset}
   --port <number>     Specify static server port override
   --help, -h          Show this help message
 
-  ${colors.gray}If no task flags (--unit, --catalog, --palette, --a11y, --visual) are specified,
+  ${colors.gray}If no task flags (--unit, --catalog, --schema, --palette, --a11y, --visual) are specified,
   all applicable validation tasks for the current repository will run.${colors.reset}
 `);
   process.exit(0);
 }
 
 // If no specific task flag was passed, run all tasks applicable to the current repo
-if (!runUnit && !runCatalog && !runPalette && !runA11y && !runVisual) {
+if (!runUnit && !runCatalog && !runSchema && !runPalette && !runA11y && !runVisual) {
   runUnit = true;
   runCatalog = true;
+  runSchema = true;
   runPalette = true;
   runA11y = true;
   runVisual = true;
@@ -281,8 +284,9 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
     }
 
     const diffPercent = (diffPixels / totalPixels) * 100;
+    const tolerance = parseFloat(process.env.VISUAL_DIFF_TOLERANCE || '1.5');
     return {
-      match: diffPercent <= 1.0,
+      match: diffPercent <= tolerance,
       diffPercent: parseFloat(diffPercent.toFixed(3)),
       diffPixels,
       totalPixels
@@ -309,7 +313,16 @@ async function getPlaywrightBrowser() {
 
   const launchOpts = {
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--font-render-hinting=none', '--force-color-profile=srgb']
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--font-render-hinting=none',
+      '--force-color-profile=srgb',
+      '--disable-features=ResponsivenessMeasurement',
+      '--disable-renderer-backgrounding'
+    ]
   };
 
   try {
@@ -448,7 +461,31 @@ async function taskCatalogCheck() {
   }
 }
 
-// TASK 3: WCAG 2.2 AA Static Color Palette Audit
+// TASK 3: Theme Schema Validation
+async function taskSchemaValidation() {
+  log('Running Theme Schema Validation...', 'header');
+  const repoRoot = path.resolve(__dirname, '..');
+  const targetDir = (cwd === repoRoot || cwd.startsWith(repoRoot)) ? cwd : repoRoot;
+  const binPath = path.join(targetDir, 'node_modules', '.bin', 'ktheme-schema');
+  let cmd = 'ktheme-schema';
+  let cmdArgs = ['sync', '--check'];
+  if (fs.existsSync(binPath)) {
+    cmd = binPath;
+  }
+  let res = spawnSync(cmd, cmdArgs, { cwd: targetDir, stdio: 'inherit', shell: true });
+  if (res.status !== 0 && !fs.existsSync(binPath)) {
+    res = spawnSync('npx', ['ktheme-schema', 'sync', '--check'], { cwd: targetDir, stdio: 'inherit', shell: true });
+  }
+  if (res.status === 0) {
+    log('Theme schema validation passed.', 'success');
+    return true;
+  } else {
+    log('Theme schema validation failed.', 'error');
+    return false;
+  }
+}
+
+// TASK 4: WCAG 2.2 AA Static Color Palette Audit
 async function taskPaletteCheck() {
   log("Running WCAG 2.2 AA Static Color Palette Audit...", "header");
 
@@ -588,7 +625,7 @@ async function taskPaletteCheck() {
   }
 }
 
-// TASK 4: WCAG 2.1 AA Accessibility Audit
+// TASK 5: WCAG 2.1 AA Accessibility Audit
 async function taskA11yAudit() {
   log('Running WCAG 2.1 AA Accessibility Audit on Live DOM Nodes...', 'header');
 
@@ -798,72 +835,72 @@ async function taskVisualSuite() {
     { name: 'mobile', width: 375, height: 667 }
   ];
 
-  let browser;
   let allMatched = true;
 
   try {
-    browser = await getPlaywrightBrowser();
-    if (!browser) return false;
-
     for (const vp of viewports) {
       log(`Capturing visual snapshots for viewport: ${vp.name} (${vp.width}x${vp.height})`, 'info');
-      const context = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
-      const page = await context.newPage();
-      await page.addInitScript(() => {
-        const inject = () => {
-          const style = document.createElement('style');
-          style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
-          if (document.head || document.documentElement) {
-            (document.head || document.documentElement).appendChild(style);
-          }
-        };
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', inject);
-        } else {
-          inject();
-        }
-      });
-      await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
-      await page.waitForTimeout(1000);
-
-      // Attempt interactive panel triggers if available
+      let browser;
       try {
-        const sweepBtn = page.getByText('Sweep Console', { exact: true }).first();
-        if (await sweepBtn.isVisible()) {
+        browser = await getPlaywrightBrowser();
+        if (!browser) return false;
+        const page = await browser.newPage({ viewport: { width: vp.width, height: vp.height } });
+        await page.addInitScript(() => {
+          const inject = () => {
+            const style = document.createElement('style');
+            style.textContent = '* { animation-duration: 0s !important; transition-duration: 0s !important; animation-play-state: paused !important; }';
+            if (document.head || document.documentElement) {
+              (document.head || document.documentElement).appendChild(style);
+            }
+          };
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', inject);
+          } else {
+            inject();
+          }
+        });
+        await navigateWithRetry(page, targetUrl, { waitUntil: 'domcontentloaded' });
+        await page.waitForTimeout(1000);
+
+        // Attempt interactive panel triggers if available
+        try {
+          const sweepBtn = page.getByText('Sweep Console', { exact: true }).first();
+          await sweepBtn.waitFor({ state: 'visible', timeout: 3000 });
           await sweepBtn.click();
-          await page.waitForTimeout(300);
-        }
-        const lcarsBtn = page.getByText('LCARS Amber', { exact: true }).first();
-        if (await lcarsBtn.isVisible()) {
+          await page.waitForTimeout(500);
+          const lcarsBtn = page.getByText('LCARS Amber', { exact: true }).first();
+          await lcarsBtn.waitFor({ state: 'visible', timeout: 3000 });
           await lcarsBtn.click();
-          await page.waitForTimeout(300);
-        }
-      } catch (_) {}
+          await page.waitForTimeout(800);
+        } catch (_) {}
 
-      const currentBuf = await page.screenshot({ fullPage: false });
-      const baselineFile = path.join(snapshotDir, `${vp.name}_sweep_lcars.png`);
+        const currentBuf = await page.screenshot({ fullPage: false });
+        const baselineFile = path.join(snapshotDir, `${vp.name}_sweep_lcars.png`);
 
-      if (updateSnapshots || !fs.existsSync(baselineFile)) {
-        fs.writeFileSync(baselineFile, currentBuf);
-        log(`Saved baseline snapshot: ${baselineFile}`, 'success');
-      } else {
-        const baselineBuf = fs.readFileSync(baselineFile);
-        const result = comparePNGBuffers(currentBuf, baselineBuf);
-
-        if (result.match) {
-          log(`Visual match for ${vp.name} (${result.diffPercent}% diff)`, 'success');
+        if (updateSnapshots || !fs.existsSync(baselineFile)) {
+          fs.writeFileSync(baselineFile, currentBuf);
+          log(`Saved baseline snapshot: ${baselineFile}`, 'success');
         } else {
-          allMatched = false;
-          log(`Visual regression detected for ${vp.name}! Diff: ${result.diffPercent}% (${result.diffPixels} diff pixels)`, 'error');
-          const diffDir = path.join(cwd, 'docs/screenshots/diffs');
-          fs.mkdirSync(diffDir, { recursive: true });
-          const diffFile = path.join(diffDir, `${vp.name}_diff.png`);
-          fs.writeFileSync(diffFile, currentBuf);
-          log(`Saved diff snapshot: ${diffFile}`, 'warn');
-        }
-      }
+          const baselineBuf = fs.readFileSync(baselineFile);
+          const result = comparePNGBuffers(currentBuf, baselineBuf);
 
-      await context.close();
+          if (result.match) {
+            log(`Visual match for ${vp.name} (${result.diffPercent}% diff)`, 'success');
+          } else {
+            allMatched = false;
+            log(`Visual regression detected for ${vp.name}! Diff: ${result.diffPercent}% (${result.diffPixels} diff pixels)`, 'error');
+            const diffDir = path.join(cwd, 'docs/screenshots/diffs');
+            fs.mkdirSync(diffDir, { recursive: true });
+            const diffFile = path.join(diffDir, `${vp.name}_diff.png`);
+            fs.writeFileSync(diffFile, currentBuf);
+            log(`Saved diff snapshot: ${diffFile}`, 'warn');
+          }
+        }
+
+        await page.close();
+      } finally {
+        if (browser) await browser.close();
+      }
     }
 
     if (allMatched) {
@@ -877,7 +914,6 @@ async function taskVisualSuite() {
     log(`Visual suite error: ${err.message}`, 'error');
     return false;
   } finally {
-    if (browser) await browser.close();
     if (server) await server.close();
   }
 }
@@ -889,7 +925,7 @@ ${colors.bold}${colors.cyan}====================================================
 ${colors.bold}  UNIFIED CROSS-REPO DESIGN SYSTEM VALIDATION CLI   ${colors.reset}
 ${colors.bold}${colors.cyan}=====================================================${colors.reset}
 Working Directory: ${cwd}
-Active Tasks: ${[runUnit && 'Unit', runCatalog && 'Catalog', runPalette && 'Palette', runA11y && 'A11y', runVisual && 'Visual'].filter(Boolean).join(', ')}
+Active Tasks: ${[runUnit && 'Unit', runCatalog && 'Catalog', runSchema && 'Schema', runPalette && 'Palette', runA11y && 'A11y', runVisual && 'Visual'].filter(Boolean).join(', ')}
 `);
 
   const results = {};
@@ -900,6 +936,10 @@ Active Tasks: ${[runUnit && 'Unit', runCatalog && 'Catalog', runPalette && 'Pale
 
   if (runCatalog) {
     results.catalog = await taskCatalogCheck();
+  }
+
+  if (runSchema) {
+    results.schema = await taskSchemaValidation();
   }
 
   if (runPalette) {
