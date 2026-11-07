@@ -1,10 +1,12 @@
-import { useRef, useState } from "react";
-import { useApp } from "../context/AppContext.jsx";
+import { useContext, useRef, useState } from "react";
+import { AppContext } from "../context/AppContext.jsx";
 import { EDITABLE_THEME_TOKENS } from "../theme/customTheme.js";
 import { validateThemeJson } from "../theme/themeValidator.js";
 
 export default function ThemeStudio() {
-  const { state, actions } = useApp();
+  const app = useContext(AppContext);
+  const state = app?.state || { customTheme: null };
+  const actions = app?.actions || {};
   const [open, setOpen] = useState(false);
   const [importError, setImportError] = useState(null);
   const fileRef = useRef(null);
