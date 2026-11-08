@@ -1,7 +1,11 @@
 import { useRef, useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
-import { INVENTORY_SOURCE, INVENTORY_FOLDERS, INVENTORY_RECENTS } from "../data/content.js";
+import {
+  INVENTORY_SOURCE,
+  INVENTORY_FOLDERS,
+  INVENTORY_RECENTS,
+} from "../data/content.js";
 import Icon from "../components/Icon.jsx";
 import FormInput from "../components/FormInput.jsx";
 import KInteractive from "../components/KInteractive.jsx";
@@ -20,27 +24,76 @@ export default function Inventory() {
 
   const isLoading = state?.cond === "loading";
 
-  const invToolStyle = { flex: "none", display: "flex", gap: "8px", padding: bleed ? "0 0 8px 10px" : "2px 16px 10px" };
-  const invRecentStyle = { flex: "none", display: "flex", gap: "8px", overflowX: "auto", padding: bleed ? "0 0 8px 10px" : "0 16px 10px" };
-  const invListStyle = { flex: 1, minHeight: "320px", overflowY: "auto", display: "flex", flexDirection: "column", gap: bleed ? C.gap + "px" : 0, background: bleed ? V.bg : "transparent" };
+  const invToolStyle = {
+    flex: "none",
+    display: "flex",
+    gap: "8px",
+    padding: bleed ? "0 0 8px 10px" : "2px 16px 10px",
+  };
+  const invRecentStyle = {
+    flex: "none",
+    display: "flex",
+    gap: "8px",
+    overflowX: "auto",
+    padding: bleed ? "0 0 8px 10px" : "0 16px 10px",
+  };
+  const invListStyle = {
+    flex: 1,
+    minHeight: "320px",
+    overflowY: "auto",
+    display: "flex",
+    flexDirection: "column",
+    gap: bleed ? C.gap + "px" : 0,
+    background: bleed ? V.bg : "transparent",
+  };
 
   const curSub = subView(state, "Inventory");
-  const rawItems = state.invItems || INVENTORY_SOURCE.map(([name, icon, depth, parent, ver, tags]) => ({ name, icon, depth, parent, ver, tags: tags || [] }));
+  const rawItems =
+    state.invItems ||
+    INVENTORY_SOURCE.map(([name, icon, depth, parent, ver, tags]) => ({
+      name,
+      icon,
+      depth,
+      parent,
+      ver,
+      tags: tags || [],
+    }));
 
   const all = rawItems.map((item) => {
     const { name, icon, depth, parent, ver, tags } = item;
     const isFolder = INVENTORY_FOLDERS.includes(name);
     const open = state.invOpen[name] !== false;
     const isSelected = (state.invSelected || []).includes(name);
-    return { name, icon, ver, parent, depth, isFolder, open, isSelected, tags: tags || [], chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "dot" };
+    return {
+      name,
+      icon,
+      ver,
+      parent,
+      depth,
+      isFolder,
+      open,
+      isSelected,
+      tags: tags || [],
+      chev: isFolder ? (open ? "chevron-down" : "chevron-right") : "dot",
+    };
   });
 
   const q = (state.invFilterQuery || "").trim().toLowerCase();
-  const baseNodes = curSub === "ALL"
-    ? (q ? all : all.filter((n) => n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false)))
-    : all.filter((n) => n.tags.includes(curSub.toLowerCase())).map((n) => ({ ...n, depth: 0, isFolder: false, chev: "dot" }));
+  const baseNodes =
+    curSub === "ALL"
+      ? q
+        ? all
+        : all.filter(
+            (n) =>
+              n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false)
+          )
+      : all
+          .filter((n) => n.tags.includes(curSub.toLowerCase()))
+          .map((n) => ({ ...n, depth: 0, isFolder: false, chev: "dot" }));
 
-  const nodes = q ? baseNodes.filter((n) => n.name.toLowerCase().includes(q)) : baseNodes;
+  const nodes = q
+    ? baseNodes.filter((n) => n.name.toLowerCase().includes(q))
+    : baseNodes;
 
   const handlePointerDown = (n) => {
     if (n.isFolder) return;
@@ -76,8 +129,24 @@ export default function Inventory() {
   return (
     <>
       <div style={invToolStyle}>
-        <div style={{ flex: 1, height: "44px", display: "flex", alignItems: "center", gap: "8px", padding: "0 10px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf }}>
-          <Icon name="search" size={15} style={{ opacity: 0.55, flexShrink: 0 }} />
+        <div
+          style={{
+            flex: 1,
+            height: "44px",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            padding: "0 10px",
+            border: "1px solid " + V.outv,
+            borderRadius: V.rs,
+            background: V.surf,
+          }}
+        >
+          <Icon
+            name="search"
+            size={15}
+            style={{ opacity: 0.55, flexShrink: 0 }}
+          />
           <SearchCombobox
             controlsId="inventory-results-tree"
             resultCount={nodes.length}
@@ -86,13 +155,34 @@ export default function Inventory() {
             placeholder="filter inventory…"
             value={state.invFilterQuery || ""}
             onChange={(e) => actions.setInvFilterQuery(e.target.value)}
-            style={{ flex: 1, minWidth: 0, border: "none", background: "transparent", font: "400 12px/1 " + t.font, color: V.ink, outline: "none" }}
+            style={{
+              flex: 1,
+              minWidth: 0,
+              border: "none",
+              background: "transparent",
+              font: "400 12px/1 " + t.font,
+              color: V.ink,
+              outline: "none",
+            }}
           />
           {state.invFilterQuery && (
             <div
               onClick={() => actions.setInvFilterQuery("")}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.setInvFilterQuery(""); } }}
-              style={{ display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: V.ink2, padding: "4px", flexShrink: 0 }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.setInvFilterQuery("");
+                }
+              }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                color: V.ink2,
+                padding: "4px",
+                flexShrink: 0,
+              }}
               role="button"
               aria-label="Clear search"
               tabIndex={0}
@@ -103,18 +193,42 @@ export default function Inventory() {
         </div>
         <div
           onClick={actions.toggleInvSelectMode}
-          onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.toggleInvSelectMode(); } }}
-          style={{
-            width: "44px", height: "44px", border: "1px solid " + (state.invSelectMode ? V.pri : V.outv),
-            borderRadius: V.rs, display: "flex", alignItems: "center", justifyContent: "center",
-            color: state.invSelectMode ? V.onpri : V.pri, background: state.invSelectMode ? V.pri : "transparent",
-            cursor: "pointer"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              actions.toggleInvSelectMode();
+            }
           }}
-          role="button" aria-label="Toggle selection mode" tabIndex={0}
+          style={{
+            width: "44px",
+            height: "44px",
+            border: "1px solid " + (state.invSelectMode ? V.pri : V.outv),
+            borderRadius: V.rs,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: state.invSelectMode ? V.onpri : V.pri,
+            background: state.invSelectMode ? V.pri : "transparent",
+            cursor: "pointer",
+          }}
+          role="button"
+          aria-label="Toggle selection mode"
+          tabIndex={0}
         >
           <Icon name="check-square" size={17} />
         </div>
-        <div style={{ width: "44px", height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, display: "flex", alignItems: "center", justifyContent: "center", color: V.pri }}>
+        <div
+          style={{
+            width: "44px",
+            height: "44px",
+            border: "1px solid " + V.outv,
+            borderRadius: V.rs,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: V.pri,
+          }}
+        >
           <Icon name="layout-grid" size={17} />
         </div>
       </div>
@@ -122,8 +236,26 @@ export default function Inventory() {
       <div style={invRecentStyle}>
         {INVENTORY_RECENTS.map((ir) => (
           <div key={ir} style={{ flex: "none", width: "62px" }}>
-            <div style={{ height: "62px", border: "1px solid " + V.outv, background: "repeating-linear-gradient(135deg, var(--md-sys-color-surface-variant, var(--ktheme-surf2)) 0 6px, var(--md-sys-color-surface, var(--ktheme-surf)) 6px 12px)" }} />
-            <div style={{ font: "400 9px/1.3 " + t.font, color: V.ink2, marginTop: "4px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{ir}</div>
+            <div
+              style={{
+                height: "62px",
+                border: "1px solid " + V.outv,
+                background:
+                  "repeating-linear-gradient(135deg, var(--md-sys-color-surface-variant, var(--ktheme-surf2)) 0 6px, var(--md-sys-color-surface, var(--ktheme-surf)) 6px 12px)",
+              }}
+            />
+            <div
+              style={{
+                font: "400 9px/1.3 " + t.font,
+                color: V.ink2,
+                marginTop: "4px",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {ir}
+            </div>
           </div>
         ))}
       </div>
@@ -131,43 +263,132 @@ export default function Inventory() {
       <div id="inventory-results-tree" style={invListStyle}>
         {isLoading || state.asyncQueryState?.inventory?.status === "loading" ? (
           <SkeletonTree style={{ minHeight: "320px" }} />
-        ) : state.asyncQueryState?.inventory?.status === "timeout" || state.asyncQueryState?.inventory?.status === "error" ? (
-          <div style={{ margin: "16px", border: "1px solid #FF6C6C", borderRadius: V.rs, background: V.surf2, padding: "20px 16px", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-            <div style={{ width: "44px", height: "44px", borderRadius: V.rs, border: "1px solid #FF6C6C", display: "flex", alignItems: "center", justifyContent: "center", color: "#FF6C6C" }}>
+        ) : state.asyncQueryState?.inventory?.status === "timeout" ||
+          state.asyncQueryState?.inventory?.status === "error" ? (
+          <div
+            style={{
+              margin: "16px",
+              border: "1px solid " + (V.err || "#FF6C6C"),
+              borderRadius: V.rs,
+              background: V.surf2,
+              padding: "20px 16px",
+              textAlign: "center",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "12px",
+            }}
+          >
+            <div
+              style={{
+                width: "44px",
+                height: "44px",
+                borderRadius: V.rs,
+                border: "1px solid " + (V.err || "#FF6C6C"),
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: V.err || "#FF6C6C",
+              }}
+            >
               <Icon name="package-x" size={22} />
             </div>
             <div>
-              <div style={{ font: "700 14px/1.3 " + t.dfont, color: V.ink }}>INVENTORY FETCH TIMEOUT</div>
-              <div style={{ font: "400 11.5px/1.5 " + t.font, color: V.ink2, marginTop: "4px", maxWidth: "280px" }}>
-                Asset server timeout while loading resident inventory. Managed async query recovery injected.
+              <div style={{ font: "700 14px/1.3 " + t.dfont, color: V.ink }}>
+                INVENTORY FETCH TIMEOUT
+              </div>
+              <div
+                style={{
+                  font: "400 11.5px/1.5 " + t.font,
+                  color: V.ink2,
+                  marginTop: "4px",
+                  maxWidth: "280px",
+                }}
+              >
+                Asset server timeout while loading resident inventory. Managed
+                async query recovery injected.
               </div>
             </div>
             <div
               onClick={() => {
-                actions.runAsyncQuery("inventory", () => new Promise((resolve) => setTimeout(resolve, 300)));
+                actions.runAsyncQuery(
+                  "inventory",
+                  () => new Promise((resolve) => setTimeout(resolve, 300))
+                );
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
-                  actions.runAsyncQuery("inventory", () => new Promise((resolve) => setTimeout(resolve, 300)));
+                  actions.runAsyncQuery(
+                    "inventory",
+                    () => new Promise((resolve) => setTimeout(resolve, 300))
+                  );
                 }
               }}
-              style={{ padding: "0 20px", height: "36px", borderRadius: V.rs, background: V.pri, color: V.onpri, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".14em", cursor: "pointer" }}
-              role="button" aria-label="Retry Inventory Fetch" tabIndex={0}
+              style={{
+                padding: "0 20px",
+                height: "36px",
+                borderRadius: V.rs,
+                background: V.pri,
+                color: V.onpri,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "6px",
+                font: "700 11px/1 " + t.font,
+                letterSpacing: ".14em",
+                cursor: "pointer",
+              }}
+              role="button"
+              aria-label="Retry Inventory Fetch"
+              tabIndex={0}
             >
               <Icon name="refresh-cw" size={14} />
               RETRY INVENTORY FETCH
             </div>
           </div>
         ) : nodes.length === 0 && q ? (
-          <div style={{ padding: "40px 16px", textAlign: "center", font: "400 12px/1.5 " + t.font, color: V.ink2 }}>
+          <div
+            style={{
+              padding: "40px 16px",
+              textAlign: "center",
+              font: "400 12px/1.5 " + t.font,
+              color: V.ink2,
+            }}
+          >
             No inventory items match '{(state.invFilterQuery || "").trim()}'
           </div>
         ) : (
           nodes.map((n) => {
             const indent = bleed
-              ? { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 12px", paddingLeft: 10 + n.depth * 16 + "px", background: n.isSelected ? V.priC : V.surf, borderLeft: "4px solid " + (n.isSelected ? V.pri : n.depth === 0 ? V.pri : n.depth === 1 ? V.sec2 : "transparent"), cursor: "pointer" }
-              : { display: "flex", alignItems: "center", gap: "8px", padding: pad + " 16px", paddingLeft: 16 + n.depth * 18 + "px", background: n.isSelected ? V.priC : "transparent", borderBottom: "1px solid " + V.outv, cursor: "pointer" };
+              ? {
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: pad + " 12px",
+                  paddingLeft: 10 + n.depth * 16 + "px",
+                  background: n.isSelected ? V.priC : V.surf,
+                  borderLeft:
+                    "4px solid " +
+                    (n.isSelected
+                      ? V.pri
+                      : n.depth === 0
+                        ? V.pri
+                        : n.depth === 1
+                          ? V.sec2
+                          : "transparent"),
+                  cursor: "pointer",
+                }
+              : {
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  padding: pad + " 16px",
+                  paddingLeft: 16 + n.depth * 18 + "px",
+                  background: n.isSelected ? V.priC : "transparent",
+                  borderBottom: "1px solid " + V.outv,
+                  cursor: "pointer",
+                };
             return (
               <KInteractive
                 key={n.name}
@@ -177,16 +398,47 @@ export default function Inventory() {
                 onPointerLeave={handlePointerUpOrLeave}
                 label={n.name}
                 style={indent}
-                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleRowClick(n); } }}
-                role="button" aria-label={n.name} tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleRowClick(n);
+                  }
+                }}
+                role="button"
+                aria-label={n.name}
+                tabIndex={0}
               >
                 {state.invSelectMode && !n.isFolder && (
-                  <Icon name={n.isSelected ? "check-square" : "square"} size={16} style={{ color: V.pri, flexShrink: 0 }} />
+                  <Icon
+                    name={n.isSelected ? "check-square" : "square"}
+                    size={16}
+                    style={{ color: V.pri, flexShrink: 0 }}
+                  />
                 )}
-                <Icon name={n.chev} size={16} style={{ color: V.pri, flexShrink: 0 }} />
-                <Icon name={n.icon} size={16} style={{ color: V.sec2, flexShrink: 0 }} />
-                <span style={{ flex: 1, font: "400 13px/1.2 " + t.font, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>{n.name}</span>
-                <span style={{ font: "400 10px/1 " + t.font, color: V.ink2 }}>{n.ver}</span>
+                <Icon
+                  name={n.chev}
+                  size={16}
+                  style={{ color: V.pri, flexShrink: 0 }}
+                />
+                <Icon
+                  name={n.icon}
+                  size={16}
+                  style={{ color: V.sec2, flexShrink: 0 }}
+                />
+                <span
+                  style={{
+                    flex: 1,
+                    font: "400 13px/1.2 " + t.font,
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {n.name}
+                </span>
+                <span style={{ font: "400 10px/1 " + t.font, color: V.ink2 }}>
+                  {n.ver}
+                </span>
               </KInteractive>
             );
           })
@@ -194,33 +446,135 @@ export default function Inventory() {
       </div>
 
       {hasSelected && (
-        <div style={{ margin: bleed ? "8px 10px 10px" : "8px 16px 12px", padding: "10px", border: "1px solid " + V.pri, borderRadius: V.rs, background: V.surf2, boxShadow: "0 6px 20px rgba(0,0,0,0.4)", display: "flex", flexDirection: "column", gap: "8px" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ font: "700 11px/1 " + t.font, color: V.pri, letterSpacing: ".12em" }}>{state.invSelected.length} SELECTED</span>
-            <span onClick={actions.toggleInvSelectMode} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.toggleInvSelectMode(); } }} style={{ font: "600 10px/1 " + t.font, color: V.ink2, cursor: "pointer" }} role="button" tabIndex={0}>CANCEL</span>
+        <div
+          style={{
+            margin: bleed ? "8px 10px 10px" : "8px 16px 12px",
+            padding: "10px",
+            border: "1px solid " + V.pri,
+            borderRadius: V.rs,
+            background: V.surf2,
+            boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+            display: "flex",
+            flexDirection: "column",
+            gap: "8px",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span
+              style={{
+                font: "700 11px/1 " + t.font,
+                color: V.pri,
+                letterSpacing: ".12em",
+              }}
+            >
+              {state.invSelected.length} SELECTED
+            </span>
+            <span
+              onClick={actions.toggleInvSelectMode}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.toggleInvSelectMode();
+                }
+              }}
+              style={{
+                font: "600 10px/1 " + t.font,
+                color: V.ink2,
+                cursor: "pointer",
+              }}
+              role="button"
+              tabIndex={0}
+            >
+              CANCEL
+            </span>
           </div>
           <div style={{ display: "flex", gap: "8px" }}>
             <div
               onClick={actions.invWearSelected}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.invWearSelected(); } }}
-              style={{ flex: 1, height: "44px", borderRadius: V.rs, background: V.pri, color: V.onpri, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".1em", cursor: "pointer" }}
-              role="button" tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.invWearSelected();
+                }
+              }}
+              style={{
+                flex: 1,
+                height: "44px",
+                borderRadius: V.rs,
+                background: V.pri,
+                color: V.onpri,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "6px",
+                font: "700 11px/1 " + t.font,
+                letterSpacing: ".1em",
+                cursor: "pointer",
+              }}
+              role="button"
+              tabIndex={0}
             >
               <Icon name="shirt" size={16} /> WEAR
             </div>
             <div
               onClick={actions.invOpenMoveModal}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.invOpenMoveModal(); } }}
-              style={{ flex: 1, height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, color: V.ink, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".1em", cursor: "pointer" }}
-              role="button" tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.invOpenMoveModal();
+                }
+              }}
+              style={{
+                flex: 1,
+                height: "44px",
+                border: "1px solid " + V.outv,
+                borderRadius: V.rs,
+                background: V.surf,
+                color: V.ink,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "6px",
+                font: "700 11px/1 " + t.font,
+                letterSpacing: ".1em",
+                cursor: "pointer",
+              }}
+              role="button"
+              tabIndex={0}
             >
               <Icon name="folder-input" size={16} /> MOVE TO…
             </div>
             <div
               onClick={actions.invDeleteSelected}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.invDeleteSelected(); } }}
-              style={{ flex: 1, height: "44px", border: "1px solid " + V.outv, borderRadius: V.rs, background: "rgba(207,102,121,0.15)", color: V.err || "var(--md-sys-color-error, var(--ktheme-err))", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", font: "700 11px/1 " + t.font, letterSpacing: ".1em", cursor: "pointer" }}
-              role="button" tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.invDeleteSelected();
+                }
+              }}
+              style={{
+                flex: 1,
+                height: "44px",
+                border: "1px solid " + V.outv,
+                borderRadius: V.rs,
+                background: "rgba(207,102,121,0.15)",
+                color: V.err || "var(--md-sys-color-error, var(--ktheme-err))",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "6px",
+                font: "700 11px/1 " + t.font,
+                letterSpacing: ".1em",
+                cursor: "pointer",
+              }}
+              role="button"
+              tabIndex={0}
             >
               <Icon name="trash-2" size={16} /> DELETE
             </div>
@@ -229,22 +583,82 @@ export default function Inventory() {
       )}
 
       {state.invMoveModal && (
-        <div style={{ margin: bleed ? "8px 10px 10px" : "8px 16px 12px", padding: "12px", border: "1px solid " + V.pri, borderRadius: V.rs, background: V.surf2, display: "flex", flexDirection: "column", gap: "10px" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span style={{ font: "700 11px/1 " + t.font, color: V.pri, letterSpacing: ".12em" }}>MOVE TO FOLDER</span>
-            <span onClick={actions.invCloseMoveModal} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.invCloseMoveModal(); } }} style={{ font: "600 10px/1 " + t.font, color: V.ink2, cursor: "pointer" }} role="button" tabIndex={0}>CANCEL</span>
+        <div
+          style={{
+            margin: bleed ? "8px 10px 10px" : "8px 16px 12px",
+            padding: "12px",
+            border: "1px solid " + V.pri,
+            borderRadius: V.rs,
+            background: V.surf2,
+            display: "flex",
+            flexDirection: "column",
+            gap: "10px",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <span
+              style={{
+                font: "700 11px/1 " + t.font,
+                color: V.pri,
+                letterSpacing: ".12em",
+              }}
+            >
+              MOVE TO FOLDER
+            </span>
+            <span
+              onClick={actions.invCloseMoveModal}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.invCloseMoveModal();
+                }
+              }}
+              style={{
+                font: "600 10px/1 " + t.font,
+                color: V.ink2,
+                cursor: "pointer",
+              }}
+              role="button"
+              tabIndex={0}
+            >
+              CANCEL
+            </span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
             {targetFolders.map((folder) => (
               <div
                 key={folder}
                 onClick={() => actions.invMoveSelected(folder)}
-                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); actions.invMoveSelected(folder); } }}
-                style={{ height: "44px", padding: "0 12px", border: "1px solid " + V.outv, borderRadius: V.rs, background: V.surf, display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}
-                role="button" tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    actions.invMoveSelected(folder);
+                  }
+                }}
+                style={{
+                  height: "44px",
+                  padding: "0 12px",
+                  border: "1px solid " + V.outv,
+                  borderRadius: V.rs,
+                  background: V.surf,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  cursor: "pointer",
+                }}
+                role="button"
+                tabIndex={0}
               >
                 <Icon name="folder" size={16} style={{ color: V.sec2 }} />
-                <span style={{ font: "600 12px/1 " + t.font, color: V.ink }}>{folder}</span>
+                <span style={{ font: "600 12px/1 " + t.font, color: V.ink }}>
+                  {folder}
+                </span>
               </div>
             ))}
           </div>

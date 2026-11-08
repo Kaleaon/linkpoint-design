@@ -99,4 +99,3 @@ if cli_cmd:
     subprocess.run([cli_cmd, "sync", "--apply"], check=True)
 else:
     subprocess.run(["npx", "ktheme-schema", "sync", "--apply"], check=True)
-
