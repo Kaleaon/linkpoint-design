@@ -15,12 +15,15 @@ export function KInteractive({
   ...props
 }) {
   const isButton = Component === "button";
-  const buttonType = isButton ? (type || "button") : undefined;
+  const buttonType = isButton ? type || "button" : undefined;
 
   const handleKeyDown = (e) => {
     if (disabled) return;
     if (onKeyDown) onKeyDown(e);
-    if (!e.defaultPrevented && (e.key === "Enter" || e.key === " " || e.key === "Spacebar")) {
+    if (
+      !e.defaultPrevented &&
+      (e.key === "Enter" || e.key === " " || e.key === "Spacebar")
+    ) {
       e.preventDefault();
       if (onClick) onClick(e);
     }
@@ -40,8 +43,8 @@ export function KInteractive({
   return (
     <Component
       type={buttonType}
-      role={isButton ? role : (role || "button")}
-      tabIndex={disabled ? -1 : (tabIndex ?? 0)}
+      role={isButton ? role : role || "button"}
+      tabIndex={disabled ? -1 : tabIndex ?? 0}
       disabled={isButton ? disabled : undefined}
       aria-label={ariaLabel}
       aria-disabled={disabled ? true : undefined}
@@ -65,4 +68,3 @@ export function KButton({ children, ...props }) {
 }
 
 export default KInteractive;
-

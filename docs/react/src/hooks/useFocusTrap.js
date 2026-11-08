@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 
 const FOCUSABLE_SELECTOR = [
-  'a[href]',
-  'button:not([disabled])',
-  'textarea:not([disabled])',
-  'input:not([disabled])',
-  'select:not([disabled])',
-  '[tabindex]:not([tabindex="-1"])'
+  "a[href]",
+  "button:not([disabled])",
+  "textarea:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
+  '[tabindex]:not([tabindex="-1"])',
 ].join(", ");
 
 /**
@@ -27,17 +27,28 @@ export function useFocusTrap(ref, onEscape, active = true) {
     const focusInitial = () => {
       if (!container) return;
       const primaryEl = container.querySelector('[data-primary="true"]');
-      const focusables = Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR));
+      const focusables = Array.from(
+        container.querySelectorAll(FOCUSABLE_SELECTOR)
+      );
 
       if (primaryEl && typeof primaryEl.focus === "function") {
         primaryEl.focus();
-      } else if (focusables.length > 0 && typeof focusables[0].focus === "function") {
+      } else if (
+        focusables.length > 0 &&
+        typeof focusables[0].focus === "function"
+      ) {
         focusables[0].focus();
       }
     };
 
-    const scheduleFocus = typeof requestAnimationFrame === "function" ? requestAnimationFrame : (cb) => setTimeout(cb, 0);
-    const cancelSchedule = typeof cancelAnimationFrame === "function" ? cancelAnimationFrame : clearTimeout;
+    const scheduleFocus =
+      typeof requestAnimationFrame === "function"
+        ? requestAnimationFrame
+        : (cb) => setTimeout(cb, 0);
+    const cancelSchedule =
+      typeof cancelAnimationFrame === "function"
+        ? cancelAnimationFrame
+        : clearTimeout;
 
     const timerId = scheduleFocus(() => {
       focusInitial();
@@ -54,8 +65,13 @@ export function useFocusTrap(ref, onEscape, active = true) {
       }
 
       if (e.key === "Tab") {
-        const focusables = Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR)).filter(
-          (el) => el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement
+        const focusables = Array.from(
+          container.querySelectorAll(FOCUSABLE_SELECTOR)
+        ).filter(
+          (el) =>
+            el.offsetWidth > 0 ||
+            el.offsetHeight > 0 ||
+            el === document.activeElement
         );
 
         if (focusables.length === 0) {
@@ -67,12 +83,18 @@ export function useFocusTrap(ref, onEscape, active = true) {
         const lastEl = focusables[focusables.length - 1];
 
         if (e.shiftKey) {
-          if (document.activeElement === firstEl || !container.contains(document.activeElement)) {
+          if (
+            document.activeElement === firstEl ||
+            !container.contains(document.activeElement)
+          ) {
             e.preventDefault();
             lastEl.focus();
           }
         } else {
-          if (document.activeElement === lastEl || !container.contains(document.activeElement)) {
+          if (
+            document.activeElement === lastEl ||
+            !container.contains(document.activeElement)
+          ) {
             e.preventDefault();
             firstEl.focus();
           }
@@ -85,7 +107,10 @@ export function useFocusTrap(ref, onEscape, active = true) {
     return () => {
       cancelSchedule(timerId);
       window.removeEventListener("keydown", handleKeyDown, true);
-      if (previousActiveElement && typeof previousActiveElement.focus === "function") {
+      if (
+        previousActiveElement &&
+        typeof previousActiveElement.focus === "function"
+      ) {
         previousActiveElement.focus();
       }
     };

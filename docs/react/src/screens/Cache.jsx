@@ -42,13 +42,14 @@ export default function Cache() {
     justifyContent: "center",
     gap: "6px",
     cursor: "pointer",
-    background: primary ? V.pri : danger ? (V.err || "#dc2626") : V.surf2,
+    background: primary ? V.pri : danger ? V.err || "#dc2626" : V.surf2,
     color: primary
       ? ink(V.pri, [V.bg, V.onpri, V.ink])
       : danger
-      ? "#fff"
-      : V.ink,
-    border: "1px solid " + (primary ? V.pri : danger ? (V.err || "#dc2626") : V.outv),
+        ? V.onerr || "var(--onerr, #fff)"
+        : V.ink,
+    border:
+      "1px solid " + (primary ? V.pri : danger ? V.err || "#dc2626" : V.outv),
     borderRadius: V.rs,
     font: "700 10.5px/1 " + t.dfont,
     letterSpacing: ".1em",
@@ -68,8 +69,23 @@ export default function Cache() {
       }}
     >
       {/* Cache Usage Hero Card */}
-      <div style={{ ...cardStyle(V.pri), display: "flex", flexDirection: "column", gap: "12px" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "12px", flexWrap: "wrap" }}>
+      <div
+        style={{
+          ...cardStyle(V.pri),
+          display: "flex",
+          flexDirection: "column",
+          gap: "12px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            gap: "12px",
+            flexWrap: "wrap",
+          }}
+        >
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <div
               style={{
@@ -88,12 +104,33 @@ export default function Cache() {
               <Icon name="hard-drive" size={22} />
             </div>
             <div>
-              <div style={{ font: "700 9px/1 " + t.dfont, letterSpacing: ".18em", color: V.sec2 || V.pri }}>
+              <div
+                style={{
+                  font: "700 9px/1 " + t.dfont,
+                  letterSpacing: ".18em",
+                  color: V.sec2 || V.pri,
+                }}
+              >
                 [SYS-04-5100] NON-VOLATILE VFS CACHE STORE
               </div>
-              <div style={{ font: "700 15px/1.2 " + t.dfont, color: V.ink, marginTop: "2px" }}>Local Cache & Storage</div>
-              <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
-                Location: {state.prefs?.cacheLoc || "Internal flash storage"} · Max limit: {cacheLimit} MB
+              <div
+                style={{
+                  font: "700 15px/1.2 " + t.dfont,
+                  color: V.ink,
+                  marginTop: "2px",
+                }}
+              >
+                Local Cache & Storage
+              </div>
+              <div
+                style={{
+                  font: "400 11px/1.3 " + t.font,
+                  color: V.ink2,
+                  marginTop: "2px",
+                }}
+              >
+                Location: {state.prefs?.cacheLoc || "Internal flash storage"} ·
+                Max limit: {cacheLimit} MB
               </div>
             </div>
           </div>
@@ -111,9 +148,17 @@ export default function Cache() {
 
         {/* Capacity Meter Bar — Discrete Segmented Chunky Ticks */}
         <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", font: "600 11.5px/1 " + (t.mfont || t.font) }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              font: "600 11.5px/1 " + (t.mfont || t.font),
+            }}
+          >
             <span style={{ color: V.ink }}>{totalUsed} MB used</span>
-            <span style={{ color: V.ink2 }}>{cacheLimit - totalUsed} MB free</span>
+            <span style={{ color: V.ink2 }}>
+              {cacheLimit - totalUsed} MB free
+            </span>
           </div>
           <SegmentedMeter
             value={totalUsed}
@@ -128,12 +173,42 @@ export default function Cache() {
       </div>
 
       {/* Itemized Cache Sections */}
-      <div style={{ display: "flex", flexDirection: "column", gap: bleed ? "4px" : "8px" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: bleed ? "4px" : "8px",
+        }}
+      >
         {[
-          { key: "textures", code: "SYS-04-TXTR", name: "Texture & Mesh Asset Cache", desc: "Cached diffuse, normal, and specular maps for in-world 3D rendering", icon: "image" },
-          { key: "inventory", code: "SYS-04-INVT", name: "Inventory Hierarchy & Skeleton", desc: "Local cache of personal inventory folder hierarchy and item metadata", icon: "folder" },
-          { key: "audio", code: "SYS-04-AUD0", name: "Sound Effects & Audio Cache", desc: "Cached spatial sound loops, gesture audio clips, and UI chimes", icon: "volume-2" },
-          { key: "vfs", code: "SYS-04-VFST", name: "Virtual File System (VFS) Temp Data", desc: "Temporary client buffers, region terrain tiles, and object geometry indices", icon: "layers" },
+          {
+            key: "textures",
+            code: "SYS-04-TXTR",
+            name: "Texture & Mesh Asset Cache",
+            desc: "Cached diffuse, normal, and specular maps for in-world 3D rendering",
+            icon: "image",
+          },
+          {
+            key: "inventory",
+            code: "SYS-04-INVT",
+            name: "Inventory Hierarchy & Skeleton",
+            desc: "Local cache of personal inventory folder hierarchy and item metadata",
+            icon: "folder",
+          },
+          {
+            key: "audio",
+            code: "SYS-04-AUD0",
+            name: "Sound Effects & Audio Cache",
+            desc: "Cached spatial sound loops, gesture audio clips, and UI chimes",
+            icon: "volume-2",
+          },
+          {
+            key: "vfs",
+            code: "SYS-04-VFST",
+            name: "Virtual File System (VFS) Temp Data",
+            desc: "Temporary client buffers, region terrain tiles, and object geometry indices",
+            icon: "layers",
+          },
         ].map(({ key, code, name, desc, icon }) => (
           <div
             key={key}
@@ -146,7 +221,15 @@ export default function Cache() {
               flexWrap: "wrap",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0, flex: 1 }}>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                minWidth: 0,
+                flex: 1,
+              }}
+            >
               <div
                 style={{
                   width: "36px",
@@ -164,13 +247,47 @@ export default function Cache() {
                 <Icon name={icon} size={18} />
               </div>
               <div style={{ minWidth: 0 }}>
-                <div style={{ font: "700 8.5px/1 " + t.dfont, letterSpacing: ".14em", color: V.sec2 || V.pri }}>[{code}]</div>
-                <div style={{ font: "700 13px/1.2 " + t.dfont, color: V.ink, marginTop: "2px" }}>{name}</div>
-                <div style={{ font: "400 11px/1.3 " + t.font, color: V.ink2, marginTop: "2px" }}>
+                <div
+                  style={{
+                    font: "700 8.5px/1 " + t.dfont,
+                    letterSpacing: ".14em",
+                    color: V.sec2 || V.pri,
+                  }}
+                >
+                  [{code}]
+                </div>
+                <div
+                  style={{
+                    font: "700 13px/1.2 " + t.dfont,
+                    color: V.ink,
+                    marginTop: "2px",
+                  }}
+                >
+                  {name}
+                </div>
+                <div
+                  style={{
+                    font: "400 11px/1.3 " + t.font,
+                    color: V.ink2,
+                    marginTop: "2px",
+                  }}
+                >
                   {desc}
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "4px" }}>
-                  <span style={{ font: "600 11px/1 " + (t.mfont || t.font), color: V.pri }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    marginTop: "4px",
+                  }}
+                >
+                  <span
+                    style={{
+                      font: "600 11px/1 " + (t.mfont || t.font),
+                      color: V.pri,
+                    }}
+                  >
                     {cacheUsage[key]} MB occupied
                   </span>
                   <SegmentedMeter
