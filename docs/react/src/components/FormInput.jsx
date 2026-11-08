@@ -17,7 +17,8 @@ const FormInput = forwardRef(function FormInput(
 
   const id = idProp || context?.id;
   const ariaDescribedBy = ariaDescribedByProp || context?.ariaDescribedBy;
-  const ariaInvalid = ariaInvalidProp !== undefined ? ariaInvalidProp : context?.ariaInvalid;
+  const ariaInvalid =
+    ariaInvalidProp !== undefined ? ariaInvalidProp : context?.ariaInvalid;
   const ariaErrorMessage = ariaErrorMessageProp || context?.ariaErrorMessage;
 
   return (
