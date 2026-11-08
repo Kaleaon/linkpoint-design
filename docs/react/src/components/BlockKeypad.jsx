@@ -46,12 +46,9 @@ export default function BlockKeypad({
     setValue("");
   }, []);
 
-  const handlePreset = useCallback(
-    (preset) => {
-      setValue(String(preset));
-    },
-    []
-  );
+  const handlePreset = useCallback((preset) => {
+    setValue(String(preset));
+  }, []);
 
   // Keyboard navigation & direct typing
   useEffect(() => {
@@ -80,9 +77,15 @@ export default function BlockKeypad({
   const numVal = Number(value) || 0;
   const isLcars = LK?.card === "cap" || LK?.head === "sweep";
   const btnRadius = isLcars ? "0px" : V.rs === "999px" ? "8px" : V.rs;
-  const dfontVar = `var(--ktheme-font-family, ${t?.dfont || '"JetBrains Mono", monospace'})`;
-  const fontVar = `var(--ktheme-font-family, ${t?.font || '"JetBrains Mono", monospace'})`;
-  const mfontVar = `var(--ktheme-font-family, ${t?.mfont || t?.dfont || '"JetBrains Mono", monospace'})`;
+  const dfontVar = `var(--ktheme-font-family, ${
+    t?.dfont || '"JetBrains Mono", monospace'
+  })`;
+  const fontVar = `var(--ktheme-font-family, ${
+    t?.font || '"JetBrains Mono", monospace'
+  })`;
+  const mfontVar = `var(--ktheme-font-family, ${
+    t?.mfont || t?.dfont || '"JetBrains Mono", monospace'
+  })`;
 
   const keyStyle = {
     flex: 1,
@@ -113,13 +116,14 @@ export default function BlockKeypad({
     justifyContent: "center",
     gap: "6px",
     cursor: "pointer",
-    background: primary ? V.pri : danger ? (V.err || "#dc2626") : V.surf2,
+    background: primary ? V.pri : danger ? V.err || "#dc2626" : V.surf2,
     color: primary
       ? ink(V.pri, [V.bg, V.onpri, V.ink])
       : danger
-      ? "#fff"
-      : V.ink,
-    border: "1px solid " + (primary ? V.pri : danger ? (V.err || "#dc2626") : V.outv),
+        ? V.onerr || "var(--onerr, #fff)"
+        : V.ink,
+    border:
+      "1px solid " + (primary ? V.pri : danger ? V.err || "#dc2626" : V.outv),
     borderRadius: isLcars ? (primary ? "0 22px 22px 0" : "0px") : V.rs,
     font: `var(--ktheme-font-weight-bold, 700) var(--ktheme-font-size-small, 11px)/1 ${dfontVar}`,
     fontFamily: dfontVar,
@@ -167,7 +171,14 @@ export default function BlockKeypad({
         }}
       >
         {/* Header with LCARS alphanumeric subsystem code */}
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            gap: "8px",
+          }}
+        >
           <div>
             <div
               style={{
@@ -301,7 +312,10 @@ export default function BlockKeypad({
                   flex: 1,
                   height: "32px",
                   background: Number(value) === p ? V.pri : V.surf2,
-                  color: Number(value) === p ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
+                  color:
+                    Number(value) === p
+                      ? ink(V.pri, [V.bg, V.onpri, V.ink])
+                      : V.ink,
                   border: "1px solid " + (Number(value) === p ? V.pri : V.outv),
                   borderRadius: isLcars ? "0px" : "3px",
                   font: `var(--ktheme-font-weight-bold, 700) var(--ktheme-font-size-small, 10.5px)/1 ${dfontVar}`,
@@ -326,40 +340,68 @@ export default function BlockKeypad({
         <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
           <div style={{ display: "flex", gap: "4px" }}>
             {["7", "8", "9"].map((d) => (
-              <KInteractive key={d} as="button" onClick={() => handleDigit(d)} style={keyStyle}>
+              <KInteractive
+                key={d}
+                as="button"
+                onClick={() => handleDigit(d)}
+                style={keyStyle}
+              >
                 {d}
               </KInteractive>
             ))}
           </div>
           <div style={{ display: "flex", gap: "4px" }}>
             {["4", "5", "6"].map((d) => (
-              <KInteractive key={d} as="button" onClick={() => handleDigit(d)} style={keyStyle}>
+              <KInteractive
+                key={d}
+                as="button"
+                onClick={() => handleDigit(d)}
+                style={keyStyle}
+              >
                 {d}
               </KInteractive>
             ))}
           </div>
           <div style={{ display: "flex", gap: "4px" }}>
             {["1", "2", "3"].map((d) => (
-              <KInteractive key={d} as="button" onClick={() => handleDigit(d)} style={keyStyle}>
+              <KInteractive
+                key={d}
+                as="button"
+                onClick={() => handleDigit(d)}
+                style={keyStyle}
+              >
                 {d}
               </KInteractive>
             ))}
           </div>
           <div style={{ display: "flex", gap: "4px" }}>
             {allowDecimal ? (
-              <KInteractive as="button" onClick={() => handleDigit(".")} style={keyStyle}>
+              <KInteractive
+                as="button"
+                onClick={() => handleDigit(".")}
+                style={keyStyle}
+              >
                 .
               </KInteractive>
             ) : (
               <KInteractive
                 as="button"
                 onClick={handleClear}
-                style={{ ...keyStyle, fontSize: "12px", letterSpacing: ".1em", color: V.err || "#dc2626" }}
+                style={{
+                  ...keyStyle,
+                  fontSize: "12px",
+                  letterSpacing: ".1em",
+                  color: V.err || "#dc2626",
+                }}
               >
                 CLR
               </KInteractive>
             )}
-            <KInteractive as="button" onClick={() => handleDigit("0")} style={keyStyle}>
+            <KInteractive
+              as="button"
+              onClick={() => handleDigit("0")}
+              style={keyStyle}
+            >
               0
             </KInteractive>
             <KInteractive
