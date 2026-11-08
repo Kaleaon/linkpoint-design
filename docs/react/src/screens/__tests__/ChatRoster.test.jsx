@@ -6,7 +6,11 @@ import { ThemeProvider } from "../../context/ThemeContext.jsx";
 import Chat from "../Chat.jsx";
 
 // Helper component to configure initial state for Chat tests
-function ChatTestWrapper({ tab = "GROUP", chip = "Bay City Builders", device = "desk" }) {
+function ChatTestWrapper({
+  tab = "GROUP",
+  chip = "Bay City Builders",
+  device = "desk",
+}) {
   const { state, actions } = useApp();
 
   useEffect(() => {
@@ -170,7 +174,9 @@ describe("Group Chat Participant Roster and Moderation Controls", () => {
     fireEvent.click(profileBtn);
 
     const logs = busInstance.getLogs();
-    const profileIntent = logs.find((l) => l.type === "NAVIGATE_SCREEN" && l.payload.screen === "Profile");
+    const profileIntent = logs.find(
+      (l) => l.type === "NAVIGATE_SCREEN" && l.payload.screen === "Profile"
+    );
     expect(profileIntent).toBeTruthy();
     expect(profileIntent.payload.target).toBe("Marlowe Quill");
   });

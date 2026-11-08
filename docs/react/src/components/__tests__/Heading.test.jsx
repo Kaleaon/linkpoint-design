@@ -45,7 +45,12 @@ describe("Heading Component", () => {
 
   it("forwards extra HTML attributes", () => {
     render(
-      <Heading level={1} id="main-heading" data-testid="custom-heading" aria-label="Accessible Title">
+      <Heading
+        level={1}
+        id="main-heading"
+        data-testid="custom-heading"
+        aria-label="Accessible Title"
+      >
         Accessible Title
       </Heading>
     );
