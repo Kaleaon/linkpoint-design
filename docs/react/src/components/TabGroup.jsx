@@ -42,7 +42,8 @@ export function TabGroup({
     explicitId ||
     (reactId ? `tabgroup-${reactId.replace(/:/g, "")}` : fallbackId);
 
-  const active = controlledIndex !== undefined ? controlledIndex : selectedIndex;
+  const active =
+    controlledIndex !== undefined ? controlledIndex : selectedIndex;
   const isControlled = active !== undefined;
   const [uncontrolledIndex, setUncontrolledIndex] = useState(defaultIndex ?? 0);
   const currentActiveIndex = isControlled ? active : uncontrolledIndex;
@@ -69,10 +70,7 @@ export function TabGroup({
     }
   }, []);
 
-  const getTabId = useCallback(
-    (index) => `${baseId}-tab-${index}`,
-    [baseId]
-  );
+  const getTabId = useCallback((index) => `${baseId}-tab-${index}`, [baseId]);
 
   const getPanelId = useCallback(
     (index) => `${baseId}-panel-${index}`,
@@ -104,7 +102,9 @@ export function TabGroup({
   };
 
   if (!Component) {
-    return <TabContext.Provider value={contextValue}>{children}</TabContext.Provider>;
+    return (
+      <TabContext.Provider value={contextValue}>{children}</TabContext.Provider>
+    );
   }
 
   return (
@@ -146,7 +146,8 @@ export function TabList({
       isKeyboardNav,
     } = context;
 
-    const count = registeredTabsCount.current || tabRefs.current.filter(Boolean).length;
+    const count =
+      registeredTabsCount.current || tabRefs.current.filter(Boolean).length;
     if (count <= 0) return;
 
     const isHorizontal = orientation === "horizontal";
@@ -213,7 +214,9 @@ export function TabList({
     <Component
       role="tablist"
       aria-label={baseLabel}
-      aria-orientation={context?.orientation !== "horizontal" ? context?.orientation : undefined}
+      aria-orientation={
+        context?.orientation !== "horizontal" ? context?.orientation : undefined
+      }
       onKeyDown={handleKeyDown}
       className={`tab-list ${className}`.trim()}
       style={style}
@@ -311,20 +314,21 @@ export function TabPanel({
 }) {
   const context = useTabContext();
 
-  const panelIndex = index !== undefined ? index : context ? context.activeIndex : 0;
+  const panelIndex =
+    index !== undefined ? index : context ? context.activeIndex : 0;
   const resolvedBaseId = explicitBaseId || (context ? context.baseId : null);
 
   const panelId = resolvedBaseId
     ? `${resolvedBaseId}-panel-${panelIndex}`
     : context
-    ? context.getPanelId(panelIndex)
-    : undefined;
+      ? context.getPanelId(panelIndex)
+      : undefined;
 
   const tabId = resolvedBaseId
     ? `${resolvedBaseId}-tab-${panelIndex}`
     : context
-    ? context.getTabId(panelIndex)
-    : undefined;
+      ? context.getTabId(panelIndex)
+      : undefined;
 
   return (
     <Component
