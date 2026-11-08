@@ -1,6 +1,7 @@
 import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { FMENU, FLOATERS } from "../theme/constants.js";
+import KInteractive from "./KInteractive.jsx";
 import { useMenuNavigation } from "../hooks/useMenuNavigation.js";
 
 // Ported from `fmBar`/`fmMenus` — the desktop-only File/Edit/View/World/
@@ -31,7 +32,10 @@ export default function MenuBar() {
   const resolvedMenus = FMENU.map((mm) => {
     const win = mm.items === "WINDOWS";
     const items = win
-      ? FLOATERS.map((f) => [f.title, state.flOpen?.[f.id] && !state.flMin?.[f.id] ? "✓" : ""])
+      ? FLOATERS.map((f) => [
+          f.title,
+          state.flOpen?.[f.id] && !state.flMin?.[f.id] ? "✓" : "",
+        ])
       : mm.items;
     return {
       label: mm.label,
@@ -41,7 +45,7 @@ export default function MenuBar() {
   });
 
   const handleSelectItem = (menuLabel, item) => {
-    const itemLabel = Array.isArray(item) ? item[0] : (item?.label || item);
+    const itemLabel = Array.isArray(item) ? item[0] : item?.label || item;
     const targetMenu = resolvedMenus.find((m) => m.label === menuLabel);
     if (targetMenu?.win) {
       const f = FLOATERS.find((x) => x.title === itemLabel);
@@ -77,7 +81,9 @@ export default function MenuBar() {
         height: "32px",
         padding: "0 8px",
         background: V.surf,
-        borderBottom: (isSweepDesk ? "2px solid " : "1px solid ") + (isSweepDesk ? V.pri : V.outv),
+        borderBottom:
+          (isSweepDesk ? "2px solid " : "1px solid ") +
+          (isSweepDesk ? V.pri : V.outv),
         position: "relative",
         zIndex: 80,
       }}
@@ -98,30 +104,31 @@ export default function MenuBar() {
 
           return (
             <div key={mm.label} style={{ position: "relative" }}>
-              <button
-                type="button"
+              <KInteractive
+                as="button"
                 {...headerProps}
-                aria-label={mm.label}
+                label={mm.label}
                 style={{
                   display: "flex",
                   alignItems: "center",
                   height: "100%",
                   padding: "0 10px",
-                  margin: 0,
-                  border: "none",
                   cursor: "pointer",
                   background: open ? V.pri : "transparent",
                   color: open ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
-                  font: (isSweepDesk ? "700 11px/1 " + t.dfont : "500 11px/1 " + t.font),
-                  letterSpacing: (isSweepDesk ? ".12em" : ".04em"),
+                  font: isSweepDesk
+                    ? "700 11px/1 " + t.dfont
+                    : "500 11px/1 " + t.font,
+                  letterSpacing: isSweepDesk ? ".12em" : ".04em",
                   borderRadius: isSweepDesk ? "999px" : V.rs,
                   textTransform: isSweepDesk ? "uppercase" : "none",
-                  outline: isHeaderFocused && !open ? "1px solid " + V.pri : "none",
+                  outline:
+                    isHeaderFocused && !open ? "1px solid " + V.pri : "none",
                   outlineOffset: "-2px",
                 }}
               >
                 {mm.label}
-              </button>
+              </KInteractive>
               {open ? (
                 <div
                   {...getDropdownProps(menuIdx, mm.label)}
@@ -144,11 +151,11 @@ export default function MenuBar() {
                     const itemProps = getItemProps(menuIdx, i, it);
 
                     return (
-                      <button
-                        type="button"
+                      <KInteractive
+                        as="button"
                         key={i}
                         {...itemProps}
-                        aria-label={it[0] + (it[1] ? " " + it[1] : "")}
+                        label={it[0] + (it[1] ? " " + it[1] : "")}
                         style={{
                           display: "flex",
                           alignItems: "center",
@@ -156,22 +163,35 @@ export default function MenuBar() {
                           width: "100%",
                           minHeight: "32px",
                           padding: "0 12px",
-                          margin: 0,
-                          border: "none",
                           cursor: "pointer",
                           font: "400 11.5px/1 " + t.font,
-                          color: isItemFocused ? ink(V.pri, [V.bg, V.onpri, V.ink]) : V.ink,
-                          background: isItemFocused ? (V.priC || "rgba(255,255,255,0.12)") : "transparent",
-                          textAlign: "left",
-                          outline: isItemFocused ? "1px solid " + V.pri : "none",
+                          color: isItemFocused
+                            ? ink(V.pri, [V.bg, V.onpri, V.ink])
+                            : V.ink,
+                          background: isItemFocused
+                            ? V.priC || "rgba(255,255,255,0.12)"
+                            : "transparent",
+                          outline: isItemFocused
+                            ? "1px solid " + V.pri
+                            : "none",
                           outlineOffset: "-1px",
+                          textAlign: "left",
                         }}
                       >
-                        <span style={{ flex: 1, font: "inherit" }}>{it[0]}</span>
-                        <span style={{ flex: "none", font: "400 10px/1 " + t.font, color: V.ink2, letterSpacing: ".06em" }}>
+                        <span style={{ flex: 1, font: "inherit" }}>
+                          {it[0]}
+                        </span>
+                        <span
+                          style={{
+                            flex: "none",
+                            font: "400 10px/1 " + t.font,
+                            color: V.ink2,
+                            letterSpacing: ".06em",
+                          }}
+                        >
                           {it[1]}
                         </span>
-                      </button>
+                      </KInteractive>
                     );
                   })}
                 </div>

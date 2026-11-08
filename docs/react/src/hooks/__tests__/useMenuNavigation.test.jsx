@@ -7,19 +7,36 @@ import { useMenuNavigation } from "../useMenuNavigation.js";
 const sampleMenus = [
   {
     label: "File",
-    items: [["Upload Image", "⌘U"], ["Take Snapshot", "⌘`"], ["Quit", "⌘Q"]],
+    items: [
+      ["Upload Image", "⌘U"],
+      ["Take Snapshot", "⌘`"],
+      ["Quit", "⌘Q"],
+    ],
   },
   {
     label: "Edit",
-    items: [["Undo", "⌘Z"], ["Redo", "⇧⌘Z"], ["Preferences", "⌘,"]],
+    items: [
+      ["Undo", "⌘Z"],
+      ["Redo", "⇧⌘Z"],
+      ["Preferences", "⌘,"],
+    ],
   },
   {
     label: "View",
-    items: [["Chat", ""], ["Radar", ""], ["Inventory", ""]],
+    items: [
+      ["Chat", ""],
+      ["Radar", ""],
+      ["Inventory", ""],
+    ],
   },
 ];
 
-function TestMenubar({ menus = sampleMenus, onSelect, openMenu: controlledOpenMenu, onOpenMenu }) {
+function TestMenubar({
+  menus = sampleMenus,
+  onSelect,
+  openMenu: controlledOpenMenu,
+  onOpenMenu,
+}) {
   const {
     menubarProps,
     getHeaderProps,
@@ -52,7 +69,11 @@ function TestMenubar({ menus = sampleMenus, onSelect, openMenu: controlledOpenMe
                 {menu.items.map((item, iIdx) => {
                   const itemProps = getItemProps(mIdx, iIdx, item);
                   return (
-                    <div key={iIdx} {...itemProps} data-testid={`item-${menu.label}-${iIdx}`}>
+                    <div
+                      key={iIdx}
+                      {...itemProps}
+                      data-testid={`item-${menu.label}-${iIdx}`}
+                    >
                       {item[0]}
                     </div>
                   );
@@ -217,7 +238,11 @@ describe("useMenuNavigation Hook", () => {
 
     fireEvent.keyDown(item1, { key: "Enter" });
 
-    expect(handleSelect).toHaveBeenCalledWith("File", ["Take Snapshot", "⌘`"], 1);
+    expect(handleSelect).toHaveBeenCalledWith(
+      "File",
+      ["Take Snapshot", "⌘`"],
+      1
+    );
     expect(screen.queryByTestId("menu-File")).not.toBeInTheDocument();
     expect(document.activeElement).toBe(fileHeader);
   });

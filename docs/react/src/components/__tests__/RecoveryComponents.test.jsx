@@ -25,7 +25,9 @@ describe("Recovery Components & Global Error Boundary", () => {
     );
 
     expect(screen.getByText("SCREEN EXECUTION EXCEPTION")).toBeDefined();
-    expect(screen.getByText("Simulated component render failure")).toBeDefined();
+    expect(
+      screen.getByText("Simulated component render failure")
+    ).toBeDefined();
 
     const retryBtn = screen.getByRole("button", { name: "Retry component" });
     fireEvent.click(retryBtn);
@@ -43,11 +45,17 @@ describe("Recovery Components & Global Error Boundary", () => {
     );
 
     // Stop grid to trigger offline status
-    const stopGridBtn = screen.getByRole("button", { name: "Toggle grid status" });
+    const stopGridBtn = screen.getByRole("button", {
+      name: "Toggle grid status",
+    });
     fireEvent.click(stopGridBtn);
 
-    expect(screen.getByText("AUTOMATED RECOVERY & AUTO-RECONNECTION")).toBeDefined();
-    expect(screen.getByRole("button", { name: "Retry Reconnection" })).toBeDefined();
+    expect(
+      screen.getByText("AUTOMATED RECOVERY & AUTO-RECONNECTION")
+    ).toBeDefined();
+    expect(
+      screen.getByRole("button", { name: "Retry Reconnection" })
+    ).toBeDefined();
   });
 
   it("Search renders skeleton loading and recovery timeout UI when query state is loading or timed out", () => {
