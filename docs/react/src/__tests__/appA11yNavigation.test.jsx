@@ -13,16 +13,28 @@ function NavigationTester() {
 
   return (
     <div data-testid="nav-tester">
-      <button data-testid="btn-inventory" onClick={() => actions.setScreen("Inventory")}>
+      <button
+        data-testid="btn-inventory"
+        onClick={() => actions.setScreen("Inventory")}
+      >
         Go to Inventory
       </button>
-      <button data-testid="btn-radar" onClick={() => actions.setScreen("Radar")}>
+      <button
+        data-testid="btn-radar"
+        onClick={() => actions.setScreen("Radar")}
+      >
         Go to Radar
       </button>
-      <button data-testid="btn-chat-im" onClick={() => actions.startIm("Nyx Vaher")}>
+      <button
+        data-testid="btn-chat-im"
+        onClick={() => actions.startIm("Nyx Vaher")}
+      >
         Chat Nyx
       </button>
-      <button data-testid="btn-toast" onClick={() => actions.notify("Teleport initiated")}>
+      <button
+        data-testid="btn-toast"
+        onClick={() => actions.notify("Teleport initiated")}
+      >
         Send Toast
       </button>
       <span data-testid="current-screen">{state.screen}</span>

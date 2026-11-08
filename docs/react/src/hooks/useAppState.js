@@ -1629,10 +1629,7 @@ export function useAppState() {
     [screen, tabs, chip]
   );
 
-  const title = useMemo(
-    () => formatDocumentTitle(screenTitle),
-    [screenTitle]
-  );
+  const title = useMemo(() => formatDocumentTitle(screenTitle), [screenTitle]);
 
   useEffect(() => {
     if (typeof document !== "undefined") {

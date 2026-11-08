@@ -96,7 +96,11 @@ describe("LiveRegionAnnouncer Component", () => {
     const statusEl = screen.getByTestId("live-region-announcer");
 
     // Simulate switching screen to Profile and firing toast in close succession
-    mockState = { screen: "Profile", screenTitle: "Profile", toast: "Opened profile: Nyx Vaher" };
+    mockState = {
+      screen: "Profile",
+      screenTitle: "Profile",
+      toast: "Opened profile: Nyx Vaher",
+    };
     rerender(
       <AppContext.Provider value={{ state: mockState, actions: {} }}>
         <LiveRegionAnnouncer />
