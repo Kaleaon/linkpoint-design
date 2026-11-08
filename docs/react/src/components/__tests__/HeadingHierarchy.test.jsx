@@ -24,7 +24,15 @@ describe("Heading Hierarchy Integration Tests", () => {
 
   it("renders <h2> title and <h3> detail row headers in SplitDetail", () => {
     const mockThemeValue = {
-      V: { pri: "#00f0ff", ink: "#ffffff", ink2: "#aaa", outv: "#333", surf: "#111", bg: "#000", rs: "4px" },
+      V: {
+        pri: "#00f0ff",
+        ink: "#ffffff",
+        ink2: "#aaa",
+        outv: "#333",
+        surf: "#111",
+        bg: "#000",
+        rs: "4px",
+      },
       t: { font: "sans-serif", dfont: "monospace" },
       d: { split: true },
       isFloat: false,
@@ -73,12 +81,26 @@ describe("Heading Hierarchy Integration Tests", () => {
 
     const h2Elements = screen.getAllByRole("heading", { level: 2 });
     expect(h2Elements.length).toBeGreaterThanOrEqual(4);
-    expect(h2Elements.some((el) => el.textContent === "LOCAL GRID ENGINE")).toBe(true);
-    expect(h2Elements.some((el) => el.textContent === "OAR REGION BACKUP IMPORTER")).toBe(true);
-    expect(h2Elements.some((el) => el.textContent === "LOCAL ASSET & SL UPLOAD CENTER")).toBe(true);
-    expect(h2Elements.some((el) => el.textContent === "STORAGE & CACHE SIZING MANAGER")).toBe(true);
+    expect(
+      h2Elements.some((el) => el.textContent === "LOCAL GRID ENGINE")
+    ).toBe(true);
+    expect(
+      h2Elements.some((el) => el.textContent === "OAR REGION BACKUP IMPORTER")
+    ).toBe(true);
+    expect(
+      h2Elements.some(
+        (el) => el.textContent === "LOCAL ASSET & SL UPLOAD CENTER"
+      )
+    ).toBe(true);
+    expect(
+      h2Elements.some(
+        (el) => el.textContent === "STORAGE & CACHE SIZING MANAGER"
+      )
+    ).toBe(true);
 
     const h3Elements = screen.getAllByRole("heading", { level: 3 });
-    expect(h3Elements.some((el) => el.textContent === "OpenSim Local Server")).toBe(true);
+    expect(
+      h3Elements.some((el) => el.textContent === "OpenSim Local Server")
+    ).toBe(true);
   });
 });
