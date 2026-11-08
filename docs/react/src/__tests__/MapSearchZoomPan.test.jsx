@@ -11,7 +11,7 @@ function renderMap() {
       <ThemeProvider>
         <Map />
       </ThemeProvider>
-    </AppProvider>,
+    </AppProvider>
   );
 }
 
@@ -103,7 +103,7 @@ describe("Map Screen Search, Zoom, Reset, and Pan Controls", () => {
   it("allows dragging viewport to adjust pan offsets", () => {
     const { container, getByText } = renderMap();
     const mapContainer = container.querySelector(
-      ".map-control-overlay",
+      ".map-control-overlay"
     ).parentElement;
 
     // Simulate drag gesture

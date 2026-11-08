@@ -243,7 +243,7 @@ export default function Objects() {
     color: primary
       ? ink(V.pri, [V.bg, V.onpri, V.ink])
       : danger
-        ? "#fff"
+        ? V.onerr || "var(--onerr, #fff)"
         : V.ink,
     border:
       "1px solid " + (primary ? V.pri : danger ? V.err || "#dc2626" : V.outv),
@@ -418,7 +418,7 @@ export default function Objects() {
                       {f}
                     </button>
                   );
-                },
+                }
               )}
             </div>
           </div>
@@ -1183,7 +1183,7 @@ export default function Objects() {
                   </div>
                   <SegmentedMeter
                     value={Math.round(
-                      (parseFloat(selectedObj.cpuTime) || 0.05) * 1000,
+                      (parseFloat(selectedObj.cpuTime) || 0.05) * 1000
                     )}
                     max={250}
                     segments={16}

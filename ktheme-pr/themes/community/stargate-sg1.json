@@ -5,7 +5,13 @@
     "description": "Iris-bronze and event-horizon teal \u2014 warm gate-room console feel with restrained neon accents",
     "author": "Linkpoint",
     "version": "1.0.0",
-    "tags": ["dark", "sci-fi", "stargate", "console", "metallic"],
+    "tags": [
+      "dark",
+      "sci-fi",
+      "stargate",
+      "console",
+      "metallic"
+    ],
     "createdAt": "2026-04-27T00:00:00.000Z",
     "updatedAt": "2026-04-27T00:00:00.000Z"
   },

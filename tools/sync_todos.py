@@ -59,7 +59,6 @@ class SyncError(RuntimeError):
 # git plumbing
 # --------------------------------------------------------------------------
 
-
 def git(args, cwd=None, check=True):
     proc = subprocess.run(
         ["git", *args],
@@ -70,9 +69,7 @@ def git(args, cwd=None, check=True):
     if check and proc.returncode != 0:
         raise SyncError(
             "git {} failed ({}): {}".format(
-                " ".join(args),
-                proc.returncode,
-                proc.stderr.strip() or proc.stdout.strip(),
+                " ".join(args), proc.returncode, proc.stderr.strip() or proc.stdout.strip()
             )
         )
     return proc
@@ -103,9 +100,7 @@ def ensure_mirror(url, cache, log=print):
     cache = Path(cache)
     if (cache / "HEAD").exists():
         log(f"  fetching into {cache}")
-        with_retries(
-            "fetch", lambda: git(["fetch", "--prune", "origin"], cwd=cache), log=log
-        )
+        with_retries("fetch", lambda: git(["fetch", "--prune", "origin"], cwd=cache), log=log)
         return cache
 
     cache.parent.mkdir(parents=True, exist_ok=True)
@@ -125,10 +120,7 @@ def ensure_mirror(url, cache, log=print):
 
 
 def rev_exists(mirror, rev):
-    return (
-        git(["cat-file", "-e", f"{rev}^{{commit}}"], cwd=mirror, check=False).returncode
-        == 0
-    )
+    return git(["cat-file", "-e", f"{rev}^{{commit}}"], cwd=mirror, check=False).returncode == 0
 
 
 def read_commits(mirror, branch, since, limit, include_merges, log=print):
@@ -145,10 +137,8 @@ def read_commits(mirror, branch, since, limit, include_merges, log=print):
         args.append(f"{since}..{branch}")
     else:
         if since:
-            log(
-                f"  ! {since[:12]} is not in the upstream history any more; "
-                f"falling back to the last {limit} commits"
-            )
+            log(f"  ! {since[:12]} is not in the upstream history any more; "
+                f"falling back to the last {limit} commits")
         args += [f"-n{limit}", branch]
 
     out = git(args, cwd=mirror).stdout
@@ -179,7 +169,6 @@ def read_commits(mirror, branch, since, limit, include_merges, log=print):
 # --------------------------------------------------------------------------
 # classification
 # --------------------------------------------------------------------------
-
 
 def glob_to_re(pattern):
     """Translate a path glob to a regex. `**` spans directories, `*` does not."""
@@ -281,7 +270,6 @@ def build_item(commit, areas, default, skip_paths, commit_url):
 # the todo file: read, merge, render
 # --------------------------------------------------------------------------
 
-
 def read_todo(path):
     """Return (state, ticks) from an existing todo file.
 
@@ -313,7 +301,7 @@ def read_todo(path):
         return state, ticks
 
     end = text.find(STATE_CLOSE, start)
-    blob = text[start + len(STATE_OPEN) : end].strip()
+    blob = text[start + len(STATE_OPEN):end].strip()
     try:
         state = json.loads(blob)
     except json.JSONDecodeError as exc:
@@ -383,11 +371,7 @@ def render(items, config, areas, default, last_sha, now):
         "",
         f"- **Upstream:** [`{up['name']}`]({up['url']}) (`{up['branch']}`)",
         f"- **Last change:** {now} — upstream read through "
-        + (
-            f"[`{last_sha[:7]}`]({up['commit_url'].format(sha=last_sha)})"
-            if last_sha
-            else "_nothing yet_"
-        ),
+        + (f"[`{last_sha[:7]}`]({up['commit_url'].format(sha=last_sha)})" if last_sha else "_nothing yet_"),
         f"- **Open:** {len(open_items)} · **Completed:** {len(done_items)}",
         "",
     ]
@@ -418,9 +402,7 @@ def render(items, config, areas, default, last_sha, now):
     else:
         lines.append(f"<details><summary>{len(done_items)} done</summary>")
         lines.append("")
-        for item in sorted(
-            done_items, key=lambda i: (i["date"], i["short"]), reverse=True
-        ):
+        for item in sorted(done_items, key=lambda i: (i["date"], i["short"]), reverse=True):
             lines.append(
                 f"- [x] **`{item['short']}`** {md_escape(item['subject'])} "
                 f"— {item['date']} · [commit]({item['url']})"
@@ -476,7 +458,6 @@ def md_escape(text):
 # entry point
 # --------------------------------------------------------------------------
 
-
 def rel(path):
     """Repo-relative display path, falling back to the absolute one."""
     try:
@@ -502,15 +483,9 @@ def main(argv=None):
     ap.add_argument("--repo", help="override the upstream clone URL")
     ap.add_argument("--branch", help="override the upstream branch")
     ap.add_argument("--output", type=Path, help="override the todo file path")
-    ap.add_argument(
-        "--since", help="re-scan from this upstream ref instead of the stored cursor"
-    )
-    ap.add_argument(
-        "--limit", type=int, help="cap on commits read when there is no cursor"
-    )
-    ap.add_argument(
-        "--no-fetch", action="store_true", help="use the cached mirror as-is"
-    )
+    ap.add_argument("--since", help="re-scan from this upstream ref instead of the stored cursor")
+    ap.add_argument("--limit", type=int, help="cap on commits read when there is no cursor")
+    ap.add_argument("--no-fetch", action="store_true", help="use the cached mirror as-is")
     ap.add_argument("--dry-run", action="store_true", help="report only; write nothing")
     ap.add_argument("--quiet", action="store_true")
     args = ap.parse_args(argv)
@@ -547,10 +522,8 @@ def main(argv=None):
         cache, up["branch"], since, limit, config.get("include_merges", False), log=log
     )
     head = git(["rev-parse", up["branch"]], cwd=cache).stdout.strip()
-    log(
-        f"  {plural(len(commits), 'commit')} to consider since "
-        f"{since[:7] if since else 'the beginning'}"
-    )
+    log(f"  {plural(len(commits), 'commit')} to consider since "
+        f"{since[:7] if since else 'the beginning'}")
 
     new_items = []
     for commit in commits:
@@ -558,9 +531,7 @@ def main(argv=None):
         if reason:
             log(f"  - skip {commit['short']} ({reason})")
             continue
-        new_items.append(
-            build_item(commit, areas, default, skip_paths, up["commit_url"])
-        )
+        new_items.append(build_item(commit, areas, default, skip_paths, up["commit_url"]))
 
     items, added, duplicates = merge(state, ticks, new_items)
     for item in duplicates:
@@ -569,27 +540,22 @@ def main(argv=None):
     text = render(items, config, areas, default, head, now)
 
     open_count = sum(1 for i in items if not i["done"])
-    changed = not output.exists() or substance(
-        output.read_text(encoding="utf-8")
-    ) != substance(text)
+    changed = (
+        not output.exists()
+        or substance(output.read_text(encoding="utf-8")) != substance(text)
+    )
 
     if args.dry_run:
         log(f"  [dry run] {len(added)} new item(s); {open_count} open in total")
         for item in added:
             log(f"    + {item['short']} [{item['area']}] {item['subject']}")
-        emit_action_outputs(
-            new_items=len(added), open_items=open_count, changed=str(changed).lower()
-        )
+        emit_action_outputs(new_items=len(added), open_items=open_count, changed=str(changed).lower())
         return 0
 
     if not changed:
-        log(
-            f"  {rel(output)} is already level with upstream "
-            f"({open_count} open); left untouched"
-        )
-        emit_action_outputs(
-            new_items=len(added), open_items=open_count, changed="false"
-        )
+        log(f"  {rel(output)} is already level with upstream "
+            f"({open_count} open); left untouched")
+        emit_action_outputs(new_items=len(added), open_items=open_count, changed="false")
         return 0
 
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -597,9 +563,7 @@ def main(argv=None):
     log(f"  wrote {rel(output)}: {len(added)} new, {open_count} open")
     for item in added:
         log(f"    + {item['short']} [{item['area']}] {item['subject']}")
-    emit_action_outputs(
-        new_items=len(added), open_items=open_count, changed=str(changed).lower()
-    )
+    emit_action_outputs(new_items=len(added), open_items=open_count, changed=str(changed).lower())
     return 0
 
 
@@ -616,7 +580,8 @@ def substance(text):
     and the cursor simply stays put until there is something to record.
     """
     return "\n".join(
-        ln for ln in text.splitlines() if not ln.strip().startswith(VOLATILE_PREFIXES)
+        ln for ln in text.splitlines()
+        if not ln.strip().startswith(VOLATILE_PREFIXES)
     )
 
 

@@ -35,7 +35,7 @@ export default function BlockKeypad({
         return next;
       });
     },
-    [max],
+    [max]
   );
 
   const handleBackspace = useCallback(() => {
@@ -77,6 +77,15 @@ export default function BlockKeypad({
   const numVal = Number(value) || 0;
   const isLcars = LK?.card === "cap" || LK?.head === "sweep";
   const btnRadius = isLcars ? "0px" : V.rs === "999px" ? "8px" : V.rs;
+  const dfontVar = `var(--ktheme-font-family, ${
+    t?.dfont || '"JetBrains Mono", monospace'
+  })`;
+  const fontVar = `var(--ktheme-font-family, ${
+    t?.font || '"JetBrains Mono", monospace'
+  })`;
+  const mfontVar = `var(--ktheme-font-family, ${
+    t?.mfont || t?.dfont || '"JetBrains Mono", monospace'
+  })`;
 
   const keyStyle = {
     flex: 1,
@@ -88,7 +97,11 @@ export default function BlockKeypad({
     color: V.ink,
     border: "1px solid " + V.outv,
     borderRadius: btnRadius,
-    font: "700 18px/1 " + t.dfont,
+    font: `var(--ktheme-font-weight-bold, 700) var(--ktheme-font-size-large, 18px)/1 ${dfontVar}`,
+    fontFamily: dfontVar,
+    fontSize: "var(--ktheme-font-size-large, 18px)",
+    fontWeight: "var(--ktheme-font-weight-bold, 700)",
+    lineHeight: "1",
     cursor: "pointer",
     userSelect: "none",
     transition: "background 0.1s ease",
@@ -107,12 +120,16 @@ export default function BlockKeypad({
     color: primary
       ? ink(V.pri, [V.bg, V.onpri, V.ink])
       : danger
-        ? "#fff"
+        ? V.onerr || "var(--onerr, #fff)"
         : V.ink,
     border:
       "1px solid " + (primary ? V.pri : danger ? V.err || "#dc2626" : V.outv),
     borderRadius: isLcars ? (primary ? "0 22px 22px 0" : "0px") : V.rs,
-    font: "700 11px/1 " + t.dfont,
+    font: `var(--ktheme-font-weight-bold, 700) var(--ktheme-font-size-small, 11px)/1 ${dfontVar}`,
+    fontFamily: dfontVar,
+    fontSize: "var(--ktheme-font-size-small, 11px)",
+    fontWeight: "var(--ktheme-font-weight-bold, 700)",
+    lineHeight: "1",
     letterSpacing: ".14em",
     whiteSpace: "nowrap",
   });
@@ -165,7 +182,11 @@ export default function BlockKeypad({
           <div>
             <div
               style={{
-                font: "700 9px/1 " + t.dfont,
+                font: `var(--ktheme-font-weight-bold, 700) var(--ktheme-font-size-small, 9px)/1 ${dfontVar}`,
+                fontFamily: dfontVar,
+                fontSize: "var(--ktheme-font-size-small, 9px)",
+                fontWeight: "var(--ktheme-font-weight-bold, 700)",
+                lineHeight: "1",
                 letterSpacing: ".18em",
                 color: V.sec2 || V.pri,
                 textTransform: "uppercase",
@@ -175,7 +196,11 @@ export default function BlockKeypad({
             </div>
             <div
               style={{
-                font: "700 15px/1.2 " + t.dfont,
+                font: `var(--ktheme-font-weight-bold, 700) var(--ktheme-font-size-base, 15px)/1.2 ${dfontVar}`,
+                fontFamily: dfontVar,
+                fontSize: "var(--ktheme-font-size-base, 15px)",
+                fontWeight: "var(--ktheme-font-weight-bold, 700)",
+                lineHeight: "1.2",
                 color: V.ink,
                 marginTop: "2px",
               }}
@@ -185,7 +210,11 @@ export default function BlockKeypad({
             {subtitle && (
               <div
                 style={{
-                  font: "400 11px/1.3 " + t.font,
+                  font: `var(--ktheme-font-weight-regular, 400) var(--ktheme-font-size-small, 11px)/1.3 ${fontVar}`,
+                  fontFamily: fontVar,
+                  fontSize: "var(--ktheme-font-size-small, 11px)",
+                  fontWeight: "var(--ktheme-font-weight-regular, 400)",
+                  lineHeight: "1.3",
                   color: V.ink2,
                   marginTop: "2px",
                 }}
@@ -229,7 +258,11 @@ export default function BlockKeypad({
         >
           <span
             style={{
-              font: "700 12px/1 " + t.dfont,
+              font: `var(--ktheme-font-weight-bold, 700) var(--ktheme-font-size-small, 12px)/1 ${dfontVar}`,
+              fontFamily: dfontVar,
+              fontSize: "var(--ktheme-font-size-small, 12px)",
+              fontWeight: "var(--ktheme-font-weight-bold, 700)",
+              lineHeight: "1",
               letterSpacing: ".12em",
               color: V.ink2,
             }}
@@ -239,7 +272,11 @@ export default function BlockKeypad({
           <div style={{ display: "flex", alignItems: "baseline", gap: "4px" }}>
             <span
               style={{
-                font: "700 28px/1 " + (t.mfont || t.dfont),
+                font: `var(--ktheme-font-weight-bold, 700) var(--ktheme-font-size-h1, 28px)/1 ${mfontVar}`,
+                fontFamily: mfontVar,
+                fontSize: "var(--ktheme-font-size-h1, 28px)",
+                fontWeight: "var(--ktheme-font-weight-bold, 700)",
+                lineHeight: "1",
                 color: V.pri,
                 letterSpacing: ".04em",
               }}
@@ -247,7 +284,16 @@ export default function BlockKeypad({
               {value || "0"}
             </span>
             {unitPosition === "suffix" && (
-              <span style={{ font: "600 12px/1 " + t.font, color: V.ink2 }}>
+              <span
+                style={{
+                  font: `var(--ktheme-font-weight-medium, 600) var(--ktheme-font-size-small, 12px)/1 ${fontVar}`,
+                  fontFamily: fontVar,
+                  fontSize: "var(--ktheme-font-size-small, 12px)",
+                  fontWeight: "var(--ktheme-font-weight-medium, 600)",
+                  lineHeight: "1",
+                  color: V.ink2,
+                }}
+              >
                 {unit}
               </span>
             )}
@@ -272,7 +318,11 @@ export default function BlockKeypad({
                       : V.ink,
                   border: "1px solid " + (Number(value) === p ? V.pri : V.outv),
                   borderRadius: isLcars ? "0px" : "3px",
-                  font: "700 10.5px/1 " + t.dfont,
+                  font: `var(--ktheme-font-weight-bold, 700) var(--ktheme-font-size-small, 10.5px)/1 ${dfontVar}`,
+                  fontFamily: dfontVar,
+                  fontSize: "var(--ktheme-font-size-small, 10.5px)",
+                  fontWeight: "var(--ktheme-font-weight-bold, 700)",
+                  lineHeight: "1",
                   letterSpacing: ".08em",
                   cursor: "pointer",
                   display: "flex",

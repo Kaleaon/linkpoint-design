@@ -45,7 +45,7 @@ function renderThemeStudio(customActions = {}) {
   const renderResult = render(
     <AppContext.Provider value={contextValue}>
       <ThemeStudio />
-    </AppContext.Provider>,
+    </AppContext.Provider>
   );
 
   return { ...renderResult, actions };
@@ -80,7 +80,7 @@ describe("ThemeStudio Component with Schema Validation Alert Banner", () => {
       "invalid-theme.json",
       {
         type: "application/json",
-      },
+      }
     );
 
     await user.upload(fileInput, invalidFile);

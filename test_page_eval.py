@@ -1,18 +1,9 @@
 from playwright.sync_api import sync_playwright
 import time
 
-
 def test_dialogs():
     with sync_playwright() as p:
-        browser = p.chromium.launch(
-            headless=True,
-            args=[
-                "--no-sandbox",
-                "--disable-setuid-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
-            ],
-        )
+        browser = p.chromium.launch(headless=True, args=["--no-sandbox", "--disable-setuid-sandbox", "--disable-dev-shm-usage", "--disable-gpu"])
         page = browser.new_page()
         page.goto("http://localhost:8080/")
         time.sleep(2)
@@ -41,20 +32,15 @@ def test_dialogs():
 
         action_btn = page.locator("div[role='button']:has-text('ALLOW ONCE')")
         if action_btn.count() > 0:
-            action_btn.evaluate(
-                "el => { const e = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }); el.dispatchEvent(e); }"
-            )
+            action_btn.evaluate("el => { const e = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }); el.dispatchEvent(e); }")
             time.sleep(1)
 
-            assert (
-                page.locator("span[role='button']:has-text('CLOSE')").count() == 0
-            ), "Dialog should be closed by Enter key on button"
+            assert page.locator("span[role='button']:has-text('CLOSE')").count() == 0, "Dialog should be closed by Enter key on button"
             print("Dialog closed via Enter key on action button successfully.")
         else:
             print("Action button still not found.")
 
         browser.close()
-
 
 if __name__ == "__main__":
     test_dialogs()

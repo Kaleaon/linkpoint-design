@@ -47,7 +47,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     const { container } = render(
       <ThemeContext.Provider value={mockThemeTokens}>
         <SkeletonCardList count={4} />
-      </ThemeContext.Provider>,
+      </ThemeContext.Provider>
     );
 
     const cardListEl = screen.getByTestId("skeleton-card-list");
@@ -73,7 +73,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     render(
       <ThemeContext.Provider value={mockThemeTokens}>
         <SkeletonTree count={6} />
-      </ThemeContext.Provider>,
+      </ThemeContext.Provider>
     );
 
     const treeEl = screen.getByTestId("skeleton-tree");
@@ -99,7 +99,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     render(
       <ThemeContext.Provider value={mockThemeTokens}>
         <SkeletonDetail />
-      </ThemeContext.Provider>,
+      </ThemeContext.Provider>
     );
 
     const detailEl = screen.getByTestId("skeleton-detail");
@@ -115,10 +115,10 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
     expect(srText).toHaveTextContent("Loading detail pane...");
 
     expect(screen.getByTestId("skeleton-detail-header")).toHaveClass(
-      "skeleton-shimmer",
+      "skeleton-shimmer"
     );
     expect(screen.getByTestId("skeleton-detail-footer")).toHaveClass(
-      "skeleton-shimmer",
+      "skeleton-shimmer"
     );
   });
 
@@ -138,7 +138,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={mockThemeTokens}>
           <CardList cards={[]} />
         </ThemeContext.Provider>
-      </AppContext.Provider>,
+      </AppContext.Provider>
     );
 
     const skeletonEl = screen.getByTestId("skeleton-card-list");
@@ -157,7 +157,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={{ ...mockThemeTokens, scr: "Inventory" }}>
           <Inventory />
         </ThemeContext.Provider>
-      </AppContext.Provider>,
+      </AppContext.Provider>
     );
 
     const treeSkeleton = screen.getByTestId("skeleton-tree");
@@ -182,7 +182,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={{ ...mockThemeTokens, scr: "Search" }}>
           <Search />
         </ThemeContext.Provider>
-      </AppContext.Provider>,
+      </AppContext.Provider>
     );
 
     const skeletonEl = screen.getByTestId("skeleton-card-list");
@@ -207,7 +207,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={splitThemeTokens}>
           <SplitDetail />
         </ThemeContext.Provider>
-      </AppContext.Provider>,
+      </AppContext.Provider>
     );
 
     const skeletonDetail = screen.getByTestId("skeleton-detail");
@@ -237,7 +237,7 @@ describe("Modular Contextual Skeletons & Reserved Layout Geometry", () => {
         <ThemeContext.Provider value={emptyThemeTokens}>
           <StateBlock />
         </ThemeContext.Provider>
-      </AppContext.Provider>,
+      </AppContext.Provider>
     );
 
     const stateBlock = screen.getByTestId("state-block");
@@ -254,7 +254,7 @@ describe("WCAG 2.2 SC 4.1.3 Status Messages & ARIA22 Semantic Enhancement", () =
           label="Loading friends list..."
           ariaLive="assertive"
         />
-      </ThemeContext.Provider>,
+      </ThemeContext.Provider>
     );
 
     const cardListEl = screen.getByRole("status", {
@@ -276,7 +276,7 @@ describe("WCAG 2.2 SC 4.1.3 Status Messages & ARIA22 Semantic Enhancement", () =
           label="Loading inventory hierarchy..."
           aria-live="polite"
         />
-      </ThemeContext.Provider>,
+      </ThemeContext.Provider>
     );
 
     const treeEl = screen.getByRole("status", {
@@ -286,7 +286,7 @@ describe("WCAG 2.2 SC 4.1.3 Status Messages & ARIA22 Semantic Enhancement", () =
     expect(treeEl).toHaveAttribute("aria-busy", "true");
     expect(treeEl).toHaveAttribute(
       "aria-label",
-      "Loading inventory hierarchy...",
+      "Loading inventory hierarchy..."
     );
 
     const srText = treeEl.querySelector("span.sr-only");
@@ -301,7 +301,7 @@ describe("WCAG 2.2 SC 4.1.3 Status Messages & ARIA22 Semantic Enhancement", () =
           label="Loading inspector pane..."
           ariaLive="assertive"
         />
-      </ThemeContext.Provider>,
+      </ThemeContext.Provider>
     );
 
     const detailEl = screen.getByRole("status", {
@@ -320,7 +320,7 @@ describe("WCAG 2.2 SC 4.1.3 Status Messages & ARIA22 Semantic Enhancement", () =
     render(
       <ThemeContext.Provider value={mockThemeTokens}>
         <SkeletonCardList />
-      </ThemeContext.Provider>,
+      </ThemeContext.Provider>
     );
 
     const srText = screen
@@ -346,7 +346,7 @@ describe("WCAG 2.2 SC 4.1.3 Status Messages & ARIA22 Semantic Enhancement", () =
         <ThemeContext.Provider value={{ ...mockThemeTokens, scr: "Inventory" }}>
           <Inventory />
         </ThemeContext.Provider>
-      </AppContext.Provider>,
+      </AppContext.Provider>
     );
 
     const inventoryStatus = screen.getByRole("status", {

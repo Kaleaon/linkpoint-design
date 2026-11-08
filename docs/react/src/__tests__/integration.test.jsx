@@ -37,7 +37,7 @@ describe("Event Bus Integration Tests across React Runtime", () => {
         <ThemeProvider>
           <TestHarness />
         </ThemeProvider>
-      </AppProvider>,
+      </AppProvider>
     );
 
     // Open Permissions dialog
@@ -63,7 +63,7 @@ describe("Event Bus Integration Tests across React Runtime", () => {
         <ThemeProvider>
           <TestHarness />
         </ThemeProvider>
-      </AppProvider>,
+      </AppProvider>
     );
 
     fireEvent.click(getByTestId("open-permissions"));
@@ -81,7 +81,7 @@ describe("Event Bus Integration Tests across React Runtime", () => {
         <ThemeProvider>
           <TestHarness />
         </ThemeProvider>
-      </AppProvider>,
+      </AppProvider>
     );
 
     const minBtns = getAllByLabelText("Minimize");

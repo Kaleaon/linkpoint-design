@@ -104,7 +104,7 @@ export default function Search() {
       : "> no friends yet";
   } else if (tab === "NEARBY") {
     const list = RADAR_AVATARS.filter(
-      (r) => !q || r.name.toLowerCase().includes(q),
+      (r) => !q || r.name.toLowerCase().includes(q)
     )
       .slice()
       .sort((a, b) => a.distance - b.distance);
@@ -404,7 +404,7 @@ export default function Search() {
           state.asyncQueryState?.search?.status === "error" ? (
           <div
             style={{
-              border: "1px solid #FF6C6C",
+              border: "1px solid " + (V.err || "#FF6C6C"),
               borderRadius: V.rs,
               background: V.surf2,
               padding: "20px 16px",
@@ -420,11 +420,11 @@ export default function Search() {
                 width: "44px",
                 height: "44px",
                 borderRadius: V.rs,
-                border: "1px solid #FF6C6C",
+                border: "1px solid " + (V.err || "#FF6C6C"),
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#FF6C6C",
+                color: V.err || "#FF6C6C",
               }}
             >
               <Icon name="wifi-off" size={22} />
@@ -449,7 +449,7 @@ export default function Search() {
               onClick={() => {
                 actions.runAsyncQuery(
                   "search",
-                  () => new Promise((resolve) => setTimeout(resolve, 300)),
+                  () => new Promise((resolve) => setTimeout(resolve, 300))
                 );
               }}
               onKeyDown={(e) => {
@@ -457,7 +457,7 @@ export default function Search() {
                   e.preventDefault();
                   actions.runAsyncQuery(
                     "search",
-                    () => new Promise((resolve) => setTimeout(resolve, 300)),
+                    () => new Promise((resolve) => setTimeout(resolve, 300))
                   );
                 }
               }}

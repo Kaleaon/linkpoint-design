@@ -104,8 +104,8 @@ export default function OfflineGrid() {
               padding: "4px 8px",
               borderRadius: V.rs,
               font: "700 10.5px/1 " + t.font,
-              background: isRunning ? V.priC : "rgba(255,108,108,0.15)",
-              color: isRunning ? V.pri : "#FF6C6C",
+              background: isRunning ? V.priC : V.surf2,
+              color: isRunning ? V.pri : V.err,
             }}
           >
             {isRunning ? "ONLINE · 127.0.0.1:9000" : "OFFLINE · Server stopped"}
@@ -143,7 +143,7 @@ export default function OfflineGrid() {
           style={{
             border:
               "1px solid " +
-              (state.recoveryState === "failed" ? "#FF6C6C" : V.pri),
+              (state.recoveryState === "failed" ? V.err || "#FF6C6C" : V.pri),
             borderRadius: V.rs,
             background: V.surf2,
             padding: "14px",
@@ -183,8 +183,8 @@ export default function OfflineGrid() {
                   state.recoveryState === "recovered"
                     ? V.pri
                     : state.recoveryState === "failed"
-                      ? "#FF6C6C"
-                      : "#FFC107",
+                      ? V.err || "#FF6C6C"
+                      : V.warn || "#FFC107",
               }}
             >
               {state.recoveryState === "reconnecting"
@@ -202,7 +202,7 @@ export default function OfflineGrid() {
           <div style={{ font: "400 11px/1.4 " + t.font, color: V.ink2 }}>
             {state.recoveryState === "reconnecting"
               ? `Background backoff retry active. Pinging 127.0.0.1:9000 (Next retry in ${Math.round(
-                  (state.nextRetryDelay || 1000) / 1000,
+                  (state.nextRetryDelay || 1000) / 1000
                 )}s)...`
               : state.recoveryState === "detecting"
                 ? "Local server dropped. Initiating background exponential backoff recovery pipeline..."
@@ -231,7 +231,7 @@ export default function OfflineGrid() {
                         : "20%",
                 height: "100%",
                 background:
-                  state.recoveryState === "failed" ? "#FF6C6C" : V.pri,
+                  state.recoveryState === "failed" ? V.err || "#FF6C6C" : V.pri,
                 transition: "width 0.3s ease",
               }}
             />
@@ -635,7 +635,7 @@ export default function OfflineGrid() {
                       ast.name +
                       " (" +
                       ast.uuid +
-                      ") to SL Grid...",
+                      ") to SL Grid..."
                   )
                 }
                 onKeyDown={(e) => {
@@ -646,7 +646,7 @@ export default function OfflineGrid() {
                         ast.name +
                         " (" +
                         ast.uuid +
-                        ") to SL Grid...",
+                        ") to SL Grid..."
                     );
                   }
                 }}
@@ -747,7 +747,7 @@ export default function OfflineGrid() {
             borderRadius: V.rs,
             border: "1px solid " + V.outv,
             background: V.surf2,
-            color: "#FF6C6C",
+            color: V.err,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

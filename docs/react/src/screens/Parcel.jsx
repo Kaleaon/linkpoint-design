@@ -15,10 +15,10 @@ export default function Parcel() {
 
   const [streamPlaying, setStreamPlaying] = useState(false);
   const [streamUrl, setStreamUrl] = useState(
-    "http://stream.sl-radio.net:8000/live",
+    "http://stream.sl-radio.net:8000/live"
   );
   const [mediaUrl, setMediaUrl] = useState(
-    "https://bay-city-builds.example/board",
+    "https://bay-city-builds.example/board"
   );
 
   const primUsed = 1240;
@@ -560,7 +560,7 @@ export default function Parcel() {
                   actions.notify(
                     streamPlaying
                       ? "Stream playback stopped"
-                      : "Connecting to parcel audio stream...",
+                      : "Connecting to parcel audio stream..."
                   );
                 }}
                 style={actBtn(!streamPlaying)}

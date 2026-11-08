@@ -27,7 +27,7 @@ describe("useAppState hook - Balance Polling & Sync", () => {
     });
 
     expect(result.current.state.lastSyncedAt.getTime()).toBeGreaterThanOrEqual(
-      initialSyncedAt.getTime(),
+      initialSyncedAt.getTime()
     );
   });
 
@@ -50,7 +50,7 @@ describe("useAppState hook - Balance Polling & Sync", () => {
     });
 
     expect(result.current.state.lastSyncedAt.getTime()).toBeGreaterThan(
-      initialTime.getTime(),
+      initialTime.getTime()
     );
     expect(result.current.state.toast).toContain("Balance synced: L$ 4,250");
   });
@@ -101,7 +101,7 @@ describe("useAppState hook - Centralized Recovery State Machine & Auto-Reconnect
     expect(result.current.state.recoveryState).toBe("recovered");
     expect(result.current.state.reconnectAttempts).toBe(0);
     expect(result.current.state.toast).toContain(
-      "Reconnected to OpenSim local grid",
+      "Reconnected to OpenSim local grid"
     );
   });
 
@@ -130,8 +130,8 @@ describe("useAppState hook - Centralized Recovery State Machine & Auto-Reconnect
     expect(result.current.state.reconnectAttempts).toBe(5);
     expect(
       result.current.state.consoleLogs.some((l) =>
-        l.msg.includes("Max reconnection attempts"),
-      ),
+        l.msg.includes("Max reconnection attempts")
+      )
     ).toBe(true);
   });
 
@@ -177,7 +177,7 @@ describe("useAppState hook - Centralized Recovery State Machine & Auto-Reconnect
       queryPromise = result.current.actions.runAsyncQuery(
         "search",
         () => new Promise((resolve) => setTimeout(resolve, 5000)),
-        2000,
+        2000
       );
     });
 

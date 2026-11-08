@@ -21,6 +21,7 @@ import {
   computeTheme,
   computeThemeTokens,
   computeThemeRuntime,
+  createTypographyStyle,
 } from "../theme/computeTheme.js";
 import {
   ThemeTokensContext,
@@ -29,6 +30,7 @@ import {
   useThemeTokens,
   useThemeRuntime,
   useTheme,
+  createTypographyStyle as contextCreateTypographyStyle,
 } from "../context/ThemeContext.jsx";
 import { AppProvider } from "../context/AppContext.jsx";
 
@@ -152,16 +154,12 @@ describe("Split Theme Context Architecture", () => {
         null,
         React.createElement(TokenComponent),
         React.createElement(RuntimeComponent),
-        React.createElement(CompositeComponent),
+        React.createElement(CompositeComponent)
       );
     }
 
     const html1 = ReactDOMServer.renderToString(
-      React.createElement(
-        AppProvider,
-        null,
-        React.createElement(TestContainer),
-      ),
+      React.createElement(AppProvider, null, React.createElement(TestContainer))
     );
     expect(html1).toContain("Chat");
     expect(tokenComponentRenders).toBe(1);
@@ -304,5 +302,42 @@ describe("Split Theme Context Architecture", () => {
     const metroRuntime = computeThemeRuntime(metroState, mockCf, metroTokens);
     expect(metroRuntime.isFloat).toBe(true);
     expect(metroRuntime.isSweepDesk).toBe(false);
+  });
+
+  it("provides typography tokens and createTypographyStyle helper bound to CSS variables", () => {
+    const mockState = {
+      layout: "terminal",
+      palette: "ink",
+      customTheme: null,
+      dense: false,
+      device: "and",
+      screen: "Chat",
+      cond: "normal",
+    };
+    const tokens = computeThemeTokens(mockState);
+    expect(tokens.typography).toBeDefined();
+    expect(tokens.typography.fontFamily).toContain("--ktheme-font-family");
+    expect(tokens.typography.fontSizeSmall).toContain(
+      "--ktheme-font-size-small"
+    );
+    expect(tokens.typography.fontWeightBold).toContain(
+      "--ktheme-font-weight-bold"
+    );
+
+    expect(typeof createTypographyStyle).toBe("function");
+    expect(contextCreateTypographyStyle).toBe(createTypographyStyle);
+
+    const style = createTypographyStyle({
+      family: "var(--ktheme-font-family, monospace)",
+      size: "var(--ktheme-font-size-small, 11px)",
+      weight: "var(--ktheme-font-weight-medium, 600)",
+      lineHeight: "1",
+    });
+
+    expect(style.fontFamily).toContain("--ktheme-font-family");
+    expect(style.fontSize).toContain("--ktheme-font-size-small");
+    expect(style.fontWeight).toContain("--ktheme-font-weight-medium");
+    expect(style.lineHeight).toBe("1");
+    expect(style.font).toBeDefined();
   });
 });

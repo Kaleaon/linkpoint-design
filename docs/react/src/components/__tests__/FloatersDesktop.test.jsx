@@ -79,7 +79,7 @@ function TestWrapper({ children, onStateController }) {
     () => ({
       sceneDown: vi.fn((e) => setState((s) => ({ ...s, cDrag: true }))),
       sceneMove: vi.fn((e) =>
-        setState((s) => ({ ...s, cHdg: s.cHdg + 10, cPitch: s.cPitch + 5 })),
+        setState((s) => ({ ...s, cHdg: s.cHdg + 10, cPitch: s.cPitch + 5 }))
       ),
       sceneUp: vi.fn(() => setState((s) => ({ ...s, cDrag: false }))),
       flR: (id) =>
@@ -101,7 +101,7 @@ function TestWrapper({ children, onStateController }) {
         { key: "agni", label: "Agni (Main)", host: "login.agni.lindenlab.com" },
       ],
     }),
-    [],
+    []
   );
 
   React.useEffect(() => {
@@ -138,7 +138,7 @@ describe("FloatersDesktop memoization", () => {
         }}
       >
         <FloatersDesktop />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     const initialCalls = buildCardsSpy.mock.calls.length;
@@ -209,7 +209,7 @@ describe("FloatersDesktop memoization", () => {
     render(
       <TestWrapper>
         <FloatersDesktop />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     // Verify taskbar and floater preview buttons/headers exist

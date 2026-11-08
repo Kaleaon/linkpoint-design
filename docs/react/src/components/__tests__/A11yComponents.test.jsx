@@ -87,7 +87,7 @@ function renderComponent(
   ui,
   stateOverrides = {},
   themeOverrides = {},
-  actionOverrides = {},
+  actionOverrides = {}
 ) {
   const state = { ...baseState, ...stateOverrides };
   const theme = { ...baseTheme, ...themeOverrides };
@@ -122,7 +122,7 @@ function renderComponent(
   const utils = render(
     <AppContext.Provider value={{ state, actions }}>
       <ThemeContext.Provider value={theme}>{ui}</ThemeContext.Provider>
-    </AppContext.Provider>,
+    </AppContext.Provider>
   );
 
   return { ...utils, actions };
@@ -171,7 +171,7 @@ describe("Keyboard Accessibility in Refactored Controls", () => {
     const { actions } = renderComponent(
       <ConsoleFrame />,
       {},
-      { isConsole: true },
+      { isConsole: true }
     );
     const chatRailBtn = screen.getByRole("button", { name: "CHAT" });
     expect(chatRailBtn.getAttribute("tabindex")).toBe("0");
@@ -184,7 +184,7 @@ describe("Keyboard Accessibility in Refactored Controls", () => {
     const { actions } = renderComponent(
       <MenuBar />,
       { menu: "Edit" },
-      { isFloat: true },
+      { isFloat: true }
     );
     const editMenuBtn = screen.getByRole("button", { name: "Edit menu" });
     expect(editMenuBtn.getAttribute("tabindex")).toBe("0");

@@ -11,11 +11,11 @@ describe("Header & HEAD Balance Formatting", () => {
       "Terminal",
       "Ink",
       {},
-      { lindenBalance: 4250, exchangeRate: 248.5 },
+      { lindenBalance: 4250, exchangeRate: 248.5 }
     );
     expect(headData.Transactions[0]).toBe("L$ TRANSACTIONS");
     expect(headData.Transactions[1]).toContain(
-      "balance L$ 4,250 (~$17.10 USD)",
+      "balance L$ 4,250 (~$17.10 USD)"
     );
   });
 
@@ -49,14 +49,14 @@ describe("Header & HEAD Balance Formatting", () => {
         <ThemeContext.Provider value={mockThemeContext}>
           <Header />
         </ThemeContext.Provider>
-      </AppContext.Provider>,
+      </AppContext.Provider>
     );
 
     expect(screen.getByText("L$ TRANSACTIONS")).toBeTruthy();
     expect(
       screen.getByText(
-        "> balance L$ 4,250 (~$17.10 USD) · 14 in the last 30 days",
-      ),
+        "> balance L$ 4,250 (~$17.10 USD) · 14 in the last 30 days"
+      )
     ).toBeTruthy();
   });
 });

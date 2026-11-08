@@ -22,7 +22,7 @@ export default function Groups() {
       prev.map((g) => ({
         ...g,
         activeTag: g.id === groupId,
-      })),
+      }))
     );
     const g = groups.find((grp) => grp.id === groupId);
     actions.notify(`Active group title set to: [${g?.title} · ${g?.name}]`);
@@ -31,8 +31,8 @@ export default function Groups() {
   const toggleNotices = (groupId) => {
     setGroups((prev) =>
       prev.map((g) =>
-        g.id === groupId ? { ...g, noticesEnabled: !g.noticesEnabled } : g,
-      ),
+        g.id === groupId ? { ...g, noticesEnabled: !g.noticesEnabled } : g
+      )
     );
   };
 

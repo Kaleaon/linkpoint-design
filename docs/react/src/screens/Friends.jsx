@@ -82,7 +82,7 @@ export default function Friends() {
           return { ...f, rights: updated };
         }
         return f;
-      }),
+      })
     );
   };
 
@@ -117,8 +117,7 @@ export default function Friends() {
   const displayFriends = friends
     .filter((f) => curSub === "ALL" || f.online)
     .filter(
-      (f) =>
-        !query.trim() || f.name.toLowerCase().includes(query.toLowerCase()),
+      (f) => !query.trim() || f.name.toLowerCase().includes(query.toLowerCase())
     );
 
   return (

@@ -43,7 +43,7 @@ export function validateThemeJson(jsonInput, options = {}) {
         valid: false,
         errors: [
           `File size (${Math.round(
-            jsonInput.length / 1024,
+            jsonInput.length / 1024
           )}KB) exceeds the maximum limit of ${Math.round(maxBytes / 1024)}KB.`,
         ],
         theme: null,
@@ -87,7 +87,7 @@ export function validateThemeJson(jsonInput, options = {}) {
   // Version compatibility check
   if (parsed.version !== undefined && parsed.version !== 1) {
     errors.push(
-      `Unsupported theme version: ${parsed.version}. Only version 1 is supported.`,
+      `Unsupported theme version: ${parsed.version}. Only version 1 is supported.`
     );
   }
 
@@ -106,11 +106,11 @@ export function validateThemeJson(jsonInput, options = {}) {
         errors.push(`Missing required color token "${key}" (${label}).`);
       } else if (typeof val !== "string") {
         errors.push(
-          `Color token "${key}" must be a string, got ${typeof val}.`,
+          `Color token "${key}" must be a string, got ${typeof val}.`
         );
       } else if (!HEX_REGEX.test(val.trim())) {
         errors.push(
-          `Invalid hex color format for token "${key}": "${val}". Expected #RGB or #RRGGBB.`,
+          `Invalid hex color format for token "${key}": "${val}". Expected #RGB or #RRGGBB.`
         );
       }
     }

@@ -92,7 +92,7 @@ describe("Semantic HTML5 Landmark Region Wrappers", () => {
         <ThemeTokensContext.Provider value={floatTokens}>
           <MenuBar />
         </ThemeTokensContext.Provider>
-      </AppContext.Provider>,
+      </AppContext.Provider>
     );
 
     const banner = screen.getByRole("banner", { name: "Desktop Menu Bar" });
@@ -110,7 +110,7 @@ describe("Semantic HTML5 Landmark Region Wrappers", () => {
             <ScreenBody />
           </ThemeTokensContext.Provider>
         </ThemeRuntimeContext.Provider>
-      </AppContext.Provider>,
+      </AppContext.Provider>
     );
 
     const main = screen.getByRole("main", { name: "Main Content" });
@@ -129,7 +129,7 @@ describe("Semantic HTML5 Landmark Region Wrappers", () => {
         <ThemeTokensContext.Provider value={railTokens}>
           <RailNav />
         </ThemeTokensContext.Provider>
-      </AppContext.Provider>,
+      </AppContext.Provider>
     );
 
     const nav = screen.getByRole("navigation", { name: "Rail Navigation" });
@@ -146,7 +146,7 @@ describe("Semantic HTML5 Landmark Region Wrappers", () => {
         <ThemeTokensContext.Provider value={tabsTokens}>
           <BottomTabs />
         </ThemeTokensContext.Provider>
-      </AppContext.Provider>,
+      </AppContext.Provider>
     );
 
     const nav = screen.getByRole("navigation", {
@@ -165,7 +165,7 @@ describe("Semantic HTML5 Landmark Region Wrappers", () => {
         <ThemeTokensContext.Provider value={tileTokens}>
           <TileNav />
         </ThemeTokensContext.Provider>
-      </AppContext.Provider>,
+      </AppContext.Provider>
     );
 
     const nav = screen.getByRole("navigation", { name: "Tile Navigation" });

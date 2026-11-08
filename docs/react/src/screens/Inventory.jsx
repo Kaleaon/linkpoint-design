@@ -85,7 +85,7 @@ export default function Inventory() {
         ? all
         : all.filter(
             (n) =>
-              n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false),
+              n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false)
           )
       : all
           .filter((n) => n.tags.includes(curSub.toLowerCase()))
@@ -265,7 +265,7 @@ export default function Inventory() {
           <div
             style={{
               margin: "16px",
-              border: "1px solid #FF6C6C",
+              border: "1px solid " + (V.err || "#FF6C6C"),
               borderRadius: V.rs,
               background: V.surf2,
               padding: "20px 16px",
@@ -281,11 +281,11 @@ export default function Inventory() {
                 width: "44px",
                 height: "44px",
                 borderRadius: V.rs,
-                border: "1px solid #FF6C6C",
+                border: "1px solid " + (V.err || "#FF6C6C"),
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "#FF6C6C",
+                color: V.err || "#FF6C6C",
               }}
             >
               <Icon name="package-x" size={22} />
@@ -310,7 +310,7 @@ export default function Inventory() {
               onClick={() => {
                 actions.runAsyncQuery(
                   "inventory",
-                  () => new Promise((resolve) => setTimeout(resolve, 300)),
+                  () => new Promise((resolve) => setTimeout(resolve, 300))
                 );
               }}
               onKeyDown={(e) => {
@@ -318,7 +318,7 @@ export default function Inventory() {
                   e.preventDefault();
                   actions.runAsyncQuery(
                     "inventory",
-                    () => new Promise((resolve) => setTimeout(resolve, 300)),
+                    () => new Promise((resolve) => setTimeout(resolve, 300))
                   );
                 }
               }}

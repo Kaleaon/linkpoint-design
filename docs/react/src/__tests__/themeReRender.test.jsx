@@ -35,7 +35,7 @@ describe("Theme Token Update Re-render Optimization", () => {
     const { getByTestId } = render(
       <KthemeProvider themeId="navy-gold">
         <TrackedComponent />
-      </KthemeProvider>,
+      </KthemeProvider>
     );
 
     // Initial render count should be 1
@@ -52,10 +52,10 @@ describe("Theme Token Update Re-render Optimization", () => {
 
     // Check that DOM CSS variable properties were updated
     expect(
-      document.documentElement.style.getPropertyValue("--ktheme-pri"),
+      document.documentElement.style.getPropertyValue("--ktheme-pri")
     ).toBe("#FF0055");
     expect(
-      document.documentElement.style.getPropertyValue("--ktheme-surf"),
+      document.documentElement.style.getPropertyValue("--ktheme-surf")
     ).toBe("#00FF22");
 
     // Component render count should still be 1 (zero React re-renders triggered!)
@@ -77,7 +77,7 @@ describe("Theme Token Update Re-render Optimization", () => {
     const { container } = render(
       <KthemeProvider themeId="navy-gold">
         <MonitoredTree />
-      </KthemeProvider>,
+      </KthemeProvider>
     );
 
     const initialRenders = renderSpy.mock.calls.length;
@@ -91,7 +91,7 @@ describe("Theme Token Update Re-render Optimization", () => {
 
       // CSS variable on document element should be updated
       expect(
-        document.documentElement.style.getPropertyValue("--ktheme-pri"),
+        document.documentElement.style.getPropertyValue("--ktheme-pri")
       ).toBe("#123456");
 
       // Active input should not trigger whole tree re-render before commit

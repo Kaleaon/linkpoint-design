@@ -3,41 +3,14 @@ import { AppContext } from "../context/AppContext.jsx";
 import { EDITABLE_THEME_TOKENS } from "../theme/customTheme.js";
 import { validateThemeJson } from "../theme/themeValidator.js";
 
-const DEFAULT_THEME = {
-  name: "Custom Theme",
-  colors: {
-    pri: "#6CFF9A",
-    sec: "#8AD0B0",
-    sec2: "#A7C8BC",
-    bg: "#0A1112",
-    surf: "#101A1C",
-    surf2: "#1B2A2D",
-    ink: "#E8E5DF",
-    ink2: "#A7C8BC",
-    ok: "#6CFF9A",
-    warn: "#F2A65A",
-    err: "#CF6679",
-  },
-};
-
-const NOOP_ACTIONS = {
-  renameTheme: () => {},
-  setThemeColor: () => {},
-  saveTheme: () => {},
-  shareTheme: () => {},
-  downloadTheme: () => {},
-  importTheme: () => {},
-  resetTheme: () => {},
-};
-
 export default function ThemeStudio() {
   const app = useContext(AppContext);
-  const state = app?.state || { customTheme: DEFAULT_THEME };
-  const actions = app?.actions || NOOP_ACTIONS;
+  const state = app?.state || { customTheme: null };
+  const actions = app?.actions || {};
   const [open, setOpen] = useState(false);
   const [importError, setImportError] = useState(null);
   const fileRef = useRef(null);
-  const theme = state?.customTheme || DEFAULT_THEME;
+  const theme = state.customTheme;
 
   const importFile = async (event) => {
     const file = event.target.files?.[0];
@@ -56,7 +29,7 @@ export default function ThemeStudio() {
       }
     } catch (err) {
       setImportError(
-        `File import error: ${err.message || "Unable to read file."}`,
+        `File import error: ${err.message || "Unable to read file."}`
       );
     } finally {
       if (event.target) event.target.value = "";
@@ -83,7 +56,7 @@ export default function ThemeStudio() {
         </span>
         <span aria-hidden="true">{open ? "−" : "+"}</span>
       </button>
-      {open && (
+      {open && theme && (
         <div className="theme-studio-body">
           {importError && (
             <div className="theme-studio-alert" role="alert" aria-live="polite">

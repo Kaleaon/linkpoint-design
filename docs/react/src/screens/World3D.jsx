@@ -1073,7 +1073,7 @@ export default function World3D() {
                   onMouseDown={() =>
                     p.k === "cam"
                       ? actions.setCamPreset(
-                          state.cCam === "ORBIT" ? "MOUSE" : "ORBIT",
+                          state.cCam === "ORBIT" ? "MOUSE" : "ORBIT"
                         )
                       : actions.cHold(p.k)
                   }
@@ -1081,7 +1081,7 @@ export default function World3D() {
                   onTouchStart={() =>
                     p.k === "cam"
                       ? actions.setCamPreset(
-                          state.cCam === "ORBIT" ? "MOUSE" : "ORBIT",
+                          state.cCam === "ORBIT" ? "MOUSE" : "ORBIT"
                         )
                       : actions.cHold(p.k)
                   }
@@ -1185,7 +1185,9 @@ export default function World3D() {
                 width: "44px",
                 height: "36px",
                 background: state.cRun ? V.ok || "#22c55e" : V.surf,
-                color: state.cRun ? "#fff" : V.ink,
+                color: state.cRun
+                  ? V.onok || V.onpri || "var(--onok, #fff)"
+                  : V.ink,
                 border: "1px solid " + V.outv,
                 borderRadius: V.rs,
                 display: "flex",
@@ -1311,7 +1313,7 @@ export function VirtualJoystick() {
       try {
         e.currentTarget.setPointerCapture(e.pointerId);
       } catch (_) {
-        // ignore pointer capture errors
+        /* ignore pointer capture error */
       }
     }
     updatePosition(e.clientX, e.clientY);
@@ -1334,7 +1336,7 @@ export function VirtualJoystick() {
       try {
         e.currentTarget.releasePointerCapture(e.pointerId);
       } catch (_) {
-        // ignore pointer capture errors
+        /* ignore pointer release error */
       }
     }
     setPosition({ x: 0, y: 0 });
@@ -1460,7 +1462,7 @@ export function World3DActionBar() {
     const next = !voiceOn;
     setVoiceOn(next);
     actions.notify(
-      next ? "Spatial Voice active (Open Mic)" : "Spatial Voice muted",
+      next ? "Spatial Voice active (Open Mic)" : "Spatial Voice muted"
     );
   };
 

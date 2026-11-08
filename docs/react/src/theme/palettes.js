@@ -361,7 +361,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#223539",
       surfaceBright: "#2A3F44",
     },
-    "ink-terminal-modern, phosphor green on near-black",
+    "ink-terminal-modern, phosphor green on near-black"
   ),
   lcars: mkPal(
     "LCARS Amber",
@@ -393,7 +393,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#3D1F5C",
       surfaceBright: "#4A2B6B",
     },
-    "lcars, amber + violet + mauve on aubergine",
+    "lcars, amber + violet + mauve on aubergine"
   ),
   lcars_blue: mkPal(
     "LCARS Okuda Blue",
@@ -425,7 +425,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#32264C",
       surfaceBright: "#3D305C",
     },
-    "lcars, Okuda ice blue + pale purple + gold on dark aubergine",
+    "lcars, Okuda ice blue + pale purple + gold on dark aubergine"
   ),
   metro: mkPal(
     "Metro Cyan",
@@ -457,7 +457,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#2A486C",
       surfaceBright: "#3D4854",
     },
-    "windows-phone-metro, flat cyan on deep blue",
+    "windows-phone-metro, flat cyan on deep blue"
   ),
   metro_zune: mkPal(
     "Metro Zune Orange",
@@ -489,7 +489,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#3E3E3E",
       surfaceBright: "#484848",
     },
-    "windows-phone-metro, Zune orange & mango on dark slate",
+    "windows-phone-metro, Zune orange & mango on dark slate"
   ),
   metro_magenta: mkPal(
     "Metro Magenta",
@@ -521,7 +521,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#333333",
       surfaceBright: "#3E3E3E",
     },
-    "windows-phone-metro, Windows Phone magenta on pitch black",
+    "windows-phone-metro, Windows Phone magenta on pitch black"
   ),
   aero: mkPal(
     "Frutiger Aero",
@@ -554,7 +554,7 @@ export const PALETTES = {
       surfaceBright: "#F7FCFF",
     },
     "frutiger-aero, sky and nature, light-first",
-    true,
+    true
   ),
   navy: mkPal(
     "Navy Gold",
@@ -586,7 +586,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#333E5D",
       surfaceBright: "#3D4766",
     },
-    "navy-gold, metallic gold on navy",
+    "navy-gold, metallic gold on navy"
   ),
   paper: mkPal(
     "Paper & Ink",
@@ -619,7 +619,7 @@ export const PALETTES = {
       surfaceBright: "#FAF9F6",
     },
     "paper-ink, hueless, maximum legibility",
-    true,
+    true
   ),
   deco: mkPal(
     "Art Deco",
@@ -651,7 +651,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#2C2A2D",
       surfaceBright: "#353336",
     },
-    "art-deco, gold hairlines on ivory-black",
+    "art-deco, gold hairlines on ivory-black"
   ),
   noir: mkPal(
     "Neo-Noir Neon",
@@ -683,7 +683,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#23293B",
       surfaceBright: "#2B3246",
     },
-    "neo-noir-neon, violet and cyan glow",
+    "neo-noir-neon, violet and cyan glow"
   ),
   emerald: mkPal(
     "Emerald Silver",
@@ -715,7 +715,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#336E5D",
       surfaceBright: "#3E7867",
     },
-    "emerald-silver, silver on deep emerald",
+    "emerald-silver, silver on deep emerald"
   ),
   amber: mkPal(
     "Midnight Amber",
@@ -747,7 +747,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#2E3E53",
       surfaceBright: "#38495F",
     },
-    "midnight-amber, amber on midnight blue",
+    "midnight-amber, amber on midnight blue"
   ),
   crimson: mkPal(
     "Obsidian Crimson",
@@ -779,7 +779,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#383838",
       surfaceBright: "#424242",
     },
-    "obsidian-crimson, crimson on obsidian",
+    "obsidian-crimson, crimson on obsidian"
   ),
   nouveau: mkPal(
     "Art Nouveau",
@@ -812,7 +812,7 @@ export const PALETTES = {
       surfaceBright: "#FFF8EE",
     },
     "art-nouveau, organic curves, botanical accents, and decorative linework with a warm natural palette",
-    true,
+    true
   ),
   aurora: mkPal(
     "Aurora Glass Night",
@@ -844,7 +844,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#253557",
       surfaceBright: "#2E3F64",
     },
-    "aurora-glass-night, night-first glass aesthetic with aurora accents and disciplined blur",
+    "aurora-glass-night, night-first glass aesthetic with aurora accents and disciplined blur"
   ),
   burgundy: mkPal(
     "Burgundy Rose Gold",
@@ -876,7 +876,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#6B344A",
       surfaceBright: "#7B3F57",
     },
-    "burgundy-rose-gold, rich burgundy with elegant rose gold metallic accents",
+    "burgundy-rose-gold, rich burgundy with elegant rose gold metallic accents"
   ),
   calm: mkPal(
     "Calm Clinical",
@@ -909,7 +909,7 @@ export const PALETTES = {
       surfaceBright: "#FFFFFF",
     },
     "calm-clinical, low-stress healthcare/admin palette with clear status readability",
-    true,
+    true
   ),
   charcoal: mkPal(
     "Charcoal Champagne",
@@ -941,7 +941,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#484848",
       surfaceBright: "#525252",
     },
-    "charcoal-champagne, sophisticated charcoal gray with warm champagne accents",
+    "charcoal-champagne, sophisticated charcoal gray with warm champagne accents"
   ),
   deep: mkPal(
     "Deep Purple Platinum",
@@ -973,7 +973,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#48346B",
       surfaceBright: "#543F7A",
     },
-    "deep-purple-platinum, deep purple background with luxurious platinum metallic accents",
+    "deep-purple-platinum, deep purple background with luxurious platinum metallic accents"
   ),
   forest: mkPal(
     "Forest Copper",
@@ -1005,7 +1005,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#345C34",
       surfaceBright: "#3E6B3E",
     },
-    "forest-copper, deep forest green with warm copper metallic accents",
+    "forest-copper, deep forest green with warm copper metallic accents"
   ),
   rose: mkPal(
     "Rose Gold",
@@ -1037,7 +1037,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#6B4C58",
       surfaceBright: "#795965",
     },
-    "rose-gold, warm and elegant rose gold with burgundy undertones",
+    "rose-gold, warm and elegant rose gold with burgundy undertones"
   ),
   royalb: mkPal(
     "Royal Bronze",
@@ -1069,7 +1069,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#4A286B",
       surfaceBright: "#58327A",
     },
-    "royal-bronze, regal deep purple with luxurious bronze metallic accents",
+    "royal-bronze, regal deep purple with luxurious bronze metallic accents"
   ),
   royals: mkPal(
     "Royal Silver",
@@ -1101,7 +1101,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#493B6B",
       surfaceBright: "#56467A",
     },
-    "royal-silver, royal purple background with elegant silver metallic accents",
+    "royal-silver, royal purple background with elegant silver metallic accents"
   ),
   slatec: mkPal(
     "Slate Cyan",
@@ -1133,7 +1133,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#475462",
       surfaceBright: "#526070",
     },
-    "slate-cyan, cool modern slate gray with vibrant cyan metallic accents",
+    "slate-cyan, cool modern slate gray with vibrant cyan metallic accents"
   ),
   slateg: mkPal(
     "Slate Gunmetal",
@@ -1165,7 +1165,7 @@ export const PALETTES = {
       surfaceContainerHighest: "#475462",
       surfaceBright: "#526070",
     },
-    "slate-gunmetal, industrial slate gray with gunmetal metallic accents",
+    "slate-gunmetal, industrial slate gray with gunmetal metallic accents"
   ),
   solarpunk: mkPal(
     "Solarpunk Civic",
@@ -1198,7 +1198,7 @@ export const PALETTES = {
       surfaceBright: "#FBFFFC",
     },
     "solarpunk-civic, optimistic civic palette with daylight greens and trust-building clarity",
-    true,
+    true
   ),
 };
 

@@ -59,7 +59,7 @@ describe("World3D - Interactive Touch Joystick Overlay", () => {
     render(
       <TestWrapper>
         <World3D />
-      </TestWrapper>,
+      </TestWrapper>
     );
 
     const joystick = screen.getByTestId("virtual-joystick");

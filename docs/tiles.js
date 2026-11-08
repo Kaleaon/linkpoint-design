@@ -4,14 +4,7 @@ window.LAYOUTS["tiles"] = {
   nav: "TILES",
   font: '"Open Sans","Segoe UI",sans-serif',
   dfont: '"Open Sans","Segoe UI",sans-serif',
-  s: {
-    rs: "0px",
-    rl: "0px",
-    rp: "0px",
-    navr: "0px",
-    pad: "14px",
-    tls: "0em",
-  },
+  s: { rs: "0px", rl: "0px", rp: "0px", navr: "0px", pad: "14px", tls: "0em" },
   look: {
     card: "flat",
     head: "pivot",

@@ -19,7 +19,7 @@ export default function SystemDialog() {
   useFocusTrap(
     dialogRef,
     () => actions.dispatchIntent("DIALOG_CLOSE", { dialogKey: state.dialog }),
-    !!dlg,
+    !!dlg
   );
   if (!dlg) return null;
 

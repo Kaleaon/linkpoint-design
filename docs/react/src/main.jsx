@@ -9,5 +9,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <KthemeProvider themeId="navy-gold">
       <App />
     </KthemeProvider>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

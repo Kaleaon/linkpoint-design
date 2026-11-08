@@ -21,7 +21,7 @@ function createMockDOM() {
             ...eventData,
             preventDefault: () => {},
             stopPropagation: () => {},
-          }),
+          })
         );
       }
     },

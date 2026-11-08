@@ -40,7 +40,11 @@ export default function CrystalLoader({ size = 88 }) {
             <stop offset="100%" stopColor="var(--sec,#365047)" />
           </linearGradient>
           <radialGradient id="lpld-core" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity=".95" />
+            <stop
+              offset="0%"
+              stopColor="var(--ink, #ffffff)"
+              stopOpacity=".95"
+            />
             <stop
               offset="55%"
               stopColor="var(--pri,#6CFF9A)"

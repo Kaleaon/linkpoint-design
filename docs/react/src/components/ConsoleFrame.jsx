@@ -721,7 +721,7 @@ function ConsoleScene() {
           " · HDG " +
           String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(
             3,
-            "0",
+            "0"
           ) +
           "° " +
           (state.cPitch > 2 ? "DN" : state.cPitch < -2 ? "UP" : "LVL")
@@ -735,7 +735,7 @@ function ConsoleScene() {
           "> · Facing: " +
           String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(
             3,
-            "0",
+            "0"
           ) +
           "° (" +
           (state.cPitch > 2 ? "Down" : state.cPitch < -2 ? "Up" : "Level") +

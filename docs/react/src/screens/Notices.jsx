@@ -371,7 +371,7 @@ export default function Notices() {
                       as="button"
                       onClick={() => {
                         actions.notify(
-                          `Teleporting via notice to ${n.attachment.coords}...`,
+                          `Teleporting via notice to ${n.attachment.coords}...`
                         );
                         actions.setScreen("Map");
                       }}
@@ -419,7 +419,7 @@ export default function Notices() {
                       as="button"
                       onClick={() => {
                         actions.notify(
-                          `Accepted “${n.attachment.name}” into Inventory`,
+                          `Accepted “${n.attachment.name}” into Inventory`
                         );
                         dismissNotice(n.id);
                       }}

@@ -34,7 +34,7 @@ describe("Heading Component", () => {
     render(
       <Heading level={2} style={{ color: "red", fontSize: "20px" }}>
         Styled Heading
-      </Heading>,
+      </Heading>
     );
     const heading = screen.getByRole("heading", { level: 2 });
     expect(heading.style.margin).toBe("0px");
@@ -52,7 +52,7 @@ describe("Heading Component", () => {
         aria-label="Accessible Title"
       >
         Accessible Title
-      </Heading>,
+      </Heading>
     );
     const heading = screen.getByTestId("custom-heading");
     expect(heading.id).toBe("main-heading");

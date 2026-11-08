@@ -3,7 +3,10 @@ import { useApp } from "./AppContext.jsx";
 import {
   computeThemeTokens,
   computeThemeRuntime,
+  createTypographyStyle,
 } from "../theme/computeTheme.js";
+
+export { createTypographyStyle };
 
 export const ThemeTokensContext = createContext(null);
 export const ThemeRuntimeContext = createContext(null);
@@ -11,9 +14,10 @@ export const ThemeContext = createContext(null);
 
 export function ThemeProvider({ children }) {
   const { state, actions } = useApp();
+
   const tokens = useMemo(
     () => computeThemeTokens(state),
-    [state.layout, state.palette, state.customTheme, state.dense],
+    [state.layout, state.palette, state.customTheme, state.dense]
   );
 
   const runtime = useMemo(
@@ -27,7 +31,7 @@ export function ThemeProvider({ children }) {
       state.customTheme,
       actions.cf,
       tokens,
-    ],
+    ]
   );
 
   useEffect(() => {
@@ -39,13 +43,13 @@ export function ThemeProvider({ children }) {
       if (tokens.V.focusRing) {
         document.documentElement.style.setProperty(
           "--k-focus-ring",
-          tokens.V.focusRing,
+          tokens.V.focusRing
         );
       }
       if (tokens.V.focusRingShadow) {
         document.documentElement.style.setProperty(
           "--k-focus-ring-shadow",
-          tokens.V.focusRingShadow,
+          tokens.V.focusRingShadow
         );
       }
     }
@@ -83,6 +87,6 @@ export function useTheme() {
   }
   return useMemo(
     () => ({ ...(legacy || {}), ...(tokens || {}), ...(runtime || {}) }),
-    [legacy, tokens, runtime],
+    [legacy, tokens, runtime]
   );
 }

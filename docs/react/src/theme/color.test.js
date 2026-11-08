@@ -110,7 +110,7 @@ test("hexToRgba: converts 3-character and 6-character hex colors to rgba strings
 test("hexToRgba: handles invalid, non-hex, null, or undefined inputs gracefully", () => {
   assert.equal(
     hexToRgba("rgba(108, 255, 154, 0.12)", 0.5),
-    "rgba(108, 255, 154, 0.12)",
+    "rgba(108, 255, 154, 0.12)"
   );
   assert.equal(hexToRgba("invalid-color", 0.2), "invalid-color");
   assert.equal(hexToRgba(null), null);

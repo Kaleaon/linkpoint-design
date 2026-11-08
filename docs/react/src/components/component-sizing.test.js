@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 test("MenuBar component sizing meets target requirements", () => {
   const fileContent = fs.readFileSync(
     path.join(__dirname, "MenuBar.jsx"),
-    "utf8",
+    "utf8"
   );
 
   // Outer menu bar height must be 32px
@@ -24,7 +24,7 @@ test("MenuBar component sizing meets target requirements", () => {
 test("Header component status badge sizing meets target requirements", () => {
   const fileContent = fs.readFileSync(
     path.join(__dirname, "Header.jsx"),
-    "utf8",
+    "utf8"
   );
 
   // Status badge container height must be 32px and padding 0 12px
@@ -35,7 +35,7 @@ test("Header component status badge sizing meets target requirements", () => {
 test("SegmentedTabs float tab height and padding meet target requirements", () => {
   const fileContent = fs.readFileSync(
     path.join(__dirname, "SegmentedTabs.jsx"),
-    "utf8",
+    "utf8"
   );
 
   // Float tab item minHeight: 28px, height: 28px, padding: 0 12px
@@ -47,7 +47,7 @@ test("SegmentedTabs float tab height and padding meet target requirements", () =
 test("ConsoleFrame dock slot remove button size meets target requirements", () => {
   const fileContent = fs.readFileSync(
     path.join(__dirname, "ConsoleFrame.jsx"),
-    "utf8",
+    "utf8"
   );
 
   // Remove button width 24px, height 24px, borderRadius 12px
@@ -58,14 +58,14 @@ test("ConsoleFrame dock slot remove button size meets target requirements", () =
   // Centered vertical alignment
   expect(
     fileContent.includes('alignItems: "center"') ||
-      fileContent.includes("lineHeight"),
+      fileContent.includes("lineHeight")
   ).toBe(true);
 });
 
 test("FloatersDesktop control button target sizes meet target requirements", () => {
   const fileContent = fs.readFileSync(
     path.join(__dirname, "FloatersDesktop.jsx"),
-    "utf8",
+    "utf8"
   );
 
   // Minimize button width/height 24px

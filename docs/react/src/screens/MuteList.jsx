@@ -104,7 +104,7 @@ export default function MuteList() {
           return { ...a, flags: updatedFlags };
         }
         return a;
-      }),
+      })
     );
   };
 
@@ -144,7 +144,7 @@ export default function MuteList() {
     color: primary
       ? ink(V.pri, [V.bg, V.onpri, V.ink])
       : danger
-        ? "#fff"
+        ? V.onerr || "var(--onerr, #fff)"
         : V.ink,
     border:
       "1px solid " + (primary ? V.pri : danger ? V.err || "#dc2626" : V.outv),
@@ -315,7 +315,7 @@ export default function MuteList() {
                 (a) =>
                   !query.trim() ||
                   a.name.toLowerCase().includes(query.toLowerCase()) ||
-                  a.uuid.includes(query),
+                  a.uuid.includes(query)
               )
               .map((av) => (
                 <div
@@ -472,7 +472,7 @@ export default function MuteList() {
                 (o) =>
                   !query.trim() ||
                   o.name.toLowerCase().includes(query.toLowerCase()) ||
-                  o.uuid.includes(query),
+                  o.uuid.includes(query)
               )
               .map((obj) => (
                 <div
@@ -590,7 +590,7 @@ export default function MuteList() {
                 (s) =>
                   !query.trim() ||
                   s.name.toLowerCase().includes(query.toLowerCase()) ||
-                  s.uuid.includes(query),
+                  s.uuid.includes(query)
               )
               .map((snd) => (
                 <div

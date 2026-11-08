@@ -28,7 +28,7 @@ function getLuminance(hex) {
   const g = ((num >> 8) & 255) / 255;
   const b = (num & 255) / 255;
   const a = [r, g, b].map((v) =>
-    v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4),
+    v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
   );
   return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
 }
@@ -63,13 +63,13 @@ describe("Theme-Aware Focus Rings & Accessibility", () => {
         <ThemeProvider>
           <TestConsumer />
         </ThemeProvider>
-      </AppProvider>,
+      </AppProvider>
     );
 
     const rootFocusRing =
       document.documentElement.style.getPropertyValue("--k-focus-ring");
     const rootFocusRingShadow = document.documentElement.style.getPropertyValue(
-      "--k-focus-ring-shadow",
+      "--k-focus-ring-shadow"
     );
 
     expect(rootFocusRing).toBeTruthy();
@@ -82,7 +82,7 @@ describe("Theme-Aware Focus Rings & Accessibility", () => {
         <ThemeProvider>
           <StateBlock />
         </ThemeProvider>
-      </AppProvider>,
+      </AppProvider>
     );
 
     // Default stateBlockActive is true in error/empty/loading conditions
@@ -109,7 +109,7 @@ describe("Theme-Aware Focus Rings & Accessibility", () => {
         <ThemeProvider>
           <FloatersDesktop />
         </ThemeProvider>
-      </AppProvider>,
+      </AppProvider>
     );
 
     const input = screen.getByPlaceholderText("Nearby Chat...");
@@ -131,7 +131,7 @@ describe("Theme-Aware Focus Rings & Accessibility", () => {
         <ThemeProvider>
           <Search />
         </ThemeProvider>
-      </AppProvider>,
+      </AppProvider>
     );
 
     const input = screen.getByLabelText("Filter or search residents by name");

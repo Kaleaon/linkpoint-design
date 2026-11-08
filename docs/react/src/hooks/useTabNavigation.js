@@ -90,7 +90,7 @@ export function useTabNavigation({
         }
       }
     },
-    [itemCount, safeActiveIndex, onSelect],
+    [itemCount, safeActiveIndex, onSelect]
   );
 
   const containerProps = {
@@ -114,7 +114,7 @@ export function useTabNavigation({
         },
       };
     },
-    [safeActiveIndex, onSelect],
+    [safeActiveIndex, onSelect]
   );
 
   return {

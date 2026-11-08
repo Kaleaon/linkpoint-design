@@ -6,7 +6,7 @@ import * as LucideIcons from "lucide-react";
 // does the same kebab -> Pascal conversion and looks the component up.
 function pascal(name) {
   return String(name || "").replace(/(^|-)([a-z0-9])/g, (_, __, c) =>
-    c.toUpperCase(),
+    c.toUpperCase()
   );
 }
 
