@@ -8,7 +8,8 @@ import ConsoleFrame from "../ConsoleFrame.jsx";
 
 function setupMatchMedia(reducedMotion = false) {
   window.matchMedia = vi.fn().mockImplementation((query) => ({
-    matches: query === "(prefers-reduced-motion: reduce)" ? reducedMotion : false,
+    matches:
+      query === "(prefers-reduced-motion: reduce)" ? reducedMotion : false,
     media: query,
     onchange: null,
     addListener: vi.fn(),
@@ -44,8 +45,12 @@ describe("ConsoleFrame DTCG Motion Token Integration", () => {
       (el) => el.style.transition && el.style.transition.includes("background")
     );
     expect(animatedItem).toBeDefined();
-    expect(animatedItem.style.transition).toMatch(/--ktheme-motion-duration|150ms|300ms/);
-    expect(animatedItem.style.transition).toMatch(/--ktheme-motion-easing|cubic-bezier/);
+    expect(animatedItem.style.transition).toMatch(
+      /--ktheme-motion-duration|150ms|300ms/
+    );
+    expect(animatedItem.style.transition).toMatch(
+      /--ktheme-motion-easing|cubic-bezier/
+    );
   });
 
   it("disables transitions when user prefers reduced motion (WCAG 2.3.3)", () => {
@@ -89,6 +94,8 @@ describe("ConsoleFrame DTCG Motion Token Integration", () => {
       (el) => el.style.transition && el.style.transition.includes("background")
     );
     expect(animatedItem).toBeDefined();
-    expect(animatedItem.style.transition).toMatch(/--ktheme-motion-duration|150ms|300ms/);
+    expect(animatedItem.style.transition).toMatch(
+      /--ktheme-motion-duration|150ms|300ms/
+    );
   });
 });

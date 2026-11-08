@@ -43,9 +43,10 @@ const fallbackUseMotionTokens = () => {
   };
 };
 
-const useMotionTokens = typeof KthemeReact?.useMotionTokens === "function"
-  ? KthemeReact.useMotionTokens
-  : fallbackUseMotionTokens;
+const useMotionTokens =
+  typeof KthemeReact?.useMotionTokens === "function"
+    ? KthemeReact.useMotionTokens
+    : fallbackUseMotionTokens;
 
 // The 3D View's sim/location — shared by the in-scene region tag and the
 // console's own top bar so the two never disagree.
@@ -264,7 +265,16 @@ export default function ConsoleFrame() {
     letterSpacing: ".14em",
   };
 
-  const consoleNav = buildConsoleNav({ state, actions, V, t, C, ink, motion, reducedMotion });
+  const consoleNav = buildConsoleNav({
+    state,
+    actions,
+    V,
+    t,
+    C,
+    ink,
+    motion,
+    reducedMotion,
+  });
 
   const shellStyle = consoleScene
     ? { display: "none" }
@@ -593,7 +603,15 @@ function buildConsoleNav({
   const navTransition = isReduced
     ? "none"
     : motion?.transition
-      ? motion.transition("background", "var(--ktheme-motion-duration-fast, " + (motion.duration || "150ms") + ")", "var(--ktheme-motion-easing, " + (motion.easing || "cubic-bezier(0.25, 0.1, 0.25, 1.0)") + ")")
+      ? motion.transition(
+          "background",
+          "var(--ktheme-motion-duration-fast, " +
+            (motion.duration || "150ms") +
+            ")",
+          "var(--ktheme-motion-easing, " +
+            (motion.easing || "cubic-bezier(0.25, 0.1, 0.25, 1.0)") +
+            ")"
+        )
       : "background var(--ktheme-motion-duration-fast, 150ms) var(--ktheme-motion-easing, cubic-bezier(0.25, 0.1, 0.25, 1.0))";
   const items = NAV_ALL.map((n, i) => {
     const on = navActive(state.screen, n.id);
@@ -724,7 +742,9 @@ function ConsoleScene() {
       : motion?.transition
         ? motion.transition(
             "transform",
-            "var(--ktheme-motion-duration, " + (motion.duration || "300ms") + ")",
+            "var(--ktheme-motion-duration, " +
+              (motion.duration || "300ms") +
+              ")",
             "var(--ktheme-motion-easing-decelerated, " +
               (motion.easing || "cubic-bezier(0, 0, 0.58, 1)") +
               ")"
