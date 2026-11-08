@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 // Batched CSS variable DOM mutation system to prevent layout thrashing
 const pendingMutations = new Map();
@@ -22,14 +22,14 @@ function flushMutations() {
 export function batchSetCssVariables(element, styles) {
   const targetEl =
     element ||
-    (typeof document !== 'undefined' ? document.documentElement : null);
+    (typeof document !== "undefined" ? document.documentElement : null);
   if (!targetEl) return;
 
   const existing = pendingMutations.get(targetEl) || {};
   pendingMutations.set(targetEl, { ...existing, ...styles });
 
   if (rafId === null) {
-    if (typeof requestAnimationFrame === 'function') {
+    if (typeof requestAnimationFrame === "function") {
       rafId = requestAnimationFrame(flushMutations);
     } else {
       flushMutations();
@@ -39,7 +39,7 @@ export function batchSetCssVariables(element, styles) {
 
 export function flushCssVariables() {
   if (rafId !== null) {
-    if (typeof cancelAnimationFrame === 'function') {
+    if (typeof cancelAnimationFrame === "function") {
       cancelAnimationFrame(rafId);
     }
     flushMutations();
@@ -52,9 +52,9 @@ export function KthemeProvider({ children, themeId }) {
 
 export const KthemeContext = React.createContext({
   theme: null,
-  activeThemeId: 'default',
+  activeThemeId: "default",
   setThemeId: () => {},
-  tokens: {}
+  tokens: {},
 });
 
 export const DEFAULT_THEMES = [];
@@ -63,7 +63,7 @@ export function useKtheme() {
   return React.useContext(KthemeContext);
 }
 
-export function useKthemeToken(tokenName, fallback = '') {
+export function useKthemeToken(tokenName, fallback = "") {
   return fallback;
 }
 
@@ -73,9 +73,9 @@ export function getKthemeCssVar(tokenName) {
 
 export function useTablist() {
   return {
-    tablistProps: { role: 'tablist' },
-    tabProps: (id) => ({ role: 'tab', id }),
-    panelProps: (id) => ({ role: 'tabpanel', id })
+    tablistProps: { role: "tablist" },
+    tabProps: (id) => ({ role: "tab", id }),
+    panelProps: (id) => ({ role: "tabpanel", id }),
   };
 }
 
@@ -92,7 +92,7 @@ export function calcLuminance() {
 }
 
 export function formatBadgeText() {
-  return 'AAA';
+  return "AAA";
 }
 
 export function getTokenCounterpart(token) {
@@ -123,5 +123,5 @@ export default {
   formatBadgeText,
   getTokenCounterpart,
   auditThemeTokens,
-  SculptingCanvas
+  SculptingCanvas,
 };
