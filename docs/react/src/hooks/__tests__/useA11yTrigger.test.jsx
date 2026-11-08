@@ -5,7 +5,11 @@ import useA11yTrigger from "../useA11yTrigger.js";
 
 function TestComponent({ onClick, onKeyDown, options = {} }) {
   const triggerProps = useA11yTrigger(onClick, { onKeyDown, ...options });
-  return <div data-testid="trigger-el" {...triggerProps}>Click or Press</div>;
+  return (
+    <div data-testid="trigger-el" {...triggerProps}>
+      Click or Press
+    </div>
+  );
 }
 
 describe("useA11yTrigger hook", () => {

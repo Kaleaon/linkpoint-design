@@ -105,7 +105,9 @@ describe("Inventory - Search Input & Node Filtering", () => {
 
     fireEvent.change(input, { target: { value: "nonexistentxyz123" } });
 
-    expect(screen.getByText("No inventory items match 'nonexistentxyz123'")).toBeInTheDocument();
+    expect(
+      screen.getByText("No inventory items match 'nonexistentxyz123'")
+    ).toBeInTheDocument();
     expect(screen.queryByText("Objects")).not.toBeInTheDocument();
     expect(screen.queryByText("Clothing")).not.toBeInTheDocument();
   });

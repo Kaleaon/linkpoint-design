@@ -9,12 +9,18 @@ const kthemeReactDir = [
   path.resolve(__dirname, "../../Ktheme/packages/react"),
   path.resolve(__dirname, "node_modules/@ktheme/react"),
   "/app/Ktheme/packages/react",
-].find(dir => fs.existsSync(dir));
+].find((dir) => fs.existsSync(dir));
 
 const kthemeAliases = kthemeReactDir
   ? {
-      "@ktheme/react/studio": path.resolve(kthemeReactDir, "src/studio/index.ts"),
-      "@ktheme/react/support": path.resolve(kthemeReactDir, "src/support/index.ts"),
+      "@ktheme/react/studio": path.resolve(
+        kthemeReactDir,
+        "src/studio/index.ts"
+      ),
+      "@ktheme/react/support": path.resolve(
+        kthemeReactDir,
+        "src/support/index.ts"
+      ),
       "@ktheme/react": path.resolve(kthemeReactDir, "src/index.ts"),
     }
   : {};
@@ -31,7 +37,11 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
-    include: ["src/theme/color.test.js", "src/**/*.test.jsx", "src/**/__tests__/*.jsx"],
+    include: [
+      "src/theme/color.test.js",
+      "src/**/*.test.jsx",
+      "src/**/__tests__/*.jsx",
+    ],
     exclude: [
       "**/node_modules/**",
       "**/dist/**",
