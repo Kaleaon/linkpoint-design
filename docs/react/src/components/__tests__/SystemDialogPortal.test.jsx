@@ -18,7 +18,10 @@ function SystemDialogTestHarness({ dialogKey = "Teleport lure" }) {
 
   return (
     <div id="app-root">
-      <button id="main-trigger" onClick={() => actions.setDialog("Teleport lure")}>
+      <button
+        id="main-trigger"
+        onClick={() => actions.setDialog("Teleport lure")}
+      >
         Trigger Teleport
       </button>
       <SystemDialog />

@@ -7,7 +7,8 @@ export function FocusStackProvider({ children }) {
   const activePortalsRef = useRef(new Map());
 
   const updateBackgroundState = useCallback(() => {
-    const appRoot = document.getElementById("app-root") || document.getElementById("root");
+    const appRoot =
+      document.getElementById("app-root") || document.getElementById("root");
     if (!appRoot) return;
 
     let hasModal = false;
@@ -28,7 +29,9 @@ export function FocusStackProvider({ children }) {
   }, []);
 
   const pushTrigger = useCallback((triggerElement) => {
-    const el = triggerElement || (typeof document !== "undefined" ? document.activeElement : null);
+    const el =
+      triggerElement ||
+      (typeof document !== "undefined" ? document.activeElement : null);
     if (el && el !== document.body) {
       triggerStackRef.current.push(el);
     }
@@ -40,7 +43,11 @@ export function FocusStackProvider({ children }) {
 
   const restoreFocus = useCallback((preferredEl) => {
     const target = preferredEl || triggerStackRef.current.pop();
-    if (target && typeof target.focus === "function" && document.body.contains(target)) {
+    if (
+      target &&
+      typeof target.focus === "function" &&
+      document.body.contains(target)
+    ) {
       try {
         target.focus();
         return true;
@@ -52,7 +59,11 @@ export function FocusStackProvider({ children }) {
       const taskbarBtn = document.querySelector(
         'div[role="button"][tabindex="0"], button:not([disabled]), [tabindex="0"]'
       );
-      if (taskbarBtn && typeof taskbarBtn.focus === "function" && document.body.contains(taskbarBtn)) {
+      if (
+        taskbarBtn &&
+        typeof taskbarBtn.focus === "function" &&
+        document.body.contains(taskbarBtn)
+      ) {
         try {
           taskbarBtn.focus();
           return true;
@@ -62,22 +73,28 @@ export function FocusStackProvider({ children }) {
     return false;
   }, []);
 
-  const registerPortal = useCallback((id, triggerElement, isModal = true) => {
-    if (!id) return;
-    activePortalsRef.current.set(id, { triggerElement, isModal });
-    pushTrigger(triggerElement);
-    updateBackgroundState();
-  }, [pushTrigger, updateBackgroundState]);
+  const registerPortal = useCallback(
+    (id, triggerElement, isModal = true) => {
+      if (!id) return;
+      activePortalsRef.current.set(id, { triggerElement, isModal });
+      pushTrigger(triggerElement);
+      updateBackgroundState();
+    },
+    [pushTrigger, updateBackgroundState]
+  );
 
-  const unregisterPortal = useCallback((id, preferredTrigger) => {
-    if (!id) return;
-    const wasActive = activePortalsRef.current.has(id);
-    activePortalsRef.current.delete(id);
-    updateBackgroundState();
-    if (wasActive) {
-      restoreFocus(preferredTrigger);
-    }
-  }, [updateBackgroundState, restoreFocus]);
+  const unregisterPortal = useCallback(
+    (id, preferredTrigger) => {
+      if (!id) return;
+      const wasActive = activePortalsRef.current.has(id);
+      activePortalsRef.current.delete(id);
+      updateBackgroundState();
+      if (wasActive) {
+        restoreFocus(preferredTrigger);
+      }
+    },
+    [updateBackgroundState, restoreFocus]
+  );
 
   const value = {
     pushTrigger,
@@ -85,7 +102,7 @@ export function FocusStackProvider({ children }) {
     restoreFocus,
     registerPortal,
     unregisterPortal,
-    activeCount: activePortalsRef.current.size
+    activeCount: activePortalsRef.current.size,
   };
 
   return (
@@ -105,7 +122,7 @@ export function useFocusStack() {
       restoreFocus: () => false,
       registerPortal: () => {},
       unregisterPortal: () => {},
-      activeCount: 0
+      activeCount: 0,
     };
   }
   return context;
