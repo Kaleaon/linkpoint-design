@@ -7,8 +7,8 @@ import fs from "fs";
 const kthemeReactCandidate = [
   path.resolve(__dirname, "../../../Ktheme/packages/react"),
   path.resolve(__dirname, "../../Ktheme/packages/react"),
-  "/app/Ktheme/packages/react"
-].find(dir => fs.existsSync(path.resolve(dir, "src/index.ts")));
+  "/app/Ktheme/packages/react",
+].find((dir) => fs.existsSync(path.resolve(dir, "src/index.ts")));
 
 const kthemeReactEntry = kthemeReactCandidate
   ? path.resolve(kthemeReactCandidate, "src/index.ts")
@@ -38,7 +38,11 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     globals: true,
-    include: ["src/theme/color.test.js", "src/**/*.test.jsx", "src/**/__tests__/*.jsx"],
+    include: [
+      "src/theme/color.test.js",
+      "src/**/*.test.jsx",
+      "src/**/__tests__/*.jsx",
+    ],
     exclude: [
       "**/node_modules/**",
       "**/dist/**",
