@@ -31,12 +31,38 @@ const baseState = {
   cPitch: 0,
   cDrag: false,
   menu: null,
-  prefs: { draw: "high", quality: "ultra", fps: "60fps", cacheLimit: 512, cacheLoc: "Internal storage" },
+  prefs: {
+    draw: "high",
+    quality: "ultra",
+    fps: "60fps",
+    cacheLimit: 512,
+    cacheLoc: "Internal storage",
+  },
   toggles: {},
 };
 
 const baseTheme = {
-  V: { surf: "#111", surf2: "#222", outv: "#333", pri: "#00f", priC: "#00a", onpriC: "#fff", ink: "#fff", ink2: "#aaa", rp: "8px", rs: "4px", navr: "4px", sec: "#555", sec2: "#444", bg: "#000", gnd: "#222", gnd2: "#111", sky1: "#003", sky2: "#005", err: "#f00" },
+  V: {
+    surf: "#111",
+    surf2: "#222",
+    outv: "#333",
+    pri: "#00f",
+    priC: "#00a",
+    onpriC: "#fff",
+    ink: "#fff",
+    ink2: "#aaa",
+    rp: "8px",
+    rs: "4px",
+    navr: "4px",
+    sec: "#555",
+    sec2: "#444",
+    bg: "#000",
+    gnd: "#222",
+    gnd2: "#111",
+    sky1: "#003",
+    sky2: "#005",
+    err: "#f00",
+  },
   t: { font: "sans-serif", dfont: "monospace" },
   d: { split: false },
   ink: () => "#ffffff",
@@ -45,10 +71,24 @@ const baseTheme = {
   isFloat: true,
   isSweepDesk: false,
   consoleScene: false,
-  C: { bar: 32, wide: true, gap: 4, rail: 104, cur: 16, foot: 24, dock: 40, rad: 8 },
+  C: {
+    bar: 32,
+    wide: true,
+    gap: 4,
+    rail: 104,
+    cur: 16,
+    foot: 24,
+    dock: 40,
+    rad: 8,
+  },
 };
 
-function renderComponent(ui, stateOverrides = {}, themeOverrides = {}, actionOverrides = {}) {
+function renderComponent(
+  ui,
+  stateOverrides = {},
+  themeOverrides = {},
+  actionOverrides = {}
+) {
   const state = { ...baseState, ...stateOverrides };
   const theme = { ...baseTheme, ...themeOverrides };
   const setScreen = vi.fn();
@@ -81,9 +121,7 @@ function renderComponent(ui, stateOverrides = {}, themeOverrides = {}, actionOve
 
   const utils = render(
     <AppContext.Provider value={{ state, actions }}>
-      <ThemeContext.Provider value={theme}>
-        {ui}
-      </ThemeContext.Provider>
+      <ThemeContext.Provider value={theme}>{ui}</ThemeContext.Provider>
     </AppContext.Provider>
   );
 
@@ -130,7 +168,11 @@ describe("Keyboard Accessibility in Refactored Controls", () => {
   });
 
   it("ConsoleFrame rail buttons and dock slots support keyboard focus and keypresses", () => {
-    const { actions } = renderComponent(<ConsoleFrame />, {}, { isConsole: true });
+    const { actions } = renderComponent(
+      <ConsoleFrame />,
+      {},
+      { isConsole: true }
+    );
     const chatRailBtn = screen.getByRole("button", { name: "CHAT" });
     expect(chatRailBtn.getAttribute("tabindex")).toBe("0");
 
@@ -139,12 +181,18 @@ describe("Keyboard Accessibility in Refactored Controls", () => {
   });
 
   it("MenuBar headers and dropdown items support keyboard focus and state toggling", () => {
-    const { actions } = renderComponent(<MenuBar />, { menu: "Edit" }, { isFloat: true });
+    const { actions } = renderComponent(
+      <MenuBar />,
+      { menu: "Edit" },
+      { isFloat: true }
+    );
     const editMenuBtn = screen.getByRole("button", { name: "Edit menu" });
     expect(editMenuBtn.getAttribute("tabindex")).toBe("0");
     expect(editMenuBtn.getAttribute("aria-expanded")).toBe("true");
 
-    const preferenceItem = screen.queryByRole("menuitem", { name: /Preferences…/i }) || screen.getByRole("button", { name: /Preferences…/i });
+    const preferenceItem =
+      screen.queryByRole("menuitem", { name: /Preferences…/i }) ||
+      screen.getByRole("button", { name: /Preferences…/i });
     expect(preferenceItem.getAttribute("tabindex")).toBe("0");
 
     fireEvent.keyDown(preferenceItem, { key: "Enter" });
