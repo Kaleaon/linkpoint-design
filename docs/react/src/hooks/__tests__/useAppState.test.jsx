@@ -71,8 +71,16 @@ describe("useAppState hook - Centralized Recovery State Machine & Auto-Reconnect
     expect(result.current.state.reconnectAttempts).toBe(0);
     expect(result.current.state.nextRetryDelay).toBe(1000);
     expect(result.current.state.asyncQueryState).toBeDefined();
-    expect(result.current.state.asyncQueryState.search).toEqual({ status: "idle", loading: false, error: null });
-    expect(result.current.state.asyncQueryState.inventory).toEqual({ status: "idle", loading: false, error: null });
+    expect(result.current.state.asyncQueryState.search).toEqual({
+      status: "idle",
+      loading: false,
+      error: null,
+    });
+    expect(result.current.state.asyncQueryState.inventory).toEqual({
+      status: "idle",
+      loading: false,
+      error: null,
+    });
   });
 
   it("triggers recovery and executes exponential backoff reconnect attempts when server drops", () => {
@@ -92,7 +100,9 @@ describe("useAppState hook - Centralized Recovery State Machine & Auto-Reconnect
 
     expect(result.current.state.recoveryState).toBe("recovered");
     expect(result.current.state.reconnectAttempts).toBe(0);
-    expect(result.current.state.toast).toContain("Reconnected to OpenSim local grid");
+    expect(result.current.state.toast).toContain(
+      "Reconnected to OpenSim local grid"
+    );
   });
 
   it("handles reconnection failure and transitions to failed state after max retries when offline", () => {
@@ -118,7 +128,11 @@ describe("useAppState hook - Centralized Recovery State Machine & Auto-Reconnect
 
     expect(result.current.state.recoveryState).toBe("failed");
     expect(result.current.state.reconnectAttempts).toBe(5);
-    expect(result.current.state.consoleLogs.some((l) => l.msg.includes("Max reconnection attempts"))).toBe(true);
+    expect(
+      result.current.state.consoleLogs.some((l) =>
+        l.msg.includes("Max reconnection attempts")
+      )
+    ).toBe(true);
   });
 
   it("cancels recovery sequence when cancelRecovery is called", () => {
