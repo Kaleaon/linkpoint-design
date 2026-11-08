@@ -4,15 +4,15 @@ on:
   workflow_call:
     inputs:
       target-flags:
-        description: 'Target flags to pass to tools/ci-runner.mjs (e.g. --unit, --a11y, --visual)'
+        description: "Target flags to pass to tools/ci-runner.mjs (e.g. --unit, --a11y, --visual)"
         required: false
         type: string
-        default: ''
+        default: ""
       node-version:
-        description: 'Node.js version to set up'
+        description: "Node.js version to set up"
         required: false
         type: string
-        default: '22'
+        default: "22"
 
 jobs:
   validate:
@@ -23,14 +23,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Clone Ktheme repository
-        run: |
-          BRANCH="${{ github.head_ref || github.ref_name }}"
-          git clone --depth 1 --branch "$BRANCH" https://github.com/Kaleaon/Ktheme.git ../Ktheme || git clone --depth 1 https://github.com/Kaleaon/Ktheme.git ../Ktheme
-          if [ -d "../Ktheme" ]; then
-            (cd ../Ktheme && (npm ci || npm install) && (npm run build || true))
-          fi
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -46,6 +38,9 @@ jobs:
           if [ -d "docs/react" ]; then
             cd docs/react && (npm ci || npm install) && cd ../..
           fi
+
+      - name: Validate theme schemas
+        run: npx ktheme-schema sync --check
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium

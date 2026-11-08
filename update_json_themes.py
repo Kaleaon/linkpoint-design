@@ -88,3 +88,14 @@ for path in theme_paths:
         f.write('\n')
 
     print(f"Updated {path} ({tid}) with desktopAdaptation.")
+
+# Validate and synchronize schemas using versioned CLI
+import subprocess
+import shutil
+
+print("\nSynchronizing schemas via ktheme-schema sync --apply...")
+cli_cmd = shutil.which("ktheme-schema")
+if cli_cmd:
+    subprocess.run([cli_cmd, "sync", "--apply"], check=True)
+else:
+    subprocess.run(["npx", "ktheme-schema", "sync", "--apply"], check=True)
