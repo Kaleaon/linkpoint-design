@@ -30,7 +30,11 @@ describe("A11yControl component", () => {
   it("handles mouse click and keydown (Enter and Space)", () => {
     const handleClick = vi.fn();
     const { getByTestId } = render(
-      <A11yControl data-testid="a11y-control" onClick={handleClick} aria-label="Action">
+      <A11yControl
+        data-testid="a11y-control"
+        onClick={handleClick}
+        aria-label="Action"
+      >
         Action
       </A11yControl>
     );
