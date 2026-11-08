@@ -51,7 +51,9 @@ export function FocusStackProvider({ children }) {
       try {
         target.focus();
         return true;
-      } catch (_) {}
+      } catch (_) {
+        // ignore focus error
+      }
     }
 
     // Fallback: search for active taskbar buttons or focusable elements
@@ -67,7 +69,9 @@ export function FocusStackProvider({ children }) {
         try {
           taskbarBtn.focus();
           return true;
-        } catch (_) {}
+        } catch (_) {
+          // ignore focus error
+        }
       }
     }
     return false;
