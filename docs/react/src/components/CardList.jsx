@@ -9,7 +9,9 @@ import { SkeletonCardList } from "./Skeletons.jsx";
 // Friends/Groups/Notices/Teleport/Settings/Diagnostics all share.
 // Enhanced with pull-to-refresh swipe gesture detection for balance sync.
 export default function CardList({ cards }) {
-  let LK = {}, V = {}, t = {};
+  let LK = {},
+    V = {},
+    t = {};
   try {
     const themeCtx = useThemeTokens();
     if (themeCtx) {
@@ -128,10 +130,18 @@ export default function CardList({ cards }) {
             size={16}
             style={{
               transform: `rotate(${pullDistance * 5}deg)`,
-              transition: refreshing ? "transform 0.8s linear infinite" : "none",
+              transition: refreshing
+                ? "transform 0.8s linear infinite"
+                : "none",
             }}
           />
-          <span>{refreshing ? "Syncing balance..." : pullDistance > 40 ? "Release to sync" : "Pull to sync balance"}</span>
+          <span>
+            {refreshing
+              ? "Syncing balance..."
+              : pullDistance > 40
+                ? "Release to sync"
+                : "Pull to sync balance"}
+          </span>
         </div>
       )}
       {cards.map((c, i) => (
