@@ -22,7 +22,7 @@ source:
     support.js) turns into a real React component.
   sections:
     template: "everything between <x-dc> and </x-dc>"
-    script: "the <script type=\"text/x-dc\" data-dc-script ...> block, near the end of the file"
+    script: 'the <script type="text/x-dc" data-dc-script ...> block, near the end of the file'
   script_layout:
     - "top-level `const` tables before `class Component`: SCREENS, GRIDS, LAYOUTS, PALETTES, DEVICES, CBTN, CSUB, CPAD/CPADR, DIALOGS, FLOATERS, FMENU, HUDS, TARGETS, STATES"
     - "`class Component extends DCLogic`: `state = {...}` initializer, then instance methods (set/setTab/cycle/notify/openSearch/connectLogin/reconnect/cf/cTap/cHold/cPress/flR/flDrag/...)"
@@ -32,7 +32,7 @@ target:
   root: docs/react/
   entry: src/App.jsx
   install: npm install
-  build: npm run build   # Vite; catches JSX/import errors
+  build: npm run build # Vite; catches JSX/import errors
   dev: npm run dev
   production_boundary: >
     Port the in-app design, content, tokens and behavior only. The outer
@@ -83,19 +83,19 @@ dsl_binding_rules:
 binding_translation_table:
   - dc: "{{ x }}"
     react: "{x}"
-  - dc: "<sc-for list=\"{{ list }}\" as=\"item\" hint-placeholder-count=\"N\">...</sc-for>"
+  - dc: '<sc-for list="{{ list }}" as="item" hint-placeholder-count="N">...</sc-for>'
     react: "{list.map((item, i) => (<Fragment key={i}>...</Fragment>))}"
-  - dc: "<sc-if value=\"{{ cond }}\" hint-placeholder-val=\"{{ false }}\">...</sc-if>"
+  - dc: '<sc-if value="{{ cond }}" hint-placeholder-val="{{ false }}">...</sc-if>'
     react: "{cond ? (...) : null}"
-  - dc: "onClick=\"{{ x.pick }}\""
+  - dc: 'onClick="{{ x.pick }}"'
     react: "onClick={x.pick}"
-  - dc: "onChange=\"{{ x.onChange }}\" (or onKeyDown/onMouseDown/etc.)"
+  - dc: 'onChange="{{ x.onChange }}" (or onKeyDown/onMouseDown/etc.)'
     react: "onChange={x.onChange}"
-  - dc: "sc-camel-on-input=\"{{ x.onInput }}\""
+  - dc: 'sc-camel-on-input="{{ x.onInput }}"'
     react: "onChange={x.onInput}   # React's onChange already fires per-keystroke for text inputs"
-  - dc: "style=\"{{ x.style }}\"  (x.style is already a JS object literal from renderVals())"
+  - dc: 'style="{{ x.style }}"  (x.style is already a JS object literal from renderVals())'
     react: "style={x.style}"
-  - dc: "data-lucide=\"{{ x.icon }}\""
+  - dc: 'data-lucide="{{ x.icon }}"'
     react: "<Icon name={x.icon} size={N} />   # src/components/Icon.jsx wraps lucide"
 
 # ---------------------------------------------------------------------

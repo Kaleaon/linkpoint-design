@@ -5,7 +5,10 @@ import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
 import Icon from "./Icon.jsx";
 import KInteractive from "./KInteractive.jsx";
 
-export default function VoiceChatBar({ compact = false, channelName = "Spatial Voice" }) {
+export default function VoiceChatBar({
+  compact = false,
+  channelName = "Spatial Voice",
+}) {
   const { state, actions } = useApp();
   const { V, t, ink } = useTheme();
   const reducedMotion = usePrefersReducedMotion();
@@ -14,7 +17,8 @@ export default function VoiceChatBar({ compact = false, channelName = "Spatial V
   const [voiceMode, setVoiceMode] = useState("muted");
   const [isPttHeld, setIsPttHeld] = useState(false);
 
-  const isSpeaking = voiceMode === "active" || (voiceMode === "ptt" && isPttHeld);
+  const isSpeaking =
+    voiceMode === "active" || (voiceMode === "ptt" && isPttHeld);
 
   const cycleMode = () => {
     if (voiceMode === "muted") {
@@ -29,8 +33,16 @@ export default function VoiceChatBar({ compact = false, channelName = "Spatial V
     }
   };
 
-  const modeColor = isSpeaking ? V.ok || "#22c55e" : voiceMode === "ptt" ? V.sec || "#f59e0b" : V.err || "#ef4444";
-  const modeLabel = isSpeaking ? "SPEAKING" : voiceMode === "ptt" ? "PTT READY" : "MUTED";
+  const modeColor = isSpeaking
+    ? V.ok || "var(--ok, #22c55e)"
+    : voiceMode === "ptt"
+      ? V.warn || V.sec || "var(--warn, #f59e0b)"
+      : V.err || "var(--err, #ef4444)";
+  const modeLabel = isSpeaking
+    ? "SPEAKING"
+    : voiceMode === "ptt"
+      ? "PTT READY"
+      : "MUTED";
 
   return (
     <div
@@ -64,24 +76,58 @@ export default function VoiceChatBar({ compact = false, channelName = "Spatial V
           border: "1px solid " + (isSpeaking ? V.pri : V.outv),
         }}
       >
-        <Icon name={isSpeaking ? "mic" : voiceMode === "ptt" ? "radio" : "mic-off"} size={16} style={{ color: modeColor }} />
-        <span style={{ font: "700 10px/1 " + t.dfont, letterSpacing: ".1em" }}>{modeLabel}</span>
+        <Icon
+          name={isSpeaking ? "mic" : voiceMode === "ptt" ? "radio" : "mic-off"}
+          size={16}
+          style={{ color: modeColor }}
+        />
+        <span style={{ font: "700 10px/1 " + t.dfont, letterSpacing: ".1em" }}>
+          {modeLabel}
+        </span>
       </KInteractive>
 
       {/* Middle: Channel & Speaking wave bars */}
-      <div style={{ flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: "8px" }}>
-        <span style={{ font: "500 11px/1.2 " + t.font, color: V.ink2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+      <div
+        style={{
+          flex: 1,
+          minWidth: 0,
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+        }}
+      >
+        <span
+          style={{
+            font: "500 11px/1.2 " + t.font,
+            color: V.ink2,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
           {channelName}
         </span>
 
         {/* Dynamic Voice Wave Meters */}
-        <div style={{ display: "flex", alignItems: "center", gap: "2px", height: "16px", flex: "none" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "2px",
+            height: "16px",
+            flex: "none",
+          }}
+        >
           {[8, 14, 11, 16, 7].map((h, i) => (
             <span
               key={i}
               style={{
                 width: "2.5px",
-                height: isSpeaking ? (reducedMotion ? `${h}px` : `${Math.max(4, (h * ((i % 2) + 1)) % 16)}px`) : "3px",
+                height: isSpeaking
+                  ? reducedMotion
+                    ? `${h}px`
+                    : `${Math.max(4, (h * ((i % 2) + 1)) % 16)}px`
+                  : "3px",
                 background: isSpeaking ? modeColor : V.outv,
                 borderRadius: "1px",
                 transition: reducedMotion ? "none" : "height .15s ease",
