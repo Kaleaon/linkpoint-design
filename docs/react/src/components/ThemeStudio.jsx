@@ -86,7 +86,9 @@ export default function ThemeStudio() {
                   <input
                     type="color"
                     value={theme.colors[key]}
-                    onChange={(e) => actions.setThemeColor?.(key, e.target.value)}
+                    onChange={(e) =>
+                      actions.setThemeColor?.(key, e.target.value)
+                    }
                     aria-label={`${label} color`}
                   />
                   <code>{theme.colors[key].toUpperCase()}</code>

@@ -204,7 +204,9 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
     fireEvent.keyDown(items[1], { key: "Escape" });
 
     // Menu should be closed and focus restored to "File" header
-    expect(screen.queryByRole("menu", { name: "File" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("menu", { name: "File" })
+    ).not.toBeInTheDocument();
     expect(document.activeElement).toBe(fileH);
     expect(fileH).toHaveAttribute("aria-expanded", "false");
   });
@@ -213,7 +215,11 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
     const notifyMock = vi.fn();
     const setScreenMock = vi.fn();
 
-    render(<StatefulMenuBarWrapper customActions={{ notify: notifyMock, setScreen: setScreenMock }} />);
+    render(
+      <StatefulMenuBarWrapper
+        customActions={{ notify: notifyMock, setScreen: setScreenMock }}
+      />
+    );
 
     const fileH = screen.getByText("File");
     fireEvent.keyDown(fileH, { key: "ArrowDown" });
@@ -229,7 +235,9 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
     fireEvent.keyDown(document.activeElement, { key: "Enter" });
 
     expect(setScreenMock).toHaveBeenCalledWith("Login");
-    expect(screen.queryByRole("menu", { name: "File" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("menu", { name: "File" })
+    ).not.toBeInTheDocument();
     expect(document.activeElement).toBe(fileH);
   });
 
@@ -237,7 +245,11 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
     const notifyMock = vi.fn();
     const setScreenMock = vi.fn();
 
-    render(<StatefulMenuBarWrapper customActions={{ notify: notifyMock, setScreen: setScreenMock }} />);
+    render(
+      <StatefulMenuBarWrapper
+        customActions={{ notify: notifyMock, setScreen: setScreenMock }}
+      />
+    );
 
     // Open World menu
     const worldH = screen.getByText("World");
@@ -252,7 +264,9 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
 
     expect(setScreenMock).toHaveBeenCalledWith("Map");
     expect(notifyMock).toHaveBeenCalledWith("Teleporting Home...");
-    expect(screen.queryByRole("menu", { name: "World" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("menu", { name: "World" })
+    ).not.toBeInTheDocument();
     expect(document.activeElement).toBe(worldH);
   });
 
@@ -268,7 +282,9 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
     fireEvent.keyDown(firstItem, { key: "ArrowRight" });
 
     // File menu should be closed, Edit menu opened, and Edit header focused
-    expect(screen.queryByRole("menu", { name: "File" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("menu", { name: "File" })
+    ).not.toBeInTheDocument();
     expect(screen.getByRole("menu", { name: "Edit" })).toBeInTheDocument();
 
     const editH = screen.getByText("Edit");
@@ -287,7 +303,9 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
     fireEvent.keyDown(firstItem, { key: "ArrowLeft" });
 
     // File menu should be closed, Help (prev) menu opened, and Help header focused
-    expect(screen.queryByRole("menu", { name: "File" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("menu", { name: "File" })
+    ).not.toBeInTheDocument();
     expect(screen.getByRole("menu", { name: "Help" })).toBeInTheDocument();
 
     const helpH = screen.getByText("Help");
@@ -296,7 +314,9 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
 
   it("supports WINDOWS floater toggling for View menu items", () => {
     const flToggleMock = vi.fn();
-    render(<StatefulMenuBarWrapper customActions={{ flToggle: flToggleMock }} />);
+    render(
+      <StatefulMenuBarWrapper customActions={{ flToggle: flToggleMock }} />
+    );
 
     const viewH = screen.getByText("View");
     fireEvent.keyDown(viewH, { key: "ArrowDown" });
@@ -313,7 +333,9 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
   it("returns null when isFloat is false", () => {
     const notFloatTheme = { ...mockThemeContext, isFloat: false };
     render(
-      <AppContext.Provider value={{ state: { menu: null, flOpen: {}, flMin: {} }, actions: {} }}>
+      <AppContext.Provider
+        value={{ state: { menu: null, flOpen: {}, flMin: {} }, actions: {} }}
+      >
         <ThemeContext.Provider value={notFloatTheme}>
           <MenuBar />
         </ThemeContext.Provider>

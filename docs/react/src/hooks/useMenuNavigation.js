@@ -29,11 +29,15 @@ export function useMenuNavigation({
 } = {}) {
   const isControlled = controlledOpenMenu !== undefined;
   const [uncontrolledOpenMenu, setUncontrolledOpenMenu] = useState(null);
-  const currentOpenMenu = isControlled ? controlledOpenMenu : uncontrolledOpenMenu;
+  const currentOpenMenu = isControlled
+    ? controlledOpenMenu
+    : uncontrolledOpenMenu;
 
   const [focusedMenuIndex, setFocusedMenuIndex] = useState(() => {
     if (controlledOpenMenu) {
-      const idx = menus.findIndex((m) => (typeof m === "string" ? m : m?.label) === controlledOpenMenu);
+      const idx = menus.findIndex(
+        (m) => (typeof m === "string" ? m : m?.label) === controlledOpenMenu
+      );
       if (idx !== -1) return idx;
     }
     return 0;
@@ -59,9 +63,7 @@ export function useMenuNavigation({
   }, []);
 
   const safeFocusedMenuIndex =
-    menuCount > 0
-      ? Math.max(0, Math.min(focusedMenuIndex, menuCount - 1))
-      : 0;
+    menuCount > 0 ? Math.max(0, Math.min(focusedMenuIndex, menuCount - 1)) : 0;
 
   const setOpenMenu = useCallback(
     (label) => {
@@ -207,7 +209,10 @@ export function useMenuNavigation({
           if (!isOpen) {
             pendingFocusRef.current = { menuIndex, itemIndex: targetIndex };
             setOpenMenu(currentLabel);
-          } else if (itemCount > 0 && itemRefs.current[menuIndex]?.[targetIndex]) {
+          } else if (
+            itemCount > 0 &&
+            itemRefs.current[menuIndex]?.[targetIndex]
+          ) {
             itemRefs.current[menuIndex][targetIndex].focus();
             setFocusedItemIndex(targetIndex);
           }
@@ -246,7 +251,15 @@ export function useMenuNavigation({
         e.stopPropagation();
       }
     },
-    [menuCount, menus, currentOpenMenu, getMenuLabel, getMenuItems, setOpenMenu, closeMenu]
+    [
+      menuCount,
+      menus,
+      currentOpenMenu,
+      getMenuLabel,
+      getMenuItems,
+      setOpenMenu,
+      closeMenu,
+    ]
   );
 
   const handleItemKeyDown = useCallback(
@@ -367,7 +380,15 @@ export function useMenuNavigation({
         e.stopPropagation();
       }
     },
-    [menus, menuCount, getMenuItems, getMenuLabel, setOpenMenu, closeMenu, onSelect]
+    [
+      menus,
+      menuCount,
+      getMenuItems,
+      getMenuLabel,
+      setOpenMenu,
+      closeMenu,
+      onSelect,
+    ]
   );
 
   const handleDropdownKeyDown = useCallback(
@@ -419,7 +440,14 @@ export function useMenuNavigation({
         },
       };
     },
-    [safeFocusedMenuIndex, currentOpenMenu, menus, getMenuLabel, setOpenMenu, handleHeaderKeyDown]
+    [
+      safeFocusedMenuIndex,
+      currentOpenMenu,
+      menus,
+      getMenuLabel,
+      setOpenMenu,
+      handleHeaderKeyDown,
+    ]
   );
 
   const getDropdownProps = useCallback(

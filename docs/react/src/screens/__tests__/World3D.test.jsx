@@ -55,7 +55,9 @@ function renderWorld3D({ stateOverrides = {}, actionsOverrides = {} } = {}) {
   };
 
   const renderResult = render(
-    <AppContext.Provider value={{ state: defaultState, actions: defaultActions }}>
+    <AppContext.Provider
+      value={{ state: defaultState, actions: defaultActions }}
+    >
       <ThemeContext.Provider value={defaultTheme}>
         <World3D />
       </ThemeContext.Provider>
@@ -81,7 +83,15 @@ describe("World3D Overlay Controls Accessibility and Interaction", () => {
     const moveLft = screen.getByLabelText("Move left");
     const moveRgt = screen.getByLabelText("Move right");
 
-    const controls = [flyUp, flyDown, snapshot, moveFwd, moveBck, moveLft, moveRgt];
+    const controls = [
+      flyUp,
+      flyDown,
+      snapshot,
+      moveFwd,
+      moveBck,
+      moveLft,
+      moveRgt,
+    ];
     controls.forEach((control) => {
       expect(control).toBeTruthy();
       expect(control.getAttribute("role")).toBe("button");
@@ -151,13 +161,19 @@ describe("World3D Overlay Controls Accessibility and Interaction", () => {
       const snapshot = screen.getByLabelText("Take snapshot");
 
       fireEvent.click(snapshot);
-      expect(actions.notify).toHaveBeenCalledWith("Snapshot captured to inventory");
+      expect(actions.notify).toHaveBeenCalledWith(
+        "Snapshot captured to inventory"
+      );
 
       fireEvent.keyDown(snapshot, { key: "Enter" });
-      expect(actions.notify).toHaveBeenCalledWith("Snapshot captured to inventory");
+      expect(actions.notify).toHaveBeenCalledWith(
+        "Snapshot captured to inventory"
+      );
 
       fireEvent.keyDown(snapshot, { key: " " });
-      expect(actions.notify).toHaveBeenCalledWith("Snapshot captured to inventory");
+      expect(actions.notify).toHaveBeenCalledWith(
+        "Snapshot captured to inventory"
+      );
     });
 
     it("displays visual active styling when cHeld is up or dn", () => {
@@ -174,7 +190,13 @@ describe("World3D Overlay Controls Accessibility and Interaction", () => {
         >
           <ThemeContext.Provider
             value={{
-              V: { surf: "#101A1C", pri: "#6CFF9A", onpri: "#03240F", outv: "#365047", rs: "4px" },
+              V: {
+                surf: "#101A1C",
+                pri: "#6CFF9A",
+                onpri: "#03240F",
+                outv: "#365047",
+                rs: "4px",
+              },
               t: { font: "sans-serif" },
             }}
           >
