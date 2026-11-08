@@ -89,7 +89,8 @@ export default function BlockKeypad({
 
   const keyStyle = {
     flex: 1,
-    minHeight: V.touchTargetMinMobile || "var(--ktheme-touch-target-min-mobile, 44px)",
+    minHeight:
+      V.touchTargetMinMobile || "var(--ktheme-touch-target-min-mobile, 44px)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -109,7 +110,8 @@ export default function BlockKeypad({
 
   const actionBtn = (primary = false, danger = false) => ({
     flex: 1,
-    minHeight: V.touchTargetMinMobile || "var(--ktheme-touch-target-min-mobile, 44px)",
+    minHeight:
+      V.touchTargetMinMobile || "var(--ktheme-touch-target-min-mobile, 44px)",
     padding: "0 16px",
     display: "flex",
     alignItems: "center",

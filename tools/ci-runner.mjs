@@ -372,26 +372,33 @@ async function getPlaywrightBrowser() {
   };
 
   // Search ms-playwright cache for installed headless shell binaries
-  const homeDir = process.env.HOME || "/home/jules";
-  const msPlaywrightDir = path.join(homeDir, ".cache/ms-playwright");
+  const candidateDirs = [
+    process.env.HOME
+      ? path.join(process.env.HOME, ".cache/ms-playwright")
+      : null,
+    "/home/jules/.cache/ms-playwright",
+  ].filter(Boolean);
   let cachedHeadlessShell = null;
-  if (fs.existsSync(msPlaywrightDir)) {
-    try {
-      const dirs = fs
-        .readdirSync(msPlaywrightDir)
-        .filter((d) => d.startsWith("chromium_headless_shell-"));
-      for (const dir of dirs) {
-        const candidate = path.join(
-          msPlaywrightDir,
-          dir,
-          "chrome-headless-shell-linux64/chrome-headless-shell"
-        );
-        if (fs.existsSync(candidate)) {
-          cachedHeadlessShell = candidate;
-          break;
+  for (const msPlaywrightDir of candidateDirs) {
+    if (fs.existsSync(msPlaywrightDir)) {
+      try {
+        const dirs = fs
+          .readdirSync(msPlaywrightDir)
+          .filter((d) => d.startsWith("chromium_headless_shell-"));
+        for (const dir of dirs) {
+          const candidate = path.join(
+            msPlaywrightDir,
+            dir,
+            "chrome-headless-shell-linux64/chrome-headless-shell"
+          );
+          if (fs.existsSync(candidate)) {
+            cachedHeadlessShell = candidate;
+            break;
+          }
         }
-      }
-    } catch (_) {}
+      } catch (_) {}
+    }
+    if (cachedHeadlessShell) break;
   }
 
   const possiblePaths = [

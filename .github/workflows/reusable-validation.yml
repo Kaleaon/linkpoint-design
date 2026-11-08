@@ -53,7 +53,7 @@ jobs:
 
       - name: Run Unified Validation CLI
         env:
-          VISUAL_DIFF_TOLERANCE: '2.0'
+          VISUAL_DIFF_TOLERANCE: "2.0"
         run: node tools/ci-runner.mjs ${{ inputs.target-flags }}
 
       - name: Upload Visual Diff Artifacts

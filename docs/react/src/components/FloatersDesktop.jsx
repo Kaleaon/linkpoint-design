@@ -262,7 +262,10 @@ export default function FloatersDesktop() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: `repeat(3, ${V.touchTargetMinDesktop || "var(--ktheme-touch-target-min-desktop, 24px)"})`,
+                gridTemplateColumns: `repeat(3, ${
+                  V.touchTargetMinDesktop ||
+                  "var(--ktheme-touch-target-min-desktop, 24px)"
+                })`,
                 gap: "3px",
                 justifyContent: "center",
               }}

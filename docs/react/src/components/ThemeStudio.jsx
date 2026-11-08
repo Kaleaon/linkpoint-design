@@ -2,7 +2,10 @@ import { useContext, useRef, useState } from "react";
 import { AppContext } from "../context/AppContext.jsx";
 import { EDITABLE_THEME_TOKENS } from "../theme/customTheme.js";
 import { validateThemeJson } from "../theme/themeValidator.js";
-import { ThemeStudio as UnifiedThemeStudio, KthemeContext } from "@ktheme/react";
+import {
+  ThemeStudio as UnifiedThemeStudio,
+  KthemeContext,
+} from "@ktheme/react";
 
 export default function ThemeStudio() {
   const app = useContext(AppContext);
