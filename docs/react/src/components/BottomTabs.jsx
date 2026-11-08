@@ -24,7 +24,14 @@ export default function BottomTabs({ children, style }) {
   return (
     <nav
       aria-label="Bottom Tabs Navigation"
-      style={{ flex: "none", display: "flex", background: V.surf, borderTop: "1px solid " + V.outv, padding: "6px 0 10px", ...style }}
+      style={{
+        flex: "none",
+        display: "flex",
+        background: V.surf,
+        borderTop: "1px solid " + V.outv,
+        padding: "6px 0 10px",
+        ...style,
+      }}
     >
       <TabGroup
         activeIndex={activeIndex >= 0 ? activeIndex : 0}
@@ -42,12 +49,43 @@ export default function BottomTabs({ children, style }) {
               <Tab
                 key={n.id}
                 index={index}
-                style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: "4px", padding: "6px 0", cursor: "pointer", color: active ? V.pri : V.ink2, position: "relative" }}
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "4px",
+                  padding: "6px 0",
+                  cursor: "pointer",
+                  color: active ? V.pri : V.ink2,
+                  position: "relative",
+                }}
               >
                 <Icon name={n.icon} size={22} />
-                <span style={{ font: "600 9px/1 " + t.font, letterSpacing: ".14em" }}>{n.label}</span>
+                <span
+                  style={{
+                    font: "600 9px/1 " + t.font,
+                    letterSpacing: ".14em",
+                  }}
+                >
+                  {n.label}
+                </span>
                 {n.badge ? (
-                  <span style={{ position: "absolute", top: "2px", right: "24%", minWidth: "16px", height: "16px", padding: "0 4px", borderRadius: "8px", background: V.bdg, color: V.onbdg, font: "700 9px/16px " + t.font, textAlign: "center" }}>
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "2px",
+                      right: "24%",
+                      minWidth: "16px",
+                      height: "16px",
+                      padding: "0 4px",
+                      borderRadius: "8px",
+                      background: V.bdg,
+                      color: V.onbdg,
+                      font: "700 9px/16px " + t.font,
+                      textAlign: "center",
+                    }}
+                  >
                     {n.badge}
                   </span>
                 ) : null}
@@ -77,4 +115,3 @@ export default function BottomTabs({ children, style }) {
     </nav>
   );
 }
-

@@ -1,6 +1,10 @@
 import { createContext, useContext, useMemo, useEffect } from "react";
 import { useApp } from "./AppContext.jsx";
-import { computeThemeTokens, computeThemeRuntime, createTypographyStyle } from "../theme/computeTheme.js";
+import {
+  computeThemeTokens,
+  computeThemeRuntime,
+  createTypographyStyle,
+} from "../theme/computeTheme.js";
 
 export { createTypographyStyle };
 
@@ -18,16 +22,35 @@ export function ThemeProvider({ children }) {
 
   const runtime = useMemo(
     () => computeThemeRuntime(state, actions.cf, tokens),
-    [state.device, state.screen, state.cond, state.layout, state.palette, state.customTheme, actions.cf, tokens]
+    [
+      state.device,
+      state.screen,
+      state.cond,
+      state.layout,
+      state.palette,
+      state.customTheme,
+      actions.cf,
+      tokens,
+    ]
   );
 
   useEffect(() => {
-    if (typeof document !== "undefined" && document.documentElement && tokens?.V) {
+    if (
+      typeof document !== "undefined" &&
+      document.documentElement &&
+      tokens?.V
+    ) {
       if (tokens.V.focusRing) {
-        document.documentElement.style.setProperty("--k-focus-ring", tokens.V.focusRing);
+        document.documentElement.style.setProperty(
+          "--k-focus-ring",
+          tokens.V.focusRing
+        );
       }
       if (tokens.V.focusRingShadow) {
-        document.documentElement.style.setProperty("--k-focus-ring-shadow", tokens.V.focusRingShadow);
+        document.documentElement.style.setProperty(
+          "--k-focus-ring-shadow",
+          tokens.V.focusRingShadow
+        );
       }
     }
   }, [tokens]);
@@ -43,13 +66,15 @@ export function ThemeProvider({ children }) {
 
 export function useThemeTokens() {
   const ctx = useContext(ThemeTokensContext) || useContext(ThemeContext);
-  if (!ctx) throw new Error("useThemeTokens must be used inside <ThemeProvider>");
+  if (!ctx)
+    throw new Error("useThemeTokens must be used inside <ThemeProvider>");
   return ctx;
 }
 
 export function useThemeRuntime() {
   const ctx = useContext(ThemeRuntimeContext) || useContext(ThemeContext);
-  if (!ctx) throw new Error("useThemeRuntime must be used inside <ThemeProvider>");
+  if (!ctx)
+    throw new Error("useThemeRuntime must be used inside <ThemeProvider>");
   return ctx;
 }
 
@@ -60,5 +85,8 @@ export function useTheme() {
   if (!tokens && !runtime && !legacy) {
     throw new Error("useTheme must be used inside <ThemeProvider>");
   }
-  return useMemo(() => ({ ...(legacy || {}), ...(tokens || {}), ...(runtime || {}) }), [legacy, tokens, runtime]);
+  return useMemo(
+    () => ({ ...(legacy || {}), ...(tokens || {}), ...(runtime || {}) }),
+    [legacy, tokens, runtime]
+  );
 }

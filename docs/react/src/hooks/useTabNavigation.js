@@ -15,7 +15,13 @@ let navIdCounter = 0;
  * @param {string} [options.baseId] - Optional base ID for tab and panel element IDs.
  * @returns {Object} { containerProps, getTabProps, getPanelProps, baseId }
  */
-export function useTabNavigation({ itemCount, activeIndex, onSelect, ariaLabel, baseId: explicitBaseId }) {
+export function useTabNavigation({
+  itemCount,
+  activeIndex,
+  onSelect,
+  ariaLabel,
+  baseId: explicitBaseId,
+}) {
   const reactId = typeof useId === "function" ? useId() : null;
   const [fallbackId] = useState(() => {
     navIdCounter += 1;
@@ -25,7 +31,6 @@ export function useTabNavigation({ itemCount, activeIndex, onSelect, ariaLabel, 
   const baseId =
     explicitBaseId ||
     (reactId ? `tabnav-${reactId.replace(/:/g, "")}` : fallbackId);
-
   const tabRefs = useRef([]);
   const isKeyboardNav = useRef(false);
 
@@ -42,7 +47,11 @@ export function useTabNavigation({ itemCount, activeIndex, onSelect, ariaLabel, 
   // Focus newly active tab if selection change was triggered via keyboard navigation
   useEffect(() => {
     if (isKeyboardNav.current) {
-      if (safeActiveIndex >= 0 && safeActiveIndex < itemCount && tabRefs.current[safeActiveIndex]) {
+      if (
+        safeActiveIndex >= 0 &&
+        safeActiveIndex < itemCount &&
+        tabRefs.current[safeActiveIndex]
+      ) {
         tabRefs.current[safeActiveIndex].focus();
       }
       isKeyboardNav.current = false;
