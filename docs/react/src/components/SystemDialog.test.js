@@ -19,5 +19,5 @@ test("SystemDialog.jsx contains WAI-ARIA dialog attributes", () => {
   // Check description ID binding
   expect(code).toContain('id="dialog-desc"');
   // Check useFocusTrap hook import and usage
-  expect(code).toContain('useFocusTrap(');
+  expect(code).toContain("useFocusTrap(");
 });

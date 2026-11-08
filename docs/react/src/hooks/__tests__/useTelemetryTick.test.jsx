@@ -91,6 +91,9 @@ describe("useTelemetryTick hook", () => {
     unmount();
 
     expect(clearIntervalSpy).toHaveBeenCalled();
-    expect(removeEventListenerSpy).toHaveBeenCalledWith("visibilitychange", expect.any(Function));
+    expect(removeEventListenerSpy).toHaveBeenCalledWith(
+      "visibilitychange",
+      expect.any(Function)
+    );
   });
 });
