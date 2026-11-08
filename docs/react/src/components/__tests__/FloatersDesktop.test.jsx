@@ -30,8 +30,8 @@ const mockThemeContext = {
     rs: "4px",
   },
   t: {
-    font: 'system-ui, sans-serif',
-    dfont: 'monospace',
+    font: "system-ui, sans-serif",
+    dfont: "monospace",
   },
   ink: (bg) => "#ffffff",
   isSweepDesk: false,
@@ -78,9 +78,12 @@ function TestWrapper({ children, onStateController }) {
   const actions = React.useMemo(
     () => ({
       sceneDown: vi.fn((e) => setState((s) => ({ ...s, cDrag: true }))),
-      sceneMove: vi.fn((e) => setState((s) => ({ ...s, cHdg: s.cHdg + 10, cPitch: s.cPitch + 5 }))),
+      sceneMove: vi.fn((e) =>
+        setState((s) => ({ ...s, cHdg: s.cHdg + 10, cPitch: s.cPitch + 5 }))
+      ),
       sceneUp: vi.fn(() => setState((s) => ({ ...s, cDrag: false }))),
-      flR: (id) => stateRef.current.flRect[id] || { x: 0, y: 0, w: 300, h: 200 },
+      flR: (id) =>
+        stateRef.current.flRect[id] || { x: 0, y: 0, w: 300, h: 200 },
       flDrag: vi.fn(),
       flFocus: vi.fn(),
       flToggle: vi.fn(),
@@ -94,7 +97,9 @@ function TestWrapper({ children, onStateController }) {
       setTab: vi.fn(),
       setDialog: vi.fn(),
       setMenu: vi.fn(),
-      allGrids: () => [{ key: "agni", label: "Agni (Main)", host: "login.agni.lindenlab.com" }],
+      allGrids: () => [
+        { key: "agni", label: "Agni (Main)", host: "login.agni.lindenlab.com" },
+      ],
     }),
     []
   );
@@ -127,7 +132,11 @@ describe("FloatersDesktop memoization", () => {
 
     let controller;
     const { container } = render(
-      <TestWrapper onStateController={(c) => { controller = c; }}>
+      <TestWrapper
+        onStateController={(c) => {
+          controller = c;
+        }}
+      >
         <FloatersDesktop />
       </TestWrapper>
     );
@@ -139,7 +148,9 @@ describe("FloatersDesktop memoization", () => {
     const chatInput = screen.getByLabelText(/Nearby chat message/i);
     expect(chatInput).toBeDefined();
 
-    fireEvent.change(chatInput, { target: { value: "Testing quick chat message" } });
+    fireEvent.change(chatInput, {
+      target: { value: "Testing quick chat message" },
+    });
     fireEvent.change(chatInput, { target: { value: "Second message draft" } });
 
     expect(buildCardsSpy.mock.calls.length).toBe(initialCalls);
