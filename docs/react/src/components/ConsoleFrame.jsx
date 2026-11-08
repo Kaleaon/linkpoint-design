@@ -317,8 +317,8 @@ export default function ConsoleFrame() {
               display: "flex",
               gap: C.gap + "px",
               zIndex: state.cEdit
-                ? (V.z?.modal ?? "var(--ktheme-z-modal, 500)")
-                : (V.z?.base ?? "var(--ktheme-z-base, 0)"),
+                ? V.z?.modal ?? "var(--ktheme-z-modal, 500)"
+                : V.z?.base ?? "var(--ktheme-z-base, 0)",
             }}
           >
             {state.cDock.map((k, i) => {

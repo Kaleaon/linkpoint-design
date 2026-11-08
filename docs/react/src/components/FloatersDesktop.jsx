@@ -393,7 +393,9 @@ export default function FloatersDesktop() {
               top: r.y + "px",
               width: r.w + "px",
               height: (isShaded ? FBAR : r.h) + "px",
-              zIndex: `calc(var(--ktheme-z-window, ${V.z?.window ?? 10}) + ${Math.max(0, state.flZ.indexOf(f.id))})`,
+              zIndex: `calc(var(--ktheme-z-window, ${
+                V.z?.window ?? 10
+              }) + ${Math.max(0, state.flZ.indexOf(f.id))})`,
               display: "flex",
               flexDirection: "column",
               background: V.surf,
