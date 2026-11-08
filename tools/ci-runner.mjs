@@ -39,6 +39,7 @@ function log(msg, type = "info") {
 
 // Parse Command Line Arguments
 const args = process.argv.slice(2);
+let runApp = args.includes("--app");
 let runUnit = args.includes("--unit");
 let runCatalog = args.includes("--catalog");
 let runSchema = args.includes("--schema");
@@ -63,6 +64,7 @@ ${colors.bold}USAGE:${colors.reset}
   node tools/ci-runner.mjs [FLAGS]
 
 ${colors.bold}FLAGS:${colors.reset}
+  --app               Run application validation suite (tokens, screens, floaters, contrast)
   --unit              Run unit test suites
   --catalog           Run theme catalog parity checks
   --schema            Run Ktheme theme schema validation
@@ -73,7 +75,7 @@ ${colors.bold}FLAGS:${colors.reset}
   --port <number>     Specify static server port override
   --help, -h          Show this help message
 
-  ${colors.gray}If no task flags (--unit, --catalog, --schema, --palette, --a11y, --visual) are specified,
+  ${colors.gray}If no task flags (--app, --unit, --catalog, --schema, --palette, --a11y, --visual) are specified,
   all applicable validation tasks for the current repository will run.${colors.reset}
 `);
   process.exit(0);
@@ -81,6 +83,7 @@ ${colors.bold}FLAGS:${colors.reset}
 
 // If no specific task flag was passed, run all tasks applicable to the current repo
 if (
+  !runApp &&
   !runUnit &&
   !runCatalog &&
   !runSchema &&
@@ -88,6 +91,7 @@ if (
   !runA11y &&
   !runVisual
 ) {
+  runApp = true;
   runUnit = true;
   runCatalog = true;
   runSchema = true;
@@ -459,6 +463,35 @@ async function navigateWithRetry(
       );
       await new Promise((r) => setTimeout(r, delayMs));
     }
+  }
+}
+
+// TASK 0: Application Validation Suite
+async function taskAppValidation() {
+  const scriptPath = path.join(cwd, "tools/validate-app.mjs");
+  if (!fs.existsSync(scriptPath)) {
+    log(
+      "No application validation script found in this repository. Skipped.",
+      "warn"
+    );
+    return true;
+  }
+
+  log("Running Application Validation Suite (validate-app.mjs)...", "header");
+  const res = spawnSync(process.execPath || "node", [scriptPath], {
+    cwd,
+    stdio: "inherit",
+  });
+  if (res.error) {
+    log(`Application validation error: ${res.error.message}`, "error");
+    return false;
+  }
+  if (res.status === 0) {
+    log("Application validation passed successfully.", "success");
+    return true;
+  } else {
+    log(`Application validation failed (exit code ${res.status}).`, "error");
+    return false;
   }
 }
 
@@ -1179,6 +1212,7 @@ ${colors.bold}${
   }=====================================================${colors.reset}
 Working Directory: ${cwd}
 Active Tasks: ${[
+    runApp && "App",
     runUnit && "Unit",
     runCatalog && "Catalog",
     runSchema && "Schema",
@@ -1191,6 +1225,10 @@ Active Tasks: ${[
 `);
 
   const results = {};
+
+  if (runApp) {
+    results.app = await taskAppValidation();
+  }
 
   if (runUnit) {
     results.unit = await taskUnitTests();

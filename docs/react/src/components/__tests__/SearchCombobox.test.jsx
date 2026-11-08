@@ -11,7 +11,19 @@ import { ThemeProvider } from "../../context/ThemeContext.jsx";
 
 const mockThemeContext = {
   LK: { card: "box", gap: "8px" },
-  V: { pri: "#00f0ff", onpri: "#000", surf: "#12141a", surf2: "#1c1f26", outv: "#333", ink: "#ffffff", ink2: "#aaa", rs: "4px", rp: "8px", ok: "#22c55e", sec2: "#00f0ff" },
+  V: {
+    pri: "#00f0ff",
+    onpri: "#000",
+    surf: "#12141a",
+    surf2: "#1c1f26",
+    outv: "#333",
+    ink: "#ffffff",
+    ink2: "#aaa",
+    rs: "4px",
+    rp: "8px",
+    ok: "#22c55e",
+    sec2: "#00f0ff",
+  },
   t: { font: "sans-serif", dfont: "sans-serif" },
   bleed: false,
   pad: "10px",
@@ -72,7 +84,9 @@ describe("SearchCombobox Component & WCAG Compliance", () => {
       </AppContext.Provider>
     );
 
-    expect(screen.getByRole("combobox").getAttribute("aria-expanded")).toBe("true");
+    expect(screen.getByRole("combobox").getAttribute("aria-expanded")).toBe(
+      "true"
+    );
 
     // When value is present but resultCount is 0, aria-expanded is false
     rerender(
@@ -89,7 +103,9 @@ describe("SearchCombobox Component & WCAG Compliance", () => {
       </AppContext.Provider>
     );
 
-    expect(screen.getByRole("combobox").getAttribute("aria-expanded")).toBe("false");
+    expect(screen.getByRole("combobox").getAttribute("aria-expanded")).toBe(
+      "false"
+    );
   });
 
   it("debounces announcement messages by 300ms and announces matching result counts", () => {
@@ -105,8 +121,22 @@ describe("SearchCombobox Component & WCAG Compliance", () => {
 
       return (
         <div>
-          <button onClick={() => { setVal("resident"); setCount(5); }}>Search 5</button>
-          <button onClick={() => { setVal("unknown"); setCount(0); }}>Search 0</button>
+          <button
+            onClick={() => {
+              setVal("resident");
+              setCount(5);
+            }}
+          >
+            Search 5
+          </button>
+          <button
+            onClick={() => {
+              setVal("unknown");
+              setCount(0);
+            }}
+          >
+            Search 0
+          </button>
           <SearchCombobox
             controlsId="results-list"
             ariaLabel="Search"
@@ -176,7 +206,10 @@ describe("LiveRegionAnnouncer Component & WCAG 2.2 SC 4.1.3", () => {
 
   it("prioritizes toast notifications over search announcements when both exist", () => {
     const mockAppContext = {
-      state: { toast: "Teleporting...", announcement: "4 matching residents found" },
+      state: {
+        toast: "Teleporting...",
+        announcement: "4 matching residents found",
+      },
       actions: {},
     };
 
@@ -255,7 +288,9 @@ describe("Screen Integration: Search.jsx, Inventory.jsx, Friends.jsx", () => {
 
     const combobox = screen.getByRole("combobox");
     expect(combobox).toBeDefined();
-    expect(combobox.getAttribute("aria-controls")).toBe("inventory-results-tree");
+    expect(combobox.getAttribute("aria-controls")).toBe(
+      "inventory-results-tree"
+    );
     expect(combobox.getAttribute("placeholder")).toBe("filter inventory…");
 
     const tree = document.getElementById("inventory-results-tree");
