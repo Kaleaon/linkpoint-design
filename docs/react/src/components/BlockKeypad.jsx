@@ -120,7 +120,7 @@ export default function BlockKeypad({
     color: primary
       ? ink(V.pri, [V.bg, V.onpri, V.ink])
       : danger
-        ? V.onerr || "var(--ink, #fff)"
+        ? V.onerr || "var(--onerr, #fff)"
         : V.ink,
     border:
       "1px solid " + (primary ? V.pri : danger ? V.err || "#dc2626" : V.outv),

@@ -517,7 +517,6 @@ async function taskUnitTests() {
         log(`Failed to clone Ktheme: ${err.message}`, "warn");
       }
     }
-
     const hasPnpmLock = fs.existsSync(path.join(reactDir, "pnpm-lock.yaml"));
     const hasNpmLock = fs.existsSync(path.join(reactDir, "package-lock.json"));
     const isPnpmAvailable = () => {

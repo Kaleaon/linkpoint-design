@@ -124,7 +124,9 @@ export function useAppState() {
       if (val === "simple" || val === "advanced") {
         savedVerbosity = val;
       }
-    } catch {}
+    } catch {
+      /* ignore storage error */
+    }
     return {
       draw: "96 m",
       quality: "Balanced",
@@ -199,7 +201,9 @@ export function useAppState() {
           return parsed;
         }
       }
-    } catch {}
+    } catch {
+      /* ignore parse error */
+    }
     return DEFAULT_STORED_ACCOUNTS;
   });
   const [selectedAccountId, setSelectedAccountId] = useState(() => {
@@ -765,7 +769,9 @@ export function useAppState() {
     setPrefs((s) => ({ ...s, telemetryVerbosity: validMode }));
     try {
       localStorage.setItem("telemetryVerbosity", validMode);
-    } catch {}
+    } catch {
+      /* ignore storage error */
+    }
   }, []);
   const setPref = useCallback(
     (key, v) => {

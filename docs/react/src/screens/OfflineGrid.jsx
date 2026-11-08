@@ -104,8 +104,8 @@ export default function OfflineGrid() {
               padding: "4px 8px",
               borderRadius: V.rs,
               font: "700 10.5px/1 " + t.font,
-              background: isRunning ? V.priC : "rgba(255,108,108,0.15)",
-              color: isRunning ? V.pri : "var(--err, #FF6C6C)",
+              background: isRunning ? V.priC : V.surf2,
+              color: isRunning ? V.pri : V.err,
             }}
           >
             {isRunning ? "ONLINE · 127.0.0.1:9000" : "OFFLINE · Server stopped"}
@@ -143,9 +143,7 @@ export default function OfflineGrid() {
           style={{
             border:
               "1px solid " +
-              (state.recoveryState === "failed"
-                ? "var(--err, #FF6C6C)"
-                : V.pri),
+              (state.recoveryState === "failed" ? V.err || "#FF6C6C" : V.pri),
             borderRadius: V.rs,
             background: V.surf2,
             padding: "14px",
@@ -185,8 +183,8 @@ export default function OfflineGrid() {
                   state.recoveryState === "recovered"
                     ? V.pri
                     : state.recoveryState === "failed"
-                      ? "var(--err, #FF6C6C)"
-                      : "var(--warn, #FFC107)",
+                      ? V.err || "#FF6C6C"
+                      : V.warn || "#FFC107",
               }}
             >
               {state.recoveryState === "reconnecting"
@@ -233,9 +231,7 @@ export default function OfflineGrid() {
                         : "20%",
                 height: "100%",
                 background:
-                  state.recoveryState === "failed"
-                    ? "var(--err, #FF6C6C)"
-                    : V.pri,
+                  state.recoveryState === "failed" ? V.err || "#FF6C6C" : V.pri,
                 transition: "width 0.3s ease",
               }}
             />
@@ -751,7 +747,7 @@ export default function OfflineGrid() {
             borderRadius: V.rs,
             border: "1px solid " + V.outv,
             background: V.surf2,
-            color: "var(--err, #FF6C6C)",
+            color: V.err,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

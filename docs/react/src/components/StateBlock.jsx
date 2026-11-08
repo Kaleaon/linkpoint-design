@@ -237,7 +237,7 @@ export default function StateBlock() {
             justifyContent: "center",
             borderRadius: V.rs,
             background: isError ? V.err : V.pri,
-            color: isError ? V.onerr || "var(--ink, #FFFFFF)" : V.onpri,
+            color: isError ? V.onerr || V.ink : V.onpri,
             font: "700 11px/1 " + t.font,
             letterSpacing: ".18em",
             cursor: "pointer",

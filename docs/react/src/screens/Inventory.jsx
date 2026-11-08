@@ -265,7 +265,7 @@ export default function Inventory() {
           <div
             style={{
               margin: "16px",
-              border: "1px solid var(--err, #FF6C6C)",
+              border: "1px solid " + (V.err || "#FF6C6C"),
               borderRadius: V.rs,
               background: V.surf2,
               padding: "20px 16px",
@@ -281,11 +281,11 @@ export default function Inventory() {
                 width: "44px",
                 height: "44px",
                 borderRadius: V.rs,
-                border: "1px solid var(--err, #FF6C6C)",
+                border: "1px solid " + (V.err || "#FF6C6C"),
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                color: "var(--err, #FF6C6C)",
+                color: V.err || "#FF6C6C",
               }}
             >
               <Icon name="package-x" size={22} />

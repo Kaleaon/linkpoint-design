@@ -56,7 +56,7 @@ export default function ThemeStudio() {
         </span>
         <span aria-hidden="true">{open ? "−" : "+"}</span>
       </button>
-      {open && (
+      {open && theme && (
         <div className="theme-studio-body">
           {importError && (
             <div className="theme-studio-alert" role="alert" aria-live="polite">
