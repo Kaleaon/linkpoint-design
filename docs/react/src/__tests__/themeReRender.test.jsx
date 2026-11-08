@@ -1,7 +1,11 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, fireEvent, act } from "@testing-library/react";
 import React, { useRef, useEffect } from "react";
-import { KthemeProvider, batchSetCssVariables, flushCssVariables } from "@ktheme/react";
+import {
+  KthemeProvider,
+  batchSetCssVariables,
+  flushCssVariables,
+} from "@ktheme/react";
 import { AppProvider } from "../context/AppContext.jsx";
 import ThemeStudio from "../components/ThemeStudio.jsx";
 
@@ -48,8 +52,12 @@ describe("Theme Token Update Re-render Optimization", () => {
     });
 
     // Check that DOM CSS variable properties were updated
-    expect(document.documentElement.style.getPropertyValue("--ktheme-pri")).toBe("#FF0055");
-    expect(document.documentElement.style.getPropertyValue("--ktheme-surf")).toBe("#00FF22");
+    expect(
+      document.documentElement.style.getPropertyValue("--ktheme-pri")
+    ).toBe("#FF0055");
+    expect(
+      document.documentElement.style.getPropertyValue("--ktheme-surf")
+    ).toBe("#00FF22");
 
     // Component render count should still be 1 (zero React re-renders triggered!)
     expect(renderSpy).toHaveBeenCalledTimes(1);
@@ -85,7 +93,9 @@ describe("Theme Token Update Re-render Optimization", () => {
       });
 
       // CSS variable on document element should be updated
-      expect(document.documentElement.style.getPropertyValue("--ktheme-pri")).toBe("#123456");
+      expect(
+        document.documentElement.style.getPropertyValue("--ktheme-pri")
+      ).toBe("#123456");
 
       // Active input should not trigger whole tree re-render before commit
       expect(renderSpy.mock.calls.length).toBe(initialRenders);
