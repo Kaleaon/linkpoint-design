@@ -495,7 +495,10 @@ async function taskUnitTests() {
       !fs.existsSync("/app/Ktheme")
     ) {
       try {
-        log("Cloning Ktheme repository for local React dependencies...", "info");
+        log(
+          "Cloning Ktheme repository for local React dependencies...",
+          "info"
+        );
         spawnSync(
           "git",
           [
@@ -505,7 +508,7 @@ async function taskUnitTests() {
             "https://github.com/Kaleaon/Ktheme.git",
             kthemeDir,
           ],
-          { stdio: "inherit" },
+          { stdio: "inherit" }
         );
       } catch (_) {}
     }
@@ -513,7 +516,7 @@ async function taskUnitTests() {
       try {
         log(
           "Installing docs/react dependencies before running unit tests...",
-          "info",
+          "info"
         );
         spawnSync("npm", ["install"], {
           cwd: reactDir,

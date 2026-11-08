@@ -114,9 +114,30 @@ export function computeThemeTokens(state) {
   const textColor = V.ink || V.text || V.onSurface || "#D7F5E6";
   const outlineColor = V.outv || V.outline || "#365047";
 
-  const priVsBg = auditPair("primary vs background", "primary", "background", priColor, bgColor, 4.5);
-  const surfVsText = auditPair("surface vs text", "surface", "text", surfColor, textColor, 4.5);
-  const outlineVsSurf = auditPair("outline vs surface", "outline", "surface", outlineColor, surfColor, 4.5);
+  const priVsBg = auditPair(
+    "primary vs background",
+    "primary",
+    "background",
+    priColor,
+    bgColor,
+    4.5
+  );
+  const surfVsText = auditPair(
+    "surface vs text",
+    "surface",
+    "text",
+    surfColor,
+    textColor,
+    4.5
+  );
+  const outlineVsSurf = auditPair(
+    "outline vs surface",
+    "outline",
+    "surface",
+    outlineColor,
+    surfColor,
+    4.5
+  );
 
   const pairs = [priVsBg, surfVsText, outlineVsSurf];
   const violations = pairs.filter((p) => !p.pass);
