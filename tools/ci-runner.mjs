@@ -229,12 +229,9 @@ function parsePNG(buffer) {
 
   const raw = zlib.inflateSync(Buffer.concat(idatChunks));
   let bpp = 4;
-  if (colorType === 2)
-    bpp = 3; // RGB
-  else if (colorType === 6)
-    bpp = 4; // RGBA
-  else if (colorType === 0)
-    bpp = 1; // Grayscale
+  if (colorType === 2) bpp = 3; // RGB
+  else if (colorType === 6) bpp = 4; // RGBA
+  else if (colorType === 0) bpp = 1; // Grayscale
   else if (colorType === 4) bpp = 2; // Grayscale + Alpha
 
   const stride = width * bpp;
