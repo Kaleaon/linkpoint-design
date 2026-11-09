@@ -4,24 +4,28 @@ import { useFocusStack } from "../context/FocusStackContext.jsx";
 import { useThemeTokens } from "../context/ThemeContext.jsx";
 
 const FOCUSABLE_SELECTOR = [
-  'a[href]',
-  'button:not([disabled])',
-  'textarea:not([disabled])',
-  'input:not([disabled])',
-  'select:not([disabled])',
+  "a[href]",
+  "button:not([disabled])",
+  "textarea:not([disabled])",
+  "input:not([disabled])",
+  "select:not([disabled])",
   '[tabindex]:not([tabindex="-1"])',
-  '[role="button"]:not([tabindex="-1"])'
+  '[role="button"]:not([tabindex="-1"])',
 ].join(", ");
 
 function getFocusableElements(container) {
   if (!container) return [];
-  return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR)).filter((el) => {
-    if (el.getAttribute("data-sentinel")) return false;
-    if (el.getAttribute("aria-hidden") === "true") return false;
-    const style = typeof window !== "undefined" ? window.getComputedStyle(el) : null;
-    if (style && (style.display === "none" || style.visibility === "hidden")) return false;
-    return true;
-  });
+  return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR)).filter(
+    (el) => {
+      if (el.getAttribute("data-sentinel")) return false;
+      if (el.getAttribute("aria-hidden") === "true") return false;
+      const style =
+        typeof window !== "undefined" ? window.getComputedStyle(el) : null;
+      if (style && (style.display === "none" || style.visibility === "hidden"))
+        return false;
+      return true;
+    }
+  );
 }
 
 function getModalRootNode() {
@@ -46,7 +50,7 @@ export default function AccessibleDialogPortal({
   role = "dialog",
   children,
   style,
-  className
+  className,
 }) {
   const portalId = useId();
   const contentRef = useRef(null);
@@ -62,7 +66,9 @@ export default function AccessibleDialogPortal({
   useEffect(() => {
     if (!isOpen) return;
 
-    const recordedTrigger = triggerElement || (typeof document !== "undefined" ? document.activeElement : null);
+    const recordedTrigger =
+      triggerElement ||
+      (typeof document !== "undefined" ? document.activeElement : null);
     focusStack.registerPortal(portalId, recordedTrigger, isModal);
 
     return () => {
@@ -74,17 +80,28 @@ export default function AccessibleDialogPortal({
   useEffect(() => {
     if (!isOpen || !mounted) return;
 
-    const scheduleFocus = typeof requestAnimationFrame === "function" ? requestAnimationFrame : (cb) => setTimeout(cb, 0);
-    const cancelSchedule = typeof cancelAnimationFrame === "function" ? cancelAnimationFrame : clearTimeout;
+    const scheduleFocus =
+      typeof requestAnimationFrame === "function"
+        ? requestAnimationFrame
+        : (cb) => setTimeout(cb, 0);
+    const cancelSchedule =
+      typeof cancelAnimationFrame === "function"
+        ? cancelAnimationFrame
+        : clearTimeout;
 
     const timerId = scheduleFocus(() => {
       if (!contentRef.current) return;
-      const primaryEl = contentRef.current.querySelector('[data-primary="true"]');
+      const primaryEl = contentRef.current.querySelector(
+        '[data-primary="true"]'
+      );
       const focusables = getFocusableElements(contentRef.current);
 
       if (primaryEl && typeof primaryEl.focus === "function") {
         primaryEl.focus();
-      } else if (focusables.length > 0 && typeof focusables[0].focus === "function") {
+      } else if (
+        focusables.length > 0 &&
+        typeof focusables[0].focus === "function"
+      ) {
         focusables[0].focus();
       } else if (typeof contentRef.current.focus === "function") {
         contentRef.current.focus();
@@ -167,17 +184,20 @@ export default function AccessibleDialogPortal({
     whiteSpace: "nowrap",
     border: 0,
     opacity: 0,
-    pointerEvents: "none"
+    pointerEvents: "none",
   };
 
   const portalWrapperStyle = {
     color: V.ink || "inherit",
     fontFamily: t.font || "sans-serif",
-    ...style
+    ...style,
   };
 
   const portalContent = (
-    <div className={`accessible-dialog-portal ${className || ""}`.trim()} style={portalWrapperStyle}>
+    <div
+      className={`accessible-dialog-portal ${className || ""}`.trim()}
+      style={portalWrapperStyle}
+    >
       {/* Top Focus Sentinel */}
       <div
         tabIndex={0}
