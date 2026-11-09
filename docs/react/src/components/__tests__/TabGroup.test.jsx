@@ -1,14 +1,24 @@
 import { describe, it, expect, vi } from "vitest";
 import React, { useState } from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { TabGroup, TabList, Tab, TabPanel, useTabContext } from "../TabGroup.jsx";
+import {
+  TabGroup,
+  TabList,
+  Tab,
+  TabPanel,
+  useTabContext,
+} from "../TabGroup.jsx";
 import SegmentedTabs from "../SegmentedTabs.jsx";
 import BottomTabs from "../BottomTabs.jsx";
 import ChipRow from "../ChipRow.jsx";
 import ScreenBody from "../ScreenBody.jsx";
 import Chat from "../../screens/Chat.jsx";
 import { AppProvider, AppContext } from "../../context/AppContext.jsx";
-import { ThemeProvider, ThemeTokensContext, ThemeRuntimeContext } from "../../context/ThemeContext.jsx";
+import {
+  ThemeProvider,
+  ThemeTokensContext,
+  ThemeRuntimeContext,
+} from "../../context/ThemeContext.jsx";
 
 const mockAppState = {
   screen: "Chat",
@@ -90,7 +100,15 @@ const mockRuntime = {
   d: { split: false },
 };
 
-function renderWithProviders(ui, { appState = mockAppState, actions = mockAppActions, tokens = mockTokens, runtime = mockRuntime } = {}) {
+function renderWithProviders(
+  ui,
+  {
+    appState = mockAppState,
+    actions = mockAppActions,
+    tokens = mockTokens,
+    runtime = mockRuntime,
+  } = {}
+) {
   return render(
     <AppContext.Provider value={{ state: appState, actions }}>
       <ThemeRuntimeContext.Provider value={runtime}>
@@ -200,7 +218,11 @@ describe("TabGroup Compound Component System", () => {
     function VerticalTest() {
       const [active, setActive] = useState(0);
       return (
-        <TabGroup activeIndex={active} onSelect={setActive} orientation="vertical">
+        <TabGroup
+          activeIndex={active}
+          onSelect={setActive}
+          orientation="vertical"
+        >
           <TabList aria-label="Vertical Nav">
             <Tab>Top</Tab>
             <Tab>Middle</Tab>
@@ -228,10 +250,18 @@ describe("TabGroup Compound Component System", () => {
   it("accepts style overrides on TabGroup, TabList, Tab, and TabPanel wrappers", () => {
     render(
       <TabGroup style={{ margin: "20px" }} className="custom-group">
-        <TabList style={{ padding: "10px" }} className="custom-list" aria-label="Custom Styled">
-          <Tab style={{ border: "2px dashed red" }} className="custom-tab">Custom Tab</Tab>
+        <TabList
+          style={{ padding: "10px" }}
+          className="custom-list"
+          aria-label="Custom Styled"
+        >
+          <Tab style={{ border: "2px dashed red" }} className="custom-tab">
+            Custom Tab
+          </Tab>
         </TabList>
-        <TabPanel style={{ background: "purple" }} className="custom-panel">Custom Content</TabPanel>
+        <TabPanel style={{ background: "purple" }} className="custom-panel">
+          Custom Content
+        </TabPanel>
       </TabGroup>
     );
 
@@ -278,16 +308,22 @@ describe("TabGroup Compound Component System", () => {
   it("BottomTabs renders TabGroup, TabList, Tab items, and TabPanel with matching controls", () => {
     renderWithProviders(<BottomTabs />);
 
-    const nav = screen.getByRole("navigation", { name: "Bottom Tabs Navigation" });
+    const nav = screen.getByRole("navigation", {
+      name: "Bottom Tabs Navigation",
+    });
     expect(nav).toBeTruthy();
 
-    const tablist = screen.getByRole("tablist", { name: "Bottom Tabs Navigation" });
+    const tablist = screen.getByRole("tablist", {
+      name: "Bottom Tabs Navigation",
+    });
     expect(tablist).toBeTruthy();
 
     const tabs = screen.getAllByRole("tab");
     expect(tabs.length).toBeGreaterThanOrEqual(4);
 
-    const activeTab = tabs.find((t) => t.getAttribute("aria-selected") === "true");
+    const activeTab = tabs.find(
+      (t) => t.getAttribute("aria-selected") === "true"
+    );
     expect(activeTab).toBeTruthy();
 
     const panel = screen.getByRole("tabpanel");
@@ -336,7 +372,9 @@ describe("TabGroup Compound Component System", () => {
     // Active subnav tab controls the main tabpanel
     const subnavTablist = screen.getByRole("tablist", { name: "View Filters" });
     const tabs = subnavTablist.querySelectorAll('[role="tab"]');
-    const activeSubTab = Array.from(tabs).find((t) => t.getAttribute("aria-selected") === "true");
+    const activeSubTab = Array.from(tabs).find(
+      (t) => t.getAttribute("aria-selected") === "true"
+    );
     expect(activeSubTab).toBeTruthy();
 
     // Ensure activeSubTab aria-controls links to a real element in the document

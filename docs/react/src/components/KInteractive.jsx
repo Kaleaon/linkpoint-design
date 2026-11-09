@@ -44,7 +44,7 @@ export function KInteractive({
     <Component
       type={buttonType}
       role={isButton ? role : role || "button"}
-      tabIndex={disabled ? -1 : tabIndex ?? 0}
+      tabIndex={disabled ? -1 : (tabIndex ?? 0)}
       disabled={isButton ? disabled : undefined}
       aria-label={ariaLabel}
       aria-disabled={disabled ? true : undefined}
