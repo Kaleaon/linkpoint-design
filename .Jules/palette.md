@@ -79,3 +79,6 @@
 
 **Learning:** When porting interactive features (like custom div/span multi-select toolbars in the Inventory screen) from vanilla HTML templates to React, developers sometimes carry over the `role="button"` and `tabIndex={0}` properties but mistakenly drop the explicit `onKeyDown` handlers required for Enter/Space keyboard activation, breaking accessibility.
 **Action:** When auditing React ports of HTML templates, explicitly cross-reference the source HTML to ensure that all `onClick` behaviors are accurately mapped with accompanying `onKeyDown` handlers.
+## 2026-11-09 - Accessible Custom Buttons in Search UI
+**Learning:** When rendering custom user-action pills (like "ADD" or "IM") within a mapped list of search results, simply providing a label parameter to an `<div onClick>` is insufficient for accessibility. Keyboard users cannot activate them with Space/Enter, and screen readers lack context of what action the button performs and on whom.
+**Action:** Ensure all dynamically rendered action `div`s have `role="button"`, `tabindex="0"` (`tabIndex={0}`), an `onKeyDown` mapped to Enter/Space with `e.preventDefault()`, and importantly, an `aria-label` that dynamically concatenates the action text with the item's name (e.g. `ADD Wren`) to provide full context.
