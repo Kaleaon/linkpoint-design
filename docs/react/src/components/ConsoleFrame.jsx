@@ -17,6 +17,36 @@ import A11yControl from "./A11yControl.jsx";
 import ScreenBody from "./ScreenBody.jsx";
 import { navActive } from "../theme/look.js";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
+import * as KthemeReact from "@ktheme/react";
+
+const fallbackUseMotionTokens = () => {
+  const reducedMotion = usePrefersReducedMotion();
+  const duration = "300ms";
+  const easing = "cubic-bezier(0.25, 0.1, 0.25, 1.0)";
+  const durationReduced = "0ms";
+  const easingReduced = "cubic-bezier(0.0, 0.0, 1.0, 1.0)";
+  const activeDuration = reducedMotion ? durationReduced : duration;
+  const activeEasing = reducedMotion ? easingReduced : easing;
+  const transition = (property = "all", overrideDuration, overrideEasing) => {
+    if (reducedMotion) return "none";
+    const d = overrideDuration || activeDuration;
+    const e = overrideEasing || activeEasing;
+    return `${property} ${d} ${e}`;
+  };
+  return {
+    duration,
+    easing,
+    durationReduced,
+    easingReduced,
+    reducedMotion,
+    transition,
+  };
+};
+
+const useMotionTokens =
+  typeof KthemeReact?.useMotionTokens === "function"
+    ? KthemeReact.useMotionTokens
+    : fallbackUseMotionTokens;
 
 // The 3D View's sim/location — shared by the in-scene region tag and the
 // console's own top bar so the two never disagree.
@@ -31,7 +61,8 @@ const SIM_COORD = { x: 128, y: 64, z: 42 };
 export default function ConsoleFrame() {
   const { state, actions } = useApp();
   const { V, t, C, ink, consoleScene } = useTheme();
-  const reducedMotion = usePrefersReducedMotion();
+  const motion = useMotionTokens();
+  const reducedMotion = motion?.reducedMotion ?? usePrefersReducedMotion();
   const tick = useTelemetryTick();
   const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
 
@@ -234,7 +265,16 @@ export default function ConsoleFrame() {
     letterSpacing: ".14em",
   };
 
-  const consoleNav = buildConsoleNav({ state, actions, V, t, C, ink });
+  const consoleNav = buildConsoleNav({
+    state,
+    actions,
+    V,
+    t,
+    C,
+    ink,
+    motion,
+    reducedMotion,
+  });
 
   const shellStyle = consoleScene
     ? { display: "none" }
@@ -249,7 +289,7 @@ export default function ConsoleFrame() {
         borderRadius: C.rad + "px 0 0 0",
         overflow: "hidden",
         background: V.surf,
-        zIndex: 2,
+        zIndex: V.z?.card ?? "var(--ktheme-z-card, 1)",
       };
 
   return (
@@ -316,7 +356,9 @@ export default function ConsoleFrame() {
               height: C.dock + "px",
               display: "flex",
               gap: C.gap + "px",
-              zIndex: state.cEdit ? 6 : 1,
+              zIndex: state.cEdit
+                ? V.z?.modal ?? "var(--ktheme-z-modal, 500)"
+                : V.z?.base ?? "var(--ktheme-z-base, 0)",
             }}
           >
             {state.cDock.map((k, i) => {
@@ -496,7 +538,7 @@ export default function ConsoleFrame() {
               position: "absolute",
               inset: 0,
               background: "rgba(0,0,0,.66)",
-              zIndex: 4,
+              zIndex: V.z?.overlay ?? "var(--ktheme-z-overlay, 100)",
             }}
           />
           <div
@@ -505,7 +547,7 @@ export default function ConsoleFrame() {
               left: C.rail + C.gap + "px",
               right: C.gap + "px",
               bottom: C.foot + C.dock + C.gap * 3 + "px",
-              zIndex: 7,
+              zIndex: V.z?.popover ?? "var(--ktheme-z-popover, 600)",
               display: "flex",
               alignItems: "center",
               gap: "12px",
@@ -545,11 +587,34 @@ export default function ConsoleFrame() {
   );
 }
 
-function buildConsoleNav({ state, actions, V, t, C, ink }) {
+function buildConsoleNav({
+  state,
+  actions,
+  V,
+  t,
+  C,
+  ink,
+  motion,
+  reducedMotion,
+}) {
   const hs = C.wide
     ? [94, 56, 70, 46, 58, 46, 52, 46]
     : [58, 46, 52, 46, 48, 46, 50, 46];
   const tint = [V.sec2, V.surf2, V.sec, V.surf2, V.sec2, V.sec, V.surf2, V.sec];
+  const isReduced = reducedMotion ?? motion?.reducedMotion ?? false;
+  const navTransition = isReduced
+    ? "none"
+    : motion?.transition
+      ? motion.transition(
+          "background",
+          "var(--ktheme-motion-duration-fast, " +
+            (motion.duration || "150ms") +
+            ")",
+          "var(--ktheme-motion-easing, " +
+            (motion.easing || "cubic-bezier(0.25, 0.1, 0.25, 1.0)") +
+            ")",
+        )
+      : "background var(--ktheme-motion-duration-fast, 150ms) var(--ktheme-motion-easing, cubic-bezier(0.25, 0.1, 0.25, 1.0))";
   const items = NAV_ALL.map((n, i) => {
     const on = navActive(state.screen, n.id);
     const bg =
@@ -582,7 +647,7 @@ function buildConsoleNav({ state, actions, V, t, C, ink }) {
         cursor: "pointer",
         font: "700 " + (C.wide ? 11 : 10) + "px/1 " + t.dfont,
         letterSpacing: ".1em",
-        transition: "background .16s ease",
+        transition: navTransition,
       },
     };
   });
@@ -649,7 +714,8 @@ function buildConsoleNav({ state, actions, V, t, C, ink }) {
 function ConsoleScene() {
   const { state, actions } = useApp();
   const { V, t, C, ink } = useTheme();
-  const reducedMotion = usePrefersReducedMotion();
+  const motion = useMotionTokens();
+  const reducedMotion = motion?.reducedMotion ?? usePrefersReducedMotion();
   const isAdvanced = state.prefs?.telemetryVerbosity === "advanced";
 
   const cfScene = {
@@ -672,6 +738,20 @@ function ConsoleScene() {
       V.gnd2 +
       " 100%)",
   };
+  const parallaxTransition =
+    reducedMotion || state.cDrag
+      ? "none"
+      : motion?.transition
+        ? motion.transition(
+            "transform",
+            "var(--ktheme-motion-duration, " +
+              (motion.duration || "300ms") +
+              ")",
+            "var(--ktheme-motion-easing-decelerated, " +
+              (motion.easing || "cubic-bezier(0, 0, 0.58, 1)") +
+              ")",
+          )
+        : "transform var(--ktheme-motion-duration, 300ms) var(--ktheme-motion-easing-decelerated, cubic-bezier(0, 0, 0.58, 1))";
   const cfParallax = {
     position: "absolute",
     inset: 0,
@@ -682,8 +762,7 @@ function ConsoleScene() {
         "px," +
         (state.cPitch * 0.8).toFixed(1) +
         "px)",
-    transition:
-      reducedMotion || state.cDrag ? "none" : "transform .35s ease-out",
+    transition: parallaxTransition,
   };
   // The console scene has one readout strip, so 3D View's CAM/GFX sub-views swap
   // what it reports rather than adding a second strip to the LCARS frame.

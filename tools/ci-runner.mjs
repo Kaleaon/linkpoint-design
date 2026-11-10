@@ -384,38 +384,48 @@ async function getPlaywrightBrowser() {
   };
 
   // Search ms-playwright cache for installed headless shell or chromium binaries
-  const homeDir = process.env.HOME || "/home/jules";
-  const msPlaywrightDir = path.join(homeDir, ".cache/ms-playwright");
+  const candidateDirs = [
+    process.env.HOME
+      ? path.join(process.env.HOME, ".cache/ms-playwright")
+      : null,
+    "/home/jules/.cache/ms-playwright",
+  ].filter(Boolean);
   let cachedHeadlessShell = null;
   let cachedChromium = null;
-  if (fs.existsSync(msPlaywrightDir)) {
-    try {
-      const dirs = fs.readdirSync(msPlaywrightDir);
-      for (const dir of dirs) {
-        if (
-          !cachedHeadlessShell &&
-          dir.startsWith("chromium_headless_shell-")
-        ) {
-          const candidate = path.join(
-            msPlaywrightDir,
-            dir,
-            "chrome-headless-shell-linux64/chrome-headless-shell",
-          );
-          if (fs.existsSync(candidate)) cachedHeadlessShell = candidate;
-        }
-        if (!cachedChromium && dir.startsWith("chromium-")) {
-          for (const sub of ["chrome-linux64/chrome", "chrome-linux/chrome"]) {
-            const candidate = path.join(msPlaywrightDir, dir, sub);
-            if (fs.existsSync(candidate)) {
-              cachedChromium = candidate;
-              break;
+  for (const msPlaywrightDir of candidateDirs) {
+    if (fs.existsSync(msPlaywrightDir)) {
+      try {
+        const dirs = fs.readdirSync(msPlaywrightDir);
+        for (const dir of dirs) {
+          if (
+            !cachedHeadlessShell &&
+            dir.startsWith("chromium_headless_shell-")
+          ) {
+            const candidate = path.join(
+              msPlaywrightDir,
+              dir,
+              "chrome-headless-shell-linux64/chrome-headless-shell",
+            );
+            if (fs.existsSync(candidate)) cachedHeadlessShell = candidate;
+          }
+          if (!cachedChromium && dir.startsWith("chromium-")) {
+            for (const sub of [
+              "chrome-linux64/chrome",
+              "chrome-linux/chrome",
+            ]) {
+              const candidate = path.join(msPlaywrightDir, dir, sub);
+              if (fs.existsSync(candidate)) {
+                cachedChromium = candidate;
+                break;
+              }
             }
           }
         }
+      } catch (_) {
+        /* ignore */
       }
-    } catch (_) {
-      /* ignore */
     }
+    if (cachedHeadlessShell && cachedChromium) break;
   }
 
   const possiblePaths = [
@@ -544,6 +554,38 @@ async function taskUnitTests() {
   if (hasReactVitest) {
     log("Executing React Linkpoint Vitest Suite...", "info");
     const reactDir = path.join(cwd, "docs/react");
+
+    const candidateKthemeDirs = [
+      path.resolve(cwd, "../Ktheme"),
+      path.resolve(cwd, "../../Ktheme"),
+      "/app/Ktheme",
+    ];
+    const kthemeFound = candidateKthemeDirs.some((d) =>
+      fs.existsSync(path.join(d, "packages/react")),
+    );
+    if (!kthemeFound) {
+      log(
+        "Ktheme dependency repository not found locally. Cloning shallow Ktheme copy for unit test suite...",
+        "info",
+      );
+      try {
+        const cloneTarget = path.resolve(cwd, "../Ktheme");
+        spawnSync(
+          "git",
+          [
+            "clone",
+            "--depth",
+            "1",
+            "https://github.com/Kaleaon/Ktheme.git",
+            cloneTarget,
+          ],
+          { stdio: "inherit" },
+        );
+      } catch (err) {
+        log(`Failed to clone Ktheme repository: ${err.message}`, "warn");
+      }
+    }
+
     const hasPnpmLock = fs.existsSync(path.join(reactDir, "pnpm-lock.yaml"));
     const hasNpmLock = fs.existsSync(path.join(reactDir, "package-lock.json"));
     const isPnpmAvailable = () => {

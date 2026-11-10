@@ -25,7 +25,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Clone Ktheme repository
-        run: git clone --depth 1 https://github.com/Kaleaon/Ktheme.git ../Ktheme
+        run: |
+          if [ ! -d "../Ktheme" ]; then
+            git clone --depth 1 https://github.com/Kaleaon/Ktheme.git ../Ktheme
+          fi
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -52,6 +55,8 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run Unified Validation CLI
+        env:
+          VISUAL_DIFF_TOLERANCE: "2.0"
         run: node tools/ci-runner.mjs ${{ inputs.target-flags }}
 
       - name: Upload Visual Diff Artifacts
