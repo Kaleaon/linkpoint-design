@@ -96,7 +96,7 @@ export function computeThemeTokens(state) {
     easingReduced: "cubic-bezier(0.0, 0.0, 1.0, 1.0)",
   };
 
-  return { V, t, pad, LK, ink, typography, motion };
+  return { V, t, pad, LK, ink, motion, typography };
 }
 
 /**
