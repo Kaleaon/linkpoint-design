@@ -6,6 +6,7 @@ import {
   batchSetCssVariables,
   flushCssVariables,
 } from "@ktheme/react";
+import { AppProvider } from "../context/AppContext.jsx";
 import ThemeStudio from "../components/ThemeStudio.jsx";
 
 describe("Theme Token Update Re-render Optimization", () => {
@@ -75,9 +76,11 @@ describe("Theme Token Update Re-render Optimization", () => {
     }
 
     const { container } = render(
-      <KthemeProvider themeId="navy-gold">
-        <MonitoredTree />
-      </KthemeProvider>,
+      <AppProvider>
+        <KthemeProvider themeId="navy-gold">
+          <MonitoredTree />
+        </KthemeProvider>
+      </AppProvider>,
     );
 
     const initialRenders = renderSpy.mock.calls.length;

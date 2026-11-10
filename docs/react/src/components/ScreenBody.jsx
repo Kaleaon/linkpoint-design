@@ -3,7 +3,7 @@ import { useThemeRuntime } from "../context/ThemeContext.jsx";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
 import { buildCards } from "../data/content.js";
-import { subView, inSub } from "../theme/constants.js";
+import { CSUB, subView, setSub, inSub } from "../theme/constants.js";
 import Header from "./Header.jsx";
 import SegmentedTabs from "./SegmentedTabs.jsx";
 import ChipRow from "./ChipRow.jsx";
@@ -11,6 +11,7 @@ import StateBlock, { GlobalErrorBoundary } from "./StateBlock.jsx";
 import CardList from "./CardList.jsx";
 import SplitDetail from "./SplitDetail.jsx";
 import { SkeletonCardList } from "./Skeletons.jsx";
+import { TabGroup, TabPanel } from "./TabGroup.jsx";
 import Chat from "../screens/Chat.jsx";
 import Radar from "../screens/Radar.jsx";
 import Map from "../screens/Map.jsx";
@@ -70,6 +71,15 @@ export default function ScreenBody() {
     "Diagnostics",
   ].includes(scr);
 
+  const subs = CSUB[scr] || [];
+  const activeSubIndex = subs.findIndex(([label]) => label === curSub);
+
+  const handleSubSelect = (index) => {
+    if (subs[index]) {
+      setSub(actions, scr, subs[index][0]);
+    }
+  };
+
   return (
     <div
       style={{
@@ -92,49 +102,73 @@ export default function ScreenBody() {
           flexDirection: "column",
         }}
       >
-        <Header />
-        <SegmentedTabs />
-        <ChipRow />
-        <GlobalErrorBoundary
-          onReset={() => actions.setCond && actions.setCond("normal")}
+        <TabGroup
+          activeIndex={activeSubIndex >= 0 ? activeSubIndex : 0}
+          onSelect={handleSubSelect}
+          id="subnav"
+          style={{
+            flex: 1,
+            minHeight: 0,
+            display: "flex",
+            flexDirection: "column",
+          }}
         >
-          {isLoading && !customLoadingScreen && scr !== "Login" && (
-            <SkeletonCardList style={{ minHeight: "320px" }} />
-          )}
-          {!isLoading && norm && scr === "Chat" && <Chat />}
-          {!isLoading && norm && scr === "Radar" && <Radar />}
-          {!isLoading && norm && scr === "Map" && <Map />}
-          {!isLoading && norm && scr === "3D View" && (
-            <>
-              <World3D />
-              <World3DActionBar />
-            </>
-          )}
-          {norm && scr === "Inventory" && <Inventory />}
-          {!isLoading && norm && scr === "Profile" && <Profile />}
-          {!isLoading && norm && scr === "Outfits" && <Outfits />}
-          {!isLoading && norm && scr === "Parcel" && <Parcel />}
-          {!isLoading && norm && scr === "Objects" && <Objects />}
-          {!isLoading && norm && scr === "Transactions" && <Transactions />}
-          {!isLoading && norm && scr === "Mute List" && <MuteList />}
-          {!isLoading && norm && scr === "Teleport" && <Teleport />}
-          {!isLoading && norm && scr === "Friends" && <Friends />}
-          {!isLoading && norm && scr === "Groups" && <Groups />}
-          {!isLoading && norm && scr === "Notices" && <Notices />}
-          {!isLoading && norm && scr === "Settings" && <Settings />}
-          {!isLoading && norm && scr === "Cache" && <Cache />}
-          {!isLoading && norm && scr === "Diagnostics" && <Diagnostics />}
-          {!isLoading && norm && scr === "Offline Grid" && <OfflineGrid />}
-          {!isLoading && norm && scr === "Grid Console" && <GridConsole />}
-          {norm && isCardScreen && (
-            <CardList
-              cards={(cardsByScreen[scr] || []).filter((c) => inSub(c, curSub))}
-            />
-          )}
-          {scr === "Login" && <Login />}
-          {scr === "Search" && <Search />}
-          {!norm && <StateBlock />}
-        </GlobalErrorBoundary>
+          <Header />
+          <SegmentedTabs />
+          <ChipRow />
+          <TabPanel
+            index={activeSubIndex >= 0 ? activeSubIndex : 0}
+            style={{
+              flex: 1,
+              minHeight: 0,
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <GlobalErrorBoundary
+              onReset={() => actions.setCond && actions.setCond("normal")}
+            >
+              {isLoading && !customLoadingScreen && scr !== "Login" && (
+                <SkeletonCardList style={{ minHeight: "320px" }} />
+              )}
+              {!isLoading && norm && scr === "Chat" && <Chat />}
+              {!isLoading && norm && scr === "Radar" && <Radar />}
+              {!isLoading && norm && scr === "Map" && <Map />}
+              {!isLoading && norm && scr === "3D View" && (
+                <>
+                  <World3D />
+                  <World3DActionBar />
+                </>
+              )}
+              {norm && scr === "Inventory" && <Inventory />}
+              {!isLoading && norm && scr === "Profile" && <Profile />}
+              {!isLoading && norm && scr === "Outfits" && <Outfits />}
+              {!isLoading && norm && scr === "Parcel" && <Parcel />}
+              {!isLoading && norm && scr === "Objects" && <Objects />}
+              {!isLoading && norm && scr === "Transactions" && <Transactions />}
+              {!isLoading && norm && scr === "Mute List" && <MuteList />}
+              {!isLoading && norm && scr === "Teleport" && <Teleport />}
+              {!isLoading && norm && scr === "Friends" && <Friends />}
+              {!isLoading && norm && scr === "Groups" && <Groups />}
+              {!isLoading && norm && scr === "Notices" && <Notices />}
+              {!isLoading && norm && scr === "Settings" && <Settings />}
+              {!isLoading && norm && scr === "Cache" && <Cache />}
+              {!isLoading && norm && scr === "Diagnostics" && <Diagnostics />}
+              {!isLoading && norm && scr === "Offline Grid" && <OfflineGrid />}
+              {!isLoading && norm && scr === "Grid Console" && <GridConsole />}
+              {norm && isCardScreen && (
+                <CardList
+                  cards={(cardsByScreen[scr] || []).filter((c) =>
+                    inSub(c, curSub),
+                  )}
+                />
+              )}
+              {scr === "Login" && <Login />}
+              {scr === "Search" && <Search />}
+              {!norm && <StateBlock />}
+            </GlobalErrorBoundary>
+          </TabPanel>
+        </TabGroup>
       </main>
       <SplitDetail />
     </div>
