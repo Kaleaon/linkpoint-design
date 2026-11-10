@@ -2,14 +2,15 @@ import { useApp } from "../context/AppContext.jsx";
 import { useTheme } from "../context/ThemeContext.jsx";
 import { segLooks } from "../theme/look.js";
 import { CSUB, subView, setSub } from "../theme/constants.js";
-import { useTabNavigation } from "../hooks/useTabNavigation.js";
+import { TabGroup, TabList, Tab, useTabContext } from "./TabGroup.jsx";
 
 // Ported from `segTabs`/`segWrap`/`hasSeg`. The labels come from CSUB — the one
 // sub-view table the LCARS rail also renders — so a screen gains a tab strip by
 // appearing there, not by being named here.
-export default function SegmentedTabs() {
+export default function SegmentedTabs({ children, style: containerStyle }) {
   const { state, actions } = useApp();
   const { V, t, LK, nav, isFloat, norm, scr } = useTheme();
+  const parentTabContext = useTabContext();
 
   if (!norm) return null;
   const curSub = subView(state, scr);
@@ -31,13 +32,6 @@ export default function SegmentedTabs() {
       setSub(actions, scr, tabs[index].label);
     }
   };
-
-  const { containerProps, getTabProps } = useTabNavigation({
-    itemCount: tabs.length,
-    activeIndex,
-    onSelect: handleSelect,
-    ariaLabel: "View Filters",
-  });
 
   const segLook = LK.seg || "fill";
   const looks = segLooks(V, t.font);
@@ -66,6 +60,7 @@ export default function SegmentedTabs() {
         margin: 0,
         borderBottom: "1px solid " + V.outv,
         background: V.surf,
+        ...containerStyle,
       }
     : segLook === "fill"
       ? {
@@ -75,6 +70,7 @@ export default function SegmentedTabs() {
           border: "1px solid " + V.outv,
           borderRadius: V.rs,
           overflow: "hidden",
+          ...containerStyle,
         }
       : {
           flex: "none",
@@ -82,10 +78,11 @@ export default function SegmentedTabs() {
           margin: "0 16px 8px",
           borderBottom: segLook === "text" ? "1px solid " + V.outv : "none",
           overflowX: "auto",
+          ...containerStyle,
         };
 
-  return (
-    <div {...containerProps} style={wrap}>
+  const tabListContent = (
+    <TabList aria-label="View Filters" style={wrap}>
       {tabs.map((x, index) => {
         const active = x.label === curSub;
         const style = {
@@ -103,9 +100,8 @@ export default function SegmentedTabs() {
               }
             : null),
         };
-        const tabProps = getTabProps(index);
         return (
-          <div key={x.label} {...tabProps} style={style}>
+          <Tab key={x.label} index={index} style={style}>
             <span style={{ font: "inherit", letterSpacing: "inherit" }}>
               {x.label}
             </span>
@@ -127,9 +123,29 @@ export default function SegmentedTabs() {
                 {x.badge}
               </span>
             ) : null}
-          </div>
+          </Tab>
         );
       })}
-    </div>
+    </TabList>
+  );
+
+  if (parentTabContext) {
+    return (
+      <>
+        {tabListContent}
+        {children}
+      </>
+    );
+  }
+
+  return (
+    <TabGroup
+      activeIndex={activeIndex >= 0 ? activeIndex : 0}
+      onSelect={handleSelect}
+      as={null}
+    >
+      {tabListContent}
+      {children}
+    </TabGroup>
   );
 }
