@@ -5,6 +5,7 @@
   "scripts": {
     "test": "node tools/ci-runner.mjs",
     "test:app": "node tools/ci-runner.mjs --app",
+    "build": "npm --prefix docs/react run build",
     "validate": "node tools/ci-runner.mjs",
     "test:a11y": "node tools/ci-runner.mjs --a11y",
     "test:visual": "node tools/ci-runner.mjs --visual",
