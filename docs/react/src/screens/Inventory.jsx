@@ -7,7 +7,6 @@ import {
   INVENTORY_RECENTS,
 } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
-import FormInput from "../components/FormInput.jsx";
 import KInteractive from "../components/KInteractive.jsx";
 import SearchCombobox from "../components/SearchCombobox.jsx";
 import { subView } from "../theme/constants.js";

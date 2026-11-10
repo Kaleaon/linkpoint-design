@@ -427,6 +427,10 @@ export function useAppState() {
     toastTimerRef.current = setTimeout(() => setToast(""), 2200);
   }, []);
 
+  const announce = useCallback((msg) => {
+    setAnnouncement(msg);
+  }, []);
+
   const getBackoffDelay = useCallback((attempt) => {
     return Math.min(1000 * Math.pow(2, Math.max(0, attempt - 1)), 16000);
   }, []);
@@ -716,9 +720,6 @@ export function useAppState() {
     [notify]
   );
 
-  const announce = useCallback((msg) => {
-    setAnnouncement(msg);
-  }, []);
   const downloadTheme = useCallback(() => {
     const blob = new Blob([JSON.stringify(customTheme, null, 2)], {
       type: "application/json",

@@ -23,7 +23,7 @@ export default function Toast() {
         font: "600 11.5px/1.3 " + t.font,
         letterSpacing: ".02em",
         textAlign: "center",
-        zIndex: 40,
+        zIndex: V.z?.toast ?? "var(--ktheme-z-toast, 400)",
         boxShadow: "0 8px 20px rgba(0,0,0,.35)",
         border: "1px solid " + V.pri,
         pointerEvents: "none",

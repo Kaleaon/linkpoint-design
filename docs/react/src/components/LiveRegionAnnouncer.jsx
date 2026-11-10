@@ -66,7 +66,7 @@ export default function LiveRegionAnnouncer() {
     prevToastRef.current = state.toast;
   }, [state?.toast]);
 
-  // Announce dynamic search result counts and announcements
+  // Announce dynamic search/filter announcements without dropping messages
   useEffect(() => {
     if (!state) return;
     if (

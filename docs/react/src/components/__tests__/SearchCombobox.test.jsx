@@ -223,7 +223,7 @@ describe("LiveRegionAnnouncer Component & WCAG 2.2 SC 4.1.3", () => {
     expect(liveRegion.textContent).toBe("Teleporting...");
   });
 
-  it("renders empty live container when neither toast nor announcement is present", () => {
+  it("renders empty persistent container when neither toast nor announcement is present", () => {
     const mockAppContext = {
       state: { toast: "", announcement: "" },
       actions: {},
