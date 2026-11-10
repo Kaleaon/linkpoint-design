@@ -3,24 +3,39 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import fs from "fs";
 
-// Resolve Ktheme react package location (supports sibling checkout or nested)
+// Resolve Ktheme react package location (supports sibling checkout, installed node_modules, or nested)
 const kthemeReactCandidate = [
   path.resolve(__dirname, "../../../Ktheme/packages/react"),
   path.resolve(__dirname, "../../Ktheme/packages/react"),
+  path.resolve(__dirname, "node_modules/@ktheme/react"),
   "/app/Ktheme/packages/react",
 ].find((dir) => fs.existsSync(path.resolve(dir, "src/index.ts")));
 
-const kthemeReactEntry = kthemeReactCandidate
-  ? path.resolve(kthemeReactCandidate, "src/index.ts")
-  : path.resolve(__dirname, "src/support/kthemeFallback.js");
+const kthemeFallbackEntry = path.resolve(
+  __dirname,
+  "src/support/kthemeFallback.js"
+);
+const hasFallback = fs.existsSync(kthemeFallbackEntry);
 
-const kthemeStudioEntry = kthemeReactCandidate
-  ? path.resolve(kthemeReactCandidate, "src/studio/index.ts")
-  : path.resolve(__dirname, "src/support/kthemeFallback.js");
-
-const kthemeSupportEntry = kthemeReactCandidate
-  ? path.resolve(kthemeReactCandidate, "src/support/index.ts")
-  : path.resolve(__dirname, "src/support/kthemeFallback.js");
+const kthemeAliases = kthemeReactCandidate
+  ? {
+      "@ktheme/react/studio": path.resolve(
+        kthemeReactCandidate,
+        "src/studio/index.ts"
+      ),
+      "@ktheme/react/support": path.resolve(
+        kthemeReactCandidate,
+        "src/support/index.ts"
+      ),
+      "@ktheme/react": path.resolve(kthemeReactCandidate, "src/index.ts"),
+    }
+  : hasFallback
+    ? {
+        "@ktheme/react/studio": kthemeFallbackEntry,
+        "@ktheme/react/support": kthemeFallbackEntry,
+        "@ktheme/react": kthemeFallbackEntry,
+      }
+    : {};
 
 // This app is a standalone dev/build sandbox that lives under docs/react in the
 // linkpoint-design repo. It is not currently wired into any parent site's base
@@ -29,11 +44,7 @@ export default defineConfig({
   base: "./",
   plugins: [react()],
   resolve: {
-    alias: {
-      "@ktheme/react/studio": kthemeStudioEntry,
-      "@ktheme/react/support": kthemeSupportEntry,
-      "@ktheme/react": kthemeReactEntry,
-    },
+    alias: kthemeAliases,
   },
   test: {
     environment: "jsdom",

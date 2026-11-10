@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       target-flags:
-        description: "Target flags to pass to tools/ci-runner.mjs (e.g. --unit, --a11y, --visual)"
+        description: "Target flags to pass to tools/ci-runner.mjs (e.g. --app, --unit, --a11y, --visual)"
         required: false
         type: string
         default: ""
@@ -44,6 +44,9 @@ jobs:
 
       - name: Validate theme schemas
         run: npx ktheme-schema sync --check
+
+      - name: Run Application Validation Suite
+        run: node tools/ci-runner.mjs --app
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
