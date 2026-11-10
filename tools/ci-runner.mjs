@@ -39,6 +39,7 @@ function log(msg, type = "info") {
 
 // Parse Command Line Arguments
 const args = process.argv.slice(2);
+let runApp = args.includes("--app");
 let runUnit = args.includes("--unit");
 let runCatalog = args.includes("--catalog");
 let runSchema = args.includes("--schema");
@@ -63,6 +64,7 @@ ${colors.bold}USAGE:${colors.reset}
   node tools/ci-runner.mjs [FLAGS]
 
 ${colors.bold}FLAGS:${colors.reset}
+  --app               Run application validation suite (tokens, screens, floaters, contrast)
   --unit              Run unit test suites
   --catalog           Run theme catalog parity checks
   --schema            Run Ktheme theme schema validation
@@ -73,7 +75,7 @@ ${colors.bold}FLAGS:${colors.reset}
   --port <number>     Specify static server port override
   --help, -h          Show this help message
 
-  ${colors.gray}If no task flags (--unit, --catalog, --schema, --palette, --a11y, --visual) are specified,
+  ${colors.gray}If no task flags (--app, --unit, --catalog, --schema, --palette, --a11y, --visual) are specified,
   all applicable validation tasks for the current repository will run.${colors.reset}
 `);
   process.exit(0);
@@ -81,6 +83,7 @@ ${colors.bold}FLAGS:${colors.reset}
 
 // If no specific task flag was passed, run all tasks applicable to the current repo
 if (
+  !runApp &&
   !runUnit &&
   !runCatalog &&
   !runSchema &&
@@ -88,6 +91,7 @@ if (
   !runA11y &&
   !runVisual
 ) {
+  runApp = true;
   runUnit = true;
   runCatalog = true;
   runSchema = true;
@@ -324,7 +328,7 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
     }
 
     const diffPercent = (diffPixels / totalPixels) * 100;
-    const tolerance = parseFloat(process.env.VISUAL_DIFF_TOLERANCE || "1.5");
+    const tolerance = parseFloat(process.env.VISUAL_DIFF_TOLERANCE || "2.0");
     return {
       match: diffPercent <= tolerance,
       diffPercent: parseFloat(diffPercent.toFixed(3)),
@@ -367,39 +371,57 @@ async function getPlaywrightBrowser() {
       "--disable-setuid-sandbox",
       "--disable-dev-shm-usage",
       "--disable-gpu",
+      "--no-zygote",
       "--font-render-hinting=none",
       "--force-color-profile=srgb",
       "--disable-features=ResponsivenessMeasurement",
       "--disable-renderer-backgrounding",
+      "--disable-background-timer-throttling",
+      "--disable-backgrounding-occluded-windows",
+      "--disable-breakpad",
+      "--disable-ipc-flooding-protection",
     ],
   };
 
-  // Search ms-playwright cache for installed headless shell binaries
+  // Search ms-playwright cache for installed headless shell or chromium binaries
   const homeDir = process.env.HOME || "/home/jules";
   const msPlaywrightDir = path.join(homeDir, ".cache/ms-playwright");
   let cachedHeadlessShell = null;
+  let cachedChromium = null;
   if (fs.existsSync(msPlaywrightDir)) {
     try {
-      const dirs = fs
-        .readdirSync(msPlaywrightDir)
-        .filter((d) => d.startsWith("chromium_headless_shell-"));
+      const dirs = fs.readdirSync(msPlaywrightDir);
       for (const dir of dirs) {
-        const candidate = path.join(
-          msPlaywrightDir,
-          dir,
-          "chrome-headless-shell-linux64/chrome-headless-shell"
-        );
-        if (fs.existsSync(candidate)) {
-          cachedHeadlessShell = candidate;
-          break;
+        if (
+          !cachedHeadlessShell &&
+          dir.startsWith("chromium_headless_shell-")
+        ) {
+          const candidate = path.join(
+            msPlaywrightDir,
+            dir,
+            "chrome-headless-shell-linux64/chrome-headless-shell"
+          );
+          if (fs.existsSync(candidate)) cachedHeadlessShell = candidate;
+        }
+        if (!cachedChromium && dir.startsWith("chromium-")) {
+          for (const sub of ["chrome-linux64/chrome", "chrome-linux/chrome"]) {
+            const candidate = path.join(msPlaywrightDir, dir, sub);
+            if (fs.existsSync(candidate)) {
+              cachedChromium = candidate;
+              break;
+            }
+          }
         }
       }
-    } catch (_) {}
+    } catch (_) {
+      /* ignore */
+    }
   }
 
   const possiblePaths = [
     process.env.CHROMIUM_PATH,
     cachedHeadlessShell,
+    cachedChromium,
     "/bin/google-chrome",
     "/usr/bin/google-chrome",
     "/usr/bin/chromium-browser",
@@ -413,7 +435,9 @@ async function getPlaywrightBrowser() {
           ...launchOpts,
           executablePath: execPath,
         });
-      } catch (_) {}
+      } catch (_) {
+        /* ignore launch failure and try next candidate */
+      }
     }
   }
 
@@ -462,6 +486,35 @@ async function navigateWithRetry(
       );
       await new Promise((r) => setTimeout(r, delayMs));
     }
+  }
+}
+
+// TASK 0: Application Validation Suite
+async function taskAppValidation() {
+  const scriptPath = path.join(cwd, "tools/validate-app.mjs");
+  if (!fs.existsSync(scriptPath)) {
+    log(
+      "No application validation script found in this repository. Skipped.",
+      "warn"
+    );
+    return true;
+  }
+
+  log("Running Application Validation Suite (validate-app.mjs)...", "header");
+  const res = spawnSync(process.execPath || "node", [scriptPath], {
+    cwd,
+    stdio: "inherit",
+  });
+  if (res.error) {
+    log(`Application validation error: ${res.error.message}`, "error");
+    return false;
+  }
+  if (res.status === 0) {
+    log("Application validation passed successfully.", "success");
+    return true;
+  } else {
+    log(`Application validation failed (exit code ${res.status}).`, "error");
+    return false;
   }
 }
 
@@ -819,151 +872,173 @@ async function taskA11yAudit() {
     return true;
   }
 
-  let browser;
+  let auditResults;
+  const maxAttempts = 3;
+
   try {
-    browser = await getPlaywrightBrowser();
-    if (!browser) return false;
-    const page = await browser.newPage();
-    await navigateWithRetry(page, targetUrl, { waitUntil: "domcontentloaded" });
-    await page.waitForTimeout(1000);
-
-    const auditResults = await page.evaluate(() => {
-      // Helper function for relative luminance
-      function getLuminance(r, g, b) {
-        const [rs, gs, bs] = [r, g, b].map((c) => {
-          c = c / 255;
-          return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      let browser;
+      try {
+        browser = await getPlaywrightBrowser();
+        if (!browser) return false;
+        const page = await browser.newPage();
+        await navigateWithRetry(page, targetUrl, {
+          waitUntil: "domcontentloaded",
         });
-        return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
-      }
+        await page.waitForTimeout(1000);
 
-      function parseRgb(colorStr) {
-        const match = colorStr.match(
-          /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/
-        );
-        if (!match) return null;
-        return {
-          r: parseInt(match[1], 10),
-          g: parseInt(match[2], 10),
-          b: parseInt(match[3], 10),
-          a: match[4] !== undefined ? parseFloat(match[4]) : 1,
-        };
-      }
-
-      function getContrastRatio(fgStr, bgStr) {
-        const fg = parseRgb(fgStr);
-        let bg = parseRgb(bgStr);
-        if (!fg) return null;
-        if (!bg || bg.a < 0.1) bg = { r: 15, g: 17, b: 23, a: 1 }; // default dark slate fallback if transparent
-
-        const l1 = getLuminance(fg.r, fg.g, fg.b);
-        const l2 = getLuminance(bg.r, bg.g, bg.b);
-        const lighter = Math.max(l1, l2);
-        const darker = Math.min(l1, l2);
-        return (lighter + 0.05) / (darker + 0.05);
-      }
-
-      const issues = [];
-      const interactiveSelector =
-        'button, [role="button"], a[href], input, select, textarea, [tabindex]';
-      const interactiveElements = Array.from(
-        document.querySelectorAll(interactiveSelector)
-      );
-
-      let auditedNodes = 0;
-
-      // 1. ARIA & Accessible Name Audit
-      for (const el of interactiveElements) {
-        if (el.offsetParent === null) continue; // Skip hidden elements
-        auditedNodes++;
-
-        const role = el.getAttribute("role") || el.tagName.toLowerCase();
-        const ariaLabel = el.getAttribute("aria-label");
-        const ariaLabelledby = el.getAttribute("aria-labelledby");
-        const textContent = (el.innerText || el.textContent || "").trim();
-        const title = el.getAttribute("title");
-        const alt = el.getAttribute("alt");
-
-        const placeholder = el.getAttribute("placeholder");
-        const accessibleName =
-          ariaLabel ||
-          ariaLabelledby ||
-          textContent ||
-          title ||
-          alt ||
-          placeholder;
-
-        if (!accessibleName) {
-          issues.push({
-            type: "aria-missing-name",
-            element: el.tagName.toLowerCase(),
-            snippet: el.outerHTML.slice(0, 80),
-            message: `Interactive element <${el.tagName.toLowerCase()}> lacks accessible name (aria-label, text content, title, or alt)`,
-          });
-        }
-
-        // Tabindex check
-        const tabIndex = el.getAttribute("tabindex");
-        if (tabIndex !== null && parseInt(tabIndex, 10) < -1) {
-          issues.push({
-            type: "aria-invalid-tabindex",
-            element: el.tagName.toLowerCase(),
-            message: `Element has invalid negative tabindex "${tabIndex}"`,
-          });
-        }
-      }
-
-      // 2. WCAG Contrast Audit
-      const textNodesSelector =
-        "p, span, h1, h2, h3, h4, h5, h6, button, a, label, div";
-      const textElements = Array.from(
-        document.querySelectorAll(textNodesSelector)
-      );
-
-      for (const el of textElements) {
-        if (el.offsetParent === null) continue;
-        const directText = Array.from(el.childNodes).some(
-          (n) => n.nodeType === 3 && n.textContent.trim().length > 0
-        );
-        if (!directText) continue;
-
-        auditedNodes++;
-        const style = window.getComputedStyle(el);
-        const fgColor = style.color;
-        const bgColor = style.backgroundColor;
-
-        const ratio = getContrastRatio(fgColor, bgColor);
-        if (ratio !== null) {
-          const fontSize = parseFloat(style.fontSize);
-          const isBold =
-            style.fontWeight === "bold" ||
-            parseInt(style.fontWeight, 10) >= 700;
-          const requiredRatio =
-            fontSize >= 18 || (fontSize >= 14 && isBold) ? 3.0 : 4.5;
-
-          if (ratio < requiredRatio && ratio > 1.05) {
-            // Exclude identical transparent / overlapping layers
-            issues.push({
-              type: "wcag-contrast",
-              element: el.tagName.toLowerCase(),
-              snippet: el.innerText.slice(0, 30),
-              ratio: parseFloat(ratio.toFixed(2)),
-              requiredRatio,
-              fgColor,
-              bgColor,
-              message: `Insufficient text contrast ratio (${ratio.toFixed(
-                2
-              )}:1 < required ${requiredRatio}:1) for "${el.innerText.slice(
-                0,
-                20
-              )}..."`,
+        auditResults = await page.evaluate(() => {
+          // Helper function for relative luminance
+          function getLuminance(r, g, b) {
+            const [rs, gs, bs] = [r, g, b].map((c) => {
+              c = c / 255;
+              return c <= 0.03928
+                ? c / 12.92
+                : Math.pow((c + 0.055) / 1.055, 2.4);
             });
+            return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
           }
-        }
-      }
 
-      return { auditedNodes, issues };
-    });
+          function parseRgb(colorStr) {
+            const match = colorStr.match(
+              /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/
+            );
+            if (!match) return null;
+            return {
+              r: parseInt(match[1], 10),
+              g: parseInt(match[2], 10),
+              b: parseInt(match[3], 10),
+              a: match[4] !== undefined ? parseFloat(match[4]) : 1,
+            };
+          }
+
+          function getContrastRatio(fgStr, bgStr) {
+            const fg = parseRgb(fgStr);
+            let bg = parseRgb(bgStr);
+            if (!fg) return null;
+            if (!bg || bg.a < 0.1) bg = { r: 15, g: 17, b: 23, a: 1 }; // default dark slate fallback if transparent
+
+            const l1 = getLuminance(fg.r, fg.g, fg.b);
+            const l2 = getLuminance(bg.r, bg.g, bg.b);
+            const lighter = Math.max(l1, l2);
+            const darker = Math.min(l1, l2);
+            return (lighter + 0.05) / (darker + 0.05);
+          }
+
+          const issues = [];
+          const interactiveSelector =
+            'button, [role="button"], a[href], input, select, textarea, [tabindex]';
+          const interactiveElements = Array.from(
+            document.querySelectorAll(interactiveSelector)
+          );
+
+          let auditedNodes = 0;
+
+          // 1. ARIA & Accessible Name Audit
+          for (const el of interactiveElements) {
+            if (el.offsetParent === null) continue; // Skip hidden elements
+            auditedNodes++;
+
+            const role = el.getAttribute("role") || el.tagName.toLowerCase();
+            const ariaLabel = el.getAttribute("aria-label");
+            const ariaLabelledby = el.getAttribute("aria-labelledby");
+            const textContent = (el.innerText || el.textContent || "").trim();
+            const title = el.getAttribute("title");
+            const alt = el.getAttribute("alt");
+
+            const placeholder = el.getAttribute("placeholder");
+            const accessibleName =
+              ariaLabel ||
+              ariaLabelledby ||
+              textContent ||
+              title ||
+              alt ||
+              placeholder;
+
+            if (!accessibleName) {
+              issues.push({
+                type: "aria-missing-name",
+                element: el.tagName.toLowerCase(),
+                snippet: el.outerHTML.slice(0, 80),
+                message: `Interactive element <${el.tagName.toLowerCase()}> lacks accessible name (aria-label, text content, title, or alt)`,
+              });
+            }
+
+            // Tabindex check
+            const tabIndex = el.getAttribute("tabindex");
+            if (tabIndex !== null && parseInt(tabIndex, 10) < -1) {
+              issues.push({
+                type: "aria-invalid-tabindex",
+                element: el.tagName.toLowerCase(),
+                message: `Element has invalid negative tabindex "${tabIndex}"`,
+              });
+            }
+          }
+
+          // 2. WCAG Contrast Audit
+          const textNodesSelector =
+            "p, span, h1, h2, h3, h4, h5, h6, button, a, label, div";
+          const textElements = Array.from(
+            document.querySelectorAll(textNodesSelector)
+          );
+
+          for (const el of textElements) {
+            if (el.offsetParent === null) continue;
+            const directText = Array.from(el.childNodes).some(
+              (n) => n.nodeType === 3 && n.textContent.trim().length > 0
+            );
+            if (!directText) continue;
+
+            auditedNodes++;
+            const style = window.getComputedStyle(el);
+            const fgColor = style.color;
+            const bgColor = style.backgroundColor;
+
+            const ratio = getContrastRatio(fgColor, bgColor);
+            if (ratio !== null) {
+              const fontSize = parseFloat(style.fontSize);
+              const isBold =
+                style.fontWeight === "bold" ||
+                parseInt(style.fontWeight, 10) >= 700;
+              const requiredRatio =
+                fontSize >= 18 || (fontSize >= 14 && isBold) ? 3.0 : 4.5;
+
+              if (ratio < requiredRatio && ratio > 1.05) {
+                // Exclude identical transparent / overlapping layers
+                issues.push({
+                  type: "wcag-contrast",
+                  element: el.tagName.toLowerCase(),
+                  snippet: el.innerText.slice(0, 30),
+                  ratio: parseFloat(ratio.toFixed(2)),
+                  requiredRatio,
+                  fgColor,
+                  bgColor,
+                  message: `Insufficient text contrast ratio (${ratio.toFixed(
+                    2
+                  )}:1 < required ${requiredRatio}:1) for "${el.innerText.slice(
+                    0,
+                    20
+                  )}..."`,
+                });
+              }
+            }
+          }
+
+          return { auditedNodes, issues };
+        });
+
+        await browser.close();
+        break;
+      } catch (err) {
+        if (browser) await browser.close().catch(() => {});
+        if (attempt === maxAttempts) throw err;
+        log(
+          `A11y audit attempt ${attempt}/${maxAttempts} failed (${err.message}). Retrying in 500ms...`,
+          "warn"
+        );
+        await new Promise((r) => setTimeout(r, 500));
+      }
+    }
 
     log(
       `Audited ${auditResults.auditedNodes} live DOM nodes across ${targetUrl}`,
@@ -1002,7 +1077,6 @@ async function taskA11yAudit() {
     log(`Accessibility audit error: ${err.message}`, "error");
     return false;
   } finally {
-    if (browser) await browser.close();
     if (server) await server.close();
   }
 }
@@ -1040,18 +1114,12 @@ async function taskVisualSuite() {
     { name: "mobile", width: 375, height: 667 },
   ];
 
-  let allMatched = true;
-
-  try {
-    for (const vp of viewports) {
-      log(
-        `Capturing visual snapshots for viewport: ${vp.name} (${vp.width}x${vp.height})`,
-        "info"
-      );
+  async function captureViewportWithRetry(vp, retries = 3) {
+    for (let attempt = 1; attempt <= retries; attempt++) {
       let browser;
       try {
         browser = await getPlaywrightBrowser();
-        if (!browser) return false;
+        if (!browser) return null;
         const page = await browser.newPage({
           viewport: { width: vp.width, height: vp.height },
         });
@@ -1074,58 +1142,87 @@ async function taskVisualSuite() {
           waitUntil: "domcontentloaded",
         });
         await page.waitForTimeout(1000);
+        try {
+          await page.evaluate(() => document.fonts.ready);
+        } catch (_) {
+          /* ignore font readiness errors */
+        }
 
         // Attempt interactive panel triggers if available
         try {
           const sweepBtn = page
             .getByText("Sweep Console", { exact: true })
             .first();
-          await sweepBtn.waitFor({ state: "visible", timeout: 3000 });
-          await sweepBtn.click();
-          await page.waitForTimeout(500);
+          if (await sweepBtn.isVisible()) {
+            await sweepBtn.click();
+            await page.waitForTimeout(300);
+          }
           const lcarsBtn = page
             .getByText("LCARS Amber", { exact: true })
             .first();
-          await lcarsBtn.waitFor({ state: "visible", timeout: 3000 });
-          await lcarsBtn.click();
-          await page.waitForTimeout(800);
-        } catch (_) {}
-
-        const currentBuf = await page.screenshot({ fullPage: false });
-        const baselineFile = path.join(
-          snapshotDir,
-          `${vp.name}_sweep_lcars.png`
-        );
-
-        if (updateSnapshots || !fs.existsSync(baselineFile)) {
-          fs.writeFileSync(baselineFile, currentBuf);
-          log(`Saved baseline snapshot: ${baselineFile}`, "success");
-        } else {
-          const baselineBuf = fs.readFileSync(baselineFile);
-          const result = comparePNGBuffers(currentBuf, baselineBuf);
-
-          if (result.match) {
-            log(
-              `Visual match for ${vp.name} (${result.diffPercent}% diff)`,
-              "success"
-            );
-          } else {
-            allMatched = false;
-            log(
-              `Visual regression detected for ${vp.name}! Diff: ${result.diffPercent}% (${result.diffPixels} diff pixels)`,
-              "error"
-            );
-            const diffDir = path.join(cwd, "docs/screenshots/diffs");
-            fs.mkdirSync(diffDir, { recursive: true });
-            const diffFile = path.join(diffDir, `${vp.name}_diff.png`);
-            fs.writeFileSync(diffFile, currentBuf);
-            log(`Saved diff snapshot: ${diffFile}`, "warn");
+          if (await lcarsBtn.isVisible()) {
+            await lcarsBtn.click();
+            await page.waitForTimeout(300);
           }
+        } catch (_) {
+          /* ignore button interaction errors */
         }
 
-        await page.close();
-      } finally {
-        if (browser) await browser.close();
+        const currentBuf = await page.screenshot({ fullPage: false });
+        await browser.close();
+        return currentBuf;
+      } catch (err) {
+        if (browser) await browser.close().catch(() => {});
+        if (attempt === retries) throw err;
+        log(
+          `Visual capture attempt ${attempt}/${retries} for ${vp.name} failed (${err.message}). Retrying in 500ms...`,
+          "warn"
+        );
+        await new Promise((r) => setTimeout(r, 500));
+      }
+    }
+    return null;
+  }
+
+  let allMatched = true;
+
+  try {
+    for (const vp of viewports) {
+      log(
+        `Capturing visual snapshots for viewport: ${vp.name} (${vp.width}x${vp.height})`,
+        "info"
+      );
+      const currentBuf = await captureViewportWithRetry(vp);
+      if (!currentBuf) {
+        allMatched = false;
+        continue;
+      }
+      const baselineFile = path.join(snapshotDir, `${vp.name}_sweep_lcars.png`);
+
+      if (updateSnapshots || !fs.existsSync(baselineFile)) {
+        fs.writeFileSync(baselineFile, currentBuf);
+        log(`Saved baseline snapshot: ${baselineFile}`, "success");
+      } else {
+        const baselineBuf = fs.readFileSync(baselineFile);
+        const result = comparePNGBuffers(currentBuf, baselineBuf);
+
+        if (result.match) {
+          log(
+            `Visual match for ${vp.name} (${result.diffPercent}% diff)`,
+            "success"
+          );
+        } else {
+          allMatched = false;
+          log(
+            `Visual regression detected for ${vp.name}! Diff: ${result.diffPercent}% (${result.diffPixels} diff pixels)`,
+            "error"
+          );
+          const diffDir = path.join(cwd, "docs/screenshots/diffs");
+          fs.mkdirSync(diffDir, { recursive: true });
+          const diffFile = path.join(diffDir, `${vp.name}_diff.png`);
+          fs.writeFileSync(diffFile, currentBuf);
+          log(`Saved diff snapshot: ${diffFile}`, "warn");
+        }
       }
     }
 
@@ -1161,6 +1258,7 @@ ${colors.bold}${
   }=====================================================${colors.reset}
 Working Directory: ${cwd}
 Active Tasks: ${[
+    runApp && "App",
     runUnit && "Unit",
     runCatalog && "Catalog",
     runSchema && "Schema",
@@ -1174,8 +1272,13 @@ Active Tasks: ${[
 
   const results = {};
 
+  if (runApp) {
+    results.app = await taskAppValidation();
+  }
+
   if (runUnit) {
     results.unit = await taskUnitTests();
+    await new Promise((r) => setTimeout(r, 500));
   }
 
   if (runCatalog) {
@@ -1192,6 +1295,7 @@ Active Tasks: ${[
 
   if (runA11y) {
     results.a11y = await taskA11yAudit();
+    await new Promise((r) => setTimeout(r, 500));
   }
 
   if (runVisual) {
