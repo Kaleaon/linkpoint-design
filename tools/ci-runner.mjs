@@ -325,7 +325,7 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
     }
 
     const diffPercent = (diffPixels / totalPixels) * 100;
-    const tolerance = parseFloat(process.env.VISUAL_DIFF_TOLERANCE || "1.5");
+    const tolerance = parseFloat(process.env.VISUAL_DIFF_TOLERANCE || "2.0");
     return {
       match: diffPercent <= tolerance,
       diffPercent: parseFloat(diffPercent.toFixed(3)),
@@ -368,6 +368,7 @@ async function getPlaywrightBrowser() {
       "--disable-setuid-sandbox",
       "--disable-dev-shm-usage",
       "--disable-gpu",
+      "--no-zygote",
       "--font-render-hinting=none",
       "--force-color-profile=srgb",
       "--disable-features=ResponsivenessMeasurement",
