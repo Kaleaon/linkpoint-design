@@ -1,7 +1,7 @@
 import { LAYOUTS, resolveLayout, Z_INDEX, ELEVATION } from "./layouts.js";
 import { PALETTES } from "./palettes.js";
 import { DEVICES, STATES } from "./constants.js";
-import { pickInk } from "./color.js";
+import { pickInk, ratio } from "./color.js";
 
 function getLuminance(hex) {
   if (!hex || typeof hex !== "string") return 0;
@@ -30,7 +30,26 @@ function getContrastRatio(hex1, hex2) {
   return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
 }
 
-// Resolves static visual design tokens (V, t, pad, LK, ink, typography)
+// Helper to audit contrast between two theme token colors
+function auditPair(label, tokenA, tokenB, colorA, colorB, threshold = 4.5) {
+  const rawRatio = ratio(colorA, colorB);
+  const roundedRatio = Math.round(rawRatio * 10) / 10;
+  const pass = roundedRatio >= threshold;
+  return {
+    label,
+    tokenA,
+    tokenB,
+    colorA,
+    colorB,
+    ratio: roundedRatio,
+    rawRatio,
+    threshold,
+    pass,
+    status: `${roundedRatio.toFixed(1)}:1 AA ${pass ? "PASS" : "FAIL"}`,
+  };
+}
+
+// Resolves static visual design tokens (V, t, pad, LK, ink, typography, contrastAudit)
 export function computeThemeTokens(state) {
   const L = resolveLayout(state.layout);
   const base = PALETTES[state.palette] || PALETTES.ink;
@@ -110,7 +129,60 @@ export function computeThemeTokens(state) {
     easingReduced: "cubic-bezier(0.0, 0.0, 1.0, 1.0)",
   };
 
-  return { V, t, pad, LK, ink, motion, typography };
+  // Requirement 3 & 5: Audit critical theme pairs (primary vs background, surface vs text, outline vs surface)
+  const priColor = V.pri || V.primary || "#D4AF37";
+  const bgColor = V.bg || V.background || "#0A1112";
+  const surfColor = V.surf || V.surface || "#101A1C";
+  const textColor = V.ink || V.text || V.onSurface || "#D7F5E6";
+  const outlineColor = V.outv || V.outline || "#365047";
+
+  const priVsBg = auditPair(
+    "primary vs background",
+    "primary",
+    "background",
+    priColor,
+    bgColor,
+    4.5
+  );
+  const surfVsText = auditPair(
+    "surface vs text",
+    "surface",
+    "text",
+    surfColor,
+    textColor,
+    4.5
+  );
+  const outlineVsSurf = auditPair(
+    "outline vs surface",
+    "outline",
+    "surface",
+    outlineColor,
+    surfColor,
+    4.5
+  );
+
+  const pairs = [priVsBg, surfVsText, outlineVsSurf];
+  const violations = pairs.filter((p) => !p.pass);
+  const contrastAudit = {
+    pairs,
+    violations,
+    hasErrors: violations.length > 0,
+    pass: violations.length === 0,
+    summary: {
+      total: pairs.length,
+      passed: pairs.length - violations.length,
+      failed: violations.length,
+      pass: violations.length === 0,
+    },
+    "primary vs background": priVsBg,
+    "surface vs text": surfVsText,
+    "outline vs surface": outlineVsSurf,
+    primaryVsBackground: priVsBg,
+    surfaceVsText: surfVsText,
+    outlineVsSurface: outlineVsSurf,
+  };
+
+  return { V, t, pad, LK, ink, motion, typography, contrastAudit };
 }
 
 /**
