@@ -234,6 +234,54 @@ LAYOUTS.tiles = LAYOUTS.metro;
 LAYOUTS.glass = LAYOUTS.frutiger_aero;
 LAYOUTS.rules = LAYOUTS.art_deco;
 
+// Standard z-index stacking layers and elevation depth shadow tokens
+export const Z_INDEX = {
+  base: 0,
+  card: 1,
+  window: 10,
+  dock: 20,
+  taskbar: 50,
+  header: 80,
+  dropdown: 90,
+  overlay: 100,
+  toast: 400,
+  modal: 500,
+  popover: 600,
+  tooltip: 700,
+  "z-base": 0,
+  "z-card": 1,
+  "z-window": 10,
+  "z-dock": 20,
+  "z-taskbar": 50,
+  "z-header": 80,
+  "z-dropdown": 90,
+  "z-overlay": 100,
+  "z-toast": 400,
+  "z-modal": 500,
+  "z-popover": 600,
+  "z-tooltip": 700,
+};
+
+export const ELEVATION = {
+  0: "none",
+  1: "0 1px 3px 1px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.30)",
+  2: "0 2px 6px 2px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.30)",
+  3: "0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.30)",
+  4: "0 6px 10px 4px rgba(0, 0, 0, 0.15), 0 2px 3px 0 rgba(0, 0, 0, 0.30)",
+  5: "0 8px 12px 6px rgba(0, 0, 0, 0.15), 0 4px 4px 0 rgba(0, 0, 0, 0.30)",
+  "elevation-0": "none",
+  "elevation-1":
+    "0 1px 3px 1px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.30)",
+  "elevation-2":
+    "0 2px 6px 2px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.30)",
+  "elevation-3":
+    "0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.30)",
+  "elevation-4":
+    "0 6px 10px 4px rgba(0, 0, 0, 0.15), 0 2px 3px 0 rgba(0, 0, 0, 0.30)",
+  "elevation-5":
+    "0 8px 12px 6px rgba(0, 0, 0, 0.15), 0 4px 4px 0 rgba(0, 0, 0, 0.30)",
+};
+
 export const PRIMARY_LAYOUT_KEYS = [
   "terminal",
   "lcars",
