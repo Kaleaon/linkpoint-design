@@ -803,37 +803,102 @@ export default function World3D() {
           gap: "8px",
         }}
       >
-        <div
+        <KInteractive
+          label="Fly up"
+          aria-label="Fly up"
+          role="button"
+          tabIndex={0}
+          onMouseDown={actions.flyUpDown}
+          onMouseUp={actions.flyRelease}
+          onMouseLeave={actions.flyRelease}
+          onTouchStart={actions.flyUpDown}
+          onTouchEnd={actions.flyRelease}
+          onTouchCancel={actions.flyRelease}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              actions.flyUpDown();
+            }
+          }}
+          onKeyUp={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              actions.flyRelease();
+            }
+          }}
+          onClick={() => {
+            actions.flyUpDown();
+            actions.flyRelease();
+          }}
           style={{
             width: "46px",
             height: "46px",
             borderRadius: V.rs,
-            background: V.surf,
+            background: state.cHeld === "up" ? V.pri : V.surf,
             border: "1px solid " + V.outv,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: V.pri,
+            color: state.cHeld === "up" ? V.onpri : V.pri,
+            cursor: "pointer",
           }}
         >
           <Icon name="arrow-up-from-line" size={20} />
-        </div>
-        <div
+        </KInteractive>
+        <KInteractive
+          label="Fly down"
+          aria-label="Fly down"
+          role="button"
+          tabIndex={0}
+          onMouseDown={actions.flyDnDown}
+          onMouseUp={actions.flyRelease}
+          onMouseLeave={actions.flyRelease}
+          onTouchStart={actions.flyDnDown}
+          onTouchEnd={actions.flyRelease}
+          onTouchCancel={actions.flyRelease}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              actions.flyDnDown();
+            }
+          }}
+          onKeyUp={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              actions.flyRelease();
+            }
+          }}
+          onClick={() => {
+            actions.flyDnDown();
+            actions.flyRelease();
+          }}
           style={{
             width: "46px",
             height: "46px",
             borderRadius: V.rs,
-            background: V.surf,
+            background: state.cHeld === "dn" ? V.pri : V.surf,
             border: "1px solid " + V.outv,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: V.pri,
+            color: state.cHeld === "dn" ? V.onpri : V.pri,
+            cursor: "pointer",
           }}
         >
           <Icon name="arrow-down-from-line" size={20} />
-        </div>
-        <div
+        </KInteractive>
+        <KInteractive
+          label="Take snapshot"
+          aria-label="Take snapshot"
+          role="button"
+          tabIndex={0}
+          onClick={() => actions.notify("Snapshot captured to inventory")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              actions.notify("Snapshot captured to inventory");
+            }
+          }}
           style={{
             width: "46px",
             height: "46px",
@@ -843,10 +908,11 @@ export default function World3D() {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            cursor: "pointer",
           }}
         >
           <Icon name="camera" size={20} />
-        </div>
+        </KInteractive>
       </div>
 
       {state.hudPicker ? (
@@ -1265,7 +1331,7 @@ export default function World3D() {
 }
 
 export function VirtualJoystick() {
-  const { actions } = useApp();
+  const { actions, state = {} } = useApp();
   const { V } = useTheme();
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -1377,56 +1443,245 @@ export function VirtualJoystick() {
           borderRadius: "50%",
           background: V.surf,
           opacity: 0.8,
+          pointerEvents: "none",
         }}
       />
-      <div
+      <KInteractive
+        label="Move forward"
+        aria-label="Move forward"
+        role="button"
+        tabIndex={0}
+        onMouseDown={() => actions.cHold("fwd")}
+        onMouseUp={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onMouseLeave={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onTouchStart={() => actions.cHold("fwd")}
+        onTouchEnd={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onTouchCancel={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            actions.cHold("fwd");
+          }
+        }}
+        onKeyUp={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            if (actions.holdEnd) actions.holdEnd();
+            actions.cHold("");
+          }
+        }}
+        onClick={() => {
+          actions.cHold("fwd");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
         style={{
           position: "absolute",
           left: "50%",
           top: "5px",
           transform: "translateX(-50%)",
-          color: V.pri,
-          pointerEvents: "none",
+          color: state.cHeld === "fwd" ? V.onpri : V.pri,
+          background: state.cHeld === "fwd" ? V.pri : "transparent",
+          borderRadius: "50%",
+          width: "32px",
+          height: "32px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
         }}
       >
         <Icon name="chevron-up" size={24} />
-      </div>
-      <div
+      </KInteractive>
+      <KInteractive
+        label="Move backward"
+        aria-label="Move backward"
+        role="button"
+        tabIndex={0}
+        onMouseDown={() => actions.cHold("bck")}
+        onMouseUp={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onMouseLeave={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onTouchStart={() => actions.cHold("bck")}
+        onTouchEnd={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onTouchCancel={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            actions.cHold("bck");
+          }
+        }}
+        onKeyUp={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            if (actions.holdEnd) actions.holdEnd();
+            actions.cHold("");
+          }
+        }}
+        onClick={() => {
+          actions.cHold("bck");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
         style={{
           position: "absolute",
           left: "50%",
           bottom: "5px",
           transform: "translateX(-50%)",
-          color: V.pri,
-          pointerEvents: "none",
+          color: state.cHeld === "bck" ? V.onpri : V.pri,
+          background: state.cHeld === "bck" ? V.pri : "transparent",
+          borderRadius: "50%",
+          width: "32px",
+          height: "32px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
         }}
       >
         <Icon name="chevron-down" size={24} />
-      </div>
-      <div
+      </KInteractive>
+      <KInteractive
+        label="Move left"
+        aria-label="Move left"
+        role="button"
+        tabIndex={0}
+        onMouseDown={() => actions.cHold("lft")}
+        onMouseUp={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onMouseLeave={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onTouchStart={() => actions.cHold("lft")}
+        onTouchEnd={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onTouchCancel={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            actions.cHold("lft");
+          }
+        }}
+        onKeyUp={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            if (actions.holdEnd) actions.holdEnd();
+            actions.cHold("");
+          }
+        }}
+        onClick={() => {
+          actions.cHold("lft");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
         style={{
           position: "absolute",
           top: "50%",
           left: "5px",
           transform: "translateY(-50%)",
-          color: V.pri,
-          pointerEvents: "none",
+          color: state.cHeld === "lft" ? V.onpri : V.pri,
+          background: state.cHeld === "lft" ? V.pri : "transparent",
+          borderRadius: "50%",
+          width: "32px",
+          height: "32px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
         }}
       >
         <Icon name="chevron-left" size={24} />
-      </div>
-      <div
+      </KInteractive>
+      <KInteractive
+        label="Move right"
+        aria-label="Move right"
+        role="button"
+        tabIndex={0}
+        onMouseDown={() => actions.cHold("rgt")}
+        onMouseUp={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onMouseLeave={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onTouchStart={() => actions.cHold("rgt")}
+        onTouchEnd={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onTouchCancel={() => {
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            actions.cHold("rgt");
+          }
+        }}
+        onKeyUp={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            if (actions.holdEnd) actions.holdEnd();
+            actions.cHold("");
+          }
+        }}
+        onClick={() => {
+          actions.cHold("rgt");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
+        }}
         style={{
           position: "absolute",
           top: "50%",
           right: "5px",
           transform: "translateY(-50%)",
-          color: V.pri,
-          pointerEvents: "none",
+          color: state.cHeld === "rgt" ? V.onpri : V.pri,
+          background: state.cHeld === "rgt" ? V.pri : "transparent",
+          borderRadius: "50%",
+          width: "32px",
+          height: "32px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
         }}
       >
         <Icon name="chevron-right" size={24} />
-      </div>
+      </KInteractive>
 
       <div
         data-testid="joystick-knob"
