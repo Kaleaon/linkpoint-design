@@ -40,7 +40,11 @@ function TestApp({ defaultOpen = true, onClose, triggerId = "test-trigger" }) {
                 <button id="btn-cancel" onClick={handleClose}>
                   Cancel
                 </button>
-                <button id="btn-submit" data-primary="true" onClick={handleClose}>
+                <button
+                  id="btn-submit"
+                  data-primary="true"
+                  onClick={handleClose}
+                >
                   Confirm Action
                 </button>
               </div>
