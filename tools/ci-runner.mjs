@@ -229,9 +229,12 @@ function parsePNG(buffer) {
 
   const raw = zlib.inflateSync(Buffer.concat(idatChunks));
   let bpp = 4;
-  if (colorType === 2) bpp = 3; // RGB
-  else if (colorType === 6) bpp = 4; // RGBA
-  else if (colorType === 0) bpp = 1; // Grayscale
+  if (colorType === 2)
+    bpp = 3; // RGB
+  else if (colorType === 6)
+    bpp = 4; // RGBA
+  else if (colorType === 0)
+    bpp = 1; // Grayscale
   else if (colorType === 4) bpp = 2; // Grayscale + Alpha
 
   const stride = width * bpp;
@@ -541,17 +544,21 @@ async function taskUnitTests() {
   if (hasReactVitest) {
     log("Executing React Linkpoint Vitest Suite...", "info");
     const reactDir = path.join(cwd, "docs/react");
-    const kthemeDir = path.resolve(cwd, "../Ktheme");
-    if (
-      !fs.existsSync(kthemeDir) &&
-      !fs.existsSync(path.resolve(cwd, "../../Ktheme")) &&
-      !fs.existsSync("/app/Ktheme")
-    ) {
+    const candidateKthemeDirs = [
+      path.resolve(cwd, "../Ktheme"),
+      path.resolve(cwd, "../../Ktheme"),
+      "/app/Ktheme",
+    ];
+    const kthemeFound = candidateKthemeDirs.some((d) =>
+      fs.existsSync(path.join(d, "packages/react"))
+    );
+    if (!kthemeFound) {
+      log(
+        "Ktheme dependency repository not found locally. Cloning shallow Ktheme copy for unit test suite...",
+        "info"
+      );
       try {
-        log(
-          "Cloning Ktheme repository for local React dependencies...",
-          "info"
-        );
+        const cloneTarget = path.resolve(cwd, "../Ktheme");
         spawnSync(
           "git",
           [
@@ -559,12 +566,15 @@ async function taskUnitTests() {
             "--depth",
             "1",
             "https://github.com/Kaleaon/Ktheme.git",
-            kthemeDir,
+            cloneTarget,
           ],
           { stdio: "inherit" }
         );
-      } catch (_) {}
+      } catch (err) {
+        log(`Failed to clone Ktheme repository: ${err.message}`, "warn");
+      }
     }
+
     if (!fs.existsSync(path.join(reactDir, "node_modules"))) {
       try {
         log(
