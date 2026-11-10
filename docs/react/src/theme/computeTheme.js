@@ -1,4 +1,4 @@
-import { LAYOUTS, resolveLayout } from "./layouts.js";
+import { LAYOUTS, resolveLayout, Z_INDEX, ELEVATION } from "./layouts.js";
 import { PALETTES } from "./palettes.js";
 import { DEVICES, STATES } from "./constants.js";
 import { pickInk } from "./color.js";
@@ -48,13 +48,19 @@ export function computeThemeTokens(state) {
     touchPaddingCompact: "var(--ktheme-touch-padding-compact, 4px)",
     touchPaddingCoarse: "var(--ktheme-touch-padding-coarse, 10px)",
   };
+  const z = { ...Z_INDEX, ...(L.z || {}), ...(P.z || {}) };
+  const elevation = {
+    ...ELEVATION,
+    ...(L.elevation || {}),
+    ...(P.elevation || {}),
+  };
   const t = {
     name: L.name + " / " + P.name,
     nav: L.nav,
     font: L.font,
     dfont: L.dfont,
     note: L.note + "   Colour pack: " + P.note + ".",
-    v: { ...spatialTokens, ...P.c, ...L.s },
+    v: { ...spatialTokens, ...P.c, ...L.s, z, elevation },
   };
   const typography = {
     fontFamily: `var(--ktheme-font-family, ${
@@ -73,6 +79,8 @@ export function computeThemeTokens(state) {
   };
   t.typography = typography;
   const V = t.v;
+  V.z = z;
+  V.elevation = elevation;
 
   let focusRing = V.pri;
   if (getContrastRatio(focusRing, V.bg) < 3.0) {

@@ -214,7 +214,7 @@ export default function FloatersDesktop() {
               display: "flex",
               flexDirection: "column",
               gap: "6px",
-              zIndex: 20,
+              zIndex: V.z?.dock ?? "var(--ktheme-z-dock, 20)",
             }}
           >
             <div
@@ -414,7 +414,9 @@ export default function FloatersDesktop() {
               top: r.y + "px",
               width: r.w + "px",
               height: (isShaded ? FBAR : r.h) + "px",
-              zIndex: 10 + Math.max(0, state.flZ.indexOf(f.id)),
+              zIndex: `calc(var(--ktheme-z-window, ${
+                V.z?.window ?? 10
+              }) + ${Math.max(0, state.flZ.indexOf(f.id))})`,
               display: "flex",
               flexDirection: "column",
               background: V.surf,
@@ -677,7 +679,9 @@ export default function FloatersDesktop() {
               borderBottomLeftRadius: isSweepDesk ? "14px" : V.rp,
               borderBottomRightRadius: isSweepDesk ? "14px" : V.rp,
               boxSizing: "border-box",
-              zIndex: 1050,
+              zIndex: `calc(var(--ktheme-z-taskbar, ${
+                V.z?.taskbar ?? 50
+              }) - 1)`,
             }}
           >
             <ScreenBody />
@@ -701,7 +705,7 @@ export default function FloatersDesktop() {
           borderTop:
             (isSweepDesk ? "2px solid " : "1px solid ") +
             (isSweepDesk ? V.pri : V.outv),
-          zIndex: 60,
+          zIndex: V.z?.taskbar ?? "var(--ktheme-z-taskbar, 50)",
         }}
       >
         {/* Persistent Firestorm Nearby Quick Chat Input Bar */}
