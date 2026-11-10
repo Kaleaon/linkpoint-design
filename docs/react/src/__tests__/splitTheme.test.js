@@ -71,6 +71,10 @@ describe("Split Theme Context Architecture", () => {
     expect(tokens.pad).toBeDefined();
     expect(tokens.LK).toBeDefined();
     expect(typeof tokens.ink).toBe("function");
+    expect(tokens.motion).toBeDefined();
+    expect(tokens.motion.duration).toBe("300ms");
+    expect(tokens.motion.durationFast).toBe("150ms");
+    expect(tokens.motion.easing).toBe("cubic-bezier(0.25, 0.1, 0.25, 1.0)");
 
     const runtime = computeThemeRuntime(mockState, mockCf, tokens);
     expect(runtime.d).toBeDefined();
