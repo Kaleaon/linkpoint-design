@@ -22,7 +22,7 @@ describe("KInteractive & Standard Button Controls Accessibility", () => {
     render(
       <KInteractive as="div" label="Div Button" onClick={handleClick}>
         Custom Div Button
-      </KInteractive>
+      </KInteractive>,
     );
 
     const control = screen.getByRole("button", { name: "Div Button" });
@@ -66,7 +66,7 @@ describe("KInteractive & Standard Button Controls Accessibility", () => {
         <ThemeContext.Provider value={mockTheme}>
           <RailNav />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const buttons = screen.getAllByRole("button");
@@ -107,7 +107,7 @@ describe("KInteractive & Standard Button Controls Accessibility", () => {
         <ThemeContext.Provider value={mockTheme}>
           <MenuBar />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const fileMenuBtn =
@@ -153,7 +153,7 @@ describe("KInteractive & Standard Button Controls Accessibility", () => {
         <ThemeContext.Provider value={mockTheme}>
           <FloatersDesktop />
         </ThemeContext.Provider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const camHudClose = screen.getByRole("button", {

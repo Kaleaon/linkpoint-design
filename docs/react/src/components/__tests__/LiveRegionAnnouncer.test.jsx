@@ -18,7 +18,7 @@ describe("LiveRegionAnnouncer Component", () => {
     render(
       <AppContext.Provider value={{ state: mockState, actions: {} }}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const statusEl = screen.getByTestId("live-region-announcer");
@@ -34,7 +34,7 @@ describe("LiveRegionAnnouncer Component", () => {
     const { rerender } = render(
       <AppContext.Provider value={{ state: mockState, actions: {} }}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const statusEl = screen.getByTestId("live-region-announcer");
@@ -45,7 +45,7 @@ describe("LiveRegionAnnouncer Component", () => {
     rerender(
       <AppContext.Provider value={{ state: mockState, actions: {} }}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     expect(statusEl.textContent).toBe("Navigated to Inventory");
@@ -58,7 +58,7 @@ describe("LiveRegionAnnouncer Component", () => {
     rerender(
       <AppContext.Provider value={{ state: mockState, actions: {} }}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     expect(statusEl.textContent).toBe("Navigated to Settings");
@@ -69,7 +69,7 @@ describe("LiveRegionAnnouncer Component", () => {
     const { rerender } = render(
       <AppContext.Provider value={{ state: mockState, actions: {} }}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const statusEl = screen.getByTestId("live-region-announcer");
@@ -79,7 +79,7 @@ describe("LiveRegionAnnouncer Component", () => {
     rerender(
       <AppContext.Provider value={{ state: mockState, actions: {} }}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     expect(statusEl.textContent).toBe("Teleport completed");
@@ -90,7 +90,7 @@ describe("LiveRegionAnnouncer Component", () => {
     const { rerender } = render(
       <AppContext.Provider value={{ state: mockState, actions: {} }}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const statusEl = screen.getByTestId("live-region-announcer");
@@ -104,7 +104,7 @@ describe("LiveRegionAnnouncer Component", () => {
     rerender(
       <AppContext.Provider value={{ state: mockState, actions: {} }}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     // First announcement displayed immediately
@@ -123,7 +123,7 @@ describe("LiveRegionAnnouncer Component", () => {
     const { rerender } = render(
       <AppContext.Provider value={{ state: mockState, actions: {} }}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const statusEl = screen.getByTestId("live-region-announcer");
@@ -133,7 +133,7 @@ describe("LiveRegionAnnouncer Component", () => {
     rerender(
       <AppContext.Provider value={{ state: mockState, actions: {} }}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     expect(statusEl.textContent).toBe("Navigated to Map");
@@ -143,7 +143,7 @@ describe("LiveRegionAnnouncer Component", () => {
     rerender(
       <AppContext.Provider value={{ state: mockState, actions: {} }}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     // "Navigated to Map" is still active
@@ -164,14 +164,14 @@ describe("LiveRegionAnnouncer Component", () => {
     const { rerender, unmount } = render(
       <AppContext.Provider value={{ state: mockState, actions: {} }}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     mockState = { screen: "Inventory", screenTitle: "Inventory", toast: "" };
     rerender(
       <AppContext.Provider value={{ state: mockState, actions: {} }}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     unmount();

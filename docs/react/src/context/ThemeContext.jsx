@@ -17,7 +17,7 @@ export function ThemeProvider({ children }) {
 
   const tokens = useMemo(
     () => computeThemeTokens(state),
-    [state.layout, state.palette, state.customTheme, state.dense]
+    [state.layout, state.palette, state.customTheme, state.dense],
   );
 
   const runtime = useMemo(
@@ -31,7 +31,7 @@ export function ThemeProvider({ children }) {
       state.customTheme,
       actions.cf,
       tokens,
-    ]
+    ],
   );
 
   useEffect(() => {
@@ -43,13 +43,13 @@ export function ThemeProvider({ children }) {
       if (tokens.V.focusRing) {
         document.documentElement.style.setProperty(
           "--k-focus-ring",
-          tokens.V.focusRing
+          tokens.V.focusRing,
         );
       }
       if (tokens.V.focusRingShadow) {
         document.documentElement.style.setProperty(
           "--k-focus-ring-shadow",
-          tokens.V.focusRingShadow
+          tokens.V.focusRingShadow,
         );
       }
     }
@@ -87,6 +87,6 @@ export function useTheme() {
   }
   return useMemo(
     () => ({ ...(legacy || {}), ...(tokens || {}), ...(runtime || {}) }),
-    [legacy, tokens, runtime]
+    [legacy, tokens, runtime],
   );
 }

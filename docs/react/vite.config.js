@@ -15,11 +15,11 @@ const kthemeAliases = kthemeReactDir
   ? {
       "@ktheme/react/studio": path.resolve(
         kthemeReactDir,
-        "src/studio/index.ts"
+        "src/studio/index.ts",
       ),
       "@ktheme/react/support": path.resolve(
         kthemeReactDir,
-        "src/support/index.ts"
+        "src/support/index.ts",
       ),
       "@ktheme/react": path.resolve(kthemeReactDir, "src/index.ts"),
     }

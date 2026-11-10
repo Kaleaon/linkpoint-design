@@ -15,7 +15,7 @@ export const KInteractive = React.forwardRef(function KInteractive(
     type,
     ...props
   },
-  ref
+  ref,
 ) {
   const isButton = Component === "button";
   const buttonType = isButton ? type || "button" : undefined;

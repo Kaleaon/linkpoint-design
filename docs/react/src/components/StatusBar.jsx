@@ -39,7 +39,7 @@ export default function StatusBar() {
             width: "104px",
             height: "26px",
             borderRadius: "14px",
-            background: "var(--bg, #000)",
+            background: "#000",
           }}
         />
       ) : d.notch === "hole" ? (
@@ -52,7 +52,7 @@ export default function StatusBar() {
             width: "11px",
             height: "11px",
             borderRadius: "50%",
-            background: "var(--bg, #000)",
+            background: "#000",
           }}
         />
       ) : null}

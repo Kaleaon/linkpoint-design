@@ -11,11 +11,7 @@ export default function ElevationBadge({
 
   const label = isUp ? `+${delta}m` : `${delta}m`;
 
-  const color = isUp
-    ? "var(--sec2, #38bdf8)"
-    : isDown
-      ? "var(--warn, #fb923c)"
-      : "var(--ink2, #94a3b8)";
+  const color = isUp ? "#38bdf8" : isDown ? "#fb923c" : "#94a3b8";
   const bg = isUp
     ? "rgba(56, 189, 248, 0.15)"
     : isDown

@@ -19,10 +19,10 @@ export default function GridConsole() {
 
   const totalCount = (state.consoleLogs || []).length;
   const warnCount = (state.consoleLogs || []).filter(
-    (e) => e.level === "WARN"
+    (e) => e.level === "WARN",
   ).length;
   const errorCount = (state.consoleLogs || []).filter(
-    (e) => e.level === "ERROR" || e.level === "FATAL"
+    (e) => e.level === "ERROR" || e.level === "FATAL",
   ).length;
 
   return (

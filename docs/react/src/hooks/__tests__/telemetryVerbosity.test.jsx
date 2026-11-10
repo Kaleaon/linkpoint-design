@@ -14,7 +14,7 @@ function TestControls() {
       data-testid="toggle-btn"
       onClick={() =>
         actions.setTelemetryVerbosity(
-          state.prefs.telemetryVerbosity === "advanced" ? "simple" : "advanced"
+          state.prefs.telemetryVerbosity === "advanced" ? "simple" : "advanced",
         )
       }
     >
@@ -100,7 +100,7 @@ describe("Telemetry verbosity component rendering", () => {
     const { getByTestId, getByText } = render(
       <TestWrapper>
         <World3D />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // In 'simple' mode (default):
@@ -121,7 +121,7 @@ describe("Telemetry verbosity component rendering", () => {
     const { getByTestId, getAllByText } = render(
       <TestWrapper>
         <ConsoleFrame />
-      </TestWrapper>
+      </TestWrapper>,
     );
 
     // In 'simple' mode (default):

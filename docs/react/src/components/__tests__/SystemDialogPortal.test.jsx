@@ -48,7 +48,7 @@ describe("SystemDialog Portal & Focus Management", () => {
             </ThemeProvider>
           </KthemeProvider>
         </FocusStackProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const modalRoot = document.getElementById("modal-root");
@@ -65,7 +65,7 @@ describe("SystemDialog Portal & Focus Management", () => {
             </ThemeProvider>
           </KthemeProvider>
         </FocusStackProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const appRoot = document.getElementById("app-root");

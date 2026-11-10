@@ -34,14 +34,14 @@ export default function RadialPieMenu({
       } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
         e.preventDefault();
         setHoveredIdx((cur) =>
-          cur === null ? 0 : (cur + 1) % PIE_SLICES.length
+          cur === null ? 0 : (cur + 1) % PIE_SLICES.length,
         );
       } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
         e.preventDefault();
         setHoveredIdx((cur) =>
           cur === null
             ? PIE_SLICES.length - 1
-            : (cur - 1 + PIE_SLICES.length) % PIE_SLICES.length
+            : (cur - 1 + PIE_SLICES.length) % PIE_SLICES.length,
         );
       } else if (e.key === "Enter" || e.key === " ") {
         e.preventDefault();

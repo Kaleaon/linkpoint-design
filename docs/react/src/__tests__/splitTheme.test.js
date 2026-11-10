@@ -176,12 +176,16 @@ describe("Split Theme Context Architecture", () => {
         null,
         React.createElement(TokenComponent),
         React.createElement(RuntimeComponent),
-        React.createElement(CompositeComponent)
+        React.createElement(CompositeComponent),
       );
     }
 
     const html1 = ReactDOMServer.renderToString(
-      React.createElement(AppProvider, null, React.createElement(TestContainer))
+      React.createElement(
+        AppProvider,
+        null,
+        React.createElement(TestContainer),
+      ),
     );
     expect(html1).toContain("Chat");
     expect(tokenComponentRenders).toBe(1);
@@ -340,10 +344,10 @@ describe("Split Theme Context Architecture", () => {
     expect(tokens.typography).toBeDefined();
     expect(tokens.typography.fontFamily).toContain("--ktheme-font-family");
     expect(tokens.typography.fontSizeSmall).toContain(
-      "--ktheme-font-size-small"
+      "--ktheme-font-size-small",
     );
     expect(tokens.typography.fontWeightBold).toContain(
-      "--ktheme-font-weight-bold"
+      "--ktheme-font-weight-bold",
     );
 
     expect(typeof createTypographyStyle).toBe("function");

@@ -234,7 +234,7 @@ export default function LinkpointLogo({
         </linearGradient>
 
         <radialGradient id="rCoreGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor={V.ink || "var(--ink)"} stopOpacity="1" />
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
           <stop offset="35%" stopColor={V.pri} stopOpacity="0.9" />
           <stop offset="100%" stopColor={V.sec} stopOpacity="0" />
         </radialGradient>

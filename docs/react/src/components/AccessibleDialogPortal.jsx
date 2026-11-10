@@ -24,7 +24,7 @@ function getFocusableElements(container) {
       if (style && (style.display === "none" || style.visibility === "hidden"))
         return false;
       return true;
-    }
+    },
   );
 }
 
@@ -92,7 +92,7 @@ export default function AccessibleDialogPortal({
     const timerId = scheduleFocus(() => {
       if (!contentRef.current) return;
       const primaryEl = contentRef.current.querySelector(
-        '[data-primary="true"]'
+        '[data-primary="true"]',
       );
       const focusables = getFocusableElements(contentRef.current);
 

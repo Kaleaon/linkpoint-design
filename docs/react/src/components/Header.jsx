@@ -28,7 +28,7 @@ export default function Header() {
       lindenBalance: state.lindenBalance,
       exchangeRate: state.exchangeRate,
       lastSyncedAt: state.lastSyncedAt,
-    }
+    },
   );
   const [rawTitle, rawSubtitle] = headMap[scr] || ["", ""];
   const title = rawTitle;

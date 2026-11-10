@@ -34,10 +34,10 @@ export default function VoiceChatBar({
   };
 
   const modeColor = isSpeaking
-    ? V.ok || "var(--ok, #22c55e)"
+    ? V.ok || "#22c55e"
     : voiceMode === "ptt"
-      ? V.warn || V.sec || "var(--warn, #f59e0b)"
-      : V.err || "var(--err, #ef4444)";
+      ? V.sec || "#f59e0b"
+      : V.err || "#ef4444";
   const modeLabel = isSpeaking
     ? "SPEAKING"
     : voiceMode === "ptt"

@@ -15,7 +15,7 @@ describe("Heading Hierarchy Integration Tests", () => {
         <ThemeProvider>
           <Header />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const h1Elements = screen.getAllByRole("heading", { level: 1 });
@@ -44,7 +44,7 @@ describe("Heading Hierarchy Integration Tests", () => {
         <ThemeContext.Provider value={mockThemeValue}>
           <SplitDetail />
         </ThemeContext.Provider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const h2Elements = screen.getAllByRole("heading", { level: 2 });
@@ -60,7 +60,7 @@ describe("Heading Hierarchy Integration Tests", () => {
         <ThemeProvider>
           <Profile />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const h1Elements = screen.getAllByRole("heading", { level: 1 });
@@ -76,31 +76,31 @@ describe("Heading Hierarchy Integration Tests", () => {
         <ThemeProvider>
           <OfflineGrid />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const h2Elements = screen.getAllByRole("heading", { level: 2 });
     expect(h2Elements.length).toBeGreaterThanOrEqual(4);
     expect(
-      h2Elements.some((el) => el.textContent === "LOCAL GRID ENGINE")
+      h2Elements.some((el) => el.textContent === "LOCAL GRID ENGINE"),
     ).toBe(true);
     expect(
-      h2Elements.some((el) => el.textContent === "OAR REGION BACKUP IMPORTER")
-    ).toBe(true);
-    expect(
-      h2Elements.some(
-        (el) => el.textContent === "LOCAL ASSET & SL UPLOAD CENTER"
-      )
+      h2Elements.some((el) => el.textContent === "OAR REGION BACKUP IMPORTER"),
     ).toBe(true);
     expect(
       h2Elements.some(
-        (el) => el.textContent === "STORAGE & CACHE SIZING MANAGER"
-      )
+        (el) => el.textContent === "LOCAL ASSET & SL UPLOAD CENTER",
+      ),
+    ).toBe(true);
+    expect(
+      h2Elements.some(
+        (el) => el.textContent === "STORAGE & CACHE SIZING MANAGER",
+      ),
     ).toBe(true);
 
     const h3Elements = screen.getAllByRole("heading", { level: 3 });
     expect(
-      h3Elements.some((el) => el.textContent === "OpenSim Local Server")
+      h3Elements.some((el) => el.textContent === "OpenSim Local Server"),
     ).toBe(true);
   });
 });

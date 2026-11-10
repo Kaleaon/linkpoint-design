@@ -49,12 +49,12 @@ export class GlobalErrorBoundary extends Component {
               height: "62px",
               flex: "none",
               borderRadius: "12px",
-              border: "1px solid var(--err, #FF6C6C)",
+              border: "1px solid #FF6C6C",
               background: "rgba(255,108,108,0.1)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "var(--err, #FF6C6C)",
+              color: "#FF6C6C",
             }}
           >
             <Icon name="alert-triangle" size={28} />
@@ -63,7 +63,7 @@ export class GlobalErrorBoundary extends Component {
             style={{
               font: "700 16px/1.3 sans-serif",
               letterSpacing: ".1em",
-              color: "var(--err, #FF6C6C)",
+              color: "#FF6C6C",
             }}
           >
             SCREEN EXECUTION EXCEPTION
@@ -93,8 +93,8 @@ export class GlobalErrorBoundary extends Component {
               alignItems: "center",
               justifyContent: "center",
               borderRadius: "8px",
-              background: "var(--err, #FF6C6C)",
-              color: "var(--onerr, #FFFFFF)",
+              background: "#FF6C6C",
+              color: "#FFFFFF",
               font: "700 11px/1 sans-serif",
               letterSpacing: ".18em",
               cursor: "pointer",
@@ -237,7 +237,7 @@ export default function StateBlock() {
             justifyContent: "center",
             borderRadius: V.rs,
             background: isError ? V.err : V.pri,
-            color: isError ? V.onerr || V.ink : V.onpri,
+            color: isError ? "#FFFFFF" : V.onpri,
             font: "700 11px/1 " + t.font,
             letterSpacing: ".18em",
             cursor: "pointer",

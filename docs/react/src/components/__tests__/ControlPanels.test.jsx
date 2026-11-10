@@ -12,7 +12,7 @@ describe("ControlPanels Component", () => {
         <ThemeProvider>
           <ControlPanels />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     // Default active screen is "Chat" (first item in SCREENS)
@@ -27,7 +27,7 @@ describe("ControlPanels Component", () => {
     expect(activeScreenBtn.style.borderColor).toBe("rgb(108, 255, 154)");
     expect(activeScreenBtn.style.color).toBe("rgb(108, 255, 154)");
     expect(activeScreenBtn.style.backgroundColor).toBe(
-      "rgba(108, 255, 154, 0.12)"
+      "rgba(108, 255, 154, 0.12)",
     );
   });
 
@@ -35,7 +35,7 @@ describe("ControlPanels Component", () => {
     render(
       <AppProvider>
         <ControlPanels />
-      </AppProvider>
+      </AppProvider>,
     );
 
     const activeScreenBtn = screen.getByRole("button", {
@@ -45,7 +45,7 @@ describe("ControlPanels Component", () => {
     expect(activeScreenBtn.style.borderColor).toBe("rgb(108, 255, 154)");
     expect(activeScreenBtn.style.color).toBe("rgb(108, 255, 154)");
     expect(activeScreenBtn.style.backgroundColor).toBe(
-      "rgba(108, 255, 154, 0.12)"
+      "rgba(108, 255, 154, 0.12)",
     );
   });
 });

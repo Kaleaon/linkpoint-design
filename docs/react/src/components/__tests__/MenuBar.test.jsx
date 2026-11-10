@@ -205,7 +205,7 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
 
     // Menu should be closed and focus restored to "File" header
     expect(
-      screen.queryByRole("menu", { name: "File" })
+      screen.queryByRole("menu", { name: "File" }),
     ).not.toBeInTheDocument();
     expect(document.activeElement).toBe(fileH);
     expect(fileH).toHaveAttribute("aria-expanded", "false");
@@ -218,7 +218,7 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
     render(
       <StatefulMenuBarWrapper
         customActions={{ notify: notifyMock, setScreen: setScreenMock }}
-      />
+      />,
     );
 
     const fileH = screen.getByText("File");
@@ -236,7 +236,7 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
 
     expect(setScreenMock).toHaveBeenCalledWith("Login");
     expect(
-      screen.queryByRole("menu", { name: "File" })
+      screen.queryByRole("menu", { name: "File" }),
     ).not.toBeInTheDocument();
     expect(document.activeElement).toBe(fileH);
   });
@@ -248,7 +248,7 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
     render(
       <StatefulMenuBarWrapper
         customActions={{ notify: notifyMock, setScreen: setScreenMock }}
-      />
+      />,
     );
 
     // Open World menu
@@ -265,7 +265,7 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
     expect(setScreenMock).toHaveBeenCalledWith("Map");
     expect(notifyMock).toHaveBeenCalledWith("Teleporting Home...");
     expect(
-      screen.queryByRole("menu", { name: "World" })
+      screen.queryByRole("menu", { name: "World" }),
     ).not.toBeInTheDocument();
     expect(document.activeElement).toBe(worldH);
   });
@@ -283,7 +283,7 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
 
     // File menu should be closed, Edit menu opened, and Edit header focused
     expect(
-      screen.queryByRole("menu", { name: "File" })
+      screen.queryByRole("menu", { name: "File" }),
     ).not.toBeInTheDocument();
     expect(screen.getByRole("menu", { name: "Edit" })).toBeInTheDocument();
 
@@ -304,7 +304,7 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
 
     // File menu should be closed, Help (prev) menu opened, and Help header focused
     expect(
-      screen.queryByRole("menu", { name: "File" })
+      screen.queryByRole("menu", { name: "File" }),
     ).not.toBeInTheDocument();
     expect(screen.getByRole("menu", { name: "Help" })).toBeInTheDocument();
 
@@ -315,7 +315,7 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
   it("supports WINDOWS floater toggling for View menu items", () => {
     const flToggleMock = vi.fn();
     render(
-      <StatefulMenuBarWrapper customActions={{ flToggle: flToggleMock }} />
+      <StatefulMenuBarWrapper customActions={{ flToggle: flToggleMock }} />,
     );
 
     const viewH = screen.getByText("View");
@@ -339,7 +339,7 @@ describe("MenuBar Component Accessibility & Keyboard Navigation", () => {
         <ThemeContext.Provider value={notFloatTheme}>
           <MenuBar />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     expect(screen.queryByRole("menubar")).not.toBeInTheDocument();

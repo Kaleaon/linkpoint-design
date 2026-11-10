@@ -45,25 +45,25 @@ describe("Map and Radar Action Handlers", () => {
           <ThemeProvider>
             <MapTestHarness />
           </ThemeProvider>
-        </AppProvider>
+        </AppProvider>,
       );
 
       const teleportBtn = getByLabelText("Teleport to region");
       fireEvent.click(teleportBtn);
       expect(getByTestId("toast").textContent).toContain(
-        "Teleporting to Da Boom"
+        "Teleporting to Da Boom",
       );
 
       // Test keypress (Enter)
       fireEvent.keyDown(teleportBtn, { key: "Enter" });
       expect(getByTestId("toast").textContent).toContain(
-        "Teleporting to Da Boom"
+        "Teleporting to Da Boom",
       );
 
       // Test keypress (Space)
       fireEvent.keyDown(teleportBtn, { key: " " });
       expect(getByTestId("toast").textContent).toContain(
-        "Teleporting to Da Boom"
+        "Teleporting to Da Boom",
       );
     });
 
@@ -73,19 +73,19 @@ describe("Map and Radar Action Handlers", () => {
           <ThemeProvider>
             <MapTestHarness />
           </ThemeProvider>
-        </AppProvider>
+        </AppProvider>,
       );
 
       const bookmarkBtn = getByLabelText("Bookmark location");
       fireEvent.click(bookmarkBtn);
       expect(getByTestId("toast").textContent).toContain(
-        "Landmark saved to Inventory: Da Boom"
+        "Landmark saved to Inventory: Da Boom",
       );
 
       // Toggle off via Space keypress
       fireEvent.keyDown(bookmarkBtn, { key: " " });
       expect(getByTestId("toast").textContent).toContain(
-        "Landmark removed: Da Boom"
+        "Landmark removed: Da Boom",
       );
     });
 
@@ -95,7 +95,7 @@ describe("Map and Radar Action Handlers", () => {
           <ThemeProvider>
             <MapTestHarness />
           </ThemeProvider>
-        </AppProvider>
+        </AppProvider>,
       );
 
       const plusBtn = getByLabelText("Zoom in map");
@@ -110,7 +110,7 @@ describe("Map and Radar Action Handlers", () => {
 
       fireEvent.click(locateBtn);
       expect(getByTestId("toast").textContent).toBe(
-        "Centered on current location"
+        "Centered on current location",
       );
     });
   });
@@ -130,7 +130,7 @@ describe("Map and Radar Action Handlers", () => {
           <ThemeProvider>
             <RadarTestHarness mode="AV" openItem="Nyx Vaher" />
           </ThemeProvider>
-        </AppProvider>
+        </AppProvider>,
       );
 
       // PROFILE chip triggers openSearch
@@ -149,14 +149,14 @@ describe("Map and Radar Action Handlers", () => {
       const trackChip = getByLabelText("TRACK");
       fireEvent.click(trackChip);
       expect(getByTestId("toast").textContent).toContain(
-        "Tracking avatar: Nyx Vaher"
+        "Tracking avatar: Nyx Vaher",
       );
 
       // TELEPORT TO chip triggers teleportToRegion
       const tpChip = getByLabelText("TELEPORT TO");
       fireEvent.click(tpChip);
       expect(getByTestId("toast").textContent).toContain(
-        "Teleporting to Nyx Vaher"
+        "Teleporting to Nyx Vaher",
       );
     });
 
@@ -166,31 +166,31 @@ describe("Map and Radar Action Handlers", () => {
           <ThemeProvider>
             <RadarTestHarness mode="OBJ" openItem="Vendor — Sunset Lamp v3" />
           </ThemeProvider>
-        </AppProvider>
+        </AppProvider>,
       );
 
       const inspectChip = getByLabelText("INSPECT");
       fireEvent.click(inspectChip);
       expect(getByTestId("toast").textContent).toContain(
-        "Inspecting object: Vendor — Sunset Lamp v3"
+        "Inspecting object: Vendor — Sunset Lamp v3",
       );
 
       const touchChip = getByLabelText("TOUCH");
       fireEvent.click(touchChip);
       expect(getByTestId("toast").textContent).toContain(
-        "Touched Vendor — Sunset Lamp v3"
+        "Touched Vendor — Sunset Lamp v3",
       );
 
       const derenderChip = getByLabelText("DERENDER");
       fireEvent.click(derenderChip);
       expect(getByTestId("toast").textContent).toContain(
-        "Derendered object: Vendor — Sunset Lamp v3"
+        "Derendered object: Vendor — Sunset Lamp v3",
       );
 
       const trackChip = getByLabelText("TRACK");
       fireEvent.click(trackChip);
       expect(getByTestId("toast").textContent).toContain(
-        "Tracking object: Vendor — Sunset Lamp v3"
+        "Tracking object: Vendor — Sunset Lamp v3",
       );
     });
 
@@ -200,7 +200,7 @@ describe("Map and Radar Action Handlers", () => {
           <ThemeProvider>
             <RadarTestHarness mode="AV" menuItem="Nyx Vaher" />
           </ThemeProvider>
-        </AppProvider>
+        </AppProvider>,
       );
 
       act(() => {
@@ -211,13 +211,13 @@ describe("Map and Radar Action Handlers", () => {
       const muteChip = getByLabelText("MUTE");
       fireEvent.click(muteChip);
       expect(getByTestId("toast").textContent).toContain(
-        "Muted avatar: Nyx Vaher"
+        "Muted avatar: Nyx Vaher",
       );
 
       const ejectChip = getByLabelText("EJECT");
       fireEvent.click(ejectChip);
       expect(getByTestId("toast").textContent).toContain(
-        "Ejected avatar: Nyx Vaher"
+        "Ejected avatar: Nyx Vaher",
       );
 
       // Object moderation chips
@@ -226,7 +226,7 @@ describe("Map and Radar Action Handlers", () => {
           <ThemeProvider>
             <RadarTestHarness mode="OBJ" menuItem="Vendor — Sunset Lamp v3" />
           </ThemeProvider>
-        </AppProvider>
+        </AppProvider>,
       );
 
       act(() => {
@@ -236,7 +236,7 @@ describe("Map and Radar Action Handlers", () => {
       const returnChip = getByLabelText("RETURN");
       fireEvent.click(returnChip);
       expect(getByTestId("toast").textContent).toContain(
-        "Returned object: Vendor — Sunset Lamp v3"
+        "Returned object: Vendor — Sunset Lamp v3",
       );
     });
   });

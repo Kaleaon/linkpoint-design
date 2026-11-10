@@ -26,7 +26,7 @@ describe("CardList - Pull-to-refresh & Receipt Dialogs", () => {
         <ThemeContext.Provider value={mockThemeContext}>
           <CardList cards={dummyCards} />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const container = screen
@@ -71,7 +71,7 @@ describe("CardList - Pull-to-refresh & Receipt Dialogs", () => {
         <ThemeContext.Provider value={mockThemeContext}>
           <CardList cards={transactionCards} />
         </ThemeContext.Provider>
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const receiptButtons = screen.getAllByText("VIEW RECEIPT");
@@ -83,7 +83,7 @@ describe("CardList - Pull-to-refresh & Receipt Dialogs", () => {
       expect.objectContaining({
         kind: "ITEMIZED RECEIPT",
         title: "Received L$ 1,200",
-      })
+      }),
     );
   });
 });

@@ -11,7 +11,7 @@ const FormInput = forwardRef(function FormInput(
     className = "",
     ...props
   },
-  ref
+  ref,
 ) {
   const context = useContext(FormFieldContext);
 

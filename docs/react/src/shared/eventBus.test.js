@@ -19,7 +19,7 @@ describe("EventBus Unit Tests", () => {
         type: "DIALOG_ACTION",
         payload: { actionId: "confirm", label: "ALLOW" },
         timestamp: expect.any(String),
-      })
+      }),
     );
 
     unsubscribe();

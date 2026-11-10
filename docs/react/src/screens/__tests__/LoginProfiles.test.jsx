@@ -130,7 +130,7 @@ describe("LocalStorage Account Manager & Login Profile Selector", () => {
     const storedRaw = localStorage.getItem(LINKPOINT_ACCOUNTS_KEY);
     const storedAccounts = JSON.parse(storedRaw || "[]");
     expect(
-      storedAccounts.find((a) => a.id === "acc-to-delete")
+      storedAccounts.find((a) => a.id === "acc-to-delete"),
     ).toBeUndefined();
 
     const avatarInput = screen.getByLabelText("Avatar Name");

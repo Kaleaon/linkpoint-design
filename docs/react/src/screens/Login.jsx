@@ -14,7 +14,7 @@ export default function Login() {
 
   const isGrid = state.loginMode === "grid";
   const hasSavedAccounts = Boolean(
-    state.storedAccounts && state.storedAccounts.length > 0
+    state.storedAccounts && state.storedAccounts.length > 0,
   );
 
   return (

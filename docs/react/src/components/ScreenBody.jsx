@@ -159,7 +159,7 @@ export default function ScreenBody() {
               {norm && isCardScreen && (
                 <CardList
                   cards={(cardsByScreen[scr] || []).filter((c) =>
-                    inSub(c, curSub)
+                    inSub(c, curSub),
                   )}
                 />
               )}

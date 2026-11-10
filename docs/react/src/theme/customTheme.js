@@ -27,7 +27,7 @@ export function themeFromPalette(palette, name = "My Linkpoint theme") {
     active: false,
     name,
     colors: Object.fromEntries(
-      EDITABLE_THEME_TOKENS.map(([key]) => [key, palette.c[key]])
+      EDITABLE_THEME_TOKENS.map(([key]) => [key, palette.c[key]]),
     ),
   };
 }
@@ -58,9 +58,9 @@ export function decodeSharedTheme(value) {
     return sanitizeTheme(
       JSON.parse(
         new TextDecoder().decode(
-          Uint8Array.from(binary, (c) => c.charCodeAt(0))
-        )
-      )
+          Uint8Array.from(binary, (c) => c.charCodeAt(0)),
+        ),
+      ),
     );
   } catch {
     return null;

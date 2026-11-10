@@ -20,14 +20,14 @@ function fail(name, error) {
 
 async function runTestSuite() {
   console.log(
-    "================================================================="
+    "=================================================================",
   );
   console.log("LINKPOINT DESIGN SYSTEM: AUTOMATED VALIDATION SUITE");
   console.log(
-    "Testing All 9 Layouts, 24 Palettes, 22 Screens, Floaters & Parity"
+    "Testing All 9 Layouts, 24 Palettes, 22 Screens, Floaters & Parity",
   );
   console.log(
-    "=================================================================\n"
+    "=================================================================\n",
   );
 
   // -------------------------------------------------------------
@@ -60,53 +60,53 @@ async function runTestSuite() {
     assert.strictEqual(
       PRIMARY_LAYOUT_KEYS.length,
       9,
-      "PRIMARY_LAYOUT_KEYS must contain exactly 9 layouts"
+      "PRIMARY_LAYOUT_KEYS must contain exactly 9 layouts",
     );
     pass(
       "Layouts Definition",
-      `All 9 canonical layouts verified in LAYOUTS registry`
+      `All 9 canonical layouts verified in LAYOUTS registry`,
     );
 
     // Verify LCARS Concentric Tangent Math Rules
     const consoleFrame = fs.readFileSync(
       path.join(cwd, "docs/react/src/components/ConsoleFrame.jsx"),
-      "utf8"
+      "utf8",
     );
     assert(
       consoleFrame.includes("cfBar"),
-      "ConsoleFrame must contain cfBar top swoop"
+      "ConsoleFrame must contain cfBar top swoop",
     );
     assert(
       consoleFrame.includes("cfBarGap"),
-      "ConsoleFrame must contain cfBarGap structural gap"
+      "ConsoleFrame must contain cfBarGap structural gap",
     );
     assert(
       consoleFrame.includes("cfBarEnd"),
-      "ConsoleFrame must contain cfBarEnd rounded end cap pill"
+      "ConsoleFrame must contain cfBarEnd rounded end cap pill",
     );
     assert(
       consoleFrame.includes("cfPlate"),
-      "ConsoleFrame must contain cfPlate registry plate"
+      "ConsoleFrame must contain cfPlate registry plate",
     );
     pass(
       "LCARS Swoop Geometry",
-      "Concentric tangent arc rules and upper swoop end cap verified"
+      "Concentric tangent arc rules and upper swoop end cap verified",
     );
 
     // Verify Tonal and Chamfer Look tokens
     assert.strictEqual(
       LAYOUTS.material3.look.card,
       "tonal",
-      "Material 3 must specify tonal card look"
+      "Material 3 must specify tonal card look",
     );
     assert.strictEqual(
       LAYOUTS.cyberpunk.look.card,
       "chamfer",
-      "Cyberpunk must specify chamfer card look"
+      "Cyberpunk must specify chamfer card look",
     );
     pass(
       "New Card Look Tokens",
-      "Tonal and Chamfer looks verified on Material 3 and Cyberpunk"
+      "Tonal and Chamfer looks verified on Material 3 and Cyberpunk",
     );
   } catch (err) {
     fail("Layout Specifications", err);
@@ -148,22 +148,22 @@ async function runTestSuite() {
       const content = fs.readFileSync(filePath, "utf8");
       assert(
         content.includes("export default function"),
-        `Screen ${scr}.jsx must have default export`
+        `Screen ${scr}.jsx must have default export`,
       );
     }
     pass(
       "Dedicated Screens",
-      `All 22 screens exist as dedicated JSX components with valid default exports`
+      `All 22 screens exist as dedicated JSX components with valid default exports`,
     );
 
     // Verify ScreenBody routes every screen and CARD_SCREENS is empty
     const screenBody = fs.readFileSync(
       path.join(cwd, "docs/react/src/components/ScreenBody.jsx"),
-      "utf8"
+      "utf8",
     );
     assert(
       screenBody.includes("const CARD_SCREENS = [];"),
-      "CARD_SCREENS must be empty (all screens dedicated)"
+      "CARD_SCREENS must be empty (all screens dedicated)",
     );
     for (const scr of [
       "Objects",
@@ -179,12 +179,12 @@ async function runTestSuite() {
     ]) {
       assert(
         screenBody.includes(`<${scr}`),
-        `ScreenBody must render <${scr} />`
+        `ScreenBody must render <${scr} />`,
       );
     }
     pass(
       "ScreenBody Routing",
-      "All 10 previously fallback card screens are properly wired in ScreenBody.jsx"
+      "All 10 previously fallback card screens are properly wired in ScreenBody.jsx",
     );
   } catch (err) {
     fail("Screens & Routing", err);
@@ -231,13 +231,13 @@ async function runTestSuite() {
       for (const t of tabs) {
         assert(
           tabNames.includes(t),
-          `CSUB["${screenKey}"] must contain tab "${t}"`
+          `CSUB["${screenKey}"] must contain tab "${t}"`,
         );
       }
     }
     pass(
       "CSUB Sub-Navigation Table",
-      `All 21 multi-view screens verified in CSUB table`
+      `All 21 multi-view screens verified in CSUB table`,
     );
   } catch (err) {
     fail("CSUB Table Verification", err);
@@ -280,7 +280,7 @@ async function runTestSuite() {
     for (const fid of requiredFloaters) {
       assert(
         floaterIds.includes(fid),
-        `FLOATERS array must include floater "${fid}"`
+        `FLOATERS array must include floater "${fid}"`,
       );
     }
 
@@ -288,24 +288,24 @@ async function runTestSuite() {
     for (const f of FLOATERS) {
       assert(
         typeof f.x === "number" && f.x >= 0,
-        `Floater ${f.id} must have valid x`
+        `Floater ${f.id} must have valid x`,
       );
       assert(
         typeof f.y === "number" && f.y >= 0,
-        `Floater ${f.id} must have valid y`
+        `Floater ${f.id} must have valid y`,
       );
       assert(
         typeof f.w === "number" && f.w >= 180,
-        `Floater ${f.id} must have valid w >= 180`
+        `Floater ${f.id} must have valid w >= 180`,
       );
       assert(
         typeof f.h === "number" && f.h >= 180,
-        `Floater ${f.id} must have valid h >= 180`
+        `Floater ${f.id} must have valid h >= 180`,
       );
     }
     pass(
       "Desktop Floaters Model",
-      `All 19 floater windows configured with valid bounds and FBAR=26px`
+      `All 19 floater windows configured with valid bounds and FBAR=26px`,
     );
   } catch (err) {
     fail("Floaters Verification", err);
@@ -317,42 +317,42 @@ async function runTestSuite() {
   try {
     const motionHook = fs.readFileSync(
       path.join(cwd, "docs/react/src/hooks/usePrefersReducedMotion.js"),
-      "utf8"
+      "utf8",
     );
     assert(
       motionHook.includes("prefers-reduced-motion"),
-      "usePrefersReducedMotion must check prefers-reduced-motion query"
+      "usePrefersReducedMotion must check prefers-reduced-motion query",
     );
 
     const liveRegion = fs.readFileSync(
       path.join(cwd, "docs/react/src/components/LiveRegionAnnouncer.jsx"),
-      "utf8"
+      "utf8",
     );
     assert(
       liveRegion.includes("aria-live"),
-      "LiveRegionAnnouncer must have aria-live attribute"
+      "LiveRegionAnnouncer must have aria-live attribute",
     );
     assert(
       liveRegion.includes('role="status"'),
-      "LiveRegionAnnouncer must have role status"
+      "LiveRegionAnnouncer must have role status",
     );
 
     const world3d = fs.readFileSync(
       path.join(cwd, "docs/react/src/screens/World3D.jsx"),
-      "utf8"
+      "utf8",
     );
     assert(
       world3d.includes("CPAD.map"),
-      "World3D must render CPAD touch movement D-pad"
+      "World3D must render CPAD touch movement D-pad",
     );
     assert(
       world3d.includes('width: "44px"'),
-      "Touch movement pad buttons must meet 44px touch target requirement"
+      "Touch movement pad buttons must meet 44px touch target requirement",
     );
 
     pass(
       "Accessibility & Motion",
-      "Touch targets >= 44px, ARIA live region, and reduced motion hooks verified"
+      "Touch targets >= 44px, ARIA live region, and reduced motion hooks verified",
     );
   } catch (err) {
     fail("Accessibility Verification", err);
@@ -364,7 +364,7 @@ async function runTestSuite() {
   try {
     const indexHtml = fs.readFileSync(
       path.join(cwd, "docs/index.html"),
-      "utf8"
+      "utf8",
     );
 
     // Check HEAD entries for new screens
@@ -390,7 +390,7 @@ async function runTestSuite() {
     ]) {
       assert(
         indexHtml.includes(`id:"${fid}"`) || indexHtml.includes(`id: "${fid}"`),
-        `docs/index.html FLOATERS must contain ${fid}`
+        `docs/index.html FLOATERS must contain ${fid}`,
       );
     }
 
@@ -399,7 +399,7 @@ async function runTestSuite() {
       .split("const FLOATERS = [")[1]
       .split("];")[0];
     const sectionIds = [...floaterSection.matchAll(/id:\s*"([^"]+)"/g)].map(
-      (m) => m[1]
+      (m) => m[1],
     );
     const floaterSet = new Set();
     const floaterDups = [];
@@ -411,13 +411,13 @@ async function runTestSuite() {
       floaterDups.length,
       0,
       `Duplicate floater IDs found in docs/index.html: ${floaterDups.join(
-        ", "
-      )}`
+        ", ",
+      )}`,
     );
 
     pass(
       "Static Canvas Parity",
-      "docs/index.html 1:1 synchronized with React constants, HEAD and FLOATERS without duplicates"
+      "docs/index.html 1:1 synchronized with React constants, HEAD and FLOATERS without duplicates",
     );
   } catch (err) {
     fail("Static Canvas Parity", err);
@@ -434,7 +434,7 @@ async function runTestSuite() {
     const paletteKeys = Object.keys(PALETTES);
     assert(
       paletteKeys.length >= 24,
-      `PALETTES must contain at least 24 palettes (found ${paletteKeys.length})`
+      `PALETTES must contain at least 24 palettes (found ${paletteKeys.length})`,
     );
 
     const colorModule = await import(
@@ -459,7 +459,7 @@ async function runTestSuite() {
 
     pass(
       "Color Engine & Contrast Math",
-      `Verified luminance, WCAG 2.1 contrast math across ${paletteKeys.length} palettes`
+      `Verified luminance, WCAG 2.1 contrast math across ${paletteKeys.length} palettes`,
     );
   } catch (err) {
     fail("Color Engine Verification", err);
@@ -508,7 +508,7 @@ async function runTestSuite() {
               body += chunk;
             });
             res.on("end", () =>
-              resolve({ status: res.statusCode, headers: res.headers, body })
+              resolve({ status: res.statusCode, headers: res.headers, body }),
             );
           })
           .on("error", reject);
@@ -519,40 +519,40 @@ async function runTestSuite() {
     assert.strictEqual(
       indexRes.status,
       200,
-      "docs/index.html must return 200 OK"
+      "docs/index.html must return 200 OK",
     );
     assert(
       indexRes.headers["content-type"].includes("text/html"),
-      "docs/index.html must have text/html Content-Type"
+      "docs/index.html must have text/html Content-Type",
     );
     assert(
       indexRes.body.includes("Linkpoint"),
-      "docs/index.html must contain Linkpoint title"
+      "docs/index.html must contain Linkpoint title",
     );
     assert(
       indexRes.body.includes("SCREENS"),
-      "docs/index.html must contain SCREENS array"
+      "docs/index.html must contain SCREENS array",
     );
     assert(
       indexRes.body.includes("CSUB"),
-      "docs/index.html must contain CSUB array"
+      "docs/index.html must contain CSUB array",
     );
 
     const reactIndex = await fetchUrl("/docs/react/index.html");
     assert.strictEqual(
       reactIndex.status,
       200,
-      "docs/react/index.html must return 200 OK"
+      "docs/react/index.html must return 200 OK",
     );
     assert(
       reactIndex.body.includes('<div id="root">'),
-      "docs/react/index.html must contain root mount div"
+      "docs/react/index.html must contain root mount div",
     );
 
     server.close();
     pass(
       "Live HTTP Server & Asset Loading",
-      `Served and verified docs/index.html and docs/react/index.html at http://127.0.0.1:${port}`
+      `Served and verified docs/index.html and docs/react/index.html at http://127.0.0.1:${port}`,
     );
   } catch (err) {
     fail("Live HTTP Server Test", err);
@@ -562,13 +562,13 @@ async function runTestSuite() {
   // SUMMARY REPORT
   // -------------------------------------------------------------
   console.log(
-    "\n================================================================="
+    "\n=================================================================",
   );
   const passed = report.filter((r) => r.status === "PASS").length;
   const failed = report.filter((r) => r.status === "FAIL").length;
   console.log(`TEST RUN COMPLETE: ${passed} PASSED, ${failed} FAILED`);
   console.log(
-    "================================================================="
+    "=================================================================",
   );
 
   // Write results to disk for test output tracking
@@ -577,8 +577,8 @@ async function runTestSuite() {
     JSON.stringify(
       { passed, failed, report, timestamp: new Date().toISOString() },
       null,
-      2
-    )
+      2,
+    ),
   );
 
   if (failed > 0) {

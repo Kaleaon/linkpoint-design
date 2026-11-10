@@ -59,7 +59,7 @@ export function FocusStackProvider({ children }) {
     // Fallback: search for active taskbar buttons or focusable elements
     if (typeof document !== "undefined") {
       const taskbarBtn = document.querySelector(
-        'div[role="button"][tabindex="0"], button:not([disabled]), [tabindex="0"]'
+        'div[role="button"][tabindex="0"], button:not([disabled]), [tabindex="0"]',
       );
       if (
         taskbarBtn &&
@@ -84,7 +84,7 @@ export function FocusStackProvider({ children }) {
       pushTrigger(triggerElement);
       updateBackgroundState();
     },
-    [pushTrigger, updateBackgroundState]
+    [pushTrigger, updateBackgroundState],
   );
 
   const unregisterPortal = useCallback(
@@ -97,7 +97,7 @@ export function FocusStackProvider({ children }) {
         restoreFocus(preferredTrigger);
       }
     },
-    [updateBackgroundState, restoreFocus]
+    [updateBackgroundState, restoreFocus],
   );
 
   const value = {

@@ -262,7 +262,7 @@ function LureCard({ msg, state, actions, V, t }) {
                 msg.id || msg.ts,
                 "accepted",
                 msg.lureRegion,
-                msg.lureCoords
+                msg.lureCoords,
               )
             }
             style={{
@@ -285,7 +285,7 @@ function LureCard({ msg, state, actions, V, t }) {
                 msg.id || msg.ts,
                 "declined",
                 msg.lureRegion,
-                msg.lureCoords
+                msg.lureCoords,
               )
             }
             style={{
@@ -338,7 +338,7 @@ export default function Chat() {
         r.name.toLowerCase().includes(activeGroup.role?.toLowerCase() || "") &&
         (r.powers.includes("Moderate Chat") ||
           r.powers.includes("Eject Members") ||
-          r.powers.includes("All Abilities"))
+          r.powers.includes("All Abilities")),
     );
 
   const participants = GROUP_PARTICIPANTS[activeChip] || [
@@ -746,7 +746,7 @@ export default function Chat() {
                         type="button"
                         data-testid={`member-row-${member.name.replace(
                           /\s+/g,
-                          "-"
+                          "-",
                         )}`}
                         onClick={() =>
                           setSelectedMember(isSelected ? null : member)
@@ -844,7 +844,7 @@ export default function Chat() {
                             title="Active Voice"
                             data-testid={`voice-indicator-${member.name.replace(
                               /\s+/g,
-                              "-"
+                              "-",
                             )}`}
                             style={{
                               color: V.ok || "#22c55e",
@@ -910,10 +910,10 @@ export default function Chat() {
                                   action: "mute",
                                   target: member.name,
                                   group: activeChip,
-                                }
+                                },
                               );
                               actions.notify(
-                                `Muted ${member.name} in ${activeChip}`
+                                `Muted ${member.name} in ${activeChip}`,
                               );
                               setSelectedMember(null);
                             }}
@@ -976,10 +976,10 @@ export default function Chat() {
                                   action: "kick",
                                   target: member.name,
                                   group: activeChip,
-                                }
+                                },
                               );
                               actions.notify(
-                                `Ejected ${member.name} from ${activeChip}`
+                                `Ejected ${member.name} from ${activeChip}`,
                               );
                               setSelectedMember(null);
                             }}

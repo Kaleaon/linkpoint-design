@@ -112,7 +112,7 @@ export default function Card({ c }) {
               // option it actually chose rather than the stringified value —
               // numeric prefs (cache size in MB) would otherwise come back as text.
               const opt = (c.options || []).find(
-                (o) => String(o.value) === e.target.value
+                (o) => String(o.value) === e.target.value,
               );
               c.onChange(opt ? opt.value : e.target.value);
             }}

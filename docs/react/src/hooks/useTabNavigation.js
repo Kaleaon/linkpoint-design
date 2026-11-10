@@ -104,7 +104,7 @@ export function useTabNavigation({
         }
       }
     },
-    [itemCount, safeActiveIndex, onSelect]
+    [itemCount, safeActiveIndex, onSelect],
   );
 
   const containerProps = {
@@ -130,7 +130,7 @@ export function useTabNavigation({
         },
       };
     },
-    [baseId, safeActiveIndex, onSelect]
+    [baseId, safeActiveIndex, onSelect],
   );
 
   const getPanelProps = useCallback(
@@ -143,7 +143,7 @@ export function useTabNavigation({
         tabIndex: 0,
       };
     },
-    [baseId, safeActiveIndex]
+    [baseId, safeActiveIndex],
   );
 
   return {

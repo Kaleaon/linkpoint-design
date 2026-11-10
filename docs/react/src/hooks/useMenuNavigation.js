@@ -36,7 +36,7 @@ export function useMenuNavigation({
   const [focusedMenuIndex, setFocusedMenuIndex] = useState(() => {
     if (controlledOpenMenu) {
       const idx = menus.findIndex(
-        (m) => (typeof m === "string" ? m : m?.label) === controlledOpenMenu
+        (m) => (typeof m === "string" ? m : m?.label) === controlledOpenMenu,
       );
       if (idx !== -1) return idx;
     }
@@ -74,7 +74,7 @@ export function useMenuNavigation({
         onOpenMenu(label);
       }
     },
-    [isControlled, onOpenMenu]
+    [isControlled, onOpenMenu],
   );
 
   const closeMenu = useCallback(() => {
@@ -259,7 +259,7 @@ export function useMenuNavigation({
       getMenuItems,
       setOpenMenu,
       closeMenu,
-    ]
+    ],
   );
 
   const handleItemKeyDown = useCallback(
@@ -388,7 +388,7 @@ export function useMenuNavigation({
       setOpenMenu,
       closeMenu,
       onSelect,
-    ]
+    ],
   );
 
   const handleDropdownKeyDown = useCallback(
@@ -402,7 +402,7 @@ export function useMenuNavigation({
         }
       }
     },
-    [closeMenu]
+    [closeMenu],
   );
 
   const menubarProps = {
@@ -447,7 +447,7 @@ export function useMenuNavigation({
       getMenuLabel,
       setOpenMenu,
       handleHeaderKeyDown,
-    ]
+    ],
   );
 
   const getDropdownProps = useCallback(
@@ -463,7 +463,7 @@ export function useMenuNavigation({
         onKeyDown: (e) => handleDropdownKeyDown(e, menuIndex),
       };
     },
-    [menus, getMenuLabel, handleDropdownKeyDown]
+    [menus, getMenuLabel, handleDropdownKeyDown],
   );
 
   const getItemProps = useCallback(
@@ -493,7 +493,7 @@ export function useMenuNavigation({
         },
       };
     },
-    [menus, getMenuLabel, onSelect, closeMenu, handleItemKeyDown]
+    [menus, getMenuLabel, onSelect, closeMenu, handleItemKeyDown],
   );
 
   return {

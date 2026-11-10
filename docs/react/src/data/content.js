@@ -76,7 +76,7 @@ export function parseSlurl(text, explicitUrl, explicitTitle) {
 
   if (!url && text) {
     const slurlRegex =
-      /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^\/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
+      /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
     const match = text.match(slurlRegex);
     if (match) {
       extractedUrl = match[0];
@@ -93,7 +93,7 @@ export function parseSlurl(text, explicitUrl, explicitTitle) {
   if (!url) return null;
 
   const slurlRegex =
-    /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^\/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
+    /(?:secondlife:\/\/|https?:\/\/(?:maps\.|slurl\.|locations\.)?secondlife\.com\/secondlife\/)([^/\s"'<>]+)(?:\/(\d+)(?:\/(\d+)(?:\/(\d+))?)?)?/i;
   const match = url.match(slurlRegex);
   let regKey =
     title ||
@@ -729,7 +729,7 @@ export const HEAD = (
   layoutName,
   paletteName,
   cacheState = {},
-  balanceState = {}
+  balanceState = {},
 ) => {
   const linden = balanceState.lindenBalance ?? 4250;
   const rate = balanceState.exchangeRate ?? 248.5;
@@ -1354,7 +1354,7 @@ export function buildCards({ state, actions, layoutName, paletteName }) {
             },
           ]),
       ...FRIEND_ROWS.filter(
-        ([, , online]) => state.tabs.Friends !== "ONLINE" || online
+        ([, , online]) => state.tabs.Friends !== "ONLINE" || online,
       ).map(([n, m, online, rights]) => ({
         title: n,
         body: m,

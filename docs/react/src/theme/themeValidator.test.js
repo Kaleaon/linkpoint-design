@@ -109,8 +109,8 @@ describe("validateThemeJson", () => {
     expect(result.errors.length).toBeGreaterThan(0);
     expect(
       result.errors.some((e) =>
-        e.includes('Missing required color token "sec"')
-      )
+        e.includes('Missing required color token "sec"'),
+      ),
     ).toBe(true);
   });
 

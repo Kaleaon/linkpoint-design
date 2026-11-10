@@ -60,7 +60,7 @@ export function TabGroup({
       onSelect?.(index);
       onChange?.(index);
     },
-    [isControlled, onSelect, onChange]
+    [isControlled, onSelect, onChange],
   );
 
   const registerTab = useCallback((index, el) => {
@@ -74,7 +74,7 @@ export function TabGroup({
 
   const getPanelId = useCallback(
     (index) => `${baseId}-panel-${index}`,
-    [baseId]
+    [baseId],
   );
 
   // Focus newly active tab if selection change was triggered via keyboard navigation

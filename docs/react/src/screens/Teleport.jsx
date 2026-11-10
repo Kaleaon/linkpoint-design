@@ -154,7 +154,7 @@ export default function Teleport() {
       max: 512,
       onConfirm: (val) => {
         setSlurlInput((prev) =>
-          prev ? `${prev}/${val}` : `secondlife://Da%20Boom/${val}/${val}/26`
+          prev ? `${prev}/${val}` : `secondlife://Da%20Boom/${val}/${val}/26`,
         );
         actions.notify(`Coordinate vector set: ${val}`);
         setKeypadConfig(null);
@@ -170,7 +170,7 @@ export default function Teleport() {
 
   const togglePin = (lmId) => {
     setLandmarks((prev) =>
-      prev.map((lm) => (lm.id === lmId ? { ...lm, pinned: !lm.pinned } : lm))
+      prev.map((lm) => (lm.id === lmId ? { ...lm, pinned: !lm.pinned } : lm)),
     );
   };
 
@@ -184,7 +184,7 @@ export default function Teleport() {
   ];
 
   const filteredLandmarks = landmarks.filter(
-    (lm) => category === "ALL" || lm.category === category
+    (lm) => category === "ALL" || lm.category === category,
   );
 
   return (
@@ -270,7 +270,7 @@ export default function Teleport() {
               as="button"
               onClick={() =>
                 actions.notify(
-                  "Home location set to current position <128, 128, 26>"
+                  "Home location set to current position <128, 128, 26>",
                 )
               }
               style={actBtn(false)}
@@ -633,7 +633,7 @@ export default function Teleport() {
                 key={h.id}
                 style={{
                   ...cardStyle(
-                    h.timestamp === "Current Region" ? V.pri : undefined
+                    h.timestamp === "Current Region" ? V.pri : undefined,
                   ),
                   display: "flex",
                   alignItems: "center",

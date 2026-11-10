@@ -15,16 +15,16 @@ describe("useAppState hook - Dynamic Navigation Title Synchronization (WCAG 2.4.
   it("exports computeScreenTitle and formatDocumentTitle helper functions", () => {
     expect(computeScreenTitle("Inventory")).toBe("Inventory");
     expect(computeScreenTitle("Chat", { Chat: "LOCAL" }, "Nyx Vaher")).toBe(
-      "Chat"
+      "Chat",
     );
     expect(computeScreenTitle("Chat", { Chat: "IM" }, "Nyx Vaher")).toBe(
-      "Chat with Nyx Vaher"
+      "Chat with Nyx Vaher",
     );
     expect(
-      computeScreenTitle("Chat", { Chat: "GROUP" }, "Bay City Builders")
+      computeScreenTitle("Chat", { Chat: "GROUP" }, "Bay City Builders"),
     ).toBe("Chat with Bay City Builders");
     expect(formatDocumentTitle("Inventory")).toBe(
-      "Inventory | Linkpoint Mobile"
+      "Inventory | Linkpoint Mobile",
     );
   });
 
@@ -51,7 +51,7 @@ describe("useAppState hook - Dynamic Navigation Title Synchronization (WCAG 2.4.
       const expectedScreenTitle = scr === "Chat" ? "Chat" : scr;
       expect(result.current.state.screenTitle).toBe(expectedScreenTitle);
       expect(result.current.state.title).toBe(
-        `${expectedScreenTitle} | Linkpoint Mobile`
+        `${expectedScreenTitle} | Linkpoint Mobile`,
       );
       expect(document.title).toBe(`${expectedScreenTitle} | Linkpoint Mobile`);
     }
@@ -67,7 +67,7 @@ describe("useAppState hook - Dynamic Navigation Title Synchronization (WCAG 2.4.
 
     expect(result.current.state.screenTitle).toBe("Chat with Nyx Vaher");
     expect(result.current.state.title).toBe(
-      "Chat with Nyx Vaher | Linkpoint Mobile"
+      "Chat with Nyx Vaher | Linkpoint Mobile",
     );
     expect(document.title).toBe("Chat with Nyx Vaher | Linkpoint Mobile");
 
@@ -78,7 +78,7 @@ describe("useAppState hook - Dynamic Navigation Title Synchronization (WCAG 2.4.
 
     expect(result.current.state.screenTitle).toBe("Chat with Kit Sandalwood");
     expect(result.current.state.title).toBe(
-      "Chat with Kit Sandalwood | Linkpoint Mobile"
+      "Chat with Kit Sandalwood | Linkpoint Mobile",
     );
     expect(document.title).toBe("Chat with Kit Sandalwood | Linkpoint Mobile");
 
@@ -89,13 +89,13 @@ describe("useAppState hook - Dynamic Navigation Title Synchronization (WCAG 2.4.
     });
 
     expect(result.current.state.screenTitle).toBe(
-      "Chat with Bay City Builders"
+      "Chat with Bay City Builders",
     );
     expect(result.current.state.title).toBe(
-      "Chat with Bay City Builders | Linkpoint Mobile"
+      "Chat with Bay City Builders | Linkpoint Mobile",
     );
     expect(document.title).toBe(
-      "Chat with Bay City Builders | Linkpoint Mobile"
+      "Chat with Bay City Builders | Linkpoint Mobile",
     );
 
     // Return to LOCAL chat
@@ -127,7 +127,7 @@ describe("useAppState hook - Dynamic Navigation Title Synchronization (WCAG 2.4.
     expect(result.current.state.chip).toBe("Kit Sandalwood");
     expect(result.current.state.screenTitle).toBe("Chat with Kit Sandalwood");
     expect(result.current.state.title).toBe(
-      "Chat with Kit Sandalwood | Linkpoint Mobile"
+      "Chat with Kit Sandalwood | Linkpoint Mobile",
     );
     expect(document.title).toBe("Chat with Kit Sandalwood | Linkpoint Mobile");
   });

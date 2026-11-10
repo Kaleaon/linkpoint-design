@@ -61,7 +61,7 @@ function renderWorld3D({ stateOverrides = {}, actionsOverrides = {} } = {}) {
       <ThemeContext.Provider value={defaultTheme}>
         <World3D />
       </ThemeContext.Provider>
-    </AppContext.Provider>
+    </AppContext.Provider>,
   );
 
   return {
@@ -162,17 +162,17 @@ describe("World3D Overlay Controls Accessibility and Interaction", () => {
 
       fireEvent.click(snapshot);
       expect(actions.notify).toHaveBeenCalledWith(
-        "Snapshot captured to inventory"
+        "Snapshot captured to inventory",
       );
 
       fireEvent.keyDown(snapshot, { key: "Enter" });
       expect(actions.notify).toHaveBeenCalledWith(
-        "Snapshot captured to inventory"
+        "Snapshot captured to inventory",
       );
 
       fireEvent.keyDown(snapshot, { key: " " });
       expect(actions.notify).toHaveBeenCalledWith(
-        "Snapshot captured to inventory"
+        "Snapshot captured to inventory",
       );
     });
 
@@ -202,7 +202,7 @@ describe("World3D Overlay Controls Accessibility and Interaction", () => {
           >
             <World3D />
           </ThemeContext.Provider>
-        </AppContext.Provider>
+        </AppContext.Provider>,
       );
       const flyDown = screen.getByLabelText("Fly down");
       expect(flyDown.style.background).toBe("rgb(108, 255, 154)");

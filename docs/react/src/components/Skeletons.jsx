@@ -21,11 +21,11 @@ function useSafeThemeTokens() {
   }
   return {
     V: {
-      surf: "var(--surf, #111)",
-      surf2: "var(--surf2, #222)",
-      outv: "var(--outv, #333)",
-      bg: "var(--bg, #000)",
-      pri: "var(--pri, #00f0ff)",
+      surf: "#111",
+      surf2: "#222",
+      outv: "#333",
+      bg: "#000",
+      pri: "#00f0ff",
       rs: "4px",
       rp: "50%",
     },

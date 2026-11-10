@@ -241,7 +241,7 @@ describe("useMenuNavigation Hook", () => {
     expect(handleSelect).toHaveBeenCalledWith(
       "File",
       ["Take Snapshot", "⌘`"],
-      1
+      1,
     );
     expect(screen.queryByTestId("menu-File")).not.toBeInTheDocument();
     expect(document.activeElement).toBe(fileHeader);

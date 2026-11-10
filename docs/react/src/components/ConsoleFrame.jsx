@@ -612,7 +612,7 @@ function buildConsoleNav({
             ")",
           "var(--ktheme-motion-easing, " +
             (motion.easing || "cubic-bezier(0.25, 0.1, 0.25, 1.0)") +
-            ")"
+            ")",
         )
       : "background var(--ktheme-motion-duration-fast, 150ms) var(--ktheme-motion-easing, cubic-bezier(0.25, 0.1, 0.25, 1.0))";
   const items = NAV_ALL.map((n, i) => {
@@ -749,7 +749,7 @@ function ConsoleScene() {
               ")",
             "var(--ktheme-motion-easing-decelerated, " +
               (motion.easing || "cubic-bezier(0, 0, 0.58, 1)") +
-              ")"
+              ")",
           )
         : "transform var(--ktheme-motion-duration, 300ms) var(--ktheme-motion-easing-decelerated, cubic-bezier(0, 0, 0.58, 1))";
   const cfParallax = {
@@ -800,7 +800,7 @@ function ConsoleScene() {
           " · HDG " +
           String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(
             3,
-            "0"
+            "0",
           ) +
           "° " +
           (state.cPitch > 2 ? "DN" : state.cPitch < -2 ? "UP" : "LVL")
@@ -814,7 +814,7 @@ function ConsoleScene() {
           "> · Facing: " +
           String(Math.round(((state.cHdg % 360) + 360) % 360)).padStart(
             3,
-            "0"
+            "0",
           ) +
           "° (" +
           (state.cPitch > 2 ? "Down" : state.cPitch < -2 ? "Up" : "Level") +

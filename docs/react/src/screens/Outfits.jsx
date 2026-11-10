@@ -185,7 +185,7 @@ export default function Outfits() {
       prev.map((o) => ({
         ...o,
         active: o.id === outfit.id,
-      }))
+      })),
     );
     actions.notify(`Worn outfit: ${outfit.name}`);
   };

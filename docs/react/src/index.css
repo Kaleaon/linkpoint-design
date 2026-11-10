@@ -275,6 +275,7 @@ select:focus-visible {
     opacity: 0.65;
   }
 }
+
 .theme-studio-alert {
   display: flex;
   align-items: flex-start;

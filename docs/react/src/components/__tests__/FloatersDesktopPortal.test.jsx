@@ -41,7 +41,7 @@ describe("FloatersDesktop Portal Focus Containment", () => {
             </ThemeProvider>
           </KthemeProvider>
         </FocusStackProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const modalRoot = document.getElementById("modal-root");
@@ -59,7 +59,7 @@ describe("FloatersDesktop Portal Focus Containment", () => {
             </ThemeProvider>
           </KthemeProvider>
         </FocusStackProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const startSentinel = document.querySelector('[data-sentinel="start"]');

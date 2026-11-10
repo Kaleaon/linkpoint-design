@@ -58,7 +58,7 @@ describe("SearchCombobox Component & WCAG Compliance", () => {
           itemLabel="items"
           onChange={() => {}}
         />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const input = screen.getByRole("combobox");
@@ -81,11 +81,11 @@ describe("SearchCombobox Component & WCAG Compliance", () => {
           itemLabel="items"
           onChange={() => {}}
         />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     expect(screen.getByRole("combobox").getAttribute("aria-expanded")).toBe(
-      "true"
+      "true",
     );
 
     // When value is present but resultCount is 0, aria-expanded is false
@@ -100,11 +100,11 @@ describe("SearchCombobox Component & WCAG Compliance", () => {
           itemLabel="items"
           onChange={() => {}}
         />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     expect(screen.getByRole("combobox").getAttribute("aria-expanded")).toBe(
-      "false"
+      "false",
     );
   });
 
@@ -152,7 +152,7 @@ describe("SearchCombobox Component & WCAG Compliance", () => {
     render(
       <AppContext.Provider value={mockAppContext}>
         <StatefulCombobox />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     // Initial render should not announce
@@ -194,7 +194,7 @@ describe("LiveRegionAnnouncer Component & WCAG 2.2 SC 4.1.3", () => {
     render(
       <AppContext.Provider value={mockAppContext}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const liveRegion = screen.getByRole("status");
@@ -216,7 +216,7 @@ describe("LiveRegionAnnouncer Component & WCAG 2.2 SC 4.1.3", () => {
     render(
       <AppContext.Provider value={mockAppContext}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const liveRegion = screen.getByRole("status");
@@ -232,7 +232,7 @@ describe("LiveRegionAnnouncer Component & WCAG 2.2 SC 4.1.3", () => {
     render(
       <AppContext.Provider value={mockAppContext}>
         <LiveRegionAnnouncer />
-      </AppContext.Provider>
+      </AppContext.Provider>,
     );
 
     const liveRegion = screen.getByRole("status");
@@ -257,7 +257,7 @@ describe("Screen Integration: Search.jsx, Inventory.jsx, Friends.jsx", () => {
           <Search />
           <LiveRegionAnnouncer />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const combobox = screen.getByRole("combobox");
@@ -285,13 +285,13 @@ describe("Screen Integration: Search.jsx, Inventory.jsx, Friends.jsx", () => {
           <Inventory />
           <LiveRegionAnnouncer />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const combobox = screen.getByRole("combobox");
     expect(combobox).toBeDefined();
     expect(combobox.getAttribute("aria-controls")).toBe(
-      "inventory-results-tree"
+      "inventory-results-tree",
     );
     expect(combobox.getAttribute("placeholder")).toBe("filter inventory…");
 
@@ -316,7 +316,7 @@ describe("Screen Integration: Search.jsx, Inventory.jsx, Friends.jsx", () => {
           <Friends />
           <LiveRegionAnnouncer />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const combobox = screen.getByRole("combobox");

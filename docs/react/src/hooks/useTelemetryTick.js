@@ -55,7 +55,7 @@ export function useTelemetryTick() {
       ) {
         document.removeEventListener(
           "visibilitychange",
-          handleVisibilityChange
+          handleVisibilityChange,
         );
       }
     };

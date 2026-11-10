@@ -1,21 +1,26 @@
-import json, glob, os
+import glob
+import json
+import os
+import shutil
+import subprocess
 
 token_file_candidates = [
     "../Ktheme/packages/tokens/dist/tokens.json",
     "../../Ktheme/packages/tokens/dist/tokens.json",
     "node_modules/@ktheme/tokens/dist/tokens.json",
-    "docs/react/node_modules/@ktheme/tokens/dist/tokens.json"
+    "docs/react/node_modules/@ktheme/tokens/dist/tokens.json",
 ]
 
 token_data = {}
 for candidate in token_file_candidates:
     if os.path.exists(candidate):
-        with open(candidate, 'r', encoding='utf-8') as f:
+        with open(candidate, "r", encoding="utf-8") as f:
             token_data = json.load(f)
         print(f"Loaded token JSON assets from {candidate}")
         break
 
 theme_desktop_configs = token_data.get("desktopConfigs", {})
+
 
 # Generic fallback builder for any theme ID not explicitly in theme_desktop_configs
 def build_default_desktop_config(data):
@@ -41,7 +46,9 @@ def build_default_desktop_config(data):
             "panelRadius": pr,
             "controlRadius": cr,
             "borderWidth": 1,
-            "shadow": "0 14px 36px rgba(0,0,0,0.5)" if dark else "0 10px 26px rgba(0,0,0,0.2)"
+            "shadow": (
+                "0 14px 36px rgba(0,0,0,0.5)" if dark else "0 10px 26px rgba(0,0,0,0.2)"
+            ),
         },
         "menuBar": {
             "height": 28,
@@ -49,30 +56,35 @@ def build_default_desktop_config(data):
             "letterSpacing": "0.06em",
             "textTransform": "uppercase" if dark else "none",
             "dropdownRadius": pr,
-            "dropdownShadow": "0 12px 28px rgba(0,0,0,0.4)" if dark else "0 8px 20px rgba(0,0,0,0.18)"
+            "dropdownShadow": (
+                "0 12px 28px rgba(0,0,0,0.4)" if dark else "0 8px 20px rgba(0,0,0,0.18)"
+            ),
         },
         "taskbar": {
             "height": 40,
             "buttonRadius": cr,
             "dockAlignment": "left",
-            "quickChatBorderRadius": cr
+            "quickChatBorderRadius": cr,
         },
         "cameraHud": {
             "panelRadius": pr,
             "buttonRadius": cr,
-            "shadow": "0 8px 20px rgba(0,0,0,0.3)"
+            "shadow": "0 8px 20px rgba(0,0,0,0.3)",
         },
         "sweep": {
             "elbowWidth": 30,
             "titleCapRadius": cap,
             "accentBand": "primary",
-            "showElbowBar": True
-        }
+            "showElbowBar": True,
+        },
     }
 
-theme_paths = sorted(glob.glob('docs/*.json') + glob.glob('ktheme-pr/themes/community/*.json'))
+
+theme_paths = sorted(
+    glob.glob("docs/*.json") + glob.glob("ktheme-pr/themes/community/*.json")
+)
 for path in theme_paths:
-    with open(path, 'r', encoding='utf-8') as f:
+    with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
     tid = data.get("metadata", {}).get("id", "")
@@ -83,16 +95,13 @@ for path in theme_paths:
 
     data["adaptation"]["desktopAdaptation"] = cfg
 
-    with open(path, 'w', encoding='utf-8') as f:
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2)
-        f.write('\n')
+        f.write("\n")
 
     print(f"Updated {path} ({tid}) with desktopAdaptation.")
 
 # Validate and synchronize schemas using versioned CLI
-import subprocess
-import shutil
-
 print("\nSynchronizing schemas via ktheme-schema sync --apply...")
 cli_cmd = shutil.which("ktheme-schema")
 if cli_cmd:

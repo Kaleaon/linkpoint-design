@@ -178,13 +178,16 @@ async function startServerHarness(rootDirectory, requestedPort = 0) {
       activeServers.add(server);
       log(
         `Static server harness listening at http://127.0.0.1:${port}/ serving ${rootDirectory}`,
-        "info"
+        "info",
       );
       resolve({
         port,
         url: `http://127.0.0.1:${port}`,
         close: async () => {
           activeServers.delete(server);
+          if (typeof server.closeAllConnections === "function") {
+            server.closeAllConnections();
+          }
           return new Promise((res) => server.close(res));
         },
       });
@@ -351,13 +354,13 @@ async function getPlaywrightBrowser() {
   } catch (err) {
     log(
       'Playwright dependency preflight check failed: "playwright" module is not installed.',
-      "error"
+      "error",
     );
     log("Actionable resolution: Please install dependencies using:", "warn");
     log("  npm install", "info");
     log("  npx playwright install --with-deps chromium", "info");
     throw new Error(
-      'Missing Playwright module. Run "npm install" and "npx playwright install --with-deps chromium".'
+      'Missing Playwright module. Run "npm install" and "npx playwright install --with-deps chromium".',
     );
   }
 
@@ -401,7 +404,7 @@ async function getPlaywrightBrowser() {
             const candidate = path.join(
               msPlaywrightDir,
               dir,
-              "chrome-headless-shell-linux64/chrome-headless-shell"
+              "chrome-headless-shell-linux64/chrome-headless-shell",
             );
             if (fs.existsSync(candidate)) cachedHeadlessShell = candidate;
           }
@@ -460,15 +463,15 @@ async function getPlaywrightBrowser() {
     ) {
       log(
         "Playwright browser preflight check failed: Chromium browser binary is not installed.",
-        "error"
+        "error",
       );
       log(
         "Actionable resolution: Please install browser binaries using:",
-        "warn"
+        "warn",
       );
       log("  npx playwright install chromium", "info");
       throw new Error(
-        'Playwright Chromium browser binary missing. Run "npx playwright install chromium".'
+        'Playwright Chromium browser binary missing. Run "npx playwright install chromium".',
       );
     }
     throw err;
@@ -480,7 +483,7 @@ async function navigateWithRetry(
   url,
   options = {},
   retries = 3,
-  delayMs = 500
+  delayMs = 500,
 ) {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
@@ -489,7 +492,7 @@ async function navigateWithRetry(
       if (attempt === retries) throw err;
       log(
         `page.goto failed on attempt ${attempt}/${retries} (${err.message}). Retrying in ${delayMs}ms...`,
-        "warn"
+        "warn",
       );
       await new Promise((r) => setTimeout(r, delayMs));
     }
@@ -502,7 +505,7 @@ async function taskAppValidation() {
   if (!fs.existsSync(scriptPath)) {
     log(
       "No application validation script found in this repository. Skipped.",
-      "warn"
+      "warn",
     );
     return true;
   }
@@ -533,7 +536,7 @@ async function taskUnitTests() {
     fs.existsSync(path.join(cwd, "jest.config.js")) ||
     fs.existsSync(path.join(cwd, "src/core/ThemeEngine.ts"));
   const hasReactVitest = fs.existsSync(
-    path.join(cwd, "docs/react/package.json")
+    path.join(cwd, "docs/react/package.json"),
   );
 
   let success = true;
@@ -558,12 +561,12 @@ async function taskUnitTests() {
       "/app/Ktheme",
     ];
     const kthemeFound = candidateKthemeDirs.some((d) =>
-      fs.existsSync(path.join(d, "packages/react"))
+      fs.existsSync(path.join(d, "packages/react")),
     );
     if (!kthemeFound) {
       log(
         "Ktheme dependency repository not found locally. Cloning shallow Ktheme copy for unit test suite...",
-        "info"
+        "info",
       );
       try {
         const cloneTarget = path.resolve(cwd, "../Ktheme");
@@ -576,7 +579,7 @@ async function taskUnitTests() {
             "https://github.com/Kaleaon/Ktheme.git",
             cloneTarget,
           ],
-          { stdio: "inherit" }
+          { stdio: "inherit" },
         );
       } catch (err) {
         log(`Failed to clone Ktheme repository: ${err.message}`, "warn");
@@ -617,7 +620,7 @@ async function taskUnitTests() {
   if (!hasKthemeJest && !hasReactVitest) {
     log(
       "No specific unit test runner found for this directory. Skipped.",
-      "warn"
+      "warn",
     );
     return true;
   }
@@ -636,7 +639,7 @@ async function taskCatalogCheck() {
   if (!fs.existsSync(scriptPath)) {
     log(
       "No theme catalog generator script found in this repository. Skipped.",
-      "info"
+      "info",
     );
     return true;
   }
@@ -756,9 +759,9 @@ async function taskPaletteCheck() {
                 `Palette "${key}" (${
                   p.name
                 }): secondary text token "${tName}" (${tVal}) vs surface (${bgVal}) contrast is ${ratio.toFixed(
-                  2
+                  2,
                 )}:1 (required >= 4.5:1)`,
-                "error"
+                "error",
               );
             }
           }
@@ -774,9 +777,9 @@ async function taskPaletteCheck() {
                 `Palette "${key}" (${p.name}): outline token "outv" (${
                   c.outv
                 }) vs surface (${bgVal}) contrast is ${ratio.toFixed(
-                  2
+                  2,
                 )}:1 (required >= 3.0:1)`,
-                "error"
+                "error",
               );
             }
           }
@@ -797,13 +800,13 @@ async function taskPaletteCheck() {
         .filter((f) => f.endsWith(".json"));
       for (const file of files) {
         const json = JSON.parse(
-          fs.readFileSync(path.join(kthemeJsonDir, file), "utf8")
+          fs.readFileSync(path.join(kthemeJsonDir, file), "utf8"),
         );
         const c = json.colorScheme;
         if (!c) continue;
 
         const bgSurfaces = [c.background, c.surface, c.surfaceVariant].filter(
-          Boolean
+          Boolean,
         );
         if (c.onSurfaceVariant) {
           for (const bg of bgSurfaces) {
@@ -815,9 +818,9 @@ async function taskPaletteCheck() {
                 `Theme preset "${file}": token "onSurfaceVariant" (${
                   c.onSurfaceVariant
                 }) vs surface (${bg}) contrast is ${r.toFixed(
-                  2
+                  2,
                 )}:1 (required >= 4.5:1)`,
-                "error"
+                "error",
               );
             }
           }
@@ -827,7 +830,7 @@ async function taskPaletteCheck() {
           totalAudited++;
           const r = getContrastRatio(
             c.onSecondaryContainer,
-            c.secondaryContainer
+            c.secondaryContainer,
           );
           if (r !== null && r < 4.5) {
             totalErrors++;
@@ -837,13 +840,13 @@ async function taskPaletteCheck() {
               }) vs secondaryContainer (${
                 c.secondaryContainer
               }) contrast is ${r.toFixed(2)}:1 (required >= 4.5:1)`,
-              "error"
+              "error",
             );
           }
         }
 
         const outlineSurfaces = [...bgSurfaces, c.secondaryContainer].filter(
-          Boolean
+          Boolean,
         );
         if (c.outline) {
           for (const bg of outlineSurfaces) {
@@ -855,9 +858,9 @@ async function taskPaletteCheck() {
                 `Theme preset "${file}": token "outline" (${
                   c.outline
                 }) vs surface/container (${bg}) contrast is ${r.toFixed(
-                  2
+                  2,
                 )}:1 (required >= 3.0:1)`,
-                "error"
+                "error",
               );
             }
           }
@@ -877,7 +880,7 @@ async function taskPaletteCheck() {
   } else {
     log(
       `Static palette verification failed with ${totalErrors} contrast violation(s).`,
-      "error"
+      "error",
     );
     return false;
   }
@@ -906,7 +909,7 @@ async function taskA11yAudit() {
   } else {
     log(
       "No target HTML entry file found to run live DOM accessibility audit.",
-      "warn"
+      "warn",
     );
     return true;
   }
@@ -940,7 +943,7 @@ async function taskA11yAudit() {
 
           function parseRgb(colorStr) {
             const match = colorStr.match(
-              /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/
+              /rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/,
             );
             if (!match) return null;
             return {
@@ -968,7 +971,7 @@ async function taskA11yAudit() {
           const interactiveSelector =
             'button, [role="button"], a[href], input, select, textarea, [tabindex]';
           const interactiveElements = Array.from(
-            document.querySelectorAll(interactiveSelector)
+            document.querySelectorAll(interactiveSelector),
           );
 
           let auditedNodes = 0;
@@ -1018,13 +1021,13 @@ async function taskA11yAudit() {
           const textNodesSelector =
             "p, span, h1, h2, h3, h4, h5, h6, button, a, label, div";
           const textElements = Array.from(
-            document.querySelectorAll(textNodesSelector)
+            document.querySelectorAll(textNodesSelector),
           );
 
           for (const el of textElements) {
             if (el.offsetParent === null) continue;
             const directText = Array.from(el.childNodes).some(
-              (n) => n.nodeType === 3 && n.textContent.trim().length > 0
+              (n) => n.nodeType === 3 && n.textContent.trim().length > 0,
             );
             if (!directText) continue;
 
@@ -1053,10 +1056,10 @@ async function taskA11yAudit() {
                   fgColor,
                   bgColor,
                   message: `Insufficient text contrast ratio (${ratio.toFixed(
-                    2
+                    2,
                   )}:1 < required ${requiredRatio}:1) for "${el.innerText.slice(
                     0,
-                    20
+                    20,
                   )}..."`,
                 });
               }
@@ -1073,7 +1076,7 @@ async function taskA11yAudit() {
         if (attempt === maxAttempts) throw err;
         log(
           `A11y audit attempt ${attempt}/${maxAttempts} failed (${err.message}). Retrying in 500ms...`,
-          "warn"
+          "warn",
         );
         await new Promise((r) => setTimeout(r, 500));
       }
@@ -1081,20 +1084,20 @@ async function taskA11yAudit() {
 
     log(
       `Audited ${auditResults.auditedNodes} live DOM nodes across ${targetUrl}`,
-      "info"
+      "info",
     );
 
     const contrastIssues = auditResults.issues.filter(
-      (i) => i.type === "wcag-contrast"
+      (i) => i.type === "wcag-contrast",
     );
     const ariaIssues = auditResults.issues.filter(
-      (i) => i.type !== "wcag-contrast"
+      (i) => i.type !== "wcag-contrast",
     );
 
     if (ariaIssues.length > 0) {
       log(`Found ${ariaIssues.length} ARIA compliance issues:`, "warn");
       ariaIssues.forEach((i) =>
-        console.log(`  - ${i.message} (snippet: ${i.snippet || "n/a"})`)
+        console.log(`  - ${i.message} (snippet: ${i.snippet || "n/a"})`),
       );
     }
 
@@ -1215,7 +1218,7 @@ async function taskVisualSuite() {
         if (attempt === retries) throw err;
         log(
           `Visual capture attempt ${attempt}/${retries} for ${vp.name} failed (${err.message}). Retrying in 500ms...`,
-          "warn"
+          "warn",
         );
         await new Promise((r) => setTimeout(r, 500));
       }
@@ -1229,7 +1232,7 @@ async function taskVisualSuite() {
     for (const vp of viewports) {
       log(
         `Capturing visual snapshots for viewport: ${vp.name} (${vp.width}x${vp.height})`,
-        "info"
+        "info",
       );
       const currentBuf = await captureViewportWithRetry(vp);
       if (!currentBuf) {
@@ -1248,13 +1251,13 @@ async function taskVisualSuite() {
         if (result.match) {
           log(
             `Visual match for ${vp.name} (${result.diffPercent}% diff)`,
-            "success"
+            "success",
           );
         } else {
           allMatched = false;
           log(
             `Visual regression detected for ${vp.name}! Diff: ${result.diffPercent}% (${result.diffPixels} diff pixels)`,
-            "error"
+            "error",
           );
           const diffDir = path.join(cwd, "docs/screenshots/diffs");
           fs.mkdirSync(diffDir, { recursive: true });
@@ -1268,7 +1271,7 @@ async function taskVisualSuite() {
     if (allMatched) {
       log(
         "All visual snapshot comparisons matched baseline successfully!",
-        "success"
+        "success",
       );
       return true;
     } else {
@@ -1358,12 +1361,12 @@ ${colors.bold}${colors.cyan}====================================================
   console.log(`-----------------------------------------------------`);
   if (overallPass) {
     console.log(
-      `${colors.bold}${colors.green}ALL VALIDATION CHECKS PASSED SUCCESSFULLY!${colors.reset}\n`
+      `${colors.bold}${colors.green}ALL VALIDATION CHECKS PASSED SUCCESSFULLY!${colors.reset}\n`,
     );
     process.exit(0);
   } else {
     console.log(
-      `${colors.bold}${colors.red}VALIDATION CHECKS FAILED. PLEASE REVIEW ERRORS ABOVE.${colors.reset}\n`
+      `${colors.bold}${colors.red}VALIDATION CHECKS FAILED. PLEASE REVIEW ERRORS ABOVE.${colors.reset}\n`,
     );
     process.exit(1);
   }

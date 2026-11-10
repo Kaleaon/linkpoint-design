@@ -107,7 +107,7 @@ function renderWithProviders(
     actions = mockAppActions,
     tokens = mockTokens,
     runtime = mockRuntime,
-  } = {}
+  } = {},
 ) {
   return render(
     <AppContext.Provider value={{ state: appState, actions }}>
@@ -116,7 +116,7 @@ function renderWithProviders(
           {ui}
         </ThemeTokensContext.Provider>
       </ThemeRuntimeContext.Provider>
-    </AppContext.Provider>
+    </AppContext.Provider>,
   );
 }
 
@@ -130,7 +130,7 @@ describe("TabGroup Compound Component System", () => {
           <Tab>Audio</Tab>
         </TabList>
         <TabPanel>General Content</TabPanel>
-      </TabGroup>
+      </TabGroup>,
     );
 
     const tablist = screen.getByRole("tablist", { name: "Settings Tabs" });
@@ -262,7 +262,7 @@ describe("TabGroup Compound Component System", () => {
         <TabPanel style={{ background: "purple" }} className="custom-panel">
           Custom Content
         </TabPanel>
-      </TabGroup>
+      </TabGroup>,
     );
 
     const group = document.querySelector(".custom-group");
@@ -322,7 +322,7 @@ describe("TabGroup Compound Component System", () => {
     expect(tabs.length).toBeGreaterThanOrEqual(4);
 
     const activeTab = tabs.find(
-      (t) => t.getAttribute("aria-selected") === "true"
+      (t) => t.getAttribute("aria-selected") === "true",
     );
     expect(activeTab).toBeTruthy();
 
@@ -373,7 +373,7 @@ describe("TabGroup Compound Component System", () => {
     const subnavTablist = screen.getByRole("tablist", { name: "View Filters" });
     const tabs = subnavTablist.querySelectorAll('[role="tab"]');
     const activeSubTab = Array.from(tabs).find(
-      (t) => t.getAttribute("aria-selected") === "true"
+      (t) => t.getAttribute("aria-selected") === "true",
     );
     expect(activeSubTab).toBeTruthy();
 

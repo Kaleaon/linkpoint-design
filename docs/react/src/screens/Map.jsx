@@ -28,7 +28,7 @@ export default function Map() {
   const parsedCoords = useMemo(() => {
     if (!query) return null;
     const match = query.match(
-      /(?:<)?\s*(\d+)\s*[\s,\/]\s*(\d+)(?:\s*[\s,\/]\s*(\d+))?\s*(?:>)?/
+      /(?:<)?\s*(\d+)\s*[\s,/]\s*(\d+)(?:\s*[\s,/]\s*(\d+))?\s*(?:>)?/,
     );
     if (match) {
       return `<${match[1]}, ${match[2]}, ${match[3] || 20}>`;

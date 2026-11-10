@@ -91,11 +91,11 @@ export default function FloatersDesktop() {
       state.prefs,
       state.cacheCleared,
       actions,
-    ]
+    ],
   );
   const fBody = useMemo(
     () => buildFBody(state, cardsByScreen),
-    [state, cardsByScreen]
+    [state, cardsByScreen],
   );
 
   const flScene = {
@@ -139,7 +139,7 @@ export default function FloatersDesktop() {
     (state.cPitch > 2 ? "DN" : state.cPitch < -2 ? "UP" : "LVL");
 
   const openFloaters = FLOATERS.filter(
-    (f) => state.flOpen[f.id] && !state.flMin[f.id]
+    (f) => state.flOpen[f.id] && !state.flMin[f.id],
   );
   const flFocused =
     state.flOpen[state.screen] &&
@@ -896,7 +896,7 @@ function buildFBody(state, cardsByScreen) {
     parent,
     depth,
   })).filter(
-    (n) => n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false)
+    (n) => n.depth === 0 || (n.parent && state.invOpen[n.parent] !== false),
   );
   return {
     Chat: LOCAL_MSGS.slice(-6).map((m) => ({ a: m.sender, b: m.ts })),
@@ -953,15 +953,15 @@ function buildFBody(state, cardsByScreen) {
       {
         a: "Warnings",
         b: String(
-          (state.consoleLogs || []).filter((e) => e.level === "WARN").length
+          (state.consoleLogs || []).filter((e) => e.level === "WARN").length,
         ),
       },
       {
         a: "Errors",
         b: String(
           (state.consoleLogs || []).filter(
-            (e) => e.level === "ERROR" || e.level === "FATAL"
-          ).length
+            (e) => e.level === "ERROR" || e.level === "FATAL",
+          ).length,
         ),
       },
     ],

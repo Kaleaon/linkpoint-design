@@ -28,7 +28,7 @@ export function useFocusTrap(ref, onEscape, active = true) {
       if (!container) return;
       const primaryEl = container.querySelector('[data-primary="true"]');
       const focusables = Array.from(
-        container.querySelectorAll(FOCUSABLE_SELECTOR)
+        container.querySelectorAll(FOCUSABLE_SELECTOR),
       );
 
       if (primaryEl && typeof primaryEl.focus === "function") {
@@ -66,12 +66,12 @@ export function useFocusTrap(ref, onEscape, active = true) {
 
       if (e.key === "Tab") {
         const focusables = Array.from(
-          container.querySelectorAll(FOCUSABLE_SELECTOR)
+          container.querySelectorAll(FOCUSABLE_SELECTOR),
         ).filter(
           (el) =>
             el.offsetWidth > 0 ||
             el.offsetHeight > 0 ||
-            el === document.activeElement
+            el === document.activeElement,
         );
 
         if (focusables.length === 0) {

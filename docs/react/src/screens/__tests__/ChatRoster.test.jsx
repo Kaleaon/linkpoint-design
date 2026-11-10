@@ -29,7 +29,7 @@ describe("Group Chat Participant Roster and Moderation Controls", () => {
         <ThemeProvider>
           <ChatTestWrapper tab="LOCAL" />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     expect(screen.queryByTestId("toggle-roster-btn")).toBeNull();
@@ -42,7 +42,7 @@ describe("Group Chat Participant Roster and Moderation Controls", () => {
         <ThemeProvider>
           <ChatTestWrapper tab="GROUP" chip="Bay City Builders" />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const toggleBtn = screen.getByTestId("toggle-roster-btn");
@@ -70,7 +70,7 @@ describe("Group Chat Participant Roster and Moderation Controls", () => {
         <ThemeProvider>
           <ChatTestWrapper tab="GROUP" chip="Bay City Builders" />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     // Open roster drawer
@@ -110,7 +110,7 @@ describe("Group Chat Participant Roster and Moderation Controls", () => {
           <BusCapture />
           <ChatTestWrapper tab="GROUP" chip="Bay City Builders" />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     // Open roster drawer
@@ -129,7 +129,8 @@ describe("Group Chat Participant Roster and Moderation Controls", () => {
     // Verify intent dispatched to event bus
     const logsAfterMute = busInstance.getLogs();
     const muteIntent = logsAfterMute.find(
-      (l) => l.type === "GROUP_MODERATION_ACTION" && l.payload.action === "mute"
+      (l) =>
+        l.type === "GROUP_MODERATION_ACTION" && l.payload.action === "mute",
     );
     expect(muteIntent).toBeTruthy();
     expect(muteIntent.payload.target).toBe("Marlowe Quill");
@@ -143,7 +144,8 @@ describe("Group Chat Participant Roster and Moderation Controls", () => {
 
     const logsAfterKick = busInstance.getLogs();
     const kickIntent = logsAfterKick.find(
-      (l) => l.type === "GROUP_MODERATION_ACTION" && l.payload.action === "kick"
+      (l) =>
+        l.type === "GROUP_MODERATION_ACTION" && l.payload.action === "kick",
     );
     expect(kickIntent).toBeTruthy();
     expect(kickIntent.payload.target).toBe("Marlowe Quill");
@@ -164,7 +166,7 @@ describe("Group Chat Participant Roster and Moderation Controls", () => {
           <BusCapture />
           <ChatTestWrapper tab="GROUP" chip="Bay City Builders" />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     fireEvent.click(screen.getByTestId("toggle-roster-btn"));
@@ -175,7 +177,7 @@ describe("Group Chat Participant Roster and Moderation Controls", () => {
 
     const logs = busInstance.getLogs();
     const profileIntent = logs.find(
-      (l) => l.type === "NAVIGATE_SCREEN" && l.payload.screen === "Profile"
+      (l) => l.type === "NAVIGATE_SCREEN" && l.payload.screen === "Profile",
     );
     expect(profileIntent).toBeTruthy();
     expect(profileIntent.payload.target).toBe("Marlowe Quill");
@@ -188,7 +190,7 @@ describe("Group Chat Participant Roster and Moderation Controls", () => {
           {/* Ruthless Roofers: User role is 'Member' without officer permissions */}
           <ChatTestWrapper tab="GROUP" chip="Ruthless Roofers" />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     fireEvent.click(screen.getByTestId("toggle-roster-btn"));
@@ -212,7 +214,7 @@ describe("Group Chat Participant Roster and Moderation Controls", () => {
         <ThemeProvider>
           <ChatTestWrapper tab="GROUP" chip="Bay City Builders" />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     fireEvent.click(screen.getByTestId("toggle-roster-btn"));
@@ -231,7 +233,7 @@ describe("Group Chat Participant Roster and Moderation Controls", () => {
         <ThemeProvider>
           <ChatTestWrapper tab="GROUP" chip="Bay City Builders" device="ios" />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     fireEvent.click(screen.getByTestId("toggle-roster-btn"));

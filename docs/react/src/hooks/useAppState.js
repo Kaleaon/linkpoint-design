@@ -78,7 +78,7 @@ export function useAppState() {
   const [palette, setPalette] = useState("ink");
   const [customTheme, setCustomTheme] = useState(() => {
     const shared = decodeSharedTheme(
-      new URLSearchParams(window.location.search).get("theme") || ""
+      new URLSearchParams(window.location.search).get("theme") || "",
     );
     return shared || readSavedTheme() || themeFromPalette(PALETTES.ink);
   });
@@ -112,7 +112,7 @@ export function useAppState() {
       parent,
       ver,
       tags: tags || [],
-    }))
+    })),
   );
   const [dismissed, setDismissed] = useState({});
   const [pinned, setPinned] = useState({});
@@ -143,7 +143,7 @@ export function useAppState() {
         savedVerbosity = val;
       }
     } catch {
-      /* ignore storage error */
+      // ignore
     }
     return {
       draw: "96 m",
@@ -220,7 +220,7 @@ export function useAppState() {
         }
       }
     } catch {
-      /* ignore parse error */
+      // ignore
     }
     return DEFAULT_STORED_ACCOUNTS;
   });
@@ -405,7 +405,7 @@ export function useAppState() {
       clearInterval(pollTimerRef.current);
       clearInterval(healthCheckTimerRef.current);
     },
-    []
+    [],
   );
 
   // ---- background 30-second balance polling & sync -----------------------
@@ -442,7 +442,7 @@ export function useAppState() {
     addDiagnosticLog(
       "INFO",
       "[RECOVERY SERVICE]",
-      "Recovery sequence cancelled by resident."
+      "Recovery sequence cancelled by resident.",
     );
     notify("[Recovery] Auto-reconnection cancelled.");
     emitRecoveryEvent({ type: "RECOVERY_CANCELLED" });
@@ -466,7 +466,7 @@ export function useAppState() {
       addDiagnosticLog(
         "INFO",
         "[RECOVERY SERVICE]",
-        "Auto-reconnect attempt #" + attemptNum + " pinging 127.0.0.1:9000..."
+        "Auto-reconnect attempt #" + attemptNum + " pinging 127.0.0.1:9000...",
       );
       emitRecoveryEvent({
         type: "RECONNECT_ATTEMPT",
@@ -484,7 +484,7 @@ export function useAppState() {
           "[RECOVERY SERVICE]",
           "Reconnection successful on attempt #" +
             attemptNum +
-            ". Server 127.0.0.1:9000 reachable."
+            ". Server 127.0.0.1:9000 reachable.",
         );
         notify("[Recovery] Reconnected to OpenSim local grid.");
         emitRecoveryEvent({ type: "RECOVERY_SUCCESS", attempt: attemptNum });
@@ -501,14 +501,14 @@ export function useAppState() {
               attemptNum +
               " failed (connection refused). Next retry in " +
               delay / 1000 +
-              "s."
+              "s.",
           );
           notify(
             "[Recovery] Attempt #" +
               attemptNum +
               " failed. Retrying in " +
               delay / 1000 +
-              "s..."
+              "s...",
           );
 
           recoveryTimerRef.current = setTimeout(() => {
@@ -521,18 +521,18 @@ export function useAppState() {
             "[RECOVERY SERVICE]",
             "Max reconnection attempts (" +
               attemptNum +
-              ") reached. Local server offline."
+              ") reached. Local server offline.",
           );
           notify(
             "[Recovery Error] Server reconnect failed after " +
               attemptNum +
-              " attempts."
+              " attempts.",
           );
           emitRecoveryEvent({ type: "RECOVERY_FAILED", attempt: attemptNum });
         }
       }
     },
-    [getBackoffDelay, addDiagnosticLog, notify, emitRecoveryEvent]
+    [getBackoffDelay, addDiagnosticLog, notify, emitRecoveryEvent],
   );
 
   const triggerRecovery = useCallback(
@@ -542,7 +542,7 @@ export function useAppState() {
       addDiagnosticLog(
         "WARN",
         "[RECOVERY SERVICE]",
-        reason + " - Initiating exponential backoff recovery."
+        reason + " - Initiating exponential backoff recovery.",
       );
       notify("[Recovery] " + reason + ". Reconnecting...");
       emitRecoveryEvent({ type: "RECOVERY_STARTED", reason });
@@ -551,7 +551,7 @@ export function useAppState() {
         attemptReconnection(1);
       }, 500);
     },
-    [addDiagnosticLog, notify, emitRecoveryEvent, attemptReconnection]
+    [addDiagnosticLog, notify, emitRecoveryEvent, attemptReconnection],
   );
 
   // ---- background health check poller (Requirement 2) -------------------
@@ -595,12 +595,12 @@ export function useAppState() {
             queryKey +
               " query timed out (" +
               timeoutMs +
-              "ms). Recovery state injected."
+              "ms). Recovery state injected.",
           );
           notify(
             "[Query Timeout] " +
               queryKey +
-              " query timed out. Injected recovery fallback."
+              " query timed out. Injected recovery fallback.",
           );
           emitRecoveryEvent({ type: "ASYNC_QUERY_TIMEOUT", queryKey });
           reject(new Error("Query timed out"));
@@ -640,7 +640,7 @@ export function useAppState() {
               addDiagnosticLog(
                 "ERROR",
                 "[ASYNC QUERY]",
-                queryKey + " query failed: " + errStr
+                queryKey + " query failed: " + errStr,
               );
               notify("[Query Error] " + queryKey + ": " + errStr);
               emitRecoveryEvent({
@@ -668,14 +668,14 @@ export function useAppState() {
         }
       });
     },
-    [addDiagnosticLog, notify, emitRecoveryEvent]
+    [addDiagnosticLog, notify, emitRecoveryEvent],
   );
 
   const retryAsyncQuery = useCallback(
     (queryKey, queryFn, timeoutMs) => {
       return runAsyncQuery(queryKey, queryFn, timeoutMs);
     },
-    [runAsyncQuery]
+    [runAsyncQuery],
   );
 
   const setThemeColor = useCallback(
@@ -685,11 +685,11 @@ export function useAppState() {
         active: true,
         colors: { ...theme.colors, [key]: value },
       })),
-    []
+    [],
   );
   const renameTheme = useCallback(
     (name) => setCustomTheme((theme) => ({ ...theme, active: true, name })),
-    []
+    [],
   );
   const selectPalette = useCallback((key) => {
     setPalette(key);
@@ -717,7 +717,7 @@ export function useAppState() {
         return false;
       }
     },
-    [notify]
+    [notify],
   );
   const downloadTheme = useCallback(() => {
     const blob = new Blob([JSON.stringify(customTheme, null, 2)], {
@@ -778,15 +778,15 @@ export function useAppState() {
   // ---- simple setters (set/setTab/dismiss/toggleSetting/pin/cycle) ------
   const setTab = useCallback(
     (scr, v) => setTabs((s) => ({ ...s, [scr]: v })),
-    []
+    [],
   );
   const dismiss = useCallback(
     (key) => setDismissed((s) => ({ ...s, [key]: true })),
-    []
+    [],
   );
   const toggleSetting = useCallback(
     (key) => setToggles((s) => ({ ...s, [key]: !s[key] })),
-    []
+    [],
   );
   const setTelemetryVerbosity = useCallback((mode) => {
     const validMode = mode === "advanced" ? "advanced" : "simple";
@@ -794,7 +794,7 @@ export function useAppState() {
     try {
       localStorage.setItem("telemetryVerbosity", validMode);
     } catch {
-      /* ignore storage error */
+      // ignore
     }
   }, []);
   const setPref = useCallback(
@@ -805,11 +805,11 @@ export function useAppState() {
         setPrefs((s) => ({ ...s, [key]: v }));
       }
     },
-    [setTelemetryVerbosity]
+    [setTelemetryVerbosity],
   );
   const pin = useCallback(
     (key) => setPinned((s) => ({ ...s, [key]: !s[key] })),
-    []
+    [],
   );
   const respondLure = useCallback(
     (lureId, response, regionName, coords) => {
@@ -819,7 +819,7 @@ export function useAppState() {
           notify("Cannot accept teleport lure while offline");
         } else {
           notify(
-            `Teleporting to ${regionName || "destination"} ${coords || ""}…`
+            `Teleporting to ${regionName || "destination"} ${coords || ""}…`,
           );
           setScreen("Map");
         }
@@ -827,7 +827,7 @@ export function useAppState() {
         notify("Teleport lure declined");
       }
     },
-    [loginMode, notify]
+    [loginMode, notify],
   );
   const teleportToRegion = useCallback(
     (regionName, coords) => {
@@ -838,7 +838,7 @@ export function useAppState() {
       notify(`Teleporting to ${regionName || "region"} ${coords || ""}…`);
       setScreen("Map");
     },
-    [loginMode, notify]
+    [loginMode, notify],
   );
   const saveLandmark = useCallback(
     (name) => {
@@ -848,12 +848,12 @@ export function useAppState() {
         notify(
           isPinned
             ? `Landmark saved to Inventory: ${name}`
-            : `Landmark removed: ${name}`
+            : `Landmark removed: ${name}`,
         );
         return { ...s, [k]: isPinned };
       });
     },
-    [notify]
+    [notify],
   );
   const cycleLayout = useCallback(() => {
     const ks = Object.keys(LAYOUTS);
@@ -878,7 +878,7 @@ export function useAppState() {
         return currId;
       });
     },
-    [storedAccounts]
+    [storedAccounts],
   );
 
   const setLoginPassword = useCallback(
@@ -892,7 +892,7 @@ export function useAppState() {
         return currId;
       });
     },
-    [storedAccounts]
+    [storedAccounts],
   );
 
   const selectAccountProfile = useCallback(
@@ -908,7 +908,7 @@ export function useAppState() {
         }
       }
     },
-    [storedAccounts]
+    [storedAccounts],
   );
 
   const saveAccountProfile = useCallback(
@@ -930,7 +930,7 @@ export function useAppState() {
       let existingIndex = storedAccounts.findIndex(
         (a) =>
           a.id === selectedAccountId ||
-          (a.avatarName === avatarName && a.gridKey === gridKey)
+          (a.avatarName === avatarName && a.gridKey === gridKey),
       );
 
       let updatedAccounts;
@@ -965,7 +965,7 @@ export function useAppState() {
       try {
         localStorage.setItem(
           LINKPOINT_ACCOUNTS_KEY,
-          JSON.stringify(updatedAccounts)
+          JSON.stringify(updatedAccounts),
         );
       } catch (err) {
         console.warn("Failed to write accounts to LocalStorage:", err);
@@ -982,7 +982,7 @@ export function useAppState() {
       storedAccounts,
       customGrids,
       notify,
-    ]
+    ],
   );
 
   const removeAccountProfile = useCallback(
@@ -998,7 +998,7 @@ export function useAppState() {
       try {
         localStorage.setItem(
           LINKPOINT_ACCOUNTS_KEY,
-          JSON.stringify(updatedAccounts)
+          JSON.stringify(updatedAccounts),
         );
       } catch (err) {
         console.warn("Failed to write accounts to LocalStorage:", err);
@@ -1012,7 +1012,7 @@ export function useAppState() {
 
       notify(`Removed profile: ${targetAcc?.profileLabel || targetId}`);
     },
-    [selectedAccountId, storedAccounts, notify]
+    [selectedAccountId, storedAccounts, notify],
   );
 
   // All known grids: the built-in Second Life / OpenSim presets plus
@@ -1033,7 +1033,7 @@ export function useAppState() {
             ? "Unable to reach " +
                 (allGrids().find((g) => g.key === loginGrid) || GRIDS[0]).host +
                 " — check your connection and try again."
-            : null
+            : null,
         );
       }, 900);
       return true;
@@ -1087,7 +1087,7 @@ export function useAppState() {
     clearTimeout(searchTimerRef.current);
     searchTimerRef.current = setTimeout(
       () => setSearchState((s) => ({ ...s, [name]: "sent" })),
-      700
+      700,
     );
   }, []);
   // Start (or resume) an IM thread with a resident picked from Friends/Nearby.
@@ -1103,7 +1103,7 @@ export function useAppState() {
       setCacheCleared((c) => ({ ...c, [key]: true }));
       notify(name + " cleared \u2014 assets refetch on demand");
     },
-    [notify]
+    [notify],
   );
   const clearAllCache = useCallback(() => {
     setCacheCleared(Object.fromEntries(CACHE_ROWS.map((r) => [r.key, true])));
@@ -1128,7 +1128,7 @@ export function useAppState() {
       };
       return { ...f, ...(flRect[id] || {}) };
     },
-    [flRect]
+    [flRect],
   );
 
   // Focusing a window has to open it as well: only five floaters start open, so
@@ -1182,7 +1182,7 @@ export function useAppState() {
       window.addEventListener("mouseup", up);
       flFocus(id);
     },
-    [flR, flFocus]
+    [flR, flFocus],
   );
 
   const flToggle = useCallback(
@@ -1201,7 +1201,7 @@ export function useAppState() {
         return { ...open, [id]: true };
       });
     },
-    [flMin]
+    [flMin],
   );
 
   const flToggleShade = useCallback((id) => {
@@ -1239,11 +1239,11 @@ export function useAppState() {
       window.addEventListener("pointerup", up);
       e.preventDefault();
     },
-    [hudPos]
+    [hudPos],
   );
   const toggleHud = useCallback(
     (id) => setHudOn((s) => ({ ...s, [id]: !s[id] })),
-    []
+    [],
   );
 
   // ---- console frame geometry (cf()) -------------------------------------
@@ -1322,7 +1322,7 @@ export function useAppState() {
       setCHdg((h) => h + dx * 0.35);
       setCPitch((p) => Math.max(-70, Math.min(70, p + dy * 0.5)));
     },
-    [cDrag]
+    [cDrag],
   );
   const sceneUp = useCallback(() => setCDrag((d) => (d ? false : d)), []);
 
@@ -1349,7 +1349,7 @@ export function useAppState() {
   }, []);
   const removeDockSlot = useCallback(
     (k) => setCDock((d) => d.filter((x) => x !== k)),
-    []
+    [],
   );
 
   const radarTap = useCallback((id) => {
@@ -1392,14 +1392,14 @@ export function useAppState() {
     setInvSelected((prev) =>
       prev.includes(itemName)
         ? prev.filter((i) => i !== itemName)
-        : [...prev, itemName]
+        : [...prev, itemName],
     );
   }, []);
 
   const invLongPressItem = useCallback((itemName) => {
     setInvSelectMode(true);
     setInvSelected((prev) =>
-      prev.includes(itemName) ? prev : [...prev, itemName]
+      prev.includes(itemName) ? prev : [...prev, itemName],
     );
   }, []);
 
@@ -1431,8 +1431,8 @@ export function useAppState() {
             items.map((item) =>
               sel.includes(item.name)
                 ? { ...item, parent: targetFolder, depth: 2 }
-                : item
-            )
+                : item,
+            ),
           );
           notify(
             "Moved " +
@@ -1440,7 +1440,7 @@ export function useAppState() {
               " item" +
               (count > 1 ? "s" : "") +
               " to " +
-              targetFolder
+              targetFolder,
           );
         }
         return [];
@@ -1448,7 +1448,7 @@ export function useAppState() {
       setInvMoveModal(false);
       setInvSelectMode(false);
     },
-    [notify]
+    [notify],
   );
 
   const invDeleteSelected = useCallback(() => {
@@ -1459,11 +1459,11 @@ export function useAppState() {
           items.map((item) =>
             sel.includes(item.name)
               ? { ...item, parent: "Trash", depth: 2 }
-              : item
-          )
+              : item,
+          ),
         );
         notify(
-          "Moved " + count + " item" + (count > 1 ? "s" : "") + " to Trash"
+          "Moved " + count + " item" + (count > 1 ? "s" : "") + " to Trash",
         );
       }
       return [];
@@ -1477,7 +1477,7 @@ export function useAppState() {
       notify(
         next
           ? "Local OpenSim Grid STARTED (127.0.0.1:9000)"
-          : "Local OpenSim Grid SHUTDOWN"
+          : "Local OpenSim Grid SHUTDOWN",
       );
       return next;
     });
@@ -1493,7 +1493,7 @@ export function useAppState() {
       "Local Account Saved: " +
         (offlineAccountFirstName || "Jane") +
         " " +
-        (offlineAccountLastName || "Resident")
+        (offlineAccountLastName || "Resident"),
     );
   }, [offlineAccountFirstName, offlineAccountLastName, notify]);
 
@@ -1547,7 +1547,7 @@ export function useAppState() {
         lindenBalance.toLocaleString("en-US") +
         " (~$" +
         usd +
-        " USD)"
+        " USD)",
     );
     return { lindenBalance, exchangeRate, lastSyncedAt: now };
   }, [lindenBalance, exchangeRate, notify]);
@@ -1567,7 +1567,7 @@ export function useAppState() {
       setScreen(id);
       setDialog(null);
     },
-    [navMode, flFocus]
+    [navMode, flFocus],
   );
 
   const getEventBus = useCallback(() => eventBusRef.current, []);
@@ -1583,7 +1583,7 @@ export function useAppState() {
         const dlgTitle = payload.title || "";
         if (dlgTitle && buttonLabel) {
           notify(
-            dlgTitle.split(" ").slice(0, 4).join(" ") + " — " + buttonLabel
+            dlgTitle.split(" ").slice(0, 4).join(" ") + " — " + buttonLabel,
           );
         } else if (buttonLabel) {
           notify(buttonLabel);
@@ -1627,12 +1627,12 @@ export function useAppState() {
 
       return intentEvent;
     },
-    [flToggle, flToggleShade, flClose, notify, screenPick]
+    [flToggle, flToggleShade, flClose, notify, screenPick],
   );
 
   const screenTitle = useMemo(
     () => computeScreenTitle(screen, tabs, chip),
-    [screen, tabs, chip]
+    [screen, tabs, chip],
   );
 
   const title = useMemo(() => formatDocumentTitle(screenTitle), [screenTitle]);

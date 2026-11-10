@@ -39,7 +39,7 @@ export default function ThemeStudio() {
       }
     } catch (err) {
       setImportError(
-        `File import error: ${err.message || "Unable to read file."}`
+        `File import error: ${err.message || "Unable to read file."}`,
       );
     } finally {
       if (event.target) event.target.value = "";
@@ -66,7 +66,7 @@ export default function ThemeStudio() {
         </span>
         <span aria-hidden="true">{open ? "−" : "+"}</span>
       </button>
-      {open && theme && (
+      {open && (
         <div className="theme-studio-body">
           {importError && (
             <div className="theme-studio-alert" role="alert" aria-live="polite">

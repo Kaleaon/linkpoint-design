@@ -265,10 +265,10 @@ export default function Transactions() {
   };
 
   const totalCredit = TRANSACTIONS_DATA.filter(
-    (tx) => tx.type === "credit"
+    (tx) => tx.type === "credit",
   ).reduce((a, b) => a + b.amount, 0);
   const totalDebit = TRANSACTIONS_DATA.filter(
-    (tx) => tx.type === "debit"
+    (tx) => tx.type === "debit",
   ).reduce((a, b) => a + b.amount, 0);
 
   return (
@@ -589,7 +589,7 @@ export default function Transactions() {
                 key={tx.id}
                 style={{
                   ...cardStyle(
-                    isCredit ? V.ok || "#22c55e" : V.sec || "#f59e0b"
+                    isCredit ? V.ok || "#22c55e" : V.sec || "#f59e0b",
                   ),
                   display: "flex",
                   flexDirection: "column",

@@ -19,7 +19,7 @@ const FormSwitch = forwardRef(function FormSwitch(
     className = "",
     ...props
   },
-  ref
+  ref,
 ) {
   const context = useContext(FormFieldContext);
 

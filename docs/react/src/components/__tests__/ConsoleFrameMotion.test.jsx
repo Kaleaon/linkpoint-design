@@ -33,7 +33,7 @@ describe("ConsoleFrame DTCG Motion Token Integration", () => {
             <ConsoleFrame />
           </ThemeProvider>
         </KthemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     // Look for rail nav items which have transition styles
@@ -42,14 +42,14 @@ describe("ConsoleFrame DTCG Motion Token Integration", () => {
 
     // Find nav item with background transition
     const animatedItem = Array.from(navItems).find(
-      (el) => el.style.transition && el.style.transition.includes("background")
+      (el) => el.style.transition && el.style.transition.includes("background"),
     );
     expect(animatedItem).toBeDefined();
     expect(animatedItem.style.transition).toMatch(
-      /--ktheme-motion-duration|150ms|300ms/
+      /--ktheme-motion-duration|150ms|300ms/,
     );
     expect(animatedItem.style.transition).toMatch(
-      /--ktheme-motion-easing|cubic-bezier/
+      /--ktheme-motion-easing|cubic-bezier/,
     );
   });
 
@@ -63,14 +63,14 @@ describe("ConsoleFrame DTCG Motion Token Integration", () => {
             <ConsoleFrame />
           </ThemeProvider>
         </KthemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const navItems = container.querySelectorAll("[style*='cursor: pointer']");
     expect(navItems.length).toBeGreaterThan(0);
 
     const animatedItem = Array.from(navItems).find(
-      (el) => el.style.transition && el.style.transition !== "none"
+      (el) => el.style.transition && el.style.transition !== "none",
     );
     // Under reduced motion, animatedItem should be none or undefined
     expect(animatedItem).toBeUndefined();
@@ -84,18 +84,18 @@ describe("ConsoleFrame DTCG Motion Token Integration", () => {
         <ThemeProvider>
           <ConsoleFrame />
         </ThemeProvider>
-      </AppProvider>
+      </AppProvider>,
     );
 
     const navItems = container.querySelectorAll("[style*='cursor: pointer']");
     expect(navItems.length).toBeGreaterThan(0);
 
     const animatedItem = Array.from(navItems).find(
-      (el) => el.style.transition && el.style.transition.includes("background")
+      (el) => el.style.transition && el.style.transition.includes("background"),
     );
     expect(animatedItem).toBeDefined();
     expect(animatedItem.style.transition).toMatch(
-      /--ktheme-motion-duration|150ms|300ms/
+      /--ktheme-motion-duration|150ms|300ms/,
     );
   });
 });
