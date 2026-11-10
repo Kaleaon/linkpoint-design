@@ -4,12 +4,19 @@ import path from "path";
 import fs from "fs";
 
 // Resolve Ktheme react package location (supports sibling checkout, installed node_modules, or nested)
-const kthemeReactDir = [
+const candidateDirs = [
   path.resolve(__dirname, "../../../Ktheme/packages/react"),
   path.resolve(__dirname, "../../Ktheme/packages/react"),
   path.resolve(__dirname, "node_modules/@ktheme/react"),
   "/app/Ktheme/packages/react",
-].find((dir) => fs.existsSync(dir));
+];
+const kthemeReactDir = candidateDirs.find((dir) =>
+  fs.existsSync(path.join(dir, "src/index.ts"))
+);
+const fallbackMockPath = path.resolve(
+  __dirname,
+  "src/mocks/ktheme-react-mock.js"
+);
 
 const kthemeAliases = kthemeReactDir
   ? {
@@ -23,7 +30,13 @@ const kthemeAliases = kthemeReactDir
       ),
       "@ktheme/react": path.resolve(kthemeReactDir, "src/index.ts"),
     }
-  : {};
+  : fs.existsSync(fallbackMockPath)
+    ? {
+        "@ktheme/react/studio": fallbackMockPath,
+        "@ktheme/react/support": fallbackMockPath,
+        "@ktheme/react": fallbackMockPath,
+      }
+    : {};
 
 // This app is a standalone dev/build sandbox that lives under docs/react in the
 // linkpoint-design repo. It is not currently wired into any parent site's base
