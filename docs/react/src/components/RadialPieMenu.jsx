@@ -89,7 +89,7 @@ export default function RadialPieMenu({
       style={{
         position: "absolute",
         inset: 0,
-        zIndex: 100,
+        zIndex: V.z?.overlay ?? "var(--ktheme-z-overlay, 100)",
         background: "rgba(0,0,0,0.35)",
         cursor: "default",
       }}

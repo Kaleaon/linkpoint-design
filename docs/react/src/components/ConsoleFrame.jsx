@@ -289,7 +289,7 @@ export default function ConsoleFrame() {
         borderRadius: C.rad + "px 0 0 0",
         overflow: "hidden",
         background: V.surf,
-        zIndex: 2,
+        zIndex: V.z?.card ?? "var(--ktheme-z-card, 1)",
       };
 
   return (
@@ -356,7 +356,9 @@ export default function ConsoleFrame() {
               height: C.dock + "px",
               display: "flex",
               gap: C.gap + "px",
-              zIndex: state.cEdit ? 6 : 1,
+              zIndex: state.cEdit
+                ? (V.z?.modal ?? "var(--ktheme-z-modal, 500)")
+                : (V.z?.base ?? "var(--ktheme-z-base, 0)"),
             }}
           >
             {state.cDock.map((k, i) => {
@@ -536,7 +538,7 @@ export default function ConsoleFrame() {
               position: "absolute",
               inset: 0,
               background: "rgba(0,0,0,.66)",
-              zIndex: 4,
+              zIndex: V.z?.overlay ?? "var(--ktheme-z-overlay, 100)",
             }}
           />
           <div
@@ -545,7 +547,7 @@ export default function ConsoleFrame() {
               left: C.rail + C.gap + "px",
               right: C.gap + "px",
               bottom: C.foot + C.dock + C.gap * 3 + "px",
-              zIndex: 7,
+              zIndex: V.z?.popover ?? "var(--ktheme-z-popover, 600)",
               display: "flex",
               alignItems: "center",
               gap: "12px",
