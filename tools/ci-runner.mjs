@@ -185,6 +185,9 @@ async function startServerHarness(rootDirectory, requestedPort = 0) {
         url: `http://127.0.0.1:${port}`,
         close: async () => {
           activeServers.delete(server);
+          if (typeof server.closeAllConnections === "function") {
+            server.closeAllConnections();
+          }
           return new Promise((res) => server.close(res));
         },
       });
