@@ -1,19 +1,22 @@
 import React from "react";
 
-export function KInteractive({
-  as: Component = "button",
-  onClick,
-  onKeyDown,
-  children,
-  label,
-  role,
-  tabIndex,
-  disabled = false,
-  className = "",
-  style,
-  type,
-  ...props
-}) {
+export const KInteractive = React.forwardRef(function KInteractive(
+  {
+    as: Component = "button",
+    onClick,
+    onKeyDown,
+    children,
+    label,
+    role,
+    tabIndex,
+    disabled = false,
+    className = "",
+    style,
+    type,
+    ...props
+  },
+  ref
+) {
   const isButton = Component === "button";
   const buttonType = isButton ? type || "button" : undefined;
 
@@ -42,6 +45,7 @@ export function KInteractive({
 
   return (
     <Component
+      ref={ref}
       type={buttonType}
       role={isButton ? role : role || "button"}
       tabIndex={disabled ? -1 : tabIndex ?? 0}
@@ -57,7 +61,7 @@ export function KInteractive({
       {children}
     </Component>
   );
-}
+});
 
 export function KButton({ children, ...props }) {
   return (
