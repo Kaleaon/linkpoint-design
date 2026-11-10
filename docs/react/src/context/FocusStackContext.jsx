@@ -52,7 +52,7 @@ export function FocusStackProvider({ children }) {
         target.focus();
         return true;
       } catch (_) {
-        /* ignore focus error */
+        // Ignore focus errors
       }
     }
 
@@ -70,7 +70,7 @@ export function FocusStackProvider({ children }) {
           taskbarBtn.focus();
           return true;
         } catch (_) {
-          /* ignore focus error */
+          // Ignore focus errors
         }
       }
     }
