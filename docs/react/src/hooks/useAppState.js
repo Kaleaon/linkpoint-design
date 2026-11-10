@@ -719,6 +719,7 @@ export function useAppState() {
     },
     [notify]
   );
+
   const downloadTheme = useCallback(() => {
     const blob = new Blob([JSON.stringify(customTheme, null, 2)], {
       type: "application/json",

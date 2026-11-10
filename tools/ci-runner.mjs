@@ -551,7 +551,6 @@ async function taskUnitTests() {
   if (hasReactVitest) {
     log("Executing React Linkpoint Vitest Suite...", "info");
     const reactDir = path.join(cwd, "docs/react");
-
     const candidateKthemeDirs = [
       path.resolve(cwd, "../Ktheme"),
       path.resolve(cwd, "../../Ktheme"),
@@ -582,7 +581,6 @@ async function taskUnitTests() {
         log(`Failed to clone Ktheme repository: ${err.message}`, "warn");
       }
     }
-
     const hasPnpmLock = fs.existsSync(path.join(reactDir, "pnpm-lock.yaml"));
     const hasNpmLock = fs.existsSync(path.join(reactDir, "package-lock.json"));
     const isPnpmAvailable = () => {
