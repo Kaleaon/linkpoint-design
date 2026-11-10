@@ -241,8 +241,12 @@ export default function FloatersDesktop() {
                 onClick={() => setShowCamHud(false)}
                 label="Close HUD"
                 style={{
-                  width: "24px",
-                  height: "24px",
+                  width:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -258,7 +262,10 @@ export default function FloatersDesktop() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(3, 24px)",
+                gridTemplateColumns: `repeat(3, ${
+                  V.touchTargetMinDesktop ||
+                  "var(--ktheme-touch-target-min-desktop, 24px)"
+                })`,
                 gap: "3px",
                 justifyContent: "center",
               }}
@@ -267,7 +274,9 @@ export default function FloatersDesktop() {
                 type="button"
                 onClick={() => actions.sceneMove({ clientX: 0, clientY: -10 })}
                 style={{
-                  height: "24px",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   background: V.surf2,
                   border: "1px solid " + V.outv,
                   color: V.ink,
@@ -287,7 +296,9 @@ export default function FloatersDesktop() {
                   actions.cHold("cam");
                 }}
                 style={{
-                  height: "24px",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   background: V.pri,
                   border: "1px solid " + V.pri,
                   color: ink(V.pri, [V.bg, V.onpri, V.ink]),
@@ -306,7 +317,9 @@ export default function FloatersDesktop() {
                 type="button"
                 onClick={() => actions.sceneMove({ clientX: 0, clientY: 10 })}
                 style={{
-                  height: "24px",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   background: V.surf2,
                   border: "1px solid " + V.outv,
                   color: V.ink,
@@ -324,7 +337,9 @@ export default function FloatersDesktop() {
                 type="button"
                 onClick={() => actions.sceneMove({ clientX: -15, clientY: 0 })}
                 style={{
-                  height: "24px",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   background: V.surf2,
                   border: "1px solid " + V.outv,
                   color: V.ink,
@@ -342,7 +357,9 @@ export default function FloatersDesktop() {
                 type="button"
                 onClick={() => actions.notify("Camera Reset")}
                 style={{
-                  height: "24px",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   background: V.surf2,
                   border: "1px solid " + V.outv,
                   color: V.ink,
@@ -360,7 +377,9 @@ export default function FloatersDesktop() {
                 type="button"
                 onClick={() => actions.sceneMove({ clientX: 15, clientY: 0 })}
                 style={{
-                  height: "24px",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   background: V.surf2,
                   border: "1px solid " + V.outv,
                   color: V.ink,
@@ -474,8 +493,12 @@ export default function FloatersDesktop() {
                   actions.dispatchIntent("FLOATER_SHADE", { id: f.id });
                 }}
                 style={{
-                  width: "24px",
-                  height: "24px",
+                  width:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   flex: "none",
                   display: "flex",
                   alignItems: "center",
@@ -487,6 +510,7 @@ export default function FloatersDesktop() {
                   opacity: 0.85,
                 }}
                 label={isShaded ? "Unshade (Expand)" : "Shade (Rollup)"}
+                aria-label={isShaded ? "Unshade (Expand)" : "Shade (Rollup)"}
               >
                 <Icon
                   name={isShaded ? "chevron-down" : "chevron-up"}
@@ -500,8 +524,12 @@ export default function FloatersDesktop() {
                   actions.dispatchIntent("FLOATER_MINIMIZE", { id: f.id });
                 }}
                 style={{
-                  width: "24px",
-                  height: "24px",
+                  width:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   flex: "none",
                   display: "flex",
                   alignItems: "center",
@@ -513,6 +541,7 @@ export default function FloatersDesktop() {
                   opacity: 0.85,
                 }}
                 label="Minimize"
+                aria-label="Minimize"
               >
                 &minus;
               </KInteractive>
@@ -523,8 +552,12 @@ export default function FloatersDesktop() {
                   actions.dispatchIntent("FLOATER_CLOSE", { id: f.id });
                 }}
                 style={{
-                  width: "24px",
-                  height: "24px",
+                  width:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   flex: "none",
                   display: "flex",
                   alignItems: "center",
@@ -536,6 +569,7 @@ export default function FloatersDesktop() {
                   opacity: 0.85,
                 }}
                 label="Close"
+                aria-label="Close"
               >
                 &times;
               </KInteractive>

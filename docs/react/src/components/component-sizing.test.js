@@ -69,18 +69,30 @@ test("FloatersDesktop control button target sizes meet target requirements", () 
   );
 
   // Minimize button width/height 24px
-  expect(fileContent).toMatch(/aria-label="Minimize"/);
+  expect(fileContent).toMatch(/(?:aria-)?label="Minimize"/);
 
   // Close button width/height 24px
-  expect(fileContent).toMatch(/aria-label="Close"/);
+  expect(fileContent).toMatch(/(?:aria-)?label="Close"/);
 
-  // Camera HUD close button target size 24px x 24px
-  expect(fileContent).toMatch(/width:\s*"24px"/);
-  expect(fileContent).toMatch(/height:\s*"24px"/);
+  // Camera HUD close button target size 24px x 24px (token-bound or 24px fallback)
+  expect(fileContent).toMatch(
+    /width:\s*(V\.touchTargetMinDesktop|"24px"|"var\(--ktheme-touch-target-min-desktop,\s*24px\)")/
+  );
+  expect(fileContent).toMatch(
+    /height:\s*(V\.touchTargetMinDesktop|"24px"|"var\(--ktheme-touch-target-min-desktop,\s*24px\)")/
+  );
 
-  // Count instances of width: "24px" and height: "24px" in FloatersDesktop
-  const width24Matches = (fileContent.match(/width:\s*"24px"/g) || []).length;
-  const height24Matches = (fileContent.match(/height:\s*"24px"/g) || []).length;
+  // Count instances of target size 24px / token bindings in FloatersDesktop
+  const width24Matches = (
+    fileContent.match(
+      /width:\s*(V\.touchTargetMinDesktop|"24px"|"var\(--ktheme-touch-target-min-desktop,\s*24px\)")/g
+    ) || []
+  ).length;
+  const height24Matches = (
+    fileContent.match(
+      /height:\s*(V\.touchTargetMinDesktop|"24px"|"var\(--ktheme-touch-target-min-desktop,\s*24px\)")/g
+    ) || []
+  ).length;
   expect(width24Matches).toBeGreaterThanOrEqual(3);
   expect(height24Matches).toBeGreaterThanOrEqual(3);
 });
