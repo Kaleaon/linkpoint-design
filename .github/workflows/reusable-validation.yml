@@ -36,6 +36,12 @@ jobs:
           node-version: ${{ inputs.node-version }}
           cache: npm
 
+      - name: Clone Ktheme dependency
+        run: |
+          if [ ! -d "../Ktheme" ]; then
+            git clone --depth 1 https://github.com/Kaleaon/Ktheme.git ../Ktheme || true
+          fi
+
       - name: Install dependencies
         run: |
           if [ -f "package.json" ]; then

@@ -63,6 +63,50 @@ test("ratio: computes contrast ratio correctly with string colors and numeric lu
   assert.equal(r3, 21);
 });
 
+test("ratio: computes accurate contrast ratios for valid 3-digit, 6-digit, and mixed-case hex colors", () => {
+  // 3-digit hex vs 6-digit hex
+  const rShort = ratio("#fff", "#000");
+  assert.equal(rShort, 21);
+
+  // Identical colors have contrast ratio 1:1
+  const rIdentical = ratio("#123456", "#123456");
+  assert.equal(rIdentical, 1);
+
+  // Mixed case hex colors
+  const rMixed = ratio("#AbCdEf", "#123456");
+  assert.ok(rMixed > 1);
+
+  // Specific known theme pair: Navy Gold primary (#D4AF37) vs background (#0A1630)
+  const rNavyGold = ratio("#D4AF37", "#0A1630");
+  assert.ok(
+    rNavyGold >= 4.5,
+    "Navy Gold primary on background meets WCAG AA (>= 4.5:1)"
+  );
+
+  // Low-contrast color pair (< 4.5:1)
+  const rLowContrast = ratio("#0A1630", "#1A2645");
+  assert.ok(rLowContrast < 4.5, "Dark on dark pair fails WCAG AA (< 4.5:1)");
+});
+
+test("ratio: handles invalid and malformed hex inputs gracefully without throwing", () => {
+  // Invalid string formats fall back to default luminance (0.5)
+  const rInvalid = ratio("not-a-hex", "#000000");
+  assert.ok(Number.isFinite(rInvalid));
+  assert.ok(rInvalid > 1);
+
+  const rBothInvalid = ratio("invalid-color-1", "invalid-color-2");
+  assert.equal(rBothInvalid, 1);
+
+  const rNull = ratio(null, "#ffffff");
+  assert.ok(Number.isFinite(rNull));
+
+  const rUndefined = ratio(undefined, "#000000");
+  assert.ok(Number.isFinite(rUndefined));
+
+  const rEmpty = ratio("", "");
+  assert.equal(rEmpty, 1);
+});
+
 test("pickInk: picks optimal ink for hex and non-hex backgrounds", () => {
   lumCache.clear();
 

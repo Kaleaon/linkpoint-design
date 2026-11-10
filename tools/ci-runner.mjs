@@ -229,9 +229,12 @@ function parsePNG(buffer) {
 
   const raw = zlib.inflateSync(Buffer.concat(idatChunks));
   let bpp = 4;
-  if (colorType === 2) bpp = 3; // RGB
-  else if (colorType === 6) bpp = 4; // RGBA
-  else if (colorType === 0) bpp = 1; // Grayscale
+  if (colorType === 2)
+    bpp = 3; // RGB
+  else if (colorType === 6)
+    bpp = 4; // RGBA
+  else if (colorType === 0)
+    bpp = 1; // Grayscale
   else if (colorType === 4) bpp = 2; // Grayscale + Alpha
 
   const stride = width * bpp;
@@ -541,7 +544,6 @@ async function taskUnitTests() {
   if (hasReactVitest) {
     log("Executing React Linkpoint Vitest Suite...", "info");
     const reactDir = path.join(cwd, "docs/react");
-
     const candidateKthemeDirs = [
       path.resolve(cwd, "../Ktheme"),
       path.resolve(cwd, "../../Ktheme"),
@@ -573,6 +575,19 @@ async function taskUnitTests() {
       }
     }
 
+    if (!fs.existsSync(path.join(reactDir, "node_modules"))) {
+      try {
+        log(
+          "Installing docs/react dependencies before running unit tests...",
+          "info"
+        );
+        spawnSync("npm", ["install"], {
+          cwd: reactDir,
+          stdio: "inherit",
+          shell: true,
+        });
+      } catch (_) {}
+    }
     const hasPnpmLock = fs.existsSync(path.join(reactDir, "pnpm-lock.yaml"));
     const hasNpmLock = fs.existsSync(path.join(reactDir, "package-lock.json"));
     const isPnpmAvailable = () => {
