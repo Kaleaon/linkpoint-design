@@ -40,7 +40,7 @@ export default function DeviceFrame() {
   };
 
   return (
-    <div className="device-frame">
+    <div className="device-frame" id="app-root">
       <SkipLink />
       <div style={frameStyle}>
         <MenuBar />
