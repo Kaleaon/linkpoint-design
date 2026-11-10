@@ -1,5 +1,8 @@
 import React, { useContext, useRef, useState } from "react";
-import { ThemeStudio as UnifiedThemeStudio, KthemeContext } from "@ktheme/react";
+import {
+  ThemeStudio as UnifiedThemeStudio,
+  KthemeContext,
+} from "@ktheme/react";
 import { lum, ratio } from "../theme/color.js";
 import { AppContext } from "../context/AppContext.jsx";
 import { EDITABLE_THEME_TOKENS } from "../theme/customTheme.js";

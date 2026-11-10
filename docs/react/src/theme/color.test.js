@@ -78,7 +78,10 @@ test("ratio: computes accurate contrast ratios for valid 3-digit, 6-digit, and m
 
   // Specific known theme pair: Navy Gold primary (#D4AF37) vs background (#0A1630)
   const rNavyGold = ratio("#D4AF37", "#0A1630");
-  assert.ok(rNavyGold >= 4.5, "Navy Gold primary on background meets WCAG AA (>= 4.5:1)");
+  assert.ok(
+    rNavyGold >= 4.5,
+    "Navy Gold primary on background meets WCAG AA (>= 4.5:1)"
+  );
 
   // Low-contrast color pair (< 4.5:1)
   const rLowContrast = ratio("#0A1630", "#1A2645");

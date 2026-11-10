@@ -373,6 +373,4 @@ describe("Split Theme Context Architecture", () => {
     expect(style.lineHeight).toBe("1");
     expect(style.font).toBeDefined();
   });
-  });
 });
-
