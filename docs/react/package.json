@@ -10,8 +10,8 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@ktheme/react": "file:../../../Ktheme/packages/react",
-    "@ktheme/tokens": "file:../../../Ktheme/packages/tokens",
+    "@ktheme/react": "file:../../vendor/ktheme-react-1.0.0.tgz",
+    "@ktheme/tokens": "file:../../vendor/ktheme-tokens-1.0.0.tgz",
     "lucide-react": "^0.451.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

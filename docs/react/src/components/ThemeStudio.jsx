@@ -20,7 +20,7 @@ export default function ThemeStudio() {
   const [open, setOpen] = useState(false);
   const [importError, setImportError] = useState(null);
   const fileRef = useRef(null);
-  const theme = state.customTheme;
+  const theme = state?.customTheme;
 
   const importFile = async (event) => {
     const file = event.target.files?.[0];
@@ -32,7 +32,7 @@ export default function ThemeStudio() {
       if (!validation.valid) {
         setImportError(validation.errors.join("; "));
       } else {
-        const ok = await actions.importTheme(text);
+        const ok = await actions.importTheme?.(text);
         if (!ok) {
           setImportError("Theme import failed. Check that the theme is valid.");
         }
@@ -49,7 +49,7 @@ export default function ThemeStudio() {
 
   const handleReset = () => {
     setImportError(null);
-    actions.resetTheme();
+    actions.resetTheme?.();
   };
 
   return (
@@ -85,7 +85,7 @@ export default function ThemeStudio() {
             <input
               value={theme.name}
               maxLength={48}
-              onChange={(e) => actions.renameTheme(e.target.value)}
+              onChange={(e) => actions.renameTheme?.(e.target.value)}
             />
           </label>
           <div className="theme-colors">
@@ -96,7 +96,9 @@ export default function ThemeStudio() {
                   <input
                     type="color"
                     value={theme.colors[key]}
-                    onChange={(e) => actions.setThemeColor(key, e.target.value)}
+                    onChange={(e) =>
+                      actions.setThemeColor?.(key, e.target.value)
+                    }
                     aria-label={`${label} color`}
                   />
                   <code>{theme.colors[key].toUpperCase()}</code>

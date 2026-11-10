@@ -1,22 +1,36 @@
-import { useRef, useCallback, useEffect } from "react";
+import { useRef, useCallback, useEffect, useId, useState } from "react";
+
+let navIdCounter = 0;
 
 /**
  * Custom hook to manage WAI-ARIA tablist accessibility, roving tabindex,
- * and horizontal keyboard arrow navigation (ArrowLeft, ArrowRight, Home, End).
+ * horizontal keyboard arrow navigation (ArrowLeft, ArrowRight, Home, End),
+ * and dynamic ID binding between tabs and panels.
  *
  * @param {Object} options
  * @param {number} options.itemCount - Total number of tabs in the tablist.
  * @param {number} options.activeIndex - Index of the currently active tab.
  * @param {Function} options.onSelect - Callback invoked when a tab is selected: (index) => void.
  * @param {string} options.ariaLabel - Accessible label for the tablist container.
- * @returns {Object} { containerProps, getTabProps }
+ * @param {string} [options.baseId] - Optional base ID for tab and panel element IDs.
+ * @returns {Object} { containerProps, getTabProps, getPanelProps, baseId }
  */
 export function useTabNavigation({
   itemCount,
   activeIndex,
   onSelect,
   ariaLabel,
+  baseId: explicitBaseId,
 }) {
+  const reactId = typeof useId === "function" ? useId() : null;
+  const [fallbackId] = useState(() => {
+    navIdCounter += 1;
+    return `tabnav-${navIdCounter}`;
+  });
+
+  const baseId =
+    explicitBaseId ||
+    (reactId ? `tabnav-${reactId.replace(/:/g, "")}` : fallbackId);
   const tabRefs = useRef([]);
   const isKeyboardNav = useRef(false);
 
@@ -104,6 +118,8 @@ export function useTabNavigation({
       const isSelected = index === safeActiveIndex;
       return {
         role: "tab",
+        id: `${baseId}-tab-${index}`,
+        "aria-controls": `${baseId}-panel-${index}`,
         "aria-selected": isSelected,
         tabIndex: isSelected ? 0 : -1,
         ref: (el) => {
@@ -114,12 +130,27 @@ export function useTabNavigation({
         },
       };
     },
-    [safeActiveIndex, onSelect]
+    [baseId, safeActiveIndex, onSelect]
+  );
+
+  const getPanelProps = useCallback(
+    (index) => {
+      const panelIndex = index !== undefined ? index : safeActiveIndex;
+      return {
+        role: "tabpanel",
+        id: `${baseId}-panel-${panelIndex}`,
+        "aria-labelledby": `${baseId}-tab-${panelIndex}`,
+        tabIndex: 0,
+      };
+    },
+    [baseId, safeActiveIndex]
   );
 
   return {
+    baseId,
     containerProps,
     getTabProps,
+    getPanelProps,
   };
 }
 
