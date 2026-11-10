@@ -3,36 +3,27 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 import fs from "fs";
 
-// Resolve Ktheme react package location (supports sibling checkout, devbox, or local fallback shim)
-const kthemeCandidate = [
+// Resolve Ktheme react package location (supports sibling checkout, installed node_modules, or nested)
+const kthemeReactDir = [
   path.resolve(__dirname, "../../../Ktheme/packages/react"),
   path.resolve(__dirname, "../../Ktheme/packages/react"),
+  path.resolve(__dirname, "node_modules/@ktheme/react"),
   "/app/Ktheme/packages/react",
 ].find((dir) => fs.existsSync(dir));
 
-const kthemeReactDir =
-  kthemeCandidate || path.resolve(__dirname, "src/support/ktheme-shim");
-const isShim = !kthemeCandidate;
-
-const kthemeAliases = isShim
+const kthemeAliases = kthemeReactDir
   ? {
-      "@ktheme/react/studio": path.resolve(kthemeReactDir, "studio.js"),
-      "@ktheme/react/support": path.resolve(kthemeReactDir, "support.js"),
-      "@ktheme/react": path.resolve(kthemeReactDir, "index.js"),
-    }
-  : {
-      "@ktheme/react/studio": fs.existsSync(
-        path.resolve(kthemeReactDir, "src/studio/index.ts")
-      )
-        ? path.resolve(kthemeReactDir, "src/studio/index.ts")
-        : path.resolve(__dirname, "src/support/ktheme-shim/studio.js"),
-      "@ktheme/react/support": fs.existsSync(
-        path.resolve(kthemeReactDir, "src/support/index.ts")
-      )
-        ? path.resolve(kthemeReactDir, "src/support/index.ts")
-        : path.resolve(__dirname, "src/support/ktheme-shim/support.js"),
+      "@ktheme/react/studio": path.resolve(
+        kthemeReactDir,
+        "src/studio/index.ts"
+      ),
+      "@ktheme/react/support": path.resolve(
+        kthemeReactDir,
+        "src/support/index.ts"
+      ),
       "@ktheme/react": path.resolve(kthemeReactDir, "src/index.ts"),
-    };
+    }
+  : {};
 
 // This app is a standalone dev/build sandbox that lives under docs/react in the
 // linkpoint-design repo. It is not currently wired into any parent site's base
@@ -41,9 +32,7 @@ export default defineConfig({
   base: "./",
   plugins: [react()],
   resolve: {
-    alias: {
-      ...kthemeAliases,
-    },
+    alias: kthemeAliases,
   },
   test: {
     environment: "jsdom",

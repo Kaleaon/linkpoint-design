@@ -1,15 +1,18 @@
 import { AppProvider } from "./context/AppContext.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
+import { FocusStackProvider } from "./context/FocusStackContext.jsx";
 import DeviceFrame from "./components/DeviceFrame.jsx";
 import LiveRegionAnnouncer from "./components/LiveRegionAnnouncer.jsx";
 
 export default function App() {
   return (
     <AppProvider>
-      <ThemeProvider>
-        <LiveRegionAnnouncer />
-        <DeviceFrame />
-      </ThemeProvider>
+      <FocusStackProvider>
+        <ThemeProvider>
+          <LiveRegionAnnouncer />
+          <DeviceFrame />
+        </ThemeProvider>
+      </FocusStackProvider>
     </AppProvider>
   );
 }
