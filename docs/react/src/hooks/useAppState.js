@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { EventBus, intentReducer } from "../../../shared/eventBus.js";
 import { LAYOUTS } from "../theme/layouts.js";
 import { PALETTES } from "../theme/palettes.js";
@@ -19,6 +19,24 @@ import {
   themeFromPalette,
   THEME_STORAGE_KEY,
 } from "../theme/customTheme.js";
+
+/**
+ * Compute descriptive screen title reflecting active screen, sub-tab, and entity focus.
+ */
+export function computeScreenTitle(screen, tabs = {}, chip = "") {
+  if (screen === "Chat") {
+    const curTab = tabs?.Chat;
+    if ((curTab === "IM" || curTab === "GROUP") && chip) {
+      return `Chat with ${chip}`;
+    }
+    return "Chat";
+  }
+  return screen;
+}
+
+export function formatDocumentTitle(screenName) {
+  return `${screenName} | Linkpoint Mobile`;
+}
 
 export const LINKPOINT_ACCOUNTS_KEY = "linkpoint_stored_accounts";
 
@@ -1612,6 +1630,19 @@ export function useAppState() {
     [flToggle, flToggleShade, flClose, notify, screenPick]
   );
 
+  const screenTitle = useMemo(
+    () => computeScreenTitle(screen, tabs, chip),
+    [screen, tabs, chip]
+  );
+
+  const title = useMemo(() => formatDocumentTitle(screenTitle), [screenTitle]);
+
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.title = title;
+    }
+  }, [title]);
+
   return {
     state: {
       layout,
@@ -1710,6 +1741,8 @@ export function useAppState() {
       reconnectAttempts,
       nextRetryDelay,
       asyncQueryState,
+      title,
+      screenTitle,
     },
     actions: {
       setLayout,

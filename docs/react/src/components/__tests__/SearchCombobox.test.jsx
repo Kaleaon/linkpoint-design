@@ -223,19 +223,21 @@ describe("LiveRegionAnnouncer Component & WCAG 2.2 SC 4.1.3", () => {
     expect(liveRegion.textContent).toBe("Teleporting...");
   });
 
-  it("returns null when neither toast nor announcement is present", () => {
+  it("renders empty live container when neither toast nor announcement is present", () => {
     const mockAppContext = {
       state: { toast: "", announcement: "" },
       actions: {},
     };
 
-    const { container } = render(
+    render(
       <AppContext.Provider value={mockAppContext}>
         <LiveRegionAnnouncer />
       </AppContext.Provider>
     );
 
-    expect(container.firstChild).toBeNull();
+    const liveRegion = screen.getByRole("status");
+    expect(liveRegion).toBeDefined();
+    expect(liveRegion.textContent).toBe("");
   });
 });
 
