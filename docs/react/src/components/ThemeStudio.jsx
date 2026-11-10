@@ -73,7 +73,7 @@ export default function ThemeStudio() {
           <label className="theme-name">
             THEME NAME
             <input
-              value={theme.name}
+              value={theme?.name || ""}
               maxLength={48}
               onChange={(e) => actions.renameTheme?.(e.target.value)}
             />
