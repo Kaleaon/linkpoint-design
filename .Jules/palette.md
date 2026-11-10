@@ -79,3 +79,7 @@
 
 **Learning:** When porting interactive features (like custom div/span multi-select toolbars in the Inventory screen) from vanilla HTML templates to React, developers sometimes carry over the `role="button"` and `tabIndex={0}` properties but mistakenly drop the explicit `onKeyDown` handlers required for Enter/Space keyboard activation, breaking accessibility.
 **Action:** When auditing React ports of HTML templates, explicitly cross-reference the source HTML to ensure that all `onClick` behaviors are accurately mapped with accompanying `onKeyDown` handlers.
+
+## 2026-10-25 - Accessibility for Config Panel Picks and Tags
+**Learning:** When using divs as selectable options (like `.pick` or `.tag` in the config panel), it's important to provide `role="button"`, `tabindex="0"`, and `onKeyDown` handlers to make them accessible via keyboard.
+**Action:** Always add keyboard access to clickable selection items.
