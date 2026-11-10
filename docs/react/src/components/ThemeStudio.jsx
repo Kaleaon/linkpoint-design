@@ -14,7 +14,6 @@ export default function ThemeStudio() {
     if (!kthemeCtx) return null;
     return <UnifiedThemeStudio embedded={false} />;
   }
-
   const state = app?.state || { customTheme: null };
   const actions = app?.actions || {};
   const [open, setOpen] = useState(false);
