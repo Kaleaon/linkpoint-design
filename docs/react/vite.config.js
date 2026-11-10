@@ -31,12 +31,12 @@ const kthemeAliases = kthemeReactDir
       "@ktheme/react": path.resolve(kthemeReactDir, "src/index.ts"),
     }
   : fs.existsSync(fallbackMockPath)
-  ? {
-      "@ktheme/react/studio": fallbackMockPath,
-      "@ktheme/react/support": fallbackMockPath,
-      "@ktheme/react": fallbackMockPath,
-    }
-  : {};
+    ? {
+        "@ktheme/react/studio": fallbackMockPath,
+        "@ktheme/react/support": fallbackMockPath,
+        "@ktheme/react": fallbackMockPath,
+      }
+    : {};
 
 // This app is a standalone dev/build sandbox that lives under docs/react in the
 // linkpoint-design repo. It is not currently wired into any parent site's base
