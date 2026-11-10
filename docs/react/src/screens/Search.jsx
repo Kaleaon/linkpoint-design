@@ -7,7 +7,7 @@ import {
   IM_CHIPS,
 } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
-import FormInput from "../components/FormInput.jsx";
+import SearchCombobox from "../components/SearchCombobox.jsx";
 import { SkeletonCardList } from "../components/Skeletons.jsx";
 
 const TABS = [
@@ -369,8 +369,11 @@ export default function Search() {
         }}
       >
         <Icon name="search" size={16} style={{ color: V.ink2 }} />
-        <FormInput
-          aria-label="Filter or search residents by name"
+        <SearchCombobox
+          controlsId="search-results-list"
+          resultCount={rows.length}
+          itemLabel="residents"
+          ariaLabel="Filter or search residents by name"
           value={state.searchQuery}
           onChange={(e) => actions.setSearchQuery(e.target.value)}
           placeholder={
@@ -388,6 +391,7 @@ export default function Search() {
       </div>
 
       <div
+        id="search-results-list"
         style={{
           flex: 1,
           minHeight: "300px",

@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "test": "node tools/ci-runner.mjs",
+    "test:app": "node tools/ci-runner.mjs --app",
     "validate": "node tools/ci-runner.mjs",
     "test:a11y": "node tools/ci-runner.mjs --a11y",
     "test:visual": "node tools/ci-runner.mjs --visual",
     "test:unit": "node tools/ci-runner.mjs --unit",
-    "test:schema": "node tools/ci-runner.mjs --schema"
+    "test:schema": "node tools/ci-runner.mjs --schema",
+    "build": "npm --prefix docs/react run build"
   },
   "devDependencies": {
     "@kaleaon/ktheme-schema-cli": "file:vendor/kaleaon-ktheme-schema-cli-1.0.0.tgz",

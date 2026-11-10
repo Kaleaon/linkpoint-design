@@ -1,27 +1,25 @@
 import { useContext, useRef, useState } from "react";
 import { AppContext } from "../context/AppContext.jsx";
+import { EDITABLE_THEME_TOKENS } from "../theme/customTheme.js";
+import { validateThemeJson } from "../theme/themeValidator.js";
 import {
   ThemeStudio as UnifiedThemeStudio,
   KthemeContext,
 } from "@ktheme/react";
-import { EDITABLE_THEME_TOKENS } from "../theme/customTheme.js";
-import { validateThemeJson } from "../theme/themeValidator.js";
 
 export default function ThemeStudio() {
   const app = useContext(AppContext);
-  const kthemeCtx = useContext(KthemeContext);
   if (!app) {
-    if (kthemeCtx) {
-      return <UnifiedThemeStudio embedded={false} />;
-    }
-    return null;
+    const kthemeCtx = useContext(KthemeContext);
+    if (!kthemeCtx) return null;
+    return <UnifiedThemeStudio embedded={false} />;
   }
   const state = app?.state || { customTheme: null };
   const actions = app?.actions || {};
   const [open, setOpen] = useState(false);
   const [importError, setImportError] = useState(null);
   const fileRef = useRef(null);
-  const theme = state.customTheme;
+  const theme = state?.customTheme;
 
   const importFile = async (event) => {
     const file = event.target.files?.[0];
@@ -33,7 +31,7 @@ export default function ThemeStudio() {
       if (!validation.valid) {
         setImportError(validation.errors.join("; "));
       } else {
-        const ok = await actions.importTheme(text);
+        const ok = await actions.importTheme?.(text);
         if (!ok) {
           setImportError("Theme import failed. Check that the theme is valid.");
         }
@@ -50,7 +48,7 @@ export default function ThemeStudio() {
 
   const handleReset = () => {
     setImportError(null);
-    actions.resetTheme();
+    actions.resetTheme?.();
   };
 
   return (
@@ -86,7 +84,7 @@ export default function ThemeStudio() {
             <input
               value={theme.name}
               maxLength={48}
-              onChange={(e) => actions.renameTheme(e.target.value)}
+              onChange={(e) => actions.renameTheme?.(e.target.value)}
             />
           </label>
           <div className="theme-colors">
@@ -97,7 +95,9 @@ export default function ThemeStudio() {
                   <input
                     type="color"
                     value={theme.colors[key]}
-                    onChange={(e) => actions.setThemeColor(key, e.target.value)}
+                    onChange={(e) =>
+                      actions.setThemeColor?.(key, e.target.value)
+                    }
                     aria-label={`${label} color`}
                   />
                   <code>{theme.colors[key].toUpperCase()}</code>

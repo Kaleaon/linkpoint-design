@@ -7,8 +7,8 @@ import {
   INVENTORY_RECENTS,
 } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
-import FormInput from "../components/FormInput.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import SearchCombobox from "../components/SearchCombobox.jsx";
 import { subView } from "../theme/constants.js";
 import { SkeletonTree } from "../components/Skeletons.jsx";
 
@@ -147,11 +147,14 @@ export default function Inventory() {
             size={15}
             style={{ opacity: 0.55, flexShrink: 0 }}
           />
-          <FormInput
+          <SearchCombobox
+            controlsId="inventory-results-tree"
+            resultCount={nodes.length}
+            itemLabel="inventory items"
             aria-label="Filter inventory"
+            placeholder="filter inventory…"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="filter inventory…"
             style={{
               flex: 1,
               minWidth: 0,
@@ -257,7 +260,7 @@ export default function Inventory() {
         ))}
       </div>
 
-      <div style={invListStyle}>
+      <div id="inventory-results-tree" style={invListStyle}>
         {isLoading || state.asyncQueryState?.inventory?.status === "loading" ? (
           <SkeletonTree style={{ minHeight: "320px" }} />
         ) : state.asyncQueryState?.inventory?.status === "timeout" ||

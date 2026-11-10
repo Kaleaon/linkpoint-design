@@ -17,6 +17,7 @@ import Icon from "./Icon.jsx";
 import ScreenBody from "./ScreenBody.jsx";
 import { usePrefersReducedMotion } from "../hooks/usePrefersReducedMotion.js";
 import RadialPieMenu from "./RadialPieMenu.jsx";
+import AccessibleDialogPortal from "./AccessibleDialogPortal.jsx";
 import KInteractive from "./KInteractive.jsx";
 
 // Ported from the `isFloat` block: desktop SL isn't a screen stack, it's N
@@ -213,7 +214,7 @@ export default function FloatersDesktop() {
               display: "flex",
               flexDirection: "column",
               gap: "6px",
-              zIndex: 20,
+              zIndex: V.z?.dock ?? "var(--ktheme-z-dock, 20)",
             }}
           >
             <div
@@ -239,9 +240,14 @@ export default function FloatersDesktop() {
                 as="button"
                 onClick={() => setShowCamHud(false)}
                 label="Close HUD"
+                aria-label="Close HUD"
                 style={{
-                  width: "24px",
-                  height: "24px",
+                  width:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -257,7 +263,10 @@ export default function FloatersDesktop() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(3, 24px)",
+                gridTemplateColumns: `repeat(3, ${
+                  V.touchTargetMinDesktop ||
+                  "var(--ktheme-touch-target-min-desktop, 24px)"
+                })`,
                 gap: "3px",
                 justifyContent: "center",
               }}
@@ -266,7 +275,9 @@ export default function FloatersDesktop() {
                 type="button"
                 onClick={() => actions.sceneMove({ clientX: 0, clientY: -10 })}
                 style={{
-                  height: "24px",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   background: V.surf2,
                   border: "1px solid " + V.outv,
                   color: V.ink,
@@ -286,7 +297,9 @@ export default function FloatersDesktop() {
                   actions.cHold("cam");
                 }}
                 style={{
-                  height: "24px",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   background: V.pri,
                   border: "1px solid " + V.pri,
                   color: ink(V.pri, [V.bg, V.onpri, V.ink]),
@@ -305,7 +318,9 @@ export default function FloatersDesktop() {
                 type="button"
                 onClick={() => actions.sceneMove({ clientX: 0, clientY: 10 })}
                 style={{
-                  height: "24px",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   background: V.surf2,
                   border: "1px solid " + V.outv,
                   color: V.ink,
@@ -323,7 +338,9 @@ export default function FloatersDesktop() {
                 type="button"
                 onClick={() => actions.sceneMove({ clientX: -15, clientY: 0 })}
                 style={{
-                  height: "24px",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   background: V.surf2,
                   border: "1px solid " + V.outv,
                   color: V.ink,
@@ -341,7 +358,9 @@ export default function FloatersDesktop() {
                 type="button"
                 onClick={() => actions.notify("Camera Reset")}
                 style={{
-                  height: "24px",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   background: V.surf2,
                   border: "1px solid " + V.outv,
                   color: V.ink,
@@ -359,7 +378,9 @@ export default function FloatersDesktop() {
                 type="button"
                 onClick={() => actions.sceneMove({ clientX: 15, clientY: 0 })}
                 style={{
-                  height: "24px",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   background: V.surf2,
                   border: "1px solid " + V.outv,
                   color: V.ink,
@@ -393,7 +414,9 @@ export default function FloatersDesktop() {
               top: r.y + "px",
               width: r.w + "px",
               height: (isShaded ? FBAR : r.h) + "px",
-              zIndex: 10 + Math.max(0, state.flZ.indexOf(f.id)),
+              zIndex: `calc(var(--ktheme-z-window, ${
+                V.z?.window ?? 10
+              }) + ${Math.max(0, state.flZ.indexOf(f.id))})`,
               display: "flex",
               flexDirection: "column",
               background: V.surf,
@@ -472,9 +495,15 @@ export default function FloatersDesktop() {
                   e.stopPropagation();
                   actions.dispatchIntent("FLOATER_SHADE", { id: f.id });
                 }}
+                label={isShaded ? "Unshade (Expand)" : "Shade (Rollup)"}
+                aria-label={isShaded ? "Unshade (Expand)" : "Shade (Rollup)"}
                 style={{
-                  width: "24px",
-                  height: "24px",
+                  width:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   flex: "none",
                   display: "flex",
                   alignItems: "center",
@@ -485,7 +514,6 @@ export default function FloatersDesktop() {
                   cursor: "pointer",
                   opacity: 0.85,
                 }}
-                label={isShaded ? "Unshade (Expand)" : "Shade (Rollup)"}
               >
                 <Icon
                   name={isShaded ? "chevron-down" : "chevron-up"}
@@ -498,9 +526,15 @@ export default function FloatersDesktop() {
                   e.stopPropagation();
                   actions.dispatchIntent("FLOATER_MINIMIZE", { id: f.id });
                 }}
+                label="Minimize"
+                aria-label="Minimize"
                 style={{
-                  width: "24px",
-                  height: "24px",
+                  width:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   flex: "none",
                   display: "flex",
                   alignItems: "center",
@@ -511,7 +545,6 @@ export default function FloatersDesktop() {
                   cursor: "pointer",
                   opacity: 0.85,
                 }}
-                label="Minimize"
               >
                 &minus;
               </KInteractive>
@@ -521,9 +554,15 @@ export default function FloatersDesktop() {
                   e.stopPropagation();
                   actions.dispatchIntent("FLOATER_CLOSE", { id: f.id });
                 }}
+                label="Close"
+                aria-label="Close"
                 style={{
-                  width: "24px",
-                  height: "24px",
+                  width:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
+                  height:
+                    V.touchTargetMinDesktop ||
+                    "var(--ktheme-touch-target-min-desktop, 24px)",
                   flex: "none",
                   display: "flex",
                   alignItems: "center",
@@ -534,7 +573,6 @@ export default function FloatersDesktop() {
                   cursor: "pointer",
                   opacity: 0.85,
                 }}
-                label="Close"
               >
                 &times;
               </KInteractive>
@@ -615,28 +653,40 @@ export default function FloatersDesktop() {
       })}
 
       {flFocused ? (
-        <div
-          style={{
-            position: "absolute",
-            left: flFocused.x + "px",
-            top: flFocused.y + FBAR + "px",
-            width: flFocused.w + "px",
-            height: flFocused.h - FBAR + "px",
-            display: "flex",
-            minWidth: 0,
-            overflow: "hidden",
-            background: V.surf,
-            borderWidth: "0 1px 1px",
-            borderStyle: "solid",
-            borderColor: V.pri,
-            borderBottomLeftRadius: isSweepDesk ? "14px" : V.rp,
-            borderBottomRightRadius: isSweepDesk ? "14px" : V.rp,
-            boxSizing: "border-box",
-            zIndex: 50,
-          }}
+        <AccessibleDialogPortal
+          isOpen={true}
+          isModal={false}
+          onClose={() =>
+            actions.dispatchIntent("FLOATER_CLOSE", { id: state.screen })
+          }
+          ariaLabel={`${state.screen} Floater Overlay`}
+          role="region"
         >
-          <ScreenBody />
-        </div>
+          <div
+            style={{
+              position: "fixed",
+              left: flFocused.x + "px",
+              top: flFocused.y + FBAR + "px",
+              width: flFocused.w + "px",
+              height: flFocused.h - FBAR + "px",
+              display: "flex",
+              minWidth: 0,
+              overflow: "hidden",
+              background: V.surf,
+              borderWidth: "0 1px 1px",
+              borderStyle: "solid",
+              borderColor: V.pri,
+              borderBottomLeftRadius: isSweepDesk ? "14px" : V.rp,
+              borderBottomRightRadius: isSweepDesk ? "14px" : V.rp,
+              boxSizing: "border-box",
+              zIndex: `calc(var(--ktheme-z-taskbar, ${
+                V.z?.taskbar ?? 50
+              }) - 1)`,
+            }}
+          >
+            <ScreenBody />
+          </div>
+        </AccessibleDialogPortal>
       ) : null}
 
       {/* Firestorm Desktop Taskbar & Nearby Quick-Chat Dock */}
@@ -655,7 +705,7 @@ export default function FloatersDesktop() {
           borderTop:
             (isSweepDesk ? "2px solid " : "1px solid ") +
             (isSweepDesk ? V.pri : V.outv),
-          zIndex: 60,
+          zIndex: V.z?.taskbar ?? "var(--ktheme-z-taskbar, 50)",
         }}
       >
         {/* Persistent Firestorm Nearby Quick Chat Input Bar */}
@@ -723,12 +773,19 @@ export default function FloatersDesktop() {
             <KInteractive
               as="button"
               key={f.id}
+              id={`taskbar-btn-${f.id}`}
               label={f.title}
               aria-pressed={act}
               onClick={() =>
                 actions.dispatchIntent("FLOATER_TOGGLE", { id: f.id })
               }
               aria-label={f.title}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  actions.dispatchIntent("FLOATER_TOGGLE", { id: f.id });
+                }
+              }}
               style={{
                 flex: "none",
                 height: "26px",

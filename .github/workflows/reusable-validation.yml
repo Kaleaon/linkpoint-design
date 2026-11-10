@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       target-flags:
-        description: "Target flags to pass to tools/ci-runner.mjs (e.g. --unit, --a11y, --visual)"
+        description: "Target flags to pass to tools/ci-runner.mjs (e.g. --app, --unit, --a11y, --visual)"
         required: false
         type: string
         default: ""
@@ -24,6 +24,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Clone Ktheme repository
+        run: |
+          if [ ! -d "../Ktheme" ]; then
+            git clone --depth 1 https://github.com/Kaleaon/Ktheme.git ../Ktheme
+          fi
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -42,10 +48,15 @@ jobs:
       - name: Validate theme schemas
         run: npx ktheme-schema sync --check
 
+      - name: Run Application Validation Suite
+        run: node tools/ci-runner.mjs --app
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 
       - name: Run Unified Validation CLI
+        env:
+          VISUAL_DIFF_TOLERANCE: "2.0"
         run: node tools/ci-runner.mjs ${{ inputs.target-flags }}
 
       - name: Upload Visual Diff Artifacts
