@@ -4,26 +4,38 @@ import path from "path";
 import fs from "fs";
 
 // Resolve Ktheme react package location (supports sibling checkout, installed node_modules, or nested)
-const kthemeReactDir = [
+const kthemeReactCandidate = [
   path.resolve(__dirname, "../../../Ktheme/packages/react"),
   path.resolve(__dirname, "../../Ktheme/packages/react"),
   path.resolve(__dirname, "node_modules/@ktheme/react"),
   "/app/Ktheme/packages/react",
-].find((dir) => fs.existsSync(dir));
+].find((dir) => fs.existsSync(path.resolve(dir, "src/index.ts")));
 
-const kthemeAliases = kthemeReactDir
+const kthemeFallbackEntry = path.resolve(
+  __dirname,
+  "src/support/kthemeFallback.js"
+);
+const hasFallback = fs.existsSync(kthemeFallbackEntry);
+
+const kthemeAliases = kthemeReactCandidate
   ? {
       "@ktheme/react/studio": path.resolve(
-        kthemeReactDir,
+        kthemeReactCandidate,
         "src/studio/index.ts"
       ),
       "@ktheme/react/support": path.resolve(
-        kthemeReactDir,
+        kthemeReactCandidate,
         "src/support/index.ts"
       ),
-      "@ktheme/react": path.resolve(kthemeReactDir, "src/index.ts"),
+      "@ktheme/react": path.resolve(kthemeReactCandidate, "src/index.ts"),
     }
-  : {};
+  : hasFallback
+    ? {
+        "@ktheme/react/studio": kthemeFallbackEntry,
+        "@ktheme/react/support": kthemeFallbackEntry,
+        "@ktheme/react": kthemeFallbackEntry,
+      }
+    : {};
 
 // This app is a standalone dev/build sandbox that lives under docs/react in the
 // linkpoint-design repo. It is not currently wired into any parent site's base
