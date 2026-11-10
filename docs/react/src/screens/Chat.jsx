@@ -1073,7 +1073,6 @@ export default function Chat() {
           </>
         )}
       </div>
-
       <div style={composerStyle}>
         <div style={composerFieldStyle}>
           <Icon name="smile" size={16} style={{ opacity: 0.55 }} />
