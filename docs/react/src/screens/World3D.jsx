@@ -893,6 +893,12 @@ export default function World3D() {
           role="button"
           tabIndex={0}
           onClick={() => actions.notify("Snapshot captured to inventory")}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              actions.notify("Snapshot captured to inventory");
+            }
+          }}
           style={{
             width: "46px",
             height: "46px",
@@ -1325,8 +1331,8 @@ export default function World3D() {
 }
 
 export function VirtualJoystick() {
-  const { state, actions } = useApp();
-  const { V, ink } = useTheme();
+  const { actions, state = {} } = useApp();
+  const { V } = useTheme();
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef(null);
@@ -1445,54 +1451,49 @@ export function VirtualJoystick() {
         aria-label="Move forward"
         role="button"
         tabIndex={0}
-        onMouseDown={() => actions?.cHold?.("fwd")}
+        onMouseDown={() => actions.cHold("fwd")}
         onMouseUp={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         onMouseLeave={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
-        onTouchStart={() => actions?.cHold?.("fwd")}
+        onTouchStart={() => actions.cHold("fwd")}
         onTouchEnd={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         onTouchCancel={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            actions?.cHold?.("fwd");
+            actions.cHold("fwd");
           }
         }}
         onKeyUp={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            actions?.holdEnd?.();
-            actions?.cHold?.("");
+            if (actions.holdEnd) actions.holdEnd();
+            actions.cHold("");
           }
         }}
         onClick={() => {
-          actions?.cHold?.("fwd");
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          actions.cHold("fwd");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         style={{
           position: "absolute",
           left: "50%",
           top: "5px",
           transform: "translateX(-50%)",
-          color:
-            state?.cHeld === "fwd"
-              ? typeof ink === "function"
-                ? ink(V.pri, [V.bg, V.onpri, V.ink])
-                : V.onpri
-              : V.pri,
-          background: state?.cHeld === "fwd" ? V.pri : "transparent",
+          color: state.cHeld === "fwd" ? V.onpri : V.pri,
+          background: state.cHeld === "fwd" ? V.pri : "transparent",
           borderRadius: "50%",
           width: "32px",
           height: "32px",
@@ -1509,54 +1510,49 @@ export function VirtualJoystick() {
         aria-label="Move backward"
         role="button"
         tabIndex={0}
-        onMouseDown={() => actions?.cHold?.("bck")}
+        onMouseDown={() => actions.cHold("bck")}
         onMouseUp={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         onMouseLeave={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
-        onTouchStart={() => actions?.cHold?.("bck")}
+        onTouchStart={() => actions.cHold("bck")}
         onTouchEnd={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         onTouchCancel={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            actions?.cHold?.("bck");
+            actions.cHold("bck");
           }
         }}
         onKeyUp={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            actions?.holdEnd?.();
-            actions?.cHold?.("");
+            if (actions.holdEnd) actions.holdEnd();
+            actions.cHold("");
           }
         }}
         onClick={() => {
-          actions?.cHold?.("bck");
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          actions.cHold("bck");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         style={{
           position: "absolute",
           left: "50%",
           bottom: "5px",
           transform: "translateX(-50%)",
-          color:
-            state?.cHeld === "bck"
-              ? typeof ink === "function"
-                ? ink(V.pri, [V.bg, V.onpri, V.ink])
-                : V.onpri
-              : V.pri,
-          background: state?.cHeld === "bck" ? V.pri : "transparent",
+          color: state.cHeld === "bck" ? V.onpri : V.pri,
+          background: state.cHeld === "bck" ? V.pri : "transparent",
           borderRadius: "50%",
           width: "32px",
           height: "32px",
@@ -1573,54 +1569,49 @@ export function VirtualJoystick() {
         aria-label="Move left"
         role="button"
         tabIndex={0}
-        onMouseDown={() => actions?.cHold?.("lft")}
+        onMouseDown={() => actions.cHold("lft")}
         onMouseUp={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         onMouseLeave={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
-        onTouchStart={() => actions?.cHold?.("lft")}
+        onTouchStart={() => actions.cHold("lft")}
         onTouchEnd={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         onTouchCancel={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            actions?.cHold?.("lft");
+            actions.cHold("lft");
           }
         }}
         onKeyUp={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            actions?.holdEnd?.();
-            actions?.cHold?.("");
+            if (actions.holdEnd) actions.holdEnd();
+            actions.cHold("");
           }
         }}
         onClick={() => {
-          actions?.cHold?.("lft");
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          actions.cHold("lft");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         style={{
           position: "absolute",
           top: "50%",
           left: "5px",
           transform: "translateY(-50%)",
-          color:
-            state?.cHeld === "lft"
-              ? typeof ink === "function"
-                ? ink(V.pri, [V.bg, V.onpri, V.ink])
-                : V.onpri
-              : V.pri,
-          background: state?.cHeld === "lft" ? V.pri : "transparent",
+          color: state.cHeld === "lft" ? V.onpri : V.pri,
+          background: state.cHeld === "lft" ? V.pri : "transparent",
           borderRadius: "50%",
           width: "32px",
           height: "32px",
@@ -1637,54 +1628,49 @@ export function VirtualJoystick() {
         aria-label="Move right"
         role="button"
         tabIndex={0}
-        onMouseDown={() => actions?.cHold?.("rgt")}
+        onMouseDown={() => actions.cHold("rgt")}
         onMouseUp={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         onMouseLeave={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
-        onTouchStart={() => actions?.cHold?.("rgt")}
+        onTouchStart={() => actions.cHold("rgt")}
         onTouchEnd={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         onTouchCancel={() => {
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         onKeyDown={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            actions?.cHold?.("rgt");
+            actions.cHold("rgt");
           }
         }}
         onKeyUp={(e) => {
           if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
-            actions?.holdEnd?.();
-            actions?.cHold?.("");
+            if (actions.holdEnd) actions.holdEnd();
+            actions.cHold("");
           }
         }}
         onClick={() => {
-          actions?.cHold?.("rgt");
-          actions?.holdEnd?.();
-          actions?.cHold?.("");
+          actions.cHold("rgt");
+          if (actions.holdEnd) actions.holdEnd();
+          actions.cHold("");
         }}
         style={{
           position: "absolute",
           top: "50%",
           right: "5px",
           transform: "translateY(-50%)",
-          color:
-            state?.cHeld === "rgt"
-              ? typeof ink === "function"
-                ? ink(V.pri, [V.bg, V.onpri, V.ink])
-                : V.onpri
-              : V.pri,
-          background: state?.cHeld === "rgt" ? V.pri : "transparent",
+          color: state.cHeld === "rgt" ? V.onpri : V.pri,
+          background: state.cHeld === "rgt" ? V.pri : "transparent",
           borderRadius: "50%",
           width: "32px",
           height: "32px",

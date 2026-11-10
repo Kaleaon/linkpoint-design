@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@ktheme/react':
-        specifier: file:../../../Ktheme/packages/react
-        version: file:../../../Ktheme/packages/react(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: file:../../vendor/ktheme-react-1.0.0.tgz
+        version: file:../../vendor/ktheme-react-1.0.0.tgz(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@ktheme/tokens':
-        specifier: file:../../../Ktheme/packages/tokens
-        version: file:../../../Ktheme/packages/tokens
+        specifier: file:../../vendor/ktheme-tokens-1.0.0.tgz
+        version: file:../../vendor/ktheme-tokens-1.0.0.tgz
       lucide-react:
         specifier: ^0.451.0
         version: 0.451.0(react@18.3.1)
@@ -356,14 +356,16 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@ktheme/react@file:../../../Ktheme/packages/react':
-    resolution: {directory: ../../../Ktheme/packages/react, type: directory}
+  '@ktheme/react@file:../../vendor/ktheme-react-1.0.0.tgz':
+    resolution: {integrity: sha512-bV7kxPyBRSgoXSQZeL4HFz3y4iNtoJSk2UWp6kB2C3qaC5MT3n5F7717L5TJO1saVot4pRC0rfu3Fe/7AdrtXg==, tarball: file:../../vendor/ktheme-react-1.0.0.tgz}
+    version: 1.0.0
     peerDependencies:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
 
-  '@ktheme/tokens@file:../../../Ktheme/packages/tokens':
-    resolution: {directory: ../../../Ktheme/packages/tokens, type: directory}
+  '@ktheme/tokens@file:../../vendor/ktheme-tokens-1.0.0.tgz':
+    resolution: {integrity: sha512-wA8jE5tnai018EwiyWbs8i2cClIu9zI16+3NqMPW1jL4wXC7gOf99bQdB7fkV+Eu4mgJkyeVJK03VRu7hRcIxA==, tarball: file:../../vendor/ktheme-tokens-1.0.0.tgz}
+    version: 1.0.0
 
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     resolution: {integrity: sha512-oTXEIha4SsuXdTA4Iyskj0kpdx2yVXdhd75c2v3xGrHFfVMsbhTPZU/nMPL4sWKo4pBHm3aucLaqGlF696dTyQ==}
@@ -1372,12 +1374,12 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
 
-  '@ktheme/react@file:../../../Ktheme/packages/react(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+  '@ktheme/react@file:../../vendor/ktheme-react-1.0.0.tgz(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
-  '@ktheme/tokens@file:../../../Ktheme/packages/tokens': {}
+  '@ktheme/tokens@file:../../vendor/ktheme-tokens-1.0.0.tgz': {}
 
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     optional: true
