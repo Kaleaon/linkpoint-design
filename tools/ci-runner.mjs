@@ -343,12 +343,40 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
   }
 }
 
+
+// Install a directory's npm dependencies once when its node_modules are
+// missing, so a fresh clone can run the suite without a manual install
+// step (and without falling back to npx, which 404s on vendored packages
+// such as ktheme-schema that only exist as local file: dependencies).
+function ensureDeps(dir) {
+  if (fs.existsSync(path.join(dir, "node_modules"))) return true;
+  log(`Dependencies not installed in ${dir}; running npm install...`, "info");
+  const res = spawnSync("npm", ["install", "--ignore-scripts"], {
+    cwd: dir,
+    stdio: "inherit",
+    shell: true,
+  });
+  return res.status === 0 && fs.existsSync(path.join(dir, "node_modules"));
+}
+
 // Helper to resolve Playwright browser launch with preflight dependency checks
 async function getPlaywrightBrowser() {
   let playwright;
   try {
     playwright = await import("playwright");
-  } catch (err) {
+  } catch (firstErr) {
+    // Fresh clone: install root deps once and retry before failing.
+    const repoRoot = path.resolve(__dirname, "..");
+    if (ensureDeps(repoRoot)) {
+      try {
+        playwright = await import("playwright");
+      } catch (err) {
+        // fall through to the actionable error below
+      }
+    }
+  }
+  if (!playwright) {
+    const err = new Error("playwright not installed");
     log(
       'Playwright dependency preflight check failed: "playwright" module is not installed.',
       "error"
@@ -596,6 +624,7 @@ async function taskUnitTests() {
         return false;
       }
     };
+    ensureDeps(reactDir);
     const runner =
       hasPnpmLock && !hasNpmLock && isPnpmAvailable() ? "pnpm" : "npm";
     let res = spawnSync(runner, ["test"], {
@@ -672,6 +701,16 @@ async function taskSchemaValidation() {
     stdio: "inherit",
     shell: true,
   });
+  if (res.status !== 0 && !fs.existsSync(binPath) && ensureDeps(targetDir)) {
+    // Retry with the locally installed (vendored) binary before any npx
+    // fallback: ktheme-schema is a file: dependency and is not on the
+    // public registry, so npx can only 404 for it.
+    res = spawnSync(binPath, cmdArgs, {
+      cwd: targetDir,
+      stdio: "inherit",
+      shell: true,
+    });
+  }
   if (res.status !== 0 && !fs.existsSync(binPath)) {
     res = spawnSync("npx", ["ktheme-schema", "sync", "--check"], {
       cwd: targetDir,

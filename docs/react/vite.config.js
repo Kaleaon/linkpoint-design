@@ -38,16 +38,11 @@ export default defineConfig({
     environment: "jsdom",
     globals: true,
     include: [
-      "src/theme/color.test.js",
+      "src/**/*.test.js",
       "src/**/*.test.jsx",
+      "src/**/__tests__/*.js",
       "src/**/__tests__/*.jsx",
     ],
-    exclude: [
-      "**/node_modules/**",
-      "**/dist/**",
-      "src/components/SystemDialog.test.js",
-      "src/components/component-sizing.test.js",
-      "src/hooks/useFocusTrap.test.js",
-    ],
+    exclude: ["**/node_modules/**", "**/dist/**"],
   },
 });
