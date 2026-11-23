@@ -783,6 +783,7 @@ export default function Objects() {
                 as="button"
                 onClick={() => actions.notify(`Touched ${selectedObj.name}`)}
                 style={actBtn(true)}
+                aria-label={`Touch ${selectedObj.name}`}
               >
                 <Icon name="hand" size={13} />
                 <span>TOUCH OBJECT</span>
@@ -814,6 +815,7 @@ export default function Objects() {
                   })
                 }
                 style={actBtn(false)}
+                aria-label={`Pay ${selectedObj.name}`}
               >
                 <Icon name="banknote" size={13} />
                 <span>PAY L$...</span>
@@ -825,6 +827,7 @@ export default function Objects() {
                   actions.notify(`${selectedObj.name} — scripts reset`)
                 }
                 style={actBtn(false)}
+                aria-label={`Reset scripts of ${selectedObj.name}`}
               >
                 <Icon name="refresh-cw" size={13} />
                 <span>RESET SCRIPTS</span>
@@ -834,6 +837,7 @@ export default function Objects() {
                 as="button"
                 onClick={() => actions.notify(`Derendered ${selectedObj.name}`)}
                 style={actBtn(false)}
+                aria-label={`Derender ${selectedObj.name}`}
               >
                 <Icon name="eye-off" size={13} />
                 <span>DERENDER</span>

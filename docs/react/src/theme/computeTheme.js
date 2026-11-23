@@ -49,7 +49,7 @@ function auditPair(label, tokenA, tokenB, colorA, colorB, threshold = 4.5) {
   };
 }
 
-// Resolves static visual design tokens (V, t, pad, LK, ink, motion, contrastAudit, typography)
+// Resolves static visual design tokens (V, t, pad, LK, ink, motion, typography, contrastAudit)
 export function computeThemeTokens(state) {
   const L = resolveLayout(state.layout);
   const base = PALETTES[state.palette] || PALETTES.ink;
@@ -61,6 +61,12 @@ export function computeThemeTokens(state) {
         c: { ...base.c, ...state.customTheme.colors },
       }
     : base;
+  const spatialTokens = {
+    touchTargetMinMobile: "var(--ktheme-touch-target-min-mobile, 44px)",
+    touchTargetMinDesktop: "var(--ktheme-touch-target-min-desktop, 24px)",
+    touchPaddingCompact: "var(--ktheme-touch-padding-compact, 4px)",
+    touchPaddingCoarse: "var(--ktheme-touch-padding-coarse, 10px)",
+  };
   const z = { ...Z_INDEX, ...(L.z || {}), ...(P.z || {}) };
   const elevation = {
     ...ELEVATION,
@@ -73,7 +79,7 @@ export function computeThemeTokens(state) {
     font: L.font,
     dfont: L.dfont,
     note: L.note + "   Colour pack: " + P.note + ".",
-    v: { ...P.c, ...L.s, z, elevation },
+    v: { ...spatialTokens, ...P.c, ...L.s, z, elevation },
   };
   const typography = {
     fontFamily: `var(--ktheme-font-family, ${
@@ -176,7 +182,7 @@ export function computeThemeTokens(state) {
     outlineVsSurface: outlineVsSurf,
   };
 
-  return { V, t, pad, LK, ink, motion, contrastAudit, typography };
+  return { V, t, pad, LK, ink, motion, typography, contrastAudit };
 }
 
 /**
