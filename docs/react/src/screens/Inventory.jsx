@@ -7,8 +7,8 @@ import {
   INVENTORY_RECENTS,
 } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
-import FormInput from "../components/FormInput.jsx";
 import KInteractive from "../components/KInteractive.jsx";
+import SearchCombobox from "../components/SearchCombobox.jsx";
 import { subView } from "../theme/constants.js";
 import { SkeletonTree } from "../components/Skeletons.jsx";
 
@@ -18,7 +18,6 @@ export default function Inventory() {
   const { state, actions } = useApp();
   const { V, t, bleed, pad, C } = useTheme();
 
-  const [searchQuery, setSearchQuery] = useState("");
   const timerRef = useRef(null);
   const isLongPressRef = useRef(false);
 
@@ -48,7 +47,6 @@ export default function Inventory() {
   };
 
   const curSub = subView(state, "Inventory");
-  const q = searchQuery.trim().toLowerCase();
   const rawItems =
     state.invItems ||
     INVENTORY_SOURCE.map(([name, icon, depth, parent, ver, tags]) => ({
@@ -79,7 +77,8 @@ export default function Inventory() {
     };
   });
 
-  let nodes =
+  const q = (state.invFilterQuery || "").trim().toLowerCase();
+  const baseNodes =
     curSub === "ALL"
       ? q
         ? all
@@ -91,9 +90,9 @@ export default function Inventory() {
           .filter((n) => n.tags.includes(curSub.toLowerCase()))
           .map((n) => ({ ...n, depth: 0, isFolder: false, chev: "dot" }));
 
-  if (q) {
-    nodes = nodes.filter((n) => n.name.toLowerCase().includes(q));
-  }
+  const nodes = q
+    ? baseNodes.filter((n) => n.name.toLowerCase().includes(q))
+    : baseNodes;
 
   const handlePointerDown = (n) => {
     if (n.isFolder) return;
@@ -147,11 +146,14 @@ export default function Inventory() {
             size={15}
             style={{ opacity: 0.55, flexShrink: 0 }}
           />
-          <FormInput
-            aria-label="Filter inventory"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+          <SearchCombobox
+            controlsId="inventory-results-tree"
+            resultCount={nodes.length}
+            itemLabel="inventory items"
+            ariaLabel="Filter inventory"
             placeholder="filter inventory…"
+            value={state.invFilterQuery || ""}
+            onChange={(e) => actions.setInvFilterQuery(e.target.value)}
             style={{
               flex: 1,
               minWidth: 0,
@@ -162,13 +164,13 @@ export default function Inventory() {
               outline: "none",
             }}
           />
-          {searchQuery && (
+          {state.invFilterQuery && (
             <div
-              onClick={() => setSearchQuery("")}
+              onClick={() => actions.setInvFilterQuery("")}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault();
-                  setSearchQuery("");
+                  actions.setInvFilterQuery("");
                 }
               }}
               style={{
@@ -257,7 +259,7 @@ export default function Inventory() {
         ))}
       </div>
 
-      <div style={invListStyle}>
+      <div id="inventory-results-tree" style={invListStyle}>
         {isLoading || state.asyncQueryState?.inventory?.status === "loading" ? (
           <SkeletonTree style={{ minHeight: "320px" }} />
         ) : state.asyncQueryState?.inventory?.status === "timeout" ||
@@ -353,7 +355,7 @@ export default function Inventory() {
               color: V.ink2,
             }}
           >
-            No inventory items match '{searchQuery.trim()}'
+            No inventory items match '{(state.invFilterQuery || "").trim()}'
           </div>
         ) : (
           nodes.map((n) => {

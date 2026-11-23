@@ -85,7 +85,7 @@ export default function MenuBar() {
           (isSweepDesk ? "2px solid " : "1px solid ") +
           (isSweepDesk ? V.pri : V.outv),
         position: "relative",
-        zIndex: 80,
+        zIndex: V.z?.header ?? "var(--ktheme-z-header, 80)",
       }}
       onClick={() => state.menu && actions.setMenu(null)}
     >
@@ -141,7 +141,7 @@ export default function MenuBar() {
                     border: "1px solid " + V.pri,
                     boxShadow: "0 14px 34px rgba(0,0,0,.55)",
                     padding: "3px 0",
-                    zIndex: 90,
+                    zIndex: V.z?.dropdown ?? "var(--ktheme-z-dropdown, 90)",
                     borderRadius: V.rp,
                     overflow: "hidden",
                   }}

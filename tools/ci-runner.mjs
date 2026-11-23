@@ -343,12 +343,40 @@ function comparePNGBuffers(bufA, bufB, colorThreshold = 15) {
   }
 }
 
+
+// Install a directory's npm dependencies once when its node_modules are
+// missing, so a fresh clone can run the suite without a manual install
+// step (and without falling back to npx, which 404s on vendored packages
+// such as ktheme-schema that only exist as local file: dependencies).
+function ensureDeps(dir) {
+  if (fs.existsSync(path.join(dir, "node_modules"))) return true;
+  log(`Dependencies not installed in ${dir}; running npm install...`, "info");
+  const res = spawnSync("npm", ["install", "--ignore-scripts"], {
+    cwd: dir,
+    stdio: "inherit",
+    shell: true,
+  });
+  return res.status === 0 && fs.existsSync(path.join(dir, "node_modules"));
+}
+
 // Helper to resolve Playwright browser launch with preflight dependency checks
 async function getPlaywrightBrowser() {
   let playwright;
   try {
     playwright = await import("playwright");
-  } catch (err) {
+  } catch (firstErr) {
+    // Fresh clone: install root deps once and retry before failing.
+    const repoRoot = path.resolve(__dirname, "..");
+    if (ensureDeps(repoRoot)) {
+      try {
+        playwright = await import("playwright");
+      } catch (err) {
+        // fall through to the actionable error below
+      }
+    }
+  }
+  if (!playwright) {
+    const err = new Error("playwright not installed");
     log(
       'Playwright dependency preflight check failed: "playwright" module is not installed.',
       "error"
@@ -381,38 +409,48 @@ async function getPlaywrightBrowser() {
   };
 
   // Search ms-playwright cache for installed headless shell or chromium binaries
-  const homeDir = process.env.HOME || "/home/jules";
-  const msPlaywrightDir = path.join(homeDir, ".cache/ms-playwright");
+  const candidateDirs = [
+    process.env.HOME
+      ? path.join(process.env.HOME, ".cache/ms-playwright")
+      : null,
+    "/home/jules/.cache/ms-playwright",
+  ].filter(Boolean);
   let cachedHeadlessShell = null;
   let cachedChromium = null;
-  if (fs.existsSync(msPlaywrightDir)) {
-    try {
-      const dirs = fs.readdirSync(msPlaywrightDir);
-      for (const dir of dirs) {
-        if (
-          !cachedHeadlessShell &&
-          dir.startsWith("chromium_headless_shell-")
-        ) {
-          const candidate = path.join(
-            msPlaywrightDir,
-            dir,
-            "chrome-headless-shell-linux64/chrome-headless-shell"
-          );
-          if (fs.existsSync(candidate)) cachedHeadlessShell = candidate;
-        }
-        if (!cachedChromium && dir.startsWith("chromium-")) {
-          for (const sub of ["chrome-linux64/chrome", "chrome-linux/chrome"]) {
-            const candidate = path.join(msPlaywrightDir, dir, sub);
-            if (fs.existsSync(candidate)) {
-              cachedChromium = candidate;
-              break;
+  for (const msPlaywrightDir of candidateDirs) {
+    if (fs.existsSync(msPlaywrightDir)) {
+      try {
+        const dirs = fs.readdirSync(msPlaywrightDir);
+        for (const dir of dirs) {
+          if (
+            !cachedHeadlessShell &&
+            dir.startsWith("chromium_headless_shell-")
+          ) {
+            const candidate = path.join(
+              msPlaywrightDir,
+              dir,
+              "chrome-headless-shell-linux64/chrome-headless-shell"
+            );
+            if (fs.existsSync(candidate)) cachedHeadlessShell = candidate;
+          }
+          if (!cachedChromium && dir.startsWith("chromium-")) {
+            for (const sub of [
+              "chrome-linux64/chrome",
+              "chrome-linux/chrome",
+            ]) {
+              const candidate = path.join(msPlaywrightDir, dir, sub);
+              if (fs.existsSync(candidate)) {
+                cachedChromium = candidate;
+                break;
+              }
             }
           }
         }
+      } catch (_) {
+        /* ignore */
       }
-    } catch (_) {
-      /* ignore */
     }
+    if (cachedHeadlessShell && cachedChromium) break;
   }
 
   const possiblePaths = [
@@ -541,6 +579,38 @@ async function taskUnitTests() {
   if (hasReactVitest) {
     log("Executing React Linkpoint Vitest Suite...", "info");
     const reactDir = path.join(cwd, "docs/react");
+
+    const candidateKthemeDirs = [
+      path.resolve(cwd, "../Ktheme"),
+      path.resolve(cwd, "../../Ktheme"),
+      "/app/Ktheme",
+    ];
+    const kthemeFound = candidateKthemeDirs.some((d) =>
+      fs.existsSync(path.join(d, "packages/react"))
+    );
+    if (!kthemeFound) {
+      log(
+        "Ktheme dependency repository not found locally. Cloning shallow Ktheme copy for unit test suite...",
+        "info"
+      );
+      try {
+        const cloneTarget = path.resolve(cwd, "../Ktheme");
+        spawnSync(
+          "git",
+          [
+            "clone",
+            "--depth",
+            "1",
+            "https://github.com/Kaleaon/Ktheme.git",
+            cloneTarget,
+          ],
+          { stdio: "inherit" }
+        );
+      } catch (err) {
+        log(`Failed to clone Ktheme repository: ${err.message}`, "warn");
+      }
+    }
+
     const hasPnpmLock = fs.existsSync(path.join(reactDir, "pnpm-lock.yaml"));
     const hasNpmLock = fs.existsSync(path.join(reactDir, "package-lock.json"));
     const isPnpmAvailable = () => {
@@ -554,6 +624,7 @@ async function taskUnitTests() {
         return false;
       }
     };
+    ensureDeps(reactDir);
     const runner =
       hasPnpmLock && !hasNpmLock && isPnpmAvailable() ? "pnpm" : "npm";
     let res = spawnSync(runner, ["test"], {
@@ -630,6 +701,16 @@ async function taskSchemaValidation() {
     stdio: "inherit",
     shell: true,
   });
+  if (res.status !== 0 && !fs.existsSync(binPath) && ensureDeps(targetDir)) {
+    // Retry with the locally installed (vendored) binary before any npx
+    // fallback: ktheme-schema is a file: dependency and is not on the
+    // public registry, so npx can only 404 for it.
+    res = spawnSync(binPath, cmdArgs, {
+      cwd: targetDir,
+      stdio: "inherit",
+      shell: true,
+    });
+  }
   if (res.status !== 0 && !fs.existsSync(binPath)) {
     res = spawnSync("npx", ["ktheme-schema", "sync", "--check"], {
       cwd: targetDir,

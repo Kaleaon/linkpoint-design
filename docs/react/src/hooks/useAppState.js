@@ -319,6 +319,8 @@ export function useAppState() {
   const [searchState, setSearchState] = useState({});
   const [reconnecting, setReconnecting] = useState(false);
   const [toast, setToast] = useState("");
+  const [announcement, setAnnouncement] = useState("");
+  const [invFilterQuery, setInvFilterQuery] = useState("");
   const [lindenBalance, setLindenBalance] = useState(4250);
   const [exchangeRate, setExchangeRate] = useState(248.5);
   const [lastSyncedAt, setLastSyncedAt] = useState(() => new Date());
@@ -423,6 +425,10 @@ export function useAppState() {
     clearTimeout(toastTimerRef.current);
     setToast(msg);
     toastTimerRef.current = setTimeout(() => setToast(""), 2200);
+  }, []);
+
+  const announce = useCallback((msg) => {
+    setAnnouncement(msg);
   }, []);
 
   const getBackoffDelay = useCallback((attempt) => {
@@ -1705,6 +1711,8 @@ export function useAppState() {
       searchState,
       reconnecting,
       toast,
+      announcement,
+      invFilterQuery,
       offlineRunning,
       offlineUser,
       offlineAccountModal,
@@ -1823,6 +1831,8 @@ export function useAppState() {
       startIm,
       reconnect,
       notify,
+      announce,
+      setInvFilterQuery,
       setLoginAvatarName,
       setLoginPassword,
       selectAccountProfile,
