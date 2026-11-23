@@ -158,9 +158,19 @@ export default function Search() {
           {r.distance}m
         </div>
         <div
+          role="button"
+          tabIndex={0}
+          aria-label={`IM ${r.name}`}
           onClick={(e) => {
             e.stopPropagation();
             startIm(r.name);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              e.stopPropagation();
+              startIm(r.name);
+            }
           }}
           style={imPillStyle(IM_CHIPS.includes(r.name))}
         >
@@ -193,6 +203,16 @@ export default function Search() {
                 id: n.toLowerCase().replace(/\s+/g, "-").slice(0, 8),
                 label,
                 pick: !isFriend && !st ? () => actions.searchAdd(n) : () => {},
+                pickKey:
+                  !isFriend && !st
+                    ? (e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          actions.searchAdd(n);
+                        }
+                      }
+                    : () => {},
+                ariaLabel: `${label} ${n}`,
                 style: {
                   display: "flex",
                   alignItems: "center",
@@ -241,7 +261,14 @@ export default function Search() {
             resident · {sr.id}
           </div>
         </div>
-        <div onClick={sr.pick} style={sr.style}>
+        <div
+          role="button"
+          tabIndex={0}
+          aria-label={sr.ariaLabel}
+          onClick={sr.pick}
+          onKeyDown={sr.pickKey}
+          style={sr.style}
+        >
           {sr.label}
         </div>
       </div>
