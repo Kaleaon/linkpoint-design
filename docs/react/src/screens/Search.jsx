@@ -7,7 +7,7 @@ import {
   IM_CHIPS,
 } from "../data/content.js";
 import Icon from "../components/Icon.jsx";
-import FormInput from "../components/FormInput.jsx";
+import SearchCombobox from "../components/SearchCombobox.jsx";
 import { SkeletonCardList } from "../components/Skeletons.jsx";
 
 const TABS = [
@@ -158,9 +158,19 @@ export default function Search() {
           {r.distance}m
         </div>
         <div
+          role="button"
+          tabIndex={0}
+          aria-label={`IM ${r.name}`}
           onClick={(e) => {
             e.stopPropagation();
             startIm(r.name);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              e.stopPropagation();
+              startIm(r.name);
+            }
           }}
           style={imPillStyle(IM_CHIPS.includes(r.name))}
         >
@@ -193,6 +203,16 @@ export default function Search() {
                 id: n.toLowerCase().replace(/\s+/g, "-").slice(0, 8),
                 label,
                 pick: !isFriend && !st ? () => actions.searchAdd(n) : () => {},
+                pickKey:
+                  !isFriend && !st
+                    ? (e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          actions.searchAdd(n);
+                        }
+                      }
+                    : () => {},
+                ariaLabel: `${label} ${n}`,
                 style: {
                   display: "flex",
                   alignItems: "center",
@@ -241,7 +261,14 @@ export default function Search() {
             resident · {sr.id}
           </div>
         </div>
-        <div onClick={sr.pick} style={sr.style}>
+        <div
+          role="button"
+          tabIndex={0}
+          aria-label={sr.ariaLabel}
+          onClick={sr.pick}
+          onKeyDown={sr.pickKey}
+          style={sr.style}
+        >
           {sr.label}
         </div>
       </div>
@@ -369,8 +396,11 @@ export default function Search() {
         }}
       >
         <Icon name="search" size={16} style={{ color: V.ink2 }} />
-        <FormInput
-          aria-label="Filter or search residents by name"
+        <SearchCombobox
+          controlsId="search-results-list"
+          resultCount={rows.length}
+          itemLabel="residents"
+          ariaLabel="Filter or search residents by name"
           value={state.searchQuery}
           onChange={(e) => actions.setSearchQuery(e.target.value)}
           placeholder={
@@ -388,6 +418,7 @@ export default function Search() {
       </div>
 
       <div
+        id="search-results-list"
         style={{
           flex: 1,
           minHeight: "300px",

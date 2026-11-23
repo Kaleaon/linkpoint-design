@@ -3,14 +3,16 @@ import { useApp } from "../context/AppContext.jsx";
 
 /**
  * LiveRegionAnnouncer: Accessible ARIA live region for screen readers.
- * Automatically announces toasts, screen view transitions, and system events.
- * WCAG 4.1.3 (Status Messages) compliance.
+ * Automatically announces toasts, screen view transitions, dynamic search result counts, and system events.
+ * WCAG 2.2 SC 4.1.3 (Status Messages): https://www.w3.org/TR/WCAG22/#status-messages
+ * WCAG 2.2 SC 4.1.2 (Name, Role, Value): https://www.w3.org/TR/WCAG22/#name-role-value
  */
 export default function LiveRegionAnnouncer() {
   const { state } = useApp();
   const [announcement, setAnnouncement] = useState("");
   const prevScreenRef = useRef(state?.screen);
-  const prevToastRef = useRef(state?.toast);
+  const prevToastRef = useRef("");
+  const prevAnnouncementRef = useRef("");
   const queueRef = useRef([]);
   const isAnnouncingRef = useRef(false);
   const timerRef = useRef(null);
@@ -63,6 +65,18 @@ export default function LiveRegionAnnouncer() {
     }
     prevToastRef.current = state.toast;
   }, [state?.toast]);
+
+  // Announce dynamic search/filter announcements without dropping messages
+  useEffect(() => {
+    if (!state) return;
+    if (
+      state.announcement &&
+      state.announcement !== prevAnnouncementRef.current
+    ) {
+      enqueueAnnouncement(state.announcement);
+    }
+    prevAnnouncementRef.current = state.announcement;
+  }, [state?.announcement]);
 
   // Cleanup pending queue timer on unmount
   useEffect(() => {
