@@ -71,6 +71,32 @@ describe("Split Theme Context Architecture", () => {
     expect(tokens.pad).toBeDefined();
     expect(tokens.LK).toBeDefined();
     expect(typeof tokens.ink).toBe("function");
+    expect(tokens.motion).toBeDefined();
+    expect(tokens.motion.duration).toBe("300ms");
+    expect(tokens.motion.durationFast).toBe("150ms");
+    expect(tokens.motion.easing).toBe("cubic-bezier(0.25, 0.1, 0.25, 1.0)");
+
+    // Elevation & Z-Index Tokens
+    expect(tokens.V.z).toBeDefined();
+    expect(tokens.V.z.base).toBe(0);
+    expect(tokens.V.z.card).toBe(1);
+    expect(tokens.V.z.window).toBe(10);
+    expect(tokens.V.z.dock).toBe(20);
+    expect(tokens.V.z.taskbar).toBe(50);
+    expect(tokens.V.z.header).toBe(80);
+    expect(tokens.V.z.dropdown).toBe(90);
+    expect(tokens.V.z.overlay).toBe(100);
+    expect(tokens.V.z.toast).toBe(400);
+    expect(tokens.V.z.modal).toBe(500);
+    expect(tokens.V.z.popover).toBe(600);
+    expect(tokens.V.z.tooltip).toBe(700);
+    expect(tokens.V.z["z-modal"]).toBe(500);
+
+    expect(tokens.V.elevation).toBeDefined();
+    expect(tokens.V.elevation[0]).toBe("none");
+    expect(tokens.V.elevation["elevation-0"]).toBe("none");
+    expect(tokens.V.elevation[1]).toContain("rgba(0, 0, 0, 0.15)");
+    expect(tokens.V.elevation["elevation-1"]).toContain("rgba(0, 0, 0, 0.15)");
 
     const runtime = computeThemeRuntime(mockState, mockCf, tokens);
     expect(runtime.d).toBeDefined();
@@ -339,5 +365,38 @@ describe("Split Theme Context Architecture", () => {
     expect(style.fontWeight).toContain("--ktheme-font-weight-medium");
     expect(style.lineHeight).toBe("1");
     expect(style.font).toBeDefined();
+  });
+
+  it("attaches structured contrastAudit results to computed tokens", () => {
+    const state = {
+      layout: "terminal",
+      palette: "ink",
+      customTheme: null,
+      dense: false,
+      device: "and",
+      screen: "Chat",
+      cond: "normal",
+    };
+    const tokens = computeThemeTokens(state);
+    expect(tokens.contrastAudit).toBeDefined();
+    expect(Array.isArray(tokens.contrastAudit.pairs)).toBe(true);
+    expect(Array.isArray(tokens.contrastAudit.violations)).toBe(true);
+    expect(typeof tokens.contrastAudit.pass).toBe("boolean");
+    expect(typeof tokens.contrastAudit.hasErrors).toBe("boolean");
+    expect(tokens.contrastAudit.summary).toBeDefined();
+
+    // Verify critical pairs are present
+    expect(tokens.contrastAudit["primary vs background"]).toBeDefined();
+    expect(tokens.contrastAudit["surface vs text"]).toBeDefined();
+    expect(tokens.contrastAudit["outline vs surface"]).toBeDefined();
+    expect(tokens.contrastAudit.primaryVsBackground).toBeDefined();
+    expect(tokens.contrastAudit.surfaceVsText).toBeDefined();
+    expect(tokens.contrastAudit.outlineVsSurface).toBeDefined();
+
+    const priBg = tokens.contrastAudit["primary vs background"];
+    expect(typeof priBg.ratio).toBe("number");
+    expect(typeof priBg.pass).toBe("boolean");
+    expect(priBg.tokenA).toBe("primary");
+    expect(priBg.tokenB).toBe("background");
   });
 });

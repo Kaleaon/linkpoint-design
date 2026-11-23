@@ -89,7 +89,7 @@ export default function RadialPieMenu({
       style={{
         position: "absolute",
         inset: 0,
-        zIndex: 100,
+        zIndex: V.z?.overlay ?? "var(--ktheme-z-overlay, 100)",
         background: "rgba(0,0,0,0.35)",
         cursor: "default",
       }}
@@ -131,6 +131,15 @@ export default function RadialPieMenu({
                   setHoveredIdx((cur) => (cur === i ? null : cur))
                 }
                 onClick={() => onSelect(slice.id, target)}
+                role="button"
+                tabIndex={0}
+                aria-label={slice.label}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onSelect(slice.id, target);
+                  }
+                }}
                 style={{ cursor: "pointer" }}
               >
                 <path
@@ -170,6 +179,15 @@ export default function RadialPieMenu({
             stroke={V.outv}
             strokeWidth="2"
             onClick={onClose}
+            role="button"
+            tabIndex={0}
+            aria-label="Close Radial Menu"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onClose();
+              }
+            }}
             style={{ cursor: "pointer" }}
           />
         </svg>
@@ -177,6 +195,15 @@ export default function RadialPieMenu({
         {/* Center Target Info */}
         <div
           onClick={onClose}
+          role="button"
+          tabIndex={0}
+          aria-label="Cancel"
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onClose();
+            }
+          }}
           style={{
             position: "absolute",
             left: "50%",
