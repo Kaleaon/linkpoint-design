@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-11-07T06:11:46Z — upstream read through [`014ce55`](https://github.com/Kaleaon/react-linkpoint/commit/014ce55a1473655cd24f0b13615b283031107a8f)
-- **Open:** 511 · **Completed:** 2
+- **Last change:** 2026-11-24T06:14:23Z — upstream read through [`dbdede6`](https://github.com/Kaleaon/react-linkpoint/commit/dbdede67302db93bdc7bc18dd99e7b2d88b249c7)
+- **Open:** 562 · **Completed:** 2
 
 ## Open
 
@@ -23,6 +23,76 @@ is tracked by hand in [`github.md`](github.md).
 
 Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/react/src/screens/`
 
+- [ ] **`ffbc6be`** feat(sync): adopt SyncActionButton in OutfitViewer and CalendarScreen
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ffbc6bed2a2198795ece7a2c4073685e2d6a62b0)
+  - 3 files: `src/components/__tests__/SyncActionButton.test.tsx`, `src/screens/CalendarScreen.jsx`, `src/screens/OutfitViewer.jsx`
+  - also touches: Components
+- [ ] **`ef3efff`** fix(notecards): sync inventory events and fetch notecard text inline
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ef3efff1526054a262cb2f9f1285c9c474cec189)
+  - 2 files: `src/screens/LumiyaTools.jsx`, `src/screens/__tests__/NotecardsScreen.test.tsx`
+- [ ] **`d6d2d8b`** fix(search): replace Grid Directory back div with accessible TouchTarget button
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d6d2d8b256aa4649268617813416c51dd1dee436)
+  - 2 files: `src/screens/Search.jsx`, `src/screens/__tests__/SearchRadarTouchTarget.test.tsx`
+- [ ] **`c4f4a38`** fix(a11y): wrap World3D overlay controls in TouchTarget and FocusRing
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/c4f4a38c63b3dbf660b3c7d36dd34753905b34d1)
+  - 3 files: `src/linkpoint/__tests__/spatial-touch-pods.test.tsx`, `src/screens/World3D.jsx`, `src/screens/__tests__/World3DOverlayTouchTarget.test.tsx`
+  - also touches: Viewer & protocol features
+- [ ] **`c4807cd`** fix(map): bind map buttons to V.ink/V.onpri tokens and wrap in TouchTarget
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/c4807cdf49ebdc0c08173d75632b92bdb82b171e)
+  - 2 files: `src/screens/Map.jsx`, `src/screens/__tests__/Map.test.tsx`
+- [ ] **`ac754ee`** feat(settings): mount inline CrystalLoader in AccessibleButton reconnect trigger
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ac754eed168d444f430138358819d9e191eafe9d)
+  - 2 files: `src/linkpoint/__tests__/settings-and-tabs.test.tsx`, `src/screens/Settings.jsx`
+  - also touches: Viewer & protocol features
+- [ ] **`9994ad7`** feat(teleport): add teleport offer actions to Contacts and Profile
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/9994ad77167d3fbaafca06e267d662fd63bcfcc8)
+  - 4 files: `src/linkpoint/__tests__/contacts-screen.test.tsx`, `src/screens/ContactsScreen.jsx`, `src/screens/Profile.jsx`, `src/screens/__tests__/ResidentInspector.test.tsx`
+  - also touches: Viewer & protocol features
+- [ ] **`928ec85`** feat(a11y): add OutfitViewer canvas fallback, keyboard controls, and reset touch target
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/928ec85bf3abf2254414238ab92bffa057a9503e)
+  - 2 files: `src/screens/OutfitViewer.jsx`, `src/screens/__tests__/OutfitViewer.test.jsx`
+- [ ] **`8d70b39`** refactor(nav): retire unbacked AO navigation entry and placeholder screen
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8d70b3937b2e5e1c1d62e76b92109fd5db9fc354)
+  - 7 files: `src/components/MenuBar.jsx`, `src/components/ScreenBody.jsx`, `src/data/content.js`, `src/hooks/useAppState.js`, `src/linkpoint/__tests__/viewer-parity.test.tsx`, `src/screens/LiveScreens.jsx` _(+1 more)_
+  - also touches: Components, State & data, Viewer & protocol features
+- [ ] **`8bd3152`** fix(settings): bind ThemeContext tokens in keybinding controls and badges
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8bd3152cb5ebe6aa96f3d2f5ba1b4b767a071253)
+  - 2 files: `src/screens/Settings.jsx`, `src/screens/__tests__/SettingsThemeTokens.test.tsx`
+- [ ] **`8831d0d`** feat(profile): integrate reactive mute toggle action in ResidentInspector
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8831d0d0634ba76d54067f848764fe8cf8c16547)
+  - 2 files: `src/screens/Profile.jsx`, `src/screens/__tests__/ResidentInspector.test.tsx`
+- [ ] **`83e0eb4`** feat(media): show inline error alert with retry button on stream playback failure
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/83e0eb47ab2c08e71f7407d139103ea283f0fa0c)
+  - 2 files: `src/screens/LumiyaTools.jsx`, `src/screens/__tests__/MediaScreenErrorRecovery.test.tsx`
+- [ ] **`63d32d2`** feat(calendar): integrate AccessibleButton and inline CrystalLoader in Google Calendar export
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/63d32d25fcd5db8105e7756173d60d465298f1d3)
+  - 2 files: `src/linkpoint/__tests__/calendar-screen.test.tsx`, `src/screens/CalendarScreen.jsx`
+  - also touches: Viewer & protocol features
+- [ ] **`600a344`** fix(groups): prevent infinite loadGroupDetails loop on store update events
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/600a344e16844a3f0dcfb01b3c0023ba996e2971)
+  - 2 files: `src/linkpoint/__tests__/group-moderation-rpc-pipeline.test.tsx`, `src/screens/LiveScreens.jsx`
+  - also touches: Viewer & protocol features
+- [ ] **`58903cf`** feat(outfit): integrate inline CrystalLoader into Save Outfit As submit button
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/58903cf58e8b0b83901d49955fb1232612e4506f)
+  - 2 files: `src/linkpoint/__tests__/save-outfit-as.test.tsx`, `src/screens/OutfitViewer.jsx`
+  - also touches: Viewer & protocol features
+- [ ] **`50efc9d`** feat(groups): integrate inline CrystalLoader into mobile group moderation modals
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/50efc9d455b760022ecc9f3061ebe1f84c854281)
+  - 2 files: `src/linkpoint/__tests__/group-moderation-rpc-pipeline.test.tsx`, `src/screens/LiveScreens.jsx`
+  - also touches: Viewer & protocol features
+- [ ] **`2afe274`** feat(a11y): mount inline CrystalLoader and aria-busy in NoticeAttachmentBanner
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/2afe274f827e8ff18bb342956b190b7e8174751d)
+  - 2 files: `src/screens/LiveScreens.jsx`, `src/screens/__tests__/NoticeAttachmentBanner.test.tsx`
+- [ ] **`1482e7b`** feat(profile): integrate PayDialog modal and trigger into ResidentInspector
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/1482e7b86030769b9b55c8e36cea9d9c4cce1822)
+  - 2 files: `src/screens/Profile.jsx`, `src/screens/__tests__/ResidentInspector.test.tsx`
+- [ ] **`0a2faa8`** feat(a11y): make radar sweep blips and list rows keyboard accessible and sized
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/0a2faa8868e5ec7d0ae57140695928285fa5a655)
+  - 3 files: `src/index.css`, `src/screens/Radar.jsx`, `src/screens/__tests__/SearchRadarTouchTarget.test.tsx`
+  - also touches: Theme & tokens
+- [ ] **`01cd85a`** fix(a11y): differentiate chat recipient presence shape and add sr-only status
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/01cd85a3671fecc85eab37c64c6dac3569448c79)
+  - 2 files: `src/screens/Chat.jsx`, `src/screens/__tests__/ChatFilterChipsA11y.test.tsx`
 - [ ] **`97607fe`** feat(settings): migrate Settings and VoiceDevices form controls to AccessibleSelect and AccessibleInput
   - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/97607feb5db130c8966f038e58a24db4cd45a6fc)
   - 3 files: `src/components/VoiceDevices.jsx`, `src/linkpoint/__tests__/accessible-control-primitives.test.tsx`, `src/screens/Settings.jsx`
@@ -200,6 +270,59 @@ Mirror into: `docs/index.html` — screen templates + `SCREENS`/`CSUB` · `docs/
 
 Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `docs/react/src/components/`
 
+- [ ] **`f2eea0b`** fix(ci): bind derez modal theme tokens and unblock inventory trash announcements
+  - 2026-11-24 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/f2eea0b623d6019d1b970f9ffd11985bd5517a9f)
+  - 3 files: `src/components/AssetContainer.jsx`, `src/components/BuildingToolbar.tsx`, `src/linkpoint/inventory.ts`
+  - also touches: Viewer & protocol features
+- [ ] **`5510006`** fix(inspector): bind BuildingToolbar derez modal colors to ThemeContext tokens
+  - 2026-11-24 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/5510006cbe51b8c27b93c4bfc7cf13cb662198d5)
+  - 1 file: `src/components/BuildingToolbar.tsx`
+- [ ] **`cdd3055`** feat(a11y): add roving tabindex and FocusRing indicators to MenuBar
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/cdd3055a12632894897e1b2ea3673ea66590c205)
+  - 2 files: `src/components/MenuBar.jsx`, `src/components/__tests__/MenuBarAccessibility.test.tsx`
+- [ ] **`c0a8fd5`** feat(a11y): add roving tabindex and focus rings to BuildingToolbar
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/c0a8fd5bd3eff648e4dffa9fb7405249ab983119)
+  - 2 files: `src/components/BuildingToolbar.tsx`, `src/components/__tests__/BuildingToolbar.test.tsx`
+- [ ] **`b3128a5`** feat(a11y): add status text badge, FocusRing, and TouchTarget to MediaControlsOverlay
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b3128a5376cf5f4167e0bd6e92199a049c7a8452)
+  - 2 files: `src/components/MediaControlsOverlay.jsx`, `src/components/__tests__/MediaControlsOverlay.test.tsx`
+- [ ] **`b280e9f`** feat(building): add focus-trapped derez confirmation modal with simulator validation
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/b280e9f809f0c756dc1d50599f871ca51cacdc0e)
+  - 3 files: `src/components/BuildingToolbar.tsx`, `src/components/ObjectInspector.tsx`, `src/components/__tests__/BuildingToolbar.test.tsx`
+- [ ] **`ab15ed1`** Mount inline CrystalLoader in group notice composer submit button
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ab15ed138d56ca23c175e47b3808cdda04d8c832)
+  - 2 files: `src/components/CreateGroupNoticeModal.jsx`, `src/linkpoint/__tests__/group-notice-composer.test.tsx`
+  - also touches: Viewer & protocol features
+- [ ] **`a18cd1b`** fix(a11y): replace teleport header cancel span with TouchTarget button
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/a18cd1bbeef14cea7f85417dd4c125a98007a7ef)
+  - 2 files: `src/components/SystemDialog.jsx`, `src/components/__tests__/TouchTargetSizes.test.tsx`
+- [ ] **`99f67bf`** feat(groups): integrate inline CrystalLoader into group admin action buttons
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/99f67bfff0e27f1c595b04b706b5a778e2c3d514)
+  - 2 files: `src/components/GroupAdminFloater.jsx`, `src/components/__tests__/GroupAdminFloater.test.tsx`
+- [ ] **`8b9fc03`** fix(a11y): add accessible TouchTarget dismiss controls and preserve input focus outlines in GroupAdminFloater
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8b9fc038ceb75f6b3653ed191b630da7f5d9c49b)
+  - 2 files: `src/components/GroupAdminFloater.jsx`, `src/components/__tests__/GroupAdminFloater.test.tsx`
+- [ ] **`84f135f`** feat(ui): extend SyncActionButton variants and adopt across secondary views
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/84f135ff6df670a0767007e2e02ad17469a2323f)
+  - 8 files: `src/components/CreateGroupNoticeModal.jsx`, `src/components/GroupAdminFloater.jsx`, `src/components/SyncActionButton.tsx`, `src/components/__tests__/SecondaryViewLoaderAdoption.test.tsx`, `src/components/__tests__/SyncActionButton.test.tsx`, `src/screens/CalendarScreen.jsx` _(+2 more)_
+  - also touches: Screens
+- [ ] **`8156407`** Standardize scene sync button and renderer loader in World3D
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8156407a6a7f0d3b05d7169b9553967d9e271362)
+  - 3 files: `src/components/__tests__/SecondaryViewLoaderAdoption.test.tsx`, `src/components/__tests__/SyncActionButton.test.tsx`, `src/screens/World3D.jsx`
+  - also touches: Screens
+- [ ] **`727b901`** feat(ui): integrate ThemeContext tokens and AccessibleButton/FocusRing in TransactionConfirmationModal
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/727b9012205b87b507709d706928d69a42ac45cf)
+  - 2 files: `src/components/TransactionConfirmationModal.tsx`, `src/components/__tests__/TransactionConfirmationModal.test.tsx`
+- [ ] **`64de264`** fix(groups): subscribe CreateGroupNoticeModal to inventory lifecycle events
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/64de264ddf1dd346a5a12d2aaa3acc8c1f746f69)
+  - 2 files: `src/components/CreateGroupNoticeModal.jsx`, `src/linkpoint/__tests__/group-notice-composer.test.tsx`
+  - also touches: Viewer & protocol features
+- [ ] **`5534a33`** fix(inspector): bind ObjectInspector and BuildingToolbar controls to ThemeContext tokens
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/5534a33d1c4e4e76cf3c155384a46d69fe9f75f7)
+  - 3 files: `src/components/BuildingToolbar.tsx`, `src/components/ObjectInspector.tsx`, `src/components/__tests__/InspectorToolbarThemeTokens.test.tsx`
+- [ ] **`02111df`** feat(a11y): replace desktop dock clickable divs with accessible buttons
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/02111dfa558f09e326bcf19b643597e7c7056b8a)
+  - 2 files: `src/components/FloatersDesktop.jsx`, `src/components/__tests__/FloatersDesktopAccessibility.test.tsx`
 - [ ] **`e591105`** feat(design-system): author AccessibleInput and AccessibleSelect primitives and migrate form controls
   - 2026-11-03 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e5911058937b7d2fde259aedacf6564323dcad63)
   - 14 files: `packages/design-system/src/__tests__/accessible-controls.test.tsx`, `packages/design-system/src/__tests__/design-system.test.ts`, `packages/design-system/src/react/AccessibleInput.tsx`, `packages/design-system/src/react/AccessibleSelect.tsx`, `packages/design-system/src/react/index.ts`, `src/components/AccessibleInput.jsx` _(+8 more)_
@@ -617,6 +740,46 @@ Mirror into: `docs/index.html` — the `render()` view-model · `docs/react/src/
 
 Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this surface yet
 
+- [ ] **`ed7138b`** feat(contacts): add dual-scope friendship termination modal and reliable UDP dispatch
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ed7138bf7023a6b3dfe80587a78037d5692cc379)
+  - 9 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/contacts-screen.test.tsx`, `src/linkpoint/__tests__/terminate-friendship.test.tsx`, `src/linkpoint/phase2/friends-extended.ts`, `src/linkpoint/sl-bridge.ts` _(+3 more)_
+  - also touches: Screens, Unclassified
+- [ ] **`ed3043c`** feat(teleport): add Teleport History floater and per-avatar IndexedDB store
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ed3043c02730c4146c13ed43438f7ed3a5b30071)
+  - 19 files: `docs/viewer-screen-inventory.csv`, `src/components/DesktopChrome.jsx`, `src/components/FloatersDesktop.jsx`, `src/components/MenuBar.jsx`, `src/components/ScreenBody.jsx`, `src/components/TeleportHistoryFloater.jsx` _(+13 more)_
+  - also touches: Screens, Components, Theme & tokens, State & data, Docs & specs
+- [ ] **`e749a84`** feat(protocol,lsl,llsd): add canonical SL upstream references and conformance vectors
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e749a84a679deaea1c00e11876a3a9468be9bec0)
+  - 24 files: `android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/Wire.kt`, `android-kotlin/core/src/test/kotlin/app/linkpoint/core/WireConformanceTest.kt`, `core/sl-interactions.cjs`, `core/viewer-session.cjs`, `docs/official-sources.md`, `docs/viewer-parity.md` _(+18 more)_
+  - also touches: Tests, Build & platform, Docs & specs, Unclassified
+- [ ] **`e05db0f`** feat(settings): add client-side JSON backup and restore with schema sanitization
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e05db0f2a4b7231614e931abdcd626c8c19e9f9f)
+  - 10 files: `src/context/KeybindingsContext.tsx`, `src/hooks/useAppState.js`, `src/hooks/viewerSettings.js`, `src/linkpoint/__tests__/settings-backup-restore.test.tsx`, `src/linkpoint/app.ts`, `src/linkpoint/camera-controls.ts` _(+4 more)_
+  - also touches: Screens, State & data, Unclassified
+- [ ] **`ce848a9`** feat(teleport): unify client teleport orchestration and 500ms arrival hold
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ce848a95fee58be51fdb6d9768e665f1e19ef22c)
+  - 15 files: `src/components/DesktopChrome.jsx`, `src/components/InteractionDialog.jsx`, `src/components/MenuBar.jsx`, `src/components/SystemDialog.jsx`, `src/components/TeleportCrystalHero.jsx`, `src/linkpoint/__tests__/interaction-dialog.test.tsx` _(+9 more)_
+  - also touches: Screens, Components
+- [ ] **`bcf3e9e`** feat(gestures): implement dedicated gesture runtime engine and action pipeline
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/bcf3e9e50baf3f51cd00aa42bdd00cb0560bb76f)
+  - 13 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/hooks/useAppState.js`, `src/linkpoint/__tests__/gesture-runtime-engine.test.tsx`, `src/linkpoint/app.ts`, `src/linkpoint/chat.ts` _(+7 more)_
+  - also touches: Screens, State & data, Unclassified
+- [ ] **`9aeb27b`** feat(groups): add reliable UDP LeaveGroupRequest with inline confirmation
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/9aeb27bc0a9d025d38dc36a7aa2f55b7c9540706)
+  - 10 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/linkpoint/__tests__/leave-group-request.test.tsx`, `src/linkpoint/app.ts`, `src/linkpoint/group-notice-sync-engine.ts`, `src/linkpoint/indexeddb-store.ts` _(+4 more)_
+  - also touches: Screens, Unclassified
+- [ ] **`68d35fb`** feat(web): embed inline SVG crystal brand placeholder in index.html
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/68d35fb5d3163146f6b3776f84d39742d4616761)
+  - 2 files: `index.html`, `src/linkpoint/__tests__/index-crystal-placeholder.test.tsx`
+  - also touches: Docs & specs
+- [ ] **`41e5095`** feat(ao): add client-side AO engine, Firestorm-parity floater UI, and AgentAnimation sync
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/41e5095421d4c651b4208f122e01ebb2d20ae43f)
+  - 23 files: `core/sl-animations.cjs`, `core/viewer-api.cjs`, `core/viewer-session.cjs`, `docs/viewer-screen-inventory.csv`, `src/components/DesktopChrome.jsx`, `src/components/FloatersDesktop.jsx` _(+17 more)_
+  - also touches: Screens, Components, Theme & tokens, State & data, Docs & specs, Unclassified
+- [ ] **`161ea8f`** feat(inventory): add modal folder creation via context menu and toolbar
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/161ea8faa90ea7ec6c4bc03fbd306ca87880bc1a)
+  - 9 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/components/CreateFolderModal.tsx`, `src/components/InventoryTree.tsx`, `src/linkpoint/__tests__/inventory-folder-creation.test.tsx`, `src/linkpoint/__tests__/inventory-tree.test.tsx` _(+3 more)_
+  - also touches: Screens, Components, Unclassified
 - [ ] **`efaab54`** feat(inventory): implement two-stage soft-delete lifecycle and trash purge
   - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/efaab5443d9b924d8fef2977f7a36ebd5e216936)
   - 8 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/components/InventoryTree.tsx`, `src/linkpoint/__tests__/inventory-soft-delete.test.tsx`, `src/linkpoint/__tests__/inventory-tree.test.tsx`, `src/linkpoint/__tests__/viewer-session.test.ts` _(+2 more)_
@@ -1434,10 +1597,27 @@ Mirror into: `docs/ROADMAP.md` — decide whether the mockup has to model this s
   - 3 files: `src/components/ViewerWorkbench.tsx`, `src/linkpoint/auth.ts`, `src/linkpoint/sl-connection-full.ts`
   - also touches: Components
 
+### Tests
+
+Mirror into: the headless verification pass over `docs/index.html` + `docs/react/` (see `docs/ROADMAP.md`)
+
+- [ ] **`dcb21b3`** feat(web): add inline SVG crystal loading placeholder to index.html
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/dcb21b37ec3b91c32b90d88bd3b4b9ce5f57cbb8)
+  - 2 files: `index.html`, `src/__tests__/entry-crystal-placeholder.test.tsx`
+  - also touches: Docs & specs
+
 ### Build & platform
 
 Mirror into: usually no design change — confirm `docs/react/` still builds the same way
 
+- [ ] **`d490773`** chore(ci): include Electron config validation in check scripts
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d490773d866e018c90d2863071f49d7d5b5ac392)
+  - 3 files: `package.json`, `scripts/codex-setup.sh`, `src/linkpoint/__tests__/desktop-packaging.test.ts`
+  - also touches: Viewer & protocol features
+- [ ] **`28f8598`** ci(setup): add esbuild server bundle check to codex-setup.sh
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/28f8598bfd153e2705a22c47be367186b34c25e2)
+  - 4 files: `bun.lock`, `package.json`, `scripts/codex-setup.sh`, `src/linkpoint/__tests__/codex-setup.test.ts`
+  - also touches: Viewer & protocol features, Unclassified
 - [ ] **`e4133cf`** Extract composite action for standardized Android Kotlin Gradle caching
   - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e4133cfca89dfc8b80d3f1e46dc4feb6dcf4290e)
   - 3 files: `.github/actions/setup-android-kotlin/action.yml`, `.github/workflows/ci.yml`, `.github/workflows/live.yml`
@@ -1660,6 +1840,12 @@ Mirror into: `docs/ROADMAP.md` · `docs/github.md` · `docs/mockup-to-react.yaml
 
 Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json`
 
+- [ ] **`d5a283c`** feat(android): centralize secondary loading states with LinkpointLoadingState
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d5a283ca92315cb7ba65f4f9ace6565bd357bd43)
+  - 5 files: `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/ErrorRecoveryComponents.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/InfoScreens.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/components/LinkpointLoadingState.kt`, `android-kotlin/app/src/main/res/values/strings.xml`, `android-kotlin/app/src/test/kotlin/app/linkpoint/viewer/ui/components/LinkpointLoadingStateTest.kt`
+- [ ] **`2d60e05`** feat(android): replace stock spinners with CrystalLoader in info screens
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/2d60e055add272facb289403dca0a7bb5253b65c)
+  - 1 file: `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/InfoScreens.kt`
 - [ ] **`3f47b13`** feat(android): add teleport crystal hero modal and milestones overlay
   - 2026-11-06 · google-labs-jules[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/3f47b13125a955f39cb835e6d0bdd8153fc9fd19)
   - 8 files: `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/MapScreen.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/Root.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/crystal/TeleportCrystalHero.kt`, `android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/crystal/TeleportModalSheet.kt`, `android-kotlin/app/src/test/kotlin/app/linkpoint/viewer/ui/crystal/TeleportCrystalHeroTest.kt`, `android-kotlin/core/src/main/kotlin/app/linkpoint/core/ViewerSession.kt` _(+2 more)_
@@ -1900,7 +2086,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-11-07T06:11:46Z",
+ "generated": "2026-11-24T06:14:23Z",
  "items": [
   {
    "also": [
@@ -13493,9 +13679,992 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "97607fe",
    "subject": "feat(settings): migrate Settings and VoiceDevices form controls to AccessibleSelect and AccessibleInput",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/97607feb5db130c8966f038e58a24db4cd45a6fc"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/GroupAdminFloater.jsx",
+    "src/components/__tests__/GroupAdminFloater.test.tsx"
+   ],
+   "sha": "99f67bfff0e27f1c595b04b706b5a778e2c3d514",
+   "short": "99f67bf",
+   "subject": "feat(groups): integrate inline CrystalLoader into group admin action buttons",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/99f67bfff0e27f1c595b04b706b5a778e2c3d514"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/contacts-screen.test.tsx",
+    "src/screens/ContactsScreen.jsx",
+    "src/screens/Profile.jsx",
+    "src/screens/__tests__/ResidentInspector.test.tsx"
+   ],
+   "sha": "9994ad77167d3fbaafca06e267d662fd63bcfcc8",
+   "short": "9994ad7",
+   "subject": "feat(teleport): add teleport offer actions to Contacts and Profile",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/9994ad77167d3fbaafca06e267d662fd63bcfcc8"
+  },
+  {
+   "also": [],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/screens/LumiyaTools.jsx",
+    "src/screens/__tests__/MediaScreenErrorRecovery.test.tsx"
+   ],
+   "sha": "83e0eb47ab2c08e71f7407d139103ea283f0fa0c",
+   "short": "83e0eb4",
+   "subject": "feat(media): show inline error alert with retry button on stream playback failure",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/83e0eb47ab2c08e71f7407d139103ea283f0fa0c"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/CreateGroupNoticeModal.jsx",
+    "src/linkpoint/__tests__/group-notice-composer.test.tsx"
+   ],
+   "sha": "ab15ed138d56ca23c175e47b3808cdda04d8c832",
+   "short": "ab15ed1",
+   "subject": "Mount inline CrystalLoader in group notice composer submit button",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ab15ed138d56ca23c175e47b3808cdda04d8c832"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/InfoScreens.kt"
+   ],
+   "sha": "2d60e055add272facb289403dca0a7bb5253b65c",
+   "short": "2d60e05",
+   "subject": "feat(android): replace stock spinners with CrystalLoader in info screens",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/2d60e055add272facb289403dca0a7bb5253b65c"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/CreateGroupNoticeModal.jsx",
+    "src/linkpoint/__tests__/group-notice-composer.test.tsx"
+   ],
+   "sha": "64de264ddf1dd346a5a12d2aaa3acc8c1f746f69",
+   "short": "64de264",
+   "subject": "fix(groups): subscribe CreateGroupNoticeModal to inventory lifecycle events",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/64de264ddf1dd346a5a12d2aaa3acc8c1f746f69"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/save-outfit-as.test.tsx",
+    "src/screens/OutfitViewer.jsx"
+   ],
+   "sha": "58903cf58e8b0b83901d49955fb1232612e4506f",
+   "short": "58903cf",
+   "subject": "feat(outfit): integrate inline CrystalLoader into Save Outfit As submit button",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/58903cf58e8b0b83901d49955fb1232612e4506f"
+  },
+  {
+   "also": [],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/screens/OutfitViewer.jsx",
+    "src/screens/__tests__/OutfitViewer.test.jsx"
+   ],
+   "sha": "928ec85bf3abf2254414238ab92bffa057a9503e",
+   "short": "928ec85",
+   "subject": "feat(a11y): add OutfitViewer canvas fallback, keyboard controls, and reset touch target",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/928ec85bf3abf2254414238ab92bffa057a9503e"
+  },
+  {
+   "also": [],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/screens/LiveScreens.jsx",
+    "src/screens/__tests__/NoticeAttachmentBanner.test.tsx"
+   ],
+   "sha": "2afe274f827e8ff18bb342956b190b7e8174751d",
+   "short": "2afe274",
+   "subject": "feat(a11y): mount inline CrystalLoader and aria-busy in NoticeAttachmentBanner",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/2afe274f827e8ff18bb342956b190b7e8174751d"
+  },
+  {
+   "also": [
+    "components"
+   ],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/__tests__/SyncActionButton.test.tsx",
+    "src/screens/CalendarScreen.jsx",
+    "src/screens/OutfitViewer.jsx"
+   ],
+   "sha": "ffbc6bed2a2198795ece7a2c4073685e2d6a62b0",
+   "short": "ffbc6be",
+   "subject": "feat(sync): adopt SyncActionButton in OutfitViewer and CalendarScreen",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ffbc6bed2a2198795ece7a2c4073685e2d6a62b0"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/BuildingToolbar.tsx",
+    "src/components/__tests__/BuildingToolbar.test.tsx"
+   ],
+   "sha": "c0a8fd5bd3eff648e4dffa9fb7405249ab983119",
+   "short": "c0a8fd5",
+   "subject": "feat(a11y): add roving tabindex and focus rings to BuildingToolbar",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/c0a8fd5bd3eff648e4dffa9fb7405249ab983119"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/GroupAdminFloater.jsx",
+    "src/components/__tests__/GroupAdminFloater.test.tsx"
+   ],
+   "sha": "8b9fc038ceb75f6b3653ed191b630da7f5d9c49b",
+   "short": "8b9fc03",
+   "subject": "fix(a11y): add accessible TouchTarget dismiss controls and preserve input focus outlines in GroupAdminFloater",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8b9fc038ceb75f6b3653ed191b630da7f5d9c49b"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/calendar-screen.test.tsx",
+    "src/screens/CalendarScreen.jsx"
+   ],
+   "sha": "63d32d25fcd5db8105e7756173d60d465298f1d3",
+   "short": "63d32d2",
+   "subject": "feat(calendar): integrate AccessibleButton and inline CrystalLoader in Google Calendar export",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/63d32d25fcd5db8105e7756173d60d465298f1d3"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/settings-and-tabs.test.tsx",
+    "src/screens/Settings.jsx"
+   ],
+   "sha": "ac754eed168d444f430138358819d9e191eafe9d",
+   "short": "ac754ee",
+   "subject": "feat(settings): mount inline CrystalLoader in AccessibleButton reconnect trigger",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ac754eed168d444f430138358819d9e191eafe9d"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "platform",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "package.json",
+    "scripts/codex-setup.sh",
+    "src/linkpoint/__tests__/desktop-packaging.test.ts"
+   ],
+   "sha": "d490773d866e018c90d2863071f49d7d5b5ac392",
+   "short": "d490773",
+   "subject": "chore(ci): include Electron config validation in check scripts",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d490773d866e018c90d2863071f49d7d5b5ac392"
+  },
+  {
+   "also": [],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/screens/Settings.jsx",
+    "src/screens/__tests__/SettingsThemeTokens.test.tsx"
+   ],
+   "sha": "8bd3152cb5ebe6aa96f3d2f5ba1b4b767a071253",
+   "short": "8bd3152",
+   "subject": "fix(settings): bind ThemeContext tokens in keybinding controls and badges",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8bd3152cb5ebe6aa96f3d2f5ba1b4b767a071253"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/group-moderation-rpc-pipeline.test.tsx",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "50efc9d455b760022ecc9f3061ebe1f84c854281",
+   "short": "50efc9d",
+   "subject": "feat(groups): integrate inline CrystalLoader into mobile group moderation modals",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/50efc9d455b760022ecc9f3061ebe1f84c854281"
+  },
+  {
+   "also": [
+    "docs"
+   ],
+   "area": "tests",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "index.html",
+    "src/__tests__/entry-crystal-placeholder.test.tsx"
+   ],
+   "sha": "dcb21b37ec3b91c32b90d88bd3b4b9ce5f57cbb8",
+   "short": "dcb21b3",
+   "subject": "feat(web): add inline SVG crystal loading placeholder to index.html",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/dcb21b37ec3b91c32b90d88bd3b4b9ce5f57cbb8"
+  },
+  {
+   "also": [],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/screens/Profile.jsx",
+    "src/screens/__tests__/ResidentInspector.test.tsx"
+   ],
+   "sha": "8831d0d0634ba76d54067f848764fe8cf8c16547",
+   "short": "8831d0d",
+   "subject": "feat(profile): integrate reactive mute toggle action in ResidentInspector",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8831d0d0634ba76d54067f848764fe8cf8c16547"
+  },
+  {
+   "also": [],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/screens/Chat.jsx",
+    "src/screens/__tests__/ChatFilterChipsA11y.test.tsx"
+   ],
+   "sha": "01cd85a3671fecc85eab37c64c6dac3569448c79",
+   "short": "01cd85a",
+   "subject": "fix(a11y): differentiate chat recipient presence shape and add sr-only status",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/01cd85a3671fecc85eab37c64c6dac3569448c79"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/MenuBar.jsx",
+    "src/components/__tests__/MenuBarAccessibility.test.tsx"
+   ],
+   "sha": "cdd3055a12632894897e1b2ea3673ea66590c205",
+   "short": "cdd3055",
+   "subject": "feat(a11y): add roving tabindex and FocusRing indicators to MenuBar",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/cdd3055a12632894897e1b2ea3673ea66590c205"
+  },
+  {
+   "also": [
+    "screens"
+   ],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/__tests__/SecondaryViewLoaderAdoption.test.tsx",
+    "src/components/__tests__/SyncActionButton.test.tsx",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "8156407a6a7f0d3b05d7169b9553967d9e271362",
+   "short": "8156407",
+   "subject": "Standardize scene sync button and renderer loader in World3D",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8156407a6a7f0d3b05d7169b9553967d9e271362"
+  },
+  {
+   "also": [],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/screens/Profile.jsx",
+    "src/screens/__tests__/ResidentInspector.test.tsx"
+   ],
+   "sha": "1482e7b86030769b9b55c8e36cea9d9c4cce1822",
+   "short": "1482e7b",
+   "subject": "feat(profile): integrate PayDialog modal and trigger into ResidentInspector",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/1482e7b86030769b9b55c8e36cea9d9c4cce1822"
+  },
+  {
+   "also": [
+    "components",
+    "state",
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/MenuBar.jsx",
+    "src/components/ScreenBody.jsx",
+    "src/data/content.js",
+    "src/hooks/useAppState.js",
+    "src/linkpoint/__tests__/viewer-parity.test.tsx",
+    "src/screens/LiveScreens.jsx",
+    "src/screens/LumiyaTools.jsx"
+   ],
+   "sha": "8d70b3937b2e5e1c1d62e76b92109fd5db9fc354",
+   "short": "8d70b39",
+   "subject": "refactor(nav): retire unbacked AO navigation entry and placeholder screen",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8d70b3937b2e5e1c1d62e76b92109fd5db9fc354"
+  },
+  {
+   "also": [],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/screens/Search.jsx",
+    "src/screens/__tests__/SearchRadarTouchTarget.test.tsx"
+   ],
+   "sha": "d6d2d8b256aa4649268617813416c51dd1dee436",
+   "short": "d6d2d8b",
+   "subject": "fix(search): replace Grid Directory back div with accessible TouchTarget button",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d6d2d8b256aa4649268617813416c51dd1dee436"
+  },
+  {
+   "also": [],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/screens/LumiyaTools.jsx",
+    "src/screens/__tests__/NotecardsScreen.test.tsx"
+   ],
+   "sha": "ef3efff1526054a262cb2f9f1285c9c474cec189",
+   "short": "ef3efff",
+   "subject": "fix(notecards): sync inventory events and fetch notecard text inline",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ef3efff1526054a262cb2f9f1285c9c474cec189"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/TransactionConfirmationModal.tsx",
+    "src/components/__tests__/TransactionConfirmationModal.test.tsx"
+   ],
+   "sha": "727b9012205b87b507709d706928d69a42ac45cf",
+   "short": "727b901",
+   "subject": "feat(ui): integrate ThemeContext tokens and AccessibleButton/FocusRing in TransactionConfirmationModal",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/727b9012205b87b507709d706928d69a42ac45cf"
+  },
+  {
+   "also": [
+    "viewer",
+    "other"
+   ],
+   "area": "platform",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "bun.lock",
+    "package.json",
+    "scripts/codex-setup.sh",
+    "src/linkpoint/__tests__/codex-setup.test.ts"
+   ],
+   "sha": "28f8598bfd153e2705a22c47be367186b34c25e2",
+   "short": "28f8598",
+   "subject": "ci(setup): add esbuild server bundle check to codex-setup.sh",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/28f8598bfd153e2705a22c47be367186b34c25e2"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/MediaControlsOverlay.jsx",
+    "src/components/__tests__/MediaControlsOverlay.test.tsx"
+   ],
+   "sha": "b3128a5376cf5f4167e0bd6e92199a049c7a8452",
+   "short": "b3128a5",
+   "subject": "feat(a11y): add status text badge, FocusRing, and TouchTarget to MediaControlsOverlay",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/b3128a5376cf5f4167e0bd6e92199a049c7a8452"
+  },
+  {
+   "also": [],
+   "area": "other",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/ErrorRecoveryComponents.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/InfoScreens.kt",
+    "android-kotlin/app/src/main/kotlin/app/linkpoint/viewer/ui/components/LinkpointLoadingState.kt",
+    "android-kotlin/app/src/main/res/values/strings.xml",
+    "android-kotlin/app/src/test/kotlin/app/linkpoint/viewer/ui/components/LinkpointLoadingStateTest.kt"
+   ],
+   "sha": "d5a283ca92315cb7ba65f4f9ace6565bd357bd43",
+   "short": "d5a283c",
+   "subject": "feat(android): centralize secondary loading states with LinkpointLoadingState",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d5a283ca92315cb7ba65f4f9ace6565bd357bd43"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/SystemDialog.jsx",
+    "src/components/__tests__/TouchTargetSizes.test.tsx"
+   ],
+   "sha": "a18cd1bbeef14cea7f85417dd4c125a98007a7ef",
+   "short": "a18cd1b",
+   "subject": "fix(a11y): replace teleport header cancel span with TouchTarget button",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/a18cd1bbeef14cea7f85417dd4c125a98007a7ef"
+  },
+  {
+   "also": [],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/screens/Map.jsx",
+    "src/screens/__tests__/Map.test.tsx"
+   ],
+   "sha": "c4807cdf49ebdc0c08173d75632b92bdb82b171e",
+   "short": "c4807cd",
+   "subject": "fix(map): bind map buttons to V.ink/V.onpri tokens and wrap in TouchTarget",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/c4807cdf49ebdc0c08173d75632b92bdb82b171e"
+  },
+  {
+   "also": [
+    "theme"
+   ],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/index.css",
+    "src/screens/Radar.jsx",
+    "src/screens/__tests__/SearchRadarTouchTarget.test.tsx"
+   ],
+   "sha": "0a2faa8868e5ec7d0ae57140695928285fa5a655",
+   "short": "0a2faa8",
+   "subject": "feat(a11y): make radar sweep blips and list rows keyboard accessible and sized",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/0a2faa8868e5ec7d0ae57140695928285fa5a655"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/BuildingToolbar.tsx",
+    "src/components/ObjectInspector.tsx",
+    "src/components/__tests__/InspectorToolbarThemeTokens.test.tsx"
+   ],
+   "sha": "5534a33d1c4e4e76cf3c155384a46d69fe9f75f7",
+   "short": "5534a33",
+   "subject": "fix(inspector): bind ObjectInspector and BuildingToolbar controls to ThemeContext tokens",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/5534a33d1c4e4e76cf3c155384a46d69fe9f75f7"
+  },
+  {
+   "also": [
+    "screens",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/contacts-screen.test.tsx",
+    "src/linkpoint/__tests__/terminate-friendship.test.tsx",
+    "src/linkpoint/phase2/friends-extended.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/sl-message-types.ts",
+    "src/screens/ContactsScreen.jsx"
+   ],
+   "sha": "ed7138bf7023a6b3dfe80587a78037d5692cc379",
+   "short": "ed7138b",
+   "subject": "feat(contacts): add dual-scope friendship termination modal and reliable UDP dispatch",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ed7138bf7023a6b3dfe80587a78037d5692cc379"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/BuildingToolbar.tsx",
+    "src/components/ObjectInspector.tsx",
+    "src/components/__tests__/BuildingToolbar.test.tsx"
+   ],
+   "sha": "b280e9f809f0c756dc1d50599f871ca51cacdc0e",
+   "short": "b280e9f",
+   "subject": "feat(building): add focus-trapped derez confirmation modal with simulator validation",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/b280e9f809f0c756dc1d50599f871ca51cacdc0e"
+  },
+  {
+   "also": [
+    "docs"
+   ],
+   "area": "viewer",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "index.html",
+    "src/linkpoint/__tests__/index-crystal-placeholder.test.tsx"
+   ],
+   "sha": "68d35fb5d3163146f6b3776f84d39742d4616761",
+   "short": "68d35fb",
+   "subject": "feat(web): embed inline SVG crystal brand placeholder in index.html",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/68d35fb5d3163146f6b3776f84d39742d4616761"
+  },
+  {
+   "also": [
+    "screens",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/linkpoint/__tests__/leave-group-request.test.tsx",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/group-notice-sync-engine.ts",
+    "src/linkpoint/indexeddb-store.ts",
+    "src/linkpoint/notices.ts",
+    "src/linkpoint/phase2/groups.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "9aeb27bc0a9d025d38dc36a7aa2f55b7c9540706",
+   "short": "9aeb27b",
+   "subject": "feat(groups): add reliable UDP LeaveGroupRequest with inline confirmation",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/9aeb27bc0a9d025d38dc36a7aa2f55b7c9540706"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/spatial-touch-pods.test.tsx",
+    "src/screens/World3D.jsx",
+    "src/screens/__tests__/World3DOverlayTouchTarget.test.tsx"
+   ],
+   "sha": "c4f4a38c63b3dbf660b3c7d36dd34753905b34d1",
+   "short": "c4f4a38",
+   "subject": "fix(a11y): wrap World3D overlay controls in TouchTarget and FocusRing",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/c4f4a38c63b3dbf660b3c7d36dd34753905b34d1"
+  },
+  {
+   "also": [
+    "screens"
+   ],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/CreateGroupNoticeModal.jsx",
+    "src/components/GroupAdminFloater.jsx",
+    "src/components/SyncActionButton.tsx",
+    "src/components/__tests__/SecondaryViewLoaderAdoption.test.tsx",
+    "src/components/__tests__/SyncActionButton.test.tsx",
+    "src/screens/CalendarScreen.jsx",
+    "src/screens/OutfitViewer.jsx",
+    "src/screens/World3D.jsx"
+   ],
+   "sha": "84f135ff6df670a0767007e2e02ad17469a2323f",
+   "short": "84f135f",
+   "subject": "feat(ui): extend SyncActionButton variants and adopt across secondary views",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/84f135ff6df670a0767007e2e02ad17469a2323f"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "screens",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/linkpoint/__tests__/group-moderation-rpc-pipeline.test.tsx",
+    "src/screens/LiveScreens.jsx"
+   ],
+   "sha": "600a344e16844a3f0dcfb01b3c0023ba996e2971",
+   "short": "600a344",
+   "subject": "fix(groups): prevent infinite loadGroupDetails loop on store update events",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/600a344e16844a3f0dcfb01b3c0023ba996e2971"
+  },
+  {
+   "also": [
+    "screens",
+    "state",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/hooks/useAppState.js",
+    "src/linkpoint/__tests__/gesture-runtime-engine.test.tsx",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/chat.ts",
+    "src/linkpoint/gesture-runtime-engine.ts",
+    "src/linkpoint/phase2/chat-extended.ts",
+    "src/linkpoint/phase2/gesture-runtime.ts",
+    "src/linkpoint/phase2/inventory-types.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/screens/Inventory.jsx"
+   ],
+   "sha": "bcf3e9e50baf3f51cd00aa42bdd00cb0560bb76f",
+   "short": "bcf3e9e",
+   "subject": "feat(gestures): implement dedicated gesture runtime engine and action pipeline",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/bcf3e9e50baf3f51cd00aa42bdd00cb0560bb76f"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/FloatersDesktop.jsx",
+    "src/components/__tests__/FloatersDesktopAccessibility.test.tsx"
+   ],
+   "sha": "02111dfa558f09e326bcf19b643597e7c7056b8a",
+   "short": "02111df",
+   "subject": "feat(a11y): replace desktop dock clickable divs with accessible buttons",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/02111dfa558f09e326bcf19b643597e7c7056b8a"
+  },
+  {
+   "also": [
+    "screens",
+    "state",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/context/KeybindingsContext.tsx",
+    "src/hooks/useAppState.js",
+    "src/hooks/viewerSettings.js",
+    "src/linkpoint/__tests__/settings-backup-restore.test.tsx",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/camera-controls.ts",
+    "src/linkpoint/key-bindings.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/Settings.jsx",
+    "src/services/settingsBackup.ts"
+   ],
+   "sha": "e05db0f2a4b7231614e931abdcd626c8c19e9f9f",
+   "short": "e05db0f",
+   "subject": "feat(settings): add client-side JSON backup and restore with schema sanitization",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e05db0f2a4b7231614e931abdcd626c8c19e9f9f"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/components/CreateFolderModal.tsx",
+    "src/components/InventoryTree.tsx",
+    "src/linkpoint/__tests__/inventory-folder-creation.test.tsx",
+    "src/linkpoint/__tests__/inventory-tree.test.tsx",
+    "src/linkpoint/inventory.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/screens/Inventory.jsx"
+   ],
+   "sha": "161ea8faa90ea7ec6c4bc03fbd306ca87880bc1a",
+   "short": "161ea8f",
+   "subject": "feat(inventory): add modal folder creation via context menu and toolbar",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/161ea8faa90ea7ec6c4bc03fbd306ca87880bc1a"
+  },
+  {
+   "also": [
+    "screens",
+    "components"
+   ],
+   "area": "viewer",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "src/components/DesktopChrome.jsx",
+    "src/components/InteractionDialog.jsx",
+    "src/components/MenuBar.jsx",
+    "src/components/SystemDialog.jsx",
+    "src/components/TeleportCrystalHero.jsx",
+    "src/linkpoint/__tests__/interaction-dialog.test.tsx",
+    "src/linkpoint/__tests__/interactions.test.ts",
+    "src/linkpoint/__tests__/sl-actions-client.test.ts",
+    "src/linkpoint/__tests__/system-dialog-teleport.test.tsx",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/interactions.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/screens/LiveScreens.jsx",
+    "src/screens/Radar.jsx",
+    "src/screens/Search.jsx"
+   ],
+   "sha": "ce848a95fee58be51fdb6d9768e665f1e19ef22c",
+   "short": "ce848a9",
+   "subject": "feat(teleport): unify client teleport orchestration and 500ms arrival hold",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ce848a95fee58be51fdb6d9768e665f1e19ef22c"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "theme",
+    "state",
+    "docs",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "core/sl-animations.cjs",
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "docs/viewer-screen-inventory.csv",
+    "src/components/DesktopChrome.jsx",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/MenuBar.jsx",
+    "src/components/ScreenBody.jsx",
+    "src/data/content.js",
+    "src/hooks/useAppState.js",
+    "src/linkpoint/__tests__/ao-engine.test.ts",
+    "src/linkpoint/__tests__/ao-floater.test.tsx",
+    "src/linkpoint/__tests__/sl-animations.test.ts",
+    "src/linkpoint/__tests__/viewer-parity.test.tsx",
+    "src/linkpoint/ao-engine.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/avatar-animator.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/AOFloater.jsx",
+    "src/screens/LumiyaTools.jsx",
+    "src/theme/constants.js"
+   ],
+   "sha": "41e5095421d4c651b4208f122e01ebb2d20ae43f",
+   "short": "41e5095",
+   "subject": "feat(ao): add client-side AO engine, Firestorm-parity floater UI, and AgentAnimation sync",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/41e5095421d4c651b4208f122e01ebb2d20ae43f"
+  },
+  {
+   "also": [
+    "screens",
+    "components",
+    "theme",
+    "state",
+    "docs"
+   ],
+   "area": "viewer",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "docs/viewer-screen-inventory.csv",
+    "src/components/DesktopChrome.jsx",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/MenuBar.jsx",
+    "src/components/ScreenBody.jsx",
+    "src/components/TeleportHistoryFloater.jsx",
+    "src/components/__tests__/TeleportHistoryFloater.test.tsx",
+    "src/data/content.js",
+    "src/linkpoint/__tests__/teleport-history-store.test.ts",
+    "src/linkpoint/app.ts",
+    "src/linkpoint/indexeddb-store.ts",
+    "src/linkpoint/interactions.ts",
+    "src/linkpoint/local-cache.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/linkpoint/teleport-history.ts",
+    "src/linkpoint/world.ts",
+    "src/screens/LumiyaTools.jsx",
+    "src/screens/Map.jsx",
+    "src/theme/constants.js"
+   ],
+   "sha": "ed3043c02730c4146c13ed43438f7ed3a5b30071",
+   "short": "ed3043c",
+   "subject": "feat(teleport): add Teleport History floater and per-avatar IndexedDB store",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ed3043c02730c4146c13ed43438f7ed3a5b30071"
+  },
+  {
+   "also": [
+    "tests",
+    "platform",
+    "docs",
+    "other"
+   ],
+   "area": "viewer",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "android-kotlin/core/src/main/kotlin/app/linkpoint/core/net/Wire.kt",
+    "android-kotlin/core/src/test/kotlin/app/linkpoint/core/WireConformanceTest.kt",
+    "core/sl-interactions.cjs",
+    "core/viewer-session.cjs",
+    "docs/official-sources.md",
+    "docs/viewer-parity.md",
+    "package.json",
+    "scripts/verify-sl-sources.mjs",
+    "src/__tests__/test-vectors.test.ts",
+    "src/linkpoint/__tests__/friend-rights.test.tsx",
+    "src/linkpoint/__tests__/sl-conformance-vectors.test.ts",
+    "src/linkpoint/__tests__/terminate-friendship.test.tsx",
+    "src/linkpoint/binaryParser.ts",
+    "src/linkpoint/index.ts",
+    "src/linkpoint/llsd.ts",
+    "src/linkpoint/phase2/friends-extended.ts",
+    "src/linkpoint/secondlife/SecondLifeLLSDUtils.ts",
+    "src/linkpoint/secondlife/lsl-definitions-data.ts",
+    "src/linkpoint/sl-message-types.ts",
+    "src/linkpoint/xmlParser.ts",
+    "test-vectors/llsd/python_llsd_conformance_vectors.json",
+    "test-vectors/protocol/master_message_template_vectors.json",
+    "test-vectors/schemas/llsd_vectors_schema.json",
+    "test-vectors/schemas/protocol_vectors_schema.json"
+   ],
+   "sha": "e749a84a679deaea1c00e11876a3a9468be9bec0",
+   "short": "e749a84",
+   "subject": "feat(protocol,lsl,llsd): add canonical SL upstream references and conformance vectors",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e749a84a679deaea1c00e11876a3a9468be9bec0"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-24",
+   "done": false,
+   "files": [
+    "src/components/BuildingToolbar.tsx"
+   ],
+   "sha": "5510006cbe51b8c27b93c4bfc7cf13cb662198d5",
+   "short": "5510006",
+   "subject": "fix(inspector): bind BuildingToolbar derez modal colors to ThemeContext tokens",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/5510006cbe51b8c27b93c4bfc7cf13cb662198d5"
+  },
+  {
+   "also": [
+    "viewer"
+   ],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-24",
+   "done": false,
+   "files": [
+    "src/components/AssetContainer.jsx",
+    "src/components/BuildingToolbar.tsx",
+    "src/linkpoint/inventory.ts"
+   ],
+   "sha": "f2eea0b623d6019d1b970f9ffd11985bd5517a9f",
+   "short": "f2eea0b",
+   "subject": "fix(ci): bind derez modal theme tokens and unblock inventory trash announcements",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/f2eea0b623d6019d1b970f9ffd11985bd5517a9f"
   }
  ],
- "last_sha": "014ce55a1473655cd24f0b13615b283031107a8f",
+ "last_sha": "dbdede67302db93bdc7bc18dd99e7b2d88b249c7",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
