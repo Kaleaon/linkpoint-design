@@ -14,8 +14,8 @@ history. This file covers one of them; the other, the Expo app
 is tracked by hand in [`github.md`](github.md).
 
 - **Upstream:** [`Kaleaon/React-Linkpoint`](https://github.com/Kaleaon/react-linkpoint) (`main`)
-- **Last change:** 2026-11-24T06:14:23Z — upstream read through [`dbdede6`](https://github.com/Kaleaon/react-linkpoint/commit/dbdede67302db93bdc7bc18dd99e7b2d88b249c7)
-- **Open:** 562 · **Completed:** 2
+- **Last change:** 2026-11-25T06:14:41Z — upstream read through [`67ea26d`](https://github.com/Kaleaon/react-linkpoint/commit/67ea26df795721a1a3f021843e5b818fda81d751)
+- **Open:** 571 · **Completed:** 2
 
 ## Open
 
@@ -277,6 +277,9 @@ Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `do
 - [ ] **`5510006`** fix(inspector): bind BuildingToolbar derez modal colors to ThemeContext tokens
   - 2026-11-24 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/5510006cbe51b8c27b93c4bfc7cf13cb662198d5)
   - 1 file: `src/components/BuildingToolbar.tsx`
+- [ ] **`3b2c66b`** fix(building): bind derez confirmation modal to ThemeContext tokens
+  - 2026-11-24 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/3b2c66b97e370a68fbdbcca5c5b81e0a61c7a619)
+  - 1 file: `src/components/BuildingToolbar.tsx`
 - [ ] **`cdd3055`** feat(a11y): add roving tabindex and FocusRing indicators to MenuBar
   - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/cdd3055a12632894897e1b2ea3673ea66590c205)
   - 2 files: `src/components/MenuBar.jsx`, `src/components/__tests__/MenuBarAccessibility.test.tsx`
@@ -313,6 +316,10 @@ Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `do
 - [ ] **`727b901`** feat(ui): integrate ThemeContext tokens and AccessibleButton/FocusRing in TransactionConfirmationModal
   - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/727b9012205b87b507709d706928d69a42ac45cf)
   - 2 files: `src/components/TransactionConfirmationModal.tsx`, `src/components/__tests__/TransactionConfirmationModal.test.tsx`
+- [ ] **`71764cb`** feat(inventory): implement ItemPropertiesFloater with desktop windowing and batch permission updates
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/71764cba3de42548d00f301410b869b8d59ae32b)
+  - 16 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `src/components/FloatersDesktop.jsx`, `src/components/InventoryTree.tsx`, `src/components/ItemPropertiesFloater.tsx`, `src/components/ScreenBody.jsx` _(+10 more)_
+  - also touches: Screens, Theme & tokens, State & data, Viewer & protocol features, Unclassified
 - [ ] **`64de264`** fix(groups): subscribe CreateGroupNoticeModal to inventory lifecycle events
   - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/64de264ddf1dd346a5a12d2aaa3acc8c1f746f69)
   - 2 files: `src/components/CreateGroupNoticeModal.jsx`, `src/linkpoint/__tests__/group-notice-composer.test.tsx`
@@ -320,6 +327,10 @@ Mirror into: `docs/index.html` — shared renderers (cards, header, tabs) · `do
 - [ ] **`5534a33`** fix(inspector): bind ObjectInspector and BuildingToolbar controls to ThemeContext tokens
   - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/5534a33d1c4e4e76cf3c155384a46d69fe9f75f7)
   - 3 files: `src/components/BuildingToolbar.tsx`, `src/components/ObjectInspector.tsx`, `src/components/__tests__/InspectorToolbarThemeTokens.test.tsx`
+- [ ] **`026db50`** feat(viewer): add Firestorm-parity Create Landmark floater with HTTP/UDP fallback
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/026db50804ea8a1ceefe7b39c39946bdd64b45e2)
+  - 17 files: `core/viewer-api.cjs`, `core/viewer-session.cjs`, `docs/viewer-screen-inventory.csv`, `src/components/DesktopChrome.jsx`, `src/components/FloatersDesktop.jsx`, `src/components/LandmarkFloater.jsx` _(+11 more)_
+  - also touches: Theme & tokens, State & data, Viewer & protocol features, Docs & specs, Unclassified
 - [ ] **`02111df`** feat(a11y): replace desktop dock clickable divs with accessible buttons
   - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/02111dfa558f09e326bcf19b643597e7c7056b8a)
   - 2 files: `src/components/FloatersDesktop.jsx`, `src/components/__tests__/FloatersDesktopAccessibility.test.tsx`
@@ -1610,10 +1621,28 @@ Mirror into: the headless verification pass over `docs/index.html` + `docs/react
 
 Mirror into: usually no design change — confirm `docs/react/` still builds the same way
 
+- [ ] **`e53f845`** ci(jules): add ready_for_review pull request trigger type
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/e53f8456e58fd36d5a0df2bd05a61081b1fefcb9)
+  - 1 file: `.github/workflows/run.yml`
 - [ ] **`d490773`** chore(ci): include Electron config validation in check scripts
   - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d490773d866e018c90d2863071f49d7d5b5ac392)
   - 3 files: `package.json`, `scripts/codex-setup.sh`, `src/linkpoint/__tests__/desktop-packaging.test.ts`
   - also touches: Viewer & protocol features
+- [ ] **`d1cc494`** ci(release): cache Filament matc toolchain in web job
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/d1cc494263ed4f5e443c5c2fe58252bfe5388475)
+  - 1 file: `.github/workflows/release.yml`
+- [ ] **`ce55b59`** ci: cache Bun dependencies in Fly.io deployment workflow
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/ce55b59e39fa2e1f540b2ed2f802947eb057c42e)
+  - 1 file: `.github/workflows/fly-deploy.yml`
+- [ ] **`a9f042e`** ci: include package.json and bun.lock in desktop path filter
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/a9f042e9087aab7f11543d6414f763cbea0d9c95)
+  - 1 file: `.github/workflows/ci.yml`
+- [ ] **`8202820`** ci: include setup-android-kotlin action in kotlin path filter
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/8202820b3eace80928b099583254cd811a727502)
+  - 1 file: `.github/workflows/ci.yml`
+- [ ] **`66f90ca`** Expand live grid workflow pull_request path filters for Gradle configs and setup action
+  - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/66f90ca124a1a1f942dac05fad218798859a7926)
+  - 1 file: `.github/workflows/live.yml`
 - [ ] **`28f8598`** ci(setup): add esbuild server bundle check to codex-setup.sh
   - 2026-11-23 · google-labs-stitch[bot] · [commit](https://github.com/Kaleaon/react-linkpoint/commit/28f8598bfd153e2705a22c47be367186b34c25e2)
   - 4 files: `bun.lock`, `package.json`, `scripts/codex-setup.sh`, `src/linkpoint/__tests__/codex-setup.test.ts`
@@ -2086,7 +2115,7 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
 
 <!-- sync-state
 {
- "generated": "2026-11-24T06:14:23Z",
+ "generated": "2026-11-25T06:14:41Z",
  "items": [
   {
    "also": [
@@ -14662,9 +14691,178 @@ Mirror into: triage by hand, then add a matching rule to `tools/sync-config.json
    "short": "f2eea0b",
    "subject": "fix(ci): bind derez modal theme tokens and unblock inventory trash announcements",
    "url": "https://github.com/Kaleaon/react-linkpoint/commit/f2eea0b623d6019d1b970f9ffd11985bd5517a9f"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    ".github/workflows/fly-deploy.yml"
+   ],
+   "sha": "ce55b59e39fa2e1f540b2ed2f802947eb057c42e",
+   "short": "ce55b59",
+   "subject": "ci: cache Bun dependencies in Fly.io deployment workflow",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/ce55b59e39fa2e1f540b2ed2f802947eb057c42e"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    ".github/workflows/run.yml"
+   ],
+   "sha": "e53f8456e58fd36d5a0df2bd05a61081b1fefcb9",
+   "short": "e53f845",
+   "subject": "ci(jules): add ready_for_review pull request trigger type",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/e53f8456e58fd36d5a0df2bd05a61081b1fefcb9"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    ".github/workflows/live.yml"
+   ],
+   "sha": "66f90ca124a1a1f942dac05fad218798859a7926",
+   "short": "66f90ca",
+   "subject": "Expand live grid workflow pull_request path filters for Gradle configs and setup action",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/66f90ca124a1a1f942dac05fad218798859a7926"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml"
+   ],
+   "sha": "8202820b3eace80928b099583254cd811a727502",
+   "short": "8202820",
+   "subject": "ci: include setup-android-kotlin action in kotlin path filter",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/8202820b3eace80928b099583254cd811a727502"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    ".github/workflows/release.yml"
+   ],
+   "sha": "d1cc494263ed4f5e443c5c2fe58252bfe5388475",
+   "short": "d1cc494",
+   "subject": "ci(release): cache Filament matc toolchain in web job",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/d1cc494263ed4f5e443c5c2fe58252bfe5388475"
+  },
+  {
+   "also": [],
+   "area": "platform",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    ".github/workflows/ci.yml"
+   ],
+   "sha": "a9f042e9087aab7f11543d6414f763cbea0d9c95",
+   "short": "a9f042e",
+   "subject": "ci: include package.json and bun.lock in desktop path filter",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/a9f042e9087aab7f11543d6414f763cbea0d9c95"
+  },
+  {
+   "also": [
+    "theme",
+    "state",
+    "viewer",
+    "docs",
+    "other"
+   ],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "docs/viewer-screen-inventory.csv",
+    "src/components/DesktopChrome.jsx",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/LandmarkFloater.jsx",
+    "src/components/MenuBar.jsx",
+    "src/components/ScreenBody.jsx",
+    "src/components/__tests__/LandmarkFloater.test.tsx",
+    "src/context/KeybindingsContext.tsx",
+    "src/hooks/useAppState.js",
+    "src/linkpoint/__tests__/viewer-session-landmark.test.ts",
+    "src/linkpoint/inventory.ts",
+    "src/linkpoint/landmark.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/theme/constants.js"
+   ],
+   "sha": "026db50804ea8a1ceefe7b39c39946bdd64b45e2",
+   "short": "026db50",
+   "subject": "feat(viewer): add Firestorm-parity Create Landmark floater with HTTP/UDP fallback",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/026db50804ea8a1ceefe7b39c39946bdd64b45e2"
+  },
+  {
+   "also": [
+    "screens",
+    "theme",
+    "state",
+    "viewer",
+    "other"
+   ],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-23",
+   "done": false,
+   "files": [
+    "core/viewer-api.cjs",
+    "core/viewer-session.cjs",
+    "src/components/FloatersDesktop.jsx",
+    "src/components/InventoryTree.tsx",
+    "src/components/ItemPropertiesFloater.tsx",
+    "src/components/ScreenBody.jsx",
+    "src/components/__tests__/ItemPropertiesFloater.test.tsx",
+    "src/context/AppContext.jsx",
+    "src/hooks/useAppState.js",
+    "src/linkpoint/__tests__/inventory-batch-permissions.test.ts",
+    "src/linkpoint/inventory.ts",
+    "src/linkpoint/services/inventory-properties-service.ts",
+    "src/linkpoint/sl-bridge.ts",
+    "src/linkpoint/sl-connection-full.ts",
+    "src/screens/Inventory.jsx",
+    "src/theme/constants.js"
+   ],
+   "sha": "71764cba3de42548d00f301410b869b8d59ae32b",
+   "short": "71764cb",
+   "subject": "feat(inventory): implement ItemPropertiesFloater with desktop windowing and batch permission updates",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/71764cba3de42548d00f301410b869b8d59ae32b"
+  },
+  {
+   "also": [],
+   "area": "components",
+   "author": "google-labs-stitch[bot]",
+   "date": "2026-11-24",
+   "done": false,
+   "files": [
+    "src/components/BuildingToolbar.tsx"
+   ],
+   "sha": "3b2c66b97e370a68fbdbcca5c5b81e0a61c7a619",
+   "short": "3b2c66b",
+   "subject": "fix(building): bind derez confirmation modal to ThemeContext tokens",
+   "url": "https://github.com/Kaleaon/react-linkpoint/commit/3b2c66b97e370a68fbdbcca5c5b81e0a61c7a619"
   }
  ],
- "last_sha": "dbdede67302db93bdc7bc18dd99e7b2d88b249c7",
+ "last_sha": "67ea26df795721a1a3f021843e5b818fda81d751",
  "upstream": {
   "branch": "main",
   "url": "https://github.com/Kaleaon/react-linkpoint"
